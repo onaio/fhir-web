@@ -6,12 +6,11 @@
     "start": "cd ./app && react-scripts start",
     "build": "cd ./app && react-scripts build",
     "lerna:prepublish": "lerna bootstrap && lerna run build --include-dependencies --stream",
-    "lerna:version": "lerna version --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
+    "lerna:version": "lerna version --include-merged-tags --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "TZ='UTC' jest",
     "test:watch": "TZ='UTC' jest --watch",
-    "lint": "eslint '{packages,app}/**/*.{js,ts,tsx}' --max-warnings 0",
-    "lint-snap": "eslint '{packages,app}/**/*.snap'"
+    "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0"
   },
   "jest": {
     "setupFiles": [
@@ -59,6 +58,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.4",
     "@testing-library/user-event": "^7.1.2",
+    "@testing-library/react-hooks": "^7.0.0",
     "@types/bootstrap": "^4.5.0",
     "@types/enzyme": "^3.10.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
@@ -105,7 +105,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jest-haste-map": "^26.3.0",
     "jest-resolve": "^26.4.0",
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "lint-staged": "^10.3.0",
     "mockdate": "^3.0.2",
     "prettier": "^2.1.1",

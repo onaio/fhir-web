@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Table } from 'antd';
+import { Row, PageHeader, Col, Button } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -12,13 +12,12 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';
-import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import {
   PLANS_CREATE_VIEW_URL,
   RouteParams,
   SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
-  TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
@@ -33,7 +32,7 @@ interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
-  allowedPlanStatus: string;
+  allowedPlanStatus: PlanStatus;
 }
 
 const defaultProps = {
@@ -69,14 +68,6 @@ const PlansList = (props: PlansListTypes) => {
   }
 
   const pageTitle = pageTitleBuilder(allowedPlanStatus);
-  // add a key prop to the array data to be consumed by the table
-  const dataSource = data.map((singleObject, key) => {
-    const planWithKey = {
-      ...singleObject,
-      key: `${TableColumnsNamespace}-${key}`,
-    };
-    return planWithKey;
-  });
 
   const columns = getColumns();
 
@@ -95,7 +86,7 @@ const PlansList = (props: PlansListTypes) => {
               </Button>
             </Link>
           </div>
-          <Table dataSource={dataSource} columns={columns}></Table>
+          <TableLayout id="PlansList" persistState={true} datasource={data} columns={columns} />
         </Col>
       </Row>
     </div>

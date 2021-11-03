@@ -19,6 +19,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR_TEAMS_MODULE,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -46,6 +47,7 @@ import {
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_FHIR_CARE_TEAM,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -86,6 +88,14 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
+import {
+  CareTeamList,
+  ROUTE_PARAM_CARE_TEAM_ID,
+  CreateEditCareTeam,
+  URL_CREATE_CARE_TEAM,
+  URL_EDIT_CARE_TEAM,
+  URL_CARE_TEAM,
+} from '@opensrp/fhir-care-team';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
@@ -100,6 +110,10 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import {
+  TeamsList as FhirTeamsView,
+  TeamsAddEdit as FhirTeamsAddEdit,
+} from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
   LocationUnitGroupAddEdit,
@@ -130,6 +144,10 @@ import {
   newLocationUnitProps,
   serverSettingsProps,
   locationUnitProps,
+  usersListProps,
+  createEditUserProps,
+  teamManagementProps,
+  careTeamProps,
 } from './utils';
 import './App.css';
 import {
@@ -225,6 +243,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER}
+              {...usersListProps}
               component={ConnectedUserList}
             />
             <PrivateComponent
@@ -257,7 +276,42 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS}
-              component={TeamsView}
+              {...teamManagementProps}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsView : TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_FHIR_CARE_TEAM}
+              component={CareTeamList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
+              component={CareTeamList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
+              {...careTeamProps}
+              component={CreateEditCareTeam}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_CREATE_CARE_TEAM}
+              {...careTeamProps}
+              component={CreateEditCareTeam}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -499,6 +553,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
+              {...createEditUserProps}
               component={ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -523,6 +578,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
+              {...createEditUserProps}
               component={ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -539,7 +595,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS_ADD}
-              component={TeamsAddEdit}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
+              {...teamManagementProps}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -547,7 +604,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
-              component={TeamsAddEdit}
+              {...teamManagementProps}
+              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

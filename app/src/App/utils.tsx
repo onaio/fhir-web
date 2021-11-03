@@ -22,15 +22,29 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
+  KEYCLOAK_USERS_PAGE_SIZE,
+  DISABLE_TEAM_MEMBER_REASSIGNMENT,
+  USER_FORM_HIDDEN_FIELDS,
+  USER_FORM_RENDER_FIELDS,
+  PAGINATION_SIZE,
+  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
+};
+
+export const teamManagementProps = {
+  ...BaseProps,
+  disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
+  paginationSize: PAGINATION_SIZE,
 };
 
 export const locationUnitProps = {
@@ -49,6 +63,9 @@ export const editLocationProps = {
   ...locationUnitProps,
 };
 
+export const usersListProps = {
+  usersPageSize: KEYCLOAK_USERS_PAGE_SIZE,
+};
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
 };
@@ -140,4 +157,16 @@ export const missionAssignmentProps = {
 
 export const inventoryItemAddEditProps = {
   openSRPBaseURL: OPENSRP_API_BASE_URL,
+};
+
+export const createEditUserProps = {
+  // TODO: this will not scale well, need a better configuration-first solution that enables us to
+  // simulate a diverse set of behaviors from the same code base for a module. preferable a solution
+  // that is closer to the code.
+  userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
+  userFormRenderFields: USER_FORM_RENDER_FIELDS,
+};
+
+export const careTeamProps = {
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };

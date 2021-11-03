@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { fetchProtectedImage, handleSessionOrTokenExpiry, OpenSRPService } from '../dataLoaders';
+import * as dataLoaders from '../dataLoaders';
+import nock from 'nock';
+import * as fhirCient from 'fhirclient';
 import fetch from 'jest-fetch-mock';
 import MockDate from 'mockdate';
 import * as opensrpService from '@opensrp/server-service';
@@ -9,6 +11,14 @@ import { authenticateUser, updateExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
+import { fhirR4 } from '@smile-cdr/fhirts';
+
+const {
+  fetchProtectedImage,
+  OpenSRPService,
+  handleSessionOrTokenExpiry,
+  FHIRServiceClass,
+} = dataLoaders;
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
@@ -160,5 +170,167 @@ describe('dataLoaders/OpenSRPService', () => {
     //check redirection action
     expect(pushMock).toHaveBeenCalledWith('/someUrl');
     MockDate.reset();
+  });
+});
+
+describe('dataloaders/FHIRService', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+    nock('https://test.fhir.org').get('/CareTeam').reply(200, fixtures.careTeams);
+  });
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    fetch.resetMocks();
+    jest.restoreAllMocks();
+  });
+
+  it('FHIRServiceClass constructor works correctly 2', async () => {
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    expect(fhir.baseURL).toEqual('https://test.fhir.org');
+    expect(fhir.resourceType).toEqual('CareTeam');
+  });
+
+  it('buildQueryParams works', async () => {
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    expect(fhir.buildQueryParams(null)).toEqual('CareTeam');
+    expect(fhir.buildQueryParams({ _count: '500', _getpagesoffset: '50' })).toEqual(
+      'CareTeam/_search?_count=500&_getpagesoffset=50'
+    );
+  });
+
+  it('FHIRServiceClass list method works without params', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: requestMock.mockResolvedValue(fixtures.careTeams),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.list();
+    await flushPromises();
+    expect(requestMock.mock.calls).toEqual([['CareTeam']]);
+    expect(result).toEqual(fixtures.careTeams);
+    // make sure every item of fhirlist returns the CareTeam
+    expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
+  });
+
+  it('FHIRServiceClass list method works with params', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: requestMock.mockResolvedValue(fixtures.careTeams),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    // without url params
+    const result = await fhir.list({ _count: '100' });
+    await flushPromises();
+    expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=100']]);
+    expect(result).toEqual(fixtures.careTeams);
+    // make sure every item of fhirlist returns the CareTeam
+    expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
+  });
+
+  it('FHIRServiceClass read method works', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          request: requestMock.mockResolvedValue(fixtures.careTeam1),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.read('308');
+    await flushPromises();
+    expect(result).toEqual(fixtures.careTeam1);
+  });
+
+  it('FHIRServiceClass update method works', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const updateMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          update: updateMock.mockResolvedValue(fixtures.careTeam1),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.update({ ...fixtures.careTeam1, name: 'New Name' });
+    await flushPromises();
+    expect(updateMock.mock.calls).toEqual([
+      [
+        {
+          id: '308',
+          identifier: [{ use: 'official', value: '93bc9c3d-6321-41b0-9b93-1275d7114e22' }],
+          meta: {
+            lastUpdated: '2021-06-18T06:07:29.649+00:00',
+            source: '#9bf085bac3f61473',
+            versionId: '4',
+          },
+          name: 'New Name',
+          participant: [
+            { member: { reference: 'Practitioner/206' } },
+            { member: { reference: 'Practitioner/103' } },
+          ],
+          resourceType: 'CareTeam',
+          status: 'active',
+          subject: { reference: 'Group/306' },
+        },
+      ],
+    ]);
+    expect(result).toEqual(fixtures.careTeam1);
+  });
+
+  it('FHIRServiceClass create method works', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const createMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          create: createMock.mockResolvedValue(fixtures.careTeam1),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.create(fixtures.careTeam1);
+    await flushPromises();
+    expect(result).toEqual(fixtures.careTeam1);
+  });
+
+  it('FHIRServiceClass delete method works', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn();
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => {
+        return {
+          delete: requestMock.mockResolvedValue('Success'),
+        };
+      })
+    );
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const result = await fhir.delete('308');
+    await flushPromises();
+    expect(result).toEqual('Success');
   });
 });

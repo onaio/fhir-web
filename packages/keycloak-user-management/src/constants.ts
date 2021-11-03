@@ -8,6 +8,7 @@ export const URL_USER_GROUP_EDIT = `${URL_ADMIN}/users/group/edit`;
 export const URL_USER_CREATE = URL_ADMIN + '/users/new';
 export const URL_USER_GROUP_CREATE = `${URL_ADMIN}/users/group/new`;
 export const URL_USER_CREDENTIALS = URL_ADMIN + '/users/credentials';
+export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
 
 // Route params
 export const ROUTE_PARAM_USER_ID = 'userId';
@@ -15,6 +16,7 @@ export const ROUTE_PARAM_USER_GROUP_ID = 'userGroupId';
 
 // Keycloak API URLs
 export const KEYCLOAK_URL_USERS = '/users';
+export const KEYCLOAK_URL_USERS_COUNT = '/users/count';
 export const KEYCLOAK_URL_USER_GROUPS = '/groups';
 export const KEYCLOAK_URL_USER_ROLES = '/roles';
 export const KEYCLOAK_URL_AVAILABLE_ROLES = '/role-mappings/realm/available';
@@ -24,7 +26,11 @@ export const KEYCLOAK_URL_RESET_PASSWORD = '/reset-password';
 export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-actions/';
 
 // OpenSRP API strings
-export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = 'practitioner/user';
+export const PRACTITIONER = 'practitioner';
+export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
+
+// practitioner role
+export const DELETE_PRACTITIONER_ROLE = 'practitionerRole/delete/';
 
 // Query patams
 export const SEARCH_QUERY_PARAM = 'searchQuery';

@@ -37,6 +37,11 @@ export interface UserAction {
   config: Dictionary;
 }
 
+export interface UserAttributes {
+  // while these may be adhoc and arbitrary it carries with it serious back and cross compatibility issues, these should not be modified lightly
+  contact?: string[];
+}
+
 /** Interface for user json object */
 export interface KeycloakUser {
   access?: {
@@ -58,6 +63,7 @@ export interface KeycloakUser {
   requiredActions?: string[];
   totp?: boolean;
   username: string;
+  attributes?: UserAttributes;
 }
 
 // actions
@@ -69,6 +75,7 @@ export const REMOVE_KEYCLOAK_USERS = 'keycloak/reducer/users/REMOVE_KEYCLOAK_USE
 
 /** interface action to add users to store */
 export interface FetchKeycloakUsersAction extends AnyAction {
+  overwrite: boolean | undefined;
   usersById: Dictionary<KeycloakUser>;
   type: typeof KEYCLOAK_USERS_FETCHED;
 }
@@ -91,10 +98,15 @@ export type KeycloakUsersActionTypes =
  * Fetch users action creator
  *
  * @param {Array} usersList - keycloak users
+ * @param {boolean} overwrite - whether to replace records in store for users
  * @returns {object} - the dispatcher to remove the user
  */
-export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloakUsersAction => {
+export const fetchKeycloakUsers = (
+  usersList: KeycloakUser[] = [],
+  overwrite?: boolean
+): FetchKeycloakUsersAction => {
   return {
+    overwrite,
     usersById: keyBy(usersList, (user: KeycloakUser) => user.id),
     type: KEYCLOAK_USERS_FETCHED,
   };
@@ -142,7 +154,9 @@ export function reducer(
     case KEYCLOAK_USERS_FETCHED:
       return SeamlessImmutable({
         ...state,
-        usersById: { ...state.usersById, ...action.usersById },
+        usersById: action.overwrite
+          ? { ...action.usersById }
+          : { ...state.usersById, ...action.usersById },
       });
     case REMOVE_KEYCLOAK_USERS:
       return SeamlessImmutable({

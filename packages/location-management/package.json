@@ -1,11 +1,12 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -16,7 +17,7 @@
     "test": "cd ../../ && yarn test packages/location-management --verbose --collectCoverage=true -u && cd packages/location-management",
     "test:watch": "cd ../../ && yarn test packages/location-management --verbose --watch && cd packages/location-management",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
@@ -38,29 +39,28 @@
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.11",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "cycle": "^1.0.3",
     "fast_array_intersect": "^1.1.0",
+    "react-i18next": "^11.8.10",
     "tree-model": "^1.0.7",
-    "uuid": "^8.3.1",
-    "react-i18next": "^11.8.10"
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
-    "@opensrp/store": "^0.0.9",
     "@types/geojson": "^7946.0.7",
     "@types/uuid": "8.3.0",
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "use-deep-compare-effect": "1.6.1",
-    "react-query": "^3.15.1",
-    "@opensrp/store": "^0.0.9",
-    "i18next": "^19.8.4",
+    "@opensrp/store": "^0.0.10",
     "formik-antd": "^2.0.1",
-    "react": "^16.13.1"
+    "i18next": "^19.8.4",
+    "react": "^16.13.1",
+    "react-query": "^3.15.1",
+    "use-deep-compare-effect": "1.6.1"
   }
 }

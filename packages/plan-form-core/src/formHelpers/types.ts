@@ -185,7 +185,8 @@ export type SubjectCodableConceptType =
   | 'Location'
   | 'Jurisdiction'
   | 'Device'
-  | 'Task';
+  | 'Task'
+  | 'Location.Stock';
 
 /** Plan Action subjectCodableConcept */
 export interface PlanActionSubjectCodableConcept {

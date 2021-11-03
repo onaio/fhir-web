@@ -1,87 +1,93 @@
 import React from 'react';
-import { Table as AntTable, Button, Divider, Dropdown, Menu } from 'antd';
+import { Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
-
-export interface TableData extends Organization {
-  key: string;
-}
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
+import { Column, TableLayout } from '@opensrp/react-utils';
+import lang from '../../lang';
 
 export interface Props {
-  data: TableData[];
+  data: Organization[];
   opensrpBaseURL: string;
-  setDetail: (isLoading: string | Organization) => void;
-  setPractitionersList: (isLoading: string | Practitioner[]) => void;
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>;
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>;
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>;
   onViewDetails?: (
-    row: TableData,
+    row: Organization,
     opensrpBaseURL: string,
-    setDetail: (isLoading: string | Organization) => void,
-    setPractitionersList: (isLoading: string | Practitioner[]) => void
+    setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+    setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
   ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
+  const {
+    setDetail,
+    onViewDetails,
+    setPractitionersList,
+    setAssignedLocations,
+    opensrpBaseURL,
+  } = props;
 
-  const columns = [
+  const columns: Column<Organization>[] = [
     {
-      title: 'Name',
+      title: lang.NAME,
       dataIndex: 'name',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
-    },
-    {
-      title: 'Actions',
-      width: '10%',
-
-      // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center">
-          <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
-            <Button type="link" className="m-0 p-1">
-              Edit
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    if (onViewDetails) {
-                      onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
-                    }
-                  }}
-                >
-                  View Details
-                </Menu.Item>
-              </Menu>
-            }
-            placement="bottomRight"
-            arrow
-            trigger={['click']}
-          >
-            <MoreOutlined className="more-options" />
-          </Dropdown>
-        </span>
-      ),
+      sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
   ];
 
   return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 5,
-        pageSizeOptions: ['5', '10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
+    <TableLayout
+      id="TeamList"
+      persistState={true}
+      datasource={props.data}
       columns={columns}
+      actions={{
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (_: unknown, record: Organization) => (
+          <span className="d-flex justify-content-end align-items-center">
+            <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
+              <Button type="link" className="m-0 p-1">
+                {lang.EDIT}
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Dropdown
+              overlay={
+                <Menu className="menu">
+                  <Menu.Item
+                    className="viewdetails"
+                    onClick={() => {
+                      if (onViewDetails) {
+                        onViewDetails(
+                          record,
+                          opensrpBaseURL,
+                          setDetail,
+                          setPractitionersList,
+                          setAssignedLocations
+                        );
+                      }
+                    }}
+                  >
+                    {lang.VIEW_DETAILS}
+                  </Menu.Item>
+                </Menu>
+              }
+              placement="bottomRight"
+              arrow
+              trigger={['click']}
+            >
+              <MoreOutlined className="more-options" />
+            </Dropdown>
+          </span>
+        ),
+      }}
     />
   );
 };

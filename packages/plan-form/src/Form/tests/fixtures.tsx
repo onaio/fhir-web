@@ -62,24 +62,6 @@ export const mission1 = {
       ],
     },
     {
-      id: 'fix_problem',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      priority: 'medium-priority',
-      target: [
-        {
-          measure: 'Percent of products problems fixed',
-          detail: {
-            detailQuantity: {
-              value: 100,
-              comparator: '>',
-              unit: 'Percent',
-            },
-          },
-          due: '2020-12-24',
-        },
-      ],
-    },
-    {
       id: 'complete_fix_problem',
       description: 'Completes Fix problem for a product (100%) within the jurisdiction',
       priority: 'medium-priority',
@@ -220,43 +202,6 @@ export const mission1 = {
         },
       ],
       definitionUri: 'product_check.json',
-      type: 'create',
-    },
-    {
-      identifier: 'bd90510c-e769-5176-ad18-5a256822822a',
-      prefix: 2,
-      title: 'Fix Problem',
-      description: 'Fix problem for all products (100%) within the jurisdiction',
-      code: 'fix_problem',
-      timingPeriod: {
-        start: '2020-11-17',
-        end: '2020-12-24',
-      },
-      reason: 'Routine',
-      goalId: 'fix_problem',
-      subjectCodableConcept: {
-        text: 'Device',
-      },
-      trigger: [
-        {
-          type: 'named-event',
-          name: 'event-submission',
-          expression: {
-            description: 'Trigger when a Flag Problem event is submitted',
-            expression: "questionnaire = 'flag_problem'",
-          },
-        },
-      ],
-      condition: [
-        {
-          kind: 'applicability',
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-        },
-      ],
-      definitionUri: 'fix_problem.json',
       type: 'create',
     },
     {
@@ -591,14 +536,6 @@ export const newPayload1 = {
       prefix: 1,
       title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
-          },
-          path: 'structureId',
-        },
-      ],
       code: 'product_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
@@ -609,6 +546,22 @@ export const newPayload1 = {
         {
           expression: { description: 'Product exists', expression: '$this.is(FHIR.Bundle)' },
           kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Product is active',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+          kind: 'applicability',
+        },
+      ],
+      dynamicValue: [
+        {
+          path: 'structureId',
+          expression: {
+            expression: '$this.entry.resource.as(Device).location.reference.substring(9)',
+          },
         },
       ],
       definitionUri: 'product_check.json',
@@ -723,71 +676,48 @@ export const newPayload1 = {
       type: 'update',
     },
     {
-      identifier: '24f02243-19d4-57de-a205-22a14205627a',
-      prefix: 5,
-      title: 'Fix Problem',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      code: 'fix_problem',
-      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
-      reason: 'Routine',
-      goalId: 'fix_problem',
-      subjectCodableConcept: { text: 'Device' },
-      trigger: [
-        {
-          expression: {
-            description: 'Trigger when a Fix Product event is submitted',
-            expression: "questionnaire = 'flag_problem'",
-          },
-          name: 'event-submission',
-          type: 'named-event',
-        },
-      ],
-      condition: [
-        {
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-          kind: 'applicability',
-        },
-      ],
-      definitionUri: 'fix_problem.json',
-      type: 'create',
-    },
-    {
       identifier: 'e5c7a70b-11b1-5c0b-80b3-6df681e27fa6',
-      prefix: 6,
+      prefix: 5,
       title: 'Record GPS',
       description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'record_gps',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
       goalId: 'record_gps',
-      subjectCodableConcept: { text: 'Location' },
+      subjectCodableConcept: { text: 'Location.Stock' },
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
       condition: [
         {
           expression: {
             description: 'Service point does not have geometry',
-            expression: "$this.identifier.where(system='hasGeometry').value='false'",
+            expression:
+              "Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'",
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
           },
           kind: 'applicability',
         },
       ],
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.id',
-          },
-          path: 'structureId',
-        },
-      ],
+      dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
       definitionUri: 'record_gps.json',
       type: 'create',
     },
     {
       identifier: 'b527bc28-71d9-596c-b03b-acbae41898e9',
-      prefix: 7,
+      prefix: 6,
       title: 'Complete Record GPS',
       description: 'Completes Record GPS activity for structure',
       code: 'complete_record_gps',
@@ -823,28 +753,35 @@ export const newPayload1 = {
     },
     {
       identifier: '117644ec-920f-57bb-8746-4c2641c571ab',
-      prefix: 8,
+      prefix: 7,
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'service_point_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
       reason: 'Routine',
       goalId: 'service_point_check',
-      subjectCodableConcept: { text: 'Location' },
+      subjectCodableConcept: { text: 'Location.Stock' },
       condition: [
         {
-          expression: { description: 'All service points', expression: '$this.is(FHIR.Location)' },
+          expression: { description: 'All service points', expression: '$this.is(FHIR.Bundle)' },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
           kind: 'applicability',
         },
       ],
-      dynamicValue: [
-        {
-          expression: {
-            expression: '$this.id',
-          },
-          path: 'structureId',
-        },
-      ],
-
+      dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
       definitionUri: 'service_point_check.json',
       title: 'Service Point Check',
       trigger: [{ name: 'plan-activation', type: 'named-event' }],
@@ -852,7 +789,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'f4aa75b0-77db-5f7a-9b2e-e9f4490a5611',
-      prefix: 9,
+      prefix: 8,
       title: 'Complete Service Point Check',
       description: 'Completes Service Point Check',
       code: 'complete_service_point_check',
@@ -931,18 +868,6 @@ export const newPayload1 = {
       target: [
         {
           measure: 'Percent of products problems found',
-          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
-          due: '2017-07-20',
-        },
-      ],
-    },
-    {
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      id: 'fix_problem',
-      priority: 'medium-priority',
-      target: [
-        {
-          measure: 'Percent of products problems fixed',
           detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
           due: '2017-07-20',
         },

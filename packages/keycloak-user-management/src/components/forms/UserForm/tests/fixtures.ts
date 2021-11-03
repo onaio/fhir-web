@@ -1,5 +1,6 @@
-import { FormFields } from '..';
+import { FormFields } from '../types';
 import { KeycloakUser, UserGroup } from '../../../../ducks/user';
+import { Organization } from '@opensrp/team-management';
 
 export const userGroup: UserGroup[] = [
   { id: '283c5d6e-9b83-4954-9f3b-4c2103e4370c', name: 'Admin', path: '/Admin', subGroups: [] },
@@ -91,11 +92,74 @@ export const keycloakUsersArray: KeycloakUser[] = [
     id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
     createdTimestamp: 1600156317992,
     username: 'opensrp',
-    enabled: true,
+    enabled: false,
     totp: false,
     emailVerified: false,
     firstName: 'Demo',
     lastName: 'kenya',
+    disableableCredentialTypes: [],
+    requiredActions: [],
+    notBefore: 0,
+    access: {
+      manageGroupMembership: true,
+      view: true,
+      mapRoles: true,
+      impersonate: false,
+      manage: true,
+    },
+  },
+];
+
+export const keycloakUsersArray1 = [
+  {
+    id: 'a9f06552-b266-48e6-9fff-a7ffa296ad0a',
+    createdTimestamp: 1621631413549,
+    username: 'zkakoma',
+    enabled: true,
+    totp: false,
+    emailVerified: false,
+    firstName: 'Ziza',
+    lastName: 'Kakoma',
+    disableableCredentialTypes: [],
+    requiredActions: [],
+    notBefore: 0,
+    access: {
+      manageGroupMembership: true,
+      view: true,
+      mapRoles: true,
+      impersonate: false,
+      manage: true,
+    },
+  },
+  {
+    id: '00310eab-7267-479e-b154-6012313fb550',
+    createdTimestamp: 1617031840778,
+    username: 'zkalimina',
+    enabled: true,
+    totp: false,
+    emailVerified: false,
+    firstName: 'Zemba',
+    lastName: 'Kalimina',
+    disableableCredentialTypes: [],
+    requiredActions: [],
+    notBefore: 0,
+    access: {
+      manageGroupMembership: true,
+      view: true,
+      mapRoles: true,
+      impersonate: false,
+      manage: true,
+    },
+  },
+  {
+    id: 'c1e3d5d7-fe1a-4ff0-afcb-de15f237b967',
+    createdTimestamp: 1621631128800,
+    username: 'zkapele',
+    enabled: true,
+    totp: false,
+    emailVerified: false,
+    firstName: 'Zyinga',
+    lastName: 'Kapele',
     disableableCredentialTypes: [],
     requiredActions: [],
     notBefore: 0,
@@ -218,20 +282,28 @@ export const requiredActions = [
 
 export const value: FormFields = {
   firstName: 'Jane',
+  id: '',
   lastName: 'Doe',
   username: 'janedoe',
   email: 'janedoe@example.com',
-  requiredActions: ['UPDATE_PASSWORD'],
-  id: '',
-  userGroup: userGroup.splice(3).map((e) => e.id),
+  userGroups: userGroup.splice(3).map((e) => e.id),
 };
 
-export const defaultInitialValue: FormFields = {
-  firstName: '',
-  id: '',
-  lastName: '',
-  username: '',
-  active: false,
-  userGroup: undefined,
-  practitioner: undefined,
-};
+export const organization: Organization[] = [
+  {
+    active: true,
+    id: 2,
+    identifier: 'd23f7350-d406-11e9-bb65-2a2ae2dbcce4',
+    name: 'Takang 1',
+    partOf: 1,
+    type: {
+      coding: [
+        {
+          code: 'team',
+          display: 'Team',
+          system: 'http://terminology.hl7.org/CodeSystem/team-type',
+        },
+      ],
+    },
+  },
+];

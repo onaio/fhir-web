@@ -45,7 +45,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Col className="gutter-row" span={12}>
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
-                {lang(t).ADMIN}
+                {lang(t).USER_MANAGEMENT}
               </Button>
             </Link>
           </Col>
@@ -54,7 +54,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
           <Col className="gutter-row" span={12}>
             <Link to={URL_TEAMS} className="admin-link">
               <Button color="outline" className="btn-links">
-                {lang(t).TEAMS}
+                {lang(t).TEAM_MANAGEMENT}
               </Button>
             </Link>
           </Col>
@@ -66,7 +66,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT} className="admin-link">
                 <Button color="outline" className="btn-links">
-                  {lang(t).LOCATION_UNIT}
+                  {lang(t).LOCATION_UNITS}
                 </Button>
               </Link>
             </Col>

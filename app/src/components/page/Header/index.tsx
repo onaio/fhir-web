@@ -13,7 +13,6 @@ import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
 import i18n from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
-import { SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 /** interface for HeaderProps */
@@ -46,7 +45,7 @@ const languageOptions: LanguageOptions = {
 const languageChangeHandler = (languageCode: string | number) => {
   const projectLanguageCode = getConfig('projectLanguageCode');
   const newLanguage = `${languageCode}_${projectLanguageCode}`;
-  setConfig('languageCode', languageCode as SetStateAction<LanguageCode | undefined>);
+  setConfig('languageCode', languageCode as LanguageCode);
   i18n.changeLanguage(newLanguage);
 };
 
@@ -70,7 +69,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           overlay={
             <Menu>
               <Menu.Item key={URL_LOGOUT}>
-                <Link to={URL_LOGOUT}>Logout</Link>
+                <Link to={URL_LOGOUT}>{lang(t).LOGOUT}</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
                 <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang(t).MANAGE_ACCOUNT}</Link>

@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/user-management",
-  "version": "0.1.13",
+  "version": "0.1.18",
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
@@ -9,7 +9,7 @@
     "test": "cd ../../ && yarn test packages/keycloak-user-management --verbose --collectCoverage=true && cd packages/keycloak-user-management",
     "test:watch": "cd ../../ && yarn test packages/keycloak-user-management --verbose --watch && cd packages/keycloak-user-management",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
@@ -23,10 +23,11 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
+    "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -46,11 +47,12 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/keycloak-service": "^0.0.13",
-    "@opensrp/notifications": "^0.0.1",
-    "@opensrp/pkg-config": "^0.0.6",
-    "@opensrp/react-utils": "^0.0.7",
+    "@opensrp/keycloak-service": "^0.0.16",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.11",
     "@opensrp/server-service": "^0.0.16",
+    "@opensrp/team-management": "^0.0.9",
     "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
@@ -60,11 +62,11 @@
     "formik-antd": "^2.0.1",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.10",
+    "react-query": "^3.15.1",
     "uuid": "^8.3.1",
     "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@opensrp/store": "^0.0.9",
     "@types/uuid": "^8.3.0",
     "i18next-parser": "^3.5.0"
   }

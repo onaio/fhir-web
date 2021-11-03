@@ -1,20 +1,16 @@
 import React from 'react';
-import { Table as AntTable, Menu, Dropdown, Button, Divider } from 'antd';
+import { Menu, Dropdown, Button, Divider } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { Column, OpenSRPService, TableLayout } from '@opensrp/react-utils';
 import { LOCATION_UNIT_GROUP_DELETE, URL_LOCATION_UNIT_GROUP_EDIT } from '../../constants';
 import lang, { Lang } from '../../lang';
 import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 
-export interface TableData extends LocationUnitGroup {
-  key: string;
-}
-
 export interface Props {
-  data: TableData[];
+  data: LocationUnitGroup[];
   opensrpBaseURL: string;
   onViewDetails?: (locationUnit: LocationUnitGroupDetailProps) => void;
 }
@@ -43,29 +39,27 @@ export const onDelete = (
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails, opensrpBaseURL } = props;
+  const data = props.data.sort((a, b) => a.name.localeCompare(b.name)); // sorts the data by name  before populating in the table
+
+  const columns: Column<LocationUnitGroup>[] = [
+    {
+      title: lang.NAME,
+      dataIndex: 'name',
+      sorter: (a: LocationUnitGroup, b: LocationUnitGroup) => a.name.localeCompare(b.name),
+    },
+  ];
 
   return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 20,
-        pageSizeOptions: ['10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
-    >
-      <AntTable.Column
-        defaultSortOrder="ascend"
-        title={lang.NAME}
-        dataIndex="name"
-        sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
-      />
-      <AntTable.Column
-        title={lang.ACTIONS}
-        width="10%"
-        dataIndex="operation"
-        sorter={(a: TableData, b: TableData) => a.name.localeCompare(b.name)}
-        render={(_: unknown, record: TableData) => (
+    <TableLayout
+      id="LocationUnitGroupList"
+      persistState={true}
+      datasource={data}
+      columns={columns}
+      actions={{
+        title: lang.ACTIONS,
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (_: unknown, record) => (
           <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
               <Button type="link" className="m-0 p-1">
@@ -94,9 +88,9 @@ const Table: React.FC<Props> = (props: Props) => {
               <MoreOutlined className="more-options" />
             </Dropdown>
           </span>
-        )}
-      />
-    </AntTable>
+        ),
+      }}
+    />
   );
 };
 

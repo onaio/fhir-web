@@ -20,10 +20,16 @@ import {
   fetchKeycloakUsers,
   removeKeycloakUsers,
 } from '../../../ducks/user';
-import { keycloakUsersArray } from '../../forms/UserForm/tests/fixtures';
+import {
+  keycloakUsersArray,
+  keycloakUsersArray1,
+  practitioner1,
+  organization,
+} from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -37,25 +43,38 @@ jest.mock('@opensrp/notifications', () => ({
 
 const history = createBrowserHistory();
 
-const locationProps = {
-  history,
-  location: {
-    hash: '',
-    pathname: `${URL_USER}`,
-    search: '',
-    state: {},
-  },
-  match: {
-    isExact: true,
-    params: {},
-    path: `${URL_USER}`,
-    url: `${URL_USER}`,
-  },
-};
-
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserList', () => {
+  const locationProps = {
+    history,
+    location: {
+      hash: '',
+      pathname: `${URL_USER}`,
+      search: '',
+      state: {},
+    },
+    match: {
+      isExact: true,
+      params: {},
+      path: `${URL_USER}`,
+      url: `${URL_USER}`,
+    },
+  };
+
+  const props = {
+    ...locationProps,
+    extraData: {
+      user_id: fixtures.keycloakUser.id,
+    },
+    fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    removeKeycloakUsersCreator: removeKeycloakUsers,
+    serviceClass: KeycloakService,
+    keycloakBaseURL: 'https://some-keycloak.server/auth/admin/realms/some-realm',
+    opensrpBaseURL: 'https://some-opensrp.server/app/',
+    usersPageSize: 20,
+  };
+
   beforeEach(() => {
     fetch.resetMocks();
     opensrpStore.store.dispatch(removeKeycloakUsers());
@@ -79,24 +98,19 @@ describe('components/UserList', () => {
   it('renders users table without crashing', () => {
     shallow(<UserList {...locationProps} />);
   });
+
   it('works correctly with store', async () => {
-    fetch.once(JSON.stringify(fixtures.keycloakUsersArray));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    };
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -111,23 +125,17 @@ describe('components/UserList', () => {
   });
 
   it('renders user list correctly', async () => {
-    fetch.once(JSON.stringify(keycloakUsersArray));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    };
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
     // Loader should be displayed
@@ -140,33 +148,157 @@ describe('components/UserList', () => {
     // Loader should be hiddern
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
+    expect(fetch.mock.calls.map((call) => call[0])).toMatchObject([
+      'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20',
+      'https://some-keycloak.server/auth/admin/realms/some-realm/users/count',
+    ]);
+
     const userList = wrapper.find('UserList');
     const headerRow = userList.find('Row').at(0);
 
     expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
     expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
+    // look for pagination
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"120 / page"`);
     wrapper.unmount();
+  });
+
+  it('search works correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
+
+    const newProps = {
+      ...props,
+      location: {
+        ...props.location,
+        search: '?searchQuery=opensrp',
+      },
+    };
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...newProps} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // const search = wrapper.find('.search-input-wrapper').find('.ant-input');
+    const search = wrapper.find('input').first();
+    await act(async () => {
+      search.simulate('change', { target: { value: 'test' } });
+      wrapper.update();
+    });
+
+    await act(async () => {
+      await new Promise((res) => setTimeout(res, 2000));
+      wrapper.update();
+    });
+
+    expect(history.location.search).toEqual('?searchQuery=test');
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20&search=opensrp',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+    ]);
+  });
+
+  it('pagination works', async () => {
+    const data = [...keycloakUsersArray, ...keycloakUsersArray1];
+    fetch.mockResponseOnce(JSON.stringify(data.slice(0, 5)));
+    fetch.mockResponseOnce(JSON.stringify(7));
+    fetch.mockResponseOnce(JSON.stringify(data.slice(5, 10)));
+    fetch.mockResponseOnce(JSON.stringify(7));
+
+    const newProps = {
+      ...props,
+      usersPageSize: 5,
+    };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...newProps} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    wrapper.find('.ant-pagination-item-2').simulate('click');
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo to"`
+    );
+  });
+
+  it('redirects to new user form', async () => {
+    const historyPushMock = jest.spyOn(history, 'push');
+    fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+    // expect(toJson(wrapper.find('.create-user').at(1))).toEqual('');
+    wrapper.find('.create-user').at(0).simulate('click');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/new');
   });
 
   it('handles user list fetch failure', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
+
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+
+    const newProps = {
+      ...props,
+      usersPageSize: undefined,
     };
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...newProps} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
 
@@ -184,86 +316,105 @@ describe('components/UserList', () => {
      * on the final block
      */
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
-    expect(toJson(wrapper.find('Table'))).toBeFalsy();
+    // check that table has No Data
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsNo Data"`
+    );
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
-  it('sort works correctly', async () => {
-    fetch.once(JSON.stringify(keycloakUsersArray));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    };
+  it('sorting works', async () => {
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(4));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <ConnectedUserList {...props} />
-        </Router>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
       </Provider>
     );
-    // Loader should be displayed
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-    // Loader should be hidden
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-    // find table (sorted by default order)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`table rows - default order ${index}`);
+
+    // get ordered tr keys
+    const rowKeys = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys).toMatchObject([
+      '97f36061-52fb-4474-88f2-fd286311ff1d',
+      '80385001-f385-42ec-8edf-8591dc181a54',
+      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
+      'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    ]);
+
+    // trigger sort on second column (first name)
+    const sorter = wrapper.find('th.ant-table-column-has-sorters').at(1);
+    sorter.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
     });
 
-    // sort by username
-    // click on sort to change the order (ascending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
+    // get newly ordered tr keys
+    const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
+    expect(rowKeys2).toMatchObject([
+      '80385001-f385-42ec-8edf-8591dc181a54',
+      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
+      'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      '97f36061-52fb-4474-88f2-fd286311ff1d',
+    ]);
 
-    // check new sort order by username (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by username - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
-
-    // check new sort order by username (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by username - descending ${index}`);
-    });
-
-    // cancel sort
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
-
-    // sort by email
-    // click on sort to change the order (ascending)
-    expect(wrapper.find('thead tr th').at(1).text()).toEqual('Email');
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-    // check new sort order by email (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by email - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-
-    // check new sort order by email (descending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by email - descending ${index}`);
-    });
     wrapper.unmount();
+  });
+
+  it('user details render correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray.length));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find view details button
+    const dropdown = wrapper.find('TableActions').find('Dropdown').at(0);
+    const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const viewDetails = subMenu.find('MenuItem.viewDetails');
+
+    fetch.mockResponseOnce(JSON.stringify(practitioner1));
+    fetch.mockResponseOnce(JSON.stringify(organization));
+
+    // click view details
+    viewDetails.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find the user details
+    expect(wrapper.find('#username').text()).toEqual(keycloakUsersArray[0].username);
+    expect(wrapper.find('#keycloakId').text()).toEqual(keycloakUsersArray[0].id);
+    expect(wrapper.find('#practitionerId').text()).toEqual(practitioner1.identifier);
+    expect(wrapper.find('#practitionerStatus').text()).toMatchInlineSnapshot(`"active"`);
+    const assignedTeams = wrapper.find('#assignedTeam').map((team) => team.text());
+    expect(assignedTeams).toEqual(organization.map((team) => team.name));
   });
 });

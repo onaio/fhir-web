@@ -29,6 +29,7 @@ i18n
 setAllConfigs({
   i18n: i18n,
   projectLanguageCode: 'core',
+  TablesState: {},
 });
 
 global.fetch = require('jest-fetch-mock');
@@ -54,3 +55,14 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
+
+jest.mock('fhirclient', () => ({
+  client: jest.fn().mockImplementation(() => {
+    return {
+      request: jest.fn(),
+      update: jest.fn(),
+      create: jest.fn(),
+      delete: jest.fn(),
+    };
+  }),
+}));

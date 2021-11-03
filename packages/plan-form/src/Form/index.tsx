@@ -568,7 +568,7 @@ const PlanForm = (props: PlanFormProps) => {
                               <div className="card-body">
                                 <fieldset key={`fieldset${arrItem.actionCode}-${index}`}>
                                   <FormItem
-                                    label={lang.ACTION}
+                                    label={lang.ACTIONS}
                                     name={[index, actionTitle]}
                                     rules={validationRules.activities.actionTitle}
                                     id={`activities-${index}-actionTitle`}

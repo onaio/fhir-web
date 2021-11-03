@@ -12,6 +12,7 @@ import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
+import { PlanStatus } from '@opensrp/plan-form-core';
 
 const columns = getColumns(lang);
 
@@ -100,7 +101,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View1"`
+      `"Draft Missions + New MissionNameDate createdEnd DateActionsDraft Plan2020-11-172021-12-24View15 / page"`
     );
   });
   it('renders Complete Missions Title', async () => {
@@ -141,7 +142,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View1"`
+      `"Complete Missions + New MissionNameDate createdEnd DateActionsComplete Plan2020-11-172021-12-24View15 / page"`
     );
   });
 
@@ -178,7 +179,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View1"`
+      `"Retired Missions + New MissionNameDate createdEnd DateActionsRetired Plan2020-11-172021-12-24View15 / page"`
     );
   });
 
@@ -343,9 +344,9 @@ describe('List view Page', () => {
 
   // test pageTitleBuilder
 
-  expect(pageTitleBuilder('active')).toEqual('Active Missions');
-  expect(pageTitleBuilder('draft')).toEqual('Draft Missions');
-  expect(pageTitleBuilder('complete')).toEqual('Complete Missions');
-  expect(pageTitleBuilder('retired')).toEqual('Retired Missions');
+  expect(pageTitleBuilder(PlanStatus.ACTIVE)).toEqual('Active Missions');
+  expect(pageTitleBuilder(PlanStatus.DRAFT)).toEqual('Draft Missions');
+  expect(pageTitleBuilder(PlanStatus.COMPLETE)).toEqual('Complete Missions');
+  expect(pageTitleBuilder(PlanStatus.RETIRED)).toEqual('Retired Missions');
   expect(pageTitleBuilder()).toEqual('');
 });

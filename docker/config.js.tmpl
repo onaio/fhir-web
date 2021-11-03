@@ -14,6 +14,7 @@ window._env_ = {
   REACT_APP_OPENSRP_CLIENT_ID: "{{ getv "/react/app/opensrp/client/id" "opensrp-stage-server" }}",
   REACT_APP_OPENSRP_LOGOUT_URL: "{{ getv "/react/app/opensrp/logout/url" "https://opensrp-stage.smartregister.org/opensrp/logout.do" }}",
   REACT_APP_OPENSRP_USER_URL: "{{ getv "/react/app/opensrp/user/url" "https://opensrp-stage.smartregister.org/opensrp/user-details/" }}",
+  REACT_APP_FHIR_API_BASE_URL: "{{ getv "/react/app/fhir/api/base/url" "https://fhir.labs.smartregister.org/fhir" }}",
   REACT_APP_WEBSITE_NAME: "{{ getv "/react/app/website/name" "opensrp-web" }}",
   REACT_APP_ACTION_UUID_NAMESPACE: "{{ getv "/react/app/action/uuid/namespace" ""}}",
   REACT_APP_PLAN_UUID_NAMESPACE: "{{ getv "/react/app/plan/uuid/namespace" ""}}"
@@ -35,9 +36,20 @@ window._env_ = {
   REACT_APP_TASK_GENERATION_STATUS: "{{ getv  "react/app/task/generation/status" "False" }}"
   REACT_APP_DEFAULT_PLAN_VERSION: "{{ getv "react/app/default/plan/version" "1" }}"
   REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS: "{{ getv "/react/app/default/activity/duration/days" "30" }}"
-  REACT_APP_OPENSRP_OAUTH_SCOPES: "{{ getv  "react/app/opensrp/oauth/scopes" "read,write" }}"
+  REACT_APP_OPENSRP_OAUTH_SCOPES: "{{ getv  "react/app/opensrp/oauth/scopes" "profile" }}"
   REACT_APP_ENABLE_LOCATIONS: "{{ getv "/react/app/enable/locations" "false" }}"
   REACT_APP_ENABLE_TEAMS: "{{ getv "/react/app/enable/teams" "false" }}"
   REACT_APP_ENABLE_PLANS: "{{ getv "/react/app/enable/plans" "false" }}"
   REACT_APP_ENABLE_CARD_SUPPORT: "{{ getv "/react/app/enable/card/support" "false" }}"
+  REACT_APP_USER_FORM_HIDDEN_FIELDS: "{{ getv "/react/app/user/form/hidden/fields" "" }}"
+  REACT_APP_USER_FORM_RENDERED_FIELDS: "{{ getv "/react/app/user/form/render/fields" "" }}"
+  REACT_APP_OPENSRP_OAUTH_STATE: "{{ getv "react/app/opensrp/oauth/state", "opensrp" }}"
+  REACT_APP_FILTER_BY_PARENT_ID: "{{ getv "react/app/filter/by/parent/id" "true" }}"
+  REACT_APP_DEFAULTS_TABLE_PAGE_SIZE: "{{ getv "react/app/defaults/table/page/size" "5" }}"
+  REACT_APP_ENABLE_FHIR_CARE_TEAM: "{{ getv "react/app/enable/fhir/care/team" "false" }}"
+  REACT_APP_KEYCLOAK_USERS_PAGE_SIZE: "{{ getv "react/app/keycloak/users/page/size" "20" }}"
+  REACT_APP_OPENSRP_ROLES: "{{ getv "react/app/opensrp/roles" "{"USERS": "ROLE_EDIT_KEYCLOAK_USERS", "PLANS": "ROLE_VIEW_KEYCLOAK_USERS", "LOCATIONS": "ROLE_VIEW_KEYCLOAK_USERS", "CARD_SUPPORT": "ROLE_VIEW_KEYCLOAK_USERS", "INVENTORY": "ROLE_VIEW_KEYCLOAK_USERS", "TEAMS": "ROLE_VIEW_KEYCLOAK_USERS", "PRODUCT_CATALOGUE": "ROLE_VIEW_KEYCLOAK_USERS", "FORM_CONFIGURATION": "ROLE_VIEW_KEYCLOAK_USERS", "CARE_TEAM": "ROLE_VIEW_KEYCLOAK_USERS"}" }}"
+  REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT: "{{ getv "react/app/disable/team/member/reassignment" "true" }}"
+  REACT_APP_USER_FORM_RENDER_FIELDS: "{{ getv "react/app/user/form/render/fields" "" }}"
+  REACT_APP_PAGINATION_SIZE: "{{ getv "react/app/pagination/size" "1000" }}"
 };
