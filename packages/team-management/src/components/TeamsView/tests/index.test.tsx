@@ -16,7 +16,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import lang from '../../../lang';
 
 describe('components/TeamsView', () => {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const teamViewProps = {
     opensrpBaseURL: OPENSRP_API_BASE_URL,
     history,
@@ -35,7 +34,7 @@ describe('components/TeamsView', () => {
   };
 
   beforeEach(() => {
-    fetch.mockClear();
+    fetch.resetMocks();
     jest.clearAllMocks();
   });
 
@@ -56,15 +55,15 @@ describe('components/TeamsView', () => {
 
   it('renders without crashing', async () => {
     shallow(
-      <QueryClientProvider client={queryClient}>
-        <Router history={history}>
-          <TeamsView {...teamViewProps} />
-        </Router>
-      </QueryClientProvider>
+      <Router history={history}>
+        <TeamsView {...teamViewProps} />
+      </Router>
     );
   });
 
   it('works correctly with store', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    fetch.mockResponse(JSON.stringify(5));
     fetch.mockResponse(JSON.stringify([org1]));
     const wrapper = mount(
       <Provider store={store}>
@@ -80,29 +79,9 @@ describe('components/TeamsView', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization?pageNumber=1&pageSize=5',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/organization/count',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization?pageNumber=1&pageSize=5',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization/count',
     ]);
     // test search input works
     const input = wrapper.find('input').first();
@@ -115,6 +94,7 @@ describe('components/TeamsView', () => {
   });
 
   it('renders fetched data correctly', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     fetch.once(JSON.stringify(teamMember));
     populateTeamDetails(
       {
@@ -145,6 +125,7 @@ describe('components/TeamsView', () => {
   });
 
   it('test error thrown if API is down', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const mockNotificationError = jest.spyOn(notification, 'error');
     fetch.mockReject(() => Promise.reject('API is down'));
     populateTeamDetails(
@@ -181,6 +162,7 @@ describe('components/TeamsView', () => {
   });
 
   it('search works correctly', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     fetch.mockResponseOnce(JSON.stringify([org1, org3]));
 
     const newProps = {
@@ -206,7 +188,6 @@ describe('components/TeamsView', () => {
       wrapper.update();
     });
 
-    // const search = wrapper.find('.search-input-wrapper').find('.ant-input');
     const search = wrapper.find('input').first();
     await act(async () => {
       search.simulate('change', { target: { value: 'luang' } });
@@ -237,6 +218,9 @@ describe('components/TeamsView', () => {
 
   it('team details view render correctly', async () => {
     fetch.mockResponseOnce(JSON.stringify([org1, org3]));
+    fetch.mockResponseOnce(JSON.stringify(5));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     const wrapper = mount(
       <Provider store={store}>
@@ -272,14 +256,14 @@ describe('components/TeamsView', () => {
     });
 
     // find the user details
-    expect(wrapper.find('#name').text()).toEqual('The Luang');
-    expect(wrapper.find('#status').text()).toEqual('true');
-    expect(wrapper.find('#identifier').text()).toEqual('fcc19470-d599-11e9-bb65-2a2ae2dbcce4');
-    expect(wrapper.find('#teamMember').text()).toEqual('julian kipembe');
+    expect(wrapper.find('TeamsDetail').text()).toMatchInlineSnapshot(
+      `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersjulian kipembeAssigned LocationsThis team is not assigned to any Location"`
+    );
     wrapper.unmount();
   });
 
   it('sorting works', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     fetch.mockResponse(JSON.stringify([org1, org2]));
 
     const wrapper = mount(
