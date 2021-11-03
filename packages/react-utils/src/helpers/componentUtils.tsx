@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Route, RouteProps, RouteComponentProps } from 'react-router';
+import { Route, RouteProps, RouteComponentProps, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
 import { getAllConfigs } from '@opensrp/pkg-config';
@@ -19,6 +19,7 @@ interface ComponentProps extends Partial<RouteProps> {
   activeRoles?: string[];
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
+  fhirBaseURL?: string;
 }
 
 /** Util wrapper around ConnectedPrivateRoute to render components
@@ -33,19 +34,22 @@ export const PrivateComponent = (props: ComponentProps) => {
     ...props,
     keycloakBaseURL: configs.keycloakBaseURL,
     opensrpBaseURL: configs.opensrpBaseURL,
+    fhirBaseURL: configs.fhirBaseURL,
   };
+  // get current pathname - to be passed as unique key to ConnectedPrivateRoute
+  const { pathname } = useLocation();
   const extraData = useSelector((state) => getExtraData(state));
   const authenticated = useSelector((state) => isAuthenticated(state));
   const { roles } = extraData;
   const { activeRoles } = props;
   if (authenticated) {
     if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
-      return <ConnectedPrivateRoute {...CPRProps} />;
+      return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
     } else {
       return <UnauthorizedPage title={lang.FORBIDDEN_PAGE_STATUS} />;
     }
   }
-  return <ConnectedPrivateRoute {...CPRProps} />;
+  return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
 };
 
 /** Util wrapper around Route for rendering components
@@ -55,7 +59,14 @@ export const PrivateComponent = (props: ComponentProps) => {
  */
 
 export const PublicComponent = ({ component: Component, ...rest }: Partial<ComponentProps>) => {
-  return <Route {...rest} component={(props: RouteComponentProps) => <Component {...props} />} />;
+  // get current pathname - to be passed as unique key to ConnectedPrivateRoute
+  const { pathname } = useLocation();
+  return (
+    <Route
+      {...rest}
+      component={(props: RouteComponentProps) => <Component {...props} key={pathname} />}
+    />
+  );
 };
 
 /** Util function to check if user is authorized to access a particular page

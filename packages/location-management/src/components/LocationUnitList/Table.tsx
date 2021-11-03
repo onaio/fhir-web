@@ -1,14 +1,13 @@
 import React from 'react';
-import { Table as AntTable, Button, Divider } from 'antd';
+import { Button, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import lang from '../../lang';
+import { Column, TableLayout } from '@opensrp/react-utils';
+import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
 
-export interface TableData {
+export interface TableData extends Pick<ParsedHierarchyNode, 'id' | 'label'> {
   geographicLevel: number;
-  id: string;
-  key: string;
-  name: string;
 }
 
 export interface Props {
@@ -18,56 +17,49 @@ export interface Props {
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
-  const columns = [
+  const columns: Column<TableData>[] = [
     {
       title: lang.NAME,
-      dataIndex: 'name',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      dataIndex: 'label',
+      sorter: (a, b) => a.label.localeCompare(b.label),
     },
     {
       title: lang.LEVEL,
       dataIndex: 'geographicLevel',
-      editable: false,
-      sorter: (a: TableData, b: TableData) => a.geographicLevel - b.geographicLevel,
-    },
-    {
-      title: lang.ACTIONS,
-      dataIndex: 'operation',
-      width: '10%',
-      // eslint-disable-next-line react/display-name
-      render: (value: boolean, record: TableData) => (
-        <span className="d-flex justify-content-end align-items-center Actions">
-          <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
-            <Button type="link" className="m-0 p-1">
-              Edit
-            </Button>
-          </Link>
-          <Divider type="vertical" />
-          <Button
-            type="link"
-            className="m-0 p-1"
-            onClick={() => {
-              if (onViewDetails) onViewDetails(record);
-            }}
-          >
-            {lang.VIEW_DETAILS}
-          </Button>
-        </span>
-      ),
+      sorter: (a, b) => a.geographicLevel - b.geographicLevel,
     },
   ];
 
   return (
-    <AntTable
-      pagination={{
-        showQuickJumper: true,
-        showSizeChanger: true,
-        defaultPageSize: 20,
-        pageSizeOptions: ['10', '20', '50', '100'],
-      }}
-      dataSource={props.data}
+    <TableLayout
+      id="LocationUnitList"
+      persistState={true}
+      datasource={props.data}
       columns={columns}
+      actions={{
+        title: lang.ACTIONS,
+        width: '10%',
+        // eslint-disable-next-line react/display-name
+        render: (_: boolean, record) => (
+          <span className="d-flex justify-content-end align-items-center Actions">
+            <Link to={URL_LOCATION_UNIT_EDIT + '/' + record.id}>
+              <Button type="link" className="m-0 p-1">
+                {lang.EDIT}
+              </Button>
+            </Link>
+            <Divider type="vertical" />
+            <Button
+              type="link"
+              className="m-0 p-1"
+              onClick={() => {
+                if (onViewDetails) onViewDetails(record);
+              }}
+            >
+              {lang.VIEW_DETAILS}
+            </Button>
+          </span>
+        ),
+      }}
     />
   );
 };

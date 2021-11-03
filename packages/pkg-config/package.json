@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/pkg-config",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "stores packages' configs",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -17,7 +17,7 @@
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
@@ -33,6 +33,9 @@
   },
   "dependencies": {
     "react-hooks-global-state": "^1.0.1"
+  },
+  "devDependencies": {
+    "antd": "^4.6.3"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",

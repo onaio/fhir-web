@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import React from 'react';
-import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
 import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
@@ -11,6 +9,10 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
+import lang from '../../lang';
+import { ColumnType } from 'antd/lib/table/interface';
+import React from 'react';
+import { ColumnsType } from 'rc-table/lib/interface';
 
 /** describes antd's table data accessors */
 export interface TableData {
@@ -81,7 +83,7 @@ export const mergeIdsWithNames = (
   const orgByIds = keyBy(organizations, 'identifier');
   const jursByIds = keyBy(jurisdictions, 'id');
   const assignmentsByJur = keyBy(assignments, 'jurisdiction');
-  // const get plan jurisdictions that do not have an assignment, add those to dataSource
+  // const get plan jurisdictions that do not have an assignment, add those to datasource
   const jursWithoutAss = planJurisdictions.filter(
     (jurisdiction) => !assignmentsByJur[jurisdiction]
   );
@@ -132,7 +134,7 @@ export const getDataSource = (
   assignments: Assignment[],
   planJurisdictions: string[]
 ) => {
-  // const get plan jurisdictions that do not have an assignment, add those to dataSource
+  // const get plan jurisdictions that do not have an assignment, add those to datasource
   const compressedAssignments = compressAssignments(assignments);
   const orgsAndJursOptions = mergeIdsWithNames(
     compressedAssignments,
@@ -157,16 +159,19 @@ export const getDataSource = (
   return dataSource;
 };
 
-/** non dynamic columns for assignment table component */
-export const staticColumns: ColumnsType<TableData> = [
+/** non dynamic columns for assignment table component
+ *
+ * @param langObj - the translation lookup object
+ */
+export const staticColumns = (langObj: Dictionary<string> = lang): ColumnsType<TableData> => [
   {
-    title: 'Assigned areas',
+    title: langObj.ASSIGNED_AREAS,
     dataIndex: 'jurisdictions',
     key: `${TableColumnsNamespace}-assigned-areas`,
     width: '40%',
   },
   {
-    title: 'Assigned teams',
+    title: langObj.ASSIGNED_TEAMS,
     dataIndex: 'organizations',
     key: `${TableColumnsNamespace}-assigned-teams`,
     width: '40%',
@@ -185,6 +190,7 @@ export const staticColumns: ColumnsType<TableData> = [
  * @param  plan - the plan
  * @param  baseURL - the base url
  * @param  disableAssignments - whether to enable assignments
+ * @param langObj - the translation lookup object
  */
 export const getPlanAssignmentColumns = (
   assignments: Assignment[],
@@ -195,7 +201,8 @@ export const getPlanAssignmentColumns = (
   assignmentsCreator: typeof fetchAssignments,
   plan: PlanDefinition,
   baseURL: string,
-  disableAssignments: boolean
+  disableAssignments: boolean,
+  langObj: Dictionary<string> = lang
 ) => {
   const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
     const fullyGrouped = compressAssignments(assignments);
@@ -228,12 +235,12 @@ export const getPlanAssignmentColumns = (
 
   const dynamicColumn = [
     {
-      title: 'Actions',
+      title: langObj.ACTIONS,
       key: `${TableColumnsNamespace}-actions`,
       render: ActionsColumnCustomRender,
       width: '20%',
     },
   ];
-  const columns = [...staticColumns, ...dynamicColumn];
+  const columns = [...staticColumns(langObj), ...dynamicColumn];
   return columns;
 };

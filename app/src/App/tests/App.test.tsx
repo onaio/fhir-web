@@ -58,7 +58,7 @@ describe('App - unauthenticated', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));
@@ -174,7 +174,7 @@ describe('App - authenticated', () => {
     );
     // before resolving get oauth state request, the user is logged out
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"InventoryAdmintHat ParttHat PartWelcome to OpenSRP"`
+      `"InventoryAdministrationtHat ParttHat PartWelcome to OpenSRP"`
     );
 
     await act(async () => {

@@ -28,7 +28,7 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/auth`
 
-- **REACT_APP_REACT_APP_OPENSRP_OAUTH_STATE**
+- **REACT_APP_OPENSRP_OAUTH_STATE**
 
   - Defines the app oauth2 state to use
   - **Required**
@@ -92,9 +92,15 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
-  - **REACT_APP_ENABLE_TEAMS**
+- **REACT_APP_ENABLE_TEAMS**
 
   - Enables the teams module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_TEAMS**
+
+  - Enables the Fhir teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -182,7 +188,7 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `true`
 
-  **REACT_APP_DEFAULT_HOME_MODE**
+- **REACT_APP_DEFAULT_HOME_MODE**
 
   - whether to redirect on eusm or tunisia home page
   - **not required**_(`string`)_
@@ -192,10 +198,54 @@ Below is a list of currently supported environment variables:
 
   - Sets the oauth app permission scopes.
   - **Required**(`string`)
-  - default: `read,write`
+  - default: `profile`
 
 - **REACT_APP_FILTER_BY_PARENT_ID**
 
   - Allows filtering root locations by parentId when set to true
   - **Optional**(_string_)
+  - default: `"true"`
+
+- **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
+
+  - keycloak users page size
+  - **Optional**(`number`)
+  - default: `20`
+
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
+
+- **REACT_APP_USER_FORM_RENDER_FIELDS** `partially-implemented`
+
+  - module: `user-management`
+  - configure rendered form fields in creating editing users, a comma separated list of `FormFieldsKey's`
+  - **optional**
+  - default: `''`
+
+- **REACT_APP_USER_FORM_HIDDEN_FIELDS** `partially-implemented`
+
+  - module: `user-management`
+  - configure hidden form fields in creating editing users, a comma separated list of `FormFieldsKey's`.
+  - hidden form fields need to be first rendered in `REACT_APP_USER_FORM_RENDER_FIELDS`
+  - **optional**
+  - default: `''`
+
+- **REACT_APP_ENABLE_FHIR_CARE_TEAM**
+
+  - Enables the FHIR Care Team module
+  - **Optional**(`boolean`)
   - default: `"false"`
+
+- **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
+
+  - Default number of rows per table page
+  - default: 5
+  - `Enum: 5, 10, 20 , 50, 100
+
+- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+  - Default FHIR resource page count
+  - **Required**
+  - default: 500

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Button, Table } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { getTableColumns } from './utils';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -8,7 +8,6 @@ import {
   INVENTORY_SERVICE_POINT_PROFILE_VIEW,
   URL_INVENTORY_ADD,
   URL_INVENTORY_EDIT,
-  TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang from '../../lang';
@@ -22,7 +21,7 @@ import {
 import { Alert } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
-import { OpenSRPService, useHandleBrokenPage } from '@opensrp/react-utils';
+import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
@@ -82,12 +81,10 @@ const InventoryList = (props: InventoryListProps) => {
     return <Alert message={lang.ERROR_GETTING_INVENTORIES} type="error" />;
   }
 
-  // add a key prop to the array data to be consumed by the table
-  const dataSource = inventoriesArray.map((item) => {
+  const datasource = inventoriesArray.map((item) => {
     const deliveryDate = format(new Date(item.deliveryDate), 'MMM dd, yyyy');
     const accountabilityEndDate = format(new Date(item.accountabilityEndDate), 'MMM dd, yyyy');
     const inventoryToDisplay = {
-      key: `${TableColumnsNamespace}-${item._id}`,
       ...item,
       deliveryDate,
       accountabilityEndDate,
@@ -107,12 +104,27 @@ const InventoryList = (props: InventoryListProps) => {
               </Button>
             </Link>
           </div>
-          <Table
+          <TableLayout
+            dataKeyAccessor="_id"
+            id="InventoryList"
+            persistState={true}
             className="custom-table"
             pagination={false}
-            dataSource={dataSource}
-            columns={getTableColumns(servicePointProfileURL, editInventoryURL)}
-          ></Table>
+            datasource={datasource}
+            columns={getTableColumns()}
+            actions={{
+              title: lang.ACTIONS_TH,
+              // eslint-disable-next-line react/display-name
+              render: (_: string, record) => (
+                <Link
+                  to={`${servicePointProfileURL}/${record.locationId}${editInventoryURL}/${record._id}`}
+                >
+                  {lang.EDIT}
+                </Link>
+              ),
+              width: '20%',
+            }}
+          />
         </Col>
       </Row>
     </>

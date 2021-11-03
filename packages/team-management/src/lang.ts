@@ -40,6 +40,13 @@ function fill() {
   lang.NO_TEAM_MEMBERS = i18n.t(`No team members`, { ns: namespace });
   lang.TEAMS = i18n.t(`Teams`, { ns: namespace });
   lang.SEARCH = i18n.t(`Search`, { ns: namespace });
+  lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.VIEW_DETAILS = i18n.t(`View details`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Actions`, { ns: namespace });
+  lang.ASSIGNED_LOCATIONS = i18n.t(`Assigned Locations`, { ns: namespace });
+  lang.NO_ASSIGNED_LOCATIONS = i18n.t(`This team is not assigned to any Location`, {
+    ns: namespace,
+  });
 }
 
 // run it initial

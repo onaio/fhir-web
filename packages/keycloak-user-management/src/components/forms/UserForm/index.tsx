@@ -1,30 +1,31 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { KeycloakUser, Practitioner, UserGroup } from '../../../ducks/user';
 import lang from '../../../lang';
-import { submitForm } from './utils';
-import { Dictionary } from '@onaio/utils';
+import { getUserGroupsOptions, submitForm, userGroupOptionsFilter } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
-
-/** props for editing a user view */
-export interface UserFormProps {
-  initialValues: FormFields;
-  keycloakBaseURL: string;
-  opensrpBaseURL: string;
-  userGroups: UserGroup[];
-  extraData: Dictionary;
-}
-
-export interface FormFields extends KeycloakUser {
-  active?: boolean;
-  userGroup?: string[];
-  practitioner?: Practitioner;
-}
+import {
+  CONTACT_FORM_FIELD,
+  FormFields,
+  FormFieldsKey,
+  SelectOption,
+  UserFormProps,
+} from './types';
+import { SelectProps } from 'antd/lib/select';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
-  const { initialValues, keycloakBaseURL, opensrpBaseURL, extraData, userGroups } = props;
+  const {
+    initialValues,
+    keycloakBaseURL,
+    opensrpBaseURL,
+    extraData,
+    userGroups,
+    renderFields,
+    hiddenFields,
+  } = props;
+  const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
+  const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
 
   // hook into the form lifecycle methods
   const [form] = Form.useForm();
@@ -60,6 +61,29 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
+  // get the status of user at mount
+  const [userEnabled, setUserEnabled] = useState<boolean>(initialValues.enabled ?? false);
+
+  // if user is disabled also disable practitioner
+  // else show default practitioner value
+  useEffect(() => {
+    if (!userEnabled) {
+      form.setFields([
+        {
+          name: 'active',
+          value: false,
+        },
+      ]);
+    } else {
+      form.setFields([
+        {
+          name: 'active',
+          value: initialValues.active,
+        },
+      ]);
+    }
+  }, [form, initialValues, userEnabled]);
+
   return (
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
@@ -78,7 +102,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               keycloakBaseURL,
               opensrpBaseURL,
               userGroups,
-              initialValues.userGroup as string[]
+              initialValues.userGroups as string[]
             )
               .catch((_: Error) => {
                 sendErrorNotification(lang.ERROR_OCCURED);
@@ -113,14 +137,48 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
+
+          {shouldRender(CONTACT_FORM_FIELD) ? (
+            <Form.Item
+              id={CONTACT_FORM_FIELD}
+              rules={[
+                {
+                  type: 'string',
+                  pattern: /^0\d{9}$/,
+                  message: lang.CONTACT_REGEX_ERROR,
+                },
+                {
+                  required: !isHidden(CONTACT_FORM_FIELD),
+                  message: lang.CONTACT_IS_REQUIRED_ERROR,
+                },
+              ]}
+              hidden={isHidden(CONTACT_FORM_FIELD)}
+              name={CONTACT_FORM_FIELD}
+              label={lang.CONTACT}
+            >
+              <Input></Input>
+            </Form.Item>
+          ) : null}
+
           <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
-            <Radio.Group options={status} name="enabled"></Radio.Group>
+            <Radio.Group
+              options={status}
+              name="enabled"
+              // watch user's status
+              onChange={(e) => setUserEnabled(e.target.value)}
+            ></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
               <Radio.Group name="active">
                 {status.map((e) => (
-                  <Radio name="active" key={e.label} value={e.value}>
+                  <Radio
+                    name="active"
+                    key={e.label}
+                    value={e.value}
+                    // disable field if user is disabled
+                    disabled={!userEnabled}
+                  >
                     {e.label}
                   </Radio>
                 ))}
@@ -128,19 +186,15 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item name="userGroup" id="userGroup" label={lang.GROUP}>
-            <Select
+          <Form.Item name="userGroups" id="userGroups" label={lang.GROUP}>
+            <Select<SelectOption[]>
               mode="multiple"
               allowClear
               placeholder={lang.PLEASE_SELECT}
               style={{ width: '100%' }}
-            >
-              {userGroups.map((group) => (
-                <Select.Option key={group.id} value={group.id}>
-                  {group.name}
-                </Select.Option>
-              ))}
-            </Select>
+              options={getUserGroupsOptions(userGroups)}
+              filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
+            ></Select>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
@@ -154,6 +208,22 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
       </Col>
     </Row>
   );
+};
+
+export const defaultUserFormInitialValues: FormFields = {
+  firstName: '',
+  id: '',
+  lastName: '',
+  username: '',
+  active: false,
+  userGroups: undefined,
+  practitioner: undefined,
+  contact: undefined,
+  enabled: false,
+};
+
+UserForm.defaultProps = {
+  initialValues: defaultUserFormInitialValues,
 };
 
 export { UserForm };

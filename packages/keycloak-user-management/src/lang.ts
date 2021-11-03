@@ -33,6 +33,12 @@ function fill() {
   lang.PRACTITIONER_UPDATED_SUCCESSFULLY = i18n.t(`Practitioner updated successfully`, {
     ns: namespace,
   });
+  lang.PRACTITIONER_DEACTIVATED_SUCCESSFULLY = i18n.t(`Practitioner deactivated successfully`, {
+    ns: namespace,
+  });
+  lang.PRACTITIONER_UNASSIGNED_SUCCESSFULLY = i18n.t(`Practitioner unassigned successfully`, {
+    ns: namespace,
+  });
   lang.ROLES_UPDATED_SUCCESSFULLY = i18n.t(`Role Mappings Updated Successfully`, { ns: namespace });
   lang.REALM_ROLES = i18n.t(`Realm Roles`, { ns: namespace });
   lang.AVAILABLE_ROLES = i18n.t(`Available Roles`, { ns: namespace });
@@ -75,6 +81,18 @@ function fill() {
   lang.GROUP = i18n.t(`Group`, { ns: namespace });
   lang.SAVE = i18n.t(`Save`, { ns: namespace });
   lang.SAVING = i18n.t(`Saving`, { ns: namespace });
+  lang.CONTACT = i18n.t(`Contact`, { ns: namespace });
+  lang.CONTACT_IS_REQUIRED_ERROR = i18n.t(`Contact is required`, { ns: namespace });
+  lang.CONTACT_REGEX_ERROR = i18n.t(`Contact should be 10 digits and start with 0`, {
+    ns: namespace,
+  });
+  lang.KEYCLOAK_UUID = i18n.t(`Keycloak UUID`, { ns: namespace });
+  lang.PRACTITIONER_UUID = i18n.t(`Practitioner UUID`, { ns: namespace });
+  lang.PRACTITIONER_STATUS = i18n.t(`Practitioner Status`, { ns: namespace });
+  lang.ASSIGNED_TEAMS = i18n.t(`Assigned Teams`, { ns: namespace });
+  lang.NO_ASSIGNED_TEAMS = i18n.t(`No Assigned Teams`, { ns: namespace });
+  lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
+  lang.NO_ACTIVE_PRACTITIONER = i18n.t(`No Active Practitioner`, { ns: namespace });
 }
 
 // run it initial

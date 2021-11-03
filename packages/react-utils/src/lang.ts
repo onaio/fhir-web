@@ -21,6 +21,7 @@ function fill() {
   lang.GO_HOME = i18n.t(`Go home`, { ns: namespace });
   lang.GO_BACK = i18n.t(`Go back`, { ns: namespace });
   lang.SESSION_EXPIRED_TEXT = i18n.t(`Session Expired`, { ns: namespace });
+  lang.ACTIONS = i18n.t(`Actions`, { ns: namespace });
 }
 
 // run it initial

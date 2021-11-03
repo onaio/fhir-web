@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import { Practitioner } from '../../../ducks/practitioners';
+import { Practitioner, PractitionerPOST } from '../../../ducks/practitioners';
 import { FormField } from '../Form';
 
 export const accessToken = 'token';
-export const opensrpBaseURL = 'https://opensrp-stage.smartregister.org/opensrp/rest/';
+export const opensrpBaseURL = 'https://some.opensrp.url/';
 export const id = '258b4dec-79d3-546d-9c5c-f172aa7e03b0';
 
 export const team: Organization = {
@@ -24,6 +24,13 @@ export const team: Organization = {
 };
 
 export const practitioners: Practitioner[] = [
+  {
+    identifier: '0',
+    active: true,
+    name: 'anon ops',
+    userId: '0',
+    username: 'anon-ops',
+  },
   {
     identifier: '1',
     active: true,
@@ -75,10 +82,35 @@ export const practitioners: Practitioner[] = [
   },
 ];
 
+export const members = [
+  {
+    identifier: '3',
+    active: false,
+    name: 'prac one',
+    userId: '3',
+    username: 'prac_one',
+  },
+  {
+    identifier: '4',
+    active: false,
+    name: 'Practitioner Two',
+    userId: '4',
+    username: 'prac_two',
+  },
+  {
+    identifier: '5',
+    active: false,
+    name: 'Practitioner One',
+    userId: '5',
+    username: 'practitioner_one',
+  },
+];
+
 export const intialValue: FormField = {
   name: team.name,
   active: team.active,
   practitioners: practitioners.slice(0, 3).map((prac) => prac.identifier),
+  practitionersList: practitioners.slice(0, 3),
 };
 
 export const teamPost: OrganizationPOST = {
@@ -680,6 +712,45 @@ export const teams: Organization[] = [
           display: 'Team',
         },
       ],
+    },
+  },
+];
+
+export const practitionerRole: PractitionerPOST[] = [
+  {
+    identifier: 'a907b36a-37a0-42a8-bdb1-720a73309816',
+    active: true,
+    organization: 'c53900dd-cb8e-4f9f-befc-5b21742612a1',
+    practitioner: '0',
+    code: {
+      text: 'Community Health Worker',
+    },
+  },
+  {
+    identifier: 'a907b36a-37a0-42a8-bdb1-720a73309816',
+    active: false,
+    organization: 'c53900dd-cb8e-4f9f-befc-5b21742612a1',
+    practitioner: '5',
+    code: {
+      text: 'Community Health Worker',
+    },
+  },
+  {
+    identifier: 'aef6722b-2bf8-45d6-b2d7-fe77d0d4a6dc',
+    active: true,
+    organization: 'e740e6b8-98dc-4d99-af34-ab2eb602da00',
+    practitioner: '6',
+    code: {
+      text: 'Community Health Worker',
+    },
+  },
+  {
+    identifier: 'e9d07e46-e00b-402a-a03f-52176db95957',
+    active: true,
+    organization: 'e740e6b8-98dc-4d99-af34-ab2eb602da00',
+    practitioner: '7',
+    code: {
+      text: 'Community Health Worker',
     },
   },
 ];

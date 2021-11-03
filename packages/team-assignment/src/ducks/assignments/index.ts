@@ -215,6 +215,10 @@ export const getAssignmentsArrayByPlanId = () => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assignments = get(assignmentsMap, planId) ?? [];
     }
-    return assignments.filter((obj) => moment(obj.toDate) >= moment());
+    // handle null and non-date entries in Assignment.toDate field
+    const filteredAssignments = assignments.filter((obj) =>
+      moment(obj.toDate).isValid() ? moment(obj.toDate) >= moment() : true
+    );
+    return filteredAssignments;
   });
 };
