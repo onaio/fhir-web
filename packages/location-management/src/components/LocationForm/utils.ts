@@ -69,7 +69,7 @@ export const defaultFormField: LocationFormFields = {
   name: '',
   status: LocationUnitStatus.ACTIVE,
   isJurisdiction: true,
-  serviceType: '',
+  serviceType: undefined,
   locationTags: [],
   externalId: '',
   extraFields: [],
@@ -90,15 +90,8 @@ export const getLocationFormFields = (
   const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
   if (!location) return { ...defaultFormField, ...commonValues };
 
-  const {
-    name,
-    status,
-    parentId,
-    username,
-    externalId,
-    type,
-    ...restProperties
-  } = location.properties;
+  const { name, status, parentId, username, externalId, type, ...restProperties } =
+    location.properties;
 
   // derive latitude and longitudes for point
   const { geometry: geoObject } = location;
@@ -153,17 +146,8 @@ export const generateLocationUnit = (
   selectedTags: LocationUnitTag[] = [],
   parentNode?: TreeNode
 ): LocationUnit => {
-  const {
-    serviceType,
-    id,
-    externalId,
-    parentId,
-    name,
-    status,
-    geometry,
-    extraFields,
-    username,
-  } = formValues;
+  const { serviceType, id, externalId, parentId, name, status, geometry, extraFields, username } =
+    formValues;
 
   const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? 0;
   const thisGeoLevel = parentId ? (parentGeographicLevel as number) + 1 : 0;

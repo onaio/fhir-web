@@ -232,7 +232,7 @@ export const Form: React.FC<Props> = ({
         >
           {practitionersList.map((practitioner) => (
             <Select.Option key={practitioner.identifier} value={practitioner.identifier}>
-              {practitioner.name}
+              {`${practitioner.name} (${practitioner.username})`}
             </Select.Option>
           ))}
         </Select>

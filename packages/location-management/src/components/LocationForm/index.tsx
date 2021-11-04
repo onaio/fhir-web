@@ -122,7 +122,11 @@ const LocationForm = (props: LocationFormProps) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldsValue({ ...initialValues });
+    // #850 - initial Values would override any values so far fed into  the form,
+    form.setFieldsValue({
+      ...initialValues,
+      ...form.getFieldsValue(),
+    });
   }, [form, initialValues]);
 
   const status = [
