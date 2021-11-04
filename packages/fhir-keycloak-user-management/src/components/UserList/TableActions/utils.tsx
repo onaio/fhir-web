@@ -3,12 +3,9 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { removeKeycloakUsers } from '../../../ducks/user';
 import { KEYCLOAK_URL_USERS } from '../../../constants';
 import lang, { Lang } from '../../../lang';
-import FHIR from 'fhirclient';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
-import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 
 /**
  * Delete keycloak user and practitioner
@@ -32,22 +29,25 @@ export const deleteUser = async (
   // start loader
   isLoadingCallback(true);
 
-  // get tied practitioners from keycloak user Id
-  const practitioners = await getPractitionersByUserId(userId, fhirBaseURL).catch(() => {
-    sendErrorNotification(langObj.ERROR_OCCURED);
-    // stop loader
-    isLoadingCallback(false);
-    return [];
-  });
+  const deleteKeycloakUser = new KeycloakService(
+    `${KEYCLOAK_URL_USERS}/${userId}`,
+    keycloakBaseURL
+  );
 
-  // service class to delete keycloak user
-  const serviceDelete = new KeycloakService(`${KEYCLOAK_URL_USERS}/${userId}`, keycloakBaseURL);
+  // get practitioners tied to the keycloak user
+  const practitioners = await getPractitionersByUserId(userId, fhirBaseURL, langObj);
+
+  // get promises to unassign and deactivate tied practitioners
+  const unassignAndDeactivatePromises = await unassignAndDeactivatePractitioners(
+    practitioners,
+    fhirBaseURL
+  );
 
   return Promise.all([
     // delete keycloak user
-    serviceDelete.delete(),
+    deleteKeycloakUser.delete(),
     // unassign and deactivate tied practitioners when you delete the base user
-    ...(await unassignAndDeactivatePractitioners(practitioners, fhirBaseURL)),
+    ...unassignAndDeactivatePromises,
   ])
     .then(() => {
       sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
@@ -65,69 +65,78 @@ export const deleteUser = async (
 };
 
 /**
- * function to query tied practitioners from a keycloak userId - i.e practitioners created from that user
+ * get practitioners tied to a keycloak user
  *
  * @param userId  - keycloak user id to get practitioners from
  * @param fhirBaseURL - fhir api base url
- * @returns - tied practitioners
+ * @param {Lang} langObj - lang
+ * @returns - array of practitioners
  */
-async function getPractitionersByUserId(userId: string, fhirBaseURL: string) {
-  const serve = FHIR.client(fhirBaseURL);
-  // search practitioners with keycloak userID as identifier
-  const bundle: IBundle = await serve.request(`Practitioner/_search?identifier=${userId}`);
-  // ideal server returns only one result but possible to have multiple
-  return bundle.entry ? bundle.entry : [];
+async function getPractitionersByUserId(userId: string, fhirBaseURL: string, langObj: Lang) {
+  const FhirClient = new FHIRServiceClass<IPractitioner>(fhirBaseURL, 'Practitioner');
+  try {
+    // search all practitioners with keycloak userID as identifier
+    const practitionerBundle = await FhirClient.list({ identifier: userId });
+    // at least one result found (also practitionerBundle.total > 0)
+    // return array of practitioners or empty array
+    /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+    if (practitionerBundle.entry) return practitionerBundle.entry.map((bundle) => bundle.resource);
+    return [];
+  } catch (_) {
+    sendErrorNotification(langObj.ERROR_OCCURED);
+    return [];
+  }
 }
 
 /**
- * unassign and deactivate practitioners
+ * unassign and deactivate practitioners promises
  *
- * @param practitionersBundle - array of practitioners bundles to modify
+ * @param practitioners - array of practitioners
  * @param fhirBaseURL - fhir api base url
- * @returns Promise that resolves to an array of promises to unassign and deactivate practitioners
+ * @returns array of Promises that resolve to unassign and deactivate practitioners
  */
 async function unassignAndDeactivatePractitioners(
-  practitionersBundle: BundleEntry[],
+  practitioners: IPractitioner[],
   fhirBaseURL: string
 ) {
-  const FhirClient = FHIR.client(fhirBaseURL);
+  const deactivatePractitioner = new FHIRServiceClass<IPractitioner>(fhirBaseURL, 'Practitioner');
+  const practitionerRoles = new FHIRServiceClass<IPractitionerRole>(
+    fhirBaseURL,
+    `PractitionerRole`
+  );
 
-  const deletePractitionerRolePromises = [];
-  const deactivatePractitionerPromises = [];
+  const deletePractitionerRolePromises: (() => Promise<IPractitionerRole>)[] = [];
+  const deactivatePractitionerPromises: (() => Promise<IPractitioner>)[] = [];
 
-  for (const practitionerBundle of practitionersBundle) {
-    // get practitioner from search result (BundleEntry array)
-    const practitioner = practitionerBundle.resource as Omit<IPractitioner, 'meta'>;
+  for (const practitioner of practitioners) {
+    // deactivate practitioner promise
+    // wrap in function to avoid immediate evocation
+    const deactivatePractitionerPromise = () =>
+      deactivatePractitioner.update({
+        ...practitioner,
+        active: false,
+      });
 
-    // deactivate practitioner
-    const deactivatePractitionerPromise = FhirClient.update({
-      ...practitioner,
-      active: false,
-    });
     deactivatePractitionerPromises.push(deactivatePractitionerPromise);
 
     // get practitioner roles tied to a practitioner
-    const bundle: IBundle = await FhirClient.request(
-      `PractitionerRole/_search?practitioner=${practitioner.id}`
-    );
+    const practitionerRoleBundle = await practitionerRoles.list({
+      practitioner: practitioner.id,
+    });
 
-    if (bundle.entry) {
-      for (const practitionerRoleBundle of bundle.entry) {
-        const practitionerRole = practitionerRoleBundle.resource as IPractitionerRole;
+    // map practitioner roles and push delete function for each to promise array
+    /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+    if (practitionerRoleBundle.entry) {
+      for (const practitionerRoleEntry of practitionerRoleBundle.entry) {
+        const practitionerRole = practitionerRoleEntry.resource;
         // delete practitioner role
-        const deletePractitionerRolePromise = FhirClient.delete<IResource>(
-          `PractitionerRole/${practitionerRole.id}`
-        );
+        const deletePractitionerRolePromise = () =>
+          practitionerRoles.delete(practitionerRole.id ?? '') as Promise<IPractitionerRole>;
         deletePractitionerRolePromises.push(deletePractitionerRolePromise);
       }
     }
   }
 
-  // array of promises to delete practitioner roles and deactivate practitioners
-  return [
-    // delete practitioner roles
-    ...deletePractitionerRolePromises,
-    // deactivate practitioners
-    ...deactivatePractitionerPromises,
-  ];
+  // flatten 2D array - [[][]]
+  return [...deletePractitionerRolePromises, ...deactivatePractitionerPromises];
 }
