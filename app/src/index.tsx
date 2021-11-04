@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App/App';
-import { SENTRY_DSN } from './configs/env';
+import { APP_VERSION, DEPLOYMENT_ENVIRONMENT, SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
 import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
@@ -21,19 +21,25 @@ import './styles/css/index.css';
 const queryClient = new QueryClient();
 
 if (SENTRY_DSN) {
-  Sentry.init({ dsn: SENTRY_DSN });
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    release: APP_VERSION,
+    environment: DEPLOYMENT_ENVIRONMENT,
+  });
 }
 
 ReactDOM.render(
-  <ErrorReporterProvider fallbackComponent={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </ConnectedRouter>
-    </Provider>
-  </ErrorReporterProvider>,
+  <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
+    <ErrorReporterProvider reporter={Sentry.captureException}>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
+        </ConnectedRouter>
+      </Provider>
+    </ErrorReporterProvider>
+  </Sentry.ErrorBoundary>,
   document.getElementById('opensrp-root')
 );
 

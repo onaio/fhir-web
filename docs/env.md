@@ -267,3 +267,7 @@ Below is a list of currently supported environment variables:
   - Opensrp web version deployed
   - **Optional**(_string_)
   - default: ""
+
+- **REACT_APP_DEPLOYMENT_ENVIRONMENT**
+  - Deployment environment,
+  - Default: `production`
