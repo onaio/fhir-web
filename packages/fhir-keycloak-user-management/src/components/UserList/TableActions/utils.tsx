@@ -56,6 +56,7 @@ export const deleteUser = async (
       sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
       sendSuccessNotification(langObj.PRACTITIONER_UNASSIGNED_SUCCESSFULLY);
       sendSuccessNotification(langObj.PRACTITIONER_DEACTIVATED_SUCCESSFULLY);
+      sendSuccessNotification(langObj.PRACTITIONER_UNASSIGNED_FROM_CARE_TEAMS_SUCCESSFULLY);
       removeKeycloakUsersCreator();
     })
     .catch((_: Error) => {
