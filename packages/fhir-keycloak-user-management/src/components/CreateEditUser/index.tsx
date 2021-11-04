@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Col, Row, Spin } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
@@ -20,8 +20,6 @@ import {
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import '../../index.css';
 
@@ -64,27 +62,28 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     practitioner: undefined,
   });
 
-  const {
-    keycloakUser,
-    keycloakBaseURL,
-    fhirBaseURL,
-    extraData,
-    fetchKeycloakUsersCreator,
-  } = props;
+  const { keycloakUser, keycloakBaseURL, fhirBaseURL, extraData, fetchKeycloakUsersCreator } =
+    props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
   const fetchPractitioner = useCallback(async () => {
-    const serve = await FHIRService(fhirBaseURL);
-    await serve.request(`Practitioner?identifier=${userId}`).then((response: IBundle) => {
-      const getPractitionerEntry = (response.entry as BundleEntry[])[0];
-      const getPractitionerResource = getPractitionerEntry.resource as IPractitioner;
-      setInitialValues((prevState) => ({
-        ...prevState,
-        active: getPractitionerResource.active,
-        practitioner: getPractitionerResource,
-      }));
-    });
+    const serve = new FHIRServiceClass<IPractitioner>(fhirBaseURL, 'Practitioner');
+    serve
+      .list({
+        identifier: userId,
+      })
+      .then((response) => {
+        // get first entry (ideal server has only one practitioner)
+        const practitionerEntry = response.entry[0];
+        const practitionerResource = practitionerEntry.resource;
+        setInitialValues((prevState) => ({
+          ...prevState,
+          active: practitionerResource.active,
+          practitioner: practitionerResource,
+        }));
+      })
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
