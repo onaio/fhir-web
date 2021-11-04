@@ -46,4 +46,12 @@ keys = [
     "/react/app/fhir/api/base/url",
     "/react/app/user/form/hidden/fields",
     "react/app/user/form/render/fields",
+    "react/app/opensrp/oauth/state",
+    "react/app/filter/by/parent/id",
+    "react/app/defaults/table/page/size",
+    "react/app/enable/fhir/care/team",
+    "react/app/keycloak/users/page/size",
+    "react/app/opensrp/roles",
+    "react/app/disable/team/member/reassignment",
+    "react/app/pagination/size",
 ]

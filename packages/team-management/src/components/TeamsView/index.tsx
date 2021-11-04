@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
+import TeamsDetail from '../TeamsDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { OpenSRPService } from '@opensrp/react-utils';
@@ -16,41 +15,103 @@ import {
   Organization,
   reducerName,
 } from '../../ducks/organizations';
-import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
+import {
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+  URL_ADD_TEAM,
+  ASSIGNED_LOCATIONS_AND_PLANS,
+} from '../../constants';
 import Table from './Table';
 import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
+import { RawAssignment } from '@opensrp/team-assignment';
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import lang, { Lang } from '../../lang';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
 
 /**
- * Function to load selected Team for details
+ *  Function to populate the team details section of teams module
  *
- * @param {Organization} row data selected from the table
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail funtion to set detail to state
- * @param {Function} setPractitionersList funtion to set detail to state
- * @param {Lang} langObj - the translation object lookup
+ * @param row data selected from the table row
+ * @param opensrpBaseURL openSrp server base url
+ * @param setDetail function to populate team details section (set row data to state)
+ * @param setPractitionersList function to populate the 'Team Members' section of team details
+ * @param setAssignedLocations function to populate the 'Assigned Locations' section of team details
+ * @param langObj translation strings object
  */
-export const loadSingleTeam = (
+export const populateTeamDetails = (
   row: Organization,
   opensrpBaseURL: string,
-  setDetail: (isLoading: string | Organization) => void,
-  setPractitionersList: (isLoading: string | Practitioner[]) => void,
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>,
   langObj: Lang = lang
-): void => {
-  const serve = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
-  serve
-    .list()
-    .then((response: Practitioner[]) => {
-      setPractitionersList(response);
-      setDetail(row);
+) => {
+  // get team members (practitioners) assigned to a team
+  const getPractitioners = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
+
+  // get raw team assignments (list of jurisdiction and organization id's)
+  const getRawTeamAssignments = new OpenSRPService(
+    `${TEAMS_GET}${ASSIGNED_LOCATIONS_AND_PLANS}${row.identifier}`,
+    opensrpBaseURL
+  );
+
+  Promise.all([
+    getPractitioners.list() as Promise<Practitioner[]>,
+    getRawTeamAssignments.list() as Promise<RawAssignment[]>,
+  ])
+    .then(([practitioners, rawAssignments]) => {
+      setPractitionersList(practitioners);
+
+      // get array jurisdictions from array of raw assignments
+      Promise.all(
+        // unwrap promises from their wrapped functions
+        jurisdictionPromises(rawAssignments, opensrpBaseURL).map((promise) => promise())
+      )
+        .then((locations) => {
+          setAssignedLocations(locations);
+        })
+        .catch(() => {
+          sendErrorNotification(langObj.ERROR_OCCURRED);
+        });
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
+    .catch(() => {
+      sendErrorNotification(langObj.ERROR_OCCURRED);
+    })
+    .finally(() => setDetail(row));
+};
+
+/**
+ * function that returns an array of jurisdiction promises from an array of rawAssignments
+ *
+ * @param rawAssignments - raw team assignments (list of jurisdiction and organization id's)
+ * @param opensrpBaseURL -  openSrp server base url
+ * @returns array of jurisdiction promises wrapped in functions
+ */
+const jurisdictionPromises = (rawAssignments: RawAssignment[], opensrpBaseURL: string) => {
+  // wrap promises in plain functions to avoid immediate evocation
+  return rawAssignments.map(
+    (assignment) => () => jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
+  );
+};
+
+/**
+ * query a jurisdiction from a jurisdiction id
+ *
+ * @param jurisdictionId - jurisdiction id
+ * @param opensrpBaseURL - openSrp server base url
+ * @returns - promise that resolves to an opensrp jurisdiction
+ */
+const jurisdictionFromId = async (jurisdictionId: string, opensrpBaseURL: string) => {
+  const getAssignedLocations = new OpenSRPService(
+    `location/${jurisdictionId}?is_jurisdiction=true`,
+    opensrpBaseURL
+  );
+  return getAssignedLocations.list() as Promise<OpenSRPJurisdiction>;
 };
 
 interface Props {
@@ -70,11 +131,12 @@ const defaultProps = {
 export const TeamsView: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const teamsArray = useSelector((state) => getOrganizationsArray(state));
-  const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
+  const [detail, setDetail] = useState<Organization | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
+  const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, setValue] = useState('');
-  const [filter, setfilterData] = useState<Organization[] | null>(null);
+  const [filter, setFilterData] = useState<Organization[] | null>(null);
   const { opensrpBaseURL } = props;
   useEffect(() => {
     if (isLoading) {
@@ -90,9 +152,9 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
   });
 
   /**
-   * Returns filted list of teams
+   * Returns filtered list of teams
    *
-   * @param {object} e event recieved onChange
+   * @param {object} e event received onChange
    * @param {object} e.target -
    * @param {object} e.target.value value to be filtered from tabel list
    */
@@ -102,7 +164,7 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
     const filteredData = teamsArray.filter((entry: { name: string }) =>
       entry.name.toLowerCase().includes(currentValue.toLowerCase())
     );
-    setfilterData(filteredData as Organization[]);
+    setFilterData(filteredData as Organization[]);
   };
 
   if (isLoading) return <Spin size="large" />;
@@ -137,12 +199,11 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
           <div className="bg-white">
             <Table
               data={value.length < 1 ? teamsArray : (filter as Organization[])}
-              onViewDetails={loadSingleTeam}
+              onViewDetails={populateTeamDetails}
               opensrpBaseURL={opensrpBaseURL}
-              setPractitionersList={
-                setPractitionersList as (isLoading: string | Practitioner[]) => void
-              }
-              setDetail={setDetail as (isLoading: string | Organization) => void}
+              setPractitionersList={setPractitionersList}
+              setAssignedLocations={setAssignedLocations}
+              setDetail={setDetail}
             />
           </div>
         </Col>
@@ -152,11 +213,10 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
               onClose={() => setDetail(null)}
               {...detail}
               teamMembers={practitionersList}
+              assignedLocations={assignedLocations}
             />
           </Col>
-        ) : (
-          ''
-        )}
+        ) : null}
       </Row>
     </section>
   );

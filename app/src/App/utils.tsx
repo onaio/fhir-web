@@ -21,16 +21,19 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
+  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {
@@ -38,6 +41,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamManagementProps = {
+  ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
   paginationSize: PAGINATION_SIZE,
 };
@@ -154,4 +158,8 @@ export const createEditUserProps = {
   // that is closer to the code.
   userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
+};
+
+export const careTeamProps = {
+  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };

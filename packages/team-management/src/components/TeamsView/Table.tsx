@@ -5,24 +5,28 @@ import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import lang from '../../lang';
 
 export interface Props {
   data: Organization[];
   opensrpBaseURL: string;
-  setDetail: (isLoading: string | Organization) => void;
-  setPractitionersList: (isLoading: string | Practitioner[]) => void;
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>;
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>;
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>;
   onViewDetails?: (
     row: Organization,
     opensrpBaseURL: string,
-    setDetail: (isLoading: string | Organization) => void,
-    setPractitionersList: (isLoading: string | Practitioner[]) => void
+    setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+    setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
   ) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { setDetail, onViewDetails, setPractitionersList, opensrpBaseURL } = props;
+  const { setDetail, onViewDetails, setPractitionersList, setAssignedLocations, opensrpBaseURL } =
+    props;
 
   const columns: Column<Organization>[] = [
     {
@@ -56,7 +60,13 @@ const Table: React.FC<Props> = (props: Props) => {
                     className="viewdetails"
                     onClick={() => {
                       if (onViewDetails) {
-                        onViewDetails(record, opensrpBaseURL, setDetail, setPractitionersList);
+                        onViewDetails(
+                          record,
+                          opensrpBaseURL,
+                          setDetail,
+                          setPractitionersList,
+                          setAssignedLocations
+                        );
                       }
                     }}
                   >

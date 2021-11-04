@@ -15,6 +15,7 @@ const defaultRoles = {
   TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -63,6 +64,8 @@ export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
+
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
@@ -140,6 +143,9 @@ export const DISABLE_LOGIN_PROTECTION =
 export const ENABLE_PRODUCT_CATALOGUE =
   setEnv('REACT_APP_ENABLE_PRODUCT_CATALOGUE', 'false') === 'true';
 
+/** Activate the FHIR Care Team menu */
+export const ENABLE_FHIR_CARE_TEAM = setEnv('REACT_APP_ENABLE_FHIR_CARE_TEAM', 'false') === 'true';
+
 /** Activate form configuration */
 export const ENABLE_FORM_CONFIGURATION =
   setEnv('REACT_APP_ENABLE_FORM_CONFIGURATION', 'false') === 'true';
@@ -174,7 +180,7 @@ export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
 export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
-  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'false') === 'true';
+  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'true') === 'true';
 
 export const USER_FORM_HIDDEN_FIELDS = setEnv('REACT_APP_USER_FORM_HIDDEN_FIELDS', '').split(',');
 
@@ -183,3 +189,5 @@ export const USER_FORM_RENDER_FIELDS = setEnv('REACT_APP_USER_FORM_RENDER_FIELDS
 export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000));
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
+
+export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));

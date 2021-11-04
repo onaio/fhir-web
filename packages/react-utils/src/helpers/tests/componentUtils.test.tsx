@@ -15,6 +15,7 @@ import { KEYCLOAK_API_BASE_URL } from '@opensrp/keycloak-service';
 import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const { PublicComponent, PrivateComponent, isAuthorized } = componentUtils;
 
@@ -70,15 +71,18 @@ describe('componentUtils', () => {
       path: '/admin',
       authenticated: true,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent
-            {...props}
-            component={MockComponent}
-            activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-          />
-        </MemoryRouter>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
+            <PrivateComponent
+              {...props}
+              component={MockComponent}
+              activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>
       </Provider>
     );
     await act(async () => {
@@ -102,22 +106,27 @@ describe('componentUtils', () => {
       path: '/admin',
       authenticated: false,
     };
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent
-            {...props}
-            component={MockComponent}
-            activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-          />
-        </MemoryRouter>
+        <QueryClientProvider client={queryClient}>
+          <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
+            <PrivateComponent
+              {...props}
+              component={MockComponent}
+              activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
+            />
+          </MemoryRouter>
+        </QueryClientProvider>
       </Provider>
     );
+
     await act(async () => {
       await flushPromises();
-      await new Promise((resolve) => setImmediate(resolve));
+      wrapper.update();
     });
-    wrapper.update();
+
     expect(wrapper.exists(MockComponent)).toBeFalsy();
     expect(toJson(wrapper.find('UnauthorizedPage'))).toBeFalsy();
     wrapper.unmount();
