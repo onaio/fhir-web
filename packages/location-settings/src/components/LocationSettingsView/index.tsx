@@ -62,7 +62,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (!locationSettings.data?.length) return <Spin size="large" />;
+  if (locationSettings.isFetching || locationSettings.isLoading) return <Spin size="large" />;
 
   return (
     <section className="layout-content">
@@ -77,7 +77,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
-              data={locationSettings.data}
+              data={locationSettings.data ?? []}
               tree={treeData}
               actioncolumn={{
                 title: 'Actions',
@@ -90,8 +90,9 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                         <Menu className="menu">
                           <Menu.Item
                             onClick={() => {
+                              console.log('row??', row);
                               const payload = { ...row, value: 'true', locationId: currentLocId };
-                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
                                 .update(payload)
                                 .catch(() => sendErrorNotification('ERROR OCCURRED'))
                                 .then(() => {
@@ -108,7 +109,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                           <Menu.Item
                             onClick={() => {
                               const payload = { ...row, value: 'true', locationId: currentLocId };
-                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
                                 .update(payload)
                                 .catch(() => sendErrorNotification('ERROR OCCURRED'))
                                 .then(() => {
@@ -124,7 +125,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                           </Menu.Item>
                           <Menu.Item
                             onClick={() => {
-                              new OpenSRPService(`settings/${currentLocId}`, v2BaseURL)
+                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
                                 .delete()
                                 .catch(() => sendErrorNotification('ERROR OCCURRED'))
                                 .then(() => {
