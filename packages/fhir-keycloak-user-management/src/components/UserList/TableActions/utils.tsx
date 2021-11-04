@@ -6,6 +6,8 @@ import lang, { Lang } from '../../../lang';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+import { CareTeamParticipant } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/careTeamParticipant';
 
 /**
  * Delete keycloak user and practitioner
@@ -46,8 +48,9 @@ export const deleteUser = async (
   return Promise.all([
     // delete keycloak user
     deleteKeycloakUser.delete(),
-    // unassign and deactivate tied practitioners when you delete the base user
-    ...unassignAndDeactivatePromises,
+    // unassign and deactivate tied practitioners
+    // unwrap from fns
+    ...unassignAndDeactivatePromises.map((promise) => promise()),
   ])
     .then(() => {
       sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
@@ -107,6 +110,7 @@ async function unassignAndDeactivatePractitioners(
 
   const deletePractitionerRolePromises: (() => Promise<IPractitionerRole>)[] = [];
   const deactivatePractitionerPromises: (() => Promise<IPractitioner>)[] = [];
+  const updateCareTeams: (() => Promise<ICareTeam>)[] = [];
 
   for (const practitioner of practitioners) {
     // deactivate practitioner promise
@@ -135,8 +139,60 @@ async function unassignAndDeactivatePractitioners(
         deletePractitionerRolePromises.push(deletePractitionerRolePromise);
       }
     }
+
+    if (practitioner.id) {
+      const careTeamsToUpdate = await removePractitionerFromCareTeam(fhirBaseURL, practitioner.id);
+      updateCareTeams.push(...careTeamsToUpdate);
+    }
   }
 
-  // flatten 2D array - [[][]]
-  return [...deletePractitionerRolePromises, ...deactivatePractitionerPromises];
+  // flatten 2D array - [[][][]]
+  return [...deletePractitionerRolePromises, ...deactivatePractitionerPromises, ...updateCareTeams];
+}
+
+/**
+ * remove practitioner from care team
+ *
+ * @param fhirBaseURL - fhir api base url
+ * @param practitionerId - practitioner.id
+ * @returns array of wrapped promises to remove practitioner from care teams
+ */
+async function removePractitionerFromCareTeam(fhirBaseURL: string, practitionerId: string) {
+  const careTeams = new FHIRServiceClass<ICareTeam>(fhirBaseURL, 'CareTeam');
+
+  const careTeamsBundle = await careTeams.list({
+    'participant:practitioner': practitionerId,
+  });
+
+  const updateCareTeams: (() => Promise<ICareTeam>)[] = [];
+
+  if (careTeamsBundle.entry) {
+    for (const careTeamEntry of careTeamsBundle.entry) {
+      if (careTeamEntry.resource.participant) {
+        const filteredParticipants = filterObjFromArr(
+          careTeamEntry.resource.participant,
+          practitionerId
+        );
+        const updateCareTeamPromise = () =>
+          careTeams.update({ ...careTeamEntry.resource, participant: filteredParticipants });
+        updateCareTeams.push(updateCareTeamPromise);
+      }
+    }
+  }
+
+  return updateCareTeams;
+}
+
+/**
+ * filter out practitioner from care team participant array
+ *
+ * @param arr - care team participants array
+ * @param practitionerId - practitioner.id
+ * @returns filtered array - one without given practitioner id
+ */
+function filterObjFromArr(arr: CareTeamParticipant[], practitionerId: string) {
+  const filteredArr = arr.filter(
+    (participant) => participant?.member?.reference !== `Practitioner/${practitionerId}`
+  );
+  return filteredArr;
 }
