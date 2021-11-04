@@ -4,14 +4,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 test('can report errors from a child component in a tree', () => {
-  const FallbackComponent = () => {
-    return (
-      <div>
-        <p>Fallback component</p>
-      </div>
-    );
-  };
-
   const err = new Error('coughid');
 
   const ChildComponent = () => {
@@ -28,9 +20,8 @@ test('can report errors from a child component in a tree', () => {
   };
 
   const mockReporter = jest.fn();
-
   render(
-    <ErrorReporterProvider fallbackComponent={FallbackComponent} reporter={mockReporter}>
+    <ErrorReporterProvider reporter={mockReporter}>
       <ChildComponent />
     </ErrorReporterProvider>
   );
