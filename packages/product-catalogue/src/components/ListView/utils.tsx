@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Spin } from 'antd';
+import { Divider } from 'antd';
 import { ProductCatalogue } from '../../ducks/productCatalogue';
 import {
   CATALOGUE_EDIT_VIEW_URL,
@@ -55,10 +55,4 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
     },
   ];
   return columns;
-};
-
-/** util component shown when there is a pending promise */
-
-export const CatalogueLoading = () => {
-  return <Spin size="large" className="custom-spinner"></Spin>;
 };

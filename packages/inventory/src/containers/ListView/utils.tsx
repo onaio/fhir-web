@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spin } from 'antd';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
@@ -66,13 +65,6 @@ export const columnsFactory = (langObj: Lang = lang) => {
     },
   ];
   return columns;
-};
-
-/**
- * util component shown when there is a pending promise
- */
-export const ServicePointsLoading = () => {
-  return <Spin size="large" className="custom-spinner"></Spin>;
 };
 
 /**
