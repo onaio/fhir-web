@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button } from 'antd';
+import { Row, PageHeader, Col, Button, Spin } from 'antd';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -7,7 +7,7 @@ import {
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
-import { PlansLoading, getColumns, pageTitleBuilder } from './utils';
+import { getColumns, pageTitleBuilder } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -59,7 +59,7 @@ const PlansList = (props: PlansListTypes) => {
   }, []);
 
   if (loading) {
-    return <PlansLoading />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (broken) {
