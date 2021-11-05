@@ -22,6 +22,7 @@ import {
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
   ENABLE_FHIR_CARE_TEAM,
+  ENABLE_SERVER_SETTINGS,
 } from './configs/env';
 
 import {
@@ -227,7 +228,11 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.SERVER_SETTINGS,
           key: 'server-settings',
-          enabled: true,
+          enabled:
+            ENABLE_SERVER_SETTINGS &&
+            roles &&
+            activeRoles.SERVER_SETTINGS &&
+            isAuthorized(roles, activeRoles.SERVER_SETTINGS.split(',')),
           url: URL_SERVER_SETTINGS,
         },
       ],
