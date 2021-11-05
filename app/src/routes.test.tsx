@@ -285,6 +285,12 @@ describe('routes', () => {
             key: 'form-config',
             title: 'Form Configuration',
           },
+          {
+            enabled: true,
+            key: 'server-settings',
+            title: 'Server Settings',
+            url: '/admin/server-settings',
+          },
         ],
         enabled: true,
         key: 'administration',

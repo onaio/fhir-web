@@ -16,7 +16,7 @@ describe('activate mission', () => {
           key: 'actions',
           dataIndex: 'actions',
           // eslint-disable-next-line react/display-name
-          render: (_, row: Setting) => <div />,
+          render: () => <div />,
           width: '10%',
         }}
       />
