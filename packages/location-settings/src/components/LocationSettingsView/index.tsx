@@ -29,6 +29,21 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
 
   const queryClient = useQueryClient();
 
+  const updateSettings = async (row: Setting, currentLocId: string, valueIsYes: boolean) => {
+    const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
+    const serve = new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL);
+    await serve
+      .update(payload)
+      .catch(() => sendErrorNotification('ERROR OCCURRED'))
+      .then(() => {
+        queryClient
+          .invalidateQueries([['settings', currentLocId]])
+          .catch(() => sendErrorNotification('Cant Invalidate'));
+
+        sendSuccessNotification('sucessfully Updated');
+      });
+  };
+
   const userLocSettings = useQuery(
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
@@ -49,13 +64,15 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
 
   const locationSettings = useQuery(
     ['settings', currentLocId],
-    () =>
-      new OpenSRPService('settings', v2BaseURL).list({
-        identifier: POP_CHARACTERISTICS_PARAM,
-        locationId: currentLocId,
-        resolve: true,
-        serverVersion: 0,
-      }),
+    async () =>
+      currentLocId
+        ? await new OpenSRPService('settings', v2BaseURL).list({
+            identifier: POP_CHARACTERISTICS_PARAM,
+            locationId: currentLocId,
+            resolve: true,
+            serverVersion: 0,
+          })
+        : undefined,
     {
       onError: () => sendErrorNotification('ERROR OCCURRED'),
       select: (res: Setting[]) => res,
@@ -89,43 +106,25 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                       overlay={
                         <Menu className="menu">
                           <Menu.Item
-                            onClick={() => {
-                              console.log('row??', row);
-                              const payload = { ...row, value: 'true', locationId: currentLocId };
-                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
-                                .update(payload)
-                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
-                                .then(() => {
-                                  queryClient
-                                    .invalidateQueries([['settings', currentLocId]])
-                                    .catch(() => sendErrorNotification('Cant Invalidate'));
-
-                                  sendSuccessNotification('sucessfully Updated');
-                                });
+                            onClick={async () => {
+                              await updateSettings(row, currentLocId, true);
                             }}
                           >
                             Yes
                           </Menu.Item>
                           <Menu.Item
-                            onClick={() => {
-                              const payload = { ...row, value: 'true', locationId: currentLocId };
-                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
-                                .update(payload)
-                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
-                                .then(() => {
-                                  queryClient
-                                    .invalidateQueries([['settings', currentLocId]])
-                                    .catch(() => sendErrorNotification('Cant Invalidate'));
-
-                                  sendSuccessNotification('sucessfully Updated');
-                                });
+                            onClick={async () => {
+                              await updateSettings(row, currentLocId, false);
                             }}
                           >
                             No
                           </Menu.Item>
                           <Menu.Item
-                            onClick={() => {
-                              new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL)
+                            onClick={async () => {
+                              await new OpenSRPService(
+                                `settings/${row.settingMetadataId}`,
+                                v2BaseURL
+                              )
                                 .delete()
                                 .catch(() => sendErrorNotification('ERROR OCCURRED'))
                                 .then(() => {
@@ -138,10 +137,6 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                             }}
                           >
                             Inherit
-                          </Menu.Item>
-                          <Menu.Item onClick={() => console.log(row)}>Log Row</Menu.Item>
-                          <Menu.Item onClick={() => console.log(currentLocId)}>
-                            Log currentLocId
                           </Menu.Item>
                         </Menu>
                       }
