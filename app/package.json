@@ -33,16 +33,10 @@
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",
-<<<<<<< HEAD
     "@opensrp/fhir-team-management": "file:../packages/fhir-team-management",
-    "@opensrp/team-assignment": "^0.0.5",
-    "@opensrp/team-management": "^0.0.8",
-    "@opensrp/user-management": "^0.1.18",
-=======
     "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
     "@opensrp/user-management": "^0.1.19",
->>>>>>> Publish
     "@sentry/react": "^5.27.4",
     "antd": "^4.6.3",
     "bootstrap": "^4.5.2",
