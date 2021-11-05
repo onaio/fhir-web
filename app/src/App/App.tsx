@@ -764,7 +764,7 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              activeRoles={activeRoles.SERVER_SETTINGS && activeRoles.SERVER_SETTINGS.split(',')}
               path={URL_SERVER_SETTINGS}
               {...serverSettingsProps}
               component={LocationSettingsView}
