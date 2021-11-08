@@ -54,4 +54,6 @@ keys = [
     "react/app/opensrp/roles",
     "react/app/disable/team/member/reassignment",
     "react/app/pagination/size",
+    "react/app/enable/server/settings",
+    "react/app/opensrp/api/v2/base/url",
 ]
