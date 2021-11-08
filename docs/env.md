@@ -256,3 +256,9 @@ Below is a list of currently supported environment variables:
   - Enables the server settings module
   - **Optional**(_string_)
   - default: `"false"`
+
+- **REACT_APP_OPENSRP_API_V2_BASE_URL**
+
+  - Opensrp server V2 base URL
+  - **Required**
+  - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
