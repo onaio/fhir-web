@@ -3,6 +3,7 @@ import { Table as AntTable } from 'antd';
 import { TableProps as AntTableProps } from 'antd/lib/table';
 import {
   ColumnType,
+  FilterValue,
   SorterResult,
   TableCurrentDataSource,
   TablePaginationConfig,
@@ -109,7 +110,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
    */
   function onChange(
     pagination: TablePaginationConfig,
-    filters: Record<string, (string | number)[] | null>,
+    filters: Record<string, FilterValue | null>,
     sorter: SorterResult<T> | SorterResult<T>[],
     extra: TableCurrentDataSource<T>
   ) {
