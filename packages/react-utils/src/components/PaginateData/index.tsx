@@ -8,12 +8,21 @@ import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 export type PaginatedData<T> = { data: T; total?: number };
 export type DataDictionary<T> = Dictionary<PaginatedData<T>>;
 
-export interface PaginateData<T, resp = T[]> {
+export interface PaginateData<T, resp = T[], Error = unknown> {
   onSuccess?: (response: PaginatedData<resp>) => void;
-  onError?: (error: unknown) => void;
+  onError?: (error: Error) => void;
   onSelect?: (response: resp) => T[];
   queryFn: (currentPage: number, pageSize: number, queryString?: string) => Promise<resp> | resp;
-  queryOptions?: UseInfiniteQueryOptions<PaginatedData<resp>>;
+  queryOptions?: Omit<
+    UseInfiniteQueryOptions<
+      PaginatedData<resp>,
+      Error,
+      PaginatedData<resp>,
+      PaginatedData<resp>,
+      (string | number | Dictionary | undefined)[]
+    >,
+    'queryKey' | 'queryFn' | 'onSelect'
+  >;
   queryid: string;
   currentPage?: number;
   pageSize?: number;
