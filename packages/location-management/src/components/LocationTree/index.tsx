@@ -171,10 +171,6 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     generateFilterData(data);
   }, [data, generateFilterData]);
 
-  if (!data.length) {
-    return null;
-  }
-
   // se we want to support a usecase where a node is selected but can be collapsed
   return (
     <div>

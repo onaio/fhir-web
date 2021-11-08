@@ -110,6 +110,7 @@ describe('routes', () => {
     envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
     envModule.ENABLE_PRODUCT_CATALOGUE = true;
     envModule.ENABLE_PLANS = true;
+    envModule.ENABLE_SERVER_SETTINGS = true;
     envModule.ENABLE_CARD_SUPPORT = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
@@ -120,6 +121,7 @@ describe('routes', () => {
       TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
       PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
+      SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
     const routes = getRoutes(
