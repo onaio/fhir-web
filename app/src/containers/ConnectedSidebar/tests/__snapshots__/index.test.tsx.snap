@@ -34,14 +34,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/server-settings"
-      >
-        Server Settings
-      </Link>
-    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -215,14 +207,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/server-settings"
-      >
-        Server Settings
-      </Link>
-    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -267,16 +251,7 @@ Object {
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
           title="Administration"
-        >
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/admin/server-settings"
-            >
-              Server Settings
-            </Link>
-          </MenuItem>
-        </SubMenu>
+        />
       </Menu>
     </div>,
     null,
@@ -325,14 +300,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/server-settings"
-      >
-        Server Settings
-      </Link>
-    </MenuItem>
   </SubMenu>,
 ]
 `;
