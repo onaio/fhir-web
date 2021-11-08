@@ -5,7 +5,7 @@ import { Table } from '../Table';
 import { locationSettings, tree } from './fixtures';
 import { Setting } from '../../../ducks/settings';
 
-describe('activate mission', () => {
+describe('Settings table view', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Table
