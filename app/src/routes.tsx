@@ -200,6 +200,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
           url: CATALOGUE_LIST_VIEW_URL,
         },
+        {
+          title: 'Questionnaire',
+          key: 'fhir-questionnaire',
+          enabled: true, // roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
+          url: '/quest',
+        },
 
         {
           title: langObj.FORM_CONFIGURATION,

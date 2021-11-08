@@ -1,0 +1,53 @@
+{
+  "name": "@opensrp/fhir-questionnaire",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "fhir-questionnaire"
+  },
+  "scripts": {
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "peerDependencies": {
+    "react": "^16.18.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "@helsenorge/core-utils": "^21.3.0-prerelease",
+    "@helsenorge/designsystem-react": ">=1.0.0-beta70",
+    "@helsenorge/skjemautfyller": "^7.11.0-prerelease2",
+    "@helsenorge/toolkit": "^21.3.0-prerelease",
+    "dompurify": "^2.0.8",
+    "fhirpath": "^2.7.3",
+    "marked": "^0.7.0",
+    "tabbable": "^3.1.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.0.0"
+  }
+}
