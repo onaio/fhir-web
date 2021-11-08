@@ -19,9 +19,15 @@ export const Table: React.FC<Props> = (props: Props) => {
   const { data: Settings, tree, actioncolumn } = props;
 
   const data = Settings.map((setting) => {
-    return {
+    const settingCopy = {
       ...setting,
-      key: setting.settingMetadataId,
+      identifier: setting.settingIdentifier,
+      _id: setting.settingMetadataId,
+      settingsId: setting.documentId,
+    };
+
+    return {
+      ...settingCopy,
       inheritedFrom: setting.inheritedFrom?.trim() ?? '',
     };
   });
@@ -31,7 +37,7 @@ export const Table: React.FC<Props> = (props: Props) => {
       {
         title: 'Name',
         dataIndex: 'label',
-        key: `productName`,
+        key: `label`,
         defaultSortOrder: 'descend',
         width: '25%',
         sorter: (rec1, rec2) => (rec1.label > rec2.label ? -1 : rec1.label < rec2.label ? 1 : 0),
