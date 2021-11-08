@@ -99,7 +99,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
     searchquery?: string
   ): Promise<KeycloakUser[]> {
     let filterParams: Dictionary = { first: page * pageSize - pageSize, max: pageSize };
-    if (searchquery) filterParams = { search: searchParam };
+    if (searchquery) filterParams = { ...filterParams, search: searchParam };
     const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
     const keycloakUsers: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
     fetchKeycloakUsersCreator(keycloakUsers, true);
@@ -204,14 +204,16 @@ const UserList = (props: UserListTypes): JSX.Element => {
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
               queryid="Users"
-              total={(data) => {
-                if (isSearchActive) return data.length;
-
+              total={() => {
                 const usersCountService = new serviceClass(
                   `${KEYCLOAK_URL_USERS_COUNT}`,
                   keycloakBaseURL
                 );
-                return usersCountService.list();
+
+                let filterParams: Dictionary | undefined = undefined;
+                if (isSearchActive) filterParams = { search: searchParam };
+
+                return usersCountService.list(filterParams);
               }}
             >
               {(tableProps) => (
