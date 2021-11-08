@@ -75,7 +75,7 @@ describe('activate mission', () => {
     expect(wrapper.find('Tree').at(0).text()).toMatchInlineSnapshot(`"Uganda"`);
     expect(wrapper.find('Table')).toBeTruthy();
     expect(wrapper.find('Table').at(0).text()).toMatchInlineSnapshot(
-      `"NameDescriptionSettingInherited fromActionsAnaemia prevalence 20% or lowerThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.YesAnaemia prevalence 40% or higherThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 40% or higher.No-HIV incidence greater than 3 per 100 person-years in the absence of PrEPWomen in the population have a substantial risk of HIV infection. Substantial risk of HIV infection is provisionally defined as HIV incidence greater than 3 per 100 person–years in the absence of pre-exposure prophylaxis (PrEP).No-HIV prevalence 5% or higherThe HIV prevalence in pregnant women in the population is 5% or higher.No-Hep B prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis B surface antigen (HBsAg) seroprevalance in the general population is 2% or higher.No-Hep C prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis C virus (HCV) antibody seroprevalence in the general population is 2% or higher. No-Low dietary calcium intakeWomen in the population are likely to have low dietary calcium intake (less than 900 mg of calcium per day).Yes-Malaria-endemic settingThis is a malaria-endemic setting.Yes-National Hep B ANC routine screening program establishedThere is a national Hepatitis B ANC routine screening program in place.Yes-Soil-transmitted helminth infection prevalence 20% or higherThe percentage of individuals in the general population infected with at least one species of soil-transmitted helminth is 20% or higher.No-12"`
+      `"NameDescriptionsettingsInherited fromActionsAnaemia prevalence 20% or lowerThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.YesAnaemia prevalence 40% or higherThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 40% or higher.No-HIV incidence greater than 3 per 100 person-years in the absence of PrEPWomen in the population have a substantial risk of HIV infection. Substantial risk of HIV infection is provisionally defined as HIV incidence greater than 3 per 100 person–years in the absence of pre-exposure prophylaxis (PrEP).No-HIV prevalence 5% or higherThe HIV prevalence in pregnant women in the population is 5% or higher.No-Hep B prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis B surface antigen (HBsAg) seroprevalance in the general population is 2% or higher.No-Hep C prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis C virus (HCV) antibody seroprevalence in the general population is 2% or higher. No-Low dietary calcium intakeWomen in the population are likely to have low dietary calcium intake (less than 900 mg of calcium per day).Yes-Malaria-endemic settingThis is a malaria-endemic setting.Yes-National Hep B ANC routine screening program establishedThere is a national Hepatitis B ANC routine screening program in place.Yes-Soil-transmitted helminth infection prevalence 20% or higherThe percentage of individuals in the general population infected with at least one species of soil-transmitted helminth is 20% or higher.No-12"`
     );
     wrapper.unmount();
   });
@@ -118,14 +118,14 @@ describe('activate mission', () => {
     wrapper.update();
 
     const payload = {
-      key: '5',
+      key: 'pop_anaemia_20',
       value: 'true',
       label: 'Anaemia prevalence 20% or lower',
       inheritedFrom: 'Test',
       description:
         'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
       uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '2',
+      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
       settingIdentifier: 'population_characteristics',
       settingMetadataId: '5',
       locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
@@ -134,6 +134,8 @@ describe('activate mission', () => {
       documentId: '0f851168-044d-4cff-9f81-689a567ade65',
       serverVersion: 2,
       type: 'Setting',
+      identifier: 'population_characteristics',
+      _id: '5',
     };
 
     expect(fetch.mock.calls).toEqual([
@@ -215,14 +217,14 @@ describe('activate mission', () => {
     wrapper.update();
 
     const payload = {
-      key: '5',
+      key: 'pop_anaemia_20',
       value: 'false',
       label: 'Anaemia prevalence 20% or lower',
       inheritedFrom: 'Test',
       description:
         'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
       uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '2',
+      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
       settingIdentifier: 'population_characteristics',
       settingMetadataId: '5',
       locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
@@ -231,6 +233,8 @@ describe('activate mission', () => {
       documentId: '0f851168-044d-4cff-9f81-689a567ade65',
       serverVersion: 2,
       type: 'Setting',
+      identifier: 'population_characteristics',
+      _id: '5',
     };
 
     expect(fetch.mock.calls).toEqual([
@@ -429,6 +433,6 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith('ERROR OCCURRED');
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });
