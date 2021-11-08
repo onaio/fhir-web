@@ -175,6 +175,17 @@ describe('activate mission', () => {
           method: 'PUT',
         },
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
     wrapper.unmount();
   });
@@ -272,6 +283,17 @@ describe('activate mission', () => {
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
+        },
+      ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer sometoken',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
       ],
     ]);

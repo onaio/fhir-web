@@ -4,6 +4,7 @@ import { Table as AntTable } from 'antd';
 import { ParsedHierarchyNode, getHierarchyNodeFromArray } from '@opensrp/location-management';
 import { Setting } from '../../ducks/settings';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
+import lang from '../../lang';
 
 interface Props {
   data: Setting[];
@@ -35,7 +36,7 @@ export const Table: React.FC<Props> = (props: Props) => {
   const columns: ColumnsType<TableData> = useMemo(() => {
     const col: ColumnsType<TableData> = [
       {
-        title: 'Name',
+        title: lang.NAME,
         dataIndex: 'label',
         key: `label`,
         defaultSortOrder: 'descend',
@@ -43,19 +44,19 @@ export const Table: React.FC<Props> = (props: Props) => {
         sorter: (rec1, rec2) => (rec1.label > rec2.label ? -1 : rec1.label < rec2.label ? 1 : 0),
       },
       {
-        title: 'Description',
+        title: lang.DESCRIPTION,
         dataIndex: 'description',
         width: '35%',
         key: `description`,
       },
       {
-        title: 'Setting',
+        title: lang.SETTINGS,
         dataIndex: 'value',
         key: `value`,
         render: (value) => (value === 'true' ? 'Yes' : 'No'),
       },
       {
-        title: 'Inherited from',
+        title: lang.INHERITED_FROM,
         dataIndex: 'inheritedFrom',
         width: '20%',
         key: `inheritedFrom`,

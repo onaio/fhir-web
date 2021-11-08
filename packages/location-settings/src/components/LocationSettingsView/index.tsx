@@ -15,6 +15,7 @@ import { Setting } from '../../ducks/settings';
 import { POP_CHARACTERISTICS_PARAM, SECURITY_AUTHENTICATE_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
 import { Table } from './Table';
+import lang from '../../lang';
 
 export interface Props {
   baseURL: string;
@@ -31,16 +32,16 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
 
   const updateSettings = async (row: Setting, currentLocId: string, valueIsYes: boolean) => {
     const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
-    const serve = new OpenSRPService(`settings/${row.settingMetadataId}`, v2BaseURL);
+    const serve = new OpenSRPService(`${lang.SETTINGS}/${row.settingMetadataId}`, v2BaseURL);
     await serve
       .update(payload)
-      .catch(() => sendErrorNotification('ERROR OCCURRED'))
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
       .then(() => {
         queryClient
-          .invalidateQueries(['settings', currentLocId])
-          .catch(() => sendErrorNotification('Cant Invalidate'));
+          .invalidateQueries([lang.SETTNGS, currentLocId])
+          .catch(() => sendErrorNotification(lang.INVALIDATE_ERROR));
 
-        sendSuccessNotification('sucessfully Updated');
+        sendSuccessNotification(lang.SUCCESSFULLY_UPDATED);
       });
   };
 
@@ -48,7 +49,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
-      onError: () => sendErrorNotification('ERROR OCCURRED'),
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
     }
   );
@@ -63,10 +64,10 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   }, [userLocSettings.data, setTreeData, setCurrentLocId]);
 
   const locationSettings = useQuery(
-    ['settings', currentLocId],
+    [lang.SETTNGS, currentLocId],
     async () =>
       currentLocId
-        ? await new OpenSRPService('settings', v2BaseURL).list({
+        ? await new OpenSRPService(lang.SETTINGS, v2BaseURL).list({
             identifier: POP_CHARACTERISTICS_PARAM,
             locationId: currentLocId,
             resolve: true,
@@ -74,7 +75,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
           })
         : undefined,
     {
-      onError: () => sendErrorNotification('ERROR OCCURRED'),
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res: Setting[]) => res,
     }
   );
@@ -97,7 +98,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
               data={locationSettings.data ?? []}
               tree={treeData}
               actioncolumn={{
-                title: 'Actions',
+                title: lang.ACTIONS,
                 key: `actions`,
                 // eslint-disable-next-line react/display-name
                 render: (_, row: Setting) => {
@@ -122,21 +123,21 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                           <Menu.Item
                             onClick={async () => {
                               await new OpenSRPService(
-                                `settings/${row.settingMetadataId}`,
+                                `${lang.SETTINGS}/${row.settingMetadataId}`,
                                 v2BaseURL
                               )
                                 .delete()
-                                .catch(() => sendErrorNotification('ERROR OCCURRED'))
+                                .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
                                 .then(() => {
                                   queryClient
-                                    .invalidateQueries([['settings', currentLocId]])
-                                    .catch(() => sendErrorNotification('Cant Invalidate'));
+                                    .invalidateQueries(['settings', currentLocId])
+                                    .catch(() => sendErrorNotification(lang.INVALIDATE_ERROR));
 
-                                  sendSuccessNotification('sucessfully Updated');
+                                  sendSuccessNotification(lang.SUCCESSFULLY_UPDATED);
                                 });
                             }}
                           >
-                            Inherit
+                            lang.INHERIT
                           </Menu.Item>
                         </Menu>
                       }
