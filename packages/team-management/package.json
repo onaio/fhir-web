@@ -40,7 +40,6 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
-    "@opensrp/team-assignment": "^0.0.6",
     "i18next": "^19.8.4",
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"

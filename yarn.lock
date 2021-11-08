@@ -2825,7 +2825,7 @@
   dependencies:
     "@opensrp/notifications" "^0.0.5"
     "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.11"
+    "@opensrp/react-utils" "^0.0.12"
     uuid "^8.3.1"
 
 "@opensrp/notifications@^0.0.4":
@@ -2833,21 +2833,6 @@
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
   integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
   dependencies:
-    antd "^4.6.3"
-
-"@opensrp/react-utils@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.11.tgz#b506df2ecd83493d024f2a540875bf1985c16812"
-  integrity sha512-oYUL7j2TUJQPd4yOFZtUZWJzCXcqmPeaxbHKbMC1LyMvvFhhu2AjE/yhaDMccf1L4Mje2VGQOtA+z1jsaFY8DA==
-  dependencies:
-    "@onaio/connected-private-route" "^0.0.11"
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/server-service" "^0.0.17"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.9":
