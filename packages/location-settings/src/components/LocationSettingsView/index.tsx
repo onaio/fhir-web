@@ -37,7 +37,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
       .catch(() => sendErrorNotification('ERROR OCCURRED'))
       .then(() => {
         queryClient
-          .invalidateQueries([['settings', currentLocId]])
+          .invalidateQueries(['settings', currentLocId])
           .catch(() => sendErrorNotification('Cant Invalidate'));
 
         sendSuccessNotification('sucessfully Updated');
