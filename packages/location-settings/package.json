@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -20,7 +21,8 @@
     "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
   },
   "jest": {
     "automock": false,
@@ -36,9 +38,12 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/location-management": "^0.0.15",
     "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
-    "react-helmet": "^6.1.0"
+    "i18next-parser": "^3.5.0",
+    "react-helmet": "^6.1.0",
+    "react-i18next": "^11.8.10"
   },
   "peerDependencies": {
     "react-query": "^3.15.1",
