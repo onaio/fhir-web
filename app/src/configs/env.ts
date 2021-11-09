@@ -65,6 +65,8 @@ export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
 
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
+
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
   'REACT_APP_DEFAULT_PLAN_ID',
