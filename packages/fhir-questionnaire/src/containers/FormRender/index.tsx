@@ -2,10 +2,14 @@
 import React from 'react';
 import rootReducer from '@helsenorge/skjemautfyller/reducers';
 import { SkjemautfyllerContainer } from '@helsenorge/skjemautfyller/components';
-import sampleQuestionnaire from './1082.json';
 import { Store, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { useParams } from 'react-router';
+import { questionnaireResourceType } from '../../constants';
+import { FHIRServiceClass } from '@opensrp/react-utils';
+import { Spin } from 'antd';
+import { useQuery } from 'react-query';
 
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -19,7 +23,20 @@ const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
  *  - validation errors are not intuitive
  */
 
-export const QuestionnaireForm = () => {
+export const QuestionnaireForm = (props: any) => {
+  const { id } = useParams<{ id: string }>();
+  const { fhirBaseURL } = props;
+
+  const { isLoading, data } = useQuery(
+    [questionnaireResourceType, id],
+    () => new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).read(id),
+    { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
+  );
+
+  if (isLoading) {
+    return <Spin />;
+  }
+
   const onSubmit = (qr: unknown) => {
     // eslint-disable-next-line no-console
     console.log(JSON.stringify(qr));
@@ -30,7 +47,7 @@ export const QuestionnaireForm = () => {
       <Provider store={store} key="1">
         <SkjemautfyllerContainer
           store={store}
-          questionnaire={sampleQuestionnaire}
+          questionnaire={data}
           onSubmit={onSubmit}
           onCancel={onCancel}
           resources={{
