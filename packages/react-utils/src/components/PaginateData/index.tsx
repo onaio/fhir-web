@@ -25,7 +25,7 @@ export interface PaginateData<Data, Response = Data[], Error = unknown> {
       PaginatedData<Response>,
       (string | number | Dictionary | undefined)[]
     >,
-    'queryKey' | 'queryFn' | 'onSelect'
+    'queryKey' | 'queryFn' | 'onSuccess' | 'onError'
   >;
   queryid: string;
   currentPage?: number;
