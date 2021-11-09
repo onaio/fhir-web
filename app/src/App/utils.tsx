@@ -21,6 +21,7 @@ import {
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
@@ -32,6 +33,7 @@ import {
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {
@@ -39,6 +41,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamManagementProps = {
+  ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
   paginationSize: PAGINATION_SIZE,
 };
