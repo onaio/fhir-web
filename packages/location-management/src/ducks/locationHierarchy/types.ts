@@ -14,6 +14,7 @@ export interface HierarchyNode<TChild> {
   node: {
     locationId: string;
     name: string;
+    tags?: string[];
     parentLocation?: { locationId: string; voided: boolean };
     attributes: HierarchyNodeAttributes;
     voided: boolean;

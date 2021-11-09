@@ -36,7 +36,7 @@
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
+    "@opensrp/react-utils": "^0.0.12",
     "@smile-cdr/fhirts": "^1.2.5",
     "fhirclient": "^2.4.0",
     "i18next": "^19.8.4",
