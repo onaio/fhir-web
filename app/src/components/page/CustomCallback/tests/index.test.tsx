@@ -13,6 +13,7 @@ import { CallbackComponent } from '../../../../App/App';
 
 jest.mock('../../../../configs/env', () => ({
   ENABLE_OPENSRP_OAUTH: true,
+  OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
   DOMAIN_NAME: 'http://localhost:3000',
   OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
 }));

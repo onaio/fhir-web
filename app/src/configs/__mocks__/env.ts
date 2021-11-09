@@ -17,6 +17,7 @@ export const OPENSRP_ROLES = {
   TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
   PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
   FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
+  SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
 };
 export const MAIN_LOGO_SRC =
   'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png';
