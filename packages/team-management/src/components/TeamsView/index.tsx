@@ -26,9 +26,18 @@ import './TeamsView.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
-import { RawAssignment } from '@opensrp/team-assignment';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import lang, { Lang } from '../../lang';
+
+// TODO - duplicate Raw assignment type from @opensrp/team-assignment - issue https://github.com/opensrp/web/issues/869
+/** the raw assignment object as received from openSRP API */
+export interface RawAssignment {
+  jurisdictionId: string;
+  organizationId: string;
+  planId: string;
+  fromDate: number;
+  toDate: number;
+}
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);

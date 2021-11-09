@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/location-management",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Location management components for opensrp web",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -40,7 +40,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
+    "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
     "cycle": "^1.0.3",
