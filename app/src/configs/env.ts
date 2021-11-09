@@ -16,6 +16,7 @@ const defaultRoles = {
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -64,6 +65,8 @@ export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
+
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
@@ -115,6 +118,11 @@ export const KEYCLOAK_LOGOUT_URL = setEnv(
 export const OPENSRP_API_BASE_URL = setEnv(
   'REACT_APP_OPENSRP_API_BASE_URL',
   'https://opensrp-stage.smartregister.org/opensrp/rest/'
+);
+
+export const OPENSRP_API_V2_BASE_URL = setEnv(
+  'REACT_APP_OPENSRP_API_V2_BASE_URL',
+  'https://opensrp-stage.smartregister.org/opensrp/rest/v2/'
 );
 
 export const KEYCLOAK_API_BASE_URL = setEnv(
@@ -187,3 +195,5 @@ export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000))
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
 
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
+
+export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';

@@ -15,6 +15,7 @@ export const URL_USER_GROUPS = `${URL_USER}/groups`;
 export const URL_USER_ROLES = `${URL_USER}/roles`;
 export const URL_USER_EDIT = `${URL_USER}/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
+export const URL_SERVER_SETTINGS = `${URL_ADMIN}/server-settings`;
 export const URL_TEAM_ASSIGNMENT = `${URL_TEAMS}/team-assignment`;
 export const URL_TEAMS_EDIT = `${URL_TEAMS}/edit`;
 export const URL_TEAMS_ADD = `${URL_TEAMS}/add`;
