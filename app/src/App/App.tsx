@@ -759,10 +759,10 @@ const App: React.FC = () => {
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
             />
-            <PublicComponent
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={[]}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
               path="/quest"
               component={QuestionnaireForm}
             />
