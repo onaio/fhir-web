@@ -111,14 +111,14 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                               await updateSettings(row, currentLocId, true);
                             }}
                           >
-                            Yes
+                            {lang.YES}
                           </Menu.Item>
                           <Menu.Item
                             onClick={async () => {
                               await updateSettings(row, currentLocId, false);
                             }}
                           >
-                            No
+                            {lang.NO}
                           </Menu.Item>
                           <Menu.Item
                             onClick={async () => {
@@ -130,14 +130,14 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
                                 .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
                                 .then(() => {
                                   queryClient
-                                    .invalidateQueries(['settings', currentLocId])
+                                    .invalidateQueries([lang.SETTINGS, currentLocId])
                                     .catch(() => sendErrorNotification(lang.INVALIDATE_ERROR));
 
                                   sendSuccessNotification(lang.SUCCESSFULLY_UPDATED);
                                 });
                             }}
                           >
-                            lang.INHERIT
+                            {lang.INHERIT}
                           </Menu.Item>
                         </Menu>
                       }
