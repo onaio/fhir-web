@@ -12,6 +12,8 @@ function fill() {
   lang.INVALIDATE_ERROR = i18n.t('Cant Invalidate', { ns: namespace });
   lang.SUCCESSFULLY_UPDATED = i18n.t('Successfully Updated', { ns: namespace });
   lang.ACTIONS = i18n.t('Actions', { ns: namespace });
+  lang.YES = i18n.t('Yes', { ns: namespace });
+  lang.NO = i18n.t('No', { ns: namespace });
   lang.NAME = i18n.t('Name', { ns: namespace });
   lang.DESCRIPTION = i18n.t('Description', { ns: namespace });
   lang.SETTING = i18n.t('Setting', { ns: namespace });
