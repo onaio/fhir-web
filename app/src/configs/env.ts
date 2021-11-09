@@ -16,6 +16,7 @@ const defaultRoles = {
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -119,6 +120,11 @@ export const OPENSRP_API_BASE_URL = setEnv(
   'https://opensrp-stage.smartregister.org/opensrp/rest/'
 );
 
+export const OPENSRP_API_V2_BASE_URL = setEnv(
+  'REACT_APP_OPENSRP_API_V2_BASE_URL',
+  'https://opensrp-stage.smartregister.org/opensrp/rest/v2/'
+);
+
 export const KEYCLOAK_API_BASE_URL = setEnv(
   'REACT_APP_KEYCLOAK_API_BASE_URL',
   'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage'
@@ -191,3 +197,5 @@ export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000))
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
 
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
+
+export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';

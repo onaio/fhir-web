@@ -35,6 +35,7 @@ export function lang(t: TFunction) {
     DRAFT: t(`Draft`, { ns: namespace }),
     COMPLETE: t(`Complete`, { ns: namespace }),
     RETIRED: t(`Retired`, { ns: namespace }),
+    SERVER_SETTINGS: t(`Server Settings`, { ns: namespace }),
     LOCATION_MANAGEMENT: t(`Location Management`, { ns: namespace }),
     USER_MANAGEMENT: t(`User Management`, { ns: namespace }),
     ADMINISTRATION: t(`Administration`, { ns: namespace }),
