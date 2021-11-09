@@ -206,7 +206,18 @@ describe('components/UserList', () => {
     expect(history.location.search).toEqual('?searchQuery=test');
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://some-keycloak.server/auth/admin/realms/some-realm/users?search=opensrp',
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20&search=opensrp',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users/count?search=opensrp',
         {
           headers: {
             accept: 'application/json',
