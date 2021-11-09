@@ -23,6 +23,7 @@ import {
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
   ENABLE_FHIR_CARE_TEAM,
+  ENABLE_SERVER_SETTINGS,
 } from './configs/env';
 
 import {
@@ -38,6 +39,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_SERVER_SETTINGS,
   URL_FHIR_CARE_TEAM,
   URL_ADMIN,
 } from './constants';
@@ -233,6 +235,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               url: URL_JSON_VALIDATOR_LIST,
             },
           ],
+        },
+        {
+          title: langObj.SERVER_SETTINGS,
+          key: 'server-settings',
+          enabled:
+            ENABLE_SERVER_SETTINGS &&
+            roles &&
+            activeRoles.SERVER_SETTINGS &&
+            isAuthorized(roles, activeRoles.SERVER_SETTINGS.split(',')),
+          url: URL_SERVER_SETTINGS,
         },
       ],
     },
