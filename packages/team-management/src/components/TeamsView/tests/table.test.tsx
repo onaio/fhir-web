@@ -47,7 +47,7 @@ describe('components/TeamsView/table', () => {
               setPractitionersList={() => jest.fn()}
               setDetail={() => jest.fn()}
               opensrpBaseURL={opensrpBaseURL}
-              fetchTeams={() => Promise.resolve([org1, org3])}
+              fetchOrgs={() => Promise.resolve([org1, org3])}
               searchParam=""
               setAssignedLocations={() => jest.fn()}
             />
@@ -69,7 +69,7 @@ describe('components/TeamsView/table', () => {
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
             opensrpBaseURL={opensrpBaseURL}
-            fetchTeams={() => Promise.resolve([org1, org3])}
+            fetchOrgs={() => Promise.resolve([org1, org3])}
             searchParam=""
             setAssignedLocations={() => jest.fn()}
             onViewDetails={onViewDetails}
@@ -104,7 +104,7 @@ describe('components/TeamsView/table', () => {
             setPractitionersList={() => jest.fn()}
             setDetail={() => jest.fn()}
             opensrpBaseURL={opensrpBaseURL}
-            fetchTeams={() => Promise.resolve([org1, org3])}
+            fetchOrgs={() => Promise.resolve([org1, org3])}
             searchParam=""
             setAssignedLocations={() => jest.fn()}
           />

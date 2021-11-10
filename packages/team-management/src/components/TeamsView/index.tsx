@@ -27,6 +27,7 @@ import {
   URL_ADD_TEAM,
   ASSIGNED_LOCATIONS_AND_PLANS,
   SEARCH_QUERY_PARAM,
+  TEAMS_SEARCH,
 } from '../../constants';
 import Table from './Table';
 import './TeamsView.css';
@@ -161,7 +162,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
    * @param {string|undefined} searchquery - searchquery generated from Paginated data
    * @returns {Promise<Organization[]>} Return data Fetched from server
    */
-  async function fetchTeams(
+  async function fetchOrgs(
     page: number,
     pageSize: number,
     searchquery?: string
@@ -169,7 +170,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
     let filterParams: Dictionary = { pageNumber: page, pageSize: pageSize };
     if (searchquery) filterParams = { name: searchParam };
     const teamsService = new OpenSRPService(
-      searchquery ? 'organization/search' : 'organization',
+      searchquery ? TEAMS_SEARCH : 'organization',
       opensrpBaseURL
     );
     const response: Organization[] = await teamsService.list(filterParams as Dictionary);
@@ -204,7 +205,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
           <div className="bg-white">
             <Table
               searchParam={searchParam}
-              fetchTeams={fetchTeams}
+              fetchOrgs={fetchOrgs}
               onViewDetails={populateTeamDetails}
               opensrpBaseURL={opensrpBaseURL}
               setPractitionersList={setPractitionersList}
