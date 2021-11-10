@@ -18,7 +18,7 @@
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/ant-icons": "^0.0.1",
-    "@opensrp/fhir-user-management": "file:../packages/fhir-keycloak-user-management",
+    "@opensrp/fhir-user-management": "^0.0.1",
     "@opensrp/card-support": "^0.0.9",
     "@opensrp/error-boundary-fallback": "^0.0.7",
     "@opensrp/form-config-antd": "^0.0.4",
