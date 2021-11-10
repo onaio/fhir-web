@@ -17,6 +17,7 @@ import {
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
   OPENSRP_API_BASE_URL,
+  OPENSRP_API_V2_BASE_URL,
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
@@ -67,6 +68,12 @@ export const usersListProps = {
 };
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const serverSettingsProps = {
+  baseURL: OPENSRP_API_BASE_URL.replace('/rest', ''),
+  restBaseURL: OPENSRP_API_BASE_URL,
+  v2BaseURL: OPENSRP_API_V2_BASE_URL,
 };
 
 export const jsonValidatorListProps = {
