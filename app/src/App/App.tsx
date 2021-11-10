@@ -44,6 +44,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_SERVER_SETTINGS,
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
@@ -107,6 +108,7 @@ import {
   ReleaseList,
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config-antd';
+import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
@@ -142,6 +144,7 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
+  serverSettingsProps,
   locationUnitProps,
   usersListProps,
   createEditUserProps,
@@ -759,6 +762,14 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.SERVER_SETTINGS && activeRoles.SERVER_SETTINGS.split(',')}
+              path={URL_SERVER_SETTINGS}
+              {...serverSettingsProps}
+              component={LocationSettingsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
