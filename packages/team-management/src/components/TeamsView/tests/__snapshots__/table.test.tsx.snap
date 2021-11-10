@@ -23,7 +23,7 @@ exports[`components/TeamsView/table renders without crashing: Table 1`] = `
   }
 >
   <Table
-    fetchTeams={[Function]}
+    fetchOrgs={[Function]}
     opensrpBaseURL="https://some.opensrp.url/"
     searchParam=""
     setAssignedLocations={[Function]}

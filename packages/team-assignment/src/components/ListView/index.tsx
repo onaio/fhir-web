@@ -38,6 +38,7 @@ import {
 import {
   ASSIGNMENTS_ENDPOINT,
   LOCATION_HIERARCHY_ENDPOINT,
+  ORGANIZATION_COUNT_ENDPOINT,
   ORGANIZATION_ENDPOINT,
   PLANS_ENDPOINT,
   POST_ASSIGNMENTS_ENDPOINT,
@@ -115,24 +116,24 @@ async function fetchOrgs(
  * @param pageSize - number of orgs in each page
  * @returns {Promise<Organization[]>} - an array of all orgs in a paginated endpoint
  */
-async function fetchTeamsRecursively(
+async function fetchOrgsRecursively(
   opensrpBaseURL: string,
   pageSize: number
 ): Promise<Organization[]> {
-  const serve = new OpenSRPService(`organization/count`, opensrpBaseURL);
+  const serve = new OpenSRPService(ORGANIZATION_COUNT_ENDPOINT, opensrpBaseURL);
   const teamsCount: number = await serve.list();
 
   // get the maximum possible page numbers
   const maxPageNo = Math.ceil(teamsCount / pageSize);
 
   // compose a promise array to resolve in parallel
-  const promises: Promise<Organization[]>[] = [];
+  const promises: (() => Promise<Organization[]>)[] = [];
   for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
-    promises.push(fetchOrgs(opensrpBaseURL, pageNumber, pageSize));
+    promises.push(() => fetchOrgs(opensrpBaseURL, pageNumber, pageSize));
   }
 
   // fetch orgs recursively according to page numbers
-  return Promise.all(promises)
+  return Promise.all(promises.map((prom) => prom()))
     .then((orgs: Organization[][]) => {
       // flatten 2D array - [[][]]
       const orgsArray = orgs.flat();
@@ -194,7 +195,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
       // fetch all organizations (pagination enabled)
-      const organizationsPromise = fetchTeamsRecursively(opensrpBaseURL, 1000)
+      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000)
         .then((orgs: Organization[]) => {
           dispatch(fetchOrganizationsAction(orgs));
         })
