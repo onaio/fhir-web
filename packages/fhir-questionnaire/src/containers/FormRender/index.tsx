@@ -19,8 +19,14 @@ const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
  * gotchas:
  *  - dependencies are actually peer dependencies, versions are left to trial and error
  *  - node-sass is left out.
+ *  - comes with its own redux-store arch
  * TODOs:
  *  - validation errors are not intuitive
+ *
+ * Issues:
+ * - some forms are not displayed, they just show submit and cancel buttons
+ *  - This function `getRootQuestionnaireResponseItemFromData` in skjemautfyller is passed stale formData parameter
+ *     bug with action creator.
  */
 
 export const QuestionnaireForm = (props: any) => {
