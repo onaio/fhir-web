@@ -15,8 +15,13 @@ export const PRACTITIONER_DEL = `${PRACTITIONER_ROLE}/deleteByPractitioner`;
 // Teams
 //
 export const TEAMS_GET = 'organization/';
+export const TEAMS_COUNT = 'organization/count';
 export const TEAMS_PUT = 'organization/';
 export const TEAMS_POST = 'organization';
+export const TEAMS_SEARCH = 'organization/search';
 export const TEAM_PRACTITIONERS = 'organization/practitioner/';
 
 export const ASSIGNED_LOCATIONS_AND_PLANS = 'assignedLocationsAndPlans/';
+
+// Query patams
+export const SEARCH_QUERY_PARAM = 'searchQuery';
