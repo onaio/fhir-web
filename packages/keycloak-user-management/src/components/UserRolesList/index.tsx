@@ -12,6 +12,7 @@ import {
   SearchForm,
   TableLayout,
   Column,
+  BrokenPage,
 } from '@opensrp/react-utils';
 import {
   reducerName as keycloakUserRolesReducerName,
@@ -51,6 +52,7 @@ const defaultProps = {
 export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   props: Props & RouteComponentProps
 ) => {
+  const [apiError, setApiError] = useState<boolean>(false);
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserRolesList = useSelector((state) =>
@@ -62,10 +64,15 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   useEffect(() => {
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch)
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setIsLoading(false));
     }
   });
+
+  if (apiError) return <BrokenPage />;
 
   if (isLoading) return <Spin size="large" />;
 

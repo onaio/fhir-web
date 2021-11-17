@@ -21,7 +21,7 @@ import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import lang from '../../lang';
-import { TableLayout } from '@opensrp/react-utils';
+import { TableLayout, BrokenPage } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
 
 /** Register reducer */
@@ -76,11 +76,17 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
   const [value, setValue] = useState('');
+  const [apiError, setApiError] = useState<boolean>(false);
   const [filterData, setfilterDataData] = useState<ManifestFilesTypes[] | null>(null);
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
   const title = formVersion ? `${lang.RELEASES}: ${formVersion}` : lang.JSON_VALIDATORS;
+
+  const onError = (err: string) => {
+    sendErrorNotification(err);
+    setApiError(true);
+  };
 
   useEffect(
     () => {
@@ -90,7 +96,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         fetchFiles,
         removeFiles,
         setLoading,
-        sendErrorNotification,
+        onError,
         formVersion,
         OPENSRP_FORM_METADATA_ENDPOINT,
         dispatch,
@@ -107,6 +113,8 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
       dispatch,
     ]
   );
+
+  if (apiError) return <BrokenPage />;
 
   if (loading) {
     return <Spin />;

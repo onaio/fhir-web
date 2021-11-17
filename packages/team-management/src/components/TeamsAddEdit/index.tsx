@@ -11,7 +11,7 @@ import {
   PRACTITIONER_ROLE,
   PRACTITIONER_COUNT,
 } from '../../constants';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
@@ -168,6 +168,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
   const [practitionersRole, setPractitionersRole] = useState<PractitionerPOST[] | null>(null);
+  const [apiError, setApiError] = useState<boolean>(false);
   const { opensrpBaseURL, disableTeamMemberReassignment, paginationSize } = props;
 
   useEffect(() => {
@@ -237,9 +238,14 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
           setPractitioners(filteredResponse);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+        .catch(() => {
+          setApiError(true);
+          sendErrorNotification(lang.ERROR_OCCURRED);
+        });
     }
   }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole]);
+
+  if (apiError) return <BrokenPage />;
 
   if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
 

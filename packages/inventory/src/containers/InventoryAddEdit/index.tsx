@@ -38,6 +38,7 @@ import {
 } from '../../ducks/inventory';
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { BrokenPage } from '@opensrp/react-utils';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -85,6 +86,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [apiError, setApiError] = React.useState<boolean>(false);
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
@@ -106,6 +108,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         })
         .catch((_: HTTPError) => {
           sendErrorNotification(lang.ERROR_GENERIC);
+          setApiError(true);
         })
         .finally(() => {
           setIsLoading(false);
@@ -126,16 +129,23 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       })
       .catch((_: HTTPError) => {
         sendErrorNotification(lang.ERROR_GENERIC);
+        setApiError(true);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onError = (err: string) => {
+    sendErrorNotification(err);
+    setApiError(true);
+  };
 
   useEffect(() => {
     fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: INVENTORY_DONORS }, setDonors);
     fetchSettings(
       openSRPBaseURL,
       { serverVersion: 0, identifier: INVENTORY_UNICEF_SECTIONS },
-      setUNICEFSections
+      setUNICEFSections,
+      onError
     ); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -157,6 +167,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         })
         .catch((_: HTTPError) => {
           sendErrorNotification(lang.ERROR_GENERIC);
+          setApiError(true);
         });
     }
   }, [
@@ -167,6 +178,8 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     openSRPBaseURL,
     fetchInventoriesCreator,
   ]);
+
+  if (apiError) return <BrokenPage />;
 
   if (isLoading) {
     return <Spin size="large" />;

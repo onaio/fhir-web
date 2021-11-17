@@ -23,6 +23,7 @@ import { UserGroupForm } from './Form';
 import { fetchAllRoles } from '../UserRolesList/utils';
 import { fetchRoleMappings, fetchSingleGroup } from './utils';
 import { KeycloakUserRole, makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
+import { BrokenPage } from '@opensrp/react-utils';
 
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
 
@@ -60,6 +61,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
 ) => {
   const { keycloakBaseURL } = props;
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [apiError, setApiError] = React.useState<boolean>(false);
   const [availableRoles, setAvailableRoles] = React.useState<KeycloakUserRole[]>([]);
   const [assignedRoles, setAssignedRoles] = React.useState<KeycloakUserRole[]>([]);
   const [effectiveRoles, setEffectiveRoles] = React.useState<KeycloakUserRole[]>([]);
@@ -105,11 +107,16 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         assignedRolesPromise,
         effectiveRolesPromise,
       ])
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues.id, props.location]);
+
+  if (apiError) return <BrokenPage />;
 
   if (isLoading) {
     return <Spin size="large" />;

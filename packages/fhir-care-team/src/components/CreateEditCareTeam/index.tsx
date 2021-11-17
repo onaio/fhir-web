@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -120,9 +120,12 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
       })) ?? [],
   };
 
+  if (fhirPractitioners.isError || singleCareTeam.isError || fhirGroups.isError)
+    return <BrokenPage />;
+
   if (
-    fhirPractitioners.isLoading ||
-    fhirGroups.isLoading ||
+    !fhirPractitioners.isSuccess ||
+    !fhirGroups.isSuccess ||
     (careTeamId && !buildInitialValues.id)
   ) {
     return <Spin size="large" />;

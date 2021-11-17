@@ -21,9 +21,10 @@ import { Button, Row, Col } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { Cell } from 'react-table';
 import { Link } from 'react-router-dom';
-import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import lang from '../../lang';
+import { Dictionary } from '@onaio/utils';
+import { BrokenPage } from '@opensrp/react-utils';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -90,6 +91,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   } = props;
 
   const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<boolean>(false);
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
   const [ifDoneHere, setIfDoneHere] = useState(false);
 
@@ -97,6 +99,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     if (customAlert) {
       customAlert(err, { type: 'error' });
     }
+    setApiError(true);
   };
 
   useEffect(() => {
@@ -196,6 +199,8 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     onChangeHandler,
     placeholder,
   };
+
+  if (apiError) return <BrokenPage />;
 
   if (LoadingComponent && loading) {
     return <div>{LoadingComponent}</div>;

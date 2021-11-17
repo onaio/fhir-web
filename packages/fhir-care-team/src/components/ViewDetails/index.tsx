@@ -27,7 +27,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
   const history = useHistory();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isSuccess, error } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
     queryFn: () =>
       careTeamId ? new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId) : undefined,
@@ -77,10 +77,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
           onClick={() => history.push(URL_CARE_TEAM)}
         />
       </div>
-      {isLoading ? (
+      {isSuccess ? (
         <Spin size="large" className="custom-ant-spin" />
       ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !isLoading && careTeamId && !data ? (
+      !isSuccess && careTeamId ? (
         <Resource404 />
       ) : (
         <Space direction="vertical">
