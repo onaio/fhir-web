@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SubmitButton, Form as AntForm, Input, Radio } from 'formik-antd';
 import { Button, Spin } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, BrokenPage } from '@opensrp/react-utils';
 import { Formik } from 'formik';
 import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
 import lang, { Lang } from '../../lang';
@@ -91,6 +91,7 @@ export const onSubmit = (
 
 export const Form: React.FC<Props> = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [apiError, setApiError] = useState<boolean>(true);
   const [initialValue, setInitialValue] = useState<FormField>({
     name: '',
     description: '',
@@ -113,7 +114,10 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+          .catch(() => {
+            setApiError(true);
+            sendErrorNotification(lang.ERROR_OCCURED);
+          });
       } else setIsLoading(false);
     }
   }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
@@ -130,6 +134,9 @@ export const Form: React.FC<Props> = (props: Props) => {
         size={'large'}
       />
     );
+
+  if (apiError) return <BrokenPage />;
+
   return (
     <Formik
       initialValues={initialValue}

@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import reducer, {
   fetchLocationUnitGroups,
@@ -29,6 +29,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const dispatch = useDispatch();
   const [detail, setDetail] = useState<LocationUnitGroupDetailProps | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [apiError, setApiError] = useState<boolean>(false);
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<LocationUnitGroup[] | null>(null);
   const { opensrpBaseURL } = props;
@@ -42,7 +43,10 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        });
     }
   });
 
@@ -56,6 +60,8 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
     );
     setfilterData(filteredData as LocationUnitGroup[]);
   };
+
+  if (apiError) return <BrokenPage />;
 
   if (isLoading)
     return (

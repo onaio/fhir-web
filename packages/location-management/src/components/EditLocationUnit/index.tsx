@@ -171,21 +171,16 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     .map((query) => query.data)
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
-  if (
-    loading ||
-    treeData.length === 0 ||
-    !locationUnits.data ||
-    treeData.length !== locationUnits.data.length
-  )
-    return <Spin size="large"></Spin>;
-
-  if (broken) {
+  if (broken || locationUnits.isError || treeDataQuery.some((query) => query.isError)) {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
   if (!thisLocation) {
     return <Resource404 />;
   }
+
+  if (loading || !locationUnits.isSuccess || treeDataQuery.every((query) => !query.isSuccess))
+    return <Spin size="large" />;
 
   const initialValues = getLocationFormFields(thisLocation, instance, isJurisdiction);
   const cancelHandler = () => {

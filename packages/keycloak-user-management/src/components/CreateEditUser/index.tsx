@@ -29,6 +29,7 @@ import '../../index.css';
 import { FormFields, UserFormProps } from '../forms/UserForm/types';
 import { defaultUserFormInitialValues, UserForm } from '../forms/UserForm';
 import { getFormValues } from '../forms/UserForm/utils';
+import { BrokenPage } from '@opensrp/react-utils';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -64,6 +65,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
   const [practitioner, setPractitioner] = useState<Practitioner>();
+  const [apiError, setApiError] = useState(false);
 
   const {
     keycloakUser,
@@ -84,7 +86,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          setApiError(true);
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setUserGroupsLoading(false));
     }
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
@@ -101,7 +106,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: KeycloakUser | null | undefined) => {
           if (response) fetchKeycloakUsersCreator([response]);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setKeyCloakUserLoading(false));
     }
   }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator]);
@@ -118,8 +126,13 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       );
       serve
         .list()
-        .then((response: UserGroup[]) => setAssignedUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .then((response: UserGroup[]) => {
+          setAssignedUserGroups(response);
+        })
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setUserGroupLoading(false));
     }
   }, [userId, keycloakBaseURL]);
@@ -136,7 +149,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: Practitioner | undefined) => {
           setPractitioner(response);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setPractitionerLoading(false));
     }
   }, [userId, opensrpBaseURL]);
@@ -144,6 +160,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   useEffect(() => {
     setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
   }, [keycloakUser, practitioner, assignedUserGroups]);
+
+  if (apiError) return <BrokenPage />;
 
   if (
     userGroupsLoading ||

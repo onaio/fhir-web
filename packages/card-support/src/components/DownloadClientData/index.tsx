@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
+import {
+  Button,
+  Card,
+  Typography,
+  Form,
+  Select,
+  TreeSelect,
+  DatePicker,
+  Tooltip,
+  Spin,
+} from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
@@ -145,6 +155,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
       </TreeSelect.TreeNode>
     ));
   }
+
+  if (apiError) return <BrokenPage />;
+
+  if (isLoading) return <Spin size="large" />;
 
   return (
     <div className="layout-content">

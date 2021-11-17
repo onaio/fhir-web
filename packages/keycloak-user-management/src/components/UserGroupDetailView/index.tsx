@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Space, Typography, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
-import { Resource404 } from '@opensrp/react-utils';
+import { Resource404, BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Button } from 'antd';
 import { URL_USER_EDIT, URL_USER_GROUPS } from '../../constants';
@@ -28,6 +28,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { groupId, keycloakBaseURL } = props;
   const history = useHistory();
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [apiError, setApiError] = React.useState<boolean>(false);
   const [userGroupMembers, setUserGroupMembers] = React.useState<UserGroupMembers[] | null>(null);
   const [singleUserGroup, setSingleUserGroup] = React.useState<KeycloakUserGroup | null>(null);
 
@@ -37,7 +38,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
       const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
       const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
       Promise.all([membersPromise, userGroupPromise])
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,6 +49,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
 
   if (!groupId) {
     return null;
+  }
+
+  if (apiError) {
+    return <BrokenPage />;
   }
 
   return (

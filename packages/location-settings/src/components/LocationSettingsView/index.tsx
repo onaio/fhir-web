@@ -80,7 +80,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (locationSettings.isFetching || locationSettings.isLoading) return <Spin size="large" />;
+  if (locationSettings.isFetching || !locationSettings.isSuccess) return <Spin size="large" />;
 
   return (
     <section className="layout-content">
@@ -95,7 +95,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
-              data={locationSettings.data ?? []}
+              data={locationSettings.data}
               tree={treeData}
               actioncolumn={{
                 title: lang.ACTIONS,

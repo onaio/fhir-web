@@ -16,7 +16,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 
 export interface Props {
@@ -44,6 +44,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   );
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
+  const [apiError, setApiError] = useState<boolean>(false);
 
   const practitioners = useQuery(
     PRACTITIONER_ENDPOINT,
@@ -86,10 +87,15 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           practitioners: practitionerInfo.map((practitioner) => practitioner.id),
         });
       })
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+      .catch(() => {
+        setApiError(true);
+        sendErrorNotification(lang.ERROR_OCCURRED);
+      });
   }
 
-  if (!practitioners.data || (params.id && (!initialValue || !allRoles.data)))
+  if (team.isError || allRoles.isError || practitioners.isError || apiError) return <BrokenPage />;
+
+  if (!practitioners.isSuccess || (params.id && (!initialValue || !allRoles.isSuccess)))
     return <Spin size={'large'} />;
 
   return (

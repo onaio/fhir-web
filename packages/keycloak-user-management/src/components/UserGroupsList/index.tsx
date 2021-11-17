@@ -35,6 +35,7 @@ import {
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
+import { BrokenPage } from '@opensrp/react-utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -84,6 +85,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     userGroupsSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [apiError, setApiError] = useState<boolean>(false);
   const history = useHistory();
   const { keycloakBaseURL } = props;
   const groupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID] ?? '';
@@ -96,11 +98,15 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         .then((response: KeycloakUserGroup[]) => {
           dispatch(fetchKeycloakUserGroups(response));
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
+        })
         .finally(() => setIsLoading(false));
     }
   });
 
+  if (apiError) return <BrokenPage />;
   if (isLoading) return <Spin size="large" />;
 
   const searchFormProps = {
