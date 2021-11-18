@@ -31,7 +31,6 @@ export interface UserPreference {
 
 const DefaultConfigs: GlobalState = {
   languageCode: 'en',
-  projectLanguageCode: 'core',
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
