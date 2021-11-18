@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getConfig } from '@opensrp/pkg-config';
-import { loadLanguageResources } from '@opensrp/react-utils';
+import { loadLanguageResources, experimentalLanguageResource } from '@opensrp/react-utils';
 import type { i18n as i18nInstance } from 'i18next';
 
 const i18n = getConfig('i18n') as i18nInstance;
@@ -47,6 +47,10 @@ const resources = {
   },
 };
 
-loadLanguageResources(i18n, resources);
+export { resources };
+
+// loadLanguageResources(i18n, resources);
+
+experimentalLanguageResource(i18n);
 
 export default i18n;
