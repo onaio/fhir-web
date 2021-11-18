@@ -73,7 +73,9 @@ export const customFetch: CustomFetch = async (...rest) => {
 type paramsType = URLParams | null;
 
 /** get acess token call back fn type */
-export type GetAccessTokenType = () => Promise<string | null>;
+export interface GetAccessTokenType {
+  (...args: unknown[]): Promise<string | null>;
+}
 
 /** The OpenSRP service class
  *
