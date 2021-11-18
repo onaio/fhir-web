@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { Meta } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/meta';
 import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
-import { deprecate } from 'util';
-import path from 'path';
-import glob from 'tiny-glob';
 
 /**
  * From T, convert a set of keys to optional, that are in the union K.
@@ -44,88 +40,3 @@ export interface FHIRResponse<T> {
     search: { mode: string };
   }[];
 }
-
-interface LoadLanguageResources {
-  relativePathToResources: string;
-  resourceObject: Dictionary;
-}
-
-// TODO - R&D if possible to lazy load the translations
-
-// export const experimentalLanguageResource = (i18n: i18nInstance) => {
-//   // assume that locales are stored in a single directory,
-//   // assume that the name of the translation json file contains the locale code only
-
-//   const thisPackLocaleFolder = path.resolve(process.cwd(), '../locales'); //configurable
-
-//   // assumption locales are in folders with respect to their
-
-//   (async function () {
-//     const files = await glob(`${thisPackLocaleFolder}/*/*.json`);
-//     const resources: Dictionary = {};
-//     for (const file of files) {
-//       const { dir, base } = path.parse(file);
-//       const dirArray = dir.split(path.sep);
-//       const localeFolder = dirArray[dirArray.length - 1];
-//       if (localeFolder !== 'locales') {
-//         resources[`${localeFolder}-${base}`] = require(file);
-//         // eslint-disable-next-line @typescript-eslint/no-var-requires
-//         i18n.addResourceBundle(base, '', require(file));
-//       }
-//     }
-//     console.log(resources);
-//   })().catch((_) => {
-//     void 0;
-//   });
-// };
-
-// TODO - R&D if possible to lazy load the translations
-
-export const experimentalLanguageResource = (i18n: i18nInstance) => {
-  // assume that locales are stored in a single directory,
-  // assume that the name of the translation json file contains the locale code only
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const coreFrJson = require('../locales/core/fr.json');
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const coreEnJson = require('../locales/core/en.json');
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const coreArJson = require('../locales/core/ar.json');
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const eusmEnJson = require('../locales/eusm/en.json');
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const eusmFrJson = require('../locales/eusm/fr.json');
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const eusmArJson = require('../locales/eusm/ar.json');
-
-  const namespace = 'sd';
-
-  // the format to load the resource files: <languageCode>_<projectCode>. in small
-  const resources = {
-    ar_core: {
-      [namespace]: coreArJson,
-    },
-    ar_eusm: {
-      [namespace]: eusmArJson,
-    },
-    fr_core: {
-      [namespace]: coreFrJson,
-    },
-    fr_eusm: {
-      [namespace]: eusmFrJson,
-    },
-    en_core: {
-      [namespace]: coreEnJson,
-    },
-    en_eusm: {
-      [namespace]: eusmEnJson,
-    },
-  };
-
-  loadLanguageResources(i18n, resources);
-};
