@@ -4,8 +4,7 @@ import { Input } from 'antd';
 import { OnChangeType, DEBOUNCE_HANDLER_MS } from './utils';
 import { SearchOutlined } from '@ant-design/icons';
 import { InputProps } from 'antd/lib/input/';
-import { Dictionary } from '@onaio/utils';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /**
  * Interface for SearchForm props
@@ -24,7 +23,6 @@ export const defaultSearchProps: SearchFormProps = {
   },
   size: 'large',
   addonBefore: defaultPrefix,
-  placeholder: lang.SEARCH,
   allowClear: true,
 };
 
@@ -33,7 +31,10 @@ export const defaultSearchProps: SearchFormProps = {
  * @param props - the component's props
  */
 const SearchForm = (props: SearchFormProps) => {
-  const { onChangeHandler } = props;
+  const { onChangeHandler, ...passedOnProps } = props;
+  // HACK to preserve defaultProps back compatibility
+  const { t } = useTranslation();
+  passedOnProps['placeholder'] = props.placeholder ?? t('Search');
 
   /** inbuilt default onChangeHandler that debounces the passed changeHandler
    *
@@ -47,11 +48,6 @@ const SearchForm = (props: SearchFormProps) => {
     );
     debouncedFn(event);
   };
-
-  const passedOnProps = {
-    ...props,
-  };
-  delete (passedOnProps as Dictionary).onChangeHandler;
 
   return (
     <div className="search-input-wrapper">

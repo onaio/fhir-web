@@ -6,6 +6,7 @@ import {
   generateLangRes,
 } from './helpers/translationUtils';
 import type { i18n as i18nInstance } from 'i18next';
+import { useTranslation as useOrigTranslation } from 'react-i18next';
 
 const i18n = getConfig('i18n') as i18nInstance;
 
@@ -45,5 +46,9 @@ const resourcesTuple: LanguageResourceTuples = [
 const resources = generateLangRes(resourcesTuple);
 
 loadLanguageResources(i18n, resources, namespace);
+
+export const useTranslation = () => {
+  return useOrigTranslation(namespace);
+};
 
 export default i18n;

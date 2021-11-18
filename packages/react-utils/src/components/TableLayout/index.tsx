@@ -11,7 +11,7 @@ import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
 import { Optional } from '../../helpers/utils';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 // Options Must be of any Data type as the Data could be any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,6 +63,8 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     ...restprops
   } = props;
 
+  const { t } = useTranslation();
+
   const paginationDefaults = {
     showQuickJumper: true,
     showSizeChanger: true,
@@ -81,12 +83,12 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     if (columns && actions) {
       const actionsColumn: Column<T> = {
         key: TABLE_ACTIONS_KEY as TKey<T>,
-        title: lang.ACTIONS,
+        title: t('actions'),
         ...actions,
       };
       return [...columns, actionsColumn];
     } else return columns;
-  }, [columns, actions]);
+  }, [columns, actions, t]);
 
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}

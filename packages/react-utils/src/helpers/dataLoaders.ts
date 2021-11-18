@@ -14,10 +14,10 @@ import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
-import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import { FHIRResponse } from '..';
+import { TFunction } from 'i18next';
 
 const configs = getAllConfigs();
 
@@ -123,30 +123,31 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
 /**
  * gets access token or redirects to login if session is expired
  *
- * @param langObject - look up of translations
+ * @param t - translator function
  */
-export const handleSessionOrTokenExpiry = async (langObject: Lang = lang) => {
+export const handleSessionOrTokenExpiry = (async (t: TFunction) => {
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
     } catch (e) {
       history.push(`${configs.appLoginURL}`);
-      throw new Error(`${langObject.SESSION_EXPIRED_TEXT}`);
+      throw new Error(t('Session Expired'));
     }
   } else {
     return getAccessToken(store.getState());
   }
-};
+}) as GetAccessTokenType;
 
 /**
  * Fetch an image that requires authentication and returns an
  * object URL from URL.createObjectURL
  *
  * @param imageURL the image source url
+ * @param t - the translator function
  */
-export const fetchProtectedImage = async (imageURL: string) => {
-  const token = await handleSessionOrTokenExpiry();
+export const fetchProtectedImage = async (imageURL: string, t: TFunction) => {
+  const token = await handleSessionOrTokenExpiry(t);
   const response = await customFetch(imageURL, {
     headers: {
       authorization: `Bearer ${token}`,

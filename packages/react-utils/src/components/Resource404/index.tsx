@@ -1,18 +1,16 @@
 import React from 'react';
 import { Result } from 'antd';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** typings for the resource404 component */
 interface Resource404Props extends UtilPageExtraProps {
-  title: string;
-  errorMessage: string;
+  title?: string;
+  errorMessage?: string;
 }
 
 const defaultProps = {
   ...extraLinksDefault,
-  title: lang.TITLE_404,
-  errorMessage: lang.RESOURCE_DOES_NOT_EXIST,
 };
 
 /** component shown when a requested resource is not found;
@@ -23,14 +21,20 @@ const defaultProps = {
 
 const Resource404 = (props: Resource404Props) => {
   const { title, errorMessage } = props;
+  const { t } = useTranslation();
   const extraLinksProps = {
     homeUrl: props.homeUrl,
   };
+
+  // HACK to preserve defaultProps back compatibility
+  const i18nedErrMessage =
+    errorMessage ?? t('Sorry, the resource you requested for, does not exist');
+  const i18nedTitle = title ?? t('404');
   return (
     <Result
       status="404"
-      title={title}
-      subTitle={errorMessage}
+      title={i18nedTitle}
+      subTitle={i18nedErrMessage}
       extra={<ExtraLinks {...extraLinksProps}></ExtraLinks>}
     />
   );
