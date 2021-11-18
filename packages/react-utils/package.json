@@ -43,13 +43,15 @@
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
-    "react-query": "^3.15.1",
-    "fhirclient": "^2.4.0"
+    "fhirclient": "^2.4.0",
+    "react-query": "^3.15.1"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
+    "i18next": "^21.5.2",
     "react": "^16.18.1",
+    "react-i18next": "^11.14.2",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
