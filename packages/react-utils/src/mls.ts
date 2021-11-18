@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getConfig } from '@opensrp/pkg-config';
-import { loadLanguageResources } from './helpers/utils';
+import {
+  loadLanguageResources,
+  LanguageResourceTuples,
+  generateLangRes,
+} from './helpers/translationUtils';
 import type { i18n as i18nInstance } from 'i18next';
 
 const i18n = getConfig('i18n') as i18nInstance;
@@ -28,31 +32,18 @@ const coreViJson = require('../locales/core/vi.json');
 
 export const namespace = 'react-utils';
 
-// the format to load the resource files: <languageCode>_<projectCode>. in small
-const resources = {
-  ar_core: {
-    [namespace]: coreArJson,
-  },
-  ar_eusm: {
-    [namespace]: eusmArJson,
-  },
-  fr_core: {
-    [namespace]: coreFrJson,
-  },
-  fr_eusm: {
-    [namespace]: eusmFrJson,
-  },
-  en_core: {
-    [namespace]: coreEnJson,
-  },
-  en_eusm: {
-    [namespace]: eusmEnJson,
-  },
-  vi_core: {
-    [namespace]: coreViJson,
-  },
-};
+const resourcesTuple: LanguageResourceTuples = [
+  ['ar', 'eusm', eusmArJson],
+  ['ar', 'core', coreArJson],
+  ['fr', 'core', coreFrJson],
+  ['fr', 'eusm', eusmFrJson],
+  ['en', 'eusm', eusmEnJson],
+  ['en', 'core', coreEnJson],
+  ['vi', 'core', coreViJson],
+];
 
-loadLanguageResources(i18n, resources);
+const resources = generateLangRes(resourcesTuple);
+
+loadLanguageResources(i18n, resources, namespace);
 
 export default i18n;
