@@ -10,6 +10,7 @@ import { questionnaireResourceType } from '../../constants';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
+import {sampleQr} from './1082-qr';
 
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -54,6 +55,7 @@ export const QuestionnaireForm = (props: any) => {
         <SkjemautfyllerContainer
           store={store}
           questionnaire={data}
+          questionnaireResponse={id === '1082' ? sampleQr : undefined}
           onSubmit={onSubmit}
           onCancel={onCancel}
           resources={{
