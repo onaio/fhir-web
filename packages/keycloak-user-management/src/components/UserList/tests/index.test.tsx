@@ -20,7 +20,12 @@ import {
   fetchKeycloakUsers,
   removeKeycloakUsers,
 } from '../../../ducks/user';
-import { keycloakUsersArray, keycloakUsersArray1 } from '../../forms/UserForm/tests/fixtures';
+import {
+  keycloakUsersArray,
+  keycloakUsersArray1,
+  practitioner1,
+  organization,
+} from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
@@ -38,25 +43,38 @@ jest.mock('@opensrp/notifications', () => ({
 
 const history = createBrowserHistory();
 
-const locationProps = {
-  history,
-  location: {
-    hash: '',
-    pathname: `${URL_USER}`,
-    search: '',
-    state: {},
-  },
-  match: {
-    isExact: true,
-    params: {},
-    path: `${URL_USER}`,
-    url: `${URL_USER}`,
-  },
-};
-
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserList', () => {
+  const locationProps = {
+    history,
+    location: {
+      hash: '',
+      pathname: `${URL_USER}`,
+      search: '',
+      state: {},
+    },
+    match: {
+      isExact: true,
+      params: {},
+      path: `${URL_USER}`,
+      url: `${URL_USER}`,
+    },
+  };
+
+  const props = {
+    ...locationProps,
+    extraData: {
+      user_id: fixtures.keycloakUser.id,
+    },
+    fetchKeycloakUsersCreator: fetchKeycloakUsers,
+    removeKeycloakUsersCreator: removeKeycloakUsers,
+    serviceClass: KeycloakService,
+    keycloakBaseURL: 'https://some-keycloak.server/auth/admin/realms/some-realm',
+    opensrpBaseURL: 'https://some-opensrp.server/app/',
+    usersPageSize: 20,
+  };
+
   beforeEach(() => {
     fetch.resetMocks();
     opensrpStore.store.dispatch(removeKeycloakUsers());
@@ -84,18 +102,7 @@ describe('components/UserList', () => {
   it('works correctly with store', async () => {
     fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      usersPageSize: 20,
-    };
+
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
@@ -120,18 +127,6 @@ describe('components/UserList', () => {
   it('renders user list correctly', async () => {
     fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      usersPageSize: 20,
-    };
 
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
@@ -153,29 +148,9 @@ describe('components/UserList', () => {
     // Loader should be hiddern
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
 
-    expect(fetch.mock.calls).toMatchObject([
-      [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer simple-token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/count',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer simple-token',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((call) => call[0])).toMatchObject([
+      'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20',
+      'https://some-keycloak.server/auth/admin/realms/some-realm/users/count',
     ]);
 
     const userList = wrapper.find('UserList');
@@ -191,21 +166,13 @@ describe('components/UserList', () => {
   it('search works correctly', async () => {
     fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
-    const props = {
-      ...locationProps,
+
+    const newProps = {
+      ...props,
       location: {
-        ...locationProps.location,
+        ...props.location,
         search: '?searchQuery=opensrp',
       },
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      usersPageSize: 20,
     };
 
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -213,7 +180,7 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -239,7 +206,7 @@ describe('components/UserList', () => {
     expect(history.location.search).toEqual('?searchQuery=test');
     expect(fetch.mock.calls).toMatchObject([
       [
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users?first=0&max=20&search=opensrp',
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20&search=opensrp',
         {
           headers: {
             accept: 'application/json',
@@ -259,16 +226,8 @@ describe('components/UserList', () => {
     fetch.mockResponseOnce(JSON.stringify(data.slice(5, 10)));
     fetch.mockResponseOnce(JSON.stringify(7));
 
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    const newProps = {
+      ...props,
       usersPageSize: 5,
     };
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -276,7 +235,7 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -301,18 +260,7 @@ describe('components/UserList', () => {
     const historyPushMock = jest.spyOn(history, 'push');
     fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      usersPageSize: 20,
-    };
+
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
@@ -337,23 +285,18 @@ describe('components/UserList', () => {
     fetch.mockReject(() => Promise.reject('API is down'));
 
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+
+    const newProps = {
+      ...props,
+      usersPageSize: undefined,
     };
+
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -383,18 +326,7 @@ describe('components/UserList', () => {
   it('sorting works', async () => {
     fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
-    const props = {
-      ...locationProps,
-      extraData: {
-        user_id: fixtures.keycloakUser.id,
-      },
-      fetchKeycloakUsersCreator: fetchKeycloakUsers,
-      removeKeycloakUsersCreator: removeKeycloakUsers,
-      serviceClass: KeycloakService,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-      usersPageSize: 20,
-    };
+
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
@@ -439,5 +371,50 @@ describe('components/UserList', () => {
     ]);
 
     wrapper.unmount();
+  });
+
+  it('user details render correctly', async () => {
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray));
+    fetch.mockResponseOnce(JSON.stringify(keycloakUsersArray.length));
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const wrapper = mount(
+      <Provider store={opensrpStore.store}>
+        <QueryClientProvider client={queryClient}>
+          <Router history={history}>
+            <ConnectedUserList {...props} />
+          </Router>
+        </QueryClientProvider>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find view details button
+    const dropdown = wrapper.find('TableActions').find('Dropdown').at(0);
+    const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const viewDetails = subMenu.find('MenuItem.viewDetails');
+
+    fetch.mockResponseOnce(JSON.stringify(practitioner1));
+    fetch.mockResponseOnce(JSON.stringify(organization));
+
+    // click view details
+    viewDetails.simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // find the user details
+    expect(wrapper.find('#username').text()).toEqual(keycloakUsersArray[0].username);
+    expect(wrapper.find('#keycloakId').text()).toEqual(keycloakUsersArray[0].id);
+    expect(wrapper.find('#practitionerId').text()).toEqual(practitioner1.identifier);
+    expect(wrapper.find('#practitionerStatus').text()).toMatchInlineSnapshot(`"active"`);
+    const assignedTeams = wrapper.find('#assignedTeam').map((team) => team.text());
+    expect(assignedTeams).toEqual(organization.map((team) => team.name));
   });
 });

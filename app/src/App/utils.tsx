@@ -17,10 +17,12 @@ import {
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
   OPENSRP_API_BASE_URL,
+  OPENSRP_API_V2_BASE_URL,
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
@@ -33,6 +35,7 @@ import {
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
+  fhirBaseURL: FHIR_API_BASE_URL,
 };
 
 export const teamAssignmentProps = {
@@ -40,6 +43,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamManagementProps = {
+  ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,
   paginationSize: PAGINATION_SIZE,
 };
@@ -66,6 +70,12 @@ export const usersListProps = {
 };
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const serverSettingsProps = {
+  baseURL: OPENSRP_API_BASE_URL.replace('/rest', ''),
+  restBaseURL: OPENSRP_API_BASE_URL,
+  v2BaseURL: OPENSRP_API_V2_BASE_URL,
 };
 
 export const jsonValidatorListProps = {

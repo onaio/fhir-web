@@ -10,7 +10,9 @@ import App from '../App';
 jest.mock('../../configs/env', () => ({
   PROJECT_LANGUAGE_CODE: 'eusm',
   SUPPORTED_LANGUAGES: ['en', 'fr'],
+  OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
   BACKEND_ACTIVE: true,
+  OPENSRP_WEB_VERSION: '',
   OPENSRP_ROLES: {
     USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
     PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',

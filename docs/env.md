@@ -92,9 +92,15 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
-  - **REACT_APP_ENABLE_TEAMS**
+- **REACT_APP_ENABLE_TEAMS**
 
   - Enables the teams module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_TEAMS**
+
+  - Enables the Fhir teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -251,6 +257,24 @@ Below is a list of currently supported environment variables:
   - **Optional**_(`string`)_
 
 - **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+
   - Default FHIR resource page count
   - **Required**
   - default: 500
+
+- **REACT_APP_ENABLE_SERVER_SETTINGS**
+
+  - Enables the server settings module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_OPENSRP_API_V2_BASE_URL**
+
+  - Opensrp server V2 base URL
+  - **Required**
+  - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
+
+- **REACT_APP_OPENSRP_WEB_VERSION**
+  - Opensrp web version deployed
+  - **Optional**(_string_)
+  - default: ""

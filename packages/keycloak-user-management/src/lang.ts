@@ -86,6 +86,13 @@ function fill() {
   lang.CONTACT_REGEX_ERROR = i18n.t(`Contact should be 10 digits and start with 0`, {
     ns: namespace,
   });
+  lang.KEYCLOAK_UUID = i18n.t(`Keycloak UUID`, { ns: namespace });
+  lang.PRACTITIONER_UUID = i18n.t(`Practitioner UUID`, { ns: namespace });
+  lang.PRACTITIONER_STATUS = i18n.t(`Practitioner Status`, { ns: namespace });
+  lang.ASSIGNED_TEAMS = i18n.t(`Assigned Teams`, { ns: namespace });
+  lang.NO_ASSIGNED_TEAMS = i18n.t(`No Assigned Teams`, { ns: namespace });
+  lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
+  lang.NO_ACTIVE_PRACTITIONER = i18n.t(`No Active Practitioner`, { ns: namespace });
 }
 
 // run it initial
