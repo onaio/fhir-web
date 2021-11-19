@@ -16,6 +16,7 @@ describe('components/UserList/TableActions', () => {
     extraData: { user_id: 'e8b07278-c75b-4dc7-b1f4-bcbf01b7d353' },
     opensrpBaseURL: 'https://test.smartregister.org/opensrp/rest/',
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    setDetailsCallback: jest.fn(),
   };
 
   it('does not crash', () => {

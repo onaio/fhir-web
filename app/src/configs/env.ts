@@ -16,6 +16,7 @@ const defaultRoles = {
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -64,6 +65,8 @@ export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');
 export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
+
+export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
@@ -115,6 +118,11 @@ export const KEYCLOAK_LOGOUT_URL = setEnv(
 export const OPENSRP_API_BASE_URL = setEnv(
   'REACT_APP_OPENSRP_API_BASE_URL',
   'https://opensrp-stage.smartregister.org/opensrp/rest/'
+);
+
+export const OPENSRP_API_V2_BASE_URL = setEnv(
+  'REACT_APP_OPENSRP_API_V2_BASE_URL',
+  'https://opensrp-stage.smartregister.org/opensrp/rest/v2/'
 );
 
 export const KEYCLOAK_API_BASE_URL = setEnv(
@@ -178,7 +186,7 @@ export const FHIR_API_BASE_URL = setEnv(
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
 export const DISABLE_TEAM_MEMBER_REASSIGNMENT =
-  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'false') === 'true';
+  setEnv('REACT_APP_DISABLE_TEAM_MEMBER_REASSIGNMENT', 'true') === 'true';
 
 export const USER_FORM_HIDDEN_FIELDS = setEnv('REACT_APP_USER_FORM_HIDDEN_FIELDS', '').split(',');
 
@@ -193,3 +201,7 @@ export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
   'eff94f33-c356-4634-8795-d52340706ba9'
 );
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
+
+export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
+
+export const OPENSRP_WEB_VERSION = setEnv('REACT_APP_OPENSRP_WEB_VERSION', '');
