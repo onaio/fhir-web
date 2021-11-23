@@ -30,7 +30,7 @@ export const location1: LocationUnit = {
   ],
 };
 
-export const location2 = {
+export const location2 = ({
   type: 'Feature',
   id: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',
   properties: {
@@ -48,7 +48,7 @@ export const location2 = {
   serverVersion: 336,
   locationTags: [{ id: 7, name: 'CHW ' }],
   // parentId is missing
-} as unknown as LocationUnit;
+} as unknown) as LocationUnit;
 
 export const location3 = {
   type: 'Feature',
