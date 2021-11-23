@@ -62,8 +62,13 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     practitioner: undefined,
   });
 
-  const { keycloakUser, keycloakBaseURL, fhirBaseURL, extraData, fetchKeycloakUsersCreator } =
-    props;
+  const {
+    keycloakUser,
+    keycloakBaseURL,
+    fhirBaseURL,
+    extraData,
+    fetchKeycloakUsersCreator,
+  } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
@@ -74,14 +79,16 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         identifier: userId,
       })
       .then((response) => {
-        // get first entry (ideal server has only one practitioner)
-        const practitionerEntry = response.entry[0];
-        const practitionerResource = practitionerEntry.resource;
-        setInitialValues((prevState) => ({
-          ...prevState,
-          active: practitionerResource.active,
-          practitioner: practitionerResource,
-        }));
+        if (response.total > 0) {
+          // get first entry (ideal server has only one practitioner)
+          const practitionerEntry = response.entry[0];
+          const practitionerResource = practitionerEntry.resource;
+          setInitialValues((prevState) => ({
+            ...prevState,
+            active: practitionerResource.active,
+            practitioner: practitionerResource,
+          }));
+        }
       })
       .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
     // eslint-disable-next-line react-hooks/exhaustive-deps
