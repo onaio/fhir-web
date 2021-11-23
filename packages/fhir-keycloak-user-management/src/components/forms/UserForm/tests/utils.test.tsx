@@ -1,5 +1,4 @@
 import { submitForm, fetchRequiredActions, createOrEditPractitioners } from '../utils';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
@@ -12,7 +11,6 @@ import lang from '../../../../lang';
 import {
   value,
   keycloakUser,
-  practitioner1,
   requiredActions,
   userGroup,
   userAction1,
@@ -202,11 +200,14 @@ describe('forms/utils/submitForm', () => {
       ],
     ]);
 
-    expect(notificationSuccessMock.mock.calls).toMatchObject([
-      ['Practitioner created successfully'],
-      ['User Group edited successfully'],
-      ['User edited successfully'],
-    ]);
+    // expect.arrayContaining - avoids strict matching array order
+    expect(notificationSuccessMock.mock.calls).toMatchObject(
+      expect.arrayContaining([
+        ['Practitioner created successfully'],
+        ['User Group edited successfully'],
+        ['User edited successfully'],
+      ])
+    );
     expect(historyPushMock).toHaveBeenCalledWith(`/admin/users/credentials/${id}`);
   });
 
@@ -265,13 +266,17 @@ describe('forms/utils/submitForm', () => {
       ],
     ]);
 
-    expect(notificationSuccessMock.mock.calls).toMatchObject([
-      ['Practitioner updated successfully'],
-      ['User Group edited successfully'],
-      ['User edited successfully'],
-    ]);
+    // expect.arrayContaining - avoids strict matching array order
+    expect(notificationSuccessMock.mock.calls).toMatchObject(
+      expect.arrayContaining([
+        ['Practitioner updated successfully'],
+        ['User Group edited successfully'],
+        ['User edited successfully'],
+      ])
+    );
+
     expect(notificationSuccessMock).toHaveBeenCalledWith('User edited successfully');
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/users/list');
+    expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
   });
 
   it('marks user as practitioner successfully', async () => {
@@ -379,52 +384,33 @@ describe('forms/utils/submitForm', () => {
 
   it('handles error when user creation fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          create: jest.fn().mockRejectedValue('Request Failed'),
-        };
-      })
-    );
-    const rejectFn = jest.fn();
-    const historyPushMock = jest.spyOn(history, 'push');
 
-    submitForm(value, keycloakBaseURL, fhirBaseURL, userGroup).catch(rejectFn);
+    const notificationSpy = jest.spyOn(notifications, 'sendErrorNotification');
+    submitForm(value, keycloakBaseURL, fhirBaseURL, userGroup).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(rejectFn).toBeCalled();
-    expect(historyPushMock).not.toHaveBeenCalled();
+    expect(notificationSpy).toHaveBeenCalledWith('An error occurred');
   });
 
   it('handles error when user edit fails', async () => {
     fetch.mockReject(() => Promise.reject('API is down'));
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          update: jest.fn().mockRejectedValue('Request Failed'),
-        };
-      })
-    );
-    const rejectFn = jest.fn();
-    const historyPushMock = jest.spyOn(history, 'push');
+
+    const notificationSpy = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(
-      { ...value, ...practitioner1, id: id },
+      { ...value, ...fhirPractitioner, id: id },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
+      fhirBaseURL,
       userGroup
-    ).catch(rejectFn);
+    ).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(rejectFn).toBeCalled();
-    expect(historyPushMock).not.toHaveBeenCalled();
+    expect(notificationSpy).toHaveBeenCalledWith('An error occurred');
   });
 });
