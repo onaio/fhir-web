@@ -165,7 +165,7 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
-import { QuestionnaireForm, QuestionnaireList } from '@opensrp/fhir-questionnaire';
+import { QuestionnaireForm, QuestionnaireList, QUEST_URL } from '@opensrp/fhir-questionnaire';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -759,18 +759,18 @@ const App: React.FC = () => {
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
             />
-              <PrivateComponent
-                redirectPath={APP_CALLBACK_URL}
-                disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-                activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-                path="/quest/:id"
-                component={QuestionnaireForm}
-              />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-              path="/quest"
+              path="/quest/:id"
+              component={QuestionnaireForm}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
+              path={QUEST_URL}
               component={QuestionnaireList}
             />
             <PrivateComponent

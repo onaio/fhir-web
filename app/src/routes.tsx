@@ -40,6 +40,7 @@ import {
   URL_ADMIN,
 } from './constants';
 import lang, { TFunction } from './lang';
+import { QUEST_URL } from '@opensrp/fhir-questionnaire';
 
 /** Interface for menu items */
 export interface Route {
@@ -194,7 +195,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: 'Questionnaire',
           key: 'fhir-questionnaire',
           enabled: true, // roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
-          url: '/quest',
+          url: QUEST_URL,
         },
         {
           title: langObj.FORM_CONFIGURATION,
