@@ -10,7 +10,8 @@ import { questionnaireResourceType } from '../../constants';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
-import {sampleQr} from './1082-qr';
+import { sampleQr } from './1082-qr';
+import { msf } from './A - msf-Questionnaire.fhir';
 
 const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
 
@@ -39,6 +40,12 @@ export const QuestionnaireForm = (props: any) => {
     () => new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).read(id),
     { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
   );
+  let sdata: any;
+  if (id === '426') {
+    sdata = msf;
+  } else {
+    sdata = data;
+  }
 
   if (isLoading) {
     return <Spin />;
@@ -54,7 +61,7 @@ export const QuestionnaireForm = (props: any) => {
       <Provider store={store} key="1">
         <SkjemautfyllerContainer
           store={store}
-          questionnaire={data}
+          // questionnaire={id === '1082' ? sdata : undefined}
           questionnaireResponse={id === '1082' ? sampleQr : undefined}
           onSubmit={onSubmit}
           onCancel={onCancel}
