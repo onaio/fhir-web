@@ -142,25 +142,32 @@ export const submitForm = async (
     Promise.all([
       serve.update(keycloakValues),
       createOrEditPractitioners(fhirBaseURL, values, langObj),
-    ]).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+    ])
+      .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+      .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_EDITED));
   } else {
     // create new keycloak user
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    const response: Response | undefined = await serve.create({
-      ...keycloakValues,
-    });
-    // get user Id for newly created keycloak user from response headers
-    if (response) {
-      const UUID = getUserId(response);
-      // inject id to values
-      values = { ...values, id: UUID };
-    }
 
-    await createOrEditPractitioners(fhirBaseURL, values, langObj);
+    await serve
+      .create({
+        ...keycloakValues,
+      })
+      .then(async (response: Response | undefined) => {
+        // get user Id for newly created keycloak user from response headers
+        if (response) {
+          const UUID = getUserId(response);
+          // inject id to values
+          values = { ...values, id: UUID };
+        }
+        await createOrEditPractitioners(fhirBaseURL, values, langObj);
+      })
+      .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+      .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_EDITED));
   }
 
   // Assign User Group to user
-  const promises: Promise<void>[] = [];
+  const promises: (() => Promise<void>)[] = [];
 
   values.userGroup?.forEach((groupId) => {
     const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
@@ -170,14 +177,14 @@ export const submitForm = async (
       keycloakBaseURL
     );
 
-    const promise = serve.update(userGroupValue);
+    const promise = () => serve.update(userGroupValue);
     promises.push(promise);
   });
 
-  await Promise.allSettled(promises).catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
-  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+  await Promise.allSettled(promises.map((prom) => prom()))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED));
 
-  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
   if (keycloakValues.id) {
     history.push(URL_USER);
   }
