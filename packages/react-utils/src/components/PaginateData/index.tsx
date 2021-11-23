@@ -7,31 +7,40 @@ import { TABLE_PAGE, TABLE_PAGE_SIZE } from '../../constants';
 
 export type PaginatedData<T> = { data: T; total?: number };
 export type DataDictionary<T> = Dictionary<PaginatedData<T>>;
+export type TotalSizeGetterFun<TResponse> = (
+  data: TResponse,
+  page: number,
+  pageSize: number,
+  queryString?: string
+) => Promise<number> | number;
+export type TotalSize<TResponse> = number | TotalSizeGetterFun<TResponse>;
 
-export interface PaginateData<T, resp = T[]> {
-  onSuccess?: (response: PaginatedData<resp>) => void;
+/** type for the children render props */
+export type ChildrenRPPropsType<T> = TableProps<T> & {
+  fetchNextPage: Function;
+  fetchPreviousPage: Function;
+};
+export type ChildrenRPType<T> = (props: ChildrenRPPropsType<T>) => JSX.Element;
+
+export interface PaginateData<T, TResp = T[]> {
+  onSuccess?: (response: PaginatedData<TResp>) => void;
   onError?: (error: unknown) => void;
-  onSelect?: (response: resp) => T[];
-  queryFn: (currentPage: number, pageSize: number, queryString?: string) => Promise<resp> | resp;
-  queryOptions?: UseInfiniteQueryOptions<PaginatedData<resp>>;
-  queryid: string;
+  onSelect?: (response: TResp) => T[];
+  queryFn: (currentPage: number, pageSize: number, queryString?: string) => Promise<TResp> | TResp;
+  queryOptions?: UseInfiniteQueryOptions<PaginatedData<TResp>>;
+  queryId: string;
   currentPage?: number;
   pageSize?: number;
   queryPram?: Dictionary;
-  total?:
-    | number
-    | ((
-        data: resp,
-        page: number,
-        pageSize: number,
-        queryString?: string
-      ) => Promise<number> | number);
-  children: (
-    props: TableProps<T> & {
-      fetchNextPage: Function;
-      fetchPreviousPage: Function;
-    }
-  ) => JSX.Element;
+  total?: TotalSize<TResp>;
+  children: ChildrenRPType<T>;
+}
+
+interface PaginateDataState<TResponse> {
+  currentPage: number;
+  pageSize: number;
+  prevData: PaginatedData<TResponse>;
+  queryPram?: Dictionary;
 }
 
 /**
@@ -43,36 +52,44 @@ export interface PaginateData<T, resp = T[]> {
 export function PaginateData<T extends object = Dictionary, Resp = T[]>(
   props: PaginateData<T, Resp>
 ) {
-  const { total, onError, queryFn, queryid, onSuccess, onSelect, children, queryOptions } = props;
+  const {
+    total,
+    onError,
+    queryFn,
+    queryId,
+    onSuccess,
+    onSelect,
+    children,
+    queryOptions,
+    pageSize,
+    queryKeys,
+  } = props;
+  const [currentPage, updateCurrentPage] = useState<number>(0);
 
-  const [{ currentPage, pageSize, prevdata, queryPram }, setProps] = useState<{
-    currentPage: number;
-    pageSize: number;
-    prevdata: PaginatedData<Resp>;
-    queryPram?: Dictionary;
-  }>({
-    currentPage: props.currentPage ?? TABLE_PAGE,
-    pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
-    prevdata: { data: ([] as unknown) as Resp, total: undefined },
-    queryPram: props.queryPram,
-  });
+  // const [paginationState, setPaginationState] = useState<PaginateDataState<Resp>>({
+  //   e: props.currentPage ?? TABLE_PAGE,
+  //   // pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
+  //   // prevData: { data: ([] as unknown) as Resp, total: undefined },
+  //   // queryPram: props.queryPram,
+  // });
+  // const { currentPage, pageSize, prevData, queryPram } = paginationState;
 
   const query = useInfiniteQuery(
-    [queryid, pageSize, queryPram],
+    [...queryKeys, pageSize],
     async ({ pageParam = currentPage }): Promise<PaginatedData<Resp>> => {
-      const queryString =
-        queryPram &&
-        Object.entries(queryPram).reduce(
-          (acc, [key, val]) => acc + (val !== '' && val !== undefined ? `&${key}=${val}` : ''),
-          ''
-        );
-      const data = await queryFn(pageParam, pageSize, queryString);
-      const totalval =
-        typeof total === 'function' ? await total(data, currentPage, pageSize, queryString) : total;
-      return { data, total: totalval };
+      // const queryString =
+      //   queryPram &&
+      //   Object.entries(queryPram).reduce(
+      //     (acc, [key, val]) => acc + (val !== '' && val !== undefined ? `&${key}=${val}` : ''),
+      //     ''
+      //   );
+      const data = await queryFn({ currentPage: pageParam, pageSize });
+      const totalVal =
+        typeof total === 'function' ? await total(data, currentPage, pageSize) : total;
+      return { data, total: totalVal };
     },
     {
-      onSuccess: (resp) => onSuccess?.(convertToDataRecord(resp)[currentPage]) ?? undefined,
+      onSuccess: (resp) => onSuccess?.(convertToDataRecord(resp)[currentPage]) ?? undefined, // this can be merged into single props
       onError: onError,
       ...queryOptions,
     }
@@ -104,7 +121,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
 
   useEffect(() => {
     if (queryPram !== props.queryPram)
-      setProps((prev) => ({ ...prev, currentPage: 1, queryPram: props.queryPram }));
+      setPaginationState((prev) => ({ ...prev, currentPage: 1, queryPram: props.queryPram }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(props.queryPram)]);
 
@@ -113,8 +130,8 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
   }, [currentPage, data, fetchPage]);
 
   const tabledata: PaginatedData<Resp> = useMemo(
-    () => (data[currentPage] as PaginatedData<Resp> | undefined) ?? prevdata,
-    [currentPage, data, prevdata]
+    () => (data[currentPage] as PaginatedData<Resp> | undefined) ?? prevData,
+    [currentPage, data]
   );
 
   return children({
@@ -127,7 +144,7 @@ export function PaginateData<T extends object = Dictionary, Resp = T[]>(
       total: tabledata.total,
       current: currentPage,
       onChange: (page, pagesize) =>
-        setProps((prev) => ({
+        setPaginationState((prev) => ({
           ...prev,
           currentPage: page,
           pageSize: pagesize ?? pageSize,

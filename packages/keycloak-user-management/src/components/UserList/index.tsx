@@ -203,7 +203,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
-              queryid="Users"
+              queryId="Users"
               total={(data) => {
                 if (isSearchActive) return data.length;
 
