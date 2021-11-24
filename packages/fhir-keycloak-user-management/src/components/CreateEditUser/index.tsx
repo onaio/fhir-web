@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Col, Row, Spin } from 'antd';
 import { RouteComponentProps } from 'react-router';
 import { Store } from 'redux';
@@ -17,11 +17,10 @@ import {
   makeKeycloakUsersSelector,
   KeycloakUser,
   UserGroup,
-  Practitioner,
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import '../../index.css';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -74,16 +73,24 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
 
   const fetchPractitioner = useCallback(async () => {
-    const serve = await FHIRService(fhirBaseURL);
-    await serve.request(`Practitioner?identifier=${userId}`).then((response: fhirR4.Bundle) => {
-      const getPractitionerEntry = (response.entry as fhirR4.BundleEntry[])[0];
-      const getPractitionerResource = getPractitionerEntry.resource as fhirR4.Practitioner;
-      setInitialValues((prevState) => ({
-        ...prevState,
-        active: getPractitionerResource.active,
-        practitioner: getPractitionerResource,
-      }));
-    });
+    const serve = new FHIRServiceClass<IPractitioner>(fhirBaseURL, 'Practitioner');
+    serve
+      .list({
+        identifier: userId,
+      })
+      .then((response) => {
+        if (response.total > 0) {
+          // get first entry (ideal server has only one practitioner)
+          const practitionerEntry = response.entry[0];
+          const practitionerResource = practitionerEntry.resource;
+          setInitialValues((prevState) => ({
+            ...prevState,
+            active: practitionerResource.active,
+            practitioner: practitionerResource,
+          }));
+        }
+      })
+      .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 

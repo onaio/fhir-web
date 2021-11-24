@@ -13,8 +13,12 @@ import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
 import { fhirR4 } from '@smile-cdr/fhirts';
 
-const { fetchProtectedImage, OpenSRPService, handleSessionOrTokenExpiry, FHIRServiceClass } =
-  dataLoaders;
+const {
+  fetchProtectedImage,
+  OpenSRPService,
+  handleSessionOrTokenExpiry,
+  FHIRServiceClass,
+} = dataLoaders;
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');

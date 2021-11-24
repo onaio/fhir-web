@@ -1,10 +1,10 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { Dispatch, SetStateAction } from 'react';
-import { get } from 'lodash';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { v4 } from 'uuid';
 import {
   KEYCLOAK_URL_USERS,
@@ -16,18 +16,16 @@ import {
 import lang, { Lang } from '../../../lang';
 import { FormFields } from '.';
 
-/** Utility function to set new user UUID extracted from the
- * POST response location header
+/**
+ * Utility function to get new user UUID from POST response location header
  *
  * @param {Response} response - response object from POST request
- * @param {FormFields} values - form submit values to be POSTed
- * @returns {FormFields} - new values object with userid set
- *
+ * @returns {string} - userId extracted from location header
  */
-export const buildUserObject = (response: Response, values: FormFields): FormFields => {
+const getUserId = (response: Response): string => {
   const locationStr = response.headers.get('location')?.split('/') as string[];
   const newUUID = locationStr[locationStr.length - 1];
-  return { ...values, id: newUUID };
+  return newUUID;
 };
 
 /**
@@ -40,22 +38,21 @@ export const createOrEditPractitioners = async (
   values: FormFields & KeycloakUser,
   langObj: Lang = lang
 ) => {
-  const requestType = values.practitioner ? 'update' : 'create';
-  const successMessage = values.practitioner
-    ? langObj.PRACTITIONER_UPDATED_SUCCESSFULLY
-    : langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
-
-  const practitionerValues = {
+  // initialize values for creating a practitioner
+  let requestType: 'update' | 'create' = 'create';
+  let successMessage: string = langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
+  // inherits values from tied keycloak user
+  let practitionerValues: IPractitioner = {
     resourceType: 'Practitioner',
-    id: values.practitioner ? (values.practitioner.id as string) : undefined,
+    id: undefined,
     identifier: [
       {
         use: 'official',
-        value: values.practitioner ? get(values.practitioner, 'identifier.0.value') : v4(),
+        value: v4(),
       },
       {
         use: 'secondary',
-        value: values.practitioner ? get(values.practitioner, 'identifier.1.value') : values.id,
+        value: values.id,
       },
     ],
     active: true,
@@ -74,10 +71,47 @@ export const createOrEditPractitioners = async (
     ],
   };
 
-  const fhirServe = await FHIRService(fhirBaseURL);
+  // if practitioner exists re-initialize as update practitioner
+  // use keycloak values - to update practitioner when base keycloak user values change
+  if (values.practitioner) {
+    requestType = 'update';
+    successMessage = langObj.PRACTITIONER_UPDATED_SUCCESSFULLY;
+    practitionerValues = {
+      resourceType: 'Practitioner',
+      id: values.practitioner.id as string,
+      identifier: [
+        {
+          use: 'official',
+          value: values.practitioner.identifier?.[0].value,
+        },
+        {
+          use: 'secondary',
+          value: values.practitioner.identifier?.[1].value,
+        },
+      ],
+      // if the base keycloak user is disabled, also disable the tied opensrp practitioner
+      // otherwise follow the practitioner's activation field
+      active: (values.enabled as boolean) === false ? false : (values.active as boolean),
+      name: [
+        {
+          use: 'official',
+          family: values.lastName,
+          given: [values.firstName, ''],
+        },
+      ],
+      telecom: [
+        {
+          system: 'email',
+          value: values.email,
+        },
+      ],
+    };
+  }
+
+  const fhirServe = new FHIRServiceClass<IPractitioner>(fhirBaseURL, 'Practitioner');
   fhirServe[requestType](practitionerValues)
-    .then((_) => sendSuccessNotification(successMessage))
-    .catch((_) => sendErrorNotification(langObj.ERROR_OCCURED));
+    .then(() => sendSuccessNotification(successMessage))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
 
   if (!values.practitioner) history.push(`${URL_USER_CREDENTIALS}/${values.id}`);
 };
@@ -98,30 +132,42 @@ export const submitForm = async (
   userGroups: UserGroup[],
   langObj: Lang = lang
 ): Promise<void> => {
-  const keycloakUserValue: Omit<FormFields, 'active' | 'practitioner' | 'userGroup'> &
-    Partial<FormFields> = {
-    ...values,
-  };
-  delete keycloakUserValue.active;
-  delete keycloakUserValue.userGroup;
-  delete keycloakUserValue.practitioner;
+  // isolate keycloak user values (includes attributes if available)
+  const { active, userGroup, practitioner, ...keycloakValues } = values;
 
-  if (values.id) {
+  // if keycloak user has id, user exists
+  if (keycloakValues.id) {
     const serve = new KeycloakService(`${KEYCLOAK_URL_USERS}/${values.id}`, keycloakBaseURL);
-    await serve.update(keycloakUserValue);
+    // update keycloak user and practitioner
+    Promise.all([
+      serve.update(keycloakValues),
+      createOrEditPractitioners(fhirBaseURL, values, langObj),
+    ])
+      .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+      .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_EDITED));
   } else {
+    // create new keycloak user
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    const response: Response | undefined = await serve.create({
-      ...keycloakUserValue,
-    });
-    // workaround to get user Id for newly created user immediately after performing a POST
-    values = response ? buildUserObject(response, values) : values;
+
+    await serve
+      .create({
+        ...keycloakValues,
+      })
+      .then(async (response: Response | undefined) => {
+        // get user Id for newly created keycloak user from response headers
+        if (response) {
+          const UUID = getUserId(response);
+          // inject id to values
+          values = { ...values, id: UUID };
+        }
+        await createOrEditPractitioners(fhirBaseURL, values, langObj);
+      })
+      .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+      .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_EDITED));
   }
 
-  await createOrEditPractitioners(fhirBaseURL, values, langObj);
-
   // Assign User Group to user
-  const promises: Promise<void>[] = [];
+  const promises: (() => Promise<void>)[] = [];
 
   values.userGroup?.forEach((groupId) => {
     const userGroupValue = userGroups.find((group) => group.id === groupId) as UserGroup;
@@ -131,17 +177,15 @@ export const submitForm = async (
       keycloakBaseURL
     );
 
-    const promise = serve.update(userGroupValue);
+    const promise = () => serve.update(userGroupValue);
     promises.push(promise);
   });
 
-  await Promise.allSettled(promises).catch((_: Error) =>
-    sendErrorNotification(langObj.ERROR_OCCURED)
-  );
-  sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+  await Promise.allSettled(promises.map((prom) => prom()))
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED))
+    .finally(() => sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED));
 
-  sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
-  if (keycloakUserValue.id) {
+  if (keycloakValues.id) {
     history.push(URL_USER);
   }
 };

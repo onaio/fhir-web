@@ -110,8 +110,8 @@ export const populateTeamDetails = (
  */
 const jurisdictionPromises = (rawAssignments: RawAssignment[], opensrpBaseURL: string) => {
   // wrap promises in plain functions to avoid immediate evocation
-  return rawAssignments.map(
-    (assignment) => () => jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
+  return rawAssignments.map((assignment) => () =>
+    jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
   );
 };
 

@@ -16,9 +16,9 @@ jest.mock('@opensrp/notifications', () => ({
 
 describe('components/UserList/utils/deleteUser', () => {
   const removeUsersMock = jest.fn();
-  const isLoadingCallback = jest.fn();
   const keycloakBaseURL =
     'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const fhirBaseURL = 'https://www.test.fhir.url/';
   const userId = '1';
 
   beforeAll(() => {
@@ -46,7 +46,7 @@ describe('components/UserList/utils/deleteUser', () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fetch.mockResponse(JSON.stringify([fixtures.keycloakUser]));
 
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, fhirBaseURL, userId).catch(() => jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -61,14 +61,13 @@ describe('components/UserList/utils/deleteUser', () => {
       method: 'DELETE',
     });
     expect(removeUsersMock).toHaveBeenCalled();
-    expect(isLoadingCallback).toHaveBeenCalled();
     expect(notificationSuccessMock).toHaveBeenCalledWith('User deleted successfully');
   });
 
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, fhirBaseURL, userId).catch(() => jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -80,7 +79,7 @@ describe('components/UserList/utils/deleteUser', () => {
   it('handles API error when calling the fetch endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, userId, isLoadingCallback);
+    deleteUser(removeUsersMock, keycloakBaseURL, fhirBaseURL, userId).catch(() => jest.fn());
 
     await act(async () => {
       await flushPromises();

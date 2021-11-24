@@ -89,7 +89,14 @@ import {
   URL_USER_CREDENTIALS,
   CreateEditUserGroup,
 } from '@opensrp/user-management';
-import { ConnectedCreateEditUser as FHIRConnectedCreateEditUser } from '@opensrp/fhir-user-management';
+import {
+  ConnectedCreateEditUser as FHIRConnectedCreateEditUser,
+  ConnectedUserList as FHIRConnectedUserList,
+  ConnectedUserCredentials as FHIRConnectedUserCredentials,
+  UserGroupsList as FHIRUserGroupsList,
+  UserRolesList as FHIRUserRolesList,
+  CreateEditUserGroup as FHIRCreateEditUserGroup,
+} from '@opensrp/fhir-user-management';
 import {
   CareTeamList,
   ROUTE_PARAM_CARE_TEAM_ID,
@@ -246,7 +253,7 @@ const App: React.FC = () => {
               exact
               path={URL_USER}
               {...usersListProps}
-              component={ConnectedUserList}
+              component={ENABLE_FHIR ? FHIRConnectedUserList : ConnectedUserList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -254,7 +261,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_GROUPS}
-              component={UserGroupsList}
+              component={ENABLE_FHIR ? FHIRUserGroupsList : UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -262,7 +269,7 @@ const App: React.FC = () => {
               exact
               path={URL_USER_ROLES}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              component={UserRolesList}
+              component={ENABLE_FHIR ? FHIRUserRolesList : UserRolesList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -270,7 +277,7 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              component={UserGroupsList}
+              component={ENABLE_FHIR ? FHIRUserGroupsList : UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -564,7 +571,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
-              component={CreateEditUserGroup}
+              component={ENABLE_FHIR ? FHIRCreateEditUserGroup : CreateEditUserGroup}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -572,7 +579,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_GROUP_CREATE}
-              component={CreateEditUserGroup}
+              component={ENABLE_FHIR ? FHIRCreateEditUserGroup : CreateEditUserGroup}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -589,7 +596,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
-              component={ConnectedUserCredentials}
+              component={ENABLE_FHIR ? FHIRConnectedUserCredentials : ConnectedUserCredentials}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

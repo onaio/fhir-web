@@ -12,6 +12,7 @@ import lang from '../../../lang';
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
   keycloakBaseURL: string;
+  fhirBaseURL: string;
   record: KeycloakUser;
   isLoadingCallback: (loading: boolean) => void;
   extraData: Dictionary;
@@ -28,6 +29,7 @@ const TableActions = (props: Props): JSX.Element => {
     record,
     removeKeycloakUsersCreator,
     keycloakBaseURL,
+    fhirBaseURL,
     isLoadingCallback,
     extraData,
   } = props;
@@ -39,9 +41,20 @@ const TableActions = (props: Props): JSX.Element => {
           title="Are you sure you want to delete this user?"
           okText="Yes"
           cancelText="No"
-          onConfirm={() =>
-            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, record.id, isLoadingCallback)
-          }
+          onConfirm={() => {
+            // start loader
+            isLoadingCallback(true);
+
+            return deleteUser(
+              removeKeycloakUsersCreator,
+              keycloakBaseURL,
+              fhirBaseURL,
+              record.id
+            ).finally(() => {
+              // stop loader
+              isLoadingCallback(false);
+            });
+          }}
         >
           {user_id &&
             (record.id === user_id ? null : (

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { KeycloakUser, Practitioner, UserAction, UserGroup } from '../../../ducks/user';
+import { KeycloakUser, UserAction, UserGroup } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
 import lang from '../../../lang';
 import { submitForm, fetchRequiredActions } from './utils';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { fhirR4 } from '@smile-cdr/fhirts';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import '../../../index.css';
 
 /** props for editing a user view */
@@ -22,7 +22,7 @@ export interface UserFormProps {
 export interface FormFields extends KeycloakUser {
   active?: boolean;
   userGroup?: string[];
-  practitioner?: fhirR4.Practitioner;
+  practitioner?: IPractitioner;
 }
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
@@ -73,6 +73,29 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   useEffect(() => {
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
+
+  // get the status of user at mount
+  const [userEnabled, setUserEnabled] = useState<boolean>(initialValues.enabled ?? false);
+
+  // if user is disabled also disable practitioner
+  // else show default practitioner value
+  useEffect(() => {
+    if (!userEnabled) {
+      form.setFields([
+        {
+          name: 'active',
+          value: false,
+        },
+      ]);
+    } else {
+      form.setFields([
+        {
+          name: 'active',
+          value: initialValues.active,
+        },
+      ]);
+    }
+  }, [form, initialValues, userEnabled]);
 
   return (
     <Row className="layout-content">
@@ -126,13 +149,24 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
           <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
-            <Radio.Group options={status} name="enabled"></Radio.Group>
+            <Radio.Group
+              options={status}
+              name="enabled"
+              // watch user's status
+              onChange={(e) => setUserEnabled(e.target.value)}
+            ></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
               <Radio.Group name="active">
                 {status.map((e) => (
-                  <Radio name="active" key={e.label} value={e.value}>
+                  <Radio
+                    name="active"
+                    key={e.label}
+                    value={e.value}
+                    // disable field if user is disabled
+                    disabled={!userEnabled}
+                  >
                     {e.label}
                   </Radio>
                 ))}

@@ -106,7 +106,7 @@ describe('components/TeamsList', () => {
     await act(async () => {
       wrapper.update();
     });
-    expect((input.instance() as unknown as HTMLInputElement).value).toEqual('Sample');
+    expect(((input.instance() as unknown) as HTMLInputElement).value).toEqual('Sample');
   });
 
   it('show error message when cant load teams from server', async () => {
