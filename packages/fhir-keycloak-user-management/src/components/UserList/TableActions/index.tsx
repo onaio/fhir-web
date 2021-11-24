@@ -41,15 +41,20 @@ const TableActions = (props: Props): JSX.Element => {
           title="Are you sure you want to delete this user?"
           okText="Yes"
           cancelText="No"
-          onConfirm={() =>
-            deleteUser(
+          onConfirm={() => {
+            // start loader
+            isLoadingCallback(true);
+
+            return deleteUser(
               removeKeycloakUsersCreator,
               keycloakBaseURL,
               fhirBaseURL,
-              record.id,
-              isLoadingCallback
-            )
-          }
+              record.id
+            ).finally(() => {
+              // stop loader
+              isLoadingCallback(false);
+            });
+          }}
         >
           {user_id &&
             (record.id === user_id ? null : (

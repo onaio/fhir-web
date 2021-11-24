@@ -16,7 +16,6 @@ import { CareTeamParticipant } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/care
  * @param {string} keycloakBaseURL - keycloak api base URL
  * @param fhirBaseURL - fhir api base url
  * @param {string} userId - id of user to be deleted
- * @param {Function} isLoadingCallback - callback function that sets loading state
  * @param {Lang} langObj - lang
  * @returns {void}
  */
@@ -25,12 +24,8 @@ export const deleteUser = async (
   keycloakBaseURL: string,
   fhirBaseURL: string,
   userId: string,
-  isLoadingCallback: (loading: boolean) => void,
   langObj: Lang = lang
 ) => {
-  // start loader
-  isLoadingCallback(true);
-
   const deleteKeycloakUser = new KeycloakService(
     `${KEYCLOAK_URL_USERS}/${userId}`,
     keycloakBaseURL
@@ -61,10 +56,6 @@ export const deleteUser = async (
     })
     .catch((_: Error) => {
       sendErrorNotification(langObj.ERROR_OCCURED);
-    })
-    .finally(() => {
-      // stop loader
-      isLoadingCallback(false);
     });
 };
 
