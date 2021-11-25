@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App/App';
-import { APP_VERSION, DEPLOYMENT_ENVIRONMENT, SENTRY_DSN } from './configs/env';
+import { OPENSRP_WEB_VERSION, DEPLOYMENT_ENVIRONMENT, SENTRY_DSN } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
 import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
@@ -23,7 +23,7 @@ const queryClient = new QueryClient();
 if (SENTRY_DSN) {
   Sentry.init({
     dsn: SENTRY_DSN,
-    release: APP_VERSION,
+    release: OPENSRP_WEB_VERSION,
     environment: DEPLOYMENT_ENVIRONMENT,
   });
 }
