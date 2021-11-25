@@ -13,7 +13,6 @@ import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ErrorReporterProvider } from '@opensrp/react-utils';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
@@ -30,15 +29,13 @@ if (SENTRY_DSN) {
 
 ReactDOM.render(
   <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
-    <ErrorReporterProvider reporter={Sentry.captureException}>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <QueryClientProvider client={queryClient}>
-            <App />
-          </QueryClientProvider>
-        </ConnectedRouter>
-      </Provider>
-    </ErrorReporterProvider>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </ConnectedRouter>
+    </Provider>
   </Sentry.ErrorBoundary>,
   document.getElementById('opensrp-root')
 );
