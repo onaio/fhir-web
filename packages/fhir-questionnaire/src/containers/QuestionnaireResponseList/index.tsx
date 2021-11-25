@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Row, PageHeader, Col } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { TableLayout } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { FHIRServiceClass } from '@opensrp/react-utils';
-import { questionnaireResourceType, QUEST_URL } from '../../constants';
+import {
+  // questionnaireResourceType,
+  questionnaireResponseResourceType,
+  // QUEST_URL,
+} from '../../constants';
 import { useQuery } from 'react-query';
 import { Spin } from 'antd';
-import { Questionnaire } from '@helsenorge/skjemautfyller/types/fhir';
 import { Column } from '@opensrp/react-utils';
+import { IfhirR4 } from '@smile-cdr/fhirts';
+
 // import { useInfiniteQuery } from 'react-query';
 // import { TablePaginationConfig } from 'antd/lib/table/Table';
 
@@ -17,51 +22,54 @@ interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
 
+interface RouteProps {
+  questId: string;
+}
+
 const defaultProps = {};
 
-/**
- * component rendered in the action column of the table
- *
- * @param record record representing the active record
- */
-export const ActionsColumnCustomRender: Column<Questionnaire>['render'] = (
-  record: Questionnaire
+// /**
+//  * component rendered in the action column of the table
+//  *
+//  * @param record record representing the active record
+//  */
+// export const ActionsColumnCustomRender: Column<Questionnaire>['render'] = (
+//   record: Questionnaire
+// ) => {
+//   return (
+//     <>
+//       {/* Assumes the record status is in the routes */}
+//       <Link to={`${QUEST_URL}/${record.id}`}></Link>
+//     </>
+//   );
+// };
+
+// eslint-disable-next-line react/display-name
+export const NamesColumnCustomCreator: Column<IfhirR4.IQuestionnaireResponse>['render'] = (
+  record: IfhirR4.IQuestionnaireResponse
 ) => {
   return (
     <>
-      {/* Assumes the record status is in the routes */}
-      <Link to={`${'qrList'}/${record.id}`}>View Questionnaire Responses</Link>
+      <Link to={`/${'qr'}/${record.id}`}>{record.id ?? ''}</Link>
     </>
   );
 };
 
-export const NamesColumnCustomRender: Column<Questionnaire>['render'] = (record: Questionnaire) => {
-  return (
-    <>
-      {/* Assumes the record status is in the routes */}
-      <Link to={`${QUEST_URL}/${record.id}`}>{record.title ?? record.id ?? ''}</Link>
-    </>
-  );
-};
-
-/** generates columns for questionnaire rendering component
+/**
+ * generates columns for questionnaire rendering component
  *
+ * @param questionnaireId
  */
-export const getColumns = (): Column<Questionnaire>[] => {
-  const columns: Column<Questionnaire>[] = [
+const getColumns = (): Column<IfhirR4.IQuestionnaireResponse>[] => {
+  const columns: Column<IfhirR4.IQuestionnaireResponse>[] = [
     {
       title: 'Name/Id',
-      render: NamesColumnCustomRender,
+      render: NamesColumnCustomCreator,
       width: '60%',
     },
     {
       title: 'Status',
       dataIndex: 'status',
-    },
-    {
-      title: 'Actions',
-      render: ActionsColumnCustomRender,
-      width: '20%',
     },
   ];
   return columns;
@@ -69,17 +77,19 @@ export const getColumns = (): Column<Questionnaire>[] => {
 
 /** component that renders plans */
 
-const QuestionnaireList = (props: QuestionnaireListProps) => {
+const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [paginationPageSize, setPaginationPageSize] = useState<number>(20);
+  const { questId } = useParams<RouteProps>();
 
   const { data, isLoading } = useQuery(
-    ['questionnaires', currentPage, paginationPageSize],
+    ['questionnaireResponses', currentPage, paginationPageSize],
     () =>
-      new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).list({
+      new FHIRServiceClass(fhirBaseURL, questionnaireResponseResourceType).list({
         _getpagesoffset: (currentPage - 1) * paginationPageSize,
         _count: paginationPageSize,
+        questionnaire: questId,
       }),
     { keepPreviousData: true, staleTime: 5000 }
   );
@@ -101,7 +111,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
 
   const tableProps = {
     pagination: {
-      total: 36,
+      total: data?.total ?? 0,
       onChange: (current: number, pageSize?: number) => {
         if (current && pageSize) {
           setPaginationPageSize(pageSize);
@@ -112,8 +122,9 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const tableDataSource = (data?.entry?.map((dt: any) => dt.resource) ?? []) as Questionnaire[];
-  const pageTitle = 'Questionnaire list view';
+  const tableDataSource = (data?.entry?.map((dt: any) => dt.resource) ??
+    []) as IfhirR4.IQuestionnaireResponse[];
+  const pageTitle = 'Questionnaire Responses';
   const columns = getColumns();
   return (
     <div className="content-section">
@@ -131,6 +142,6 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
   );
 };
 
-QuestionnaireList.defaultProps = defaultProps;
+QuestionnaireResponseList.defaultProps = defaultProps;
 
-export { QuestionnaireList };
+export { QuestionnaireResponseList };

@@ -6,7 +6,7 @@ import { Store, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { useParams } from 'react-router';
-import { questionnaireResourceType } from '../../constants';
+import { questionnaireResourceType, questionnaireResponseResourceType } from '../../constants';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
@@ -31,33 +31,37 @@ const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
  *     bug with action creator.
  */
 
-export const QuestionnaireForm = (props: any) => {
-  const { questId } = useParams<{ questId: string }>();
+export const QuestionnaireResponseForm = (props: any) => {
+  const { questResId } = useParams<{ questResId: string }>();
   const { fhirBaseURL } = props;
 
   /** is it possible to have this form show for both questionnaire only and
    * questionnaireResponse, questionnaireResponse, we can have the first questy for questionnaireResponse
    */
 
-  // const { isLoading: questRespIsLoading, data: questResp } = useQuery(
-  //   [questionnaireResponseResourceType, questId],
-  //   () => new FHIRServiceClass(fhirBaseURL, questionnaireResponseResourceType).read(questId),
-  //   {
-  //     refetchOnMount: false,
-  //     refetchOnWindowFocus: false,
-  //     refetchOnReconnect: false,
-  //     enabled: !!questResId,
-  //   }
-  // );
+  const { isLoading: questRespIsLoading, data: questResp } = useQuery(
+    [questionnaireResponseResourceType, questResId],
+    () => new FHIRServiceClass(fhirBaseURL, questionnaireResponseResourceType).read(questResId),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    }
+  );
 
   /** if questionnaire response loads up */
   const { isLoading, data } = useQuery(
-    [questionnaireResourceType, questId],
-    () => new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).read(questId),
-    { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
+    [questionnaireResourceType, questResp?.questionnaire],
+    () => new FHIRServiceClass(fhirBaseURL, questResp?.questionnaire).read(''),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      enabled: !!questResp?.questionnaire,
+    }
   );
 
-  if (isLoading) {
+  if (isLoading || questRespIsLoading) {
     return <Spin />;
   }
 
@@ -72,7 +76,7 @@ export const QuestionnaireForm = (props: any) => {
         <SkjemautfyllerContainer
           store={store}
           questionnaire={data}
-          // questionnaireResponse={questResp}
+          questionnaireResponse={questResp}
           onSubmit={onSubmit}
           onCancel={onCancel}
           resources={{

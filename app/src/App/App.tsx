@@ -165,7 +165,7 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
-import { QuestionnaireForm, QuestionnaireList, QUEST_URL } from '@opensrp/fhir-questionnaire';
+import { QuestionnaireForm, QuestionnaireList, QUEST_URL, QuestionnaireResponseList, QuestionnaireResponseForm } from '@opensrp/fhir-questionnaire';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -763,8 +763,22 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-              path="/quest/:id"
+              path="/quest/:questId"
               component={QuestionnaireForm}
+            />
+             <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
+              path="/qr/:questResId"
+              component={QuestionnaireResponseForm}
+            />
+             <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
+              path="/qrList/:questId"
+              component={QuestionnaireResponseList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
