@@ -10,4 +10,3 @@ export * from './helpers/utils';
 export * from './components/LanguageSwitcher';
 export * from './components/TableLayout';
 export * from './components/PaginateData';
-export * from './components/GlobalErrorReporter';
