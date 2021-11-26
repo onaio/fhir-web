@@ -54,9 +54,7 @@ export const deleteUser = async (
       sendSuccessNotification(langObj.PRACTITIONER_UNASSIGNED_FROM_CARE_TEAMS_SUCCESSFULLY);
       removeKeycloakUsersCreator();
     })
-    .catch((_: Error) => {
-      sendErrorNotification(langObj.ERROR_OCCURED);
-    });
+    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
 };
 
 /**
