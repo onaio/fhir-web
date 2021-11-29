@@ -147,4 +147,35 @@ describe('un-assigns and deactivates practitioners', () => {
     expect(notificationErrorMock).not.toHaveBeenCalled();
     expect(removeUsersMock).toHaveBeenCalledTimes(1);
   });
+
+  it('works if no practitioner, or practitioner is not assigned to teams or careTeams', async () => {
+    const newPractitionerBundle = { ...PractitionerBundle, total: 0, entry: [] };
+    const newCareTeamBundle = { ...CareTeamBundle, total: 0, entry: [] };
+    const newPractitionerRoleBundle = { PractitionerRoleBundle, total: 0, entry: [] };
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Practitioner/_search?identifier=1')
+            return Promise.resolve(newPractitionerBundle);
+          else if (url === 'PractitionerRole/_search?practitioner=5123')
+            return Promise.resolve(newPractitionerRoleBundle);
+          else if (url === 'CareTeam/_search?participant:practitioner=5123')
+            return Promise.resolve(newCareTeamBundle);
+        }),
+        update: jest.fn(() => Promise.resolve()),
+        delete: jest.fn((url) => {
+          if (url === 'PractitionerRole/5124') return Promise.resolve();
+        }),
+      }))
+    );
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    deleteUser(removeUsersMock, keycloakBaseURL, fhirBaseURL, userId).catch(() => jest.fn());
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(notificationSuccessMock).toHaveBeenCalledWith('User deleted successfully');
+    expect(notificationErrorMock).not.toHaveBeenCalled();
+  });
 });
