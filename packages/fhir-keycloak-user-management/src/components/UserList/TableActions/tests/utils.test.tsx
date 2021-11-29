@@ -8,6 +8,8 @@ import lang from '../../../../lang';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
+import fhirCient from 'fhirclient';
+import { PractitionerBundle, PractitionerRoleBundle, CareTeamBundle } from './fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -95,5 +97,54 @@ describe('components/UserList/utils/deleteUser', () => {
     });
     expect(removeUsersMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+  });
+});
+
+describe('un-assigns and deactivates practitioners', () => {
+  const fhir = jest.spyOn(fhirCient, 'client');
+  const removeUsersMock = jest.fn();
+  const keycloakBaseURL =
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+  const fhirBaseURL = 'https://www.test.fhir.url/';
+  const userId = '1';
+  beforeEach(() => {
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn((url) => {
+          if (url === 'Practitioner/_search?identifier=1')
+            return Promise.resolve(PractitionerBundle);
+          else if (url === 'PractitionerRole/_search?practitioner=5123')
+            return Promise.resolve(PractitionerRoleBundle);
+          else if (url === 'CareTeam/_search?participant:practitioner=5123')
+            return Promise.resolve(CareTeamBundle);
+        }),
+        update: jest.fn(() => Promise.resolve()),
+        delete: jest.fn((url) => {
+          if (url === 'PractitionerRole/5124') return Promise.resolve();
+        }),
+      }))
+    );
+  });
+
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
+
+  it('un-assigns and deactivates practitioners from teams and care teams', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    deleteUser(removeUsersMock, keycloakBaseURL, fhirBaseURL, userId).catch(() => jest.fn());
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(notificationSuccessMock).toHaveBeenCalledWith('User deleted successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner unassigned successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Practitioner deactivated successfully');
+    expect(notificationSuccessMock).toHaveBeenCalledWith(
+      'Practitioner unassigned from care teams successfully'
+    );
+    expect(notificationErrorMock).not.toHaveBeenCalled();
+    expect(removeUsersMock).toHaveBeenCalledTimes(1);
   });
 });
