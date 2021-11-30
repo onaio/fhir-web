@@ -8,7 +8,7 @@ import { downloadFile } from '../../helpers/utils';
 import { ParsedHierarchyNode } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import lang, { Lang } from '../../lang';
+import { TFunction } from 'react-i18next';
 /* eslint-disable @typescript-eslint/camelcase */
 
 /** interface for user assignment response */
@@ -53,7 +53,7 @@ export const handleCardOrderDateChange = (
  * @param serviceClass - OPENSRP service class
  * @param locations location hierarchy
  * @param setSubmitting - method to set form `isSubmitting` status
- * @param langObj - tthe lang object
+ * @param t - translator function
  */
 export const submitForm = (
   values: DownloadClientDataFormFields,
@@ -62,7 +62,7 @@ export const submitForm = (
   serviceClass: typeof OpenSRPService,
   locations: ParsedHierarchyNode[],
   setSubmitting: (isSubmitting: boolean) => void,
-  langObj: Lang = lang
+  t: TFunction
 ): void => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
 
@@ -121,12 +121,12 @@ export const submitForm = (
       if (entries.length) {
         createCsv(entries, buildCSVFileName(location ? location.title : '', startDate, endDate));
       } else {
-        sendErrorNotification(langObj.NO_DATA_FOUND);
+        sendErrorNotification(t('No data found'));
       }
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      sendErrorNotification(langObj.ERROR_OCCURRED);
+      sendErrorNotification(t('An error occurred'));
     });
 };
 
