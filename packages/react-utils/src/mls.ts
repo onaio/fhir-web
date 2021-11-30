@@ -2,7 +2,7 @@
 import { getConfig } from '@opensrp/pkg-config';
 import {
   loadLanguageResources,
-  LanguageResourceTuples,
+  LanguageResourceGroups,
   generateLangRes,
 } from './helpers/translationUtils';
 import type { i18n as i18nInstance } from 'i18next';
@@ -33,17 +33,21 @@ const coreViJson = require('../locales/core/vi.json');
 
 export const namespace = 'react-utils';
 
-const resourcesTuple: LanguageResourceTuples = [
-  ['ar', 'eusm', eusmArJson],
-  ['ar', 'core', coreArJson],
-  ['fr', 'core', coreFrJson],
-  ['fr', 'eusm', eusmFrJson],
-  ['en', 'eusm', eusmEnJson],
-  ['en', 'core', coreEnJson],
-  ['vi', 'core', coreViJson],
-];
+const resourceGroups: LanguageResourceGroups = {
+  core: {
+    ar: coreArJson,
+    en: coreEnJson,
+    vi: coreViJson,
+    fr: coreFrJson,
+  },
+  eusm: {
+    ar: eusmArJson,
+    en: eusmEnJson,
+    fr: eusmFrJson,
+  },
+};
 
-const resources = generateLangRes(resourcesTuple);
+const resources = generateLangRes(resourceGroups);
 
 loadLanguageResources(i18n, resources, namespace);
 

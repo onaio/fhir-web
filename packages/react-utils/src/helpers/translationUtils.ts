@@ -2,7 +2,11 @@ import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 import { getConfig, LanguageCode, ProjectLanguageCode } from '@opensrp/pkg-config';
 
-export type LanguageResourceTuples = Array<[LanguageCode, ProjectLanguageCode, Dictionary]>;
+export type LanguageResourceGroups = {
+  [plc in Partial<ProjectLanguageCode>]?: {
+    [lc in Partial<LanguageCode>]?: Dictionary;
+  };
+};
 
 /**
  * generate resource key when adding a resource bundle to i18n, only core resources
@@ -11,23 +15,24 @@ export type LanguageResourceTuples = Array<[LanguageCode, ProjectLanguageCode, D
  * This means other web projects that use these packages are not forced to specify a
  * projectLanguageCode if it does not apply to them
  *
- * @param resourceTuple - tuple pair from which to generate the resource object from
+ * @param resourceGroups - tuple pair from which to generate the resource object from
  */
-export const generateLangRes = (resourceTuple: LanguageResourceTuples) => {
+export const generateLangRes = (resourceGroups: LanguageResourceGroups) => {
   const configuredProjectLanguageCode = getConfig('projectLanguageCode');
   const finalResourceObj: Dictionary = {};
-  for (const eachResource of resourceTuple) {
-    const languageCode = eachResource[0].toLowerCase();
-    const projectLanguageCode = eachResource[1].toLowerCase();
-    const resourceKey = `${languageCode}_${projectLanguageCode}`;
-    const resourceObj = eachResource[2];
-    // the format to load the resource files: <languageCode>[_<projectCode>].
-    if (configuredProjectLanguageCode !== undefined) {
-      finalResourceObj[resourceKey] = resourceObj;
-    } else if (projectLanguageCode === 'core') {
-      finalResourceObj[languageCode] = resourceObj;
-    }
-  }
+  Object.entries(resourceGroups).forEach(([projectLanguageCode, languageResource]) => {
+    Object.entries(languageResource).forEach(([languageCode, resourceObj]) => {
+      const projectLanguageCodeLower = projectLanguageCode.toLowerCase();
+      const languageCodeLower = languageCode.toLowerCase();
+      if (configuredProjectLanguageCode === undefined && projectLanguageCode === 'core') {
+        finalResourceObj[languageCodeLower] = resourceObj;
+      }
+      if (configuredProjectLanguageCode !== undefined) {
+        const resourceKey = `${languageCodeLower}_${projectLanguageCodeLower}`;
+        finalResourceObj[resourceKey] = resourceObj;
+      }
+    });
+  });
   return finalResourceObj;
 };
 
