@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App/App';
-import { OPENSRP_WEB_VERSION, DEPLOYMENT_ENVIRONMENT, SENTRY_DSN } from './configs/env';
+import { SENTRY_CONFIGS } from './configs/env';
 import * as serviceWorker from './serviceWorker';
 import { store } from '@opensrp/store';
 import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
@@ -19,12 +19,16 @@ import './styles/css/index.css';
 // tslint:disable-next-line: ordered-imports
 const queryClient = new QueryClient();
 
-if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    release: OPENSRP_WEB_VERSION,
-    environment: DEPLOYMENT_ENVIRONMENT,
-  });
+if (process.env.NODE_ENV === 'production') {
+  const { tags, ...sentryConfigs } = SENTRY_CONFIGS;
+  Sentry.init(sentryConfigs);
+  if (tags) {
+    Sentry.configureScope((scope) => {
+      Object.entries(tags as Record<string, string>).forEach(([key, value]) => {
+        scope.setTag(key, value);
+      });
+    });
+  }
 }
 
 ReactDOM.render(
