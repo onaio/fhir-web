@@ -2,7 +2,7 @@
 import { getConfig } from '@opensrp/pkg-config';
 import { loadLanguageResources, LanguageResourceGroups } from './helpers/translationUtils';
 import type { i18n as i18nInstance } from 'i18next';
-import { useTranslation as useOrigTranslation } from 'react-i18next';
+import { useTranslation as useOrigTranslation, UseTranslationOptions } from 'react-i18next';
 
 const i18n = getConfig('i18n') as i18nInstance;
 
@@ -45,6 +45,6 @@ const resourceGroups: LanguageResourceGroups = {
 
 loadLanguageResources(i18n, resourceGroups, namespace);
 
-export const useTranslation = () => {
-  return useOrigTranslation(namespace);
+export const useTranslation = (ns?: string, options?: UseTranslationOptions) => {
+  return useOrigTranslation(ns ? ns : namespace, options);
 };
