@@ -3,8 +3,8 @@ import type { i18n as i18nInstance } from 'i18next';
 import { getConfig, LanguageCode, ProjectLanguageCode } from '@opensrp/pkg-config';
 
 export type LanguageResourceGroups = {
-  [plc in Partial<ProjectLanguageCode>]?: {
-    [lc in Partial<LanguageCode>]?: Dictionary;
+  [plc in ProjectLanguageCode]?: {
+    [lc in LanguageCode]?: Dictionary;
   };
 };
 
@@ -40,14 +40,15 @@ export const generateLangRes = (resourceGroups: LanguageResourceGroups) => {
  * Abstraction to add language resources to the i18n instance
  *
  * @param i18n the i18n instance
- * @param resources - an object that contains the resources
+ * @param resourceGroups - an object that contains the resources
  * @param ns - the namespace used to register this resource bundle
  */
 export const loadLanguageResources = (
   i18n: i18nInstance | undefined,
-  resources: Dictionary,
+  resourceGroups: LanguageResourceGroups,
   ns: string
 ) => {
+  const resources = generateLangRes(resourceGroups);
   Object.entries(resources).forEach(([resourceKey, resourceObj]) => {
     i18n?.addResourceBundle(resourceKey, ns, resourceObj);
   });

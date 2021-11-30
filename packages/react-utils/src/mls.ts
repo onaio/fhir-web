@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getConfig } from '@opensrp/pkg-config';
-import {
-  loadLanguageResources,
-  LanguageResourceGroups,
-  generateLangRes,
-} from './helpers/translationUtils';
+import { loadLanguageResources, LanguageResourceGroups } from './helpers/translationUtils';
 import type { i18n as i18nInstance } from 'i18next';
 import { useTranslation as useOrigTranslation } from 'react-i18next';
 
@@ -47,12 +43,8 @@ const resourceGroups: LanguageResourceGroups = {
   },
 };
 
-const resources = generateLangRes(resourceGroups);
-
-loadLanguageResources(i18n, resources, namespace);
+loadLanguageResources(i18n, resourceGroups, namespace);
 
 export const useTranslation = () => {
   return useOrigTranslation(namespace);
 };
-
-export default i18n;
