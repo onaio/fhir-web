@@ -27,17 +27,14 @@
   },
   "peerDependencies": {
     "antd": "^4.6.3",
-    "i18next": "^19.8.4",
-    "react": "^16.13.1"
+    "i18next": "^21.5.2",
+    "react": "^16.13.1",
+    "react-i18next": "^11.14.2"
   },
   "dependencies": {
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "react-i18next": "^11.8.10"
-  },
-  "devDependencies": {
-    "@types/antd": "^1.0.0",
-    "i18next-parser": "^3.5.0"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
