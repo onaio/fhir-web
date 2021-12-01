@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist"
+    "dist",
+    "locales"
   ],
   "publishConfig": {
     "access": "public"
@@ -42,11 +43,13 @@
   },
   "devDependencies": {
     "@types/uuid": "8.3.1",
-    "i18next-parser": "^3.5.0",
     "@smile-cdr/fhirts": "1.2.5"
   },
   "peerDependencies": {
-    "i18next": "^19.8.4",
-    "react": "^16.13.1"
+    "i18next": "^21.5.2",
+    "react-i18next": "^11.14.2",
+    "react": "^16.13.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
   }
 }

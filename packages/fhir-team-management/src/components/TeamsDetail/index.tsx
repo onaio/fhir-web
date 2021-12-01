@@ -2,8 +2,7 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { OrganizationDetail } from '../../types';
-import lang from '../../lang';
-import { Dictionary } from 'lodash';
+import { useTranslation } from '../../mls';
 
 export interface TeamsDetailProps extends OrganizationDetail {
   onClose?: Function;
@@ -11,14 +10,15 @@ export interface TeamsDetailProps extends OrganizationDetail {
 
 const TeamsDetail = (props: TeamsDetailProps) => {
   const { name, active, id, practitionerInfo, onClose } = props;
+  const { t } = useTranslation();
 
-  const detail: Dictionary<string | number | JSX.Element[]> = {
-    [lang.TEAM_NAME]: name,
-    [lang.STATUS]: active ? 'Active' : 'Inactive',
-    [lang.IDENTIFIER]: id,
-    [lang.TEAM_MEMBERS]: practitionerInfo.length
+  const detail = {
+    [t('Team Name')]: name,
+    [t('Status')]: active ? 'Active' : 'Inactive',
+    [t('Identifier')]: id,
+    [t('Team Members')]: practitionerInfo.length
       ? practitionerInfo.map((prac) => <div key={prac.id}>{prac.name}</div>)
-      : lang.NO_TEAM_MEMBERS,
+      : t('No team members'),
   };
 
   return (

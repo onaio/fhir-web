@@ -16,10 +16,10 @@ import {
 } from '@opensrp/notifications';
 import { Organization, Practitioner, PractitionerRole } from '../../types';
 import { useQueryClient } from 'react-query';
-
-import lang from '../../lang';
 import { SelectProps } from 'antd/lib/select';
 import { FHIRServiceClass, Require } from '@opensrp/react-utils';
+import { useTranslation } from '../../mls';
+import { TFunction } from 'react-i18next';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -42,6 +42,7 @@ interface Props {
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {Practitioner} practitioners list of practitioner to refer to when adding or removing
+ * @param t - translator function
  * @param {PractitionerRole} PractitionerRoles list of practitionerRole to remove or add
  */
 export async function onSubmit(
@@ -49,6 +50,7 @@ export async function onSubmit(
   initialValue: Partial<FormField>,
   values: Require<FormField, 'active' | 'name'>,
   practitioners: Practitioner[],
+  t: TFunction,
   PractitionerRoles?: PractitionerRole[]
 ) {
   const officialIdentifier =
@@ -62,24 +64,33 @@ export async function onSubmit(
     name: values.name,
   };
 
-  const team = await setTeam(fhirBaseURL, payload);
+  const team = await setTeam(fhirBaseURL, payload, t);
 
   // Filter and seperate the practitioners uuid
   const toAdd = values.practitioners.filter((val) => !initialValue?.practitioners?.includes(val));
   const toRem = initialValue?.practitioners?.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirBaseURL, team, toAdd, toRem ?? [], practitioners, PractitionerRoles);
+  await SetPractitioners(
+    fhirBaseURL,
+    team,
+    toAdd,
+    toRem ?? [],
+    practitioners,
+    t,
+    PractitionerRoles
+  );
 }
 
 /**
  * handle Practitioners
  *
- * @param {string} fhirBaseURL - base url
- * @param {Organization} team Oganization to be used to Practitioner
- * @param {string[]} toAdd list of practitioner uuid to add
- * @param {string[]} toRemove list of practitioner uuid to remove
- * @param {Practitioner[]} practitioner list of practitioner to refer to when adding or removing
- * @param {PractitionerRole[]} practitionerRole list of practitionerRole to remove or add
+ * @param fhirBaseURL - base url
+ * @param team Oganization to be used to Practitioner
+ * @param toAdd list of practitioner uuid to add
+ * @param toRemove list of practitioner uuid to remove
+ * @param practitioner list of practitioner to refer to when adding or removing
+ * @param t - translator function
+ * @param practitionerRole list of practitionerRole to remove or add
  */
 async function SetPractitioners(
   fhirBaseURL: string,
@@ -87,9 +98,10 @@ async function SetPractitioners(
   toAdd: string[],
   toRemove: string[],
   practitioner: Practitioner[],
+  t: TFunction,
   practitionerRole?: PractitionerRole[]
 ) {
-  sendInfoNotification(lang.MSG_ASSIGN_PRACTITIONERS);
+  sendInfoNotification(t('Assigning Practitioners'));
   const serve = new FHIRServiceClass(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
 
   // Api Call to delete practitioners
@@ -130,7 +142,7 @@ async function SetPractitioners(
   });
   await Promise.all(addPromises);
 
-  sendSuccessNotification(lang.MSG_ASSIGN_PRACTITONERS_SUCCESS);
+  sendSuccessNotification(t('Successfully Assigned Practitioners'));
 }
 
 /**
@@ -138,16 +150,21 @@ async function SetPractitioners(
  *
  * @param {string} fhirBaseURL - base url
  * @param {Organization} payload payload To send
+ * @param t - the translator function
  */
-export async function setTeam(fhirBaseURL: string, payload: Omit<Organization, 'meta'>) {
+export async function setTeam(
+  fhirBaseURL: string,
+  payload: Omit<Organization, 'meta'>,
+  t: TFunction
+) {
   const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   if (payload.id) {
     const resp: Organization = await serve.update(payload);
-    sendSuccessNotification(lang.MSG_TEAMS_UPDATE_SUCCESS);
+    sendSuccessNotification(t('Successfully Updated Teams'));
     return resp;
   } else {
     const resp: Organization = await serve.create(payload);
-    sendSuccessNotification(lang.MSG_TEAMS_ADD_SUCCESS);
+    sendSuccessNotification(t('Successfully Added Teams'));
     return resp;
   }
 }
@@ -156,6 +173,8 @@ export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
   const { practitioners, practitionerRoles, fhirBaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { t } = useTranslation();
+
   const initialValue = props.value ?? {
     active: true,
     name: '',
@@ -199,60 +218,60 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) => {
         setIsSubmitting(true);
-        onSubmit(fhirBaseURL, initialValue, values, practitioners, practitionerRoles)
+        onSubmit(fhirBaseURL, initialValue, values, practitioners, t, practitionerRoles)
           .then(() => {
             queryClient
               .invalidateQueries(ORGANIZATION_ENDPOINT)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              .catch(() => sendErrorNotification(t('An error occurred')));
             queryClient
               .invalidateQueries(PRACTITIONERROLE_ENDPOINT)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              .catch(() => sendErrorNotification(t('An error occurred')));
             queryClient
               .invalidateQueries(PRACTITIONER_ENDPOINT)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              .catch(() => sendErrorNotification(t('An error occurred')));
             history.goBack();
           })
-          .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+          .catch(() => sendErrorNotification(t('An error occurred')))
           .finally(() => setIsSubmitting(false));
       }}
       initialValues={initialValue}
     >
-      <AntdForm.Item name="uuid" label={lang.TEAM_NAME} hidden={true}>
+      <AntdForm.Item name="uuid" label={t('Team Name')} hidden={true}>
         <Input />
       </AntdForm.Item>
       <AntdForm.Item
         name="name"
-        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
-        label={lang.TEAM_NAME}
+        rules={[{ required: true, message: t('This is a required field') }]}
+        label={t('Team Name')}
       >
-        <Input placeholder={lang.ENTER_TEAM_NAME} />
+        <Input placeholder={t('Enter a team name')} />
       </AntdForm.Item>
-      <AntdForm.Item name="active" label={lang.STATUS}>
+      <AntdForm.Item name="active" label={t('Status')}>
         <Radio.Group>
-          <Radio value={true}>{lang.ACTIVE}</Radio>
-          <Radio value={false}>{lang.INACTIVE}</Radio>
+          <Radio value={true}>{t('Active')}</Radio>
+          <Radio value={false}>{t('Inactive')}</Radio>
         </Radio.Group>
       </AntdForm.Item>
       <AntdForm.Item
         name="practitioners"
-        label={lang.TEAM_MEMBERS}
-        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
+        label={t('Team Members')}
+        rules={[{ required: true, message: t('This is a required field') }]}
       >
         <Select
           allowClear
           mode="multiple"
           optionFilterProp="label"
-          placeholder={lang.SELECT_PRACTITIONER}
+          placeholder={t('Select user (practitioners only)')}
           options={getPractitionersOptions(props.practitioners)}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
       </AntdForm.Item>
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
-          {isSubmitting ? lang.SAVING : lang.SAVE}
+          {isSubmitting ? t('Saving') : t('Save')}
         </Button>
         <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-          {lang.CANCEL}
+          {t('Cancel')}
         </Button>
       </AntdForm.Item>
     </AntdForm>

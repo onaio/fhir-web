@@ -14,10 +14,10 @@ import {
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
+import { useTranslation } from '../../mls';
 
 export interface Props {
   fhirBaseURL: string;
@@ -25,6 +25,7 @@ export interface Props {
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
   const fhirParams = {
     _count: FHIR_RESOURCES_PAGE_SIZE,
     _getpagesoffset: 0,
@@ -49,7 +50,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     PRACTITIONER_ENDPOINT,
     async () => practitionerAPI.list(fhirParams),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res.entry.map((e) => e.resource),
     }
   );
@@ -58,7 +59,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     [ORGANIZATION_ENDPOINT, params.id],
     async () => organizationAPI.read(`${params.id}`),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
       enabled: params.id !== undefined,
     }
@@ -68,7 +69,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     PRACTITIONERROLE_ENDPOINT,
     async () => practitionerroleAPI.list(fhirParams),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res.entry.map((e) => e.resource),
       enabled: params.id !== undefined,
     }
@@ -86,7 +87,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           practitioners: practitionerInfo.map((practitioner) => practitioner.id),
         });
       })
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+      .catch(() => sendErrorNotification(t('An error occurred')));
   }
 
   if (!practitioners.data || (params.id && (!initialValue || !allRoles.data)))
@@ -95,11 +96,11 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? lang.EDIT : lang.CREATE} Team</title>
+        <title>{params.id ? t('Edit') : t('Create')} Team</title>
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {initialValue?.name ? `${lang.EDIT_TEAM} | ${initialValue.name}` : lang.CREATE_TEAM}
+        {initialValue?.name ? `${t('Edit Team')} | ${initialValue.name}` : t('Create Team')}
       </h5>
 
       <div className="bg-white p-5">

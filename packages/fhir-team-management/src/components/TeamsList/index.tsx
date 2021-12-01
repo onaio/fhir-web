@@ -17,10 +17,10 @@ import Table from './Table';
 import './TeamsList.css';
 import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
-import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
+import { useTranslation } from '../../mls';
 
 interface Props {
   fhirBaseURL: string;
@@ -33,6 +33,7 @@ interface Props {
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
   const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   const fhirParams = {
     _count: FHIR_RESOURCES_PAGE_SIZE,
@@ -42,7 +43,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const [filterData, setfilterData] = useState<{ search?: string; data?: Organization[] }>({});
 
   const teams = useQuery(ORGANIZATION_ENDPOINT, async () => serve.list(fhirParams), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+    onError: () => sendErrorNotification(t('An error occurred')),
     select: (res) => res.entry.map((e) => e.resource),
   });
 
@@ -72,15 +73,15 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.TEAMS}</title>
+        <title>{t('Teams')}</title>
       </Helmet>
-      <h5 className="mb-3">{lang.TEAMS}</h5>
+      <h5 className="mb-3">{t('Teams')}</h5>
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
             <h5>
               <Input
-                placeholder={lang.SEARCH}
+                placeholder={t('Search')}
                 size="large"
                 defaultValue={filterData.search}
                 prefix={<SearchOutlined />}
@@ -91,7 +92,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
               <Link className="create" to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.CREATE_TEAM}
+                  {t('Create Team')}
                 </Button>
               </Link>
             </div>
@@ -105,7 +106,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
                 loadTeamPractitionerInfo(prams)
                   .then((team) => setDetail(team))
                   .catch(() => {
-                    sendErrorNotification(lang.ERROR_OCCURRED);
+                    sendErrorNotification(t('An error occurred'));
                     setDetail(null);
                   });
               }}
