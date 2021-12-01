@@ -2,17 +2,18 @@ import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Fields, FormFields } from './Form';
+import { TFunction } from 'react-i18next';
 
 export const submitForm = async (
   values: FormFields,
   fhirBaseURL: string,
   groups: Fields[],
   practitioners: Fields[],
+  t: TFunction,
   id?: string,
   uuid?: string
 ): Promise<void> => {
@@ -49,13 +50,14 @@ export const submitForm = async (
   if (id) {
     await serve
       .update(payload)
-      .then(() => sendSuccessNotification(lang.CARE_TEAMS_UPDATE_SUCCESS))
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+      // TODO - possible place to use translation plurals
+      .then(() => sendSuccessNotification(t('Successfully Updated Care Teams')))
+      .catch(() => sendErrorNotification(t('An error occurred')));
   } else {
     await serve
       .create(payload)
-      .then(() => sendSuccessNotification(lang.CARE_TEAMS_ADD_SUCCESS))
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+      .then(() => sendSuccessNotification(t('Successfully Added Care Teams')))
+      .catch(() => sendErrorNotification(t('An error occurred')));
   }
   history.push(URL_CARE_TEAM);
 };

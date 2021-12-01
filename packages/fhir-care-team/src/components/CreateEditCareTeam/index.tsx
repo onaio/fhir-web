@@ -6,7 +6,6 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
-import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
   FHIR_GROUPS,
@@ -16,6 +15,7 @@ import {
 import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
+import { useTranslation } from '../../mls';
 
 // Interface for route params
 interface RouteParams {
@@ -52,6 +52,8 @@ export const defaultInitialValues: FormFields = {
 
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
   const { fhirBaseURL, resourcePageSize } = props;
+  const { t } = useTranslation();
+
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID];
   const fhirParams = {
     _count: resourcePageSize,
@@ -62,7 +64,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     [FHIR_CARE_TEAM, careTeamId],
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
     }
   );
@@ -71,7 +73,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     FHIR_GROUPS,
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).list(fhirParams),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
     }
   );
@@ -80,7 +82,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     FHIR_PRACTITIONERS,
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_PRACTITIONERS).list(fhirParams),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
     }
   );

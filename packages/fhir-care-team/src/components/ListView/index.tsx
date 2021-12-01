@@ -19,7 +19,6 @@ import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@opensrp/react-utils';
-import lang from '../../lang';
 import {
   SEARCH_QUERY_PARAM,
   FHIR_CARE_TEAM,
@@ -31,6 +30,8 @@ import {
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { TFunction } from 'react-i18next';
+import { useTranslation } from '../../mls';
 
 // route params for care team pages
 interface RouteParams {
@@ -78,12 +79,16 @@ export const fetchCareTeams = async (
   });
 };
 
-export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
+export const deleteCareTeam = async (
+  fhirBaseURL: string,
+  id: string,
+  t: TFunction
+): Promise<void> => {
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   return serve
     .delete(id)
-    .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
-    .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+    .then(() => sendSuccessNotification(t('Successfully Deleted Care Team')))
+    .catch(() => sendErrorNotification(t('An error occurred')));
 };
 
 export const useCareTeamsHook = (
@@ -109,6 +114,7 @@ export const useCareTeamsHook = (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL, careTeamPageSize } = props;
   const history = useHistory();
+  const { t } = useTranslation();
   const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
 
   const [payloadCount, setPayloadCount] = React.useState<number>(0);
@@ -147,7 +153,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
 
   const columns = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name',
       editable: true,
       sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
@@ -170,11 +176,11 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               <Menu className="menu">
                 <Menu.Item>
                   <Popconfirm
-                    title={lang.CONFIRM_DELETE}
-                    okText={lang.YES}
-                    cancelText={lang.NO}
+                    title={t('Are you sure you want to delete this Care Team?')}
+                    okText={t('Yes')}
+                    cancelText={t('No')}
                     onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id);
+                      await deleteCareTeam(fhirBaseURL, record.id, t);
                       await refetch();
                     }}
                   >
@@ -207,9 +213,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.CARE_TEAM_PAGE_HEADER}</title>
+        <title>{t('FHIR Care Team')}</title>
       </Helmet>
-      <PageHeader title={lang.CARE_TEAM_PAGE_HEADER} className="page-header" />
+      <PageHeader title={t('FHIR Care Team')} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -217,7 +223,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
                 <PlusOutlined />
-                {lang.CREATE_CARE_TEAM}
+                {t('Create Care Team')}
               </Button>
             </Link>
           </div>

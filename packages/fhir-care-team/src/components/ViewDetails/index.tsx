@@ -6,10 +6,10 @@ import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Resource404, BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
-import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
 import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
+import { useTranslation } from '../../mls';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -25,6 +25,7 @@ export interface ViewDetailsProps {
  */
 const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
+  const { t } = useTranslation();
   const history = useHistory();
 
   const { data, isLoading, error } = useQuery({
@@ -85,19 +86,19 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <Text strong={true} className="display-block">
-            {lang.NAME}
+            {t('Name')}
           </Text>
           <Text type="secondary" className="display-block">
             {data?.name}
           </Text>
           <Text strong={true} className="display-block">
-            {lang.IDENTIFIER}
+            {t('Identifier')}
           </Text>
           <Text type="secondary" className="display-block">
             {data?.identifier[0].value}
           </Text>
           <Text strong={true} className="display-block">
-            {lang.STATUS}
+            {t('Status')}
           </Text>
           <Text type="secondary" className="display-block">
             {data?.status}
@@ -105,7 +106,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
           {subject.data && subject.data.name ? (
             <>
               <Text strong={true} className="display-block">
-                {lang.SUBJECT}
+                {t('Subject')}
               </Text>
               <Text type="secondary" className="display-block">
                 {subject.data.name}
@@ -115,7 +116,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
             ''
           )}
           <Text strong={true} className="display-block">
-            {lang.PARTICIPANTS}
+            {t('Participant')}
           </Text>
           {practitioners.length
             ? practitioners.map((datum: Dictionary) => (
