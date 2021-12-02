@@ -1,10 +1,11 @@
 import React from 'react';
 import { Spin, Alert } from 'antd';
-import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
+import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
-import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
 import { Column } from '@opensrp/react-utils';
+import { useTranslation } from '../../mls';
+import { TFunction } from 'react-i18next';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -19,10 +20,11 @@ export interface TableData {
  * @param record - record to show in row
  */
 export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
+  const { t } = useTranslation();
   return (
     <>
       <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
-        {lang.VIEW}
+        {t('View')}
       </Link>
     </>
   );
@@ -30,14 +32,14 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
 
 /** service point list table columns factory
  *
- * @param langObj - the language translations lookup
+ * @param t - translator function
  */
-export const columnsFactory = (langObj: Lang = lang) => {
+export const columnsFactory = (t: TFunction) => {
   const columns: Column<TableData>[] = [
     {
-      title: langObj.SERVICE_POINT_TH,
+      title: t('Service point'),
       dataIndex: 'serviceName',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_TH}` as keyof TableData,
+      key: 'serviceName' as keyof TableData,
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.serviceName > rec2.serviceName) {
@@ -50,19 +52,19 @@ export const columnsFactory = (langObj: Lang = lang) => {
       },
     },
     {
-      title: langObj.TYPE_TH,
+      title: t('type'),
       dataIndex: 'type',
-      key: `${TableColumnsNamespace}-${langObj.TYPE_TH}` as keyof TableData,
+      key: 'type',
     },
     {
-      title: langObj.LOCATION_TH,
+      title: t('Location'),
       dataIndex: 'location',
-      key: `${TableColumnsNamespace}-${langObj.LOCATION_TH}` as keyof TableData,
+      key: 'location' as keyof TableData,
     },
     {
-      title: langObj.SERVICE_POINT_ID_TH,
+      title: t('Service point ID'),
       dataIndex: 'servicePointId',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}` as keyof TableData,
+      key: 'servicePointId',
     },
   ];
   return columns;
@@ -75,13 +77,15 @@ export const columnsFactory = (langObj: Lang = lang) => {
  * @param root0.message - message to show as title
  * @param root0.description - description of error to show
  */
-export const ServicePointsLoading = ({
-  message = lang.FETCHING_LOCATIONS,
-  description = lang.FETCHING_LOCATIONS_DESCRIPTION,
-}) => {
+export const ServicePointsLoading = () => {
+  const { t } = useTranslation();
   return (
-    <Spin tip={lang.LOADING_ELLIPSIS}>
-      <Alert message={message} description={description} type="info" />
+    <Spin tip={t('Loading ...')}>
+      <Alert
+        message={t('Fetching locations')}
+        description={t('Please wait, while locations are being fetched')}
+        type="info"
+      />
     </Spin>
   );
 };

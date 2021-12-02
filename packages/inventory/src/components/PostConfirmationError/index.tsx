@@ -2,14 +2,14 @@
  * to the db fails and returns a csv error */
 import React from 'react';
 import { Card, Divider } from 'antd';
-import lang from '../../lang';
 import { WarningOutlined } from '@ant-design/icons';
-import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
+import { INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
-import { format } from 'util';
 import { Column, TableLayout } from '@opensrp/react-utils';
+import { useTranslation } from '../../mls';
+import { Trans } from 'react-i18next';
 
 type TableData = BadRequestError['errors'][0];
 
@@ -29,24 +29,25 @@ const defaultProps = {
  */
 const PostConfirmError = (props: PostConfirmErrorProps) => {
   const { errorObj, filename } = props;
+  const { t } = useTranslation();
 
   const columns: Column<TableData>[] = [
     {
-      title: lang.ROW_NUMBER,
+      title: t('Row number'),
       dataIndex: 'row',
-      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}` as keyof TableData,
+      key: 'rowNumber' as keyof TableData,
     },
     {
-      title: lang.ERRORS,
+      title: t('Errors'),
       dataIndex: 'failureReason',
-      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}` as keyof TableData,
+      key: 'failureReason' as keyof TableData,
     },
   ];
 
   const cardTitle = (
     <CardTitle
       IconRender={<WarningOutlined className="card-title__icon" />}
-      text={lang.INVENTORY_PROCESSING_ERROR}
+      text={t('Processing error: inventory items failed to be added')}
     />
   );
 
@@ -58,21 +59,30 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{format(lang.INVENTORY_ITEMS_FAILED_TO_BE_ADDED, failedRowsNum, filename)}</p>
+      <p>
+        {t(
+          '{{failedRowsNum}} inventory items failed to be added from “{{filename}}”. To add items, follow these steps: ',
+          { failedRowsNum, filename }
+        )}
+      </p>
       <ol>
-        <li>{format(lang.EXTRACT_THE_ROWS_LISTED, filename)}</li>
-        <li>{lang.PASTE_THE_ROWS}</li>
+        <li>{t('Extract the rows listed below from "{{filename}}"', { filename })}</li>
+        <li>{t('Paste the rows into a new CSV file')}</li>
         <li>
-          <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.UPLOAD_THE_CSV_FILE}</Link>
+          <Link to={INVENTORY_BULK_UPLOAD_URL}>{t('Upload the CSV file')}</Link>
         </li>
       </ol>
       <p>
-        {lang.INVENTORY_ITEMS_NOT_LISTED_BELOW}
-        <Link to={INVENTORY_BULK_UPLOAD_URL}>{lang.SERVICE_POINT_INVENTORY}</Link>.
-        <strong>{lang.CAUTION_DO_NOT_RE_UPLOAD_THE_SUCCESSFULLY_UPLOADED_ITEMS}</strong>
+        <Trans t={t} i18nKey="PostConfirmError.inventoryItemsNotAdded">
+          Inventory items not listed below were successfully added to the
+          <Link to={INVENTORY_BULK_UPLOAD_URL}>Service point inventory</Link>.
+          <strong>
+            &nbsp;Caution: do not re-upload the successful items or duplicates will be created.
+          </strong>
+        </Trans>
       </p>
       <Divider></Divider>
-      <p>{format(lang.INVENTORY_ITEMS_FROM_FILE_THAT_WERE_NOT_ADDED, filename)}</p>
+      <p>{t('Inventory items from “{{filename}}” that were not added', { filename })}</p>
       <TableLayout
         id="InventoryPostConfirmationError"
         dataKeyAccessor="row"

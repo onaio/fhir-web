@@ -6,7 +6,6 @@ import { Typography, Spin } from 'antd';
 import { Helmet } from 'react-helmet';
 import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import lang from '../../lang';
 import { fetchSettings } from './utils';
 import { Setting } from '../../components/InventoryItemForm';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -38,6 +37,7 @@ import {
 } from '../../ducks/inventory';
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
+import { useTranslation } from '../../mls';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -85,6 +85,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [donors, setDonors] = React.useState<Setting[]>([]);
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { t } = useTranslation();
   const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
@@ -105,13 +106,20 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
           fetchLocationUnitsCreator([response]);
         })
         .catch((_: HTTPError) => {
-          sendErrorNotification(lang.ERROR_GENERIC);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => {
           setIsLoading(false);
         });
     }
-  }, [servicePoint, fetchLocationUnitsCreator, openSRPBaseURL, customFetchOptions, match.params]);
+  }, [
+    servicePoint,
+    fetchLocationUnitsCreator,
+    openSRPBaseURL,
+    customFetchOptions,
+    match.params,
+    t,
+  ]);
 
   useEffect(() => {
     const service = new OpenSRPService(
@@ -125,17 +133,18 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         setProducts(response);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(lang.ERROR_GENERIC);
+        sendErrorNotification(t('An error occurred'));
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: INVENTORY_DONORS }, setDonors);
+    fetchSettings(openSRPBaseURL, { serverVersion: 0, identifier: INVENTORY_DONORS }, setDonors, t);
     fetchSettings(
       openSRPBaseURL,
       { serverVersion: 0, identifier: INVENTORY_UNICEF_SECTIONS },
-      setUNICEFSections
+      setUNICEFSections,
+      t
     ); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -156,7 +165,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
           fetchInventoriesCreator(response);
         })
         .catch((_: HTTPError) => {
-          sendErrorNotification(lang.ERROR_GENERIC);
+          sendErrorNotification(t('An error occurred'));
         });
     }
   }, [
@@ -166,6 +175,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     servicePoint,
     openSRPBaseURL,
     fetchInventoriesCreator,
+    t,
   ]);
 
   if (isLoading) {
@@ -211,16 +221,18 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
     initialValues,
     inventoryID: inventory?._id,
   };
-  let heading = `${lang.ADD_INVENTORY_ITEM} ${lang.TO} ${properties.name}`;
+  const { name } = properties;
+  let heading = t('Add inventory item to {{name}}', { name });
 
   if (isEdit) {
-    if (inventory?.product?.productName) {
-      heading = `${lang.EDIT} > ${inventory.product.productName}`;
+    const productName = inventory?.product?.productName;
+    if (productName) {
+      heading = t('Edit > {{productName}}', { productName });
     } else {
-      heading = lang.EDIT;
+      heading = t('Edit');
     }
   }
-  const title = !isEdit ? lang.ADD_INVENTORY_ITEM : lang.EDIT_INVENTORY_ITEM;
+  const title = !isEdit ? t('Add inventory item') : t('Edit inventory item');
 
   return (
     <div className="layout-content">

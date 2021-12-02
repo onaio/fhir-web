@@ -22,7 +22,6 @@ export const URL_INVENTORY_EDIT = '/item/edit';
 
 // other constants
 /** namespace for the keys attached to the columns */
-export const TableColumnsNamespace = 'inventory';
 export const errorsTableColumnsNameSpace = 'inventoryBulkUploadError';
 export const INVENTORY_DONORS = 'inventory_donors';
 export const INVENTORY_UNICEF_SECTIONS = 'inventory_unicef_sections';

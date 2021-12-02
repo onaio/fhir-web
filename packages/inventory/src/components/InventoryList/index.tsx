@@ -10,7 +10,6 @@ import {
   URL_INVENTORY_EDIT,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import lang from '../../lang';
 import {
   fetchInventories,
   getInventoriesByExpiry,
@@ -23,6 +22,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import '../../index.css';
 import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from '../../mls';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -60,6 +60,7 @@ const InventoryList = (props: InventoryListProps) => {
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     // api call to get inventory by id
@@ -78,7 +79,7 @@ const InventoryList = (props: InventoryListProps) => {
   }, []);
 
   if (broken) {
-    return <Alert message={lang.ERROR_GETTING_INVENTORIES} type="error" />;
+    return <Alert message={t('Unable to fetch inventories for service point')} type="error" />;
   }
 
   const datasource = inventoriesArray.map((item) => {
@@ -97,10 +98,10 @@ const InventoryList = (props: InventoryListProps) => {
       <Row className={'list-view'}>
         <Col className={'main-content'}>
           <div className="inventory-profile">
-            <h6>{lang.INVENTORY_ITEMS}</h6>
+            <h6>{t('Inventory items')}</h6>
             <Link to={`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`}>
               <Button type="primary" size="large">
-                {`+ ${lang.ADD_NEW_INVENTORY_ITEM}`}
+                {t(' + Add new inventory item')}
               </Button>
             </Link>
           </div>
@@ -111,15 +112,15 @@ const InventoryList = (props: InventoryListProps) => {
             className="custom-table"
             pagination={false}
             datasource={datasource}
-            columns={getTableColumns()}
+            columns={getTableColumns(t)}
             actions={{
-              title: lang.ACTIONS_TH,
+              title: t('Actions'),
               // eslint-disable-next-line react/display-name
               render: (_: string, record) => (
                 <Link
                   to={`${servicePointProfileURL}/${record.locationId}${editInventoryURL}/${record._id}`}
                 >
-                  {lang.EDIT}
+                  {t('Edit')}
                 </Link>
               ),
               width: '20%',

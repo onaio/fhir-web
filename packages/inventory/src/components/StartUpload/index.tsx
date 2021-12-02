@@ -1,10 +1,10 @@
 import React from 'react';
 import { Card, Button, Upload } from 'antd';
-import lang from '../../lang';
 import { CloudUploadOutlined, UploadOutlined } from '@ant-design/icons';
 import { CSV_FILE_TYPE } from '../../constants';
 import { UploadChangeParam, RcCustomRequestOptions } from 'antd/lib/upload/interface';
 import { CardTitle } from '../../helpers/utils';
+import { useTranslation } from '../../mls';
 
 /** props for file start upload */
 interface StartUploadProps {
@@ -22,11 +22,12 @@ const defaultProps = {
  */
 const StartUpload = (props: StartUploadProps) => {
   const { onFileUpload } = props;
+  const { t } = useTranslation();
 
   const cardTitle = (
     <CardTitle
       IconRender={<CloudUploadOutlined className="card-title__icon" />}
-      text={lang.USE_CSV_TO_UPLOAD_INVENTORY}
+      text={t('Use a CSV file to add service point inventory')}
     />
   );
 
@@ -52,10 +53,10 @@ const StartUpload = (props: StartUploadProps) => {
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{lang.CHANCE_TO_REVIEW_BEFORE_COMMITTING}</p>
+      <p>{t('You’ll get a chance to review before committing inventory updates.')}</p>
       <Upload {...uploadProps}>
         <Button icon={<UploadOutlined />} type="primary" className="round-button">
-          {lang.SELECT_CSV_FILE}
+          {t('Select CSV file')}
         </Button>
       </Upload>
     </Card>

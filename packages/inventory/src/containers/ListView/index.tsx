@@ -34,9 +34,9 @@ import {
   SEARCH_QUERY_PARAM,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import lang from '../../lang';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { loadCount } from '../../helpers/dataLoaders';
+import { useTranslation } from '../../mls';
 
 /** make sure locations and hierarchy reducer is registered */
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
@@ -80,8 +80,9 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   } = props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
+  const { t } = useTranslation();
 
-  const columns = columnsFactory(lang);
+  const columns = columnsFactory(t);
 
   useEffect(() => {
     const getCountParams = {
@@ -140,8 +141,8 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
   }
-
-  const pageTitle = `${lang.SERVICE_POINT_INVENTORY} (${structures.length})`;
+  const structureNum = structures.length;
+  const pageTitle = t('Service point inventory ({{structureNum}})', { structureNum });
 
   const datasource: TableData[] = structures.map((location) => {
     const locationToDisplay = {
@@ -170,7 +171,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
           <div className="main-content__header">
             <SearchForm {...searchFormProps} size="middle" />
             <Link to={INVENTORY_ADD_SERVICE_POINT}>
-              <Button type="primary">{lang.ADD_SERVICE_POINT}</Button>
+              <Button type="primary">{t('+ Add service point')}</Button>
             </Link>
           </div>
           <TableLayout
@@ -180,7 +181,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             datasource={datasource}
             columns={columns}
             actions={{
-              title: lang.ACTIONS_TH,
+              title: t('Actions'),
               render: ActionsColumnCustomRender,
               width: '20%',
             }}

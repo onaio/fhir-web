@@ -1,9 +1,8 @@
 import React from 'react';
 import { Card, Space, Button } from 'antd';
-import lang from '../../lang';
 import { RightCircleOutlined } from '@ant-design/icons';
-import { format } from 'util';
 import { CardTitle } from '../../helpers/utils';
+import { useTranslation } from '../../mls';
 
 /** describes this component's props */
 interface PreConfirmationSuccessProps {
@@ -24,27 +23,33 @@ const defaultProps = {
  */
 const PreConfirmationSuccess = (props: PreConfirmationSuccessProps) => {
   const { onCancel, onCommitInventory, rowsProcessed, filename } = props;
+  const { t } = useTranslation();
 
   const cardTitle = (
     <CardTitle
       IconRender={<RightCircleOutlined className="card-title__icon" />}
-      text={format(lang.FILE_READY, filename)}
+      text={t('“{{filename}}” ready', { filename })}
     />
   );
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{format(lang.INVENTORY_ITEMS_WILL_BE_ADDED, rowsProcessed)}</p>
+      <p>
+        {t(
+          '{{rowsProcessed}} inventory items will be added to service points. Do you wish to proceed?',
+          { rowsProcessed }
+        )}
+      </p>
       <Space>
         <Button
           id="confirm-commit"
           className="custom-btn-success round-button"
           onClick={onCommitInventory}
         >
-          {lang.PROCEED_WITH_ADDING_INVENTORY}
+          {t('Proceed with adding inventory')}
         </Button>
         <Button id="cancel-commit" className="round-button" onClick={onCancel}>
-          {lang.CANCEL}
+          {t('Cancel')}
         </Button>
       </Space>
     </Card>
