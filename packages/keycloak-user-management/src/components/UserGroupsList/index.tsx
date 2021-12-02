@@ -20,7 +20,7 @@ import {
   reducerName as keycloakUserGroupsReducerName,
   reducer as keycloakUserGroupsReducer,
 } from '../../ducks/userGroups';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import {
   KEYCLOAK_URL_USER_GROUPS,
   ROUTE_PARAM_USER_GROUP_ID,
@@ -78,6 +78,7 @@ export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
  * @returns {Function} returns User Groups list display
  */
 export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
@@ -96,7 +97,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         .then((response: KeycloakUserGroup[]) => {
           dispatch(fetchKeycloakUserGroups(response));
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => sendErrorNotification(t(t('An error occurred'))))
         .finally(() => setIsLoading(false));
     }
   });
@@ -110,7 +111,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
 
   const columns: Column<KeycloakUserGroup>[] = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
@@ -119,9 +120,9 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   return (
     <div className="content-section user-group">
       <Helmet>
-        <title>{lang.USER_GROUPS_PAGE_HEADER}</title>
+        <title>{t('User Groups')}</title>
       </Helmet>
-      <PageHeader title={lang.USER_GROUPS_PAGE_HEADER} className="page-header" />
+      <PageHeader title={t('User Groups')} className="page-header" />
       <Row className="list-view">
         <Col className={'main-content'}>
           <div className="main-content__header">
@@ -129,7 +130,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             <Link to={URL_USER_GROUP_CREATE}>
               <Button type="primary">
                 <PlusOutlined />
-                {lang.ADD_USER_GROUP}
+                {t('New User Group')}
               </Button>
             </Link>
           </div>
@@ -139,14 +140,14 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             datasource={getUserGroupsList}
             columns={columns}
             actions={{
-              title: lang.ACTIONS,
+              title: t('Actions'),
               width: '10%',
               // eslint-disable-next-line react/display-name
               render: (record) => (
                 <span className="d-flex justify-content-end align-items-center">
                   <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
                     <Button type="link" className="m-0 p-1">
-                      {lang.EDIT}
+                      {t('Edit')}
                     </Button>
                   </Link>
                   <Divider type="vertical" />
@@ -159,7 +160,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                             history.push(`${URL_USER_GROUPS}/${record.id}`);
                           }}
                         >
-                          {lang.VIEW_DETAILS}
+                          {t('View Details')}
                         </Menu.Item>
                       </Menu>
                     }

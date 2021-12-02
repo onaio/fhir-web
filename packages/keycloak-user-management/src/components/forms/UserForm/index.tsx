@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import lang from '../../../lang';
+import { useTranslation } from '../../../mls';
 import { getUserGroupsOptions, submitForm, userGroupOptionsFilter } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
@@ -26,6 +26,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
+  const { t } = useTranslation();
 
   // hook into the form lifecycle methods
   const [form] = Form.useForm();
@@ -88,7 +89,9 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     <Row className="layout-content">
       {/** If email is provided render edit user otherwise add user */}
       <h5 className="mb-3 header-title">
-        {props.initialValues.id ? `${lang.EDIT_USER} | ${initialValues.username}` : lang.ADD_USER}
+        {props.initialValues.id
+          ? t('Edit User | {{username}}', { username: initialValues.username })
+          : t('Add User')}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form
@@ -102,10 +105,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               keycloakBaseURL,
               opensrpBaseURL,
               userGroups,
-              initialValues.userGroups as string[]
+              initialValues.userGroups as string[],
+              t
             )
               .catch((_: Error) => {
-                sendErrorNotification(lang.ERROR_OCCURED);
+                sendErrorNotification(t('An error occurred'));
               })
               .finally(() => setSubmitting(false));
           }}
@@ -113,27 +117,27 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
           <Form.Item
             name="firstName"
             id="firstName"
-            label={lang.FIRST_NAME}
-            rules={[{ required: true, message: lang.FIRST_NAME_REQUIRED }]}
+            label={t('First Name')}
+            rules={[{ required: true, message: t('First Name is required') }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="lastName"
             id="lastName"
-            label={lang.LAST_NAME}
-            rules={[{ required: true, message: lang.LAST_NAME_REQUIRED }]}
+            label={t('Last Name')}
+            rules={[{ required: true, message: t('Last Name is required') }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name="email" id="email" label={lang.EMAIL}>
+          <Form.Item name="email" id="email" label={t('Email')}>
             <Input />
           </Form.Item>
           <Form.Item
             name="username"
             id="username"
-            label={lang.USERNAME}
-            rules={[{ required: true, message: lang.USERNAME_REQUIRED }]}
+            label={t('Username')}
+            rules={[{ required: true, message: t('Username is required') }]}
           >
             <Input disabled={initialValues.id ? true : false} />
           </Form.Item>
@@ -145,22 +149,22 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 {
                   type: 'string',
                   pattern: /^0\d{9}$/,
-                  message: lang.CONTACT_REGEX_ERROR,
+                  message: t('Contact should be 10 digits and start with 0'),
                 },
                 {
                   required: !isHidden(CONTACT_FORM_FIELD),
-                  message: lang.CONTACT_IS_REQUIRED_ERROR,
+                  message: t('Contact is required'),
                 },
               ]}
               hidden={isHidden(CONTACT_FORM_FIELD)}
               name={CONTACT_FORM_FIELD}
-              label={lang.CONTACT}
+              label={t('Contact')}
             >
               <Input></Input>
             </Form.Item>
           ) : null}
 
-          <Form.Item id="enabled" name="enabled" label={lang.ENABLE_USER}>
+          <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
             <Radio.Group
               options={status}
               name="enabled"
@@ -169,7 +173,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             ></Radio.Group>
           </Form.Item>
           {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item id="practitionerToggle" name="active" label={lang.MARK_AS_PRACTITIONER}>
+            <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
               <Radio.Group name="active">
                 {status.map((e) => (
                   <Radio
@@ -186,11 +190,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item name="userGroups" id="userGroups" label={lang.GROUP}>
+          <Form.Item name="userGroups" id="userGroups" label={t('Group')}>
             <Select<SelectOption[]>
               mode="multiple"
               allowClear
-              placeholder={lang.PLEASE_SELECT}
+              placeholder={t('Please select')}
               style={{ width: '100%' }}
               options={getUserGroupsOptions(userGroups)}
               filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
@@ -198,10 +202,10 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
-              {isSubmitting ? lang.SAVING : lang.SAVE}
+              {isSubmitting ? t('SAVING') : t('Save')}
             </Button>
             <Button onClick={() => history.goBack()} className="cancel-user">
-              {lang.CANCEL}
+              {t('Cancel')}
             </Button>
           </Form.Item>
         </Form>

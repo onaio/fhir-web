@@ -8,17 +8,17 @@ import {
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
   DELETE_PRACTITIONER_ROLE,
 } from '../../../constants';
-import lang, { Lang } from '../../../lang';
 import { Practitioner } from '@opensrp/team-management';
+import { TFunction } from 'react-i18next';
 
 /**
  * Delete keycloak user and practitioner
  *
- * @param {Function} removeKeycloakUsersCreator - remove users action creator
- * @param {string} keycloakBaseURL - keycloak api base URL
+ * @param removeKeycloakUsersCreator - remove users action creator
+ * @param keycloakBaseURL - keycloak api base URL
  * @param opensrpBaseURL - opensrp api base url
- * @param {string} userId - id of user to be deleted
- * @param {Lang} langObj - lang
+ * @param userId - id of user to be deleted
+ * @param  t - translator function
  * @returns {void}
  */
 export const deleteUser = async (
@@ -26,7 +26,7 @@ export const deleteUser = async (
   keycloakBaseURL: string,
   opensrpBaseURL: string,
   userId: string,
-  langObj: Lang = lang
+  t: TFunction
 ) => {
   // get tied practitioner from base user Id
   const practitioner = await getPractitionerByUserId(
@@ -34,7 +34,7 @@ export const deleteUser = async (
     userId,
     opensrpBaseURL
   ).catch(() => {
-    sendErrorNotification(langObj.ERROR_OCCURED);
+    sendErrorNotification(t('An error occurred'));
     // stop loader
     return undefined;
   });
@@ -57,12 +57,12 @@ export const deleteUser = async (
   ])
     .then(() => {
       removeKeycloakUsersCreator();
-      sendSuccessNotification(langObj.USER_DELETED_SUCCESSFULLY);
-      sendSuccessNotification(langObj.PRACTITIONER_UNASSIGNED_SUCCESSFULLY);
-      sendSuccessNotification(langObj.PRACTITIONER_DEACTIVATED_SUCCESSFULLY);
+      sendSuccessNotification(t('User deleted successfully'));
+      sendSuccessNotification(t('Practitioner unassigned successfully'));
+      sendSuccessNotification(t('Practitioner deactivated successfully'));
     })
     .catch((_: Error) => {
-      sendErrorNotification(langObj.ERROR_OCCURED);
+      sendErrorNotification(t('An error occurred'));
     });
 };
 

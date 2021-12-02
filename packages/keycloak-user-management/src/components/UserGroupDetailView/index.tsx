@@ -10,7 +10,7 @@ import { UserGroupMembers } from '../UserGroupsList';
 import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
 import { Link } from 'react-router-dom';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -30,14 +30,15 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [userGroupMembers, setUserGroupMembers] = React.useState<UserGroupMembers[] | null>(null);
   const [singleUserGroup, setSingleUserGroup] = React.useState<KeycloakUserGroup | null>(null);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (groupId) {
       setLoading(true);
-      const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
-      const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
+      const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers, t);
+      const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup, t);
       Promise.all([membersPromise, userGroupPromise])
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => sendErrorNotification(t('An error occurred')))
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,13 +66,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <Text strong={true} className="display-block">
-            {lang.NAME}
+            {t('Name')}
           </Text>
           <Text type="secondary" className="display-block">
             {singleUserGroup?.name}
           </Text>
           <Text strong={true} className="display-block">
-            {lang.ROLES}
+            {t('Roles')}
           </Text>
           {singleUserGroup?.realmRoles?.map((role: string) => (
             <Text key={role} type="secondary" className="display-block">
@@ -79,7 +80,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
             </Text>
           ))}
           <Text strong={true} className="display-block">
-            {lang.MEMBERS}
+            {t('Members')}
           </Text>
           {userGroupMembers?.map((object: UserGroupMembers) => (
             <Link key={object.id} to={`${URL_USER_EDIT}/${object.id}`}>

@@ -13,7 +13,7 @@ import {
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -64,6 +64,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
   const [practitioner, setPractitioner] = useState<Practitioner>();
+  const { t } = useTranslation();
 
   const {
     keycloakUser,
@@ -84,10 +85,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => sendErrorNotification(t('An error occurred')))
         .finally(() => setUserGroupsLoading(false));
     }
-  }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
+  }, [keycloakBaseURL, opensrpBaseURL, t, userGroups.length]);
 
   /**
    * Fetch user if userId changes (editing a different user)
@@ -101,10 +102,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: KeycloakUser | null | undefined) => {
           if (response) fetchKeycloakUsersCreator([response]);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => sendErrorNotification(t('An error occurred')))
         .finally(() => setKeyCloakUserLoading(false));
     }
-  }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator]);
+  }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator, t]);
 
   /**
    * Fetch User group of the user being edited
@@ -119,10 +120,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) => setAssignedUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => sendErrorNotification(t('An error occurred')))
         .finally(() => setUserGroupLoading(false));
     }
-  }, [userId, keycloakBaseURL]);
+  }, [userId, keycloakBaseURL, t]);
 
   /**
    * Fetch practitioner data of the user being edited
@@ -136,10 +137,10 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: Practitioner | undefined) => {
           setPractitioner(response);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => sendErrorNotification(t('An error occurred')))
         .finally(() => setPractitionerLoading(false));
     }
-  }, [userId, opensrpBaseURL]);
+  }, [userId, opensrpBaseURL, t]);
 
   useEffect(() => {
     setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
