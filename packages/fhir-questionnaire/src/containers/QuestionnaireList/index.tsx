@@ -48,15 +48,42 @@ export const NamesColumnCustomRender: Column<Questionnaire>['render'] = (record:
  *
  */
 export const getColumns = (): Column<Questionnaire>[] => {
+  const dateSorter = (a: string, b: string) => new Date(a).getTime() - new Date(b).getTime();
   const columns: Column<Questionnaire>[] = [
     {
       title: 'Name/Id',
       render: NamesColumnCustomRender,
-      width: '60%',
+      width: '20%',
     },
     {
       title: 'Status',
       dataIndex: 'status',
+    },
+    {
+      title: 'Publisher',
+      dataIndex: 'publisher',
+    },
+    {
+      title: 'Version',
+      dataIndex: 'version',
+      render: (value, fullObj) => value ?? fullObj?.meta?.versionId ?? '',
+    },
+    {
+      title: 'Effective period',
+      children: [
+        {
+          title: 'Start',
+          dataIndex: ['effectivePeriod', 'start'],
+          key: 'start',
+          sorter: dateSorter,
+        },
+        {
+          title: 'End',
+          dataIndex: ['effectivePeriod', 'end'],
+          key: 'end',
+          sorter: dateSorter,
+        },
+      ],
     },
     {
       title: 'Actions',
