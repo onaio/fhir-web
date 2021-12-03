@@ -266,6 +266,6 @@ Below is a list of currently supported environment variables:
 
 - **REACT_APP_SENTRY_CONFIG_JSON**
   - Stringified json That has sentry custom sentry configurations, refer to [the sdk](https://docs.sentry.io/platforms/javascript/guides/react/enriching-events/tags/) for more information on custom Sentry tags.
-  - The full enum space of the keys that can be passed in the config object looks this: {...[key in [doc](https://getsentry.github.io/sentry-javascript/interfaces/browser.browseroptions-2.html) where value can be serialized as json]: value, tags:{ // any key value pair }}
+  - The full enum space of the keys that can be passed in the config object can be described as: {...[key in [doc](https://getsentry.github.io/sentry-javascript/interfaces/browser.browseroptions-2.html) where value is json serializable]: value, tags:{ // any key value pair }}
   - **Optional**(_string_)
   - default: ""
