@@ -268,3 +268,8 @@ Below is a list of currently supported environment variables:
   - Opensrp server V2 base URL
   - **Required**
   - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
+
+- **REACT_APP_OPENSRP_WEB_VERSION**
+  - Opensrp web version deployed
+  - **Optional**(_string_)
+  - default: ""

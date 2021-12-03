@@ -47,3 +47,5 @@ export const EXPRESS_OAUTH_GET_STATE_URL = 'http://localhost:3000/oauth/state';
 export const EXPRESS_OAUTH_LOGOUT_URL = 'http://localhost:3000/logout';
 
 export const DOMAIN_NAME = 'http://localhost:3000';
+
+export const OPENSRP_WEB_VERSION = '';

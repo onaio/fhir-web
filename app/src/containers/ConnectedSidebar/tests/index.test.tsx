@@ -136,6 +136,22 @@ describe('components/ConnectedSidebar', () => {
     expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
   });
 
+  it('shows version if available', () => {
+    const envModule = require('../../../configs/env');
+    envModule.OPENSRP_WEB_VERSION = 'v1.0.1';
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
+          <ConnectedSidebar />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const version = wrapper.find('.sidebar-version').text();
+    expect(version).toMatchInlineSnapshot(`"v1.0.1"`);
+  });
+
   it('correctly sets open keys', () => {
     const wrapper = mount(
       <Provider store={store}>
