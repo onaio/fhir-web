@@ -24,7 +24,7 @@ export interface Props {
 }
 
 export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL, resourcePageSize = 20 } = props;
+  const { fhirBaseURL, resourcePageSize } = props;
   const fhirParams = {
     _count: resourcePageSize,
     _getpagesoffset: 0,

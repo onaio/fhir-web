@@ -28,7 +28,7 @@ interface Props {
  * @returns {Function} returns team display
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL, resourcePageSize = 20 } = props;
+  const { fhirBaseURL, resourcePageSize } = props;
   const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   const fhirParams = {
     _count: resourcePageSize,

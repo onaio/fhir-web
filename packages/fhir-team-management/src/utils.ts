@@ -15,9 +15,9 @@ export async function loadTeamPractitionerInfo(props: {
   team: Organization;
   fhirBaseURL: string;
   PractitionerRoles?: PractitionerRole[];
-  resourcePageSize?: number;
+  resourcePageSize: number;
 }): Promise<OrganizationDetail> {
-  const { fhirBaseURL, team, resourcePageSize = 20 } = props;
+  const { fhirBaseURL, team, resourcePageSize } = props;
   const serve = new FHIRServiceClass<PractitionerRole>(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
   const fhirParams = {
     _count: resourcePageSize,
