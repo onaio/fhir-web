@@ -79,7 +79,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       team: team.data,
       fhirBaseURL: fhirBaseURL,
       PractitionerRoles: allRoles.data,
-      resourcePageSize: 500,
+      resourcePageSize,
     })
       .then(({ practitionerInfo, ...team }) => {
         setInitialValue({
