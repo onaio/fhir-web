@@ -178,7 +178,6 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
     const response: Organization[] = await teamsService.list(filterParams as Dictionary);
     dispatch(removeOrganizationsAction());
     dispatch(fetchOrganizationsAction(response));
-    setApiError(true);
     return response;
   }
 
