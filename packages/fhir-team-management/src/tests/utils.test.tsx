@@ -47,6 +47,8 @@ describe('utils', () => {
     const result = await loadTeamPractitionerInfo({
       fhirBaseURL: fhirBaseURL,
       team: team.entry[0].resource,
+      PractitionerRoles: undefined,
+      resourcePageSize: 500,
     });
 
     expect(result).toMatchObject(teamsDetail);
