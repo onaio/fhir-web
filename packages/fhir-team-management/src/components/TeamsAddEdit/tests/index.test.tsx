@@ -78,7 +78,7 @@ describe('components/TeamsAddEdit', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsAddEdit fhirBaseURL={fhirBaseURL} />
+          <TeamsAddEdit resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -99,7 +99,9 @@ describe('components/TeamsAddEdit', () => {
         <QueryClientProvider client={queryClient}>
           <Route
             path="/:id"
-            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+            render={(props) => (
+              <TeamsAddEdit resourcePageSize={20} {...props} fhirBaseURL={fhirBaseURL} />
+            )}
           />
         </QueryClientProvider>
       </MemoryRouter>
@@ -131,7 +133,9 @@ describe('components/TeamsAddEdit', () => {
         <QueryClientProvider client={queryClient}>
           <Route
             path="/:id"
-            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+            render={(props) => (
+              <TeamsAddEdit resourcePageSize={20} {...props} fhirBaseURL={fhirBaseURL} />
+            )}
           />
         </QueryClientProvider>
       </MemoryRouter>

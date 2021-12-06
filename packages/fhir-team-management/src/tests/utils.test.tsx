@@ -48,7 +48,7 @@ describe('utils', () => {
       fhirBaseURL: fhirBaseURL,
       team: team.entry[0].resource,
       PractitionerRoles: undefined,
-      resourcePageSize: 500,
+      resourcePageSize: 20,
     });
 
     expect(result).toMatchObject(teamsDetail);

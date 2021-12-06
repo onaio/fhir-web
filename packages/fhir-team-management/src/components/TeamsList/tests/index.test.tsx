@@ -69,7 +69,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -91,7 +91,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -125,7 +125,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -146,7 +146,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -177,7 +177,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
@@ -227,7 +227,7 @@ describe('components/TeamsList', () => {
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
-          <TeamsList fhirBaseURL={fhirBaseURL} />
+          <TeamsList resourcePageSize={20} fhirBaseURL={fhirBaseURL} />
         </QueryClientProvider>
       </Router>
     );
