@@ -18,7 +18,6 @@ import {
   PLANS_CREATE_VIEW_URL,
   RouteParams,
   SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
-  TableColumnsNamespace,
 } from '../../constants';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
@@ -33,7 +32,7 @@ interface Props<T = PlanDefinition> extends CommonProps {
   data: T[];
   service: typeof OpenSRPService;
   fetchPlansCreator: typeof fetchPlanDefinitions;
-  allowedPlanStatus: string;
+  allowedPlanStatus: PlanStatus;
 }
 
 const defaultProps = {
@@ -68,15 +67,7 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = pageTitleBuilder(allowedPlanStatus as PlanStatus);
-  // add a key prop to the array data to be consumed by the table
-  const datasource = data.map((singleObject, key) => {
-    const planWithKey = {
-      ...singleObject,
-      key: `${TableColumnsNamespace}-${key}`,
-    };
-    return planWithKey;
-  });
+  const pageTitle = pageTitleBuilder(allowedPlanStatus);
 
   const columns = getColumns();
 
@@ -95,12 +86,7 @@ const PlansList = (props: PlansListTypes) => {
               </Button>
             </Link>
           </div>
-          <TableLayout
-            id="PlansList"
-            persistState={true}
-            datasource={datasource}
-            columns={columns}
-          />
+          <TableLayout id="PlansList" persistState={true} datasource={data} columns={columns} />
         </Col>
       </Row>
     </div>
