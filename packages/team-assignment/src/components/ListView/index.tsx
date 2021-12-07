@@ -38,6 +38,7 @@ import {
 import {
   ASSIGNMENTS_ENDPOINT,
   LOCATION_HIERARCHY_ENDPOINT,
+  ORGANIZATION_COUNT_ENDPOINT,
   ORGANIZATION_ENDPOINT,
   PLANS_ENDPOINT,
   POST_ASSIGNMENTS_ENDPOINT,
@@ -55,7 +56,6 @@ const assignmentsSelector = getAssignmentsArrayByPlanId();
 
 export interface TableData {
   id: string;
-  key: string;
   locationName: string;
   existingAssignments: Assignment[];
   setExistingAssignments: (assignments: Assignment[]) => void;
@@ -79,6 +79,69 @@ interface AssignedLocationAndTeams {
 interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
   opensrpBaseURL: string;
   defaultPlanId: string;
+}
+
+/**
+ * Function to fetch orgs against a paginatied endpoint
+ *
+ * @param opensrpBaseURL - OpenSRP API base URL
+ * @param pageNumber - paginated page number
+ * @param pageSize - number of orgs in each page
+ */
+async function fetchOrgs(
+  opensrpBaseURL: string,
+  pageNumber: number,
+  pageSize: number
+): Promise<Organization[]> {
+  // pagination params
+  const paginationParams = {
+    pageNumber,
+    pageSize,
+  };
+  // fetch all organizations
+  const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
+  try {
+    const getOrgs = await organizationsService.list(paginationParams);
+    return getOrgs;
+  } catch (_) {
+    sendErrorNotification(lang.ERROR_OCCURRED);
+    return [];
+  }
+}
+
+/**
+ * function to fetch paginated orgs resource recursively
+ *
+ * @param opensrpBaseURL - OpenSRP API base URL
+ * @param pageSize - number of orgs in each page
+ * @returns {Promise<Organization[]>} - an array of all orgs in a paginated endpoint
+ */
+async function fetchOrgsRecursively(
+  opensrpBaseURL: string,
+  pageSize: number
+): Promise<Organization[]> {
+  const serve = new OpenSRPService(ORGANIZATION_COUNT_ENDPOINT, opensrpBaseURL);
+  const teamsCount: number = await serve.list();
+
+  // get the maximum possible page numbers
+  const maxPageNo = Math.ceil(teamsCount / pageSize);
+
+  // compose a promise array to resolve in parallel
+  const promises: (() => Promise<Organization[]>)[] = [];
+  for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
+    promises.push(() => fetchOrgs(opensrpBaseURL, pageNumber, pageSize));
+  }
+
+  // fetch orgs recursively according to page numbers
+  return Promise.all(promises.map((prom) => prom()))
+    .then((orgs: Organization[][]) => {
+      // flatten 2D array - [[][]]
+      const orgsArray = orgs.flat();
+      return orgsArray;
+    })
+    .catch((err) => {
+      throw err;
+    });
 }
 
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
@@ -131,16 +194,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         })
         .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
-      // fetch all organizations
-      const organizationsService = new OpenSRPService(ORGANIZATION_ENDPOINT, opensrpBaseURL);
-      const organizationsPromise = organizationsService
-        .list()
-        .then((response: Organization[]) => {
-          dispatch(fetchOrganizationsAction(response));
+      // fetch all organizations (pagination enabled)
+      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000)
+        .then((orgs: Organization[]) => {
+          dispatch(fetchOrganizationsAction(orgs));
         })
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
-        });
+        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
@@ -196,7 +255,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return null;
   }
 
-  const tableData = dataSource.map((datum: ParsedHierarchyNode, i: number) => {
+  const tableData = dataSource.map((datum: ParsedHierarchyNode) => {
     const jurisdictionAssignments = assignmentsList.filter(
       (assignment) => assignment.jurisdiction === datum.id
     );
@@ -210,7 +269,6 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
     return {
       id: datum.id,
-      key: i.toString(),
       locationName: datum.label,
       existingAssignments: jurisdictionAssignments,
       setExistingAssignments,

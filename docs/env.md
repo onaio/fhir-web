@@ -92,9 +92,15 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
-  - **REACT_APP_ENABLE_TEAMS**
+- **REACT_APP_ENABLE_TEAMS**
 
   - Enables the teams module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_TEAMS**
+
+  - Enables the Fhir teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -192,13 +198,13 @@ Below is a list of currently supported environment variables:
 
   - Sets the oauth app permission scopes.
   - **Required**(`string`)
-  - default: `read,write`
+  - default: `profile`
 
 - **REACT_APP_FILTER_BY_PARENT_ID**
 
   - Allows filtering root locations by parentId when set to true
   - **Optional**(_string_)
-  - default: `"false"`
+  - default: `"true"`
 
 - **REACT_APP_KEYCLOAK_USERS_PAGE_SIZE**
 
@@ -227,6 +233,12 @@ Below is a list of currently supported environment variables:
   - **optional**
   - default: `''`
 
+- **REACT_APP_ENABLE_FHIR_CARE_TEAM**
+
+  - Enables the FHIR Care Team module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
 - **REACT_APP_DEFAULTS_TABLE_PAGE_SIZE**
 
   - Default number of rows per table page
@@ -238,3 +250,27 @@ Below is a list of currently supported environment variables:
   - Enables the FHIR Organization Affiliation module
   - **Optional**(`boolean`)
   - default: `"false"`
+  - `Enum: 5, 10, 20 , 50, 100
+
+- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+
+  - Default FHIR resource page count
+  - **Required**
+  - default: 500
+
+- **REACT_APP_ENABLE_SERVER_SETTINGS**
+
+  - Enables the server settings module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_OPENSRP_API_V2_BASE_URL**
+
+  - Opensrp server V2 base URL
+  - **Required**
+  - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
+
+- **REACT_APP_OPENSRP_WEB_VERSION**
+  - Opensrp web version deployed
+  - **Optional**(_string_)
+  - default: ""

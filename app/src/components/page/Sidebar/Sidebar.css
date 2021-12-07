@@ -20,3 +20,10 @@
   font-size: 18px !important;
   vertical-align: middle;
 }
+
+.sidebar-version {
+  color: rgba(255, 255, 255, 0.65);
+  text-align: left;
+  margin-left: 7.5%; /* align with logo (logo centered with width 85%. Thus align left with preceding margin half of 100%-85%) */
+  margin-top: 0.5rem;
+}

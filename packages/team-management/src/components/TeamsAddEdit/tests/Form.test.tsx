@@ -22,7 +22,7 @@ jest.mock('uuid', () => {
 
   return {
     __esModule: true,
-    ...jest.requireActual('uuid'),
+    ...Object.assign({}, jest.requireActual('uuid')),
     v4,
   };
 });
@@ -171,6 +171,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     expect(wrapper.find('form')).toHaveLength(1);
     wrapper.find('button#cancel').simulate('click');
     expect(historyback).toBeCalled();
+    expect(history.location.pathname).toBe('/');
   });
 
   it('fail and test call onsubmit', async () => {

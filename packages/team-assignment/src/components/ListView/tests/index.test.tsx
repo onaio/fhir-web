@@ -67,6 +67,8 @@ describe('List view Page', () => {
 
   beforeEach(() => {
     fetch.mockClear();
+    fetch.resetMocks();
+    jest.clearAllMocks();
     jest.spyOn(React, 'useLayoutEffect').mockImplementation(() => false);
   });
 
@@ -78,7 +80,9 @@ describe('List view Page', () => {
     fetch.mockResponses(
       /** Get plan hierarchy */
       [JSON.stringify(samplePlan), { status: 200 }],
+      [JSON.stringify(sampleHierarchy), { status: 200 }],
       /** These calls are made by PlanAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -129,6 +133,8 @@ describe('List view Page', () => {
     fetch.mockResponses(
       /** Get plan */
       [JSON.stringify([samplePlan]), { status: 200 }],
+      [JSON.stringify(sampleHierarchy), { status: 200 }],
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -179,6 +185,8 @@ describe('List view Page', () => {
     fetch.mockResponses(
       /** Get plan */
       [JSON.stringify([samplePlan]), { status: 200 }],
+      [JSON.stringify(sampleHierarchy), { status: 200 }],
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -275,6 +283,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -373,6 +382,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -514,6 +524,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -577,6 +588,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -633,6 +645,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -699,6 +712,7 @@ describe('List view Page', () => {
       /** Get plan */
       [JSON.stringify(samplePlan), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      // [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -742,10 +756,7 @@ describe('List view Page', () => {
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    wrapper.update();
 
     // find antd Select with id 'teamAssignment_assignTeams'
     const teamAssignmentSelect = wrapper.find('Select#teamAssignment_assignTeams');
@@ -753,10 +764,7 @@ describe('List view Page', () => {
     // simulate click on select - to show dropdown items
     teamAssignmentSelect.find('.ant-select-selector').simulate('mousedown');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    wrapper.update();
 
     // expect to see all options
     const teamAssignmentSelect2 = wrapper.find('Select#teamAssignment_assignTeams');
@@ -772,6 +780,7 @@ describe('List view Page', () => {
       'Test Demo Team',
       'TestTeam',
       'Team Blank test',
+      '',
     ]);
 
     // find search input field
@@ -792,5 +801,6 @@ describe('List view Page', () => {
         "Test Demo Team",
       ]
     `);
+    wrapper.unmount();
   });
 });

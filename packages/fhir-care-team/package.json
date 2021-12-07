@@ -1,0 +1,57 @@
+{
+  "name": "@opensrp/fhir-care-team",
+  "version": "0.0.1",
+  "description": "FHIR Care Team management components for opensrp web",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist",
+    "locales"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/OpenSRP/web/",
+  "scripts": {
+    "test": "cd ../../ && yarn test packages/fhir-care-team --verbose --collectCoverage=true && cd packages/fhir-care-team",
+    "tsc": "tsc",
+    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/OpenSRP/web/issues"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.12",
+    "@smile-cdr/fhirts": "^1.2.5",
+    "fhirclient": "^2.4.0",
+    "i18next": "^19.8.4",
+    "react-i18next": "^11.8.10",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@onaio/utils": "^0.0.1",
+    "@types/uuid": "8.3.0",
+    "i18next-parser": "^3.5.0",
+    "nock": "^13.0.6"
+  },
+  "peerDependencies": {
+    "i18next": "^19.8.4",
+    "react": "^16.13.1",
+    "react-query": "^3.15.1"
+  }
+}
