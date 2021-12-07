@@ -145,6 +145,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       openSRPBaseURL,
       { serverVersion: 0, identifier: INVENTORY_UNICEF_SECTIONS },
       setUNICEFSections,
+      undefined,
       onError
     ); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
