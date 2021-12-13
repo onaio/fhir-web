@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { HealthcareService } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
-import { HEALTHCARES_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
+import { HEALTH_CARE_SERVICE_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
@@ -11,23 +11,19 @@ import { useQuery } from 'react-query';
 import { history } from '@onaio/connected-reducer-registry';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
-
+import { getConfig } from '@opensrp/pkg-config';
 export interface Props {
-  fhirBaseURL: string;
   resourcePageSize?: number;
 }
 
-/** default component props */
-export const defaultProps = {
-  fhirBaseURL: '',
-};
-
 export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL, resourcePageSize = 20 } = props;
+  const { resourcePageSize = 20 } = props;
   const fhirParams = {
     _count: resourcePageSize,
     _getpagesoffset: 0,
   };
+
+  const fhirBaseURL = getConfig('fhirBaseURL') ?? '';
 
   const healthcareServiceAPI = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
@@ -41,7 +37,7 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
   const [initialValue, setInitialValue] = useState<FormField>();
 
   const healthcares = useQuery(
-    [HEALTHCARES_ENDPOINT, params.id],
+    [HEALTH_CARE_SERVICE_ENDPOINT, params.id],
     async () => healthcareServiceAPI.read(`${params.id}`),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
@@ -59,9 +55,11 @@ export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (params.id && healthcares.data && !initialValue) {
-    setInitialValue({ comment: '', extraDetails: '', ...healthcares.data });
-  }
+  useEffect(() => {
+    if (params.id && healthcares.data && !initialValue) {
+      setInitialValue({ comment: '', extraDetails: '', ...healthcares.data });
+    }
+  }, [params.id, healthcares.data, initialValue]);
 
   if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;
 

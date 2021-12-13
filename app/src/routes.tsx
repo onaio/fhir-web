@@ -31,7 +31,7 @@ import {
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
-  URL_HEALTHCARESERVICES,
+  URL_HEALTHCARE_SERVICES,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -207,7 +207,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.HEALTHCARESERVICES_MANAGEMENT,
           key: 'healthcare',
-          url: URL_HEALTHCARESERVICES,
+          url: URL_HEALTHCARE_SERVICES,
           enabled:
             ENABLE_HEALTHCARESERVICES &&
             roles &&

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { v4 } from 'uuid';
-import { HEALTHCARES_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
+import { HEALTH_CARE_SERVICE_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
 import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService } from '../../types';
@@ -57,7 +57,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
     sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
   } else {
     await serve.create(payload);
-    sendSuccessNotification(lang.MSG_HEALTHCARES_ADD_SUCCESS);
+    sendSuccessNotification(lang.MSG_HEALTHCARES_CREATE_SUCCESS);
   }
 }
 
@@ -80,12 +80,10 @@ export const Form: React.FC<Props> = (props: Props) => {
         setIsSubmitting(true);
         onSubmit(fhirBaseURL, values)
           .then(() => {
-            queryClient
-              .invalidateQueries(ORGANIZATION_ENDPOINT)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            queryClient
-              .invalidateQueries(HEALTHCARES_ENDPOINT)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+            Promise.all([
+              queryClient.invalidateQueries(ORGANIZATION_ENDPOINT),
+              queryClient.invalidateQueries(HEALTH_CARE_SERVICE_ENDPOINT),
+            ]).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             onSuccess?.();
           })
           .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))

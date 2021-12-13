@@ -149,7 +149,7 @@ describe('components/HealthCareAddEdit/Form', () => {
 
     expect(catchfn).not.toBeCalled();
     expect(thenfn).toBeCalled();
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Added Healthcares');
+    expect(mockSuccessNotification).toBeCalledWith('Successfully Created Healthcares');
   });
 
   it('Edit Team', async () => {

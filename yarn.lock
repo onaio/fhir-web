@@ -2727,6 +2727,15 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
+"@opensrp/fhir-health-care-service@file:packages/fhir-health-care-service":
+  version "1.0.0"
+  dependencies:
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/react-utils" "^0.0.12"
+    react-i18next "^11.8.10"
+    uuid "^8.3.1"
+
 "@opensrp/fhir-team-management@file:packages/fhir-team-management":
   version "0.0.5"
   dependencies:
