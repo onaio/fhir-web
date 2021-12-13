@@ -21,7 +21,9 @@ function fill() {
   lang.MSG_HEALTHCARES_UPDATE_SUCCESS = i18n.t(`Successfully Updated Healthcares`, {
     ns: namespace,
   });
-  lang.MSG_HEALTHCARES_ADD_SUCCESS = i18n.t(`Successfully Added Healthcares`, { ns: namespace });
+  lang.MSG_HEALTHCARES_CREATE_SUCCESS = i18n.t(`Successfully Created Healthcares`, {
+    ns: namespace,
+  });
 
   // Rendered text
   lang.ENTER_HEALTHCARE_NAME = i18n.t(`Enter a healthcare name`, { ns: namespace });

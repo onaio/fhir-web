@@ -8,7 +8,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService, HealthcareServiceDetail } from '../../types';
 import {
-  HEALTHCARES_ENDPOINT,
+  HEALTH_CARE_SERVICE_ENDPOINT,
   HEALTH_CARE_SERVICE_RESOURCE_TYPE,
   URL_ADD_HEALTHCARE,
 } from '../../constants';
@@ -20,9 +20,9 @@ import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { loadHealthcareOrganization } from '../../utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
+import { getConfig } from '@opensrp/pkg-config';
 
 interface Props {
-  fhirBaseURL: string;
   resourcePageSize?: number;
 }
 
@@ -32,11 +32,14 @@ interface Props {
  * @returns {Function} returns healthcare display
  */
 export const HealthCareList: React.FC<Props> = (props: Props) => {
-  const { fhirBaseURL, resourcePageSize = 20 } = props;
+  const { resourcePageSize = 20 } = props;
   const fhirParams = {
     _count: resourcePageSize,
     _getpagesoffset: 0,
   };
+
+  const fhirBaseURL = getConfig('fhirBaseURL') ?? '';
+
   const serve = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
     HEALTH_CARE_SERVICE_RESOURCE_TYPE
@@ -45,7 +48,7 @@ export const HealthCareList: React.FC<Props> = (props: Props) => {
   const [detail, setDetail] = useState<HealthcareServiceDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: HealthcareService[] }>({});
 
-  const healthcare = useQuery(HEALTHCARES_ENDPOINT, async () => serve.list(fhirParams), {
+  const healthcare = useQuery(HEALTH_CARE_SERVICE_ENDPOINT, async () => serve.list(fhirParams), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
     select: (res) => res.entry.map((e) => e.resource),
   });
