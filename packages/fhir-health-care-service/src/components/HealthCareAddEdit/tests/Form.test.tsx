@@ -199,7 +199,7 @@ describe('components/HealthCareAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Added Healthcares');
+    expect(mockSuccessNotification).toBeCalledWith('Successfully Created Healthcares');
   });
 
   it('fail and test call onsubmit', async () => {
