@@ -1,0 +1,26 @@
+.keyValueGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(32px, 1fr));
+}
+
+.keyValueGrid-pair__value {
+  color: #000;
+}
+
+.keyValueGrid-pair__label {
+  color: #777;
+}
+
+.keyValueGrid-pair__value,
+.keyValueGrid-pair__label {
+  display: inline-block;
+}
+
+.keyValueGrid-pair__value {
+  margin-left: 1rem;
+}
+
+dl.keyValueGrid, dl.singleKeyValue{
+  margin-bottom: 0;
+  line-height: 1.2em;
+}

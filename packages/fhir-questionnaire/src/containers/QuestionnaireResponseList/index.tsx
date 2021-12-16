@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Row, PageHeader, Col } from 'antd';
+import { Row, Col } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import { TableLayout } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import {
+  questionnaireResourceType,
   // questionnaireResourceType,
   questionnaireResponseResourceType,
   // QUEST_URL,
@@ -12,7 +13,10 @@ import {
 import { useQuery } from 'react-query';
 import { Spin } from 'antd';
 import { Column } from '@opensrp/react-utils';
-import { IfhirR4 } from '@smile-cdr/fhirts';
+import { Questionnaire } from '../../resources/Questionnaire/Questionnaire';
+import { parseResource } from '../../resources/QuestionnaireResponse/questionResponse';
+import type { ParsedQuestionnaireResponse } from '../../resources/QuestionnaireResponse/questionResponse';
+import type { IQuestionnaireResponse } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaireResponse';
 
 // import { useInfiniteQuery } from 'react-query';
 // import { TablePaginationConfig } from 'antd/lib/table/Table';
@@ -45,12 +49,12 @@ const defaultProps = {};
 // };
 
 // eslint-disable-next-line react/display-name
-export const NamesColumnCustomCreator: Column<IfhirR4.IQuestionnaireResponse>['render'] = (
-  record: IfhirR4.IQuestionnaireResponse
+const ActionsColumnCustomRender: Column<ParsedQuestionnaireResponse>['render'] = (
+  record: ParsedQuestionnaireResponse
 ) => {
   return (
     <>
-      <Link to={`/${'qr'}/${record.id}`}>{record.id ?? ''}</Link>
+      <Link to={`/${'qr'}/${record.id}`}>View in Form</Link>
     </>
   );
 };
@@ -60,16 +64,30 @@ export const NamesColumnCustomCreator: Column<IfhirR4.IQuestionnaireResponse>['r
  *
  * @param questionnaireId
  */
-const getColumns = (): Column<IfhirR4.IQuestionnaireResponse>[] => {
-  const columns: Column<IfhirR4.IQuestionnaireResponse>[] = [
+const getColumns = (): Column<ParsedQuestionnaireResponse>[] => {
+  const columns: Column<ParsedQuestionnaireResponse>[] = [
     {
-      title: 'Name/Id',
-      render: NamesColumnCustomCreator,
-      width: '60%',
+      title: 'Submission Id',
+      width: '30%',
+      dataIndex: 'id',
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
+      title: 'Date authored',
+      dataIndex: 'authoredDateTime',
+      render: (value) => new Intl.DateTimeFormat('en-US').format(new Date(value)), // TODO - dry out, magic string
+    },
+    {
+      title: 'Subject',
+      dataIndex: 'subject',
+    },
+    {
+      title: 'QuestionnaireVersion',
+      dataIndex: 'questionnaireVersion',
+    },
+    {
+      title: 'Actions',
+      render: ActionsColumnCustomRender,
+      width: '20%',
     },
   ];
   return columns;
@@ -94,6 +112,12 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
     { keepPreviousData: true, staleTime: 5000 }
   );
 
+  const { isLoading: QuestLoading, data: questData } = useQuery(
+    [questionnaireResourceType, questId],
+    () => new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).read(questId),
+    { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }
+  );
+
   // TODO:  Prefetch the next page!
   // useEffect(() => {
   //   if (data?.hasMore) {
@@ -101,7 +125,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   //   }
   // }, []);
 
-  if (isLoading) {
+  if (isLoading || QuestLoading) {
     return <Spin size="large" className="custom-spinner" />;
   }
 
@@ -122,22 +146,23 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const tableDataSource = (data?.entry?.map((dt: any) => dt.resource) ??
-    []) as IfhirR4.IQuestionnaireResponse[];
+  const resources = (data?.entry?.map((dt) => dt.resource) ?? []) as IQuestionnaireResponse[];
+  const tableDataSource = resources.map((res) => parseResource(res));
   const pageTitle = 'Questionnaire Responses';
   const columns = getColumns();
   return (
-    <div className="content-section">
+    <div className="content-section questionnaireList">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
-
-      <Row className={'list-view pt-0'}>
-        <Col className={'main-content'}>
-          <TableLayout datasource={tableDataSource} columns={columns} {...tableProps} />
-        </Col>
-      </Row>
+      <div>
+        <Questionnaire questionnaire={questData as any} />
+        <Row className={'list-view pt-0'}>
+          <Col className={'main-content'}>
+            <TableLayout datasource={tableDataSource} columns={columns} {...tableProps} />
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 };

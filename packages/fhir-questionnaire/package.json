@@ -44,9 +44,10 @@
     "@helsenorge/toolkit": "^21.3.0-prerelease",
     "dompurify": "^2.0.8",
     "fhirpath": "^2.7.3",
+    "html-react-parser": "^1.4.3",
     "marked": "^0.7.0",
-    "tabbable": "^3.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tabbable": "^3.1.1"
   },
   "devDependencies": {
     "node-sass": "^4.0.0"
