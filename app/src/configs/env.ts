@@ -173,7 +173,8 @@ export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
-export const ENABLE_FHIR = setEnv('REACT_APP_ENABLE_FHIR', 'false') === 'true';
+export const ENABLE_FHIR_USER_MANAGEMENT =
+  setEnv('REACT_APP_ENABLE_FHIR_USER_MANAGEMENT', 'false') === 'true';
 
 export const FHIR_API_BASE_URL = setEnv(
   'REACT_APP_FHIR_API_BASE_URL',
