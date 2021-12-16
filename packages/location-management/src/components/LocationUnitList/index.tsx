@@ -18,7 +18,7 @@ import {
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
 import { useQuery, useQueries, UseQueryResult } from 'react-query';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
@@ -31,6 +31,7 @@ import {
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree, getBaseTreeNode } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
+import { TFunction } from 'react-i18next';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -48,16 +49,16 @@ export interface AntTreeProps {
 
 /** Function to Load selected location unit for details
  *
- * @param {TableData} row data selected from the table
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail function to set detail to state
- * @param {Lang} langObj translation string lookup
+ * @param row data selected from the table
+ * @param opensrpBaseURL - base url
+ * @param setDetail function to set detail to state
+ * @param t translation string lookup
  */
 export async function loadSingleLocation(
   row: TableData,
   opensrpBaseURL: string,
   setDetail: React.Dispatch<React.SetStateAction<LocationDetailData | 'loading' | null>>,
-  langObj: Lang = lang
+  t: TFunction
 ) {
   setDetail('loading');
   const serve = new OpenSRPService(LOCATION_UNIT_ENDPOINT, opensrpBaseURL);
@@ -67,7 +68,7 @@ export async function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+    .catch(() => sendErrorNotification(t('An error occurred')));
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
@@ -75,12 +76,13 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
+  const { t } = useTranslation();
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -91,7 +93,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            onError: () => sendErrorNotification(t('An error occurred')),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
           };
@@ -138,16 +140,16 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.LOCATION_UNIT}</title>
+        <title>{t('Location Unit')}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
+      <h1 className="mb-3 fs-5">{t('Location Unit Management')}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">{currentClickedNode ? tableData[0].label : lang.LOCATION_UNIT}</h6>
+            <h6 className="mt-4">{currentClickedNode ? tableData[0].label : t('Location Unit')}</h6>
             <div>
               <Link
                 to={(location) => {
@@ -158,7 +160,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
               >
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.ADD_LOCATION_UNIT}
+                  {t('Add Location Unit')}
                 </Button>
               </Link>
             </div>
@@ -167,7 +169,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             <Table
               data={tableData}
               onViewDetails={async (row) => {
-                await loadSingleLocation(row, opensrpBaseURL, setDetail);
+                await loadSingleLocation(row, opensrpBaseURL, setDetail, t);
               }}
             />
           </div>

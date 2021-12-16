@@ -7,8 +7,8 @@ import { loadSettings } from '../../../helpers/dataLoaders';
 import React, { useEffect, useState } from 'react';
 import { LocationSetting, validationRulesFactory } from '../utils';
 import { Form, Input } from 'antd';
-import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import lang from '../../../lang';
+import { OPENSRP_API_BASE_URL } from '@openi18nextsrp/server-service';
+import { useTranslation } from '../../../mls';
 
 const { List, Item: FormItem } = Form;
 
@@ -31,7 +31,8 @@ const defaultExtraFieldProps = {
 const ExtraFields = (props: ExtraFieldProps) => {
   const { baseURL, disabled, hidden } = props;
   const [settings, setSettings] = useState<LocationSetting[]>([]);
-  const validationRules = validationRulesFactory(lang);
+  const { t } = useTranslation();
+  const validationRules = validationRulesFactory(t);
 
   useEffect(() => {
     // fetch service type settings

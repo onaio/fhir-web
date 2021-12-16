@@ -15,7 +15,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { getUser } from '@onaio/session-reducer';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
@@ -74,6 +74,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     successURLGenerator,
     disabledTreeNodesCallback,
   } = props;
+  const { t } = useTranslation();
   const history = useHistory();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -148,7 +149,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -159,7 +160,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            onError: () => sendErrorNotification(t('An error occurred')),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
           };
@@ -210,14 +211,14 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
         if (grandparenthierarchy && grandparenthierarchy.id)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])
-            .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-        else sendErrorNotification(lang.ERROR_OCCURRED);
+            .catch(() => sendErrorNotification(t('An error occurred')));
+        else sendErrorNotification(t('An error occurred'));
       }
       dispatch(fetchAllHierarchies([]));
     },
     disabledTreeNodesCallback,
   };
-  const pageTitle = `${lang.EDIT} > ${thisLocation.properties.name}`;
+  const pageTitle = t('Edit > {{name}}', { name: thisLocation.properties.name });
 
   return (
     <Row className="layout-content">

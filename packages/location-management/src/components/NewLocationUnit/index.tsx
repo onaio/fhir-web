@@ -8,7 +8,7 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
 import { Helmet } from 'react-helmet';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
 import { LocationUnit } from '../../ducks/location-units';
 import {
@@ -65,6 +65,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const history = useHistory();
+  const { t } = useTranslation();
   const cancelHandler = () => {
     const cancelURL = cancelURLGenerator();
     history.push(cancelURL);
@@ -83,7 +84,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -94,7 +95,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+            onError: () => sendErrorNotification(t('An error occurred')),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
           };
@@ -126,15 +127,15 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
         if (grandparenthierarchy)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy])
-            .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-        else sendErrorNotification(lang.ERROR_OCCURRED);
+            .catch(() => sendErrorNotification(t('An error occurred')));
+        else sendErrorNotification(t('An error occurred'));
       }
       dispatch(fetchAllHierarchies([]));
     },
     disabledTreeNodesCallback: disabledTreeNodesCallback,
   };
 
-  const pageTitle = lang.ADD_LOCATION_UNIT;
+  const pageTitle = t('Add Location Unit');
   return (
     <Row className="layout-content">
       <Helmet>

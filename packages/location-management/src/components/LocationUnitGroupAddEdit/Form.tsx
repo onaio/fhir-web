@@ -6,21 +6,17 @@ import { history } from '@onaio/connected-reducer-registry';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Formik } from 'formik';
 import { LOCATION_UNIT_GROUP_ALL, LOCATION_UNIT_GROUP_GET } from '../../constants';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import {
   LocationUnitGroup,
   LocationUnitGroupPayloadPOST,
   LocationUnitGroupPayloadPUT,
 } from '../../ducks/location-unit-groups';
+import { TFunction } from 'react-i18next';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
-
-const status = [
-  { label: 'Active', value: true },
-  { label: 'Inactive', value: false },
-];
 
 interface FormField {
   name: string;
@@ -44,18 +40,18 @@ interface Props {
 /**
  * Handle form submission
  *
- * @param {Object} values the form fields
- * @param {string} opensrpBaseURL - base url
- * @param {object} props component props
- * @param {Function} setSubmitting method to set submission status
- * @param {Lang} langObj - translations object lookup
+ * @param values the form fields
+ * @param opensrpBaseURL - base url
+ * @param props component props
+ * @param setSubmitting method to set submission status
+ * @param t - translations object lookup
  */
 export const onSubmit = (
   values: FormField,
   opensrpBaseURL: string,
   props: Props,
   setSubmitting: (isSubmitting: boolean) => void,
-  langObj: Lang = lang
+  t: TFunction
 ) => {
   const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
 
@@ -71,7 +67,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(langObj.ERROR_OCCURED);
+        sendErrorNotification(t('An error occurred'));
         setSubmitting(false);
       });
   } else {
@@ -83,7 +79,7 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(langObj.ERROR_OCCURED);
+        sendErrorNotification(t('An error occurred'));
         setSubmitting(false);
       });
   }
@@ -97,6 +93,12 @@ export const Form: React.FC<Props> = (props: Props) => {
     active: true,
   });
   const { opensrpBaseURL, setEditTitle } = props;
+  const { t } = useTranslation();
+
+  const status = [
+    { label: t('Active'), value: true },
+    { label: t('Inactive'), value: false },
+  ];
 
   useEffect(() => {
     if (isLoading) {
@@ -113,10 +115,10 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+          .catch(() => sendErrorNotification(t('An error occurred')));
       } else setIsLoading(false);
     }
-  }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
+  }, [isLoading, props.id, opensrpBaseURL, setEditTitle, t]);
 
   if (isLoading)
     return (
@@ -137,16 +139,16 @@ export const Form: React.FC<Props> = (props: Props) => {
       onSubmit={(
         values: FormField,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
-      ) => onSubmit(values, opensrpBaseURL, props, setSubmitting)}
+      ) => onSubmit(values, opensrpBaseURL, props, setSubmitting, t)}
     >
       {({ isSubmitting, handleSubmit }) => {
         return (
           <AntForm requiredMark={false} {...layout} onSubmitCapture={handleSubmit}>
-            <AntForm.Item label={lang.LOCATION_NAME} name="name">
-              <Input name="name" placeholder={lang.ENTER_LOCATION_GROUP_NAME} />
+            <AntForm.Item label={t('Location Name')} name="name">
+              <Input name="name" placeholder={t('Enter a location group name')} />
             </AntForm.Item>
 
-            <AntForm.Item label={lang.STATUS} name="active" valuePropName="checked">
+            <AntForm.Item label={t('Status')} name="active" valuePropName="checked">
               <Radio.Group name="active" defaultValue={initialValue.active}>
                 {status.map((e) => (
                   <Radio name="active" key={e.label} value={e.value}>
@@ -156,14 +158,14 @@ export const Form: React.FC<Props> = (props: Props) => {
               </Radio.Group>
             </AntForm.Item>
 
-            <AntForm.Item name="description" label={lang.DESCRIPTION}>
-              <Input.TextArea name="description" rows={4} placeholder={lang.DESCRIPTION} />
+            <AntForm.Item name="description" label={t('Description')}>
+              <Input.TextArea name="description" rows={4} placeholder={t('Description')} />
             </AntForm.Item>
 
             <AntForm.Item name={'buttons'} {...offsetLayout}>
-              <SubmitButton id="submit">{isSubmitting ? lang.SAVING : lang.SAVE}</SubmitButton>
+              <SubmitButton id="submit">{isSubmitting ? t('Saving') : t('Save')}</SubmitButton>
               <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-                {lang.CANCEL}
+                {t('Cancel')}
               </Button>
             </AntForm.Item>
           </AntForm>
