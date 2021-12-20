@@ -48,6 +48,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  URL_TEAM_AFFILIATION,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -97,7 +98,8 @@ import {
   URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
 import { TeamAssignmentView } from '@opensrp/team-assignment';
-import { DownloadClientData } from '@opensrp/card-support';
+import { TeamAffiliationView } from '@opensrp/team-affiliation';
+// import { DownloadClientData } from '@opensrp/card-support';
 import {
   UploadForm,
   FileList,
@@ -321,6 +323,15 @@ const App: React.FC = () => {
               path={URL_TEAM_ASSIGNMENT}
               {...teamAssignmentProps}
               component={TeamAssignmentView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_TEAM_AFFILIATION}
+              {...teamAssignmentProps}
+              component={TeamAffiliationView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -607,14 +618,14 @@ const App: React.FC = () => {
               {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
-            <PrivateComponent
+            {/* <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.CARD_SUPPORT && activeRoles.CARD_SUPPORT.split(',')}
               exact
               path={URL_DOWNLOAD_CLIENT_DATA}
               component={DownloadClientData}
-            />
+            /> */}
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={false}

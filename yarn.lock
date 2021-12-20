@@ -2771,6 +2771,23 @@
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
+"@opensrp/team-affiliation@file:packages/team-affiliation":
+  version "0.0.6"
+  dependencies:
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/location-management" "^0.0.15"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/react-utils" "^0.0.12"
+    "@opensrp/reducer-factory" "^0.0.13"
+    "@opensrp/server-service" "^0.0.17"
+    "@opensrp/team-management" "^0.0.9"
+    antd "^4.6.3"
+    formik "^2.1.5"
+    formik-antd "2.0.1"
+    react-helmet "^6.1.0"
+    yup "^0.29.3"
+
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.5.0.tgz#1025c1ccb224d1fc06d8d98a61f6717d57e6d477"
