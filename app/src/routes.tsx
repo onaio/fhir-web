@@ -21,6 +21,7 @@ import {
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
+  ENABLE_FHIR_ORG_AFFILIATION,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
 } from './configs/env';
@@ -37,6 +38,7 @@ import {
   URL_DOWNLOAD_CLIENT_DATA,
   URL_USER_GROUPS,
   URL_USER_ROLES,
+  URL_ORG_AFFILIATION,
   URL_SERVER_SETTINGS,
   URL_FHIR_CARE_TEAM,
   URL_ADMIN,
@@ -174,6 +176,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.CARE_TEAM &&
             isAuthorized(roles, activeRoles.CARE_TEAM.split(',')),
           url: URL_FHIR_CARE_TEAM,
+        },
+        {
+          title: langObj.ORG_AFFILIATION,
+          key: 'org-affiliation',
+          enabled:
+            ENABLE_FHIR_ORG_AFFILIATION &&
+            roles &&
+            activeRoles.ORG_AFFILIATION &&
+            isAuthorized(roles, activeRoles.ORG_AFFILIATION.split(',')),
+          url: URL_ORG_AFFILIATION,
         },
         {
           title: langObj.TEAM_MANAGEMENT,
