@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { getConfig } from '@opensrp/pkg-config';
-import { loadLanguageResources } from '@opensrp/react-utils';
+import { loadLanguageResources, LanguageResourceGroups } from '@opensrp/react-utils';
 import type { i18n as i18nInstance } from 'i18next';
+import { useTranslation as useOrigTranslation, UseTranslationOptions } from 'react-i18next';
 
 const i18n = getConfig('i18n') as i18nInstance;
 
@@ -25,28 +26,21 @@ const eusmArJson = require('../locales/eusm/ar.json');
 
 export const namespace = 'product-catalogue';
 
-// the format to load the resource files: <languageCode>_<projectCode>. in small
-const resources = {
-  ar_core: {
-    [namespace]: coreArJson,
+const resourceGroups: LanguageResourceGroups = {
+  core: {
+    ar: coreArJson,
+    en: coreEnJson,
+    fr: coreFrJson,
   },
-  ar_eusm: {
-    [namespace]: eusmArJson,
-  },
-  fr_core: {
-    [namespace]: coreFrJson,
-  },
-  fr_eusm: {
-    [namespace]: eusmFrJson,
-  },
-  en_core: {
-    [namespace]: coreEnJson,
-  },
-  en_eusm: {
-    [namespace]: eusmEnJson,
+  eusm: {
+    ar: eusmArJson,
+    en: eusmEnJson,
+    fr: eusmFrJson,
   },
 };
 
-loadLanguageResources(i18n, resources);
+loadLanguageResources(i18n, resourceGroups, namespace);
 
-export default i18n;
+export const useTranslation = (ns?: string, options?: UseTranslationOptions) => {
+  return useOrigTranslation(ns ? ns : namespace, options);
+};

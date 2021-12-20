@@ -7,8 +7,9 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { Link } from 'react-router-dom';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
 import { Column } from '@opensrp/react-utils';
+import type { TFunction } from 'react-i18next';
 
 /**
  * component rendered in the action column of the table
@@ -16,23 +17,24 @@ import { Column } from '@opensrp/react-utils';
  * @param record - represent row as records
  */
 export const ActionsColumnCustomRender: Column<ProductCatalogue>['render'] = (record) => {
+  const { t } = useTranslation();
   return (
     <>
-      <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{lang.EDIT}</Link>
+      <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{t('Edit')}</Link>
       <Divider type="vertical" />
-      <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{lang.VIEW_DETAILS}</Link>
+      <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{t('View details')}</Link>
     </>
   );
 };
 
 /** product Catalogue table columns
  *
- * @param langObj - the lang translation object
+ * @param t - the translator function
  */
-export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[] => {
+export const columnsFactory = (t: TFunction): Column<ProductCatalogue>[] => {
   const columns: Column<ProductCatalogue>[] = [
     {
-      title: langObj.PRODUCT_NAME_TH,
+      title: t('Product Name'),
       dataIndex: 'productName',
       key: `${TableColumnsNamespace}-productName` as keyof ProductCatalogue,
       defaultSortOrder: 'descend',
@@ -47,7 +49,7 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
       },
     },
     {
-      title: langObj.ID_TH,
+      title: t('ID'),
       dataIndex: 'uniqueId',
       key: `${TableColumnsNamespace}-uniqueId` as keyof ProductCatalogue,
     },
@@ -58,11 +60,12 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
 /** util component shown when there is a pending promise */
 
 export const CatalogueLoading = () => {
+  const { t } = useTranslation();
   return (
-    <Spin tip={lang.LOADING_ELLIPSIS}>
+    <Spin tip={t('Loading...')}>
       <Alert
-        message={lang.FETCHING_PRODUCT}
-        description={lang.FETCHING_PRODUCT_DESCRIPTION}
+        message={t('Loading...')}
+        description={t('Please wait, as we fetch the product Catalogue.')}
         type="info"
       />
     </Spin>
