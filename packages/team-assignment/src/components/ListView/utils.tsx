@@ -13,6 +13,7 @@ import { Column } from '@opensrp/react-utils';
  * @param record - table row record
  */
 export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
+  console.log('record location :: ', record);
   return (
     <>
       <Button

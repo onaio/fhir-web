@@ -2742,6 +2742,21 @@
   dependencies:
     antd "^4.6.3"
 
+"@opensrp/react-utils@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.10.tgz#94cd8dec89d63ec970661d0dd4b3e761efbb7685"
+  integrity sha512-RI2NAa1yPU0ayFjvtTLYn/sKK/9/NrKUeAGh0kbYNDkFwstCvxrXkBZORiv+sy0kpIkBjVBmtAM2mfjxsLxqIw==
+  dependencies:
+    "@onaio/connected-private-route" "^0.0.11"
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.1"
+    "@onaio/session-reducer" "^0.0.12"
+    "@onaio/utils" "^0.0.1"
+    "@opensrp/notifications" "^0.0.5"
+    "@opensrp/pkg-config" "^0.0.9"
+    "@opensrp/server-service" "^0.0.17"
+    antd "^4.6.3"
+
 "@opensrp/reducer-factory@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@opensrp/reducer-factory/-/reducer-factory-0.0.9.tgz#4dbe60dcb18cf4e744319647256bd83d9b4583ad"
@@ -2770,6 +2785,19 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
+
+"@opensrp/store@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.9.tgz#e0b5cf49665e80ae377a2db40c046889d496f50a"
+  integrity sha512-v0JlRY51v/96Yw3IrM2E332cpv0FxS0Q4IE4yvVozZkDy4Hn0QQMVLOeExEMT2OHJq0XkwFXyHGdkBj21jVAeA==
+  dependencies:
+    "@onaio/connected-reducer-registry" "^0.0.3"
+    "@onaio/gatekeeper" "^0.1.1"
+    "@onaio/redux-reducer-registry" "^0.0.9"
+    "@onaio/session-reducer" "^0.0.11"
+    "@onaio/utils" "^0.0.1"
+    connected-react-router "^6.8.0"
+    reselect "^4.0.0"
 
 "@opensrp/team-affiliation@file:packages/team-affiliation":
   version "0.0.6"
@@ -7902,6 +7930,16 @@ fb-watchman@^2.0.0:
   integrity sha512-DkPJKQeY6kKwmuMretBhr7G6Vodr7bFwDYTXIkfG1gjvNpaxBTQV3PbXg6bR1c1UP4jPOX0jHUbbHANL9vRjVg==
   dependencies:
     bser "2.1.1"
+
+fhirclient@2.3.11:
+  version "2.3.11"
+  resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.3.11.tgz#daff5f605007d163a74cd7cd65130f0a60cef534"
+  integrity sha512-pBEcAJlMLeqrnDEYPDTV+BGooYIzwj0vsIjR7ppFF2qSHXEijgQ6IgyKkUB3EnnR4/UP91pCicjrnM/qFGV/2Q==
+  dependencies:
+    abortcontroller-polyfill "^1.5.0"
+    core-js "^3.6.5"
+    cross-fetch "^3.0.5"
+    debug "^4.1.1"
 
 fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"
