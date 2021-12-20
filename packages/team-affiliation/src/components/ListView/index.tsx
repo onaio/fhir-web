@@ -7,16 +7,9 @@ import {
   // getPayload,
   ActionsColumnCustomRender,
   getPayload,
-  Assignment,
+  Affiliation,
 } from './utils';
-import { RouteComponentProps } from 'react-router-dom';
-import {
-  OpenSRPService,
-  TableLayout,
-  FHIRServiceClass,
-  BrokenPage,
-  FHIRResponse,
-} from '@opensrp/react-utils';
+import { TableLayout, FHIRServiceClass, BrokenPage, FHIRResponse } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { Organization, getOrganizationsArray } from '@opensrp/team-management';
@@ -27,7 +20,6 @@ import {
   RawOpenSRPHierarchy,
 } from '@opensrp/location-management';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
 import lang from '../../lang';
 import {
   LocationHirerchy,
@@ -40,6 +32,7 @@ import {
   LOCATIONHIERARCHY_ENDPOINT,
   LOCATION_ENDPOINT,
   ORGANIZATIONAFFILIATION_ENDPOINT,
+  ORGANIZATION_ENDPOINT,
   POST_ORGANIZATIONAFFILIATION_ENDPOINT,
 } from '../../constants';
 import { useQuery, useQueries, UseQueryResult } from 'react-query';
@@ -50,7 +43,7 @@ export interface TableData {
   id: string;
   locationName: string;
   existingAffiliations: any[];
-  setExistingAffiliations: (affiliations: Assignment[]) => void;
+  setExistingAffiliations: (affiliations: Affiliation[]) => void;
   setAssignedLocAndOrgs: (affiliations: any) => void;
   setModalVisibility: (visible: true) => void;
   assignedOrgIds: string[];
@@ -59,6 +52,7 @@ export interface TableData {
 
 interface TeamAffiliationViewProps {
   defaultPlanId: string;
+  pageSize: number;
 }
 interface AssignedLocationAndTeams {
   locationName: string;
@@ -67,18 +61,18 @@ interface AssignedLocationAndTeams {
 }
 
 const TeamAffiliationView = (props: TeamAffiliationViewProps) => {
-  const { defaultPlanId } = props;
+  const { defaultPlanId, pageSize } = props;
 
   const fhirBaseURL = getConfig('fhirBaseURL') ?? '';
 
-  const allOrganizations: Organization[] = useSelector((state) => getOrganizationsArray(state));
+  const [allOrganizations, setAllOrganizations] = useState<Organization[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(false);
   const [assignedLocAndOrgs, setAssignedLocAndOrgs] = useState<AssignedLocationAndTeams | null>(
     null
   );
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
-  const [existingAffiliations, setExistingAffiliations] = useState<Assignment[]>([]);
+  const [existingAffiliations, setExistingAffiliations] = useState<Affiliation[]>([]);
   const columns = columnsFactory(lang);
   const [selectedLocation, setSelectedLocation] = useState<LocationHirerchy>(
     {} as LocationHirerchy
@@ -88,7 +82,7 @@ const TeamAffiliationView = (props: TeamAffiliationViewProps) => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [locationHierarchiesData, setLocationHierarchiesData] = useState<ParsedHierarchyNode[]>([]);
   // const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
+  // const [currentClickedNode, setCurrentClickedNode] = useState<ParsedHierarchyNode | null>(null);
 
   //side effects
   useEffect(() => {
@@ -122,14 +116,28 @@ const TeamAffiliationView = (props: TeamAffiliationViewProps) => {
     }
   }, [currentParentChildren]);
 
-  //organization affiliation
-  const organizationAffiliationService = new FHIRServiceClass<OrganizationAffiliation>(
+  //organization
+  const organizationService = new FHIRServiceClass<Organization>(
+    fhirBaseURL,
+    ORGANIZATION_ENDPOINT
+  );
+  const organizations = useQuery(
+    ORGANIZATION_ENDPOINT,
+    async () => organizationService.list({ pageSize }),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => res.entry.map((e) => e.resource),
+    }
+  );
+
+  //organizationAffiliation
+  const organizationAffiliationService = new FHIRServiceClass<Organization>(
     fhirBaseURL,
     ORGANIZATIONAFFILIATION_ENDPOINT
   );
-  const organizations = useQuery(
+  const organizationsAffiliation = useQuery(
     ORGANIZATIONAFFILIATION_ENDPOINT,
-    async () => organizationAffiliationService.list(),
+    async () => organizationAffiliationService.list({ pageSize }),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => res.entry.map((e) => e.resource),
@@ -214,6 +222,16 @@ const TeamAffiliationView = (props: TeamAffiliationViewProps) => {
       setLocationHierarchiesData(allLocationHierarchyData);
     }
   }, [locationHierarchies]);
+
+  // useEffect(() =>{
+  //   if(organizations.data){
+  //     const refectorOrgsPayload: Organization[] = organizations?.data?.map((org) => ({
+  //       ...org,
+  //       identifier: org?.identifier?.find((item: any) => item.use === 'official')?.value || '',
+  //     }))
+  //     setAllOrganizations(refectorOrgsPayload)
+  //   }
+  // },[organizations?.data])
 
   if (
     locations.isError ||
@@ -317,8 +335,11 @@ const TeamAffiliationView = (props: TeamAffiliationViewProps) => {
                 optionFilterProp="children"
                 filterOption={filterFunction}
               >
-                {allOrganizations.map((e) => (
-                  <Select.Option key={e.identifier} value={e.identifier}>
+                {organizations?.data?.map((e: any) => (
+                  <Select.Option
+                    key={e?.id}
+                    value={e?.identifier?.find((item: any) => item?.use === 'official')[0]?.value}
+                  >
                     {e.name}
                   </Select.Option>
                 ))}

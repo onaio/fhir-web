@@ -41,6 +41,11 @@ export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
 };
 
+export const teamAffiliationProps = {
+  defaultPlanId: DEFAULT_PLAN_ID,
+  pageSize: FHIR_RESOURCES_PAGE_SIZE,
+};
+
 export const teamManagementProps = {
   ...BaseProps,
   disableTeamMemberReassignment: DISABLE_TEAM_MEMBER_REASSIGNMENT,

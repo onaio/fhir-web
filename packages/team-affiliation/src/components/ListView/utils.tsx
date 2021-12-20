@@ -8,7 +8,7 @@ import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';
 
-export interface Assignment {
+export interface Affiliation {
   jurisdiction: string;
   organization: string;
   plan: string;
@@ -90,21 +90,21 @@ export const TeamAffiliationLoading = () => {
  * @param {string} selectedPlanId - the selected plan definition object
  * @param {string} selectedJurisdictionId - the selected OpenSRP jurisdiction
  * @param {string[]} initialOrgs - an array of initial (existing) organization ids
- * @param {Assignment[]} existingAssignments - an array of Assignment objects that exist for this plan/jurisdiction
- * @returns {Assignment[]} - returns payload array to be POSTed
+ * @param {Affiliation[]} existingAssignments - an array of Assignment objects that exist for this plan/jurisdiction
+ * @returns {Affiliation[]} - returns payload array to be POSTed
  */
 export const getPayload = (
   selectedOrgs: string[],
   selectedPlanId: string,
   selectedJurisdictionId: string,
   initialOrgs: string[] = [],
-  existingAssignments: Assignment[] = []
-): Assignment[] => {
+  existingAssignments: Affiliation[] = []
+): Affiliation[] => {
   const now = moment(new Date());
   let startDate = now.format();
   const endDate = now.add(10, 'year').format();
 
-  const payload: Assignment[] = [];
+  const payload: Affiliation[] = [];
   const assignmentsByOrgId = keyBy(existingAssignments, 'organization');
 
   for (const orgId of selectedOrgs) {

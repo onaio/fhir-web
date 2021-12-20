@@ -148,6 +148,7 @@ import {
   retiredPlansListStatusProp,
   missionAssignmentProps,
   teamAssignmentProps,
+  teamAffiliationProps,
   inventoryServiceProps,
   inventoryItemAddEditProps,
   editLocationProps,
@@ -338,7 +339,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAM_AFFILIATION}
-              {...teamAssignmentProps}
+              {...teamAffiliationProps}
               component={TeamAffiliationView}
             />
             <PrivateComponent

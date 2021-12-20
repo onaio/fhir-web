@@ -22,12 +22,13 @@ export const LOCATIONHIERARCHY_ENDPOINT = 'LocationHierarchy';
 //
 export const ORGANIZATIONAFFILIATION_RESOURCE_TYPE = '';
 export const ORGANIZATIONAFFILIATION_ENDPOINT = 'OrganizationAffiliation';
-export const POST_ORGANIZATIONAFFILIATION_ENDPOINT = 'OrganizationAffiliation/';
+export const POST_ORGANIZATIONAFFILIATION_ENDPOINT = 'OrganizationAffiliation';
 
 //
 // Organization
 //
 export const ORGANIZATION_RESOURCE_TYPE = 'Organization';
+export const ORGANIZATION_ENDPOINT = 'Organization';
 
 export const FHIR_RESOURCES_PAGE_SIZE = 500;
 
