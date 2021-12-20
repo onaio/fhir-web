@@ -74,6 +74,14 @@ import {
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
 import {
+  OrgAffiliationList,
+  URL_ORG_AFFILIATION,
+  ROUTE_PARAM_ORG_AFFILIATION_ID,
+  CreateEditOrganizationAffiliation,
+  URL_EDIT_ORG_AFFILIATION,
+  URL_CREATE_ORG_AFFILIATION,
+} from '@opensrp/fhir-organization-affiliation';
+import {
   ConnectedUserList,
   ConnectedCreateEditUser,
   ConnectedUserCredentials,
@@ -384,6 +392,39 @@ const App: React.FC = () => {
               {...plansListProps}
               {...draftPlansListStatusProp}
               component={ConnectedPlansList}
+            />
+
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.ORG_AFFILIATION && activeRoles.ORG_AFFILIATION.split(',')}
+              exact
+              path={URL_ORG_AFFILIATION}
+              component={OrgAffiliationList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.ORG_AFFILIATION && activeRoles.ORG_AFFILIATION.split(',')}
+              exact
+              path={`${URL_ORG_AFFILIATION}/:${ROUTE_PARAM_ORG_AFFILIATION_ID}`}
+              component={OrgAffiliationList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.ORG_AFFILIATION && activeRoles.ORG_AFFILIATION.split(',')}
+              exact
+              path={`${URL_EDIT_ORG_AFFILIATION}/:${ROUTE_PARAM_ORG_AFFILIATION_ID}`}
+              component={CreateEditOrganizationAffiliation}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.ORG_AFFILIATION && activeRoles.ORG_AFFILIATION.split(',')}
+              exact
+              path={URL_CREATE_ORG_AFFILIATION}
+              component={CreateEditOrganizationAffiliation}
             />
 
             <PrivateComponent

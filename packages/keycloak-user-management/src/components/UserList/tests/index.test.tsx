@@ -216,6 +216,17 @@ describe('components/UserList', () => {
           method: 'GET',
         },
       ],
+      [
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users/count?search=opensrp',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
     ]);
   });
 

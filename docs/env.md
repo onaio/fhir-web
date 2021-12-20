@@ -243,6 +243,13 @@ Below is a list of currently supported environment variables:
 
   - Default number of rows per table page
   - default: 5
+  - `Enum: 5, 10, 20 , 50, 100`
+
+- **REACT_APP_ENABLE_FHIR_ORG_AFFILIATION**
+
+  - Enables the FHIR Organization Affiliation module
+  - **Optional**(`boolean`)
+  - default: `"false"`
   - `Enum: 5, 10, 20 , 50, 100
 
 - **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**

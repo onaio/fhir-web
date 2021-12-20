@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`View Practitioner role Details detail view without practitionerRoleId: Should be null 1`] = `null`;
+
+exports[`View Practitioner role Details works correctly: nominal display 1`] = `"Identifierb3046485-1591-46b4-959f-02db30a2f622Statustrue"`;
+
+exports[`View Practitioner role Details works correctly: space element 1`] = `
+Object {
+  "children": Array [
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Identifier
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      b3046485-1591-46b4-959f-02db30a2f622
+    </Text>,
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Status
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      true
+    </Text>,
+    "",
+    "",
+  ],
+  "direction": "vertical",
+}
+`;

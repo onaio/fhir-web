@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Practitioner Role list view renders table correctly 1`] = `"FHIR Practitioner RoleCreate Practitioner RolePractitioner NameOrganization NameStatusActionsAllay AllanOpenSRP web Test OrganisationtrueEditJohn CenoOpenSRP web Test OrganisationtrueEditAllay AllanOpenSRP web Test OrganisationtrueEditBobi mapesaOpenSRP web Test OrganisationtrueEditWard N Williams MDTest Team OnetrueEdit12345 / pageGo to"`;
+
+exports[`Practitioner Role list view renders table correctly 3`] = `""`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 1 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 2 1`] = `"John CenoOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 3 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 4 1`] = `"Bobi mapesaOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - ascending 5 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 1 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 2 1`] = `"test fhirTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 3 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 4 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by org name - descending 5 1`] = `"John CenoOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 1 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 2 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 3 1`] = `"Bobi mapesaOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 4 1`] = `"John CenoOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner nam - ascending 5 1`] = `"test fhirTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 1 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 2 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 3 1`] = `"test fhirTest Team OnetrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 4 1`] = `"John CenoOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: sorted table rows by practitioner name name - descending 5 1`] = `"Bobi mapesaOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 0 1`] = `"Practitioner NameOrganization NameStatusActions"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 1 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 2 1`] = `"John CenoOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 3 1`] = `"Allay AllanOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 4 1`] = `"Bobi mapesaOpenSRP web Test OrganisationtrueEdit"`;
+
+exports[`Practitioner Role list view renders table correctly: table rows - default order 5 1`] = `"Ward N Williams MDTest Team OnetrueEdit"`;
