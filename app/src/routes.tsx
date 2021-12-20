@@ -40,6 +40,7 @@ import {
   URL_SERVER_SETTINGS,
   URL_FHIR_CARE_TEAM,
   URL_ADMIN,
+  URL_TEAM_AFFILIATION,
 } from './constants';
 import lang, { TFunction } from './lang';
 
@@ -188,7 +189,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               title: langObj.TEAM_ASSIGNMENT,
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
-              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
+              enabled: true,
+            },
+            {
+              title: langObj.TEAM_AFFILIATION,
+              url: URL_TEAM_AFFILIATION,
+              key: 'team-affiliation',
+              enabled: true,
             },
           ],
         },

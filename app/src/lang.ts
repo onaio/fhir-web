@@ -19,6 +19,7 @@ export function lang(t: TFunction) {
     }),
     USERS: t(`Users`, { ns: namespace }),
     TEAM_ASSIGNMENT: t(`Team Assignment`, { ns: namespace }),
+    TEAM_AFFILIATION: t(`Team Affiliation`, { ns: namespace }),
     USER_GROUPS: t(`User Groups`, { ns: namespace }),
     USER_ROLES: t(`User Roles`, { ns: namespace }),
     TEAM_MANAGEMENT: t(`Team Management`, { ns: namespace }),

@@ -19,7 +19,7 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 
 interface Props {
@@ -66,6 +66,8 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
     );
     setfilterData({ search: currentValue, data: filteredData });
   };
+
+  if(teams.isError) return <BrokenPage />
 
   if (!tableData.length) return <Spin size="large" />;
 
