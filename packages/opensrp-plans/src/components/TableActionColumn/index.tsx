@@ -13,7 +13,7 @@ import {
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 interface ActionColumnProps {
   assignments: Assignment[];
@@ -48,6 +48,7 @@ export const ActionColumn = (props: ActionColumnProps) => {
     baseURL,
     disableAssignments,
   } = props;
+  const { t } = useTranslation();
 
   const allOrganizationOptions = organizations.map((org) => ({
     key: org.identifier,
@@ -133,9 +134,9 @@ export const ActionColumn = (props: ActionColumnProps) => {
 
   const teamsIsDisabled = assignedJursOptions.length === 0 || disableAssignments;
   const teamsModalProps = {
-    invokeText: lang.EDIT_TEAMS,
-    modalTitle: lang.EDIT_TEAMS,
-    placeHolder: lang.SELECT_TEAMS,
+    invokeText: t('Edit teams'),
+    modalTitle: t('Edit teams'),
+    placeHolder: t('Select teams'),
     options: allOrganizationOptions,
     existingOptions: assignedOrgsOptions,
     saveHandler: teamsSaveHandler,
@@ -143,9 +144,9 @@ export const ActionColumn = (props: ActionColumnProps) => {
   };
 
   const areasModalProps = {
-    invokeText: lang.EDIT_AREAS,
-    modalTitle: lang.EDIT_AREAS,
-    placeHolder: lang.SELECT_AREAS,
+    invokeText: t('Edit areas'),
+    modalTitle: t('Edit areas'),
+    placeHolder: t('Select areas'),
     options: allJurisdictionOptions,
     existingOptions: assignedJursOptions,
     saveHandler: areasSaveHandler,

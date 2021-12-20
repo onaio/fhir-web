@@ -22,7 +22,7 @@ import {
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(PlansReducerName, plansReducer);
@@ -51,6 +51,7 @@ const PlansList = (props: PlansListTypes) => {
   const { service, data, fetchPlansCreator, baseURL, allowedPlanStatus } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadPlans(baseURL, service, fetchPlansCreator, allowedPlanStatus)
@@ -67,9 +68,9 @@ const PlansList = (props: PlansListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = pageTitleBuilder(allowedPlanStatus);
+  const pageTitle = pageTitleBuilder(t, allowedPlanStatus);
 
-  const columns = getColumns();
+  const columns = getColumns(t);
 
   return (
     <div className="content-section">
@@ -82,7 +83,7 @@ const PlansList = (props: PlansListTypes) => {
           <div className="main-content__header flex-right">
             <Link to={PLANS_CREATE_VIEW_URL}>
               <Button type="primary" className="mr-0">
-                {lang.NEW_MISSION}
+                {t(' + New Mission')}
               </Button>
             </Link>
           </div>

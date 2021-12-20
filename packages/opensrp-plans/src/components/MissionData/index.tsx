@@ -7,7 +7,7 @@ import {
 } from '@opensrp/plan-form-core';
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Typography, Space, Alert } from 'antd';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLoaders';
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
@@ -34,6 +34,7 @@ const MissionData = (props: MissionDataProps) => {
   const [flaggedProducts, setFlaggedProducts] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const { identifier: planId } = plan;
@@ -77,29 +78,29 @@ const MissionData = (props: MissionDataProps) => {
     <Card
       className="mission-data"
       bordered={false}
-      title={<Title level={5}>{lang.MISSION_DATA}</Title>}
+      title={<Title level={5}>{t('Mission data')}</Title>}
     >
       {loading ? (
         <p>
-          <Text style={{ fontStyle: 'italic' }}>{lang.FETCHING_MISSION_INDICATORS_DATA}</Text>
+          <Text style={{ fontStyle: 'italic' }}>{t('Fetching mission indicators data')}</Text>
         </p>
       ) : null}
       {broken ? <Alert message={errorMessage} type="error" /> : null}
       <Space direction="vertical">
         <p>
-          <Text>{lang.SERVICE_POINTS_VISITED}</Text>:&nbsp;
+          <Text>{t('Service points visited')}</Text>:&nbsp;
           <Text type="secondary">{servicePoints}</Text>
         </p>
         <p>
-          <Text>{lang.PRODUCTS_CHECKED}</Text>:&nbsp;
+          <Text>{t('Products checked')}</Text>:&nbsp;
           <Text type="secondary">{productsChecked}</Text>
         </p>
         <p>
-          <Text>{lang.NUMBER_OF_FLAGGED_PRODUCTS}</Text>:&nbsp;
+          <Text>{t('Number of flagged products')}</Text>:&nbsp;
           <Text type="secondary">{flaggedProducts}</Text>
         </p>
         <a href={BuildDownloadUrl(baseURL, plan.identifier)} download>
-          <Button type="primary">{lang.DOWNLOAD_MISSION_DATA}</Button>
+          <Button type="primary">{t('Download mission data')}</Button>
         </a>
       </Space>
     </Card>
