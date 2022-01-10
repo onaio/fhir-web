@@ -63,11 +63,6 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
 
-- **REACT_APP_SENTRY_DSN**
-
-  - URL to send crash reports
-  - **Required**
-
 - **REACT_APP_ENABLE_CARD_SUPPORT**
 
   - Enables the card support module
@@ -264,6 +259,13 @@ Below is a list of currently supported environment variables:
   - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
 
 - **REACT_APP_OPENSRP_WEB_VERSION**
+
   - Opensrp web version deployed
+  - **Optional**(_string_)
+  - default: ""
+
+- **REACT_APP_SENTRY_CONFIG_JSON**
+  - Stringified json That has sentry custom sentry configurations, refer to [the sdk](https://docs.sentry.io/platforms/javascript/guides/react/enriching-events/tags/) for more information on custom Sentry tags.
+  - The full enum space of the keys that can be passed in the config object can be described as: {...[key in [doc](https://getsentry.github.io/sentry-javascript/interfaces/browser.browseroptions-2.html) where value is json serializable]: value, tags:{ // any key value pair }}
   - **Optional**(_string_)
   - default: ""
