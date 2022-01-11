@@ -34,7 +34,8 @@ import './TeamsView.css';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from 'react-i18next';
 
 // TODO - duplicate Raw assignment type from @opensrp/team-assignment - issue https://github.com/opensrp/web/issues/869
 /** the raw assignment object as received from openSRP API */
@@ -57,7 +58,7 @@ reducerRegistry.register(reducerName, reducer);
  * @param setDetail function to populate team details section (set row data to state)
  * @param setPractitionersList function to populate the 'Team Members' section of team details
  * @param setAssignedLocations function to populate the 'Assigned Locations' section of team details
- * @param langObj translation strings object
+ * @param t translation strings object
  */
 export const populateTeamDetails = (
   row: Organization,
@@ -65,7 +66,7 @@ export const populateTeamDetails = (
   setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
   setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
   setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>,
-  langObj: Lang = lang
+  t: TFunction
 ) => {
   // get team members (practitioners) assigned to a team
   const getPractitioners = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
@@ -92,11 +93,11 @@ export const populateTeamDetails = (
           setAssignedLocations(locations);
         })
         .catch(() => {
-          sendErrorNotification(langObj.ERROR_OCCURRED);
+          sendErrorNotification(t('An error occurred'));
         });
     })
     .catch(() => {
-      sendErrorNotification(langObj.ERROR_OCCURRED);
+      sendErrorNotification(t('An error occurred'));
     })
     .finally(() => setDetail(row));
 };
@@ -152,6 +153,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   const [detail, setDetail] = useState<Organization | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
   const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
+  const { t } = useTranslation();
   const { opensrpBaseURL } = props;
 
   /**
@@ -182,9 +184,9 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.TEAMS}</title>
+        <title>{t('Teams')}</title>
       </Helmet>
-      <h5 className="mb-3">{lang.TEAMS}</h5>
+      <h5 className="mb-3">{t('Teams')}</h5>
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
@@ -197,7 +199,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.CREATE_TEAM}
+                  {t('Create Team')}
                 </Button>
               </Link>
             </div>

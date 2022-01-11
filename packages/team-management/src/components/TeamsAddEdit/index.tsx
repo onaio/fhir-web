@@ -15,7 +15,8 @@ import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from 'react-i18next';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -59,16 +60,16 @@ export async function getPractitionerDetail(id: string, opensrpBaseURL: string) 
 /**
  * Set the InitialValue in component
  *
- * @param {string} id id of the team
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setInitialValue Function to set intial value
- * @param {Lang} langObj - the translation object lookup
+ * @param id id of the team
+ * @param opensrpBaseURL - base url
+ * @param setInitialValue Function to set intial value
+ * @param t - the translator function
  */
 function setupInitialValue(
   id: string,
   opensrpBaseURL: string,
   setInitialValue: Function,
-  langObj: Lang = lang
+  t: TFunction
 ) {
   getTeamDetail(id, opensrpBaseURL)
     .then((response) => {
@@ -78,7 +79,7 @@ function setupInitialValue(
         practitionersList: response.practitioners,
       });
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
+    .catch(() => sendErrorNotification(t('An error occurred')));
 }
 
 export interface Props {
@@ -99,15 +100,15 @@ export const defaultProps = {
  * @param practitionersEndpoint - OpenSRP practitioners endpoint
  * @param pageNumber - paginated page number
  * @param pageSize - number of practitioners in each page
- * @param errorNotification - the error message to show for a failed request
- * @returns {Promise<Practitioner[]>} an array of practitioners
+ * @param t - translator function
+ * @returns an array of practitioners
  */
 async function fetchPractitioners(
   opensrpBaseURL: string,
   practitionersEndpoint: string,
   pageNumber: number,
   pageSize: number,
-  errorNotification: string = lang.ERROR_OCCURRED
+  t: TFunction
 ): Promise<Practitioner[]> {
   const paginationParams = {
     pageNumber,
@@ -118,7 +119,7 @@ async function fetchPractitioners(
     const practitioners: Practitioner[] = await serve.list(paginationParams);
     return practitioners;
   } catch (_) {
-    sendErrorNotification(errorNotification);
+    sendErrorNotification(t('An error occurred'));
     return [];
   }
 }
@@ -130,13 +131,15 @@ async function fetchPractitioners(
  * @param practitionersCountEndpoint - OpenSRP practitioners count endpoint
  * @param practitionersEndpoint - OpenSRP practitioners endpoint
  * @param pageSize - number of practitioners in each page
+ * @param t - translator function
  * @returns {Promise<Practitioner[]>} - an array of all practitioners in a paginated endpoint
  */
 async function fetchPractitionersRecursively(
   opensrpBaseURL: string,
   practitionersCountEndpoint: string,
   practitionersEndpoint: string,
-  pageSize: number
+  pageSize: number,
+  t: TFunction
 ): Promise<Practitioner[]> {
   // get the total number of practitioners
   const serve = new OpenSRPService(practitionersCountEndpoint, opensrpBaseURL);
@@ -148,7 +151,9 @@ async function fetchPractitionersRecursively(
   // compose a promise array to resolve in parallel
   const promises: Promise<Practitioner[]>[] = [];
   for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
-    promises.push(fetchPractitioners(opensrpBaseURL, practitionersEndpoint, pageNumber, pageSize));
+    promises.push(
+      fetchPractitioners(opensrpBaseURL, practitionersEndpoint, pageNumber, pageSize, t)
+    );
   }
 
   // fetch practitioners recursively according to page numbers
@@ -168,11 +173,12 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
   const [initialValue, setInitialValue] = useState<FormField | null>(null);
   const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
   const [practitionersRole, setPractitionersRole] = useState<PractitionerPOST[] | null>(null);
+  const { t } = useTranslation();
   const { opensrpBaseURL, disableTeamMemberReassignment, paginationSize } = props;
 
   useEffect(() => {
-    if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue);
-  }, [params.id, opensrpBaseURL]);
+    if (params.id) setupInitialValue(params.id, opensrpBaseURL, setInitialValue, t);
+  }, [params.id, opensrpBaseURL, t]);
 
   /**
    * Fetch practitioners role array - array of all practitioners already assigned to teams
@@ -188,9 +194,9 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           const filteredResponse = response.filter((practitioner) => practitioner.active);
           setPractitionersRole(filteredResponse);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+        .catch(() => sendErrorNotification(t('An error occurred')));
     }
-  }, [disableTeamMemberReassignment, opensrpBaseURL]);
+  }, [disableTeamMemberReassignment, opensrpBaseURL, t]);
 
   /**
    * fetch practitioners and diff inactive and already assigned to teams
@@ -202,7 +208,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         opensrpBaseURL,
         PRACTITIONER_COUNT,
         PRACTITIONER_GET,
-        paginationSize
+        paginationSize,
+        t
       )
         .then((response: Practitioner[]) => {
           // filter out inactive practitioners
@@ -237,20 +244,22 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
           setPractitioners(filteredResponse);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+        .catch(() => sendErrorNotification(t('An error occurred')));
     }
-  }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole]);
+  }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole, t]);
 
   if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
 
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? lang.EDIT : lang.CREATE} Team</title>
+        <title>{params.id ? t('Edit') : t('Create')} Team</title>
       </Helmet>
 
       <h5 className="mb-3 header-title">
-        {initialValue?.name ? `${lang.EDIT_TEAM} | ${initialValue.name}` : lang.CREATE_TEAM}
+        {initialValue?.name
+          ? t('Edit Team | {{name}}', { name: initialValue.name })
+          : t('Create Team')}
       </h5>
 
       <div className="bg-white p-5">

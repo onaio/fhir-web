@@ -40,8 +40,6 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
-    "i18next": "^19.8.4",
-    "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -52,6 +50,7 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
+    "react-i18next": "^11.8.10",
     "i18next": "^19.8.4",
     "react": "^16.13.1"
   }
