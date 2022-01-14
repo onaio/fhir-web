@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 1`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Last Changed:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    4/11/2020
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 2`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Version
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    1
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire items preview 1`] = `
+<ul
+  class="questionnaireItemsList"
+>
+  <li
+    class="questionnaireItemsList-title"
+    data-testid="linkId-/G1/Q4"
+  >
+    <span
+      class="ant-typography"
+    >
+      What pizza toppings would you like?
+    </span>
+     
+    <span
+      class="ant-tag ant-tag-default"
+    >
+      linkId: 
+      /G1/Q4
+    </span>
+    <span
+      class="ant-tag ant-tag-default"
+    >
+      type: 
+      choice
+    </span>
+  </li>
+  <li>
+    <ul
+      class="questionnaireItemsList__questions-list"
+    >
+      <li
+        data-testid="linkId-/G1/Q4-help"
+      >
+        Favorite toppings
+      </li>
+    </ul>
+  </li>
+</ul>
+`;
