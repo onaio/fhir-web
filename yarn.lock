@@ -1831,9 +1831,9 @@
   integrity sha512-Y76/s2UdNglnfR6ySADLp4uEHLl6LzRcaQU3ZZdDKMjEI03fjbb1O4rwQX9r6SDc8n9C5c8UYSXiyrBY4A7OVg==
 
 "@helsenorge/designsystem-react@>=1.0.0-beta70":
-  version "1.0.0-beta91"
-  resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta91.tgz#99fa435a21c83772fb645f9862fb69f8c5d50b63"
-  integrity sha512-R15M17bBAkXvkGINe13nBYgCyYR596hSdhQ6j4a/MBQ592dcgFFCRvC2P6uArpAB8jZgAxgg8dK3f79JdZ/gAg==
+  version "1.0.0-beta90"
+  resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta90.tgz#e397f81013deceef52491e0319242da7af0abd6d"
+  integrity sha512-KniEZAJNeqYx0AUCKsl3ePSvykldfoiLMJfHPLw44df1mUsg3L7BZnQF0Zhqk2mHSPynTv6tYW9UM52RAlT4UA==
   dependencies:
     bootstrap "4.4.1"
 
