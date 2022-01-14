@@ -1,6 +1,7 @@
 import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { getConfig } from '@opensrp/pkg-config';
 
 /**
  * From T, convert a set of keys to optional, that are in the union K.
@@ -35,3 +36,30 @@ export function getResourcesFromBundle<TResource>(bundle: IBundle) {
   const rtn = temp?.map((e) => e.resource as TResource) ?? [];
   return rtn;
 }
+
+/**
+ * formats a date string according to the configured locale
+ *
+ * @param dateString - the date as string
+ */
+export const intlFormatDateStrings = (dateString: string) => {
+  const temp = new Date(dateString);
+  if (isNaN(temp.getTime())) {
+    return '';
+  }
+  const i18n = getConfig('i18n');
+  const selectedLang = (i18n as i18nInstance).language;
+  let configuredLocale: string | string[] = selectedLang;
+  if (!selectedLang) configuredLocale = [];
+  // remove project language code config if present
+  if (selectedLang.includes('_')) {
+    const localeSplits = selectedLang.split('_');
+    localeSplits.pop();
+    configuredLocale = localeSplits.join('_');
+  }
+  try {
+    return Intl.DateTimeFormat(configuredLocale).format(temp);
+  } catch (error) {
+    return '';
+  }
+};
