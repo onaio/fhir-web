@@ -22,6 +22,21 @@ function fill() {
   lang.DOWNLOADING = i18n.t(`Downloading`, { ns: namespace });
   lang.DOWNLOAD_CSV = i18n.t(`Download CSV`, { ns: namespace });
   lang.NO_DATA_FOUND = i18n.t(`No data found`, { ns: namespace });
+  lang.USER_NOT_ACTIVE_PRACTITIONER = i18n.t(`check if logged in user is an active practitioner`, {
+    ns: namespace,
+  });
+  lang.USER_NOT_ASSIGNED = i18n.t(`check if user is assigned to any active teams`, {
+    ns: namespace,
+  });
+  lang.USERS_TEAM_NOT_ASSIGNED = i18n.t(`check if user's team is assigned to any locations`, {
+    ns: namespace,
+  });
+  lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED = i18n.t(
+    `Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.`,
+    {
+      ns: namespace,
+    }
+  );
 }
 
 // run it initial
