@@ -47,7 +47,7 @@ export interface FHIRResponse<T> {
  *
  * @param dateString - the date as string
  */
-export const intlFormatDateStrings = (dateString: string) => {
+export const intlFormatDateStrings = (dateString = '') => {
   const temp = new Date(dateString);
   if (isNaN(temp.getTime())) {
     return '';
