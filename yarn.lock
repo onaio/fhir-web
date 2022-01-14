@@ -1520,10 +1520,17 @@
   resolved "https://registry.yarnpkg.com/@helsenorge/core-utils/-/core-utils-21.3.0-prerelease.tgz#4adc1ccc3118c3461688a70ce989eb05110f0b6a"
   integrity sha512-Y76/s2UdNglnfR6ySADLp4uEHLl6LzRcaQU3ZZdDKMjEI03fjbb1O4rwQX9r6SDc8n9C5c8UYSXiyrBY4A7OVg==
 
+<<<<<<< HEAD
 "@helsenorge/designsystem-react@>=1.0.0-beta109":
   version "1.0.0-beta113"
   resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta113.tgz#30d1dfa518d97d98c1ebe7f7f4956de5a00b9d5a"
   integrity sha512-dEhux2X3qO70MYMPOSqTYG93HVuoC6jM8fe2bjLj3XaYtJxZnFgrgDpYRmC3sKq9JvYIiSrUYvXNBa/1um3WXA==
+=======
+"@helsenorge/designsystem-react@>=1.0.0-beta70":
+  version "1.0.0-beta90"
+  resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta90.tgz#e397f81013deceef52491e0319242da7af0abd6d"
+  integrity sha512-KniEZAJNeqYx0AUCKsl3ePSvykldfoiLMJfHPLw44df1mUsg3L7BZnQF0Zhqk2mHSPynTv6tYW9UM52RAlT4UA==
+>>>>>>> Add bug fix for @helsenorge package
   dependencies:
     bootstrap "4.6.1"
 
