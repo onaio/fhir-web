@@ -13,11 +13,6 @@
     "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
     "postinstall": "patch-package"
   },
-  "jest": {
-    "setupFiles": [
-      "./setupTests.js"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
