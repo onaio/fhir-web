@@ -53,8 +53,17 @@
   flex-direction: row;
   column-gap: 2rem;
   padding: 8px 0;
+  margin: 24px 0;
 }
 
 .resourceDetails-info {
   flex-grow: 1;
+}
+
+.content-section.fhir-resource-container > div {
+  padding: unset;
+}
+
+.questionnaireItemPreview {
+  margin-bottom: 16px;
 }
