@@ -21,6 +21,8 @@
     "@opensrp/card-support": "^0.0.9",
     "@opensrp/error-boundary-fallback": "^0.0.7",
     "@opensrp/form-config-antd": "^0.0.4",
+    "@opensrp/fhir-views": "^0.0.0",
+    "@opensrp/fhir-quest-form": "^0.0.0",
     "@opensrp/inventory": "^0.0.9",
     "@opensrp/keycloak-service": "^0.0.17",
     "@opensrp/location-management": "^0.0.15",
