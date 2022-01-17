@@ -47,7 +47,7 @@ const R4Parse = (resource: IQuestionnaire) => {
   };
 };
 
-const parseResource = (resource: IQuestionnaire) => {
+export const parseQuestionnaireResource = (resource: IQuestionnaire) => {
   return { ...commonParse(resource), ...R4Parse(resource) };
 };
 
@@ -67,7 +67,7 @@ export const Questionnaire = (props: QuestionnaireProps) => {
     subjectType,
     lastReviewDate,
     effectivePeriod,
-  } = parseResource(resource);
+  } = parseQuestionnaireResource(resource);
   const questionnaireDetailProps: QuestionnaireDetailsProps = {
     title,
     publisher,
@@ -81,7 +81,7 @@ export const Questionnaire = (props: QuestionnaireProps) => {
   return (
     <>
       <QuestionnaireDetails {...questionnaireDetailProps} />
-      <Collapse>
+      <Collapse className="questionnaireItemPreview">
         <Panel header="Preview items" key="1">
           {narrativePreview ? parse(narrativePreview) : <QItems qItems={resource.item}></QItems>}
         </Panel>
