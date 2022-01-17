@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
@@ -12,18 +12,10 @@ import {
   ParsedHierarchyNode,
 } from '@opensrp/location-management';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { submitForm, handleCardOrderDateChange } from './utils';
-import {
-  OPENSRP_URL_LOCATION_HIERARCHY,
-  PRACTITIONER_FROM_USER,
-  ORGANIZATION_BY_PRACTITIONER,
-  GET_ASSIGNMENTS_ENDPOINT,
-} from '../../constants';
+import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
+import { OPENSRP_URL_LOCATION_HIERARCHY, OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { Practitioner, Organization } from '@opensrp/team-management';
-import { RawAssignment } from '@opensrp/team-assignment';
-import { Dictionary } from '@onaio/utils';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 
@@ -67,15 +59,13 @@ export const initialFormValues: Partial<DownloadClientDataFormFields> = {
  */
 const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadClientDataProps) => {
   const { opensrpBaseURL, opensrpServiceClass, fetchAllHierarchiesActionCreator } = props;
-  const [cardOrderDate, setCardOrderDate] = useState<[string, string]>(['', '']);
-  const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const [defaultLocationId, setDefaultLocationId] = useState<string>('');
+  const [cardOrderDate, setCardOrderDate] = React.useState<[string, string]>(['', '']);
+  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const [defaultLocationId, setDefaultLocationId] = React.useState<string>('');
   const locationHierarchies = useSelector((state) =>
     locationHierachyDucks.getAllHierarchiesArray(state)
   );
   const accessToken = useSelector((state) => getAccessToken(state) as string);
-  // get logged in user's id from redux store
-  const userId = useSelector((state) => (state as Dictionary).session.extraData.user_id);
   const dispatch = useDispatch();
   const { Option } = Select;
   const { RangePicker } = DatePicker;
@@ -103,105 +93,39 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     return current > moment().startOf('day');
   };
 
-  useEffect(() => {
-    // fetch practitioner tied to keycloak user
-    const fetchPractitioner = async (userId: string) => {
-      const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, PRACTITIONER_FROM_USER);
-      try {
-        const practitioner: Practitioner = await serve.read(userId);
-        return practitioner;
-      } catch (_) {
-        return undefined;
-      }
-    };
-
-    // fetch teams (organizations) a practitioner is assigned to
-    const fetchAssignedTeams = async (practitionerId: string) => {
-      const serve = new opensrpServiceClass(
-        accessToken,
-        opensrpBaseURL,
-        ORGANIZATION_BY_PRACTITIONER
-      );
-      try {
-        const organizations: Organization[] = await serve.read(practitionerId);
-        return organizations;
-      } catch (_) {
-        return [];
-      }
-    };
-
-    // get all locations a team is assigned to
-    const loadAssignments = async (teamId: string) => {
-      const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, GET_ASSIGNMENTS_ENDPOINT);
-      try {
-        const assignments: RawAssignment[] = await serve.read(teamId);
-        return assignments;
-      } catch (_) {
-        return [];
-      }
-    };
-
-    // fetch location hierarchy for logged  in user
-    const fetchLocationHierarchy = async () => {
-      const practitioner = await fetchPractitioner(userId);
-      if (!practitioner) {
-        sendErrorNotification(lang.USER_NOT_ACTIVE_PRACTITIONER);
-        return;
-      }
-      const assignedTeams = await fetchAssignedTeams(practitioner.identifier);
-      if (assignedTeams.length === 0) {
-        sendErrorNotification(lang.USER_NOT_ASSIGNED);
-        return;
-      }
-      // get first active team member
-      const defaultActiveTeam = assignedTeams.find((team) => team.active === true);
-      if (!defaultActiveTeam) {
-        sendErrorNotification(lang.USER_NOT_ASSIGNED);
-        return;
-      }
-      // load locations assigned to the team
-      const locationsAssigned = await loadAssignments(defaultActiveTeam.identifier);
-      if (locationsAssigned.length === 0) {
-        sendErrorNotification(lang.USERS_TEAM_NOT_ASSIGNED);
-        return;
-      }
-      // get first location whose expiry date is in the future or null
-      const defaultLocation = locationsAssigned.find(
-        (location) => location.toDate === null || new Date(location.toDate) > new Date()
-      );
-      if (!defaultLocation) {
-        sendErrorNotification(lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED);
-        return;
-      }
-      setDefaultLocationId(defaultLocation.jurisdictionId);
-
-      // fetch location hierarchy of default location
-      const serve = new opensrpServiceClass(
-        accessToken,
-        opensrpBaseURL,
-        OPENSRP_URL_LOCATION_HIERARCHY
-      );
-      serve
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        .read(defaultLocation.jurisdictionId, { is_jurisdiction: true })
-        .then((res: RawOpenSRPHierarchy) => {
-          const hierarchy = generateJurisdictionTree(res);
-          dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
-        })
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURRED);
-        });
-    };
-    if (userId) {
-      fetchLocationHierarchy().catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-    }
+  React.useEffect(() => {
+    const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, OPENSRP_URL_USER_ASSIGNMENT);
+    serve
+      .list()
+      .then((assignment: UserAssignment) => {
+        const { jurisdictions } = assignment;
+        const defaultLocationId = jurisdictions[0];
+        setDefaultLocationId(defaultLocationId);
+        const serve = new opensrpServiceClass(
+          accessToken,
+          opensrpBaseURL,
+          OPENSRP_URL_LOCATION_HIERARCHY
+        );
+        serve
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          .read(defaultLocationId, { is_jurisdiction: true })
+          .then((res: RawOpenSRPHierarchy) => {
+            const hierarchy = generateJurisdictionTree(res);
+            dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
+          })
+          .catch((_: Error) => {
+            sendErrorNotification(lang.ERROR_OCCURRED);
+          });
+      })
+      .catch((_: Error) => {
+        sendErrorNotification(lang.ERROR_OCCURRED);
+      });
   }, [
     accessToken,
-    dispatch,
-    fetchAllHierarchiesActionCreator,
     opensrpBaseURL,
+    fetchAllHierarchiesActionCreator,
     opensrpServiceClass,
-    userId,
+    dispatch,
   ]);
 
   /** Function to parse the hierarchy tree into TreeSelect node format
