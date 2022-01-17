@@ -12,7 +12,7 @@ export interface QuestionnaireDetailsProps {
   effectivePeriod?: Period;
   lastReviewDate?: string;
   title?: string;
-  date?: Date;
+  date?: string;
   description?: string;
 }
 
