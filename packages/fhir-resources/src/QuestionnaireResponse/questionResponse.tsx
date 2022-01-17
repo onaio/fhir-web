@@ -37,8 +37,8 @@ const R4Parse = (resource: IQuestionnaireResponse) => {
   };
 };
 
-export const parseResource = (resource: IQuestionnaireResponse) => {
+export const parseQuestionnaireResponseResource = (resource: IQuestionnaireResponse) => {
   return { ...R4Parse(resource) };
 };
 
-export type ParsedQuestionnaireResponse = ReturnType<typeof parseResource>;
+export type ParsedQuestionnaireResponse = ReturnType<typeof parseQuestionnaireResponseResource>;
