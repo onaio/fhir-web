@@ -18,7 +18,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 
 const qClient = new QueryClient();
 
-jest.unmock('fhirclient');
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
