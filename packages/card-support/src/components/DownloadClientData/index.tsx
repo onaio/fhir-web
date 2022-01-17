@@ -74,6 +74,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     locationHierachyDucks.getAllHierarchiesArray(state)
   );
   const accessToken = useSelector((state) => getAccessToken(state) as string);
+  // get logged in user's id from redux store
   const userId = useSelector((state) => (state as Dictionary).session.extraData.user_id);
   const dispatch = useDispatch();
   const { Option } = Select;
