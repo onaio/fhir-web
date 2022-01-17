@@ -9,7 +9,9 @@ import { Router, Route, Switch } from 'react-router';
 import nock from 'nock';
 import { questionnairesPage1, questionnairesPage2 } from './fixtures';
 
-jest.unmock('fhirclient');
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 const props = {
   fhirBaseURL: 'http://example.com',
@@ -63,6 +65,14 @@ test('pagination events work correctly', async () => {
       _count: 20,
     })
     .reply(200, questionnairesPage2)
+    .persist();
+  nock(props.fhirBaseURL)
+    .get('/Questionnaire/_search')
+    .query({
+      _getpagesoffset: 40,
+      _count: 20,
+    })
+    .reply(200, [])
     .persist();
 
   render(
