@@ -3,7 +3,6 @@ export const OPENSRP_URL_USER_ASSIGNMENT = 'organization/user-assignment';
 export const OPENSRP_URL_CLIENT_SEARCH = 'client/search';
 export const OPENSRP_URL_LOCATION_HIERARCHY = 'location/hierarchy';
 export const PRACTITIONER_FROM_USER = `practitioner/user`;
-export const USER_DETAILS = 'user-details';
 export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
 export const GET_ASSIGNMENTS_ENDPOINT = `organization/assignedLocationsAndPlans`;
 
