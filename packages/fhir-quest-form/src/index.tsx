@@ -5,7 +5,7 @@ import { SkjemautfyllerContainer } from '@helsenorge/skjemautfyller/components';
 import { Store, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { RouteComponentProps, useParams } from 'react-router';
+import { RouteComponentProps, useHistory, useParams } from 'react-router';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -113,6 +113,7 @@ export type QuestRFormProps = Pick<BaseQuestRFormProps, 'fhirBaseURL'> &
 
 export const QuestRForm = (props: QuestRFormProps) => {
   const { resourceId, resourceType } = useParams<RouteParams>();
+  const history = useHistory();
   const isQuestionnaire = resourceType === 'Questionnaire';
   const { fhirBaseURL } = props;
 
@@ -126,7 +127,7 @@ export const QuestRForm = (props: QuestRFormProps) => {
       .then(() => sendSuccessNotification('Questionnaire Response resource submitted successfully'))
       .catch((e) => sendErrorNotification(e));
   };
-  const onCancel = () => void 0;
+  const onCancel = () => history.goBack();
 
   const rawQuestProps = {
     resourceId,
