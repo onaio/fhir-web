@@ -15,7 +15,9 @@ import { Router, Route, Switch } from 'react-router';
 import nock from 'nock';
 import { questionnairesPage1, questRespPage1, questRespPage2 } from './fixtures';
 
-jest.unmock('fhirclient');
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 const props = {
   fhirBaseURL: 'http://example.com',
@@ -100,8 +102,6 @@ test('pagination events work correctly', async () => {
   await waitFor(() => {
     expect(screen.getByText(/d8eb71c1-085d-4667-8fe1-b64ad1c6dd77/)).toBeInTheDocument();
   });
-
-  expect(screen.getByTitle(/Questionnaire Responses/)).toBeInTheDocument();
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

@@ -5,6 +5,7 @@ import React from 'react';
 import MapMarkerOutlineIcon from '@opensrp/ant-icons/lib/MapMarkerOutline';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import ArchiveOutlineIcon from '@opensrp/ant-icons/lib/ArchiveOutline';
+
 jest.mock('./configs/env');
 
 describe('routes', () => {
@@ -112,6 +113,7 @@ describe('routes', () => {
     envModule.ENABLE_PLANS = true;
     envModule.ENABLE_SERVER_SETTINGS = true;
     envModule.ENABLE_CARD_SUPPORT = true;
+    envModule.ENABLE_QUEST = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
       PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -122,6 +124,7 @@ describe('routes', () => {
       PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
       SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
     const routes = getRoutes(
@@ -259,12 +262,7 @@ describe('routes', () => {
             key: 'team-management',
             title: 'Team Management',
           },
-          {
-            enabled: true,
-            key: 'product-catalogue',
-            title: 'Product Catalogue',
-            url: '/admin/product-catalogue',
-          },
+          { enabled: true, key: 'fhir-quest', title: 'Questionnaire', url: '/quest' },
           {
             children: [
               {
