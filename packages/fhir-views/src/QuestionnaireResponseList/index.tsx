@@ -25,8 +25,10 @@ export interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
 
+export const qrListRouteKey = 'questId' as const;
+
 export interface RouteProps {
-  questId: string;
+  [qrListRouteKey]: string;
 }
 
 // eslint-disable-next-line react/display-name
@@ -124,7 +126,6 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       keepPreviousData: true,
       staleTime: 5000,
     },
-    pageTitle: 'Questionnaire Responses',
     columns: getColumns(),
     // eslint-disable-next-line react/display-name
     aboveTableRender: () => <Questionnaire resource={questData as IQuestionnaire} />,
