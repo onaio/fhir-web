@@ -39,7 +39,8 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "html-react-parser": "^1.4.3"
+    "html-react-parser": "^1.4.3",
+    "@opensrp/react-utils": "0.0.12"
   },
   "devDependencies": {
     "node-sass": "^4.0.0"
