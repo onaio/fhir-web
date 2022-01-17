@@ -131,6 +131,7 @@ describe('components/DownloadClientData', () => {
      * Currently, there isn't an action method to remove all hierachies. If one is made
      * available from the package @opensrp/location-management, then it should be used here
      */
+    fetch.resetMocks();
   });
 
   const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
@@ -384,7 +385,7 @@ describe('components/DownloadClientData', () => {
     wrapper.unmount();
   });
 
-  it('handles fetch error when fetching user assignment', async () => {
+  it('handles fetch error when fetching practitioner tied to user', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
@@ -409,9 +410,9 @@ describe('components/DownloadClientData', () => {
     wrapper.unmount();
   });
 
-  it('handles fetch error when fetching user location hierarchy', async () => {
+  it('handles fetch error when fetching teams tied to user', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
@@ -431,6 +432,117 @@ describe('components/DownloadClientData', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.USER_NOT_ASSIGNED);
+    wrapper.unmount();
+  });
+
+  it('handles fetch error when fetching team assignments', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DownloadClientData {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USERS_TEAM_NOT_ASSIGNED);
+    wrapper.unmount();
+  });
+  it('handles fetch error when fetching location hierarchies', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DownloadClientData {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    wrapper.unmount();
+  });
+
+  it('handles error if theres no active team', async () => {
+    const inactiveSampleTeam = [{ ...fixtures.sampleTeam[0], active: false }];
+
+    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
+    fetch.mockOnce(JSON.stringify(inactiveSampleTeam));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DownloadClientData {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USER_NOT_ASSIGNED);
+    wrapper.unmount();
+  });
+
+  it('handles error if theres no active location in team assignment', async () => {
+    // set to date in the past
+    const yesterday = new Date().setDate(new Date().getDate() - 1);
+    const inactiveSampleTeamAssignment = [
+      { ...fixtures.sampleTeamAssignment[0], toDate: yesterday },
+    ];
+
+    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
+    fetch.mockOnce(JSON.stringify(inactiveSampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <DownloadClientData {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
+    );
     wrapper.unmount();
   });
 });
