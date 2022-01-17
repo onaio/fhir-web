@@ -21,12 +21,22 @@ i18n
     interpolation: { escapeValue: false },
     returnEmptyString: false,
     nsSeparator: '::',
+    resources: {
+      en_core: {
+        translation: {
+          key: 'hello world',
+        },
+      },
+    },
     keySeparator: false,
     react: {
       useSuspense: false,
     },
   })
   .catch((err) => err);
+
+// force i18n to be initialized
+i18n.changeLanguage(configuredLanguage).catch((err) => err);
 
 setAllConfigs({
   i18n: i18n,

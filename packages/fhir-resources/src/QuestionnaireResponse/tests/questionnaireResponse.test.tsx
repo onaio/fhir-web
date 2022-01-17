@@ -1,8 +1,8 @@
-import { parseResource } from '../questionResponse';
+import { parseQuestionnaireResponseResource } from '../questionResponse';
 import { openChoiceQuestRes } from './fixtures';
 
 test('parse Resource is ok', () => {
-  expect(parseResource(openChoiceQuestRes)).toEqual({
+  expect(parseQuestionnaireResponseResource(openChoiceQuestRes)).toEqual({
     author: undefined,
     authoredDateTime: undefined,
     basedOn: undefined,
