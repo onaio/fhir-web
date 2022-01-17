@@ -245,8 +245,15 @@ export const locationTreeNode3 = {
 
 export const locations = [locationTreeNode1];
 
-export const userAssignment = {
-  organizationIds: [2],
-  jurisdictions: ['e2b4a441-21b5-4d03-816b-09d45b17cad7'],
-  plans: [],
+export const sampleTeamAssignment = {
+  team: {
+    team: {
+      teamName: 'Weekly Call',
+      uuid: '903594cf-7890-4c64-9e12-143fda948a72',
+      location: {
+        name: 'Nairobi',
+        uuid: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      },
+    },
+  },
 };
