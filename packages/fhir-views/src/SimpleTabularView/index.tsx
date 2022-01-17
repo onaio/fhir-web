@@ -23,7 +23,7 @@ export interface SimpleTabularViewProps<TTableSource> {
     { records: TTableSource[]; total: number }, // what we should get from query select
     TRQuery
   >;
-  pageTitle: string | (() => string);
+  pageTitle?: string | (() => string);
   columns: Column<TTableSource>[];
   aboveTableRender?: () => JSX.Element;
 }
@@ -104,11 +104,16 @@ function SimpleTabularView<TableSourceT>(props: SimpleTabularViewProps<TableSour
 
   const title = typeof pageTitle === 'function' ? pageTitle() : pageTitle;
   return (
-    <div className="content-section">
-      <Helmet>
-        <title>{title}</title>
-      </Helmet>
-      <PageHeader title={title} className="page-header"></PageHeader>
+    <div className="content-section fhir-resource-container">
+      {title ? (
+        <>
+          <Helmet>
+            <title>{title}</title>
+          </Helmet>
+          <PageHeader title={title} className="page-header"></PageHeader>
+        </>
+      ) : null}
+
       {aboveTableRender?.()}
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
