@@ -21,10 +21,9 @@ import {
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import lang from '../../lang';
-import { Practitioner } from '@opensrp/team-management';
-import { Dictionary } from '@onaio/utils';
-import { Organization } from '@opensrp/team-management';
+import { Practitioner, Organization } from '@opensrp/team-management';
 import { RawAssignment } from '@opensrp/team-assignment';
+import { Dictionary } from '@onaio/utils';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 
