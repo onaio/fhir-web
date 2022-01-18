@@ -250,39 +250,3 @@ export const userAssignment = {
   jurisdictions: ['e2b4a441-21b5-4d03-816b-09d45b17cad7'],
   plans: [],
 };
-
-export const samplePractitioner = {
-  identifier: '3eb4a68a-3a91-4598-84f0-182f52e19675',
-  active: true,
-  name: 'Demo User',
-  userId: 'db90092f-b983-4f26-b129-daddaf02384f',
-  username: 'demo',
-};
-
-export const sampleTeam = [
-  {
-    id: 66,
-    identifier: '903594cf-7890-4c64-9e12-143fda948a72',
-    active: true,
-    name: 'Weekly Call',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
-    },
-  },
-];
-
-export const sampleTeamAssignment = [
-  {
-    organizationId: '903594cf-7890-4c64-9e12-143fda948a72',
-    jurisdictionId: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
-    planId: '27362060-0309-411a-910c-64f55ede3758',
-    fromDate: 1642118400000,
-    toDate: 1957651200000,
-  },
-];
