@@ -50,12 +50,15 @@ export const intlFormatDateStrings = (dateString = '') => {
   const i18n = getConfig('i18n');
   const selectedLang = (i18n as i18nInstance).language;
   let configuredLocale: string | string[] = selectedLang;
-  if (!selectedLang) configuredLocale = [];
-  // remove project language code config if present
-  if (selectedLang.includes('_')) {
-    const localeSplits = selectedLang.split('_');
-    localeSplits.pop();
-    configuredLocale = localeSplits.join('_');
+  if (!selectedLang) {
+    configuredLocale = [];
+  } else {
+    // remove project language code config if present
+    if (selectedLang.includes('_')) {
+      const localeSplits = selectedLang.split('_');
+      localeSplits.pop();
+      configuredLocale = localeSplits.join('_');
+    }
   }
   try {
     return Intl.DateTimeFormat(configuredLocale).format(temp);
