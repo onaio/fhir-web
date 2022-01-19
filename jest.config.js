@@ -11,7 +11,7 @@ module.exports = {
     '!**/dist/**',
     '!**/{tests,__tests__}/**',
   ],
-  // this modules are not transpiled to commonjs, they also have un-transpiled scss code
+  // these modules are not transpiled to commonjs, they also have un-transpiled scss code
   // which is added in the moduleNameMapper config further below
   transformIgnorePatterns: [
     'node_modules/(?!(@helsenorge/toolkit|@helsenorge/core-utils|@helsenorge/designsystem-react)/)',
