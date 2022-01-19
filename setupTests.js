@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // learn more: https://github.com/testing-library/jest-dom
@@ -8,6 +9,7 @@ import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/camelcase */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { setLogger } from 'react-query';
 
 const configuredLanguage = `en_core`;
 
@@ -66,3 +68,11 @@ jest.mock('fhirclient', () => ({
     };
   }),
 }));
+
+// disable react-query errors and warning on console during tests
+// eg "API is down" when testing api failure
+setLogger({
+  log: () => {},
+  warn: () => {},
+  error: () => {},
+});
