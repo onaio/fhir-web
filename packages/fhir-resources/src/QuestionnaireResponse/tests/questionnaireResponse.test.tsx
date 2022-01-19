@@ -33,4 +33,7 @@ test('parse Resource is ok', () => {
     source: undefined,
     subject: undefined,
   });
+
+  const qVersionTest = { ...openChoiceQuestRes, questionnaire: 'Questionnaire/3440/_history/20' };
+  expect(parseQuestionnaireResponseResource(qVersionTest).questionnaireVersion).toEqual('20');
 });
