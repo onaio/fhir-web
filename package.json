@@ -12,11 +12,6 @@
     "test:watch": "TZ='UTC' jest --watch",
     "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0"
   },
-  "jest": {
-    "setupFiles": [
-      "./setupTests.js"
-    ]
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
