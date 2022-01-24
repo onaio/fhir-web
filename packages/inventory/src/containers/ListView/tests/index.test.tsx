@@ -14,6 +14,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { getNodePath } from '../utils';
 import { generateJurisdictionTree } from '@opensrp/location-management';
 import * as notifications from '@opensrp/notifications';
+import toJson from 'enzyme-to-json';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -76,7 +77,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -116,7 +117,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -167,7 +168,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -193,7 +194,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -218,7 +219,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
