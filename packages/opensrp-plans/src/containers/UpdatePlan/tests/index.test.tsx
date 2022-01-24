@@ -12,6 +12,7 @@ import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import lang from '../../../lang';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -57,7 +58,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -112,7 +113,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -227,7 +228,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -269,7 +270,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -277,7 +278,7 @@ describe('CreateEditProduct Page', () => {
     });
 
     /** should still be loading page */
-    expect(wrapper.text()).toMatchInlineSnapshot(`""`);
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     expect(fetch).not.toHaveBeenCalled();
   });
