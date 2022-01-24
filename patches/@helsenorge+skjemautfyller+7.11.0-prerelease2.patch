@@ -1,0 +1,22 @@
+diff --git a/node_modules/@helsenorge/skjemautfyller/reducers/form.js b/node_modules/@helsenorge/skjemautfyller/reducers/form.js
+index 7e7d739..e133b94 100644
+--- a/node_modules/@helsenorge/skjemautfyller/reducers/form.js
++++ b/node_modules/@helsenorge/skjemautfyller/reducers/form.js
+@@ -616,11 +616,13 @@ function processSetSkjemaDefinition(action, state) {
+     else if (action.questionnaireResponse) {
+         formData = { Content: action.questionnaireResponse };
+     }
+-    else if (state.FormData === initialState.FormData) {
+-        formData = { Content: generateQuestionnaireResponse_1.generateQuestionnaireResponse(action.questionnaire) };
+-    }
++    // override stale formData slice
++    // else if (state.FormData === initialState.FormData) {
++    //     formData = { Content: generateQuestionnaireResponse_1.generateQuestionnaireResponse(action.questionnaire) };
++    // }
+     else {
+-        formData = state.FormData;
++        // formData = state.FormData;
++        formData = { Content: generateQuestionnaireResponse_1.generateQuestionnaireResponse(action.questionnaire) };
+     }
+     return Object.assign(Object.assign({}, state), { FormDefinition: formDefinition, FormData: formData, Language: action.language || state.Language });
+ }
