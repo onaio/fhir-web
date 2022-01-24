@@ -189,7 +189,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // show loading screen
-    expect(wrapper.text()).toMatchSnapshot('show loader');
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
