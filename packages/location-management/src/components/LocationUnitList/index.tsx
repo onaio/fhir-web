@@ -5,7 +5,7 @@ import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
-import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LocationUnit,
   locationUnitsReducer,
@@ -127,9 +127,12 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   }, [treeDataQuery, currentClickedNode]);
 
-  if (locationUnits.isError || treeDataQuery.some((e) => e.isError)) return <BrokenPage />;
-
-  if (!locationUnits.isSuccess || treeDataQuery.every((e) => !e.isSuccess))
+  if (
+    tableData.length === 0 ||
+    treeData.length === 0 ||
+    !locationUnits.data ||
+    treeData.length !== locationUnits.data.length
+  )
     return <Spin size={'large'} />;
 
   return (
