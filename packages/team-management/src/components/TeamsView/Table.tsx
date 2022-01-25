@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
+import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { TEAMS_COUNT, URL_EDIT_TEAM } from '../../constants';
@@ -47,6 +48,7 @@ const Table: React.FC<Props> = (props: Props) => {
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
+      onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
       queryPram={{ searchParam }}
       pageSize={5}
       queryid="Teams"
