@@ -11,7 +11,6 @@ import {
   SearchForm,
   getQueryParams,
   createChangeHandler,
-  BrokenPage,
 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -151,7 +150,6 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   const dispatch = useDispatch();
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
   const [detail, setDetail] = useState<Organization | null>(null);
-  const [apiError, setApiError] = useState<boolean>(false);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
   const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
   const { opensrpBaseURL } = props;
@@ -181,12 +179,6 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
     return response;
   }
 
-  const onError = () => {
-    setApiError(true);
-  };
-
-  if (apiError) return <BrokenPage />;
-
   return (
     <section className="layout-content">
       <Helmet>
@@ -212,7 +204,6 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
           </div>
           <div className="bg-white">
             <Table
-              onError={onError}
               searchParam={searchParam}
               fetchOrgs={fetchOrgs}
               onViewDetails={populateTeamDetails}

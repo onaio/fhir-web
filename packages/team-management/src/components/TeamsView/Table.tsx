@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization } from '../../ducks/organizations';
 import { Link } from 'react-router-dom';
 import { TEAMS_COUNT, URL_EDIT_TEAM } from '../../constants';
@@ -24,7 +23,6 @@ export interface Props {
     setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
     setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
   ) => void;
-  onError: (msg: string) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -36,7 +34,6 @@ const Table: React.FC<Props> = (props: Props) => {
     fetchOrgs,
     opensrpBaseURL,
     searchParam,
-    onError = sendErrorNotification,
   } = props;
 
   const columns: Column<Organization>[] = [
@@ -50,7 +47,6 @@ const Table: React.FC<Props> = (props: Props) => {
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
-      onError={(e) => onError(e as string)}
       queryPram={{ searchParam }}
       pageSize={5}
       queryid="Teams"
