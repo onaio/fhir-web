@@ -1,7 +1,7 @@
 import { getUser } from '@onaio/session-reducer';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import React from 'react';
-import { OpenSRPService, BrokenPage } from '@opensrp/react-utils';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
@@ -106,9 +106,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     .map((query) => query.data)
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
-  if (locationUnits.isError || treeDataQuery.some((e) => e.isError)) return <BrokenPage />;
-
-  if (!locationUnits.isSuccess || treeDataQuery.every((e) => !e.isSuccess))
+  if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
     return <Spin size="large"></Spin>;
 
   const locationFormProps: LocationFormProps = {
