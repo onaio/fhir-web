@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, SubmitButton, FormItem, Radio, Input, InputNumber } from 'formik-antd';
 import { Formik } from 'formik';
 import { PlusOutlined } from '@ant-design/icons';
-import { Upload, Space, Button, Spin } from 'antd';
+import { Upload, Space, Button } from 'antd';
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { postProduct, putProduct } from '../..//helpers/dataLoaders';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -12,7 +12,7 @@ import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import lang, { Lang } from '../../lang';
 import { HTTPError } from '@opensrp/server-service';
-import { BrokenPage, fetchProtectedImage } from '@opensrp/react-utils';
+import { fetchProtectedImage } from '@opensrp/react-utils';
 
 /** type describing the fields in the product catalogue form */
 export interface ProductFormFields {
@@ -117,8 +117,6 @@ const ProductForm = (props: ProductFormProps) => {
   const isEditMode = !!initialValues.uniqueId;
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>('');
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
-  const [apiError, setApiError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const history = useHistory();
 
   const ProductFormValidationSchema = ProductFormValidationSchemaFactory(lang);
@@ -184,11 +182,7 @@ const ProductForm = (props: ProductFormProps) => {
             setImageUrl(url);
           }
         })
-        .catch((_: HTTPError) => {
-          setApiError(true);
-          sendErrorNotification(lang.ERROR_IMAGE_LOAD);
-        })
-        .finally(() => setIsLoading(false));
+        .catch((_: HTTPError) => sendErrorNotification(lang.ERROR_IMAGE_LOAD));
     }
     return () => {
       if (objectURL) {
@@ -202,10 +196,6 @@ const ProductForm = (props: ProductFormProps) => {
   if (areWeDoneHere) {
     return <Redirect to={redirectAfterAction} />;
   }
-
-  if (apiError) return <BrokenPage />;
-
-  if (isLoading) return <Spin size="large" />;
 
   return (
     <div className="product-form form-container">
