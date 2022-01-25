@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Row, PageHeader, Col, Button, Modal, Form, Select } from 'antd';
-import {
-  TeamAssignmentLoading,
-  columnsFactory,
-  getPayload,
-  ActionsColumnCustomRender,
-} from './utils';
+import { Row, PageHeader, Col, Button, Modal, Form, Select, Spin } from 'antd';
+import { columnsFactory, getPayload, ActionsColumnCustomRender } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService, TableLayout, BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -176,9 +171,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             const hierarchy = generateJurisdictionTree(response);
             dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
           })
-          .catch(() => {
-            sendErrorNotification(lang.ERROR_OCCURED);
-            setApiError(true);
+          .catch((err) => {
+            return err;
           });
       });
       // get all assignments
@@ -221,10 +215,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     setVisible(false);
   };
 
-  if (apiError) return <BrokenPage />;
+  if (apiError) {
+    return <BrokenPage />;
+  }
 
   if (loading) {
-    return <TeamAssignmentLoading />;
+    return <Spin size="large" />;
   }
 
   /**
