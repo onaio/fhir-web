@@ -386,15 +386,15 @@ exports[`LocationForm renders correctly: serviceType field 1`] = `
   onKeyDown={[Function]}
   onMouseDown={[Function]}
   onPaste={[Function]}
-  readOnly={true}
+  readOnly={false}
   role="combobox"
   style={
     Object {
-      "opacity": 0,
+      "opacity": null,
     }
   }
   type="search"
-  unselectable="on"
+  unselectable={null}
   value=""
 />
 `;

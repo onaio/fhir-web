@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
-import { ColumnType, TableProps as AntTableProps } from 'antd/lib/table';
+import { TableProps as AntTableProps } from 'antd/lib/table';
+import {
+  ColumnType,
+  SorterResult,
+  TableCurrentDataSource,
+  TablePaginationConfig,
+} from 'antd/lib/table/interface';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
 import { getConfig, TableState, setConfig } from '@opensrp/pkg-config';
@@ -20,6 +26,7 @@ export interface Column<T> extends ColumnType<T>, Dictionary {
 
 interface Props<T> extends Omit<Options<T>, 'columns' | 'dataSource'> {
   datasource: T[];
+  dataKeyAccessor?: keyof T;
   columns?: Column<T>[];
   actions?: Action<T>;
 }
@@ -41,7 +48,9 @@ export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object = Dictionary>(props: TableProps<T>) {
+export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
+  props: TableProps<T>
+) {
   const {
     id,
     columns,
@@ -49,6 +58,7 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
     children,
     persistState,
     actions,
+    dataKeyAccessor,
     pagination,
     ...restprops
   } = props;
@@ -66,47 +76,56 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   };
   const tablesState = getConfig('tablespref') ?? {};
 
-  if (columns && actions) {
-    const actionsColumn: Column<T> = {
-      key: TABLE_ACTIONS_KEY as TKey<T>,
-      title: lang.ACTIONS,
-      ...actions,
-    };
-    columns.push(actionsColumn);
-  }
+  // Appends action column in the table column array
+  const tablecolumn = useMemo(() => {
+    if (columns && actions) {
+      const actionsColumn: Column<T> = {
+        key: TABLE_ACTIONS_KEY as TKey<T>,
+        title: lang.ACTIONS,
+        ...actions,
+      };
+      return [...columns, actionsColumn];
+    } else return columns;
+  }, [columns, actions]);
 
   const [tableState, setTableState] = useState<TableState>(
     id && tablesState[id] !== undefined ? tablesState[id] : {}
   );
 
-  const tableprops: Options = {
-    ...options,
-    ...tablesState,
-    // bind change event to pagination only if  table is uniquely identifable /and have to persistState
-    // instead of table onchange bind it to pagination onchange so that table change event will be free to use for user at will
+  // auto append key into data if not provided
+  const data: T[] = useMemo(() => {
+    return datasource.map((e, index) => ({
+      ...e,
+      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+    }));
+  }, [dataKeyAccessor, datasource]);
 
-    // only add pagination event listner if we have id and persistState true
-    ...(id &&
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      persistState && {
-        pagination: {
-          ...options.pagination,
-          ...tableState?.pagination,
-          onChange: paginationChange,
-        },
-      }),
-  };
-
-  /** Table Layout Component used to render the table with default Settings
+  /** Function Trigger on each change and is used to save state of the save on table props change
    *
-   * @param page - the current viewing Page number
+   * @param pagination - Table Pagination if any
+   * @param filters - Table Filters if any
+   * @param sorter - Table Sorter if any
+   * @param extra - Table Extra if any
+   */
+  function onChange(
+    pagination: TablePaginationConfig,
+    filters: Record<string, (string | number)[] | null>,
+    sorter: SorterResult<T> | SorterResult<T>[],
+    extra: TableCurrentDataSource<T>
+  ) {
+    if (props.onChange) props.onChange(pagination, filters, sorter, extra);
+    if (id && persistState) SaveTableState(pagination.current, pagination.pageSize);
+  }
+
+  /** Function To update and save table State into GlobalState
+   *
+   * @param current - the current viewing Page number
    * @param pageSize - the no of rows to show in the table
    */
-  function paginationChange(page: number, pageSize?: number) {
-    // if table is uniquely identifable and have to persistState then Save Pagination to pkg-config store
+  function SaveTableState(current: number | undefined, pageSize: number | undefined) {
     const newstate: TableState = {
       ...tableState,
-      pagination: { ...tableState, current: page, pageSize: pageSize },
+      pagination: { ...tableState, current, pageSize },
     };
     tablesState[id as string] = newstate;
     setConfig('tablespref', { ...tablesState });
@@ -114,7 +133,12 @@ export function TableLayout<T extends object = Dictionary>(props: TableProps<T>)
   }
 
   return (
-    <AntTable<T> dataSource={datasource} columns={columns} {...tableprops}>
+    <AntTable<T>
+      {...{ ...options, ...tablesState }}
+      onChange={onChange}
+      dataSource={data}
+      columns={tablecolumn}
+    >
       {children}
     </AntTable>
   );

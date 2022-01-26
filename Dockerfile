@@ -1,6 +1,6 @@
 FROM alpine/git AS sources
 
-RUN git clone --depth=1 --branch=config-sessions https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --depth=1 --branch=v1.3.0 https://github.com/onaio/express-server.git /usr/src/express-server
 
 FROM node:14.9.0-alpine as build
 
@@ -13,7 +13,7 @@ RUN chown -R node .
 USER node
 
 RUN cp /project/app/.env.sample /project/app/.env \
-      && yarn
+  && yarn
 
 USER root
 RUN chown -R node .

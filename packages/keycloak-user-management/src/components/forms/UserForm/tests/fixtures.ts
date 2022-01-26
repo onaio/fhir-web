@@ -1,5 +1,6 @@
 import { FormFields } from '../types';
 import { KeycloakUser, UserGroup } from '../../../../ducks/user';
+import { Organization } from '@opensrp/team-management';
 
 export const userGroup: UserGroup[] = [
   { id: '283c5d6e-9b83-4954-9f3b-4c2103e4370c', name: 'Admin', path: '/Admin', subGroups: [] },
@@ -287,3 +288,22 @@ export const value: FormFields = {
   email: 'janedoe@example.com',
   userGroups: userGroup.splice(3).map((e) => e.id),
 };
+
+export const organization: Organization[] = [
+  {
+    active: true,
+    id: 2,
+    identifier: 'd23f7350-d406-11e9-bb65-2a2ae2dbcce4',
+    name: 'Takang 1',
+    partOf: 1,
+    type: {
+      coding: [
+        {
+          code: 'team',
+          display: 'Team',
+          system: 'http://terminology.hl7.org/CodeSystem/team-type',
+        },
+      ],
+    },
+  },
+];
