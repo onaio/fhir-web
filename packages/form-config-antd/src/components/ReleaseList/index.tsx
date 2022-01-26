@@ -19,7 +19,7 @@ import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import lang from '../../lang';
-import { TableLayout, BrokenPage } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
 
 /** Register reducer */
@@ -59,7 +59,6 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const [filterData, setfilterDataData] = useState<ManifestReleasesTypes[] | null>(null);
   const [value, setValue] = useState('');
-  const [apiError, setApiError] = useState<boolean>(false);
   const {
     opensrpBaseURL,
     uploadFileURL,
@@ -70,7 +69,6 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   const onError = (err: string) => {
     sendErrorNotification(err);
-    setApiError(true);
   };
 
   useEffect(() => {
@@ -85,8 +83,6 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
       customFetchOptions
     );
   }, [accessToken, opensrpBaseURL, customFetchOptions, dispatch, fetchReleases]);
-
-  if (apiError) return <BrokenPage />;
 
   if (loading) {
     return <Spin />;
