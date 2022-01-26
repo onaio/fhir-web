@@ -118,21 +118,6 @@ describe('View User Group Details', () => {
     expect(toJson(wrapper.find('.view-details-content'))).toBeTruthy();
   });
 
-  it('detail view without groupId', () => {
-    const props = {
-      groupId: '',
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <ViewDetails {...props} />
-      </Router>
-    );
-    expect(toJson(wrapper.find('.view-details-content'))).toMatchSnapshot('Should be null');
-    wrapper.unmount();
-  });
-
   it('works when GroupId is present but user group members/details isnt', async () => {
     fetch.once(JSON.stringify(null)).once(JSON.stringify({}));
     const props = {
