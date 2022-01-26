@@ -126,14 +126,15 @@ describe('components/UserGroupsList', () => {
       </Provider>
     );
     // Loader should be displayed
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+    expect(toJson(wrapper.find('[data-testid="group-list-loader"]'))).toBeTruthy();
 
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-    // Loader should be hiddern
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
+
+    // Loader should be hidden
+    expect(toJson(wrapper.find('[data-testid="group-list-loader"]'))).toBeFalsy();
 
     const userList = wrapper.find('UserGroupsList');
     const headerRow = userList.find('Row').at(0);
