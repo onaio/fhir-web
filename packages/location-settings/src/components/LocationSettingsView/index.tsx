@@ -10,7 +10,7 @@ import {
   RawOpenSRPHierarchy,
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
 import { Setting } from '../../ducks/settings';
 import { POP_CHARACTERISTICS_PARAM, SECURITY_AUTHENTICATE_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
@@ -75,12 +75,23 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
           })
         : undefined,
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => {
+        sendErrorNotification(lang.ERROR_OCCURRED);
+      },
       select: (res: Setting[]) => res,
     }
   );
 
-  if (locationSettings.isFetching || !locationSettings.isSuccess) return <Spin size="large" />;
+  if (
+    (locationSettings.error && !locationSettings.data) ||
+    (userLocSettings.error && !userLocSettings.data)
+  ) {
+    return <BrokenPage />;
+  }
+
+  if (locationSettings.isLoading || userLocSettings.isLoading) {
+    return <Spin size="large" />;
+  }
 
   return (
     <section className="layout-content">
@@ -95,7 +106,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
-              data={locationSettings.data}
+              data={locationSettings.data ?? []}
               tree={treeData}
               actioncolumn={{
                 title: lang.ACTIONS,
