@@ -21,7 +21,7 @@ import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import lang from '../../lang';
-import { TableLayout, BrokenPage } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
 
 /** Register reducer */
@@ -72,11 +72,10 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   } = props;
   const { Title } = Typography;
   const [loading, setLoading] = useState<boolean>(false);
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
+  const [sortedInfo, setSortedInfo] = useState<Dictionary>();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
   const [value, setValue] = useState('');
-  const [apiError, setApiError] = useState<boolean>(false);
   const [filterData, setfilterDataData] = useState<ManifestFilesTypes[] | null>(null);
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
@@ -85,7 +84,6 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
 
   const onError = (err: string) => {
     sendErrorNotification(err);
-    setApiError(true);
   };
 
   useEffect(
@@ -113,8 +111,6 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
       dispatch,
     ]
   );
-
-  if (apiError) return <BrokenPage />;
 
   if (loading) {
     return <Spin />;
