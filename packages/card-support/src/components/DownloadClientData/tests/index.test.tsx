@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React from 'react';
 import { DownloadClientData } from '..';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -16,6 +17,7 @@ import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
+import { QueryClient, QueryClientProvider } from 'react-query';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
@@ -108,8 +110,10 @@ describe('components/DownloadClientData', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: accessToken, state: 'abcde' } }
+        {
+          api_token: 'hunter2',
+          oAuth2Data: { access_token: accessToken, state: 'abcde' },
+        }
       )
     );
   });
@@ -127,6 +131,7 @@ describe('components/DownloadClientData', () => {
      * Currently, there isn't an action method to remove all hierachies. If one is made
      * available from the package @opensrp/location-management, then it should be used here
      */
+    fetch.resetMocks();
   });
 
   const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
@@ -141,55 +146,43 @@ describe('components/DownloadClientData', () => {
   const papaparseMock = jest.spyOn(Papaparse, 'unparse');
 
   it('renders without crashing', () => {
+    const queryClient = new QueryClient();
+
     shallow(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
   });
 
   it('renders correctly', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/user-assignment`,
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
-      [
-        `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/${fixtures.userAssignment.jurisdictions[0]}?is_jurisdiction=true`,
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer hunter2',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
     ]);
     const content = wrapper.find('div.layout-content');
     expect(content.find('Title').props()).toMatchSnapshot('title');
@@ -198,20 +191,26 @@ describe('components/DownloadClientData', () => {
   });
 
   it('submit is disabled until date range is selected', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
+
     // Submit is disabled if date range is empty
     expect(wrapper.find('Tooltip').prop('title')).toEqual('Select Card Order Date');
     expect(wrapper.find('Tooltip').find('Button').prop('disabled')).toEqual(true);
@@ -234,22 +233,26 @@ describe('components/DownloadClientData', () => {
   });
 
   it('downloads csv correctly', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('select#cardOrderDate').simulate('change', {
       target: { value: ['2020-01-01', '2020-11-30'] },
@@ -267,19 +270,13 @@ describe('components/DownloadClientData', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
-    expect(fetch.mock.calls[2]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -291,22 +288,26 @@ describe('components/DownloadClientData', () => {
   });
 
   it('submits if card status is not entered', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('select#cardOrderDate').simulate('change', {
       target: { value: ['2020-01-01', '2020-11-30'] },
@@ -322,19 +323,13 @@ describe('components/DownloadClientData', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
-    expect(fetch.mock.calls[2]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -342,22 +337,26 @@ describe('components/DownloadClientData', () => {
   });
 
   it('uses the default location id if location not selected', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     wrapper.find('select#cardOrderDate').simulate('change', {
       target: { value: ['2020-01-01', '2020-11-30'] },
@@ -372,65 +371,83 @@ describe('components/DownloadClientData', () => {
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
-    expect(fetch.mock.calls[2]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${fixtures.userAssignment.jurisdictions[0]}&attribute=card_status:needs_card`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
     });
   });
 
-  it('handles fetch error when fetching user assignment', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+  it('handles fetch error when fetching user data - team assignments', async () => {
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
+    // turn retries off - makes fetch fail on first try
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
+    );
   });
 
   it('handles fetch error when fetching user location hierarchy', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.userAssignment));
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
+    // turn retries off - makes fetch fail on first try
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });

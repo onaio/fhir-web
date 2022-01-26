@@ -10,7 +10,9 @@ import App from '../App';
 jest.mock('../../configs/env', () => ({
   PROJECT_LANGUAGE_CODE: 'eusm',
   SUPPORTED_LANGUAGES: ['en', 'fr'],
+  OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
   BACKEND_ACTIVE: true,
+  OPENSRP_WEB_VERSION: '',
   OPENSRP_ROLES: {
     USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
     PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -35,7 +37,7 @@ describe('App with active backend', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
       await new Promise<unknown>((resolve) => setImmediate(resolve));

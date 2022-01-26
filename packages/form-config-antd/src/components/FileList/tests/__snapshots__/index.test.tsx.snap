@@ -68,11 +68,6 @@ exports[`components/Antd/FileList renders correctly for view file: table 1`] = `
         "key": "module",
         "title": "Module",
       },
-      Object {
-        "key": "_actions",
-        "render": [Function],
-        "title": "Actions",
-      },
     ]
   }
   datasource={
@@ -191,11 +186,6 @@ exports[`components/Antd/FileList renders correctly: table 1`] = `
         "sortOrder": undefined,
         "sorter": [Function],
         "title": "Created at",
-      },
-      Object {
-        "key": "_actions",
-        "render": [Function],
-        "title": "Actions",
       },
     ]
   }

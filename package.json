@@ -11,7 +11,7 @@
     "test": "TZ='UTC' jest",
     "test:watch": "TZ='UTC' jest --watch",
     "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
-    "lint-snap": "eslint {packages,app}/**/*.snap"
+    "postinstall": "patch-package"
   },
   "jest": {
     "setupFiles": [
@@ -56,8 +56,9 @@
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@opensrp/server-logout": "^0.0.1",
     "@reduxjs/toolkit": "^1.5.0",
-    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.0.4",
+    "@testing-library/react-hooks": "^7.0.0",
     "@testing-library/user-event": "^7.1.2",
     "@types/bootstrap": "^4.5.0",
     "@types/enzyme": "^3.10.3",
@@ -130,6 +131,8 @@
     "packages/*"
   ],
   "dependencies": {
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "tsd": "^0.13.1"
   }
 }

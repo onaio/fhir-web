@@ -1,56 +1,133 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Input } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import TeamsDetail, { TeamsDetailProps } from '../TeamsDetail';
-import { SearchOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { OpenSRPService } from '@opensrp/react-utils';
+import TeamsDetail from '../TeamsDetail';
+import { Dictionary } from '@onaio/utils';
+import { RouteComponentProps } from 'react-router';
+import { useDispatch } from 'react-redux';
+import {
+  OpenSRPService,
+  SearchForm,
+  getQueryParams,
+  createChangeHandler,
+} from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   reducer,
   fetchOrganizationsAction,
-  getOrganizationsArray,
+  removeOrganizationsAction,
   Organization,
   reducerName,
 } from '../../ducks/organizations';
-import { TEAMS_GET, TEAM_PRACTITIONERS, URL_ADD_TEAM } from '../../constants';
-import Table, { TableData } from './Table';
+import {
+  TEAMS_GET,
+  TEAM_PRACTITIONERS,
+  URL_ADD_TEAM,
+  ASSIGNED_LOCATIONS_AND_PLANS,
+  SEARCH_QUERY_PARAM,
+  TEAMS_SEARCH,
+} from '../../constants';
+import Table from './Table';
 import './TeamsView.css';
-import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
+import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import lang, { Lang } from '../../lang';
+
+// TODO - duplicate Raw assignment type from @opensrp/team-assignment - issue https://github.com/opensrp/web/issues/869
+/** the raw assignment object as received from openSRP API */
+export interface RawAssignment {
+  jurisdictionId: string;
+  organizationId: string;
+  planId: string;
+  fromDate: number;
+  toDate: number;
+}
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
 
 /**
- * Function to load selected Team for details
+ *  Function to populate the team details section of teams module
  *
- * @param {TableData} row data selected from the table
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setDetail funtion to set detail to state
- * @param {Function} setPractitionersList funtion to set detail to state
- * @param {Lang} langObj - the translation object lookup
+ * @param row data selected from the table row
+ * @param opensrpBaseURL openSrp server base url
+ * @param setDetail function to populate team details section (set row data to state)
+ * @param setPractitionersList function to populate the 'Team Members' section of team details
+ * @param setAssignedLocations function to populate the 'Assigned Locations' section of team details
+ * @param langObj translation strings object
  */
-export const loadSingleTeam = (
-  row: TableData,
+export const populateTeamDetails = (
+  row: Organization,
   opensrpBaseURL: string,
-  setDetail: (isLoading: string | Organization) => void,
-  setPractitionersList: (isLoading: string | Practitioner[]) => void,
+  setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
+  setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
+  setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>,
   langObj: Lang = lang
-): void => {
-  const serve = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
-  serve
-    .list()
-    .then((response: Practitioner[]) => {
-      setPractitionersList(response);
-      setDetail(row);
+) => {
+  // get team members (practitioners) assigned to a team
+  const getPractitioners = new OpenSRPService(TEAM_PRACTITIONERS + row.identifier, opensrpBaseURL);
+
+  // get raw team assignments (list of jurisdiction and organization id's)
+  const getRawTeamAssignments = new OpenSRPService(
+    `${TEAMS_GET}${ASSIGNED_LOCATIONS_AND_PLANS}${row.identifier}`,
+    opensrpBaseURL
+  );
+
+  Promise.all([
+    getPractitioners.list() as Promise<Practitioner[]>,
+    getRawTeamAssignments.list() as Promise<RawAssignment[]>,
+  ])
+    .then(([practitioners, rawAssignments]) => {
+      setPractitionersList(practitioners);
+
+      // get array jurisdictions from array of raw assignments
+      Promise.all(
+        // unwrap promises from their wrapped functions
+        jurisdictionPromises(rawAssignments, opensrpBaseURL).map((promise) => promise())
+      )
+        .then((locations) => {
+          setAssignedLocations(locations);
+        })
+        .catch(() => {
+          sendErrorNotification(langObj.ERROR_OCCURRED);
+        });
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
+    .catch(() => {
+      sendErrorNotification(langObj.ERROR_OCCURRED);
+    })
+    .finally(() => setDetail(row));
+};
+
+/**
+ * function that returns an array of jurisdiction promises from an array of rawAssignments
+ *
+ * @param rawAssignments - raw team assignments (list of jurisdiction and organization id's)
+ * @param opensrpBaseURL -  openSrp server base url
+ * @returns array of jurisdiction promises wrapped in functions
+ */
+const jurisdictionPromises = (rawAssignments: RawAssignment[], opensrpBaseURL: string) => {
+  // wrap promises in plain functions to avoid immediate evocation
+  return rawAssignments.map((assignment) => () =>
+    jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
+  );
+};
+
+/**
+ * query a jurisdiction from a jurisdiction id
+ *
+ * @param jurisdictionId - jurisdiction id
+ * @param opensrpBaseURL - openSrp server base url
+ * @returns - promise that resolves to an opensrp jurisdiction
+ */
+const jurisdictionFromId = async (jurisdictionId: string, opensrpBaseURL: string) => {
+  const getAssignedLocations = new OpenSRPService(
+    `location/${jurisdictionId}?is_jurisdiction=true`,
+    opensrpBaseURL
+  );
+  return getAssignedLocations.list() as Promise<OpenSRPJurisdiction>;
 };
 
 interface Props {
@@ -62,64 +139,45 @@ const defaultProps = {
   opensrpBaseURL: '',
 };
 
+export type TeamsViewTypes = Props & RouteComponentProps;
+
 /** Function which shows the list of all teams and there details
  *
  * @param {Object} props - TeamsView component props
  * @returns {Function} returns team display
  */
-export const TeamsView: React.FC<Props> = (props: Props) => {
+export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   const dispatch = useDispatch();
-  const teamsArray = useSelector((state) => getOrganizationsArray(state));
-  const [detail, setDetail] = useState<TeamsDetailProps | null>(null);
+  const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
+  const [detail, setDetail] = useState<Organization | null>(null);
   const [practitionersList, setPractitionersList] = useState<Practitioner[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [value, setValue] = useState('');
-  const [filter, setfilterData] = useState<TableData[] | null>(null);
+  const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
   const { opensrpBaseURL } = props;
-  useEffect(() => {
-    if (isLoading) {
-      const serve = new OpenSRPService(TEAMS_GET, opensrpBaseURL);
-      serve
-        .list()
-        .then((response: Organization[]) => {
-          dispatch(fetchOrganizationsAction(response));
-          setIsLoading(false);
-        })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-    }
-  });
-
-  const tableData: TableData[] = [];
-
-  if (teamsArray.length) {
-    teamsArray.forEach((team: Organization, i: number) => {
-      tableData.push({
-        key: i.toString(),
-        id: team.id,
-        name: team.name,
-        active: team.active,
-        identifier: team.identifier,
-      });
-    });
-  }
 
   /**
-   * Returns filted list of teams
+   * Function to fetch organizations
    *
-   * @param {object} e event recieved onChange
-   * @param {object} e.target -
-   * @param {object} e.target.value value to be filtered from tabel list
+   * @param {number} page - current Page number in Table
+   * @param {number} pageSize - Page Size of the table
+   * @param {string|undefined} searchquery - searchquery generated from Paginated data
+   * @returns {Promise<Organization[]>} Return data Fetched from server
    */
-  const onChange = (e: { target: { value: string } }) => {
-    const currentValue = e.target.value;
-    setValue(currentValue);
-    const filteredData = tableData.filter((entry: { name: string }) =>
-      entry.name.toLowerCase().includes(currentValue.toLowerCase())
+  async function fetchOrgs(
+    page: number,
+    pageSize: number,
+    searchquery?: string
+  ): Promise<Organization[]> {
+    let filterParams: Dictionary = { pageNumber: page, pageSize: pageSize };
+    if (searchquery) filterParams = { name: searchParam };
+    const teamsService = new OpenSRPService(
+      searchquery ? TEAMS_SEARCH : 'organization',
+      opensrpBaseURL
     );
-    setfilterData(filteredData as TableData[]);
-  };
-
-  if (isLoading) return <Spin size="large" />;
+    const response: Organization[] = await teamsService.list(filterParams as Dictionary);
+    dispatch(removeOrganizationsAction());
+    dispatch(fetchOrganizationsAction(response));
+    return response;
+  }
 
   return (
     <section className="layout-content">
@@ -130,15 +188,11 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
-            <h5>
-              <Input
-                placeholder={lang.SEARCH}
-                size="large"
-                value={value}
-                prefix={<SearchOutlined />}
-                onChange={onChange}
-              />
-            </h5>
+            <SearchForm
+              defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
+              onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
+              size={'middle'}
+            />
             <div>
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
@@ -150,13 +204,13 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
           </div>
           <div className="bg-white">
             <Table
-              data={value.length < 1 ? tableData : (filter as TableData[])}
-              onViewDetails={loadSingleTeam}
+              searchParam={searchParam}
+              fetchOrgs={fetchOrgs}
+              onViewDetails={populateTeamDetails}
               opensrpBaseURL={opensrpBaseURL}
-              setPractitionersList={
-                setPractitionersList as (isLoading: string | Practitioner[]) => void
-              }
-              setDetail={setDetail as (isLoading: string | Organization) => void}
+              setPractitionersList={setPractitionersList}
+              setAssignedLocations={setAssignedLocations}
+              setDetail={setDetail}
             />
           </div>
         </Col>
@@ -166,11 +220,10 @@ export const TeamsView: React.FC<Props> = (props: Props) => {
               onClose={() => setDetail(null)}
               {...detail}
               teamMembers={practitionersList}
+              assignedLocations={assignedLocations}
             />
           </Col>
-        ) : (
-          ''
-        )}
+        ) : null}
       </Row>
     </section>
   );
