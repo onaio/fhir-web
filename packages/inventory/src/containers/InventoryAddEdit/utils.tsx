@@ -14,7 +14,6 @@ import { Setting } from '../../components/InventoryItemForm';
  * @param params settings endpoint params
  * @param setSettings set settings fetch in component state
  * @param customOptions OpenSRP class custom fetch options
- * @param onError - calls when some error occur
  * @param langObj - the language translations look up
  */
 export const fetchSettings = (
@@ -22,12 +21,11 @@ export const fetchSettings = (
   params: Dictionary,
   setSettings: Dispatch<SetStateAction<Setting[]>>,
   customOptions?: typeof getFetchOptions,
-  onError: (err: string) => void = sendErrorNotification,
   langObj: Lang = lang
 ) => {
   const service = new OpenSRPService(OPENSRP_ENDPOINT_SETTINGS, openSRPBaseURL, customOptions);
   service
     .list(params)
     .then((response: Setting[]) => setSettings(response))
-    .catch(() => onError(langObj.errorFetchingSettings));
+    .catch(() => sendErrorNotification(langObj.ERROR_GENERIC));
 };
