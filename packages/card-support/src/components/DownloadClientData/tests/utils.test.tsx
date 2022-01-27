@@ -18,6 +18,7 @@ import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-empty-function */
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
