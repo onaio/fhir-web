@@ -235,6 +235,7 @@ describe('components/DownloadClientData', () => {
   it('downloads csv correctly', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     const queryClient = new QueryClient();
@@ -276,7 +277,8 @@ describe('components/DownloadClientData', () => {
     expect(fetch.mock.calls.map((res) => res[0])).toEqual([
       'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -290,6 +292,7 @@ describe('components/DownloadClientData', () => {
   it('submits if card status is not entered', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     const queryClient = new QueryClient();
@@ -329,7 +332,8 @@ describe('components/DownloadClientData', () => {
     expect(fetch.mock.calls.map((res) => res[0])).toEqual([
       'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -338,6 +342,7 @@ describe('components/DownloadClientData', () => {
 
   it('uses the default location id if location not selected', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
@@ -377,7 +382,8 @@ describe('components/DownloadClientData', () => {
     expect(fetch.mock.calls.map((res) => res[0])).toEqual([
       'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -386,8 +392,7 @@ describe('components/DownloadClientData', () => {
 
   it('handles fetch error when fetching user data - team assignments', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     // turn retries off - makes fetch fail on first try
@@ -422,7 +427,7 @@ describe('components/DownloadClientData', () => {
   it('handles fetch error when fetching user location hierarchy', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     // turn retries off - makes fetch fail on first try

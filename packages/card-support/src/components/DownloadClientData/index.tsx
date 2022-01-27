@@ -167,7 +167,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               opensrpServiceClass,
               locationHierarchies,
               setSubmitting
-            );
+            ).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
           }}
         >
           <Form.Item name="clientLocation" label={lang.CLIENT_LOCATION}>
