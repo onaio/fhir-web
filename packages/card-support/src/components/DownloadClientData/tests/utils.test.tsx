@@ -155,7 +155,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
@@ -190,7 +190,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -217,7 +218,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -245,7 +247,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -272,7 +275,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -295,7 +299,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
@@ -308,6 +312,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
   it('filters correctly if registration date does not meet range', async () => {
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
     submitForm(
       {
         ...values,
@@ -318,7 +323,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
@@ -342,7 +347,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -364,7 +370,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
