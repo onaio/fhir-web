@@ -16,6 +16,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
+import * as functions from '../utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -204,6 +205,31 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+  });
+
+  it('handles error if submit form fails', async () => {
+    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+
+    const mockRejectFn = jest.fn();
+    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(() => Promise.reject('API is down'));
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {
+      mockRejectFn();
+    });
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockRejectFn).toHaveBeenCalled();
   });
 
   it('handles error if submission fails', async () => {
