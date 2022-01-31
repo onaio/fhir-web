@@ -1,9 +1,7 @@
 // OPENSRP API endpoints
+export const SECURITY_AUTHENTICATE = 'security/authenticate';
 export const OPENSRP_URL_CLIENT_SEARCH = 'client/search';
 export const OPENSRP_URL_LOCATION_HIERARCHY = 'location/hierarchy';
-export const PRACTITIONER_FROM_USER = `practitioner/user`;
-export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
-export const GET_ASSIGNMENTS_ENDPOINT = `organization/assignedLocationsAndPlans`;
 
 /** CSV File MIME Types */
 export const TEXT_CSV = 'text/csv';

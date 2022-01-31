@@ -74,3 +74,122 @@ exports[`Questionnaire profile view renders correctly: questionnaire items previ
   </li>
 </ul>
 `;
+
+exports[`no items edge case: questionnaire meta 1`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Last Changed:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    4/11/2020
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 2`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Version
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    1
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 3`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Subject type:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    Organization
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 4`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Publisher:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    Health eData Inc
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 5`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Effective period start:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    2020-04-11T22:01:37.262Z
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 6`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Effective period end:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    2020-04-11T22:01:37.262Z
+  </dd>
+</div>
+`;
+
+exports[`no items edge case: questionnaire meta 7`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Last reviewed date:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    4/11/2020
+  </dd>
+</div>
+`;

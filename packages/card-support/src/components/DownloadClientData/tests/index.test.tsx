@@ -17,6 +17,7 @@ import Papaparse from 'papaparse';
 import * as globalUtils from '../../../helpers/utils';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
+import { QueryClient, QueryClientProvider } from 'react-query';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
@@ -112,7 +113,6 @@ describe('components/DownloadClientData', () => {
         {
           api_token: 'hunter2',
           oAuth2Data: { access_token: accessToken, state: 'abcde' },
-          user_id: '0b1010010001010101',
         }
       )
     );
@@ -146,27 +146,33 @@ describe('components/DownloadClientData', () => {
   const papaparseMock = jest.spyOn(Papaparse, 'unparse');
 
   it('renders without crashing', () => {
+    const queryClient = new QueryClient();
+
     shallow(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
   });
 
   it('renders correctly', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -174,10 +180,8 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/practitioner/user/0b1010010001010101',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/by-practitioner/3eb4a68a-3a91-4598-84f0-182f52e19675',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans/903594cf-7890-4c64-9e12-143fda948a72',
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
     ]);
     const content = wrapper.find('div.layout-content');
@@ -187,17 +191,19 @@ describe('components/DownloadClientData', () => {
   });
 
   it('submit is disabled until date range is selected', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -224,22 +230,24 @@ describe('components/DownloadClientData', () => {
     wrapper.update();
     expect(wrapper.find('Tooltip').prop('title')).toEqual('');
     expect(wrapper.find('Tooltip').find('Button').prop('disabled')).toEqual(false);
-    wrapper.unmount();
   });
 
   it('downloads csv correctly', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -266,12 +274,11 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/practitioner/user/0b1010010001010101',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/by-practitioner/3eb4a68a-3a91-4598-84f0-182f52e19675',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans/903594cf-7890-4c64-9e12-143fda948a72',
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
@@ -280,22 +287,24 @@ describe('components/DownloadClientData', () => {
     expect(mockDownload.mock.calls[0][1]).toEqual(
       'Children_list_CSB Hopital Bouficha_18_11_2020_(01-01-2020 - 30-11-2020).csv'
     );
-    wrapper.unmount();
   });
 
   it('submits if card status is not entered', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -320,32 +329,33 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/practitioner/user/0b1010010001010101',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/by-practitioner/3eb4a68a-3a91-4598-84f0-182f52e19675',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans/903594cf-7890-4c64-9e12-143fda948a72',
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7',
     ]);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
       header: true,
     });
-    wrapper.unmount();
   });
 
   it('uses the default location id if location not selected', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -369,170 +379,39 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/practitioner/user/0b1010010001010101',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/by-practitioner/3eb4a68a-3a91-4598-84f0-182f52e19675',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans/903594cf-7890-4c64-9e12-143fda948a72',
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
-      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
-    expect(papaparseMock).toBeCalledWith(
-      [{ ...fixtures.child1CsvEntry }, { ...fixtures.child2CsvEntry }],
-      {
-        header: true,
-      }
-    );
-    wrapper.unmount();
+    expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
+      header: true,
+    });
   });
 
-  it('handles fetch error when fetching practitioner tied to user', async () => {
+  it('handles fetch error when fetching user data - team assignments', async () => {
     fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    // turn retries off - makes fetch fail on first try
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USER_NOT_ACTIVE_PRACTITIONER);
-    wrapper.unmount();
-  });
-
-  it('handles fetch error when fetching teams tied to user', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USER_NOT_ASSIGNED);
-    wrapper.unmount();
-  });
-
-  it('handles fetch error when fetching team assignments', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USERS_TEAM_NOT_ASSIGNED);
-    wrapper.unmount();
-  });
-  it('handles fetch error when fetching location hierarchies', async () => {
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
-    wrapper.unmount();
-  });
-
-  it('handles error if theres no active team', async () => {
-    const inactiveSampleTeam = [{ ...fixtures.sampleTeam[0], active: false }];
-
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(inactiveSampleTeam));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
-
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.USER_NOT_ASSIGNED);
-    wrapper.unmount();
-  });
-
-  it('handles error if theres no active location in team assignment', async () => {
-    // set to date in the past
-    const yesterday = new Date().setDate(new Date().getDate() - 1);
-    const inactiveSampleTeamAssignment = [
-      { ...fixtures.sampleTeamAssignment[0], toDate: yesterday },
-    ];
-
-    fetch.mockOnce(JSON.stringify(fixtures.samplePractitioner));
-    fetch.mockOnce(JSON.stringify(fixtures.sampleTeam));
-    fetch.mockOnce(JSON.stringify(inactiveSampleTeamAssignment));
-    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockOnce(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
-
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <DownloadClientData {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -543,6 +422,38 @@ describe('components/DownloadClientData', () => {
     expect(notificationErrorMock).toHaveBeenCalledWith(
       lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
     );
-    wrapper.unmount();
+  });
+
+  it('handles fetch error when fetching user location hierarchy', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
+    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    // turn retries off - makes fetch fail on first try
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
+    const wrapper = mount(
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DownloadClientData {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 });
