@@ -86,7 +86,9 @@ describe('components/CreateEditCareTeam', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          request: jest.fn().mockImplementation(async () => {
+            throw new Error('Something went wrong');
+          }),
         };
       })
     );
@@ -104,9 +106,7 @@ describe('components/CreateEditCareTeam', () => {
       wrapper.update();
     });
 
-    const row = wrapper.find('Row').at(0);
-
-    expect(row.text()).toMatchSnapshot('full care tem form');
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
 
     wrapper.unmount();
   });
