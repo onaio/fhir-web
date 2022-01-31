@@ -162,7 +162,7 @@ const ProductForm = (props: ProductFormProps) => {
    * @param {Function} setFieldValue - the callback that updates formik state
    * for the photoURL field
    */
-  const handleChange: (info: UploadChangeParam, setFieldValue: Function) => void = (
+  const handleChange: (info: UploadChangeParam<any>, setFieldValue: Function) => void = (
     info,
     setFieldValue
   ) => {
