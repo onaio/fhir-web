@@ -1,6 +1,7 @@
 import { Organization, PractitionerRole, OrganizationDetail } from '.';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { FHIR_RESOURCES_PAGE_SIZE, PRACTITIONERROLE_RESOURCE_TYPE } from './constants';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 /**
  * Function to load selected Team for details
@@ -16,7 +17,7 @@ export async function loadTeamPractitionerInfo(props: {
   PractitionerRoles?: PractitionerRole[];
 }): Promise<OrganizationDetail> {
   const { fhirBaseURL, team } = props;
-  const serve = new FHIRServiceClass<PractitionerRole>(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
+  const serve = new FHIRServiceClass<IBundle>(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
   const fhirParams = {
     _count: FHIR_RESOURCES_PAGE_SIZE,
     _getpagesoffset: 0,
@@ -24,7 +25,9 @@ export async function loadTeamPractitionerInfo(props: {
 
   const AllRoles: PractitionerRole[] =
     props.PractitionerRoles ??
-    (await serve.list(fhirParams).then((res) => res.entry.map((e) => e.resource)));
+    (await serve
+      .list(fhirParams)
+      .then((res) => res.entry?.map((e) => e.resource as PractitionerRole) ?? []));
 
   const practitionerAssigned = AllRoles.filter(
     (role) => role.organization.reference === `Organization/${team.id}`

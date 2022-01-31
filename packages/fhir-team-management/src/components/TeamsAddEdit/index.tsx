@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Organization, Practitioner, PractitionerRole } from '../../types';
+import { Organization } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
@@ -18,6 +18,9 @@ import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import type { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 export interface Props {
   fhirBaseURL: string;
@@ -30,34 +33,30 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     _getpagesoffset: 0,
   };
 
-  const practitionerAPI = new FHIRServiceClass<Practitioner>(
-    fhirBaseURL,
-    PRACTITIONER_RESOURCE_TYPE
-  );
-  const organizationAPI = new FHIRServiceClass<Organization>(
-    fhirBaseURL,
-    ORGANIZATION_RESOURCE_TYPE
-  );
-  const practitionerroleAPI = new FHIRServiceClass<PractitionerRole>(
-    fhirBaseURL,
-    PRACTITIONERROLE_RESOURCE_TYPE
-  );
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
   const [apiError, setApiError] = useState<boolean>(false);
 
   const practitioners = useQuery(
     PRACTITIONER_ENDPOINT,
-    async () => practitionerAPI.list(fhirParams),
+    async () =>
+      new FHIRServiceClass<IBundle>(fhirBaseURL, PRACTITIONER_RESOURCE_TYPE).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry.map((e) => e.resource),
+      select: (res) => {
+        const temp = res.entry?.filter((x) => x !== undefined);
+        const rtn = temp?.map((e) => e.resource as IPractitioner) ?? [];
+        return rtn;
+      },
     }
   );
 
   const team = useQuery(
     [ORGANIZATION_ENDPOINT, params.id],
-    async () => organizationAPI.read(`${params.id}`),
+    async () =>
+      new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE).read(
+        `${params.id}`
+      ),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => res,
@@ -67,10 +66,15 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const allRoles = useQuery(
     PRACTITIONERROLE_ENDPOINT,
-    async () => practitionerroleAPI.list(fhirParams),
+    async () =>
+      new FHIRServiceClass<IBundle>(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry.map((e) => e.resource),
+      select: (res) => {
+        const temp = res.entry?.filter((x) => x !== undefined);
+        const rtn = temp?.map((e) => e.resource as IPractitionerRole) ?? [];
+        return rtn;
+      },
       enabled: params.id !== undefined,
     }
   );
