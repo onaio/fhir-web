@@ -6,6 +6,7 @@ import {
   SorterResult,
   TableCurrentDataSource,
   TablePaginationConfig,
+  FilterValue,
 } from 'antd/lib/table/interface';
 import { Dictionary } from '@onaio/utils';
 import { TABLE_PAGE_SIZE, TABLE_PAGE_SIZE_OPTIONS, TABLE_ACTIONS_KEY } from '../../constants';
@@ -109,7 +110,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
    */
   function onChange(
     pagination: TablePaginationConfig,
-    filters: Record<string, (string | number)[] | null>,
+    filters: Record<string, FilterValue | null>,
     sorter: SorterResult<T> | SorterResult<T>[],
     extra: TableCurrentDataSource<T>
   ) {
