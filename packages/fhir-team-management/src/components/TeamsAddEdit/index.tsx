@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Organization } from '../../types';
+import { Organization, Practitioner, PractitionerRole } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import {
@@ -83,7 +83,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     loadTeamPractitionerInfo({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
-      PractitionerRoles: allRoles.data,
+      PractitionerRoles: allRoles.data as PractitionerRole[],
     })
       .then(({ practitionerInfo, ...team }) => {
         setInitialValue({
@@ -116,8 +116,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           fhirBaseURL={fhirBaseURL}
           value={initialValue}
-          practitioners={practitioners.data}
-          practitionerRoles={allRoles.data ? allRoles.data : undefined}
+          practitioners={practitioners.data as Practitioner[]}
+          practitionerRoles={allRoles.data ? (allRoles.data as PractitionerRole[]) : undefined}
         />
       </div>
     </section>
