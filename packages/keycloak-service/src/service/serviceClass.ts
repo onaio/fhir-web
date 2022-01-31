@@ -74,7 +74,7 @@ export const customFetch: CustomFetch = async (...rest) => {
   try {
     return await fetch(...rest);
   } catch (err) {
-    throwNetworkError(err);
+    if (err instanceof Error) throwNetworkError(err);
   }
 };
 
