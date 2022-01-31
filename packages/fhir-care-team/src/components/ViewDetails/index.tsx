@@ -5,11 +5,13 @@ import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Resource404, BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
 import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
+import { sendErrorNotification } from '@opensrp/notifications';
+
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -27,11 +29,11 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
   const history = useHistory();
 
-  const { data, isSuccess, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [`CareTeam/${careTeamId}`],
-    queryFn: () =>
-      careTeamId ? new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId) : undefined,
+    queryFn: () => new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId),
     select: (res) => res,
+    onError: () => sendErrorNotification('Failed to fetch care team'),
   });
 
   const practitioners = useQueries(
@@ -57,15 +59,8 @@ const ViewDetails = (props: ViewDetailsProps) => {
         ? new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).read(data.subject.reference.split('/')[1])
         : undefined,
     select: (res) => res,
+    onError: () => sendErrorNotification('Failed to get assigned groups'),
   });
-
-  if (!careTeamId) {
-    return null;
-  }
-
-  if (error) {
-    return <BrokenPage errorMessage={`${error}`} />;
-  }
 
   return (
     <Col className="view-details-content">
@@ -77,12 +72,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
           onClick={() => history.push(URL_CARE_TEAM)}
         />
       </div>
-      {isSuccess ? (
+      {isLoading ? (
         <Spin size="large" className="custom-ant-spin" />
-      ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !isSuccess && careTeamId ? (
-        <Resource404 />
-      ) : (
+      ) : !data ? null : (
         <Space direction="vertical">
           <Text strong={true} className="display-block">
             {lang.NAME}

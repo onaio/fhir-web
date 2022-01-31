@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View Care Team Details detail view without careTeamId: Should be null 1`] = `null`;
-
 exports[`View Care Team Details works correctly: nominal display 1`] = `"NameCare Team OneIdentifier93bc9c3d-6321-41b0-9b93-1275d7114e22StatusactiveSubjectCare Team OneParticipant"`;
 
 exports[`View Care Team Details works correctly: space element 1`] = `
