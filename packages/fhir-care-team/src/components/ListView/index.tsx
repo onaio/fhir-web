@@ -119,15 +119,18 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   const { currentPage, pageSize } = pageProps;
   const pageOffset = (currentPage - 1) * pageSize;
 
-  const { data, isError, error, refetch, isSuccess } = useCareTeamsHook(
+  const { data, isLoading, isFetching, error, refetch } = useCareTeamsHook(
     fhirBaseURL,
     pageSize as number,
     pageOffset,
     setPayloadCount
   );
-  if (isError) return <BrokenPage errorMessage={`${error}`} />;
 
-  if (!isSuccess) return <Spin size="large" />;
+  if (isLoading || isFetching) return <Spin size="large" />;
+
+  if (error) {
+    return <BrokenPage errorMessage={`${error}`} />;
+  }
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],

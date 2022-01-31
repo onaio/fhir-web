@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -16,8 +16,6 @@ import {
 import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
-import type { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
-import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 // Interface for route params
 interface RouteParams {
@@ -60,9 +58,9 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     _getpagesoffset: 0,
   };
 
-  const singleCareTeam = useQuery<ICareTeam>(
+  const singleCareTeam = useQuery(
     [FHIR_CARE_TEAM, careTeamId],
-    async () => await new FHIRServiceClass<ICareTeam>(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId),
+    async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res) => res,
@@ -71,7 +69,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const fhirGroups = useQuery(
     FHIR_GROUPS,
-    async () => await new FHIRServiceClass<IBundle>(fhirBaseURL, FHIR_GROUPS).list(fhirParams),
+    async () => await new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res) => res,
@@ -80,25 +78,12 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const fhirPractitioners = useQuery(
     FHIR_PRACTITIONERS,
-    async () =>
-      await new FHIRServiceClass<IBundle>(fhirBaseURL, FHIR_PRACTITIONERS).list(fhirParams),
+    async () => await new FHIRServiceClass(fhirBaseURL, FHIR_PRACTITIONERS).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
       select: (res) => res,
     }
   );
-
-  if (fhirPractitioners.isLoading || fhirGroups.isLoading || singleCareTeam.isLoading) {
-    return <Spin size="large" />;
-  }
-
-  if (
-    (fhirPractitioners.isError && !fhirPractitioners.data) ||
-    (singleCareTeam.isError && !singleCareTeam.data) ||
-    (fhirGroups.isError && !fhirGroups.data)
-  ) {
-    return <BrokenPage />;
-  }
 
   const buildInitialValues = singleCareTeam.data
     ? {
@@ -134,6 +119,14 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
         name: e.resource?.name,
       })) ?? [],
   };
+
+  if (
+    fhirPractitioners.isLoading ||
+    fhirGroups.isLoading ||
+    (careTeamId && !buildInitialValues.id)
+  ) {
+    return <Spin size="large" />;
+  }
 
   return (
     <Row>

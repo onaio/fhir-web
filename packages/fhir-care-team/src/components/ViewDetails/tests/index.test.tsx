@@ -12,7 +12,6 @@ import * as fhirCient from 'fhirclient';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { createTestQueryClient } from '../../ListView/tests/utils';
-import * as notifications from '@opensrp/notifications';
 
 const { QueryClientProvider } = reactQuery;
 
@@ -90,6 +89,22 @@ describe('View Care Team Details', () => {
     expect(toJson(wrapper.find('.view-details-content'))).toBeTruthy();
   });
 
+  it('detail view without careTeamId', () => {
+    const props = {
+      careTeamId: '',
+      fhirBaseURL: 'https://r4.smarthealthit.org/',
+    };
+    const wrapper = mount(
+      <Router history={history}>
+        <QueryClientProvider client={testQueryClient}>
+          <ViewDetails {...props} />
+        </QueryClientProvider>
+      </Router>
+    );
+    expect(toJson(wrapper.find('.view-details-content'))).toMatchSnapshot('Should be null');
+    wrapper.unmount();
+  });
+
   it('Closes on clicking cancel (X) ', () => {
     const props = {
       careTeamId: fixtures.careTeam1.id,
@@ -117,19 +132,15 @@ describe('View Care Team Details', () => {
       careTeamId: fixtures.careTeam1.id,
       fhirBaseURL: 'https://r4.smarthealthit.org/',
     };
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockImplementation(async () => {
-            throw new Error('Problem');
-          }),
-        };
-      })
+    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
+    reactQueryMock.mockImplementation(
+      () =>
+        ({
+          data: undefined,
+          error: 'Something went wrong',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any)
     );
-    const notifSpy = jest.spyOn(notifications, 'sendErrorNotification');
-
     const wrapper = mount(
       <Router history={history}>
         <QueryClientProvider client={testQueryClient}>
@@ -141,11 +152,10 @@ describe('View Care Team Details', () => {
     await act(async () => {
       await flushPromises();
     });
-    wrapper.update();
 
+    wrapper.update();
     /** error view */
-    expect(notifSpy).toHaveBeenCalledWith('Failed to fetch care team');
-    notifSpy.mockRestore();
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
     wrapper.unmount();
   });
 });
