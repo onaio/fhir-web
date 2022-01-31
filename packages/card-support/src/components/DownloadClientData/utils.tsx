@@ -2,10 +2,14 @@ import Papaparse from 'papaparse';
 import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
 import { Dispatch, SetStateAction } from 'react';
-import { OPENSRP_URL_CLIENT_SEARCH, APPLICATION_CSV } from '../../constants';
+import {
+  OPENSRP_URL_CLIENT_SEARCH,
+  APPLICATION_CSV,
+  OPENSRP_URL_LOCATION_HIERARCHY,
+} from '../../constants';
 import { Client } from '../../ducks/clients';
 import { downloadFile } from '../../helpers/utils';
-import { ParsedHierarchyNode } from '@opensrp/location-management';
+import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
@@ -55,7 +59,7 @@ export const handleCardOrderDateChange = (
  * @param setSubmitting - method to set form `isSubmitting` status
  * @param langObj - tthe lang object
  */
-export const submitForm = (
+export const submitForm = async (
   values: DownloadClientDataFormFields,
   accessToken: string,
   opensrpBaseURL: string,
@@ -63,7 +67,7 @@ export const submitForm = (
   locations: ParsedHierarchyNode[],
   setSubmitting: (isSubmitting: boolean) => void,
   langObj: Lang = lang
-): void => {
+): Promise<void> => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
 
   if (!clientLocation) {
@@ -71,12 +75,38 @@ export const submitForm = (
   }
 
   setSubmitting(true);
-  const startDate = cardOrderDate[0];
-  const endDate = cardOrderDate[1];
-  const endPoint = `${OPENSRP_URL_CLIENT_SEARCH}`;
-  const serve = new serviceClass(accessToken, opensrpBaseURL, endPoint);
+
+  // get location id's of all nested children of a selected jurisdiction
+  const fetchNestedLocationIds = async (clientLocationId: string) => {
+    const serve = new serviceClass(accessToken, opensrpBaseURL, OPENSRP_URL_LOCATION_HIERARCHY);
+    try {
+      const res: RawOpenSRPHierarchy = await serve.read(clientLocationId);
+      // parentChildren is an object with keys as parent location ids
+      // and values as arrays of children location ids
+      // each children location with children itself has an entry in the object
+      const nestedLocationIds = Object.values(res.locationsHierarchy.parentChildren);
+      const flatNestedLocationIds = nestedLocationIds.flat();
+      // all keys (nested children location ids) are present as values of the primary location id values (clientLocationId)
+      // except the primary location id itself - thus the re-add
+      const flatNestedLocationIdsWithClientLocationId = [
+        ...flatNestedLocationIds,
+        clientLocationId,
+      ];
+      const stringifiedFlatNestedLocationIdsWithClientLocationId = flatNestedLocationIdsWithClientLocationId.join(
+        ','
+      );
+      return stringifiedFlatNestedLocationIdsWithClientLocationId;
+    } catch (_) {
+      sendErrorNotification(langObj.ERROR_OCCURRED);
+      return '';
+    }
+  };
+
+  const nestedLocationIds = await fetchNestedLocationIds(clientLocation);
+
+  // add all nested location ids (children of selected location) to the search params
   let params: Dictionary = {
-    locationIds: clientLocation,
+    locationIds: nestedLocationIds,
   };
 
   if (cardStatus) {
@@ -85,6 +115,10 @@ export const submitForm = (
       attribute: `card_status:${cardStatus}`,
     };
   }
+
+  const startDate = cardOrderDate[0];
+  const endDate = cardOrderDate[1];
+  const serve = new serviceClass(accessToken, opensrpBaseURL, OPENSRP_URL_CLIENT_SEARCH);
 
   serve
     .list(params)

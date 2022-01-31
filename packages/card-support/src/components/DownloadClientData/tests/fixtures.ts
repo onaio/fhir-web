@@ -193,7 +193,32 @@ export const locationHierarchy = {
         },
       },
     },
-    parentChildren: {},
+    parentChildren: {
+      '70589012-899c-401d-85a1-13fabce26aab': [
+        '325b9549-80fa-4dd0-9cf8-f0538cbebb18',
+        'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+        '72f8ae88-58c9-40b4-863a-1c7bc6549a8b',
+        '52c10f07-6653-470d-9fee-14b0bb111c2a',
+        'd309898b-3925-494f-a30c-689222d3fcce',
+        'dbacb5dc-c8a3-439d-b407-13ffd570b9ef',
+        '27400130-8127-4f54-b14f-e26f20ecae14',
+        '14e83edc-5a54-44f5-816e-c96c61b5d911',
+        '9c183088-e498-4183-af41-b29bd32d94b6',
+        '66c88197-8281-4eb4-ae2e-4a89ae8419ed',
+      ],
+      'e447d5bb-8d42-4be4-b91d-b8d185cf81a6': ['1018b255-0889-492c-b5dd-31a50cb3db4d'],
+      'e5631d3e-70c3-4083-ac17-46f9467c6dd5': ['5d99a60e-126e-4c40-b5ce-439f920de090'],
+      '7a663f5e-2619-4a2d-a7df-7250263f47d2': ['9a0e7727-b011-458f-832a-61108b2fe381'],
+      '18b3841b-b5b1-4971-93d0-d36ac20c4565': ['70589012-899c-401d-85a1-13fabce26aab'],
+      'fee237ef-75e8-4ada-b15f-6d1a92633f33': ['e5631d3e-70c3-4083-ac17-46f9467c6dd5'],
+      '16c58ef5-3b19-4ec2-ba9c-aefac3d08a66': ['e447d5bb-8d42-4be4-b91d-b8d185cf81a6'],
+      'ede2c7cf-331e-497e-9c7f-2f914d734604': [
+        '18b3841b-b5b1-4971-93d0-d36ac20c4565',
+        'fee237ef-75e8-4ada-b15f-6d1a92633f33',
+        '16c58ef5-3b19-4ec2-ba9c-aefac3d08a66',
+        '7a663f5e-2619-4a2d-a7df-7250263f47d2',
+      ],
+    },
   },
 };
 
@@ -245,44 +270,15 @@ export const locationTreeNode3 = {
 
 export const locations = [locationTreeNode1];
 
-export const userAssignment = {
-  organizationIds: [2],
-  jurisdictions: ['e2b4a441-21b5-4d03-816b-09d45b17cad7'],
-  plans: [],
-};
-
-export const samplePractitioner = {
-  identifier: '3eb4a68a-3a91-4598-84f0-182f52e19675',
-  active: true,
-  name: 'Demo User',
-  userId: 'db90092f-b983-4f26-b129-daddaf02384f',
-  username: 'demo',
-};
-
-export const sampleTeam = [
-  {
-    id: 66,
-    identifier: '903594cf-7890-4c64-9e12-143fda948a72',
-    active: true,
-    name: 'Weekly Call',
-    type: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-          code: 'team',
-          display: 'Team',
-        },
-      ],
+export const sampleTeamAssignment = {
+  team: {
+    team: {
+      teamName: 'Weekly Call',
+      uuid: '903594cf-7890-4c64-9e12-143fda948a72',
+      location: {
+        name: 'Nairobi',
+        uuid: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      },
     },
   },
-];
-
-export const sampleTeamAssignment = [
-  {
-    organizationId: '903594cf-7890-4c64-9e12-143fda948a72',
-    jurisdictionId: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
-    planId: '27362060-0309-411a-910c-64f55ede3758',
-    fromDate: 1642118400000,
-    toDate: 1957651200000,
-  },
-];
+};

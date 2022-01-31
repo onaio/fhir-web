@@ -14,12 +14,10 @@ const R4Parse = (resource: IQuestionnaireResponse) => {
     source,
   } = resource;
 
-  // naive attempt at getting the questionnaire version on which the questionResponse was collected.
-  // This could easily break if the url is a full canonical url, globally identifies the resource
   const questionnaireURl = resource.questionnaire;
   const splitPath = questionnaireURl?.split('/') ?? [];
   const historyPathIndex = splitPath.findIndex((value) => value === '_history');
-  let questionnaireVersion = 'current';
+  let questionnaireVersion = 'Current';
   if (historyPathIndex > 0) {
     questionnaireVersion = splitPath[historyPathIndex + 1];
   }
