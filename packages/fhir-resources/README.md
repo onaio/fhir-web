@@ -1,6 +1,6 @@
 # Fhir Resources
 
-Contains utils that parse and optionally components that render individual fhir resources.
+Utils and components to parse and render individual fhir resources
 
 ## Installation
 
