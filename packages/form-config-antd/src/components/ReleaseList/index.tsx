@@ -67,17 +67,13 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
     fetchReleases,
   } = props;
 
-  const onError = (err: string) => {
-    sendErrorNotification(err);
-  };
-
   useEffect(() => {
     fetchReleaseFiles(
       accessToken,
       opensrpBaseURL,
       fetchReleases,
       setLoading,
-      onError,
+      sendErrorNotification,
       OPENSRP_MANIFEST_ENDPOINT,
       dispatch,
       customFetchOptions
