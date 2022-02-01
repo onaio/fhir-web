@@ -9,7 +9,7 @@ test('parse Resource is ok', () => {
     id: '321',
     partOf: undefined,
     questionnaire: 'Questionnaire/123',
-    questionnaireVersion: 'current',
+    questionnaireVersion: 'Current',
     rootItems: [
       {
         answer: [
