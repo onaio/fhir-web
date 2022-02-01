@@ -16,7 +16,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import type { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
@@ -44,9 +44,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => {
-        const temp = res.entry?.filter((x) => x !== undefined);
-        const rtn = temp?.map((e) => e.resource as IPractitioner) ?? [];
-        return rtn;
+        return getResourcesFromBundle<IPractitioner>(res);
       },
     }
   );
@@ -71,9 +69,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => {
-        const temp = res.entry?.filter((x) => x !== undefined);
-        const rtn = temp?.map((e) => e.resource as IPractitionerRole) ?? [];
-        return rtn;
+        return getResourcesFromBundle<IPractitionerRole>(res);
       },
       enabled: params.id !== undefined,
     }
@@ -97,10 +93,18 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
       });
   }
 
-  if (team.isError || allRoles.isError || practitioners.isError || apiError) return <BrokenPage />;
+  if (
+    (team.isError && !team.data) ||
+    (allRoles.isError && !allRoles.data) ||
+    (practitioners.isError && !practitioners.data) ||
+    apiError
+  ) {
+    return <BrokenPage />;
+  }
 
-  if (!practitioners.isSuccess || (params.id && (!initialValue || !allRoles.isSuccess)))
+  if (team.isLoading || allRoles.isLoading || practitioners.isLoading) {
     return <Spin size={'large'} />;
+  }
 
   return (
     <section className="layout-content">
