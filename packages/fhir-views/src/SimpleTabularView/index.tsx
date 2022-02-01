@@ -89,6 +89,8 @@ function SimpleTabularView<TableSourceT>(props: SimpleTabularViewProps<TableSour
     columns,
     loading: isFetching,
     pagination: {
+      current: page,
+      pageSize,
       total: data?.total,
       defaultPageSize,
       onChange: (current: number, pageSize?: number) => {
