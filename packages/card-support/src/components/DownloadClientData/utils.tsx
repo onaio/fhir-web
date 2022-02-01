@@ -92,9 +92,8 @@ export const submitForm = async (
         ...flatNestedLocationIds,
         clientLocationId,
       ];
-      const stringifiedFlatNestedLocationIdsWithClientLocationId = flatNestedLocationIdsWithClientLocationId.join(
-        ','
-      );
+      const stringifiedFlatNestedLocationIdsWithClientLocationId =
+        flatNestedLocationIdsWithClientLocationId.join(',');
       return stringifiedFlatNestedLocationIdsWithClientLocationId;
     } catch (_) {
       sendErrorNotification(langObj.ERROR_OCCURRED);
@@ -141,7 +140,7 @@ export const submitForm = async (
             first_name: client.firstName,
             last_name: client.lastName,
             gender: client.gender,
-            facility_of_registration: location ? location.title : '',
+            facility_of_registration: client.attributes.registration_location_name,
             date_of_registration: formatDDMMYYY(new Date(client.dateCreated.split('T')[0])),
             card_status: client.attributes.card_status,
             card_status_last_update: formatDDMMYYY(
