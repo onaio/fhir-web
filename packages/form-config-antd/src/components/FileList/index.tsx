@@ -82,10 +82,6 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const history = useHistory();
   const title = formVersion ? `${lang.RELEASES}: ${formVersion}` : lang.JSON_VALIDATORS;
 
-  const onError = (err: string) => {
-    sendErrorNotification(err);
-  };
-
   useEffect(
     () => {
       fetchManifests(
@@ -94,7 +90,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         fetchFiles,
         removeFiles,
         setLoading,
-        onError,
+        sendErrorNotification,
         formVersion,
         OPENSRP_FORM_METADATA_ENDPOINT,
         dispatch,
