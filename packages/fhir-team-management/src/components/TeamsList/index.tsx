@@ -19,7 +19,7 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
@@ -47,7 +47,7 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
     async () => serve.list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry?.map((e) => e.resource as Organization),
+      select: (res) => getResourcesFromBundle<Organization>(res),
     }
   );
 
