@@ -141,7 +141,6 @@ export const submitForm = async (
             first_name: client.firstName,
             last_name: client.lastName,
             gender: client.gender,
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             facility_of_registration: client.attributes.registration_location_name || '',
             date_of_registration: formatDDMMYYY(new Date(client.dateCreated.split('T')[0])),
             card_status: client.attributes.card_status,
