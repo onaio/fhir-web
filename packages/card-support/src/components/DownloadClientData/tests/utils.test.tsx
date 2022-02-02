@@ -384,8 +384,22 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(papaparseMock).not.toHaveBeenCalled();
   });
 
-  it('creates csv correctly if location is not found in hierarchy', async () => {
-    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+  it('creates csv correctly if location name is not found', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        {
+          ...fixtures.child1,
+          attributes: { ...fixtures.child1.attributes, registration_location_name: '' },
+        },
+        {
+          ...fixtures.child2,
+          attributes: { ...fixtures.child2.attributes, registration_location_name: '' },
+        },
+      ])
+    );
 
     submitForm(
       {
