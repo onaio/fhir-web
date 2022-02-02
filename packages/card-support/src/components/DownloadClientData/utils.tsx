@@ -92,8 +92,9 @@ export const submitForm = async (
         ...flatNestedLocationIds,
         clientLocationId,
       ];
-      const stringifiedFlatNestedLocationIdsWithClientLocationId =
-        flatNestedLocationIdsWithClientLocationId.join(',');
+      const stringifiedFlatNestedLocationIdsWithClientLocationId = flatNestedLocationIdsWithClientLocationId.join(
+        ','
+      );
       return stringifiedFlatNestedLocationIdsWithClientLocationId;
     } catch (_) {
       sendErrorNotification(langObj.ERROR_OCCURRED);
