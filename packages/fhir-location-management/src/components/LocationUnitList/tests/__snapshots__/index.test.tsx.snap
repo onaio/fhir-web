@@ -1,18 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`location-management/src/components/LocationUnitList location unit table renders correctly 1`] = `
-Object {
-  "data": Array [
-    Object {
-      "description": "This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.",
-      "id": "2252",
-      "key": "0",
-      "name": "Root FHIR Location",
-      "partOf": "-",
-      "physicalType": "Jurisdiction",
-      "status": "active",
-    },
-  ],
-  "onViewDetails": [Function],
-}
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Ona Office Sub Location
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 2`] = `
+<td
+  class="ant-table-cell"
+>
+  The Sub location
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 3`] = `
+<td
+  class="ant-table-cell"
+>
+  Root FHIR Location
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 4`] = `
+<td
+  class="ant-table-cell"
+>
+  Jurisdiction
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 5`] = `
+<td
+  class="ant-table-cell"
+>
+  active
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 6`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex justify-content-end align-items-center Actions"
+  >
+    <a
+      href="/admin/location/unit/edit/303"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: user defined root location 1`] = `
+<span
+  title="Ona Office Sub Location"
+>
+  Ona Office Sub Location
+</span>
 `;

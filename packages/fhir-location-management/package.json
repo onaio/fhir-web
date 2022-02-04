@@ -43,26 +43,22 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
-    "@smile-cdr/fhirts": "1.2.5",
+    "@onaio/redux-reducer-registry": "^0.0.9",
     "cycle": "^1.0.3",
-    "fast_array_intersect": "^1.1.0",
-    "react-i18next": "^11.8.10",
     "tree-model": "^1.0.7",
+    "fhirclient": "^2.4.0",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
-    "@onaio/redux-reducer-registry": "^0.0.9",
-    "@types/geojson": "^7946.0.7",
+    "@smile-cdr/fhirts": "1.2.5",
     "@types/uuid": "8.3.0",
-    "fhirclient": "^2.4.0",
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
+    "react-i18next": "^11.8.10",
     "@opensrp/store": "^0.0.10",
-    "formik-antd": "^2.0.1",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
-    "react-query": "^3.15.1",
-    "use-deep-compare-effect": "1.6.1"
+    "react-query": "^3.15.1"
   }
 }
