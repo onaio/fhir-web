@@ -1,96 +1,77 @@
-import { useEffect, useState } from 'react';
-import { fhirBaseURL } from '../../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import React from 'react';
-import { TreeNode } from '../../../ducks/locationHierarchy/types';
-import {
-  FHIRLocationHierarchy,
-  generateFHIRLocationTree,
-} from '../../../ducks/locationHierarchy/utils';
+import { TreeNode } from '../../../helpers/types';
+import { convertApiResToTree } from '../../../helpers/utils';
 import { TreeSelect } from 'antd';
 import { TreeSelectProps } from 'antd/lib/tree-select/';
 import { LabelValueType, DataNode } from 'rc-tree-select/lib/interface';
 import { treeToOptions } from '../utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { useCallback } from 'react';
 
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
-  baseURL: string;
-  fhirBaseURL: string;
-  filterByParentId?: boolean;
+  baseUrl: string;
   fhirRootLocationIdentifier: string;
   fullDataCallback?: (node?: TreeNode) => void;
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
 
-const defaultProps = {
-  fhirBaseURL: fhirBaseURL,
-};
+export const locationHierarchyResourceType = 'LocationHierarchy';
 
 /** form field where user can select the parent location from a tree structure
  *
  * @param props - the component props
  */
-const CustomTreeSelect = (props: CustomTreeSelectProps) => {
+export const CustomTreeSelect = (props: CustomTreeSelectProps) => {
   const {
-    fhirBaseURL,
+    baseUrl,
     value,
     fullDataCallback,
     disabledTreeNodesCallback,
     fhirRootLocationIdentifier,
-    filterByParentId,
     ...restProps
   } = props;
-  const [trees, updateTrees] = useState<TreeNode[]>([]);
-
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
   };
 
-  useEffect(() => {
-    // if value is set, find parent node and pass it to fullDataCallback
-    let node: TreeNode | undefined;
-    for (const tree of trees) {
-      node = tree.first((node) => node.model.id === value);
-      if (node) {
-        break;
-      }
-    }
-    fullDataCallback?.(node);
-  }, [fullDataCallback, trees, value]);
-
-  const { data, isLoading } = useQuery(
-    'LocationHierarchy',
-    async () => new FHIRServiceClass(fhirBaseURL, 'LocationHierarchy').list(hierarchyParams),
+  const { data, isLoading, isFetching } = useQuery<IBundle, Error, TreeNode>(
+    [locationHierarchyResourceType, hierarchyParams],
+    async () => {
+      return new FHIRServiceClass<IBundle>(baseUrl, locationHierarchyResourceType).list(
+        hierarchyParams
+      );
+    },
     {
-      onError: () => sendErrorNotification('Error'),
-      select: (res) =>
-        res.entry.map((singleEntry) =>
-          generateFHIRLocationTree((singleEntry as unknown) as FHIRLocationHierarchy)
-        ),
+      onError: (err) => {
+        sendErrorNotification(err.message);
+      },
+      select: (res: IBundle) => {
+        return convertApiResToTree(res) as TreeNode;
+      },
+      refetchInterval: false,
     }
   );
 
-  useEffect(() => {
-    if (data?.length) {
-      updateTrees(data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useCallback(() => {
+    // if value is set, find parent node and pass it to fullDataCallback
+    let node: TreeNode | undefined;
+    data?.first((node) => node.model.nodeId === value);
+    fullDataCallback?.(node);
+  }, [data, fullDataCallback, value]);
 
-  const selectOptions = treeToOptions(data as TreeNode[], disabledTreeNodesCallback);
+  const userDefinedRoots = data?.children ?? [];
+  const selectOptions = treeToOptions(userDefinedRoots, disabledTreeNodesCallback);
 
   const treeSelectProps: TreeSelectProps<DataNode> = {
     ...restProps,
     treeData: selectOptions,
-    loading: isLoading,
+    loading: isLoading || isFetching,
     value,
   };
 
   return <TreeSelect {...treeSelectProps}></TreeSelect>;
 };
-
-CustomTreeSelect.defaultProps = defaultProps;
-
-export { CustomTreeSelect };

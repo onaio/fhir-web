@@ -1,26 +1,23 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { NewLocationUnit } from '..';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { store } from '@opensrp/store';
-import * as notifications from '@opensrp/notifications';
-import { createBrowserHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import * as fhirCient from 'fhirclient';
 import { authenticateUser } from '@onaio/session-reducer';
 import { location1 } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import nock from 'nock';
 
-import { fhirHierarchy } from '../../LocationUnitList/tests/fixtures';
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fetch = require('jest-fetch-mock');
+nock.disableNetConnect();
 
-const history = createBrowserHistory();
-
-/* eslint-disable @typescript-eslint/camelcase */
+const history = createMemoryHistory();
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -30,6 +27,8 @@ jest.mock('@opensrp/notifications', () => ({
 const path = '/locations/new';
 const locationId = location1.id;
 const locationProps = {
+  fhirBaseURL: 'http://test.server.org',
+  fhirRootLocationIdentifier: 'someId',
   history,
   location: {
     hash: '',
@@ -46,6 +45,24 @@ const locationProps = {
 };
 
 describe('NewLocationUnit', () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  const AppWrapper = (props: { children: ReactNode }) => {
+    // TODO - do we need a redux provider
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+  };
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -61,102 +78,49 @@ describe('NewLocationUnit', () => {
     );
   });
 
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks();
+    nock.cleanAll();
   });
 
   it('renders without crashing', async () => {
-    const queryClient = new QueryClient();
-    fetch.mockResponse(JSON.stringify([]));
-    shallow(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <NewLocationUnit {...locationProps} />
-          </QueryClientProvider>{' '}
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-    });
-  });
-
-  it('renders correctly for create location unit', async () => {
-    const queryClient = new QueryClient();
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(fhirHierarchy),
-        };
-      })
-    );
-
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <NewLocationUnit {...locationProps} />
-          </QueryClientProvider>{' '}
-        </Router>
-      </Provider>
+      <AppWrapper>
+        <NewLocationUnit {...locationProps} />
+      </AppWrapper>
     );
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
     });
     wrapper.update();
-
-    const helmet = Helmet.peek();
-    expect(helmet.title).toEqual('Add Location Unit');
-
-    // rendered page including title
-    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
-
-    expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
+    expect(wrapper.text()).toMatchSnapshot('form rendered');
     wrapper.unmount();
   });
 
   it('cancel button redirects to list view', async () => {
-    const queryClient = new QueryClient();
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(fhirHierarchy),
-        };
-      })
-    );
+    const scope = nock(locationProps.fhirBaseURL)
+      .get(() => true)
+      .query(() => true)
+      .reply(200, {})
+      .persist();
 
     const cancelURL = '/admin/location/unit';
-
     const props = {
       ...locationProps,
-      match: {
-        ...locationProps.match,
-        params: { id: location1.id },
-      },
       cancelURLGenerator: () => cancelURL,
     };
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <NewLocationUnit {...props} />
-          </QueryClientProvider>{' '}
-        </Router>
-      </Provider>
+      <AppWrapper>
+        <NewLocationUnit {...props} />
+      </AppWrapper>
     );
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
     });
+    wrapper.update();
 
     // simulate click on cancel button
     wrapper.find('button#location-form-cancel-button').simulate('click');
@@ -166,37 +130,8 @@ describe('NewLocationUnit', () => {
     expect(
       (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
     ).toEqual(cancelURL);
-    wrapper.unmount();
-  });
 
-  it('handles error if fetch fails when page reloads', async () => {
-    const queryClient = new QueryClient();
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockRejectedValue('API Failed'),
-        };
-      })
-    );
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <NewLocationUnit {...locationProps} />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-    });
-    wrapper.update();
-
-    expect(mockNotificationError).toHaveBeenCalledWith('');
+    scope.done();
     wrapper.unmount();
   });
 });

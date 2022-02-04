@@ -1,49 +1,67 @@
-import { Button } from 'antd';
-import React from 'react';
+import { Button, Alert, Spin, Col } from 'antd';
+import React, { MouseEventHandler } from 'react';
 import { get } from 'lodash';
 import { CloseOutlined } from '@ant-design/icons';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 import lang from '../../lang';
+import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import { useQuery } from 'react-query';
+import { locationResourceType } from '../LocationUnitList'; // TODO - move to constants
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
-export interface Props extends IfhirR4.ILocation {
-  onClose?: Function;
+export interface LUDProps {
+  onClose: MouseEventHandler<HTMLElement>;
+  fhirBaseUrl: string;
+  detailId: string;
 }
 
-const LocationUnitDetail: React.FC<Props> = (props: Props) => {
+export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
+  const { onClose, fhirBaseUrl, detailId } = props;
+
+  // fetch location details for the the selected location
+  const serve = new FHIRServiceClass<ILocation>(fhirBaseUrl, locationResourceType);
+  const { data, isLoading, error } = useQuery(
+    [locationResourceType, detailId],
+    async () => serve.read(detailId as string),
+    {
+      select: (res) => res,
+      enabled: !!detailId,
+    }
+  );
+
+  if (isLoading) {
+    return <Spin />;
+  }
+
+  if (error && !data) {
+    return <Alert data-testid="error-alert" message={`${error}`} type="error" />;
+  }
+
+  if (!data) {
+    return <Alert data-testid="info-alert" message="Location resource not found" type="info" />;
+  }
+
+  const { name, status, description } = data;
+  const detailsMap = {
+    [lang.NAME]: name,
+    [lang.STATUS]: status,
+    [lang.DESCRIPTION]: description,
+    [lang.PHYSICAL_TYPE]: get(props, 'physicalType.coding.0.display'),
+    [lang.ALIAS]: get(props, 'alias.0'),
+  };
   return (
-    <div className="p-4 bg-white">
-      <Button
-        shape="circle"
-        onClick={() => (props.onClose ? props.onClose() : '')}
-        className="float-right"
-        type="text"
-        icon={<CloseOutlined />}
-      />
-      <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">{lang.NAME}</p>
-        <p className="mb-0 loc-desc">{props.name}</p>
+    <Col className="pl-3" span={5}>
+      <div className="p-4 bg-white" data-testid="view-details">
+        <Button
+          shape="circle"
+          onClick={onClose}
+          className="float-right"
+          type="text"
+          icon={<CloseOutlined />}
+        />
+        {Object.entries(detailsMap).forEach((key, value) => {
+          return <SingleKeyNestedValue {...{ key: value }} data-testid="single-key-value" />;
+        })}
       </div>
-
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.STATUS}</p>
-        <p className="mb-0 loc-desc">{props.status}</p>
-      </div>
-
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.DESCRIPTION}</p>
-        <p className="mb-0 loc-desc">{props.description}</p>
-      </div>
-
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.ALIAS}</p>
-        <p className="mb-0 loc-desc">{get(props, 'alias.0')}</p>
-      </div>
-      <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.PHYSICAL_TYPE}</p>
-        <p className="mb-0 loc-desc">{get(props, 'physicalType.coding.0.display')}</p>
-      </div>
-    </div>
+    </Col>
   );
 };
-
-export default LocationUnitDetail;

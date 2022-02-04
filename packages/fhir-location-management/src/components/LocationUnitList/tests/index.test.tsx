@@ -1,28 +1,63 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
-import { mount, shallow } from 'enzyme';
-import * as fhirCient from 'fhirclient';
-import * as reactQuery from 'react-query';
-import { history } from '@onaio/connected-reducer-registry';
-import { Router } from 'react-router';
-import LocationUnitList from '..';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
+import LocationUnitList, { locationHierarchyResourceType } from '..';
 import { authenticateUser } from '@onaio/session-reducer';
-import { fhirHierarchy } from './fixtures';
-import { baseURL } from '../../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import nock from 'nock';
+import {
+  render,
+  cleanup,
+  waitForElementToBeRemoved,
+  screen,
+  within,
+  fireEvent,
+} from '@testing-library/react';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
+import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
+import { Provider } from 'react-redux';
 
-LocationUnitList.defaultProps = { opensrpBaseURL: baseURL };
+const history = createBrowserHistory();
+
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+const props = {
+  fhirRootLocationIdentifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+  fhirBaseURL: 'http://test.server.org',
+};
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+nock.disableNetConnect();
+
 describe('location-management/src/components/LocationUnitList', () => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        // react-query will retry failed request, this can cause some weird
+        // behavior when testing a rejected request
+        retry: false,
+      },
+    },
+  });
+
+  const AppWrapper = (props) => {
+    return (
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <LocationUnitList {...props} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+  };
+
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -39,206 +74,90 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
-    jest.resetModules();
+    nock.cleanAll();
+    cleanup();
   });
 
-  it('renders locations list view without crashing', async () => {
-    shallow(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <LocationUnitList
-            opensrpBaseURL={baseURL}
-            fhirBaseURL="https://r4.smarthealthit.org/"
-            fhirRootLocationIdentifier="eff94f33-c356-4634-8795-d52340706ba9"
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-  });
-
-  it('location unit table renders correctly', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(fhirHierarchy),
-        };
+  it('shows broken page', async () => {
+    const scope = nock(props.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: props.fhirRootLocationIdentifier })
+      .replyWithError({
+        message: 'something awful happened',
+        code: 'AWFUL_ERROR',
       })
-    );
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: 'missing' })
+      .reply(200, {})
+      .persist();
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <LocationUnitList
-              opensrpBaseURL={baseURL}
-              fhirBaseURL="https://r4.smarthealthit.org/"
-              fhirRootLocationIdentifier="eff94f33-c356-4634-8795-d52340706ba9"
-            />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
+    const { rerender } = render(<AppWrapper {...props} />);
 
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.update();
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    expect(wrapper.find('Table').first().props()).toMatchSnapshot();
-    wrapper.unmount();
+    expect(screen.getByText(/reason: something awful happened/)).toBeInTheDocument();
+
+    rerender(<AppWrapper {...{ ...props, fhirRootLocationIdentifier: 'missing' }} />);
+
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+    expect(screen.getByText(/404/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Sorry, the resource you requested for, does not exist/)
+    ).toBeInTheDocument();
+
+    scope.done();
   });
 
-  it('change table view when clicked on tree node', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(fhirHierarchy),
-        };
-      })
-    );
+  it('works correctly', async () => {
+    const scope = nock(props.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: props.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+      .get('/Location/303')
+      .reply(200, onaOfficeSubLocation)
+      .persist();
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <LocationUnitList
-              opensrpBaseURL={baseURL}
-              fhirBaseURL="https://r4.smarthealthit.org/"
-              fhirRootLocationIdentifier="eff94f33-c356-4634-8795-d52340706ba9"
-            />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
+    render(<AppWrapper {...props} />);
 
-    await act(async () => {
-      await flushPromises();
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+    expect(screen.getByText(/Location Unit Management/)).toBeInTheDocument();
+
+    // initially show single user defined root location
+    const treeSection = document.querySelector('.ant-tree') as HTMLElement;
+    const firstRootLoc = within(treeSection).getByTitle(/Ona Office Sub Location/);
+    expect(firstRootLoc).toMatchSnapshot('user defined root location');
+
+    // table row should be one containing information
+    const table = document.querySelector('table');
+    // how many body rows - should be 1
+    expect(table.querySelectorAll('tbody tr')).toHaveLength(1);
+    const firstRowTd = table.querySelectorAll('tbody tr:nth-child(1) td');
+    firstRowTd.forEach((td) => {
+      expect(td).toMatchSnapshot('first row containing ona office loc details');
     });
 
-    wrapper.update();
+    // view details
+    const hamburger = document.querySelector('.more-options');
+    fireEvent.click(hamburger);
+    // should see the popup with view details
+    expect(document.querySelector('.view-details')).toBeInTheDocument();
+    fireEvent.click(document.querySelector('.view-details'));
 
-    // // using index 0 cuz after sorting by name that is the last one
-    const tableFirstRow = {
-      description:
-        'This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.',
-      id: '2252',
-      key: undefined,
-      name: 'Root FHIR Location',
-      partOf: '-',
-      physicalType: 'Jurisdiction',
-      status: 'active',
-    };
+    // should load single location
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toEqual(tableFirstRow);
-
-    // test table with tree node with child
-    const treeItemwithchild = wrapper.find('span.ant-tree-title').first();
-    treeItemwithchild.simulate('click');
-    wrapper.update();
-    await act(async () => {
-      await flushPromises();
-    });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).toEqual({
-      description: 'The Sub location',
-      id: '303',
-      key: undefined,
-      name: 'Ona Office Sub Location',
-      partOf: 'Root FHIR Location',
-      physicalType: 'Jurisdiction',
-      status: 'active',
-    });
-    expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tableFirstRow); // table changed
-  });
-
-  it('test Open and close view details', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(fhirHierarchy),
-        };
-      })
-    );
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <LocationUnitList
-              opensrpBaseURL={baseURL}
-              fhirBaseURL="https://r4.smarthealthit.org/"
-              fhirRootLocationIdentifier="eff94f33-c356-4634-8795-d52340706ba9"
-            />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    // see location details in view details
+    const viewDetailsSection = document.querySelector('[data-testid="view-details"]');
+    viewDetailsSection.querySelectorAll('[data-testid="single-key-value"]').forEach((keyValue) => {
+      expect(keyValue).toMatchSnapshot('key value');
     });
 
-    const firstAction = wrapper.find('.Actions').first();
-    firstAction.find('button').last().simulate('click');
+    // close view details section
+    fireEvent.click(viewDetailsSection.querySelector('button.float-right'));
+    expect(document.querySelector('[data-testid="view-details"]')).not.toBeInTheDocument();
 
-    // test out loading animation works correctly
-    expect(wrapper.find('.ant-spin')).toHaveLength(1);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('.ant-spin')).toHaveLength(0);
-    expect(wrapper.find('LocationUnitDetail')).toHaveLength(1);
-
-    // close LocationUnitDetail
-    wrapper.find('LocationUnitDetail button').simulate('click');
-    wrapper.update();
-    expect(wrapper.find('LocationUnitDetail')).toHaveLength(0);
-    wrapper.unmount();
-  });
-
-  it('fail loading location hierarchy', async () => {
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockImplementation(
-      () =>
-        ({
-          data: undefined,
-          error: 'Something went wrong',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any)
-    );
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <LocationUnitList
-              opensrpBaseURL={baseURL}
-              fhirBaseURL="https://r4.smarthealthit.org/"
-              fhirRootLocationIdentifier="eff94f33-c356-4634-8795-d52340706ba9"
-            />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.update();
-    /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorAn error occurredGo backGo home"`);
-    wrapper.unmount();
+    scope.done();
   });
 });

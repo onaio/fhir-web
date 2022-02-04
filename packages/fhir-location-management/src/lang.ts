@@ -109,6 +109,7 @@ function fill() {
   lang.LONGITUDE_LABEL = i18n.t(`Longitude`, { ns: namespace });
   lang.ALIAS = i18n.t(`Alias`, { ns: namespace });
   lang.PHYSICAL_TYPE = i18n.t(`Physical Type`, { ns: namespace });
+  lang.LOCATION_SUSPENDED_STATUS_LABEL = i18n.t(`Suspended`, { ns: namespace });
 }
 
 // run it initial

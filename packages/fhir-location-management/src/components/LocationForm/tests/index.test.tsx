@@ -1,30 +1,37 @@
 import { store } from '@opensrp/store';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import React from 'react';
+import * as React from 'react';
 import { act } from 'react-dom/test-utils';
 import { RouteComponentProps, Router } from 'react-router';
 import { LocationForm } from '..';
-import { defaultFormField, FormInstances, getLocationFormFields } from '../utils';
+import { getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
-import {
-  createdLocation1,
-  duplicateLocationTags,
-  fetchCalls1,
-  generatedLocation2,
-  generatedLocation4,
-  generatedLocation4Dot1,
-  location2,
-  location4,
-  locationSettings,
-  locationTags,
-  rawOpenSRPHierarchy1,
-  serviceTypeSettings,
-} from './fixtures';
+import { createdLocation1, createdLocation2 } from './fixtures';
+import nock from 'nock';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { locationHierarchyResourceType } from '../CustomTreeSelect';
+import { fhirHierarchy } from '../../../ducks/tests/fixtures';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+// process.on('unhandledRejection', (reason, p) => {
+//   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+//   // application specific logging, throwing an error, or other logic here
+// });
 
 const history = createBrowserHistory();
+nock.disableNetConnect();
+
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 jest.mock('uuid', () => {
   const actual = jest.requireActual('uuid');
@@ -34,10 +41,28 @@ jest.mock('uuid', () => {
   };
 });
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const fetch = require('jest-fetch-mock');
-
 describe('LocationForm', () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  const AppWrapper = (props: { children: React.ReactNode }) => {
+    return (
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+      </Router>
+    );
+  };
+
+  const formProps = {
+    fhirBaseURL: 'http://test.server.org',
+    fhirRootLocationIdentifier: 'potus',
+  };
+
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -54,19 +79,23 @@ describe('LocationForm', () => {
   });
 
   afterEach(() => {
-    fetch.resetMocks();
+    nock.cleanAll();
   });
 
   it('renders correctly', async () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
 
-    fetch.mockResponse(JSON.stringify([]));
+    nock(formProps.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+      .persist();
 
     const wrapper = mount(
-      <Router history={history}>
-        <LocationForm />
-      </Router>,
+      <AppWrapper>
+        <LocationForm {...formProps} />
+      </AppWrapper>,
       { attachTo: div }
     );
 
@@ -74,12 +103,6 @@ describe('LocationForm', () => {
       await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
-
-    // getter fetch calls made
-    expect(fetch.mock.calls).toEqual(fetchCalls1);
-
-    expect(toJson(wrapper.find('#instance label'))).toMatchSnapshot('instance label');
-    expect(toJson(wrapper.find('#instance input'))).toMatchSnapshot('instance field');
 
     expect(toJson(wrapper.find('#parentId label'))).toMatchSnapshot('parentId label');
     expect(toJson(wrapper.find('#parentId select'))).toMatchSnapshot('parentId field');
@@ -94,23 +117,9 @@ describe('LocationForm', () => {
       'isJurisdiction label'
     );
     expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
-    expect(toJson(wrapper.find('#serviceType label'))).toMatchSnapshot('serviceType label');
-    expect(toJson(wrapper.find('#serviceType input'))).toMatchSnapshot('serviceType field');
-    expect(toJson(wrapper.find('#externalId label'))).toMatchSnapshot('externalId label');
-    expect(toJson(wrapper.find('#externalId input'))).toMatchSnapshot('externalId field');
-    expect(toJson(wrapper.find('#geometry label'))).toMatchSnapshot('geometry label');
-    expect(toJson(wrapper.find('#geometry textarea'))).toMatchSnapshot('geometry field');
-    expect(toJson(wrapper.find('#longitude label'))).toMatchSnapshot('longitude label');
-    expect(toJson(wrapper.find('#longitude input'))).toMatchSnapshot('longitude field');
-    expect(toJson(wrapper.find('#latitude label'))).toMatchSnapshot('latitude label');
-    expect(toJson(wrapper.find('#latitude input'))).toMatchSnapshot('latitude field');
-    expect(toJson(wrapper.find('#locationTags label'))).toMatchSnapshot('locationTags label');
-    expect(toJson(wrapper.find('#locationTags input'))).toMatchSnapshot('locationTags field');
 
-    wrapper.find('.extraFields').forEach((field) => {
-      expect(toJson(field.find('label'))).toMatchSnapshot('field label');
-      expect(toJson(field.find('input'))).toMatchSnapshot('field input');
-    });
+    expect(toJson(wrapper.find('#description label'))).toMatchSnapshot('description label');
+    expect(toJson(wrapper.find('#description textarea'))).toMatchSnapshot('description field');
 
     expect(toJson(wrapper.find('#location-form-submit-button button'))).toMatchSnapshot(
       'submit button'
@@ -121,17 +130,21 @@ describe('LocationForm', () => {
     wrapper.unmount();
   });
 
-  it('form validation works for core instance', async () => {
+  it('form validation works', async () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
 
-    fetch.mockResponse(JSON.stringify([]));
+    nock(formProps.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+      .persist();
 
     // when instance is set to core by default, types is required, serviceType is not required
     const wrapper = mount(
-      <Router history={history}>
-        <LocationForm />
-      </Router>,
+      <AppWrapper>
+        <LocationForm {...formProps} />
+      </AppWrapper>,
       { attachTo: div }
     );
 
@@ -147,136 +160,27 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
+    // not required
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"Part Of"`);
 
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
-      `"ParentSelect the parent location"`
-    );
-
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
-
-    expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Location categoryService pointJurisdiction"`
-    );
-
-    // name is required for core
+    // name is required and has not default
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
-    // not required for core
-    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(`"Type"`);
-
-    expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
-
-    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
-
-    expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
-      'location Tags does not have error message'
+    // status has default value
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(
+      `"StatusActiveInactiveSuspended"`
     );
 
-    wrapper.unmount();
-  });
-
-  it('form validation works for wrong data types', async () => {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
-    fetch.mockResponse(JSON.stringify([]));
-
-    const wrapper = mount(
-      <Router history={history}>
-        <LocationForm />
-      </Router>,
-      { attachTo: div }
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    // set longitude, and latitude to invalid values
-    wrapper
-      .find('FormItem#longitude input')
-      .simulate('change', { target: { value: '432dsff', name: 'longitude' } });
-
-    wrapper
-      .find('FormItem#latitude input')
-      .simulate('change', { target: { value: '43f', name: 'latitude' } });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItem#longitude').text()).toMatchInlineSnapshot(
-      `"LongitudeOnly decimal values allowed"`
-    );
-
-    expect(wrapper.find('FormItem#latitude').text()).toMatchInlineSnapshot(
-      `"LatitudeOnly decimal values allowed"`
-    );
-
-    wrapper.unmount();
-  });
-
-  it('form validation works for eusm instance', async () => {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
-    fetch.mockResponse(JSON.stringify([]));
-
-    // when instance is set to core by default, types is required, serviceType is not required
-    const initialValues = { ...defaultFormField, instance: FormInstances.EUSM };
-    const wrapper = mount(
-      <Router history={history}>
-        <LocationForm initialValues={initialValues} />
-      </Router>,
-      {
-        attachTo: div,
-      }
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItem#instance').text()).toMatchInlineSnapshot(`"Instance"`);
-
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
-      `"ParentSelect the parent location'parentId' is required"`
-    );
-
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
-
+    // has default value
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Location categoryService pointJurisdiction"`
+      `"Physical TypeBuildingJurisdiction"`
     );
 
-    // name is required for core
-    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
 
-    // service types is required for eusm
-    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
-      `"TypeService types is required"`
-    );
+    // not required
+    expect(wrapper.find('FormItem#description').text()).toMatchInlineSnapshot(`"Description"`);
 
-    expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
-
-    expect(wrapper.find('FormItem#geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
-
-    expect(wrapper.find('FormItem#locationTags').text()).toMatchSnapshot(
-      'location Tags does not have error message'
-    );
     wrapper.unmount();
   });
 
@@ -284,105 +188,23 @@ describe('LocationForm', () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
-    fetch.mockResponse(JSON.stringify([]));
+    const successToastMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    const wrapper = mount(
-      <Router history={history}>
-        <LocationForm />
-      </Router>,
-      { attachTo: container }
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formInstance = (wrapper.find(Form).props() as any).form;
-
-    // change parent Id
-    formInstance.setFieldsValue({
-      parentId: '51',
-    });
-
-    // simulate active check to be inactive
-    wrapper
-      .find('FormItem#status input')
-      .last()
-      .simulate('change', {
-        target: { checked: true },
-      });
-
-    // set isJurisdiction to false
-    wrapper
-      .find('FormItem#isJurisdiction input')
-      .first()
-      .simulate('change', {
-        target: { checked: true },
-      });
-
-    // simulate name change
-    wrapper
-      .find('FormItem#name input')
-      .simulate('change', { target: { name: 'name', value: 'area51' } });
-
-    // simulate service type change
-    // change service types
-    formInstance.setFieldsValue({
-      serviceType: 'School',
-    });
-
-    wrapper
-      .find('FormItem#externalId input')
-      .simulate('change', { target: { name: 'externalId', value: 'secret' } });
-
-    wrapper.find('FormItem#geometry textarea').simulate('change', {
-      target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
-    });
-
-    fetch.resetMocks();
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=false',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(createdLocation1),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'POST',
-        },
-      ],
-    ]);
-
-    wrapper.unmount();
-  });
-
-  it('correctly redirects on submit', async () => {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-
-    fetch.mockResponse(JSON.stringify([]));
+    nock(formProps.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+      .post('/Location', createdLocation1)
+      .reply(201, {})
+      .persist();
 
     const someMockURL = '/someURL';
     const successURLGeneratorMock = jest.fn(() => someMockURL);
 
     const wrapper = mount(
-      <Router history={history}>
-        <LocationForm successURLGenerator={successURLGeneratorMock} />
-      </Router>,
+      <AppWrapper>
+        <LocationForm successURLGenerator={successURLGeneratorMock} {...formProps} />
+      </AppWrapper>,
       { attachTo: container }
     );
 
@@ -396,10 +218,10 @@ describe('LocationForm', () => {
 
     // change parent Id
     formInstance.setFieldsValue({
-      parentId: '51',
+      parentId: 'Location/303',
     });
 
-    // simulate active check to be inactive
+    // simulate active check to be suspended
     wrapper
       .find('FormItem#status input')
       .last()
@@ -407,10 +229,10 @@ describe('LocationForm', () => {
         target: { checked: true },
       });
 
-    // set isJurisdiction to false
+    // set isJurisdiction to structure
     wrapper
       .find('FormItem#isJurisdiction input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });
@@ -420,21 +242,16 @@ describe('LocationForm', () => {
       .find('FormItem#name input')
       .simulate('change', { target: { name: 'name', value: 'area51' } });
 
-    // simulate service type change
-    // change service types
-    formInstance.setFieldsValue({
-      serviceType: 'School',
-    });
-
     wrapper
-      .find('FormItem#externalId input')
-      .simulate('change', { target: { name: 'externalId', value: 'secret' } });
+      .find('FormItem#alias input')
+      .simulate('change', { target: { name: 'alias', value: 'creepTown' } });
 
-    wrapper.find('FormItem#geometry textarea').simulate('change', {
-      target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
+    wrapper.find('FormItem#description textarea').simulate('change', {
+      target: {
+        value:
+          'The secret Nevada base, known as Area 51, is often the subject of alien conspiracy theories.',
+      },
     });
-
-    fetch.resetMocks();
 
     wrapper.find('form').simulate('submit');
 
@@ -443,6 +260,7 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
+    expect(successToastMock).toBeCalledWith();
     expect(successURLGeneratorMock).toHaveBeenCalledWith(createdLocation1);
     expect(
       (wrapper.find('Router').props() as RouteComponentProps).history.location.pathname
@@ -454,13 +272,20 @@ describe('LocationForm', () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
-    fetch.mockResponse(JSON.stringify([]));
+    nock(formProps.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+
+      .persist();
+
     const cancelMock = jest.fn();
 
     const wrapper = mount(
-      <Router history={history}>
-        <LocationForm onCancel={cancelMock} />
-      </Router>,
+      <AppWrapper>
+        <LocationForm onCancel={cancelMock} {...formProps} />
+      </AppWrapper>,
+
       { attachTo: container }
     );
 
@@ -480,23 +305,20 @@ describe('LocationForm', () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
-    fetch
-      .once(JSON.stringify([location2]))
-      .once(JSON.stringify(serviceTypeSettings))
-      .once(JSON.stringify(locationTags))
-      .once(JSON.stringify(locationSettings))
-      .once(JSON.stringify(rawOpenSRPHierarchy1));
+    nock(formProps.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
+      .post('/Location', createdLocation2)
+      .reply(201, {})
+      .persist();
 
-    const initialValues = getLocationFormFields(location2);
-
-    const locationFormProps = {
-      initialValues,
-    };
+    const initialValues = getLocationFormFields(createdLocation1);
 
     const wrapper = mount(
-      <Router history={history}>
-        <LocationForm {...locationFormProps} />
-      </Router>,
+      <AppWrapper>
+        <LocationForm initialValues={initialValues} {...formProps} />
+      </AppWrapper>,
       { attachTo: container }
     );
 
@@ -505,22 +327,18 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    // put this here to help guide to know how to mock the fetch calls
-    expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
-      'https://opensrp-stage.smartregister.org/opensrp/rest/location/hierarchy/95310ca2-02df-47ba-80fc-bf31bfaa88d7?return_structure_count=false',
-    ]);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formInstance = (wrapper.find(Form).props() as any).form;
-
-    // simulate active check to be inactive
+    // simulate active check to be active
     wrapper
       .find('FormItem#status input')
-      .last()
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // set isJurisdiction to structure
+    wrapper
+      .find('FormItem#isJurisdiction input')
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
@@ -528,41 +346,11 @@ describe('LocationForm', () => {
     // simulate name change
     wrapper
       .find('FormItem#name input')
-      .simulate('change', { target: { name: 'name', value: 'Mars' } });
-
-    // simulate service type change
-    // change service types
-    formInstance.setFieldsValue({
-      serviceType: 'School',
-    });
+      .simulate('change', { target: { name: 'name', value: 'Yosemite' } });
 
     wrapper
-      .find('FormItem#externalId input')
-      .simulate('change', { target: { name: 'externalId', value: 'alien' } });
-
-    const geometry = {
-      type: 'Point',
-      coordinates: [19.92919921875, 30.135626231134587],
-    };
-
-    wrapper.find('FormItem#geometry textarea').simulate('change', {
-      target: { value: JSON.stringify(geometry) },
-    });
-
-    // extra fields
-    expect(wrapper.find('FormItem.extra-fields')).toHaveLength(4);
-    wrapper.find('FormItem.extra-fields').forEach((field) => {
-      // snapshot of label
-      expect(toJson(field.find('label'))).toMatchSnapshot('field label');
-      expect(toJson(field.find('input'))).toMatchSnapshot('field input');
-
-      // fill the fields
-      field
-        .find('input')
-        .simulate('change', { target: { value: `extraFields - ${field.find('label').text()}` } });
-    });
-
-    fetch.resetMocks();
+      .find('FormItem#alias input')
+      .simulate('change', { target: { name: 'alias', value: 'world wonder' } });
 
     wrapper.find('form').simulate('submit');
 
@@ -571,158 +359,6 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(generatedLocation2),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
-      ],
-    ]);
-
-    wrapper.unmount();
-  });
-
-  it('Editing latitude and longitudes works fine', async () => {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-
-    fetch
-      .once(JSON.stringify([location2]))
-      .once(JSON.stringify(serviceTypeSettings))
-      .once(JSON.stringify(locationTags))
-      .once(JSON.stringify(locationSettings))
-      .once(JSON.stringify(rawOpenSRPHierarchy1));
-
-    const initialValues = getLocationFormFields(location4);
-
-    const locationFormProps = {
-      initialValues,
-    };
-
-    const wrapper = mount(
-      <Router history={history}>
-        <LocationForm {...locationFormProps} />
-      </Router>,
-
-      { attachTo: container }
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formInstance = (wrapper.find(Form).props() as any).form;
-
-    // simulate service type change
-    // change service types
-    formInstance.setFieldsValue({
-      serviceType: 'School',
-    });
-
-    wrapper.find('FormItem#latitude input').simulate('change', {
-      target: { value: '34.56' },
-    });
-
-    wrapper.find('FormItem#longitude input').simulate('change', {
-      target: { value: '19.56' },
-    });
-
-    fetch.resetMocks();
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(generatedLocation4),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
-      ],
-    ]);
-    wrapper.unmount();
-  });
-
-  it('#595 Duplicate location Tags failing upload', async () => {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-
-    fetch
-      .once(JSON.stringify([location2]))
-      .once(JSON.stringify(serviceTypeSettings))
-      .once(JSON.stringify(duplicateLocationTags))
-      .once(JSON.stringify(locationSettings))
-      .once(JSON.stringify(rawOpenSRPHierarchy1));
-
-    const initialValues = getLocationFormFields(location4);
-
-    const locationFormProps = {
-      initialValues,
-    };
-
-    const wrapper = mount(
-      <Router history={history}>
-        <LocationForm {...locationFormProps} />
-      </Router>,
-
-      { attachTo: container }
-    );
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    fetch.mockReset();
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    /** payload does not contain duplicate entries in locationTags field*/
-    expect(generatedLocation4Dot1.locationTags).toHaveLength(1);
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/location?is_jurisdiction=true',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(generatedLocation4Dot1),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
-      ],
-    ]);
     wrapper.unmount();
   });
 });
