@@ -9,13 +9,14 @@ import {
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { URL_LOCATION_UNIT } from '../../constants';
+import { locationHierarchyResourceType, URL_LOCATION_UNIT } from '../../constants';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
+import { useQueryClient } from 'react-query';
 
 const { Item: FormItem } = Form;
 
@@ -103,6 +104,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [successUrl, setSuccessUrl] = useState<string>();
   const validationRules = validationRulesFactory(lang);
+  const queryClient = useQueryClient();
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
 
@@ -140,12 +142,7 @@ const LocationForm = (props: LocationFormProps) => {
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={async (values) => {
           setSubmitting(true);
-          const payload = generateLocationUnit(
-            values,
-            initialValues,
-            fhirRootLocationIdentifier,
-            parentNode
-          );
+          const payload = generateLocationUnit(values, initialValues, parentNode);
 
           const successMessage = isEditMode
             ? lang.SUCCESSFULLY_UPDATED_LOCATION
@@ -158,7 +155,9 @@ const LocationForm = (props: LocationFormProps) => {
               setAreWeDoneHere(true);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
-              // TODO - use mutations and invalidate queries
+              queryClient.invalidateQueries(locationHierarchyResourceType).catch((err) => {
+                throw err;
+              });
             })
             .catch((err: Error) => {
               sendErrorNotification(err.message);

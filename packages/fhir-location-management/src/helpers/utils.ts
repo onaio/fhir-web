@@ -58,6 +58,10 @@ export const convertApiResToTree = (apiRes: IBundle) => {
  *
  * @param trees - trees to be serialized
  */
-export const serializeTree = (trees: TreeNode[]) => {
-  return JSON.stringify(trees.map((tree) => JSON.stringify(cycle.decycle(tree))));
+export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
+  if (!trees) {
+    return JSON.stringify(undefined);
+  }
+  const sanitizeTrees = Array.isArray(trees) ? trees : [trees];
+  return JSON.stringify(sanitizeTrees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };

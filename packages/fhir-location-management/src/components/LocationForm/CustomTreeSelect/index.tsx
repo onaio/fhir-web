@@ -1,7 +1,7 @@
 import { sendErrorNotification } from '@opensrp/notifications';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TreeNode } from '../../../helpers/types';
-import { convertApiResToTree } from '../../../helpers/utils';
+import { convertApiResToTree, serializeTree } from '../../../helpers/utils';
 import { TreeSelect } from 'antd';
 import { TreeSelectProps } from 'antd/lib/tree-select/';
 import { LabelValueType, DataNode } from 'rc-tree-select/lib/interface';
@@ -9,7 +9,6 @@ import { treeToOptions } from '../utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { useCallback } from 'react';
 
 /** props for service types select component */
 export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
@@ -56,12 +55,16 @@ export const CustomTreeSelect = (props: CustomTreeSelectProps) => {
     }
   );
 
-  useCallback(() => {
+  useEffect(() => {
     // if value is set, find parent node and pass it to fullDataCallback
-    let node: TreeNode | undefined;
-    data?.first((node) => node.model.nodeId === value);
-    fullDataCallback?.(node);
-  }, [data, fullDataCallback, value]);
+    const node = data?.first((node) => node.model.nodeId === value);
+    if (node && value) {
+      fullDataCallback?.(node);
+    } else if (data) {
+      fullDataCallback?.(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serializeTree(data), fullDataCallback, value]);
 
   const userDefinedRoots = data?.children ?? [];
   const selectOptions = treeToOptions(userDefinedRoots, disabledTreeNodesCallback);

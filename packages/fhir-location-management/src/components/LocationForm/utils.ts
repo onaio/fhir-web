@@ -56,10 +56,11 @@ export const defaultFormField: LocationFormFields = {
   alias: undefined,
 };
 
-/** helps compute the default values of the location form field values
+/**
+ * helps compute the default values of the location form field values
  *
  * @param location - the location unit
- * @param isJurisdiction - whether location is jurisdiction or structure
+ * @param parentId - parent node id
  */
 export const getLocationFormFields = (
   location?: IfhirR4.ILocation,
@@ -77,13 +78,11 @@ export const getLocationFormFields = (
  *
  * @param formValues - values from the form
  * @param initialValues - initial values
- * @param fhirRootLocation - opensrp root location
  * @param parentNode - parent node of created location
  */
 export const generateLocationUnit = (
   formValues: LocationFormFields,
   initialValues: LocationFormFields,
-  fhirRootLocation: string,
   parentNode?: TreeNode
 ) => {
   const { id, name, status, description, alias, isJurisdiction } = formValues;
@@ -91,14 +90,11 @@ export const generateLocationUnit = (
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
 
-  let partOf: ILocation['partOf'] = {
-    reference: `Location/${fhirRootLocation}`,
-  };
-
+  let partOf: ILocation['partOf'];
   if (parentNode) {
     // this is a user defined location
     partOf = {
-      reference: `Location/${parentNode.model.node.id}`,
+      reference: parentNode.model.nodeId,
       display: parentNode.model.node.name,
     };
   }
