@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet';
 import { ProductForm } from '../../ProductForm';
 import { act } from 'react-dom/test-utils';
 import { removeProducts } from '../../../ducks/productCatalogue';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -54,9 +55,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -103,7 +102,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // show loading screen
-    expect(wrapper.text()).toMatchSnapshot('full page text');
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -142,9 +141,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching product CataloguePlease wait, as we fetch the product Catalogue."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
