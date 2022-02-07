@@ -17,6 +17,8 @@ export type OrganizationDetail = Organization & {
   practitionerInfo: { name: string; id: string }[];
 };
 
+// TODO - Do we need further abstraction of the below 2 types?
+// @smile-cdr/../interfaces/IPractitioner & ../interfaces/IPractitionerRole
 export interface Practitioner extends Require<IfhirR4.IPractitioner, 'id' | 'active' | 'name'> {
   resourceType: typeof PRACTITIONER_RESOURCE_TYPE;
 }
