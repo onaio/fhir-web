@@ -7,9 +7,9 @@
 export const downloadFile = (data: string, filename: string, type: string) => {
   const file = new Blob([data], { type });
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (window.navigator.msSaveOrOpenBlob) {
+  if ((window.navigator as any).msSaveOrOpenBlob) {
     // IE10+
-    window.navigator.msSaveOrOpenBlob(file, filename);
+    (window.navigator as any).msSaveOrOpenBlob(file, filename);
   } else {
     // Others
     const docElement = document.createElement('a');
