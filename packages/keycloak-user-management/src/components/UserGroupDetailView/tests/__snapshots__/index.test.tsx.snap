@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View User Group Details detail view without groupId: Should be null 1`] = `null`;
-
 exports[`View User Group Details works correctly: nominal display 1`] = `"NameProviderRolesPLANS_FOR_USERALL_EVENTSOPENMRSMembersdemoonadev"`;
 
 exports[`View User Group Details works correctly: space element 1`] = `

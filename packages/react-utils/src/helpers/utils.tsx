@@ -1,6 +1,6 @@
-import { Meta } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/meta';
 import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
+import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 /**
  * From T, convert a set of keys to optional, that are in the union K.
@@ -26,17 +26,11 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
   });
 };
 
-/** interface for FHIR response */
-export interface FHIRResponse<T> {
-  resourceType: string;
-  id: string;
-  meta?: Meta;
-  type: string;
-  total: number;
-  link: { relation: string; url: string }[];
-  entry: {
-    fullUrl: string;
-    resource: T;
-    search: { mode: string };
-  }[];
+/**
+ * @param bundle - a fhir resource bundle api response
+ */
+export function getResourcesFromBundle<TResource>(bundle: IBundle) {
+  const temp = bundle.entry?.filter((x) => x !== undefined);
+  const rtn = temp?.map((e) => e.resource as TResource) ?? [];
+  return rtn;
 }
