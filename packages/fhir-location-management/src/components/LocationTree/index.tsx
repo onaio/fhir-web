@@ -8,12 +8,14 @@ import { TreeNode } from '../../helpers/types';
 import lang from '../../lang';
 import { Key } from 'rc-tree/lib/interface';
 import reducerRegistry from '@onaio/redux-reducer-registry';
+import { slice } from 'lodash';
+
 reducerRegistry.register(reducerName, reducer);
 
 interface TreeProp {
   data: TreeNode[];
   selectedNode?: TreeNode;
-  onSelect: (node: TreeNode) => void;
+  onSelect: (node?: TreeNode) => void;
 }
 
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
@@ -23,6 +25,13 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   useEffect(() => {
     // set expanded and selected keys depending on location tree state and searchValue
+    let expandedKeys: Key[] = [];
+    if (selectedNode) {
+      let parentPath = selectedNode.getPath();
+      parentPath = slice(parentPath, 1, parentPath.length);
+      const parentKeys = parentPath.map((node) => node.model.nodeId);
+      expandedKeys = [...parentKeys];
+    }
     if (searchValue) {
       let matchedNodes: TreeNode[] = [];
       data.forEach((tree) => {
@@ -32,23 +41,24 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         matchedNodes = [...matchedNodes, ...matchedNodesPerTree];
       });
       // parent keys of matched nodes
-      const parentKeys = matchedNodes.map((node) => node.parent.model.nodeId);
-      setExpandedKeys(parentKeys);
+      const nodeKeys = matchedNodes.map((node) => node.parent.model.nodeId);
+      expandedKeys = [...expandedKeys, ...nodeKeys];
     }
-
-    if (selectedNode) {
-      const parentPath = selectedNode.getPath();
-      parentPath.pop();
-      const parentKeys = parentPath.map((node) => node.model.nodeId);
-      setExpandedKeys(parentKeys);
-    }
+    setExpandedKeys(expandedKeys);
   }, [data, searchValue, selectedNode]);
 
   /**
    * @param keys - node keys
+   * @param info -
    */
-  function expandHandler(keys: Key[]) {
-    setExpandedKeys(keys);
+  function expandHandler(keys: Key[], info: any) {
+    const thisNodeKey = info.node.data.model.nodeId;
+    if (info.expanded) {
+      setExpandedKeys([...expandedKeys, thisNodeKey]);
+    } else {
+      const kys = expandedKeys.filter((key) => key !== thisNodeKey);
+      setExpandedKeys(kys);
+    }
   }
 
   /** Function to handle event when tree search input changes value
@@ -108,14 +118,19 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onSelect={(_, antTreeNode) => {
-          const node = ((antTreeNode as unknown) as AntTreeData).data as TreeNode;
-          onSelect(node);
+        onSelect={(keys: Key[], info: any) => {
+          if (info.selected) {
+            onSelect(info.node.data);
+          } else {
+            const kys = expandedKeys.filter((key) => key !== info.node.data.model.nodeId);
+            setExpandedKeys(kys);
+            onSelect();
+          }
         }}
+        autoExpandParent={true}
         selectedKeys={selectedNode ? [selectedNode.model.nodeId] : undefined}
         onExpand={expandHandler}
         expandedKeys={[...expandedKeys]}
-        autoExpandParent={true}
         treeData={buildTreeData(data)}
       />
     </div>

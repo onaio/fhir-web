@@ -30,10 +30,6 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: lang.DESCRIPTION,
-      dataIndex: 'description',
-    },
-    {
       title: 'Parent',
       dataIndex: 'partOf',
     },

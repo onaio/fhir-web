@@ -1,7 +1,7 @@
 import React from 'react';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { RouteComponentProps, useHistory, useLocation } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
-import { defaultFormField } from '../LocationForm/utils';
+import { getLocationFormFields } from '../LocationForm/utils';
 import { Row, Col } from 'antd';
 import { Helmet } from 'react-helmet';
 import lang from '../../lang';
@@ -41,13 +41,19 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const parentId = params.get('parentId') ?? undefined;
+
   const cancelHandler = () => {
     const cancelURL = cancelURLGenerator();
     history.push(cancelURL);
   };
 
+  const initialValues = getLocationFormFields(undefined, parentId);
+
   const locationFormProps: LocationFormProps = {
-    initialValues: defaultFormField,
+    initialValues,
     successURLGenerator: successURLGenerator,
     hidden: hidden,
     disabled: disabled,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spin, Alert } from 'antd';
 import { TableColumnsNamespace, URL_MISSIONS } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
@@ -65,15 +64,6 @@ export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefin
     },
   ];
   return columns;
-};
-
-/** util component shown when there is a pending promise */
-export const PlansLoading = () => {
-  return (
-    <Spin tip={lang.TIP}>
-      <Alert message={lang.MESSAGE} description={lang.DESCRIPTION} type="info" />
-    </Spin>
-  );
 };
 
 /**

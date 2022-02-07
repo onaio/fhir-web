@@ -63,12 +63,12 @@ export const defaultFormField: LocationFormFields = {
  */
 export const getLocationFormFields = (
   location?: IfhirR4.ILocation,
-  isJurisdiction = true
+  parentId?: string
 ): LocationFormFields => {
   return {
     ...location,
-    isJurisdiction: isJurisdiction,
-    parentId: location?.partOf?.reference?.split('/')[1],
+    isJurisdiction: true, // TODO
+    parentId: parentId ?? location?.partOf?.reference?.split('/')[1],
   } as LocationFormFields;
 };
 

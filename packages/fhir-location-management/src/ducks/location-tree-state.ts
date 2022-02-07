@@ -21,13 +21,13 @@ export interface LocationTreeState {
 // **************************** action creators ****************************
 
 /** describes action that saves the selectedNode to store */
-export interface SetLocationTreeStateAction extends AnyAction {
+export interface SetSelectedNode extends AnyAction {
   type: typeof SET_LOCATION_TREE_STATE;
-  node: TreeNode;
+  selectedNode?: TreeNode;
 }
 
 /** combined full action types | its a union */
-export type TreeActionTypes = SetLocationTreeStateAction | AnyAction;
+export type TreeActionTypes = SetSelectedNode | AnyAction;
 
 /**
  * action creator when adding the selectedNode to store
@@ -35,9 +35,9 @@ export type TreeActionTypes = SetLocationTreeStateAction | AnyAction;
  * @param node - the selectedNode
  * @returns - action object
  */
-export function setLocationTreeState(node: TreeNode): SetLocationTreeStateAction {
+export function setSelectedNode(node?: TreeNode): SetSelectedNode {
   return {
-    node: node,
+    selectedNode: node,
     type: SET_LOCATION_TREE_STATE,
   };
 }

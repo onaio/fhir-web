@@ -17,7 +17,6 @@ import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
-import { FHIRResponse } from '..';
 
 const configs = getAllConfigs();
 

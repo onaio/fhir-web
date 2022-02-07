@@ -13,6 +13,7 @@ import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
 import { PlanStatus } from '@opensrp/plan-form-core';
+import toJson from 'enzyme-to-json';
 
 const columns = getColumns(lang);
 
@@ -57,9 +58,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -322,9 +321,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));

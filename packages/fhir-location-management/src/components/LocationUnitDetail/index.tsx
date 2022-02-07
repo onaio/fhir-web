@@ -5,8 +5,8 @@ import { CloseOutlined } from '@ant-design/icons';
 import lang from '../../lang';
 import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
-import { locationResourceType } from '../LocationUnitList'; // TODO - move to constants
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { locationResourceType } from '../../constants';
 
 export interface LUDProps {
   onClose: MouseEventHandler<HTMLElement>;
@@ -45,9 +45,10 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
     [lang.NAME]: name,
     [lang.STATUS]: status,
     [lang.DESCRIPTION]: description,
-    [lang.PHYSICAL_TYPE]: get(props, 'physicalType.coding.0.display'),
-    [lang.ALIAS]: get(props, 'alias.0'),
+    [lang.PHYSICAL_TYPE]: get(data, 'physicalType.coding.0.display'),
+    [lang.ALIAS]: get(data, 'alias.0'),
   };
+
   return (
     <Col className="pl-3" span={5}>
       <div className="p-4 bg-white" data-testid="view-details">
@@ -58,8 +59,14 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
           type="text"
           icon={<CloseOutlined />}
         />
-        {Object.entries(detailsMap).forEach((key, value) => {
-          return <SingleKeyNestedValue {...{ key: value }} data-testid="single-key-value" />;
+
+        {Object.entries(detailsMap).map(([key, value]) => {
+          const singleMapValue = { [key]: value };
+          return (
+            <div data-testid="single-key-value" key={key} className="pb-3">
+              <SingleKeyNestedValue {...singleMapValue} />
+            </div>
+          );
         })}
       </div>
     </Col>
