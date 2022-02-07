@@ -177,8 +177,8 @@ describe('components/DownloadClientData', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(fetch.mock.calls.map((res) => res[0])).toEqual([
       'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',

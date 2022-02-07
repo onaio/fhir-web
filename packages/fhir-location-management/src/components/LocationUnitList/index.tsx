@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { URL_LOCATION_UNIT_ADD } from '../../constants';
+import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
 import lang from '../../lang';
 import Table, { TableData } from './Table';
@@ -20,7 +20,7 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
   reducerName,
   reducer,
-  setLocationTreeState,
+  setSelectedNode,
   getSelectedNode,
 } from '../../ducks/location-tree-state';
 
@@ -59,9 +59,6 @@ export function parseTableData(hierarchy: TreeNode[]) {
   });
   return data;
 }
-
-export const locationResourceType = 'Location';
-export const locationHierarchyResourceType = 'LocationHierarchy';
 
 export const LocationUnitList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
   const { fhirBaseURL, fhirRootLocationIdentifier } = props;
@@ -130,7 +127,9 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
             data-testid="hierarchy-display"
             data={treeData.children}
             selectedNode={selectedNode}
-            onSelect={(node) => dispatch(setLocationTreeState(node))}
+            onSelect={(node) => {
+              dispatch(setSelectedNode(node));
+            }}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>

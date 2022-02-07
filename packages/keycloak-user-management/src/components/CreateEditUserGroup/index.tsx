@@ -105,7 +105,9 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         assignedRolesPromise,
         effectiveRolesPromise,
       ])
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

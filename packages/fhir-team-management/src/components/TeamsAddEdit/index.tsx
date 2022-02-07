@@ -16,8 +16,11 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import type { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 export interface Props {
   fhirBaseURL: string;
@@ -30,33 +33,28 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     _getpagesoffset: 0,
   };
 
-  const practitionerAPI = new FHIRServiceClass<Practitioner>(
-    fhirBaseURL,
-    PRACTITIONER_RESOURCE_TYPE
-  );
-  const organizationAPI = new FHIRServiceClass<Organization>(
-    fhirBaseURL,
-    ORGANIZATION_RESOURCE_TYPE
-  );
-  const practitionerroleAPI = new FHIRServiceClass<PractitionerRole>(
-    fhirBaseURL,
-    PRACTITIONERROLE_RESOURCE_TYPE
-  );
   const params: { id?: string } = useParams();
   const [initialValue, setInitialValue] = useState<FormField>();
+  const [apiError, setApiError] = useState<boolean>(false);
 
   const practitioners = useQuery(
     PRACTITIONER_ENDPOINT,
-    async () => practitionerAPI.list(fhirParams),
+    async () =>
+      new FHIRServiceClass<IBundle>(fhirBaseURL, PRACTITIONER_RESOURCE_TYPE).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry.map((e) => e.resource),
+      select: (res) => {
+        return getResourcesFromBundle<IPractitioner>(res);
+      },
     }
   );
 
   const team = useQuery(
     [ORGANIZATION_ENDPOINT, params.id],
-    async () => organizationAPI.read(`${params.id}`),
+    async () =>
+      new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE).read(
+        `${params.id}`
+      ),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
       select: (res) => res,
@@ -66,10 +64,13 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
   const allRoles = useQuery(
     PRACTITIONERROLE_ENDPOINT,
-    async () => practitionerroleAPI.list(fhirParams),
+    async () =>
+      new FHIRServiceClass<IBundle>(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE).list(fhirParams),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry.map((e) => e.resource),
+      select: (res) => {
+        return getResourcesFromBundle<IPractitionerRole>(res);
+      },
       enabled: params.id !== undefined,
     }
   );
@@ -78,7 +79,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     loadTeamPractitionerInfo({
       team: team.data,
       fhirBaseURL: fhirBaseURL,
-      PractitionerRoles: allRoles.data,
+      PractitionerRoles: allRoles.data as PractitionerRole[],
     })
       .then(({ practitionerInfo, ...team }) => {
         setInitialValue({
@@ -86,11 +87,24 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           practitioners: practitionerInfo.map((practitioner) => practitioner.id),
         });
       })
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+      .catch(() => {
+        setApiError(true);
+        sendErrorNotification(lang.ERROR_OCCURRED);
+      });
   }
 
-  if (!practitioners.data || (params.id && (!initialValue || !allRoles.data)))
+  if (
+    (team.isError && !team.data) ||
+    (allRoles.isError && !allRoles.data) ||
+    (practitioners.isError && !practitioners.data) ||
+    apiError
+  ) {
+    return <BrokenPage />;
+  }
+
+  if (team.isLoading || allRoles.isLoading || practitioners.isLoading) {
     return <Spin size={'large'} />;
+  }
 
   return (
     <section className="layout-content">
@@ -106,8 +120,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
         <Form
           fhirBaseURL={fhirBaseURL}
           value={initialValue}
-          practitioners={practitioners.data}
-          practitionerRoles={allRoles.data ? allRoles.data : undefined}
+          practitioners={practitioners.data as Practitioner[]}
+          practitionerRoles={allRoles.data ? (allRoles.data as PractitionerRole[]) : undefined}
         />
       </div>
     </section>

@@ -128,7 +128,7 @@ describe('EditLocationUnit', () => {
       </AppWrapper>
     );
 
-    // // loading page
+    // loading page
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
     expect(screen.getByText(/Something went wrong/)).toBeInTheDocument();
