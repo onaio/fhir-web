@@ -161,7 +161,9 @@ describe('LocationForm', () => {
     });
 
     // not required
-    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(`"Part Of"`);
+    expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
+      `"Part OfSelect the parent location"`
+    );
 
     // name is required and has not default
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);

@@ -6,7 +6,6 @@ import { createMemoryHistory } from 'history';
 import { RouteComponentProps, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
-import { location1 } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
@@ -25,7 +24,6 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const path = '/locations/new';
-const locationId = location1.id;
 const locationProps = {
   fhirBaseURL: 'http://test.server.org',
   fhirRootLocationIdentifier: 'someId',
@@ -40,7 +38,7 @@ const locationProps = {
     isExact: true,
     params: {},
     path: `${path}`,
-    url: `${path}/${locationId}`,
+    url: `${path}/locationId`,
   },
 };
 
