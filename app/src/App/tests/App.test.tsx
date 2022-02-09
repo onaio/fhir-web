@@ -76,7 +76,7 @@ describe('App - unauthenticated', () => {
   });
 
   it('Callback component Renders correctly', async () => {
-    const routeProps: RouteComponentProps<{ id: string }> = {
+    const routeProps = {
       history,
       location: {
         hash: '',
@@ -87,7 +87,8 @@ describe('App - unauthenticated', () => {
       match: {
         params: { id: 'OpenSRP' },
       },
-    };
+    } as RouteComponentProps<{ id: string }>;
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/` }]}>
