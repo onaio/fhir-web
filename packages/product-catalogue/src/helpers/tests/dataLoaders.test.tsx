@@ -24,7 +24,7 @@ describe('dataLoading', () => {
     loadProductCatalogue(mockBaseURL).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(creatorSpy).toHaveBeenCalledWith(products);
     creatorSpy.mockRestore();
@@ -49,7 +49,7 @@ describe('dataLoading', () => {
       expect(e.message).toEqual('No products found in the catalogue');
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(creatorSpy).toHaveBeenCalled();
     creatorSpy.mockRestore();
@@ -72,7 +72,7 @@ describe('dataLoading', () => {
     loadSingleProduct(mockBaseURL, '1').catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(creatorSpy).toHaveBeenCalledWith([product1]);
     creatorSpy.mockRestore();
@@ -95,7 +95,7 @@ describe('dataLoading', () => {
     loadSingleProduct(mockBaseURL, '1').catch((e) => {
       expect(e.message).toEqual('Product not found in the catalogue');
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(creatorSpy).not.toHaveBeenCalled();
     creatorSpy.mockRestore();
@@ -108,7 +108,7 @@ describe('dataLoading', () => {
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls[0]).toMatchObject([
       'https://example.com/restproduct-catalogue',
@@ -142,7 +142,7 @@ describe('dataLoading', () => {
       }
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('putProduct works correctly', async (done) => {
@@ -153,7 +153,7 @@ describe('dataLoading', () => {
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls[0]).toMatchObject([
       'https://example.com/restproduct-catalogue/1',
@@ -187,7 +187,7 @@ describe('dataLoading', () => {
       }
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('postProduct behaves when error', async () => {
@@ -198,7 +198,7 @@ describe('dataLoading', () => {
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('putProduct behaves when error', async () => {
@@ -209,7 +209,7 @@ describe('dataLoading', () => {
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('custom getFetchOptions works when payload is undefined', () => {

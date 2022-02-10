@@ -50,7 +50,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -112,7 +112,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -133,7 +133,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -153,7 +153,7 @@ describe('mission data listing & download', () => {
     const wrapper = shallow(<MissionData {...props} />);
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -171,7 +171,7 @@ describe('mission data listing & download', () => {
     const wrapper = shallow(<MissionData {...props} />);
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

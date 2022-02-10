@@ -99,7 +99,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -126,7 +126,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -170,7 +170,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -196,7 +196,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -225,7 +225,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

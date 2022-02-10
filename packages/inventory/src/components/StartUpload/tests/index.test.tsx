@@ -22,7 +22,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fileUploadMock).toHaveBeenCalledWith(file);
 
@@ -40,7 +40,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     wrapper.update();
   });
@@ -57,7 +57,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     wrapper.update();
   });

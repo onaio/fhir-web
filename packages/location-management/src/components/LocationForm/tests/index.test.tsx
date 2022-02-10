@@ -71,7 +71,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -136,14 +136,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -192,7 +192,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -208,7 +208,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -240,14 +240,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -295,7 +295,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -347,7 +347,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -388,7 +388,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -440,7 +440,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -466,7 +466,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -502,7 +502,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -568,7 +568,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -618,7 +618,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -644,7 +644,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -693,7 +693,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -702,7 +702,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -765,7 +765,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

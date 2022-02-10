@@ -225,7 +225,7 @@ describe('components/forms/CreateTeamForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();

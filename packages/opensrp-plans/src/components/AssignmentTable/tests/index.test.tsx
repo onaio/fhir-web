@@ -73,7 +73,7 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -90,7 +90,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -154,7 +154,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -182,7 +182,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -206,7 +206,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -239,7 +239,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedJurisdiction = jursToOptions([jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     // what fetch calls were made:
@@ -294,7 +294,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -320,7 +320,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedOrgs = orgsToOptions([organizations[0]]);
     (teamAssignmentModal.props() as Dictionary).saveHandler(selectedOrgs);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     // what fetch calls were made:
@@ -359,7 +359,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -385,7 +385,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedJurisdiction = jursToOptions([jurisdictions[1], jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     // what fetch calls were made:

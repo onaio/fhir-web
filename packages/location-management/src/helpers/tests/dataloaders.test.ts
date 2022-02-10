@@ -39,7 +39,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadHierarchy(mockRootId, mockDispatcher, mockBaseUrl).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -65,7 +65,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadHierarchy(mockRootId, mockDispatcher).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -97,7 +97,7 @@ describe('src/helpers/dataloaders', () => {
         fail();
       });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('loadHierarchy works with error', async () => {
@@ -111,7 +111,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage)
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('loadJurisdictions', async () => {
@@ -121,7 +121,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadJurisdictions(mockDispatcher, mockBaseUrl).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -150,7 +150,7 @@ describe('src/helpers/dataloaders', () => {
       fail()
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -175,7 +175,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadJurisdictions(mockDispatcher).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -208,7 +208,7 @@ describe('src/helpers/dataloaders', () => {
       true // set filterByParentId
     ).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -235,7 +235,7 @@ describe('src/helpers/dataloaders', () => {
       })
       .catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('loadJurisdictions works with error', async () => {
@@ -248,7 +248,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage)
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('load jurisdiction dispatches when dispatcher and response', async () => {
@@ -257,7 +257,7 @@ describe('src/helpers/dataloaders', () => {
     const mockDispatcher = jest.fn();
     loadJurisdiction('id', mockDispatcher).catch((_) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(mockDispatcher).toHaveBeenCalledWith({});
   });
@@ -275,7 +275,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage);
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('load location tags', async () => {
@@ -287,7 +287,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage);
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('load settings uses callback only when present', async () => {
@@ -300,6 +300,6 @@ describe('src/helpers/dataloaders', () => {
     // no assertion here intentionally, we cannot check that a callback that
     // was not provided was called
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 });

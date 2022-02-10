@@ -38,7 +38,7 @@ describe('dataLoading', () => {
     loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       `https://example.com/rest/groups/${fixtures.userGroup1.id}`,
       {
@@ -57,7 +57,7 @@ describe('dataLoading', () => {
     loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       `https://example.com/rest/groups/${fixtures.userGroup1.id}/members`,
       {
@@ -77,7 +77,7 @@ describe('dataLoading', () => {
     loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 

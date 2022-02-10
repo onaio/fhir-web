@@ -62,7 +62,7 @@ describe('App - unauthenticated', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -180,7 +180,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -206,7 +206,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -238,7 +238,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -261,7 +261,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     expect(mock).toHaveBeenCalled();
@@ -277,7 +277,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

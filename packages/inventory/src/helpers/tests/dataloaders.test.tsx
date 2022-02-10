@@ -20,7 +20,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
       .catch((_) => {
         fail();
       });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('works with bad request errors', async () => {
@@ -36,7 +36,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     uploadCSV(mockFile, undefined, undefined, undefined, badRequestMock).catch((_) => {
       fail();
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(badRequestMock).toHaveBeenCalledWith({
       errors: [],
       rowsNumber: '0',
@@ -57,7 +57,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     uploadCSV(mockFile, undefined, undefined, undefined, badRequestMock).catch((err) => {
       expect(err.message).toEqual('Error');
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('handles request cancellation by user', async () => {
@@ -82,7 +82,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     ).catch((err) => {
       expect(err.message).toEqual('Error');
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(requestCancelMock).toHaveBeenCalled();
   });
 });

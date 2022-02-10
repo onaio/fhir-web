@@ -40,7 +40,7 @@ describe('App with active backend', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

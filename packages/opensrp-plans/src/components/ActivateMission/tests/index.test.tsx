@@ -83,7 +83,7 @@ describe('activate mission', () => {
 
     // simulate click on activate mission button
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.find('button').simulate('click');
       wrapper.update();
     });
@@ -136,7 +136,7 @@ describe('activate mission', () => {
 
     // simulate click on activate mission button
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.find('button').simulate('click');
       wrapper.update();
     });

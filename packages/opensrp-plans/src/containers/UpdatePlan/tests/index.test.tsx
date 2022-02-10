@@ -62,7 +62,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -119,7 +119,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -195,7 +195,7 @@ describe('CreateEditProduct Page', () => {
     expect(wrapper.text()).toMatchSnapshot('show loader');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -236,7 +236,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -280,7 +280,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
