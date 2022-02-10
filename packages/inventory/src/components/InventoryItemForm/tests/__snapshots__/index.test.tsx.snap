@@ -12,6 +12,7 @@ Object {
         "getFieldError": [Function],
         "getFieldInstance": [Function],
         "getFieldValue": [Function],
+        "getFieldWarning": [Function],
         "getFieldsError": [Function],
         "getFieldsValue": [Function],
         "getInternalHooks": [Function],
@@ -253,19 +254,12 @@ Object {
       }
     >
       <Button
-        block={false}
-        ghost={false}
         htmlType="submit"
-        loading={false}
         type="primary"
       >
         Save
       </Button>
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
       >
         Cancel
