@@ -12,7 +12,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  The Sub location
+  Root FHIR Location
 </td>
 `;
 
@@ -20,7 +20,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  Root FHIR Location
+  Jurisdiction
 </td>
 `;
 
@@ -28,19 +28,11 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  Jurisdiction
-</td>
-`;
-
-exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 5`] = `
-<td
-  class="ant-table-cell"
->
   active
 </td>
 `;
 
-exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 6`] = `
+exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -85,6 +77,176 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
     </span>
   </span>
 </td>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 1`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Name
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          Ona Office Sub Location
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 2`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Status
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          active
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 3`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Description
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          The Sub location
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 4`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Physical Type
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          Jurisdiction
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 5`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Alias
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          ona office
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
 `;
 
 exports[`location-management/src/components/LocationUnitList works correctly: user defined root location 1`] = `

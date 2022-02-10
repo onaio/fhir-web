@@ -24,12 +24,12 @@ const { Item: FormItem } = Form;
 export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
+  tree: TreeNode;
   successURLGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
   hidden: string[];
   disabled: string[];
   onCancel: () => void;
-  fhirRootLocationIdentifier: string;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
 }
 
@@ -39,7 +39,6 @@ const defaultProps = {
   hidden: [],
   disabled: [],
   onCancel: () => void 0,
-  fhirBaseURL: '',
   afterSubmit: () => void 0,
 };
 
@@ -92,15 +91,17 @@ const LocationForm = (props: LocationFormProps) => {
     disabled,
     hidden,
     disabledTreeNodesCallback,
-    fhirRootLocationIdentifier,
     fhirBaseURL,
     afterSubmit,
     successURLGenerator,
     onCancel,
+    tree,
   } = props;
   const isEditMode = !!initialValues?.id;
+  const defaultParentNode =
+    tree.first((node) => node.model.nodeId === initialValues.parentId) ?? tree;
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const [parentNode, setParentNode] = useState<TreeNode>();
+  const [parentNode, setParentNode] = useState<TreeNode>(defaultParentNode);
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [successUrl, setSuccessUrl] = useState<string>();
   const validationRules = validationRulesFactory(lang);
@@ -152,12 +153,12 @@ const LocationForm = (props: LocationFormProps) => {
             .then(() => {
               const successUrl = successURLGenerator(payload);
               setSuccessUrl(successUrl);
-              setAreWeDoneHere(true);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
-              queryClient.invalidateQueries(locationHierarchyResourceType).catch((err) => {
+              queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
+              setAreWeDoneHere(true);
             })
             .catch((err: Error) => {
               sendErrorNotification(err.message);
@@ -180,13 +181,12 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.parentId}
           >
             <CustomTreeSelect
-              baseUrl={fhirBaseURL}
               disabled={disabled.includes('parentId')}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
               disabledTreeNodesCallback={disabledTreeNodesCallback}
-              fhirRootLocationIdentifier={fhirRootLocationIdentifier}
               fullDataCallback={setParentNode}
+              tree={tree}
             />
           </FormItem>
 

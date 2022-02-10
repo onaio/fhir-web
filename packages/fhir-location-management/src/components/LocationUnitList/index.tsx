@@ -175,5 +175,3 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     </section>
   );
 };
-
-export default LocationUnitList;
