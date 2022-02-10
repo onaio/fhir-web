@@ -3,7 +3,7 @@ import { Card, Button, Upload } from 'antd';
 import lang from '../../lang';
 import { CloudUploadOutlined, UploadOutlined } from '@ant-design/icons';
 import { CSV_FILE_TYPE } from '../../constants';
-import { UploadChangeParam, RcCustomRequestOptions } from 'antd/lib/upload/interface';
+import { UploadChangeParam } from 'antd/lib/upload/interface';
 import { CardTitle } from '../../helpers/utils';
 
 /** props for file start upload */
@@ -42,18 +42,16 @@ const StartUpload = (props: StartUploadProps) => {
     }
   };
 
-  const uploadProps = {
-    accept: `${CSV_FILE_TYPE}`,
-    onChange: uploadOnChange,
-    customRequest: ({ file, onSuccess }: RcCustomRequestOptions) => {
-      onSuccess({}, file);
-    },
-  };
-
   return (
     <Card title={cardTitle} className="full-page-card">
       <p>{lang.CHANCE_TO_REVIEW_BEFORE_COMMITTING}</p>
-      <Upload {...uploadProps}>
+      <Upload
+        accept={`${CSV_FILE_TYPE}`}
+        onChange={uploadOnChange}
+        customRequest={({ file, onSuccess }) => {
+          onSuccess && onSuccess(file);
+        }}
+      >
         <Button icon={<UploadOutlined />} type="primary" className="round-button">
           {lang.SELECT_CSV_FILE}
         </Button>
