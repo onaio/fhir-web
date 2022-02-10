@@ -1,6 +1,6 @@
 import React from 'react';
 import { store } from '@opensrp/store';
-import LocationUnitList, { locationHierarchyResourceType } from '..';
+import { LocationUnitList } from '..';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
@@ -16,6 +16,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
+import { locationHierarchyResourceType } from '../../../constants';
 
 const history = createBrowserHistory();
 
@@ -73,23 +74,24 @@ describe('location-management/src/components/LocationUnitList', () => {
     );
   });
 
+  nock.cleanAll();
   afterEach(() => {
-    nock.cleanAll();
     cleanup();
   });
 
   it('shows broken page', async () => {
-    const scope = nock(props.fhirBaseURL)
+    nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: props.fhirRootLocationIdentifier })
       .replyWithError({
         message: 'something awful happened',
         code: 'AWFUL_ERROR',
-      })
+      });
+
+    nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: 'missing' })
-      .reply(200, {})
-      .persist();
+      .reply(200, {});
 
     const { rerender } = render(<AppWrapper {...props} />);
 
@@ -105,18 +107,15 @@ describe('location-management/src/components/LocationUnitList', () => {
     expect(
       screen.getByText(/Sorry, the resource you requested for, does not exist/)
     ).toBeInTheDocument();
-
-    scope.done();
   });
 
   it('works correctly', async () => {
-    const scope = nock(props.fhirBaseURL)
+    nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: props.fhirRootLocationIdentifier })
-      .reply(200, fhirHierarchy)
-      .get('/Location/303')
-      .reply(200, onaOfficeSubLocation)
-      .persist();
+      .reply(200, fhirHierarchy);
+
+    nock(props.fhirBaseURL).get('/Location/303').reply(200, onaOfficeSubLocation);
 
     render(<AppWrapper {...props} />);
 
@@ -157,7 +156,5 @@ describe('location-management/src/components/LocationUnitList', () => {
     // close view details section
     fireEvent.click(viewDetailsSection.querySelector('button.float-right'));
     expect(document.querySelector('[data-testid="view-details"]')).not.toBeInTheDocument();
-
-    scope.done();
   });
 });

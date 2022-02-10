@@ -1,47 +1,32 @@
-import { CustomTreeSelect, locationHierarchyResourceType } from '..';
+import { CustomTreeSelect } from '..';
 import React, { ReactNode } from 'react';
-import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
-import nock from 'nock';
 import { fhirHierarchy } from '../../../../ducks/tests/fixtures';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { convertApiResToTree } from '../../../../helpers/utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
-
-nock.disableNetConnect();
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+const tree = convertApiResToTree(fhirHierarchy);
+
 describe('FormComponents/CustomTreeSelect', () => {
   const props = {
-    baseUrl: 'http://test.server.org',
-    fhirRootLocationIdentifier: 'someId',
+    tree,
     placeholder: 'select',
     disabledTreeNodesCallback: () => false,
   };
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
   const AppWrapper = (props: { children: ReactNode }) => {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <Form>{props.children}</Form>
-      </QueryClientProvider>
-    );
+    return <Form>{props.children}</Form>;
   };
 
   beforeAll(() => {
@@ -59,17 +44,7 @@ describe('FormComponents/CustomTreeSelect', () => {
     );
   });
 
-  afterEach(() => {
-    nock.cleanAll();
-  });
-
   it('works correctly', async () => {
-    const scope = nock(props.baseUrl)
-      .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: 'someId' })
-      .reply(200, fhirHierarchy)
-      .persist();
-
     const fullNodeCallback = jest.fn();
 
     render(
@@ -96,35 +71,5 @@ describe('FormComponents/CustomTreeSelect', () => {
     fireEvent.click(screen.getByText(/Part Of Sub Location/));
 
     expect(document.querySelector('.ant-select-selection-item')).toMatchSnapshot('selected option');
-    scope.done();
-  });
-
-  it('sends an error notification', async () => {
-    const errorMessage = 'coughid';
-    const scope = nock(props.baseUrl)
-      .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: 'someId' })
-      .replyWithError(errorMessage)
-      .persist();
-
-    const errorMock = jest.spyOn(notifications, 'sendErrorNotification');
-
-    render(
-      <AppWrapper>
-        <CustomTreeSelect {...props} />
-      </AppWrapper>
-    );
-
-    await waitFor(() => {
-      expect(document.querySelector('.ant-select-arrow')).not.toHaveClass(
-        'ant-select-arrow-loading'
-      );
-    });
-
-    // error notification is sent
-    expect(errorMock).toHaveBeenCalledWith(
-      'request to http://test.server.org/LocationHierarchy/_search?identifier=someId failed, reason: coughid'
-    );
-    scope.done();
   });
 });

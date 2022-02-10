@@ -4,6 +4,11 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { useQuery } from 'react-query';
+import { FHIRServiceClass } from '@opensrp/react-utils';
+import { locationHierarchyResourceType, locationResourceType } from '../constants';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 /** Parse the raw child hierarchy node map
  *
@@ -64,4 +69,46 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
   }
   const sanitizeTrees = Array.isArray(trees) ? trees : [trees];
   return JSON.stringify(sanitizeTrees.map((tree) => JSON.stringify(cycle.decycle(tree))));
+};
+
+/** get the location hierarchy of location with given identifier
+ *
+ * @param baseUrl - the server base url
+ * @param rootIdentifier - the location identifier
+ */
+export const useGetLocationHierarchy = (baseUrl: string, rootIdentifier: string) => {
+  const hierarchyParams = {
+    identifier: rootIdentifier,
+  };
+  return useQuery<IBundle, Error, TreeNode>(
+    [locationHierarchyResourceType, hierarchyParams],
+    async () => {
+      return new FHIRServiceClass<IBundle>(baseUrl, locationHierarchyResourceType).list(
+        hierarchyParams
+      );
+    },
+    {
+      onError: (err) => {
+        sendErrorNotification(err.message);
+      },
+      select: (res: IBundle) => {
+        return convertApiResToTree(res) as TreeNode;
+      },
+      refetchInterval: false,
+    }
+  );
+};
+
+/**
+ * get single location
+ *
+ * @param baseUrl - the server base url
+ * @param locId - the location identifier
+ */
+export const useGetLocation = (baseUrl: string, locId?: string) => {
+  const serve = new FHIRServiceClass<ILocation>(baseUrl, locationResourceType);
+  return useQuery([locationResourceType, locId], () => serve.read(locId as string), {
+    select: (res) => res,
+    enabled: !!locId,
+  });
 };
