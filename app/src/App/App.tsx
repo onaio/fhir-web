@@ -124,8 +124,7 @@ import {
 } from '@opensrp/location-management';
 import {
   LocationUnitList as FHIRLocationUnitList,
-  NewLocationUnit as FHIRNewLocationUnit,
-  EditLocationUnit as FHIREditLocationUnit,
+  NewEditLocationUnit as FHIRNewEditLocationUnit,
 } from '@opensrp/fhir-location-management';
 import {
   BaseProps,
@@ -724,7 +723,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_ADD}
               {...newLocationUnitProps}
-              component={ENABLE_FHIR_LOCATIONS ? FHIRNewLocationUnit : NewLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -733,7 +732,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_EDIT}
               {...editLocationProps}
-              component={ENABLE_FHIR_LOCATIONS ? FHIREditLocationUnit : EditLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
