@@ -9,10 +9,6 @@ exports[`components/Antd/DraftFileList renders correctly: release button 1`] = `
   }
 >
   <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
     onClick={[Function]}
     type="primary"
   >
@@ -145,10 +141,6 @@ exports[`components/Antd/DraftFileList renders correctly: upload button 1`] = `
   }
 >
   <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
     onClick={[Function]}
     type="primary"
   >

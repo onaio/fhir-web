@@ -165,6 +165,8 @@ exports[`LocationForm renders correctly: geometry field 1`] = `
   disabled={false}
   id="location-form_geometry"
   onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
   onKeyDown={[Function]}
   placeholder="</> JSON"
   rows={4}
@@ -216,6 +218,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -226,6 +231,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -417,6 +425,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value="Active"
   />,
@@ -426,6 +437,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value="InActive"
   />,

@@ -118,10 +118,6 @@ exports[`components/Antd/ReleaseList renders correctly: upload button 1`] = `
   }
 >
   <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
     onClick={[Function]}
     type="primary"
   >

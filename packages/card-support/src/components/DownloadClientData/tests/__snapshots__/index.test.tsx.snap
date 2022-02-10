@@ -144,14 +144,10 @@ Object {
         mouseLeaveDelay={0.1}
         placement="bottom"
         title="Select Card Order Date"
-        transitionName="zoom-big-fast"
       >
         <Button
-          block={false}
           disabled={true}
-          ghost={false}
           htmlType="submit"
-          loading={false}
           type="primary"
         >
           <ForwardRef(DownloadOutlined) />

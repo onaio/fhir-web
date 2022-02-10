@@ -9,10 +9,6 @@ Object {
 exports[`components/Antd/FileList/TableActions renders correctly: dots menu 1`] = `
 Object {
   "children": <Button
-    block={false}
-    ghost={false}
-    htmlType="button"
-    loading={false}
     style={
       Object {
         "margin": 0,
@@ -37,10 +33,6 @@ Object {
   "overlay": <Menu>
     <MenuItem>
       <Button
-        block={false}
-        ghost={false}
-        htmlType="button"
-        loading={false}
         onClick={[Function]}
         type="link"
       >

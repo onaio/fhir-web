@@ -241,10 +241,6 @@ exports[`components/Antd/FileList renders correctly: upload button 1`] = `
 >
   <React.Fragment>
     <Button
-      block={false}
-      ghost={false}
-      htmlType="button"
-      loading={false}
       onClick={[Function]}
       type="primary"
     >

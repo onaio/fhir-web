@@ -263,7 +263,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo to"`
+      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo toPage"`
     );
   });
 
