@@ -82,7 +82,7 @@ describe('View User Group Details', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -195,7 +195,7 @@ describe('View User Group Details', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

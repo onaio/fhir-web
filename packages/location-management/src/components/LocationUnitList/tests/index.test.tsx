@@ -281,7 +281,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     const response = await getBaseTreeNode(baseURL);
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(response).toMatchObject(baseLocationUnits);
     expect(fetch.mock.calls).toEqual([
       [
@@ -304,7 +304,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     await getBaseTreeNode(baseURL, true);
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,parentId:null',

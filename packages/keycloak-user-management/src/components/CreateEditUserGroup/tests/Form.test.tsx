@@ -137,7 +137,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -145,8 +145,7 @@ describe('components/forms/UserFroupForm', () => {
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
-          body:
-            '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Test1","path":"/Admin","subGroups":[]}',
+          body: '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Test1","path":"/Admin","subGroups":[]}',
           headers: {
             accept: 'application/json',
             authorization: 'Bearer access token',
@@ -177,7 +176,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
@@ -205,7 +204,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
@@ -223,7 +222,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     const button = wrapper.find('button.cancel-group');
     button.simulate('click');

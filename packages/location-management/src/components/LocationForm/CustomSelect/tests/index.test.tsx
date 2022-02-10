@@ -37,7 +37,7 @@ describe('FormComponents/CustomSelect', () => {
       </Form>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
   });
 
@@ -55,7 +55,7 @@ describe('FormComponents/CustomSelect', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     // error notification is sent
@@ -78,7 +78,7 @@ describe('FormComponents/CustomSelect', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -114,7 +114,7 @@ describe('FormComponents/CustomSelect', () => {
     inputField.simulate('change', { target: { value: 'samp' } });
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

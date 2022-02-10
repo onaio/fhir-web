@@ -59,7 +59,7 @@ describe('dataLoading', () => {
     fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       `https://example.com/rest/groups/${fixtures.userGroup1.id}`,
       {
@@ -79,7 +79,7 @@ describe('dataLoading', () => {
     fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
@@ -87,7 +87,7 @@ describe('dataLoading', () => {
     assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
       {
@@ -110,7 +110,7 @@ describe('dataLoading', () => {
     assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
@@ -120,7 +120,7 @@ describe('dataLoading', () => {
         throw e;
       }
     );
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
       {
@@ -145,7 +145,7 @@ describe('dataLoading', () => {
         throw e;
       }
     );
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
@@ -159,7 +159,7 @@ describe('dataLoading', () => {
     ).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm/available',
       {
@@ -183,7 +183,7 @@ describe('dataLoading', () => {
     ).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
       {
@@ -207,7 +207,7 @@ describe('dataLoading', () => {
     ).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm/composite',
       {
@@ -232,7 +232,7 @@ describe('dataLoading', () => {
     ).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 

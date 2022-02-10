@@ -42,7 +42,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
     });
 
     // error notification is sent

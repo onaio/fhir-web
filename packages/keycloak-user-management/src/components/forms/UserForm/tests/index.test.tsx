@@ -302,7 +302,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
@@ -406,7 +406,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
@@ -435,7 +435,7 @@ describe('components/forms/UserForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
@@ -452,7 +452,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');

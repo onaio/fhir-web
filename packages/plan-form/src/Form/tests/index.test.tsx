@@ -159,7 +159,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -199,7 +199,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -245,7 +245,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -343,7 +343,7 @@ describe('containers/forms/PlanForm', () => {
       .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -352,7 +352,7 @@ describe('containers/forms/PlanForm', () => {
 
     await act(async () => {
       wrapper.find('form').simulate('submit');
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
     });
 
     expect(fetch).toHaveBeenCalled();
@@ -411,7 +411,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -470,7 +470,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -527,7 +527,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     wrapper.unmount();
@@ -567,7 +567,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -623,7 +623,7 @@ describe('containers/forms/PlanForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     // there are initially 4 activities
@@ -659,7 +659,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.removeActivity`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     // 1 less activity
@@ -699,7 +699,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.add-more-activities`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     // there should be one activity that can be added back
@@ -709,7 +709,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.addActivity`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
     // we should have 6 activities again
@@ -800,7 +800,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await new Promise<any>((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 

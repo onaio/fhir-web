@@ -46,7 +46,7 @@ describe('FormComponents/ExtraFields', () => {
       </Form>
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   it('sends an error notification', async () => {
@@ -60,7 +60,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -83,7 +83,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
@@ -108,7 +108,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await new Promise((resolve) => setTimeout(resolve, 0));
       wrapper.update();
     });
 
