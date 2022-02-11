@@ -7,9 +7,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @opensrp/location-management
 
+# <<<<<<< HEAD
+
 ## [0.0.14](https://github.com/OpenSRP/web/compare/@opensrp/location-management@0.0.13...@opensrp/location-management@0.0.14) (2021-06-30)
 
 **Note:** Version bump only for package @opensrp/location-management
+
+> > > > > > > master
 
 ## [0.0.13](https://github.com/OpenSRP/web/compare/@opensrp/location-management@0.0.12...@opensrp/location-management@0.0.13) (2021-06-17)
 

@@ -17,7 +17,6 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_TEAMS,
-  ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
@@ -211,17 +210,6 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             },
           ],
         },
-        {
-          title: langObj.PRODUCT_CATALOGUE,
-          key: 'product-catalogue',
-          enabled:
-            ENABLE_PRODUCT_CATALOGUE &&
-            roles &&
-            activeRoles.PRODUCT_CATALOGUE &&
-            isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
-          url: CATALOGUE_LIST_VIEW_URL,
-        },
-
         {
           title: langObj.FORM_CONFIGURATION,
           key: 'form-config',
