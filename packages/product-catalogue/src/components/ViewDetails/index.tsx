@@ -62,7 +62,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         />
       </div>
       {objectId && !object ? (
-        <Resource404></Resource404>
+        <Resource404 />
       ) : (
         <div className="p-10">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {

@@ -25,7 +25,6 @@ keys = [
     "/react/app/default/home/mode",
     "/react/app/enable/language/switcher",
     "/react/app/supported/languages",
-    "/react/app/sentry/dsn",
     "/react/app/enable/inventory",
     "/react/app/project/language/code",
     "/react/app/language/code",
@@ -57,5 +56,6 @@ keys = [
     "/react/app/pagination/size",
     "/react/app/enable/server/settings",
     "/react/app/opensrp/api/v2/base/url",
-    "/react/app/opensrp/web/version"
+    "/react/app/opensrp/web/version",
+    "/react/app/opensrp/sentry/config/json"
 ]

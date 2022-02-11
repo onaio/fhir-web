@@ -163,8 +163,6 @@ export const PROJECT_LANGUAGE_CODE = setEnv('REACT_APP_PROJECT_LANGUAGE_CODE', '
 
 export const ENABLE_INVENTORY = setEnv('REACT_APP_ENABLE_INVENTORY', 'false') === 'true';
 
-export const SENTRY_DSN = setEnv('REACT_APP_SENTRY_DSN', '');
-
 export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').split(',');
 
 export const ENABLE_LANGUAGE_SWITCHER =
@@ -203,3 +201,5 @@ export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
 
 export const OPENSRP_WEB_VERSION = setEnv('REACT_APP_OPENSRP_WEB_VERSION', '');
+
+export const SENTRY_CONFIGS = JSON.parse(setEnv('REACT_APP_SENTRY_CONFIG_JSON', '{}'));

@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { PlanStatus } from '@opensrp/plan-form-core';
 import * as planDux from '../../../ducks/planDefinitions';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -52,9 +53,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -136,9 +135,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
@@ -177,9 +174,7 @@ describe('PlanAssignment Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching PlansPlease wait, as we fetch the plans."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
