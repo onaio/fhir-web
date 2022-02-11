@@ -96,12 +96,16 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         .then((response: KeycloakUserGroup[]) => {
           dispatch(fetchKeycloakUserGroups(response));
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setIsLoading(false));
     }
   });
 
-  if (isLoading) return <Spin size="large" />;
+  if (isLoading) {
+    return <Spin data-testid="group-list-loader" size="large" />;
+  }
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],

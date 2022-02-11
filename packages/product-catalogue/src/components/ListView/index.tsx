@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button } from 'antd';
+import { Row, PageHeader, Col, Button, Spin } from 'antd';
 import { loadProductCatalogue } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -9,7 +9,7 @@ import {
   ProductCatalogue,
 } from '../../ducks/productCatalogue';
 import { connect } from 'react-redux';
-import { ActionsColumnCustomRender, CatalogueLoading, columnsFactory } from './utils';
+import { ActionsColumnCustomRender, columnsFactory } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -65,7 +65,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   }, []);
 
   if (loading) {
-    return <CatalogueLoading />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (broken) {

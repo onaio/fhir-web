@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, keyBy } from 'lodash';
-import { Spin, Button } from 'antd';
+import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import lang, { Lang } from '../../lang';
@@ -13,7 +13,6 @@ import { Column } from '@opensrp/react-utils';
  * @param record - table row record
  */
 export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
-  console.log('record location :: ', record);
   return (
     <>
       <Button
@@ -64,12 +63,6 @@ export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
   ];
 
   return columns;
-};
-
-/** util component shown when there is a pending promise */
-
-export const TeamAssignmentLoading = () => {
-  return <Spin size="large" />;
 };
 
 /**

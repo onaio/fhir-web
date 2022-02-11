@@ -21,6 +21,7 @@ import {
 } from '@opensrp/product-catalogue';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
 import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 jest.mock('../../configs/env');
 
@@ -221,12 +222,18 @@ describe('App - authenticated', () => {
     const envModule = require('../../configs/env');
     envModule.DEFAULT_HOME_MODE = 'tunisia';
     history.push(URL_DOWNLOAD_CLIENT_DATA);
+
+    // card support uses react query (component at history.push)
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {

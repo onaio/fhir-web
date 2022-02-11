@@ -84,7 +84,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       serve
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setUserGroupsLoading(false));
     }
   }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
@@ -101,7 +103,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: KeycloakUser | null | undefined) => {
           if (response) fetchKeycloakUsersCreator([response]);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setKeyCloakUserLoading(false));
     }
   }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator]);
@@ -118,8 +122,12 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
       );
       serve
         .list()
-        .then((response: UserGroup[]) => setAssignedUserGroups(response))
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .then((response: UserGroup[]) => {
+          setAssignedUserGroups(response);
+        })
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setUserGroupLoading(false));
     }
   }, [userId, keycloakBaseURL]);
@@ -136,7 +144,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .then((response: Practitioner | undefined) => {
           setPractitioner(response);
         })
-        .catch((_: Error) => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch((_: Error) => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setPractitionerLoading(false));
     }
   }, [userId, opensrpBaseURL]);
@@ -145,13 +155,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
   }, [keycloakUser, practitioner, assignedUserGroups]);
 
-  if (
-    userGroupsLoading ||
-    keyCloakUserLoading ||
-    userGroupLoading ||
-    practitionerLoading ||
-    !(userGroups.length > 0)
-  )
+  if (userGroupsLoading || keyCloakUserLoading || userGroupLoading || practitionerLoading)
     return <Spin size="large" />;
 
   return (
