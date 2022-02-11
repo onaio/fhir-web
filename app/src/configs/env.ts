@@ -168,7 +168,9 @@ export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').s
 export const ENABLE_LANGUAGE_SWITCHER =
   setEnv('REACT_APP_ENABLE_LANGUAGE_SWITCHER', 'false') === 'true';
 
-export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true') === 'true';
+export const ENABLE_FHIR_LOCATIONS = setEnv('REACT_APP_ENABLE_FHIR_LOCATIONS', 'false') === 'true';
+
+export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'false') === 'true';
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
@@ -196,6 +198,10 @@ export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_
 export const ENABLE_FHIR_ORG_AFFILIATION =
   setEnv('REACT_APP_ENABLE_FHIR_ORG_AFFILIATION', 'false') === 'true';
 
+export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
+  'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
+  'eff94f33-c356-4634-8795-d52340706ba9'
+);
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
 
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
