@@ -23,6 +23,7 @@ import {
   rawOpenSRPHierarchy1,
   serviceTypeSettings,
 } from './fixtures';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 
 const history = createBrowserHistory();
 
@@ -179,47 +180,28 @@ describe('LocationForm', () => {
   });
 
   it('form validation works for wrong data types', async () => {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
     fetch.mockResponse(JSON.stringify([]));
 
-    const wrapper = mount(
+    const { getByLabelText, getByText, getAllByText, unmount } = render(
       <Router history={history}>
         <LocationForm />
-      </Router>,
-      { attachTo: div }
+      </Router>
     );
 
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      wrapper.update();
+    const longitudeInput = getByLabelText('Longitude');
+    const latitudeInput = getByLabelText('Latitude');
+    fireEvent.change(longitudeInput, { target: { value: '432dsff', name: 'longitude' } });
+    fireEvent.change(latitudeInput, { target: { value: '43f', name: 'latitude' } });
+
+    const submitButton = getByText('Save');
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(getAllByText('Only decimal values allowed')).toHaveLength(2);
     });
 
-    // set longitude, and latitude to invalid values
-    wrapper
-      .find('FormItem#longitude input')
-      .simulate('change', { target: { value: '432dsff', name: 'longitude' } });
-
-    wrapper
-      .find('FormItem#latitude input')
-      .simulate('change', { target: { value: '43f', name: 'latitude' } });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItemInput#longitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-    expect(wrapper.find('FormItemInput#latitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-
-    wrapper.unmount();
+    unmount();
   });
 
   it('form validation works for eusm instance', async () => {
