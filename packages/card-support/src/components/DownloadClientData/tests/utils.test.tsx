@@ -390,7 +390,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       JSON.stringify([
         fixtures.mother,
         // remove registration_location_name from child1 and child2
-        // use location if for location that doesn't exist so that it's not auto filled with location matching location id
+        // use location id for location that doesn't exist so that it's not auto filled with location matching location id
         {
           ...fixtures.child1,
           attributes: {
