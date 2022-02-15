@@ -124,11 +124,10 @@ describe('components/Antd/FileList', () => {
       },
     ]);
     const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').prop('children')).toHaveLength(3);
-    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
-    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
-    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
+    expect(content.find('Title').text()).toMatchInlineSnapshot(`"JSON Validators"`);
+    expect(content.find('input#search')).toBeTruthy();
+    expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
+    expect(content.find('TableLayout#FormFileList')).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -181,11 +180,9 @@ describe('components/Antd/FileList', () => {
       },
     ]);
     const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').prop('children')).toHaveLength(3);
-    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
-    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
-    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
+    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Releases: 1.0.11"`);
+    expect(content.find('input#search')).toBeTruthy();
+    expect(content.find('TableLayout#FormFileList')).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -375,7 +372,7 @@ describe('components/Antd/FileList', () => {
   });
 
   it('handles failure if fetching mainfest files fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     fetch.once(JSON.stringify(downloadFile));
 
     const wrapper = mount(

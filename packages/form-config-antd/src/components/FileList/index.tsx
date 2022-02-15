@@ -142,7 +142,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
           {!formVersion && (
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             <>
-              <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+              <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
                 {lang.UPLOAD_NEW_FILE}
               </Button>
