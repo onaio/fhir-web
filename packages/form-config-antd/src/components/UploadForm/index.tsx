@@ -39,7 +39,7 @@ export const defaultInitialValues: UploadFileFieldTypes = {
   // eslint-disable-next-line @typescript-eslint/camelcase
   form_relation: '',
   module: '',
-  form: '',
+  form: [],
 };
 
 /** default component props */
