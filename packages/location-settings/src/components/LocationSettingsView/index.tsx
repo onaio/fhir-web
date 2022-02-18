@@ -10,7 +10,7 @@ import {
   RawOpenSRPHierarchy,
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
 import { Setting } from '../../ducks/settings';
 import { POP_CHARACTERISTICS_PARAM, SECURITY_AUTHENTICATE_ENDPOINT } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
@@ -75,12 +75,23 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
           })
         : undefined,
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => {
+        sendErrorNotification(lang.ERROR_OCCURRED);
+      },
       select: (res: Setting[]) => res,
     }
   );
 
-  if (locationSettings.isFetching || locationSettings.isLoading) return <Spin size="large" />;
+  if (
+    (locationSettings.error && !locationSettings.data) ||
+    (userLocSettings.error && !userLocSettings.data)
+  ) {
+    return <BrokenPage />;
+  }
+
+  if (locationSettings.isLoading || userLocSettings.isLoading) {
+    return <Spin size="large" />;
+  }
 
   return (
     <section className="layout-content">

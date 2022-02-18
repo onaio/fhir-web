@@ -35,6 +35,7 @@ export interface Attributes {
   place_of_birth: string;
   card_status_date: string;
   registration_location_id: string;
+  registration_location_name?: string;
 }
 
 /** interface for  relationships*/

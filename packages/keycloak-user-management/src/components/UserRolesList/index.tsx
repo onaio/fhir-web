@@ -62,7 +62,9 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   useEffect(() => {
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch)
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setIsLoading(false));
     }
   });

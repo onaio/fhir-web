@@ -239,7 +239,7 @@ export const locationSettings: Setting[] = [
   },
 ];
 
-export const locationSettingslevel1: Setting[] = [
+export const locationSettingsLevel1: Setting[] = [
   {
     key: 'pop_hepc',
     value: 'false',
@@ -623,7 +623,7 @@ export const tree: ParsedHierarchyNode[] = [
   },
 ];
 
-export const securityauthenticateendpoint = {
+export const securityAuthenticateEndpoint = {
   jurisdictionIds: ['982eb3f3-b7e3-450f-a38e-d067f2345212', 'ee08a6e0-3f73-4c28-b186-64d5cd06f4ce'],
   locations: {
     locationsHierarchy: {
