@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import * as notifications from '@opensrp/notifications';
 import { LocationSettingsView } from '..';
-import { locationSettings, locationSettingslevel1, securityauthenticateendpoint } from './fixtures';
+import { locationSettings, locationSettingsLevel1, securityAuthenticateEndpoint } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
@@ -44,7 +44,7 @@ describe('activate mission', () => {
   it('renders without crashing', async () => {
     const queryClient = new QueryClient();
 
-    fetch.mockResponseOnce(JSON.stringify(securityauthenticateendpoint));
+    fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
 
     const wrapper = mount(
@@ -83,7 +83,7 @@ describe('activate mission', () => {
   it('Updates settings correctly when value is yes', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
-    fetch.mockResponseOnce(JSON.stringify(securityauthenticateendpoint));
+    fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
 
     const wrapper = mount(
@@ -193,7 +193,7 @@ describe('activate mission', () => {
   it('Updates settings correctly when value is no', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
-    fetch.mockResponseOnce(JSON.stringify(securityauthenticateendpoint));
+    fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
 
     const wrapper = mount(
@@ -303,7 +303,7 @@ describe('activate mission', () => {
   it('Updates settings correctly when value is inherited', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
-    fetch.mockResponseOnce(JSON.stringify(securityauthenticateendpoint));
+    fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
     fetch.mockResponseOnce(JSON.stringify(locationSettings));
 
     const wrapper = mount(
@@ -378,8 +378,8 @@ describe('activate mission', () => {
   it('Table Changes on Tree Click', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
-    fetch.mockResponseOnce(JSON.stringify(securityauthenticateendpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.once(JSON.stringify(securityAuthenticateEndpoint));
+    fetch.mockResponse(JSON.stringify(locationSettings));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -396,9 +396,9 @@ describe('activate mission', () => {
     );
 
     await act(async () => {
-      await flushPromises();
-      wrapper.update();
+      await new Promise((resolve) => setImmediate(resolve));
     });
+    wrapper.update();
 
     await act(async () => {
       let treeholder = wrapper.find('div[className*="ant-tree-list-holder-inner"]');
@@ -417,13 +417,13 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
-    fetch.mockResponseOnce(JSON.stringify(locationSettingslevel1));
+    fetch.mockResponse(JSON.stringify(locationSettingsLevel1));
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((r) => setImmediate(r));
     });
     wrapper.update();
+
     // test snapshot of expanded tree
     expect(wrapper.find('Tree').at(0).text()).toMatchInlineSnapshot(`"UgandaKampalaKCCA"`);
     wrapper.unmount();
@@ -456,5 +456,8 @@ describe('activate mission', () => {
       wrapper.update();
     });
     expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+
+    // broken page as well
+    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
   });
 });

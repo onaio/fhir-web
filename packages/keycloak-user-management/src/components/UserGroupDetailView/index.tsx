@@ -37,15 +37,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
       const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
       const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
       Promise.all([membersPromise, userGroupPromise])
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groupId]);
-
-  if (!groupId) {
-    return null;
-  }
 
   return (
     <Col className="view-details-content">

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spin, Alert } from 'antd';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
@@ -66,24 +65,6 @@ export const columnsFactory = (langObj: Lang = lang) => {
     },
   ];
   return columns;
-};
-
-/**
- * util component shown when there is a pending promise
- *
- * @param root0 - object argument containing below args
- * @param root0.message - message to show as title
- * @param root0.description - description of error to show
- */
-export const ServicePointsLoading = ({
-  message = lang.FETCHING_LOCATIONS,
-  description = lang.FETCHING_LOCATIONS_DESCRIPTION,
-}) => {
-  return (
-    <Spin tip={lang.LOADING_ELLIPSIS}>
-      <Alert message={message} description={description} type="info" />
-    </Spin>
-  );
 };
 
 /**

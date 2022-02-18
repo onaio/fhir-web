@@ -12,6 +12,7 @@ import { team, practitioner102, practitioner116, practitionerRole } from '../../
 import * as fhirCient from 'fhirclient';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import { render, waitFor } from '@testing-library/react';
 
 const history = createBrowserHistory();
 
@@ -81,6 +82,34 @@ describe('components/TeamsList', () => {
     wrapper.update();
 
     expect(wrapper.find('table')).toHaveLength(1);
+  });
+
+  test('loader views and error view', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn(async () => {
+          throw new Error('Something went wrong');
+        }),
+      }))
+    );
+
+    const { container, getByText } = render(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <TeamsList fhirBaseURL={fhirBaseURL} />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+
+    expect(getByText(/Something went wrong/)).toBeInTheDocument();
   });
 
   it('Search works correctly', async () => {

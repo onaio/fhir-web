@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button } from 'antd';
+import { Row, PageHeader, Col, Button, Spin } from 'antd';
 import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   TreeNode,
@@ -16,13 +16,7 @@ import {
   getTreesByIds,
 } from '@opensrp/location-management';
 import { connect } from 'react-redux';
-import {
-  ServicePointsLoading,
-  columnsFactory,
-  getNodePath,
-  ActionsColumnCustomRender,
-  TableData,
-} from './utils';
+import { columnsFactory, getNodePath, ActionsColumnCustomRender, TableData } from './utils';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -134,7 +128,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   }, [JSON.stringify(rootLocations)]);
 
   if (loadingStructures) {
-    return <ServicePointsLoading />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (broken) {

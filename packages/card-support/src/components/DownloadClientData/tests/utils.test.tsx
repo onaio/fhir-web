@@ -384,8 +384,31 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(papaparseMock).not.toHaveBeenCalled();
   });
 
-  it('creates csv correctly if location is not found in hierarchy', async () => {
-    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+  it('creates csv correctly if location name is not found', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        // use location id for location that doesn't exist so that it's not auto filled with location matching location id
+        {
+          ...fixtures.child1,
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
+        },
+        {
+          ...fixtures.child2,
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
+        },
+      ])
+    );
 
     submitForm(
       {
@@ -419,6 +442,64 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     );
     expect(mockDownload.mock.calls[0][1]).toEqual(
       'Children_list__18_11_2020_(26-04-2020 - 26-12-2020).csv'
+    );
+  });
+
+  it('fetches registration location name using location id if registration_location_name is undefined', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        // use location id for location "CSB Hopital Bouficha"
+        {
+          ...fixtures.child1,
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+        {
+          ...fixtures.child2,
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+      ])
+    );
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {});
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(papaparseMock).toBeCalledWith(
+      [
+        {
+          ...fixtures.child1CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+        {
+          ...fixtures.child2CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+      ],
+      {
+        header: true,
+      }
+    );
+    expect(mockDownload.mock.calls[0][1]).toMatchInlineSnapshot(
+      `"Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020).csv"`
     );
   });
 });

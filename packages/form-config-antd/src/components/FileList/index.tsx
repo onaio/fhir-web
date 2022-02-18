@@ -72,7 +72,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   } = props;
   const { Title } = Typography;
   const [loading, setLoading] = useState<boolean>(false);
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
+  const [sortedInfo, setSortedInfo] = useState<Dictionary>();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestFilesArray(state));
   const [value, setValue] = useState('');

@@ -15,6 +15,7 @@ import { getNodePath } from '../utils';
 import { generateJurisdictionTree } from '@opensrp/location-management';
 import * as notifications from '@opensrp/notifications';
 import flushPromises from 'flush-promises';
+import toJson from 'enzyme-to-json';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -77,9 +78,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await flushPromises();
@@ -119,9 +118,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await flushPromises();
@@ -172,9 +169,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await flushPromises();
@@ -200,9 +195,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await flushPromises();
@@ -227,9 +220,7 @@ describe('List view Page', () => {
     );
 
     /** loading view */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading ...Fetching locationsPlease wait, while locations are being fetched"`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
       await flushPromises();
