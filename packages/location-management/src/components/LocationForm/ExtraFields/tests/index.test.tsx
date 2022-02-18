@@ -6,6 +6,7 @@ import { act } from 'react-dom/test-utils';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -42,7 +43,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
 
     // error notification is sent

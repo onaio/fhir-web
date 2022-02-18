@@ -199,7 +199,7 @@ describe('components/UserList', () => {
     });
 
     await act(async () => {
-      await new Promise((res) => setTimeout(res, 2000));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -293,7 +293,7 @@ describe('components/UserList', () => {
   });
 
   it('handles user list fetch failure', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
 
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 

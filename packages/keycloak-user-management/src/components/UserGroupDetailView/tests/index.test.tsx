@@ -82,7 +82,7 @@ describe('View User Group Details', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -179,7 +179,7 @@ describe('View User Group Details', () => {
   });
 
   it('shows error notification when fetching group details fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.once(JSON.stringify(fixtures.userGroup1));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -195,7 +195,7 @@ describe('View User Group Details', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

@@ -5,6 +5,7 @@ import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
 import { loadGroupDetails, loadGroupMembers } from '../utils';
 import fetch from 'jest-fetch-mock';
 import lang from '../../../lang';
+import flushPromises from 'flush-promises';
 
 const mockBaseURL = 'https://example.com/rest';
 
@@ -38,7 +39,7 @@ describe('dataLoading', () => {
     loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     expect(fetch.mock.calls[0]).toEqual([
       `https://example.com/rest/groups/${fixtures.userGroup1.id}`,
       {
@@ -57,7 +58,7 @@ describe('dataLoading', () => {
     loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     expect(fetch.mock.calls[0]).toEqual([
       `https://example.com/rest/groups/${fixtures.userGroup1.id}/members`,
       {
@@ -72,17 +73,17 @@ describe('dataLoading', () => {
   });
 
   it('loadGroupMembers handles errors', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 
   it('loadGroupDetails handles errors', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
       throw e;

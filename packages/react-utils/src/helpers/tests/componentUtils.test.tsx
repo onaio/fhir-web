@@ -87,7 +87,7 @@ describe('componentUtils', () => {
     );
     await act(async () => {
       await flushPromises();
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
     wrapper.update();
     // test if isAuthorized is called
@@ -151,7 +151,7 @@ describe('componentUtils', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.exists(MockComponent)).toBeFalsy();

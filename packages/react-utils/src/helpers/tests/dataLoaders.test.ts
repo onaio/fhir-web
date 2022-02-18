@@ -13,12 +13,8 @@ import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
 import { fhirR4 } from '@smile-cdr/fhirts';
 
-const {
-  fetchProtectedImage,
-  OpenSRPService,
-  handleSessionOrTokenExpiry,
-  FHIRServiceClass,
-} = dataLoaders;
+const { fetchProtectedImage, OpenSRPService, handleSessionOrTokenExpiry, FHIRServiceClass } =
+  dataLoaders;
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
@@ -161,7 +157,7 @@ describe('dataLoaders/OpenSRPService', () => {
 
     // refresh token throws an error
     const errorMessage = 'API is down';
-    fetch.mockRejectOnce(() => Promise.reject(errorMessage));
+    fetch.mockRejectOnce(new Error(errorMessage));
     store.dispatch(updateExtraData(authDataCopy));
     await handleSessionOrTokenExpiry().catch((e) => {
       expect(e.message).toEqual('Session Expired');

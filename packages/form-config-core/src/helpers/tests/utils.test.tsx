@@ -257,8 +257,7 @@ describe('helpers/utils/makeRelease', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',
@@ -289,8 +288,7 @@ describe('helpers/utils/makeRelease', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',
@@ -305,7 +303,7 @@ describe('helpers/utils/makeRelease', () => {
   });
 
   it('handles failure if make release fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+    fetch.mockRejectOnce(new Error('API taking a break'));
 
     makeRelease(
       FixManifestDraftFiles,
@@ -344,8 +342,7 @@ describe('helpers/utils/makeRelease', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',
@@ -432,7 +429,7 @@ describe('helpers/utils/fetchDrafts', () => {
   });
 
   it('handles failure if fetch drafts fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+    fetch.mockRejectOnce(new Error('API taking a break'));
 
     fetchDrafts(
       accessToken,
@@ -565,7 +562,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
   });
 
   it('handles failure if fetch releases fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+    fetch.mockRejectOnce(new Error('API taking a break'));
 
     fetchReleaseFiles(
       accessToken,
@@ -706,7 +703,7 @@ describe('helpers/utils/fetchManifests', () => {
   });
 
   it('handles failure if fetch fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API taking a break'));
+    fetch.mockRejectOnce(new Error('API taking a break'));
 
     fetchManifests(
       accessToken,

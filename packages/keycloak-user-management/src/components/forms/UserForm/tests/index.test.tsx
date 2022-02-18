@@ -166,8 +166,10 @@ describe('components/forms/UserForm', () => {
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
 
     // regex validation
@@ -177,8 +179,10 @@ describe('components/forms/UserForm', () => {
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
       'Contact should be 10 digits and start with 0',
     ]);
@@ -190,8 +194,10 @@ describe('components/forms/UserForm', () => {
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
       'Contact should be 10 digits and start with 0',
     ]);
@@ -203,8 +209,10 @@ describe('components/forms/UserForm', () => {
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([]);
 
     wrapper.unmount();
@@ -302,7 +310,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
@@ -377,7 +385,7 @@ describe('components/forms/UserForm', () => {
   });
 
   it('user is not created if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
@@ -406,13 +414,13 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
 
   it('user is not edited if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: getFormValues(keycloakUser),
@@ -435,7 +443,7 @@ describe('components/forms/UserForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
@@ -452,7 +460,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
@@ -460,7 +468,7 @@ describe('components/forms/UserForm', () => {
   });
 
   it('render correct user name in header', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: keycloakUser,

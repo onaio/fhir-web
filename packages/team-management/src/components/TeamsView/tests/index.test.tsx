@@ -127,7 +127,7 @@ describe('components/TeamsView', () => {
   it('test error thrown if API is down', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const mockNotificationError = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     populateTeamDetails(
       {
         id: 1,
@@ -195,7 +195,7 @@ describe('components/TeamsView', () => {
     });
 
     await act(async () => {
-      await new Promise((res) => setTimeout(res, 2000));
+      await flushPromises();
       wrapper.update();
     });
 

@@ -220,7 +220,7 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('handles error if fetch user group fails when page reloads', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(

@@ -1,4 +1,5 @@
 import { postPutPlan } from '../dataloaders';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -18,7 +19,7 @@ describe('dataLoading', () => {
     postPutPlan(mockPayload as any, mockBaseURL).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/plans',
@@ -44,7 +45,7 @@ describe('dataLoading', () => {
     postPutPlan(mockPayload as any, mockBaseURL, false).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/plans',
@@ -75,6 +76,6 @@ describe('dataLoading', () => {
     postPutPlan({} as any, mockBaseURL, true).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
   });
 });

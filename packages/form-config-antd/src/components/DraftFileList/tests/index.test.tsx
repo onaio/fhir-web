@@ -131,12 +131,11 @@ describe('components/Antd/DraftFileList', () => {
       },
     ]);
     const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').prop('children')).toHaveLength(4);
-    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
-    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
-    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
-    expect(content.find('Card').prop('children')[3]).toMatchSnapshot('release button');
+    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Draft Files"`);
+    expect(content.find('input#search')).toBeTruthy();
+    expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
+    expect(content.find('TableLayout#FormDraftFileList')).toBeTruthy();
+    expect(content.find('button#makeRelease').text()).toMatchInlineSnapshot(`"Make Release"`);
     wrapper.unmount();
   });
 
@@ -278,8 +277,7 @@ describe('components/Antd/DraftFileList', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',
@@ -302,7 +300,7 @@ describe('components/Antd/DraftFileList', () => {
   });
 
   it('handles failure if fetching draft files fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     fetch.once(JSON.stringify(downloadFile));
 
     const wrapper = mount(
@@ -326,7 +324,7 @@ describe('components/Antd/DraftFileList', () => {
 
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
+    fetch.mockRejectOnce(new Error('Cannot fetch file'));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -363,7 +361,7 @@ describe('components/Antd/DraftFileList', () => {
 
   it('handles failure if creating manifest file fails', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot create file'));
+    fetch.mockRejectOnce(new Error('Cannot create file'));
 
     const wrapper = mount(
       <Provider store={store}>

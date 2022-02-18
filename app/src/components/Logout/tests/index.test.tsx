@@ -59,7 +59,7 @@ describe('components/Logout', () => {
   });
 
   it('handles logout failure correctly', async () => {
-    jest.spyOn(serverLogout, 'logout').mockImplementation(() => Promise.reject('error'));
+    jest.spyOn(serverLogout, 'logout').mockRejectedValueOnce(new Error('error'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     mountWithTranslations(
       <Provider store={store}>

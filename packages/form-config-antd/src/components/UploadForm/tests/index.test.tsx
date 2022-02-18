@@ -84,7 +84,7 @@ describe('components/UploadForm', () => {
     );
   });
 
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -93,9 +93,13 @@ describe('components/UploadForm', () => {
       </Provider>
     );
 
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('Title').text()).toMatchInlineSnapshot(`"Upload Form"`);
+    expect(wrapper.find('UploadForm').props()).toMatchSnapshot('UploadForm');
     wrapper.unmount();
   });
 
@@ -132,6 +136,11 @@ describe('components/UploadForm', () => {
       </Provider>
     );
 
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
     wrapper
       .find('input#form_name')
       .simulate('change', { target: { name: 'form_name', value: 'test name' } });
@@ -141,7 +150,13 @@ describe('components/UploadForm', () => {
     wrapper
       .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
+
+    await act(async () => {
+      wrapper
+        .find('input#form')
+        .simulate('change', { target: { name: 'form', files: sampleFile } });
+    });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -178,7 +193,13 @@ describe('components/UploadForm', () => {
     wrapper
       .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
+
+    await act(async () => {
+      wrapper
+        .find('input#form')
+        .simulate('change', { target: { name: 'form', files: sampleFile } });
+    });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -219,16 +240,23 @@ describe('components/UploadForm', () => {
       </Provider>
     );
 
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(wrapper.find('Title').props()).toMatchSnapshot('title');
+    expect(wrapper.find('UploadForm').props()).toMatchSnapshot('UploadForm');
 
     expect(wrapper.find('input').at(0).props().value).toEqual('test publish');
 
-    wrapper
-      .find('input')
-      .at(3)
-      .simulate('change', { target: { name: 'form', files: sampleFile } });
+    await act(async () => {
+      wrapper
+        .find('input')
+        .at(3)
+        .simulate('change', { target: { name: 'form', files: sampleFile } });
+    });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -263,7 +291,13 @@ describe('components/UploadForm', () => {
     wrapper
       .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
+
+    await act(async () => {
+      wrapper
+        .find('input#form')
+        .simulate('change', { target: { name: 'form', files: sampleFile } });
+    });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -318,9 +352,7 @@ describe('components/UploadForm', () => {
   });
 
   it('handles non-API errors when submitting', async () => {
-    jest
-      .spyOn(OpenSRPService, 'processAcessToken')
-      .mockImplementationOnce(() => Promise.reject('Error'));
+    jest.spyOn(OpenSRPService, 'processAcessToken').mockRejectedValueOnce(new Error('Error'));
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
@@ -338,7 +370,13 @@ describe('components/UploadForm', () => {
     wrapper
       .find('input#form_relation')
       .simulate('change', { target: { name: 'form_relation', value: 'bar' } });
-    wrapper.find('input#form').simulate('change', { target: { name: 'form', files: sampleFile } });
+
+    await act(async () => {
+      wrapper
+        .find('input#form')
+        .simulate('change', { target: { name: 'form', files: sampleFile } });
+    });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {

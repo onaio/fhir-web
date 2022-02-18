@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removeProducts } from '../../../ducks/productCatalogue';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -56,7 +57,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -96,7 +97,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -157,7 +158,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -203,7 +204,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { baseLocationUnits, rawHierarchy } from '../../EditServicePoint/tests/fixtures';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -66,7 +67,7 @@ describe('CreateServicePoint', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
     wrapper.update();
 

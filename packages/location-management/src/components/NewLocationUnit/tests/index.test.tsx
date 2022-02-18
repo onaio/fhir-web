@@ -11,7 +11,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { location1 } from '../../LocationForm/tests/fixtures';
 import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
+import flushPromises from 'flush-promises';
 import { baseLocationUnits, rawHierarchy } from '../../LocationUnitList/tests/fixtures';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -72,7 +72,7 @@ describe('NewLocationUnit', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
   });
 
@@ -96,7 +96,7 @@ describe('NewLocationUnit', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -229,7 +229,7 @@ describe('NewLocationUnit', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

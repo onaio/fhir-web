@@ -17,12 +17,8 @@ import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
 import lang from '../../../lang';
 
-const {
-  draftReducer,
-  draftReducerName,
-  getAllManifestDraftFilesArray,
-  removeManifestDraftFiles,
-} = formConfigCore;
+const { draftReducer, draftReducerName, getAllManifestDraftFilesArray, removeManifestDraftFiles } =
+  formConfigCore;
 
 jest.mock('@opensrp/form-config-core', () => ({
   __esModule: true,
@@ -162,8 +158,7 @@ describe('components/DraftFiles', () => {
     const postData = {
       'Cache-Control': 'no-cache',
       Pragma: 'no-cache',
-      body:
-        '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
+      body: '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
       headers: {
         accept: 'application/json',
         authorization: 'Bearer hunter2',
@@ -184,7 +179,7 @@ describe('components/DraftFiles', () => {
   });
 
   it('handles failure if fetching draft files fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     fetch.once(JSON.stringify(downloadFile));
 
     const wrapper = mount(
@@ -208,7 +203,7 @@ describe('components/DraftFiles', () => {
 
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
+    fetch.mockRejectOnce(new Error('Cannot fetch file'));
     const downloadSpy = jest.spyOn(formConfigCore, 'handleDownload');
 
     const wrapper = mount(
@@ -234,14 +229,14 @@ describe('components/DraftFiles', () => {
     });
 
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('Cannot fetch file', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('Error: Cannot fetch file', { type: 'error' });
     expect(downloadSpy).not.toHaveBeenCalled();
     wrapper.unmount();
   });
 
   it('handles failure if creating manifest file fails', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot create file'));
+    fetch.mockRejectOnce(new Error('Cannot create file'));
 
     const wrapper = mount(
       <Provider store={store}>

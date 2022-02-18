@@ -111,7 +111,7 @@ describe('components/InventoryItemForm', () => {
       </Router>
     );
 
-    expect(wrapper.find('Card').props()).toMatchSnapshot('card');
+    expect(wrapper.find('Form')).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -363,7 +363,7 @@ describe('components/InventoryItemForm', () => {
     expect(wrapper.find('select#productName').get(0).props.value).toEqual(
       fixtures.products[0].productName
     );
-    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
+    expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"78"`);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-02'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
       moment('2022-02-02')
@@ -372,7 +372,7 @@ describe('components/InventoryItemForm', () => {
       fixtures.unicefSections[0].value
     );
     expect(wrapper.find('select#donor').get(0).props.value).toEqual(fixtures.donors[0].value);
-    expect(wrapper.find('input#poNumber').get(0).props.value).toEqual(90);
+    expect(wrapper.find('input#poNumber').get(0).props.value).toMatchInlineSnapshot(`"90"`);
 
     // Make edits
     wrapper.find('select#productName').simulate('change', {
@@ -640,10 +640,10 @@ describe('components/InventoryItemForm', () => {
     // Form is initialized with initial values
     // product should not be editable when editing an inventory item
     expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(true);
-    expect(wrapper.find('select#productName').get(0).props.value).toEqual(
+    expect(wrapper.find('select#productName').get(0).props.value).toMatch(
       fixtures.product4.productName
     );
-    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(78);
+    expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"78"`);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-16'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
       moment('2022-02-17')
@@ -652,7 +652,7 @@ describe('components/InventoryItemForm', () => {
       fixtures.unicefSections[0].value
     );
     expect(wrapper.find('select#donor').get(0).props.value).toEqual(fixtures.donors[0].value);
-    expect(wrapper.find('input#poNumber').get(0).props.value).toEqual(90);
+    expect(wrapper.find('input#poNumber').get(0).props.value).toMatchInlineSnapshot(`"90"`);
     expect(wrapper.find('input#serialNumber').get(0).props.value).toEqual('1245');
 
     // It autocalculates accountability end date if delivery date is touched

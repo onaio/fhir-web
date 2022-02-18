@@ -1,6 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/forms/PlanForm Form submission for editing plans works: invalid data type Errors, we should have some errors 1`] = `
+exports[`containers/forms/PlanForm Form validation works: Errors 1`] = `
+Array [
+  Object {
+    "errors": Array [
+      "'title' is required",
+    ],
+    "name": Array [
+      "title",
+    ],
+    "warnings": Array [],
+  },
+  Object {
+    "errors": Array [
+      "'name' is required",
+    ],
+    "name": Array [
+      "name",
+    ],
+    "warnings": Array [],
+  },
+  Object {
+    "errors": Array [
+      "'description' is required",
+    ],
+    "name": Array [
+      "description",
+    ],
+    "warnings": Array [],
+  },
+]
+`;
+
+exports[`containers/forms/PlanForm Form validation works: Initial Errors, no errors shown initially 1`] = `Array []`;
+
+exports[`containers/forms/PlanForm Form validation works: date error 1`] = `Array []`;
+
+exports[`containers/forms/PlanForm Form validation works: dateRange required error 1`] = `Array []`;
+
+exports[`containers/forms/PlanForm Form validation works: description error 1`] = `Array []`;
+
+exports[`containers/forms/PlanForm Form validation works: description required error 1`] = `
+Array [
+  "'description' is required",
+]
+`;
+
+exports[`containers/forms/PlanForm Form validation works: interventionType error 1`] = `Array []`;
+
+exports[`containers/forms/PlanForm Form validation works: invalid data type Errors, we should have some errors 1`] = `
 Array [
   Object {
     "errors": Array [
@@ -41,19 +89,7 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm Form submission for new plans works: date error 1`] = `Array []`;
-
-exports[`containers/forms/PlanForm Form submission for new plans works: dateRange required error 1`] = `Array []`;
-
-exports[`containers/forms/PlanForm Form submission for new plans works: description required error 1`] = `
-Array [
-  "'description' is required",
-]
-`;
-
-exports[`containers/forms/PlanForm Form submission for new plans works: interventionType error 1`] = `Array []`;
-
-exports[`containers/forms/PlanForm Form submission for new plans works: more Errors, dateRange, interventionType, date 1`] = `
+exports[`containers/forms/PlanForm Form validation works: more Errors, dateRange, interventionType, date 1`] = `
 Array [
   Object {
     "errors": Array [
@@ -102,42 +138,6 @@ Array [
   },
 ]
 `;
-
-exports[`containers/forms/PlanForm Form validation works: Errors 1`] = `
-Array [
-  Object {
-    "errors": Array [
-      "'title' is required",
-    ],
-    "name": Array [
-      "title",
-    ],
-    "warnings": Array [],
-  },
-  Object {
-    "errors": Array [
-      "'name' is required",
-    ],
-    "name": Array [
-      "name",
-    ],
-    "warnings": Array [],
-  },
-  Object {
-    "errors": Array [
-      "'description' is required",
-    ],
-    "name": Array [
-      "description",
-    ],
-    "warnings": Array [],
-  },
-]
-`;
-
-exports[`containers/forms/PlanForm Form validation works: Initial Errors, no errors shown initially 1`] = `Array []`;
-
-exports[`containers/forms/PlanForm Form validation works: description error 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm Form validation works: name error 1`] = `Array []`;
 

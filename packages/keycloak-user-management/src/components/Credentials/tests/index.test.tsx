@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { cancelUserHandler, ConnectedUserCredentials, UserCredentials, submitForm } from '..';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
@@ -164,8 +164,10 @@ describe('components/Credentials', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
@@ -202,8 +204,10 @@ describe('components/Credentials', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+
+    wrapper.update();
+
     const formContainer = wrapper.find('div.form-container');
 
     expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
@@ -251,7 +255,7 @@ describe('components/Credentials', () => {
   });
 
   it('it handles errors correctly if API response is not 200', async () => {
-    fetch.mockReject(() => Promise.reject({ description: lang.ERROR_OCCURED }));
+    fetch.mockReject(new HTTPError({} as Response, { error_description: lang.ERROR_OCCURED }));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(

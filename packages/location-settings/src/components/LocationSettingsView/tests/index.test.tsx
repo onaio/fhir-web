@@ -62,7 +62,7 @@ describe('activate mission', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -431,7 +431,7 @@ describe('activate mission', () => {
 
   it('handles errors', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(

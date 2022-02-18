@@ -137,7 +137,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -159,7 +159,7 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('usergroup is not created if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const wrapper = mount(<UserGroupForm {...props} />);
 
     await act(async () => {
@@ -176,14 +176,14 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
 
   it('usergroup is not edited if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: fixtures.userGroup,
@@ -204,7 +204,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
@@ -222,7 +222,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
     wrapper.update();
     const button = wrapper.find('button.cancel-group');
     button.simulate('click');
@@ -231,7 +231,7 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('render correct user group name in header', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: fixtures.userGroup,

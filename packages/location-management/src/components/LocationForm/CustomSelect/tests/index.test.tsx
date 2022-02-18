@@ -8,6 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
 import { locationTags } from '../../tests/fixtures';
 import { getLocationTagOptions } from '../../utils';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -37,7 +38,7 @@ describe('FormComponents/CustomSelect', () => {
       </Form>
     );
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
   });
 
@@ -55,7 +56,7 @@ describe('FormComponents/CustomSelect', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
 
     // error notification is sent
@@ -78,7 +79,7 @@ describe('FormComponents/CustomSelect', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -114,7 +115,7 @@ describe('FormComponents/CustomSelect', () => {
     inputField.simulate('change', { target: { value: 'samp' } });
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

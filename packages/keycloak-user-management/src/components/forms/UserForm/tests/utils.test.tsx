@@ -331,7 +331,7 @@ describe('forms/utils/submitForm', () => {
   });
 
   it('handles error when user creation fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const historyPushMock = jest.spyOn(history, 'push');
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -352,7 +352,7 @@ describe('forms/utils/submitForm', () => {
   });
 
   it('handles error when user edit fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(
@@ -501,7 +501,7 @@ describe('forms/utils/submitForm', () => {
 
   it('handles errors when marking practitioner fails', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const valuesCopy = {
       ...{ ...value, id: id },
       active: true,

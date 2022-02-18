@@ -22,6 +22,7 @@ import {
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
 import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import flushPromises from 'flush-promises';
 
 jest.mock('../../configs/env');
 
@@ -62,7 +63,7 @@ describe('App - unauthenticated', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -180,7 +181,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -206,7 +207,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -238,7 +239,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -261,7 +262,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
     expect(mock).toHaveBeenCalled();
@@ -277,7 +278,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

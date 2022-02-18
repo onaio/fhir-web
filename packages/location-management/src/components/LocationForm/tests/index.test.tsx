@@ -23,7 +23,8 @@ import {
   rawOpenSRPHierarchy1,
   serviceTypeSettings,
 } from './fixtures';
-import { screen, render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
 
 const history = createBrowserHistory();
 
@@ -72,7 +73,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -137,14 +138,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -222,14 +223,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -277,7 +278,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -329,7 +330,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -370,7 +371,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -422,7 +423,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -448,7 +449,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -484,7 +485,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -550,7 +551,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -600,7 +601,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -626,7 +627,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -675,7 +676,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -684,7 +685,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -747,7 +748,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

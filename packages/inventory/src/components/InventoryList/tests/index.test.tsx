@@ -18,6 +18,7 @@ import { InventoryList } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -57,7 +58,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -78,7 +79,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -100,7 +101,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -130,7 +131,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -151,7 +152,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
 
     wrapper.update();

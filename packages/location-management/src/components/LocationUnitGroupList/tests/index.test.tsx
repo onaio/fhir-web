@@ -69,7 +69,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
 
   it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockReject(new Error(lang.ERROR_OCCURED));
     mount(
       <Provider store={store}>
         <Router history={history}>
