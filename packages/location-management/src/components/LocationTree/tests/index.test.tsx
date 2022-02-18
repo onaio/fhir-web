@@ -172,7 +172,7 @@ describe('location-management/src/components/LocationTree', () => {
     );
 
     await act(async () => {
-      await new Promise((r) => setTimeout(r, 0));
+      await flushPromises();
     });
 
     const rootNode = wrapper.find('.ant-tree-title');

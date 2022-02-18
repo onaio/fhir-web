@@ -13,6 +13,7 @@ import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
 import { PlanStatus } from '@opensrp/plan-form-core';
+import flushPromises from 'flush-promises';
 
 const columns = getColumns(lang);
 
@@ -62,7 +63,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -97,7 +98,7 @@ describe('List view Page', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
@@ -137,7 +138,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -174,7 +175,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -211,7 +212,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -266,7 +267,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -327,7 +328,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

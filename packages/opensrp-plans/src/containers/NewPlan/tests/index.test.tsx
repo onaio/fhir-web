@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils';
 import lang from '../../../lang';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -31,7 +32,7 @@ describe('Create Plan Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -52,7 +53,7 @@ describe('Create Plan Page', () => {
     );
   });
 
-  it('planForm gets configured', () => {
+  it('planForm gets configured', async () => {
     const props = {
       hiddenFields: ['interventionType', 'title'] as PlanFormFieldsKeys[],
     };
@@ -63,6 +64,11 @@ describe('Create Plan Page', () => {
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     // check if page title is correct
     const helmet = Helmet.peek();

@@ -176,7 +176,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
   it('fail and test call onsubmit', async () => {
     const mockNotificationError = jest.spyOn(notification, 'error');
-    fetch.mockReject();
+    fetch.mockReject(new Error('An error occurred'));
 
     const wrapper = mount(
       <Provider store={store}>

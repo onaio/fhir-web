@@ -375,7 +375,7 @@ describe('containers/InventoryAddEdit', () => {
     expect(wrapper.find('select#productName').get(0).props.value).toEqual(
       fixtures.inventories[0].product.productName
     );
-    expect(wrapper.find('input#quantity').get(0).props.value).toEqual(1);
+    expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"1"`);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(
       moment(fixtures.inventories[0].deliveryDate)
     );

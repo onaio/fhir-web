@@ -115,7 +115,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+          <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
             {lang.UPLOAD_NEW_FILE}
           </Button>
@@ -147,6 +147,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           <Space style={{ float: 'right' }}>
             <Button
               type="primary"
+              id="makeRelease"
               onClick={() =>
                 makeRelease(
                   data,

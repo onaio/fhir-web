@@ -4,6 +4,7 @@ import { MissionData } from '..';
 import { eusmPlans, retiredDraftPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { act } from 'react-dom/test-utils';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -50,7 +51,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -112,7 +113,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -133,7 +134,7 @@ describe('mission data listing & download', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -153,7 +154,7 @@ describe('mission data listing & download', () => {
     const wrapper = shallow(<MissionData {...props} />);
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -171,7 +172,7 @@ describe('mission data listing & download', () => {
     const wrapper = shallow(<MissionData {...props} />);
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

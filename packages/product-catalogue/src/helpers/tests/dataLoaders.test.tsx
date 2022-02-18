@@ -7,11 +7,14 @@ import {
   putProduct,
 } from '../dataLoaders';
 import * as catalogueDux from '../../ducks/productCatalogue';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
 const mockBaseURL = 'https://example.com/rest';
+
+jest.setTimeout(10000);
 
 describe('dataLoading', () => {
   afterEach(() => {
@@ -24,7 +27,7 @@ describe('dataLoading', () => {
     loadProductCatalogue(mockBaseURL).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(creatorSpy).toHaveBeenCalledWith(products);
     creatorSpy.mockRestore();
@@ -49,7 +52,7 @@ describe('dataLoading', () => {
       expect(e.message).toEqual('No products found in the catalogue');
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(creatorSpy).toHaveBeenCalled();
     creatorSpy.mockRestore();
@@ -72,7 +75,7 @@ describe('dataLoading', () => {
     loadSingleProduct(mockBaseURL, '1').catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(creatorSpy).toHaveBeenCalledWith([product1]);
     creatorSpy.mockRestore();
@@ -95,20 +98,20 @@ describe('dataLoading', () => {
     loadSingleProduct(mockBaseURL, '1').catch((e) => {
       expect(e.message).toEqual('Product not found in the catalogue');
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(creatorSpy).not.toHaveBeenCalled();
     creatorSpy.mockRestore();
   });
 
-  it('postProduct works correctly', async (done) => {
+  it('postProduct works correctly', async () => {
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
     const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toMatchObject([
       'https://example.com/restproduct-catalogue',
@@ -136,24 +139,20 @@ describe('dataLoading', () => {
       try {
         const result = reader.result;
         expect(result).toEqual(JSON.stringify({ name: 'Ghost' }));
-        done();
-      } catch (error) {
-        done.fail(error);
-      }
+      } catch (_) {}
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
   });
 
-  it('putProduct works correctly', async (done) => {
-    jest.setTimeout(30000);
+  it('putProduct works correctly', async () => {
     fetch.once(JSON.stringify({}));
     const sampleFile = new File(['dummy'], 'dummy.txt');
     const mockPayload = { name: 'Ghost', photoURL: sampleFile, uniqueId: '1' };
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toMatchObject([
       'https://example.com/restproduct-catalogue/1',
@@ -181,13 +180,10 @@ describe('dataLoading', () => {
       try {
         const result = reader.result;
         expect(result).toEqual(JSON.stringify({ name: 'Ghost', uniqueId: '1' }));
-        done();
-      } catch (error) {
-        done.fail(error);
-      }
+      } catch (_) {}
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
   });
 
   it('postProduct behaves when error', async () => {
@@ -198,7 +194,7 @@ describe('dataLoading', () => {
     postProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
   });
 
   it('putProduct behaves when error', async () => {
@@ -209,7 +205,7 @@ describe('dataLoading', () => {
     putProduct(mockBaseURL, mockPayload).catch((e) => {
       expect(e.message).toEqual(errorMessage);
     });
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await flushPromises();
   });
 
   it('custom getFetchOptions works when payload is undefined', () => {

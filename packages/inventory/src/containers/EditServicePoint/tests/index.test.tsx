@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { commonHiddenFields } from '../../../helpers/utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import flushPromises from 'flush-promises';
 
 const history = createBrowserHistory();
 
@@ -68,7 +69,7 @@ describe('CreateServicePoint', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

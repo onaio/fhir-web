@@ -352,7 +352,7 @@ describe('components/CreateEditUser', () => {
   });
 
   it('handles error if fetch user fails if page is refreshed', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     opensrpStore.store.dispatch(

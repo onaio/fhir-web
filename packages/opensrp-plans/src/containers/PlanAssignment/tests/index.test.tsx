@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { PlanStatus } from '@opensrp/plan-form-core';
 import * as planDux from '../../../ducks/planDefinitions';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -57,7 +58,7 @@ describe('PlanAssignment Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -97,7 +98,7 @@ describe('PlanAssignment Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -141,7 +142,7 @@ describe('PlanAssignment Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -182,7 +183,7 @@ describe('PlanAssignment Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -222,7 +223,7 @@ describe('PlanAssignment Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"<Router />"`);
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.find('MissionData')).not.toBeNull();

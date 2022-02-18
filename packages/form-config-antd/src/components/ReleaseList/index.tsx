@@ -59,13 +59,8 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const [filterData, setfilterDataData] = useState<ManifestReleasesTypes[] | null>(null);
   const [value, setValue] = useState('');
-  const {
-    opensrpBaseURL,
-    uploadFileURL,
-    viewReleaseURL,
-    customFetchOptions,
-    fetchReleases,
-  } = props;
+  const { opensrpBaseURL, uploadFileURL, viewReleaseURL, customFetchOptions, fetchReleases } =
+    props;
 
   useEffect(() => {
     fetchReleaseFiles(
@@ -111,7 +106,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+          <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
             {lang.UPLOAD_NEW_FILE}
           </Button>

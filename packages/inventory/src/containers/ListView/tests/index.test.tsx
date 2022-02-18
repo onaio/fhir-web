@@ -14,6 +14,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { getNodePath } from '../utils';
 import { generateJurisdictionTree } from '@opensrp/location-management';
 import * as notifications from '@opensrp/notifications';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -81,7 +82,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -123,7 +124,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -176,7 +177,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -204,7 +205,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -231,7 +232,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -255,7 +256,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

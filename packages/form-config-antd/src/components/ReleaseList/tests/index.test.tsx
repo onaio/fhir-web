@@ -114,11 +114,10 @@ describe('components/Antd/ReleaseList', () => {
       },
     ]);
     const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').prop('children')).toHaveLength(3);
-    expect(content.find('Card').prop('children')[0]).toMatchSnapshot('search');
-    expect(content.find('Card').prop('children')[1]).toMatchSnapshot('upload button');
-    expect(content.find('Card').prop('children')[2]).toMatchSnapshot('table');
+    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Releases"`);
+    expect(content.find('input#search')).toBeTruthy();
+    expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
+    expect(content.find('TableLayout#FormDraftFileList')).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -171,7 +170,7 @@ describe('components/Antd/ReleaseList', () => {
   });
 
   it('handles failure if fetching releases fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
 
     const wrapper = mount(
       <Provider store={store}>

@@ -396,7 +396,7 @@ describe('components/Antd/FileList', () => {
 
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
+    fetch.mockRejectOnce(new Error('Cannot fetch file'));
     const downloadSpy = jest.spyOn(helpers, 'handleDownload');
 
     const wrapper = mount(

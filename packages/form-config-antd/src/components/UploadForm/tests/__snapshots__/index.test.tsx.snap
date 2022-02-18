@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/UploadForm edits form correctly: UploadForm 1`] = `
+Object {
+  "history": Object {
+    "action": "REPLACE",
+    "block": [Function],
+    "createHref": [Function],
+    "go": [Function],
+    "goBack": [Function],
+    "goForward": [Function],
+    "length": 1,
+    "listen": [Function],
+    "location": Object {
+      "hash": "",
+      "key": "1bakqc",
+      "pathname": "/foo",
+      "search": "",
+      "state": undefined,
+    },
+    "push": [Function],
+    "replace": [Function],
+  },
+  "initialValues": Object {
+    "form": Array [],
+    "form_name": "",
+    "form_relation": "",
+    "module": "",
+  },
+  "isJsonValidator": false,
+  "location": Object {
+    "hash": "",
+    "pathname": "/upload-form/53",
+    "search": "",
+    "state": Object {},
+  },
+  "match": Object {
+    "isExact": true,
+    "params": Object {
+      "formId": "53",
+    },
+    "path": "/upload-form:formId",
+    "url": "/upload-form/53",
+  },
+  "onSaveRedirectURL": "/foo",
+  "opensrpBaseURL": "https://test-example.com/rest/",
+}
+`;
+
+exports[`components/UploadForm edits form correctly: title 1`] = `
+Object {
+  "children": "Upload Form",
+  "level": 3,
+}
+`;
+
+exports[`components/UploadForm renders correctly: UploadForm 1`] = `
+Object {
+  "history": Object {
+    "action": "POP",
+    "block": [Function],
+    "createHref": [Function],
+    "go": [Function],
+    "goBack": [Function],
+    "goForward": [Function],
+    "length": 1,
+    "listen": [Function],
+    "location": Object {
+      "hash": "",
+      "pathname": "/",
+      "search": "",
+    },
+    "push": [Function],
+    "replace": [Function],
+  },
+  "initialValues": Object {
+    "form": Array [],
+    "form_name": "",
+    "form_relation": "",
+    "module": "",
+  },
+  "isJsonValidator": false,
+  "location": Object {
+    "hash": "",
+    "pathname": "/upload-form",
+    "search": "",
+    "state": Object {},
+  },
+  "match": Object {
+    "isExact": true,
+    "params": Object {
+      "formId": null,
+    },
+    "path": "/upload-form",
+    "url": "/upload-form",
+  },
+  "onSaveRedirectURL": "/foo",
+  "opensrpBaseURL": "https://test-example.com/rest/",
+}
+`;

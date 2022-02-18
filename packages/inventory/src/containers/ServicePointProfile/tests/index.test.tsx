@@ -28,6 +28,8 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
 import { Helmet } from 'react-helmet';
+import flushPromises from 'flush-promises';
+
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
@@ -99,7 +101,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -126,7 +128,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -170,7 +172,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -196,7 +198,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -225,7 +227,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
       wrapper.update();
     });
 

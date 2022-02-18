@@ -178,7 +178,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -202,7 +202,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -236,7 +236,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(
       fixtures.sampleLocationUnitGroupPayload,

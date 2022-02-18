@@ -148,7 +148,7 @@ describe('components/UserRolesList', () => {
   });
 
   it('handles user role list fetch failure', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
       ...locationProps,
@@ -217,7 +217,7 @@ describe('components/UserRolesList', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await flushPromises();
     });
 
     wrapper.update();

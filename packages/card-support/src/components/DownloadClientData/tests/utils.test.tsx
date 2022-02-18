@@ -180,7 +180,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('handles error if fetching Nested Location Ids fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
@@ -208,11 +208,11 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('handles error if submit form fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
     const mockRejectFn = jest.fn();
-    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(() => Promise.reject('API is down'));
+    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(new Error('API is down'));
 
     submitForm(
       values,
@@ -234,7 +234,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
   it('handles error if submission fails', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
