@@ -31,7 +31,8 @@ const defaultProps = {
   disabled: false,
 };
 
-/** Modal component used for either locations or teams assignments
+/**
+ * Modal component used for either locations or teams assignments
  *
  * @param {object} props - props
  * @returns {Element} -
@@ -119,7 +120,8 @@ EditAssignmentsModal.defaultProps = defaultProps;
 
 export { EditAssignmentsModal };
 
-/** filters what options to show depending on the string input
+/**
+ * filters what options to show depending on the string input
  *
  * @param input - the string input
  * @param option - a single option

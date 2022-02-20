@@ -74,7 +74,8 @@ interface DefaultGeographyItemProp {
   value?: string | number | string[] | number[];
 }
 
-/** component that renders Geography Items
+/**
+ * component that renders Geography Items
  *
  * @param props - the component props
  */
@@ -88,7 +89,8 @@ export const GeographyItem = (props: DefaultGeographyItemProp) => {
   );
 };
 
-/** component that renders service point list
+/**
+ * component that renders service point list
  *
  * @param props - the component props
  */
@@ -138,12 +140,9 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
       return dispatch(fetchLocationUnits(locations, true));
     };
 
-    loadJurisdictions(
-      jurisdictionsDispatcher,
-      opensrpBaseURL,
-      undefined,
-      undefined
-    ).catch((err: Error) => sendErrorNotification(err.message));
+    loadJurisdictions(jurisdictionsDispatcher, opensrpBaseURL, undefined, undefined).catch(
+      (err: Error) => sendErrorNotification(err.message)
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

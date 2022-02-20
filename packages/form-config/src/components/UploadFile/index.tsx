@@ -223,7 +223,8 @@ UploadConfigFile.defaultProps = defaultProps;
 /** ownprops interface */
 interface OwnProps extends UploadConfigFileProps, UploadDefaultProps {}
 
-/** Map props to state
+/**
+ * Map props to state
  *
  * @param {Store} state - the  redux store
  * @param {Dictionary} ownProps - props passed to component

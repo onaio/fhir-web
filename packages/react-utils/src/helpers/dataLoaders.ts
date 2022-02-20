@@ -37,7 +37,8 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
   }
 }
 
-/** A generic FHIR service class
+/**
+ * A generic FHIR service class
  *
  * Sample usage:
  * -------------

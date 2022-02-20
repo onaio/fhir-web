@@ -16,7 +16,8 @@ interface PreConfirmationErrorProps {
   errorObj?: BadRequestError;
 }
 
-/** Card shows errors from validation step
+/**
+ * Card shows errors from validation step
  *
  * @param props - components props
  */

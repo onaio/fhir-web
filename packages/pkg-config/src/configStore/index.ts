@@ -45,14 +45,11 @@ let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
   ? JSON.parse(localStorage.getItem(USER_PREFERENCE_KEY) as string)
   : {};
 
-const {
-  useGlobalState,
-  getGlobalState,
-  setGlobalState,
-  ...unexposedGettersSetters
-} = createGlobalState<GlobalState>({ ...DefaultConfigs, ...localstorage });
+const { useGlobalState, getGlobalState, setGlobalState, ...unexposedGettersSetters } =
+  createGlobalState<GlobalState>({ ...DefaultConfigs, ...localstorage });
 
-/** hook to get and update values in the config store
+/**
+ * hook to get and update values in the config store
  *
  * @example
  * import { useGlobalConfigs } from `'@opensrp/pkg-config'`;
@@ -64,7 +61,8 @@ const {
  */
 const useGlobalConfigs = useGlobalState;
 
-/** function to get config values outside of React
+/**
+ * function to get config values outside of React
  *
  * @example
  * import {getConfig} from `"@opensrp/pkg-config"`;
@@ -73,11 +71,11 @@ const useGlobalConfigs = useGlobalState;
  */
 const getConfig = getGlobalState;
 
-/** function to set config values outside of React
+/**
+ * function to set config values outside of React
  *
  * @param key name of the config to set
  * @param value value of the config to set
- *
  * @example
  * import {setConfig} from `'@opensrp/pkg-config'`;
  *
@@ -91,12 +89,13 @@ function setConfig<T extends keyof GlobalState>(key: T, value: GlobalState[T]) {
 }
 
 /** these properties are part of useGlobalState but the exposed type interface does not include them */
-const otherGettersSetters = (unexposedGettersSetters as unknown) as {
+const otherGettersSetters = unexposedGettersSetters as unknown as {
   getState: () => GlobalState;
   setState: (nextGlobalState: GlobalState) => void;
 };
 
-/** function to get all config values outside of React
+/**
+ * function to get all config values outside of React
  *
  * @example
  * import {getAllConfigs} from `'@opensrp/pkg-config'`;
@@ -105,10 +104,10 @@ const otherGettersSetters = (unexposedGettersSetters as unknown) as {
  */
 const getAllConfigs = otherGettersSetters.getState;
 
-/** function to get all config values outside of React
+/**
+ * function to get all config values outside of React
  *
  * @param value Object for setting all config values
- *
  * @example
  * import {setAllConfigs} from `'@opensrp/pkg-config'`;
  *
@@ -124,7 +123,8 @@ function setAllConfigs(value: GlobalState) {
   otherGettersSetters.setState(value);
 }
 
-/** internal function to save Value to Local Storage for later retrival
+/**
+ * internal function to save Value to Local Storage for later retrival
  *
  * @param config config to save to local storage
  */

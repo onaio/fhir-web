@@ -135,7 +135,8 @@ const ProductForm = (props: ProductFormProps) => {
     </div>
   );
 
-  /** returns a string that we can use as the source of the staged image
+  /**
+   * returns a string that we can use as the source of the staged image
    * once one is uploaded but before getting submitted.
    *
    * @param {UploadFile} file - the uploaded File
@@ -145,7 +146,7 @@ const ProductForm = (props: ProductFormProps) => {
       const reader = new FileReader();
 
       reader.addEventListener('load', function (event) {
-        if (event?.target?.result) {
+        if (event.target?.result) {
           setImageUrl(event.target.result);
         }
       });
@@ -156,7 +157,8 @@ const ProductForm = (props: ProductFormProps) => {
     return;
   };
 
-  /** change handler for Upload component
+  /**
+   * change handler for Upload component
    *
    * @param {UploadChangeParam} info - info object containing File, and fileList
    * @param {Function} setFieldValue - the callback that updates formik state

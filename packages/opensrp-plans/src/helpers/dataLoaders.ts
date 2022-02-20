@@ -78,7 +78,6 @@ export async function loadPlans(
  * @param {string} id - id of the product to be fetched
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchPlanDefinitions} actionCreator - Action creator; creates actions thad adds plans to the store
- *
  * @returns {Promise<void>}
  */
 export async function loadSinglePlan(
@@ -231,7 +230,8 @@ export const getSingleJurisdictionPayload = (
   return payload;
 };
 
-/** retire all assignments pertaining to a certain jurisdiction, bound by the rules:
+/**
+ * retire all assignments pertaining to a certain jurisdiction, bound by the rules:
  * if plan is given; retire assignments by jurisdiction for only the specified plan, otherwise retire everything for said jurisdiction
  * if orgs are given; retire assignments by jurisdiction for only specified orgs, otherwise retire everything for said jurisdiction
  * if both are given; retire assignments by jurisdiction that have the plan and org
@@ -355,7 +355,8 @@ export async function putJurisdictionsToPlan(
     });
 }
 
-/** post assignments to api
+/**
+ * post assignments to api
  *
  * @param {string} baseURL -  base url of api
  * @param {Assignment[]} payload - the assignments payload
@@ -382,7 +383,8 @@ export const updateAssignments = (
     });
 };
 
-/** load jurisdictions at a specific level of the hierarchy
+/**
+ * load jurisdictions at a specific level of the hierarchy
  *
  * @param {string} baseURL -  base url of api
  * @param {number} geographicLevel - geography level to load jurisdictions for

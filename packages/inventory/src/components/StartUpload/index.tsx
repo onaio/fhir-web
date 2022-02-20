@@ -15,7 +15,8 @@ const defaultProps = {
   onFileUpload: () => void 0,
 };
 
-/** card rendered during csv upload, its shown on the first page, initiates the file upload
+/**
+ * card rendered during csv upload, its shown on the first page, initiates the file upload
  * upload constraints; only csv files can be uploaded, only one file can be uploaded at a time
  *
  * @param props - components props
@@ -30,7 +31,8 @@ const StartUpload = (props: StartUploadProps) => {
     />
   );
 
-  /** call onFileUpload callback after file is fully read from source
+  /**
+   * call onFileUpload callback after file is fully read from source
    *
    * @param info - the selected file, formatted by antd
    */

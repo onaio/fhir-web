@@ -1,5 +1,7 @@
-/** shown during inventory csv bulk upload when committing entries
- * to the db fails and returns a csv error */
+/**
+ * shown during inventory csv bulk upload when committing entries
+ * to the db fails and returns a csv error
+ */
 import React from 'react';
 import { Card, Divider } from 'antd';
 import lang from '../../lang';
@@ -23,7 +25,8 @@ const defaultProps = {
   filename: '',
 };
 
-/** Card shows errors from validation step
+/**
+ * Card shows errors from validation step
  *
  * @param props - components props
  */

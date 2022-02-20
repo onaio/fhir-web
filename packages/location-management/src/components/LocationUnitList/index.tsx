@@ -46,7 +46,8 @@ export interface AntTreeProps {
   children: AntTreeProps[];
 }
 
-/** Function to Load selected location unit for details
+/**
+ * Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url

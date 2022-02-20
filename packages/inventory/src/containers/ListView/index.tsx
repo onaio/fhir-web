@@ -59,19 +59,14 @@ const defaultProps = {
 
 export type ServicePointsListTypes = ServicePointsListProps & RouteComponentProps;
 
-/** component that renders service point list
+/**
+ * component that renders service point list
  *
  * @param props - the component props
  */
 const ServicePointList = (props: ServicePointsListTypes) => {
-  const {
-    trees,
-    rootLocations,
-    fetchLocationsCreator,
-    fetchTreesCreator,
-    baseURL,
-    structures,
-  } = props;
+  const { trees, rootLocations, fetchLocationsCreator, fetchTreesCreator, baseURL, structures } =
+    props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
 

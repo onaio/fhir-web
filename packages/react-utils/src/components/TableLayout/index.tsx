@@ -44,7 +44,8 @@ interface NoPersistState {
 
 export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
 
-/** Table Layout Component used to render the table with default Settings
+/**
+ * Table Layout Component used to render the table with default Settings
  *
  * @param props - Table settings
  * @returns - the component
@@ -101,7 +102,8 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     }));
   }, [dataKeyAccessor, datasource]);
 
-  /** Function Trigger on each change and is used to save state of the save on table props change
+  /**
+   * Function Trigger on each change and is used to save state of the save on table props change
    *
    * @param pagination - Table Pagination if any
    * @param filters - Table Filters if any
@@ -118,7 +120,8 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
     if (id && persistState) SaveTableState(pagination.current, pagination.pageSize);
   }
 
-  /** Function To update and save table State into GlobalState
+  /**
+   * Function To update and save table State into GlobalState
    *
    * @param current - the current viewing Page number
    * @param pageSize - the no of rows to show in the table

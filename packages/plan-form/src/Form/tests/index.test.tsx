@@ -21,7 +21,8 @@ jest.mock('@opensrp/notifications', () => {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
-/** place to mount the application/component to the JSDOM document during testing.
+/**
+ * place to mount the application/component to the JSDOM document during testing.
  * https://github.com/reactstrap/reactstrap/issues/773#issuecomment-373451256
  */
 const div = document.createElement('div');

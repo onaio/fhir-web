@@ -29,7 +29,8 @@ interface ActionColumnProps {
   disableAssignments: boolean;
 }
 
-/** rendered for each assignment table row in the actions columns
+/**
+ * rendered for each assignment table row in the actions columns
  *
  * @param props -  the props
  * @returns - the component
@@ -63,7 +64,8 @@ export const ActionColumn = (props: ActionColumnProps) => {
     };
   });
 
-  /** called when user saves assignment in teams assignment modal
+  /**
+   * called when user saves assignment in teams assignment modal
    * makes new assignments, retires removed assignments for the jurisdiction range in this row
    *
    * @param {SelectOption[]} selected - the selected organization options
@@ -85,7 +87,8 @@ export const ActionColumn = (props: ActionColumnProps) => {
     return updateAssignments(baseURL, payload, assignmentsCreator, serviceClass);
   };
 
-  /** called if user clicks save on areas assignment modal
+  /**
+   * called if user clicks save on areas assignment modal
    *
    * @param {SelectOption[]} selected - the selected jurisdiction options
    * @returns {Promise<void | Error>} - promise

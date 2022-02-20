@@ -55,7 +55,8 @@ const defaultServiceTypeProps = {
   },
 };
 
-/** custom select,  gets options from the api
+/**
+ * custom select,  gets options from the api
  *
  * @param props - the component props
  */

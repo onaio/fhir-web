@@ -124,7 +124,8 @@ describe('components/DownloadClientData', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    /** @todo A dispatch should be made to remove all hierarchies after each test because
+    /**
+     * @todo A dispatch should be made to remove all hierarchies after each test because
      * each test adds hiearchies to existing hierarchies leading to duplicates, hence
      * the duplicate key warning when running tests
      *

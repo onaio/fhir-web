@@ -247,7 +247,8 @@ export function getFormActivities(items: FormActivity, configs?: EnvConfig) {
     .sort((a, b) => a.action.prefix - b.action.prefix)
     .map((e) => extractActivityForForm(e, configs));
 }
-/** returns a lookup object for activities per interventionType
+/**
+ * returns a lookup object for activities per interventionType
  *
  * @param {EnvConfig} configs - configurations
  * @returns {object} -

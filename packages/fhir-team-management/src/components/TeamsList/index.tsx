@@ -27,7 +27,8 @@ interface Props {
   fhirBaseURL: string;
 }
 
-/** Function which shows the list of all teams and there details
+/**
+ * Function which shows the list of all teams and there details
  *
  * @param {Object} props - TeamsList component props
  * @returns {Function} returns team display
