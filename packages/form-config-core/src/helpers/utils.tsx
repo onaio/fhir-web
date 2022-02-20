@@ -24,8 +24,6 @@ import { Dispatch } from 'redux';
 import { fetchManifestReleases, ManifestReleasesTypes } from '../ducks/manifestReleases';
 import { format } from 'date-fns';
 
-type StrNum = string | number;
-
 /**
  * format long date to YYY-mm-dd
  *
