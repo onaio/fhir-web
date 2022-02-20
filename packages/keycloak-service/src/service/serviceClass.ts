@@ -31,7 +31,8 @@ export function getDefaultHeaders(
   };
 }
 
-/** converts filter params object to string
+/**
+ * converts filter params object to string
  *
  * @param {object} obj - the object representing filter params
  * @returns {string} filter params as a string
@@ -84,7 +85,8 @@ type paramsType = URLParams | null;
 /** get acess token call back fn type */
 type GetAccessTokenType = () => Promise<string | null>;
 
-/** The Keycloak service class
+/**
+ * The Keycloak service class
  *
  * Sample usage:
  * -------------
@@ -156,7 +158,8 @@ export class KeycloakAPIService {
     return accessTokenCallBack;
   }
 
-  /** create method
+  /**
+   * create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
    *
@@ -191,7 +194,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** read method
+  /**
+   * read method
    * Send a GET request to the url for the specific object
    *
    * @param {string|number} id - the identifier of the object
@@ -219,7 +223,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** update method
+  /**
+   * update method
    * Simply send the updated object as PUT request to the general endpoint URL
    * Successful requests will result in a HTTP status 200/201 response with no body
    *
@@ -253,7 +258,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** list method
+  /**
+   * list method
    * Send a GET request to the general API endpoint
    *
    * @param {object} params - the url params object
@@ -275,7 +281,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** delete method
+  /**
+   * delete method
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
    *

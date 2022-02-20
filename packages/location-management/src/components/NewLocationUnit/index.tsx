@@ -46,7 +46,8 @@ const defaultNewLocationUnitProps = {
   cancelURLGenerator: () => '',
 };
 
-/** renders page where user can create new location unit
+/**
+ * renders page where user can create new location unit
  *
  * @param props - this components props
  */

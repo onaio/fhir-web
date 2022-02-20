@@ -66,7 +66,7 @@ export function PaginateData<Data extends object = Dictionary, Response = Data[]
   }>({
     currentPage: props.currentPage ?? TABLE_PAGE,
     pageSize: props.pageSize ?? TABLE_PAGE_SIZE,
-    prevdata: { data: ([] as unknown) as Response, total: undefined },
+    prevdata: { data: [] as unknown as Response, total: undefined },
     queryPram: props.queryPram,
   });
 
@@ -134,7 +134,7 @@ export function PaginateData<Data extends object = Dictionary, Response = Data[]
   );
 
   return children({
-    datasource: onSelect?.(tabledata.data) ?? ((tabledata.data as unknown) as Data[]),
+    datasource: onSelect?.(tabledata.data) ?? (tabledata.data as unknown as Data[]),
     loading: query.isFetching,
     fetchNextPage: () => fetchPage(currentPage + 1),
     fetchPreviousPage: () => fetchPage(currentPage - 1),

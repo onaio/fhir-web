@@ -17,8 +17,7 @@ export const team: FHIRResponse<Organization> = {
     },
     {
       relation: 'next',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=cb83f799-a14e-41e5-87c6-2b19019f3d31&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=cb83f799-a14e-41e5-87c6-2b19019f3d31&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
@@ -514,8 +513,7 @@ export const practitionerRole: FHIRResponse<PractitionerRole> = {
     },
     {
       relation: 'next',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=3b2e3407-4b10-45da-800b-5c971acd7b65&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=3b2e3407-4b10-45da-800b-5c971acd7b65&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
@@ -1149,8 +1147,7 @@ export const practitioner: FHIRResponse<Practitioner> = {
     },
     {
       relation: 'next',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=66a3df9d-3d9e-47fb-be64-24bbf69a9cdb&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=66a3df9d-3d9e-47fb-be64-24bbf69a9cdb&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [

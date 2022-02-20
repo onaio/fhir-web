@@ -76,7 +76,8 @@ export const defaultFormField: LocationFormFields = {
   username: '',
 };
 
-/** helps compute the default values of the location form field values
+/**
+ * helps compute the default values of the location form field values
  *
  * @param location - the location unit
  * @param instance - the form instance
@@ -118,7 +119,8 @@ export const getLocationFormFields = (
   return formFields;
 };
 
-/** removes empty undefined and null objects before they payload is sent to server
+/**
+ * removes empty undefined and null objects before they payload is sent to server
  *
  * @param {Dictionary} obj object to remove empty keys from
  */
@@ -307,7 +309,8 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
   ],
 });
 
-/** given a value retrun a rejected promise if value is not parseable as number
+/**
+ * given a value retrun a rejected promise if value is not parseable as number
  *
  * @param value - value to parse into string
  * @param message - error message to show
@@ -320,10 +323,10 @@ const rejectIfNan = (value: string, message: string) => {
   }
 };
 
-/** gets location tag options for location form location tags select field
+/**
+ * gets location tag options for location form location tags select field
  *
  * @param tags - location unit tags
- *
  */
 export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
   return tags.map((locationTag) => {
@@ -417,7 +420,8 @@ export const getPointCoordinates = (geoText: string) => {
   return { longitude, latitude };
 };
 
-/** handles form values change , creates a values change handler that listens for
+/**
+ * handles form values change , creates a values change handler that listens for
  * changes to geometry, latitude and longitude and syncs changes across the 3 fields
  *
  * @param form - the form instance

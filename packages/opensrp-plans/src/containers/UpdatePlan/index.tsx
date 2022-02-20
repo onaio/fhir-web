@@ -1,4 +1,5 @@
-/** component renders view where users can edit Plans
+/**
+  component renders view where users can edit Plans
  */
 import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';

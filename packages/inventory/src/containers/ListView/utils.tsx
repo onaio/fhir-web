@@ -13,7 +13,8 @@ export interface TableData {
   servicePointId: string;
 }
 
-/** component rendered in the action column of the table
+/**
+ * component rendered in the action column of the table
  *
  * @param record - record to show in row
  */
@@ -27,7 +28,8 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
   );
 };
 
-/** service point list table columns factory
+/**
+ * service point list table columns factory
  *
  * @param langObj - the language translations lookup
  */

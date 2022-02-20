@@ -35,7 +35,8 @@ const defaultProps = {
   ...defaultCommonProps,
 };
 
-/** component that renders views for uploading inventory using a csv file
+/**
+ * component that renders views for uploading inventory using a csv file
  *
  * @param props - the component props
  */

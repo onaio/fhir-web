@@ -72,7 +72,8 @@ const defaultProps = {
 
 export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
 
-/** Component which shows the list of all groups and their details
+/**
+ * Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display

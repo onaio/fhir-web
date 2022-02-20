@@ -59,7 +59,8 @@ const defaultEditLocationUnitProps = {
   cancelURLGenerator: () => '',
 };
 
-/** renders page where user can Edit already created location unit
+/**
+ * renders page where user can Edit already created location unit
  *
  * @param props - this components props
  */

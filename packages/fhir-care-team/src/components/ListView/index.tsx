@@ -101,7 +101,8 @@ export const useCareTeamsHook = (
   );
 };
 
-/** Function which shows the list of all roles and their details
+/**
+ * Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display

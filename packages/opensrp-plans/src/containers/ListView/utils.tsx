@@ -23,7 +23,8 @@ export const ActionsColumnCustomRender: Column<PlanDefinition>['render'] = (
   );
 };
 
-/** generates columns for plan list component
+/**
+ * generates columns for plan list component
  *
  * @param langObj - the language object
  */

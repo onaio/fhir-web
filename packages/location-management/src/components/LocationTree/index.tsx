@@ -65,7 +65,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** Return the the parent key in a tree for the supplied key
+  /**
+   * Return the the parent key in a tree for the supplied key
    *
    * @param {string} key the key to find parent of
    * @param {string} parentId the id of current node
@@ -87,7 +88,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     return nodeKey;
   }
 
-  /** Function to handle event when a tree is expanded
+  /**
+   * Function to handle event when a tree is expanded
    *
    * @param allExpandedKeys currently expanded keys
    */
@@ -103,7 +105,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setExpandedKeys(allExpandedKeys);
   }
 
-  /** Function to handle event when tree search input changes value
+  /**
+   * Function to handle event when tree search input changes value
    *
    * @param {ChangeEvent<HTMLInputElement>} event the actual event
    */
@@ -113,7 +116,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     expandTree(value);
   }
 
-  /** process the data before it could be displayed in tree
+  /**
+   * process the data before it could be displayed in tree
    *
    * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
@@ -151,7 +155,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     [searchValue]
   );
 
-  /** Generate filter data to later used to compare and filter keys on input with ant tree node
+  /**
+   * Generate filter data to later used to compare and filter keys on input with ant tree node
    *
    * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
    */

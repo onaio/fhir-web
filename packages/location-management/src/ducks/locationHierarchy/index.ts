@@ -1,4 +1,5 @@
-/** store location hierarchy information
+/**
+ * store location hierarchy information
  * - should be able to add a tree model
  * - modify the tree model in a manner such that shallow comparison would yield false
  * - provide the selectors
@@ -40,7 +41,8 @@ export type TreeActionTypes = FetchedTreeAction | DeforestAction | AnyAction;
 
 // **************************** action creators ****************************
 
-/** action creator when adding a tree to store
+/**
+ * action creator when adding a tree to store
  *
  * @param apiResponse - the raw hierarchy as received from opensrp
  * @param treeId - the treeId to use while saving to the store
@@ -68,7 +70,8 @@ export function deforest(): DeforestAction {
 
 // **************************** reducer ****************************
 
-/** The store's slice state
+/**
+  The store's slice state
  */
 export interface TreeState {
   treeByRootId: Dictionary<TreeNode> | {};
@@ -116,7 +119,8 @@ export interface Filters {
   searchQuery?: string /** search query to filter nodes against, by name and id */;
 }
 
-/** retrieve the rootJurisdiction value
+/**
+ * retrieve the rootJurisdiction value
  *
  * @param _ - the store
  * @param props -  the filterProps
@@ -124,21 +128,24 @@ export interface Filters {
 export const getRootJurisdictionId = (_: Partial<Store>, props: Filters) =>
   props.rootJurisdictionId;
 
-/** retrieve the geoLevel value
+/**
+ * retrieve the geoLevel value
  *
  * @param _ - the store
  * @param props -  the filterProps
  */
 export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel;
 
-/** retrieve the geoLevel value
+/**
+ * retrieve the geoLevel value
  *
  * @param _ - the store
  * @param props -  the filterProps
  */
 export const getSearchQuery = (_: Partial<Store>, props: Filters) => props.searchQuery;
 
-/** gets all trees key'd by the rootNodes id
+/**
+ * gets all trees key'd by the rootNodes id
  *
  * @param state - the store
  * @param _ -  the filterProps
@@ -165,7 +172,8 @@ export const getTreesByIds = () =>
 
 const treeSelectors = getTreesByIds();
 
-/** factory that returns a selector to retrieve the tree(s) using their rootNode's ids
+/**
+ * factory that returns a selector to retrieve the tree(s) using their rootNode's ids
  * the selector will return all nodes if geographic level is undefined
  */
 export const getLocationsByLevel = () =>
@@ -187,7 +195,8 @@ export const getLocationsByLevel = () =>
 
 const geoLevelSelector = getLocationsByLevel();
 
-/** factory that returns a selector that can be used to filter the nodes by either their
+/**
+ * factory that returns a selector that can be used to filter the nodes by either their
  * labels or ids
  */
 export const getLocationsByNameAndId = () =>
