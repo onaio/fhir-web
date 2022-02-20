@@ -396,7 +396,7 @@ describe('activate mission', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -420,7 +420,7 @@ describe('activate mission', () => {
     fetch.mockResponse(JSON.stringify(locationSettingsLevel1));
 
     await act(async () => {
-      await new Promise((r) => setImmediate(r));
+      await flushPromises();
     });
     wrapper.update();
 
