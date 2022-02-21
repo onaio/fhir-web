@@ -163,8 +163,8 @@ describe('components/forms/UserForm', () => {
     expect(toJson(wrapper.find('#contact input'))).toMatchSnapshot('contact input');
 
     // empty error message; contact is required
-    wrapper.find('form').simulate('submit');
     await act(async () => {
+      wrapper.find('form').simulate('submit');
       await flushPromises();
     });
 
@@ -176,8 +176,9 @@ describe('components/forms/UserForm', () => {
     wrapper
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: 'Test' } });
-    wrapper.find('form').simulate('submit');
+
     await act(async () => {
+      wrapper.find('form').simulate('submit');
       await flushPromises();
     });
 
@@ -191,8 +192,9 @@ describe('components/forms/UserForm', () => {
     wrapper
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: '012345678910' } });
-    wrapper.find('form').simulate('submit');
+
     await act(async () => {
+      wrapper.find('form').simulate('submit');
       await flushPromises();
     });
 
@@ -206,8 +208,9 @@ describe('components/forms/UserForm', () => {
     wrapper
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: '0123456789' } });
-    wrapper.find('form').simulate('submit');
+
     await act(async () => {
+      wrapper.find('form').simulate('submit');
       await flushPromises();
     });
 
