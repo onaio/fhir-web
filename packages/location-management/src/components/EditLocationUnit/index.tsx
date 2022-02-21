@@ -96,17 +96,17 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
     const commonParams = {
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       return_geometry: true,
     };
     const structureParams = {
       ...commonParams,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: false,
     };
     const jurisdictionParams = {
       ...commonParams,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: true,
     };
 

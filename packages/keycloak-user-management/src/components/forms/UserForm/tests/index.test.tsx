@@ -23,7 +23,7 @@ import { UserFormProps } from '../types';
 import { getFormValues } from '../utils';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 
@@ -73,7 +73,7 @@ describe('components/forms/UserForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
       )
     );

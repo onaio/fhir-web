@@ -107,10 +107,10 @@ describe('helpers/utils/submitUploadForm', () => {
   });
 
   const values = {
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     form_name: 'foo',
     module: 'bar',
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     form_relation: 'baz',
     form: sampleFile,
   };

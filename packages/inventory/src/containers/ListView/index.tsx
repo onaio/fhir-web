@@ -75,7 +75,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   useEffect(() => {
     const getCountParams = {
       serverVersion: 0,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: false,
     };
     loadCount(undefined, baseURL, getCountParams)
@@ -83,7 +83,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         // get structures, this is the most important call for this page
         const params = {
           serverVersion: 0,
-          // eslint-disable-next-line @typescript-eslint/camelcase
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           is_jurisdiction: false,
           limit: count,
         };

@@ -39,7 +39,7 @@ import { fetchKeycloakUserRoles, makeKeycloakUserRolesSelector } from '../../../
 reducerRegistry.register(reducerName, reducer);
 reducerRegistry.register(rolesReducername, rolesReducer);
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -81,7 +81,7 @@ describe('components/CreateEditUserGroup', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );

@@ -120,7 +120,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
         accessToken,
         opensrpBaseURL,
         OPENSRP_URL_LOCATION_HIERARCHY
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
       ).read(userLocSettings.data?.uuid ?? '', { is_jurisdiction: true }),
     {
       // start fetching when userLocSettings hook succeeds

@@ -399,9 +399,9 @@ export const loadJurisdictions = (
   service: typeof OpenSRPService = OpenSRPService
 ) => {
   const params = {
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     is_jurisdiction: true,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     return_geometry: false,
   };
   const serve = new service(`${OPENSRP_LOCATION}/${OPENSRP_FIND_BY_PROPERTIES}`, baseURL);
@@ -411,7 +411,7 @@ export const loadJurisdictions = (
   };
   const paramsToUse = {
     ...params,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     properties_filter: service.getFilterParams(propertiesToFilter),
   };
 

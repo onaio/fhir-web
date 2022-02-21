@@ -13,7 +13,7 @@ import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-mana
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /** interface for user assignment response */
 export interface UserAssignment {

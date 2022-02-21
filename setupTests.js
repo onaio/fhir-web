@@ -7,7 +7,7 @@ import enzyme from 'enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { setLogger } from 'react-query';

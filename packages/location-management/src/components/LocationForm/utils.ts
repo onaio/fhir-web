@@ -166,7 +166,7 @@ export const generateLocationUnit = (
       externalId: externalId,
       parentId: parentId ?? '',
       name,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       name_en: name,
       status: status,
       type: serviceType,
