@@ -15,7 +15,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { convertApiResToTree } from '../../../helpers/utils';
-import flushPromises from 'flush-promises';
+// import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -152,7 +152,8 @@ describe('LocationForm', () => {
       // TODO [circle ci specific] - the below assertions behave correctly only when we force promise resolution with
       // both of these function invocations. I tried each one and both in a different order and it did not work.
       await new Promise((resolve) => setImmediate(resolve));
-      await flushPromises();
+      // await flushPromises();
+      wrapper.update();
     });
     wrapper.update();
 
