@@ -1,5 +1,7 @@
-import { intlFormatDateStrings } from '../utils';
+import { getResourcesFromBundle, intlFormatDateStrings } from '../utils';
 import * as config from '@opensrp/pkg-config';
+import { careTeams } from './fixtures';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 jest.mock('@opensrp/pkg-config', () => ({
   __esModule: true,
@@ -24,4 +26,10 @@ test('date formatting works correctly ', () => {
     return { language: 'fr-FR' };
   });
   expect(intlFormatDateStrings('01 Jan 1970 00:00:00 GMT')).toEqual('01/01/1970');
+});
+
+test('getResourceFromBundle', () => {
+  const response = getResourcesFromBundle<Record<string, unknown>>(careTeams as IBundle);
+  expect(response).toHaveLength(6);
+  expect(response.map((x) => x.id)).toEqual(['308', '325', '327', '330', '328', '326']);
 });
