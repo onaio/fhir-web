@@ -15,6 +15,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { convertApiResToTree } from '../../../helpers/utils';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -97,7 +98,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -146,14 +147,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -206,7 +207,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -255,7 +256,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     wrapper.unmount();
@@ -283,7 +284,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -316,7 +317,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -348,7 +349,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
