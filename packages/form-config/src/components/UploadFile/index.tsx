@@ -238,7 +238,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: OwnProps): UploadDefau
     formData = getManifestFilesById(state, formId);
   }
   if (formId && formData) {
-    /* eslint-disable @typescript-eslint/camelcase */
+    /* eslint-disable @typescript-eslint/naming-convention */
     formInitialValues = {
       form: null,
       form_name: formData.label,

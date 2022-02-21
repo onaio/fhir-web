@@ -87,11 +87,11 @@ export function getBaseTreeNode(
 ): Promise<LocationUnit[]> {
   const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return serve.list({
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     is_jurisdiction: true,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     return_geometry: false,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     properties_filter: getFilterParams({
       status: 'Active',
       ...{ ...(filterByParentId ? { parentId: null } : { geographicLevel: 0 }) },

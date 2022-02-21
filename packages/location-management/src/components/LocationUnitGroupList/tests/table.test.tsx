@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { store } from '@opensrp/store';
 import { mount } from 'enzyme';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';

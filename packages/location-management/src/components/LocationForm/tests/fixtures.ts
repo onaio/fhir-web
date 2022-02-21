@@ -4,7 +4,7 @@ import { LocationUnitGroup } from '../../../ducks/location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../../../ducks/location-units';
 import { LocationFormFields } from '../utils';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const location1: LocationUnit = {
   type: 'Feature',
   id: 'b652b2f4-a95d-489b-9e28-4629746db96a',

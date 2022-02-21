@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -100,7 +100,7 @@ describe('components/CreateEditUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
@@ -227,7 +227,7 @@ describe('components/CreateEditUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
@@ -318,7 +318,7 @@ describe('components/CreateEditUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
@@ -363,7 +363,7 @@ describe('components/CreateEditUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
@@ -403,7 +403,7 @@ describe('components/CreateEditUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
       )
     );
