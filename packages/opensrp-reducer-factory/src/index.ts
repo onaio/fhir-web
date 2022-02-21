@@ -54,7 +54,7 @@ export type ItemsActionTypes<ObjectType> = FetchAction<ObjectType> | RemoveActio
  * @param {string} reducerName - generic name of reducer
  * @param {object} idField - key value whose value is more like an id for the objects,
  * this needs to be unique
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export function fetchActionCreatorFactory<ObjectType>(
   reducerName: string,
@@ -81,7 +81,7 @@ export function fetchActionCreatorFactory<ObjectType>(
  * removeAction action ; action creator factory
  *
  * @param {string} reducerName - name of reducer
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export const removeActionCreatorFactory = (reducerName: string) => (): RemoveAction => ({
   objectsById: {},
@@ -93,14 +93,14 @@ export const removeActionCreatorFactory = (reducerName: string) => (): RemoveAct
  * creates actions to set total records
  *
  * @param {string} reducerName - generic name of the reducer
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export function setTotalRecordsFactory(reducerName: string) {
   /**
    * setTotalRecords action
    *
    * @param {number} totalCount -  the number of records got form api
-   * @returns {function()} - the action creator
+   * @returns {Function} - the action creator
    */
   return (totalCount: number): SetTotalRecordsAction => ({
     totalRecords: totalCount,
@@ -194,7 +194,7 @@ export const reducerFactory = <ObjectType>(
  *  ObjectType - generic type - object type being handled by this function
  *
  *  @param {string} reducerName - the reducerName
- *  @returns {function()} - function that returns the state
+ *  @returns {Function} - function that returns the state
  */
 export const getItemsByIdFactory = <ObjectType>(
   reducerName: string
@@ -215,7 +215,7 @@ export const getItemsByIdFactory = <ObjectType>(
  * factory function that creates selector
  *
  * @param {string} reducerName - name of the reducer
- * @returns {function()} - an array of object type being handled by this function
+ * @returns {Function} - an array of object type being handled by this function
  */
 export const getItemsArrayFactory = <ObjectType>(reducerName: string) =>
   /**
@@ -233,7 +233,7 @@ export const getItemsArrayFactory = <ObjectType>(reducerName: string) =>
  * factory function that creates selector
  *
  * @param {string} reducerName -  name of reducer
- * @returns {function()} - object type being handled by this function
+ * @returns {Function} - object type being handled by this function
  */
 export const getItemByIdFactory = <ObjectType>(reducerName: string) =>
   /**
@@ -252,7 +252,7 @@ export const getItemByIdFactory = <ObjectType>(reducerName: string) =>
  * factory function that creates selector
  *
  * @param {string} reducerName -  name of reducer
- * @returns {function()} - function that returns the total number of records
+ * @returns {Function} - function that returns the total number of records
  */
 export const getTotalRecordsFactory = (reducerName: string) =>
   /**

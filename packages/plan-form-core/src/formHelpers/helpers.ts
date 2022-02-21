@@ -74,7 +74,7 @@ import {
   PlanGoalTarget,
   GoalPriorityType,
   PlanFormFields,
-  taskGenerationStatusType,
+  TaskGenerationStatusType,
   UseContext,
   FIReasonType,
   EnvConfig,
@@ -587,7 +587,7 @@ export const isDynamicPlan = <T extends Pick<PlanDefinition, 'action'> = PlanDef
  *
  * @param {string | undefined} configuredEnv -  env of what the task generation status value should be
  * @param {object}planActions - planDefinition actions , to help deduce if plan is dynamic
- * @returns {taskGenerationStatusType} -
+ * @returns {TaskGenerationStatusType} -
  */
 export const getTaskGenerationValue = (
   configuredEnv: string | undefined,
@@ -595,11 +595,11 @@ export const getTaskGenerationValue = (
 ) => {
   const isDynamic = isDynamicPlan(planActions);
   /** we should probably add a validation check for the envs higher at point of entry */
-  const taskGenerationStatusValue: taskGenerationStatusType | undefined =
+  const taskGenerationStatusValue: TaskGenerationStatusType | undefined =
     isDynamic &&
     configuredEnv &&
-    Object.values(taskGenerationStatuses).includes(configuredEnv as taskGenerationStatusType)
-      ? (configuredEnv as taskGenerationStatusType)
+    Object.values(taskGenerationStatuses).includes(configuredEnv as TaskGenerationStatusType)
+      ? (configuredEnv as TaskGenerationStatusType)
       : undefined;
   return taskGenerationStatusValue;
 };
@@ -793,9 +793,9 @@ export function getPlanFormValues(
     }
   }
 
-  const taskGenerationStatus: taskGenerationStatusType =
+  const taskGenerationStatus: TaskGenerationStatusType =
     taskGenerationStatusContext.length > 0
-      ? (taskGenerationStatusContext[0].valueCodableConcept as taskGenerationStatusType)
+      ? (taskGenerationStatusContext[0].valueCodableConcept as TaskGenerationStatusType)
       : isDynamicPlan(planObject)
       ? taskGenerationStatuses.ignore
       : taskGenerationStatuses.False;

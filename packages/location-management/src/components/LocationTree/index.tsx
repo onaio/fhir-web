@@ -28,6 +28,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
 
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filterData: ParsedHierarchyNode[] = [];
   const locationTreeState = useSelector((state) => getLocationTreeState(state));
 

@@ -86,7 +86,8 @@ export const addPlanDefinition = (planObj: PlanDefinition): AddPlanDefinitionAct
 
 /** interface for PlanDefinition state */
 interface PlanDefinitionState {
-  planDefinitionsById: { [key: string]: PlanDefinition } | {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  planDefinitionsById: { [key: string]: PlanDefinition } | Record<string, any>;
 }
 
 /** immutable PlanDefinition state */

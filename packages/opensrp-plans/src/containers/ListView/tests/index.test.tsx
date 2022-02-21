@@ -334,7 +334,7 @@ describe('List view Page', () => {
   });
 
   // test column sorter method
-
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const columnsSorter = columns[0].sorter as Function;
   expect(columnsSorter({ title: 4 }, { title: 1 })).toBe(-1);
   expect(columnsSorter({ title: 1 }, { title: 4 })).toBe(1);

@@ -128,6 +128,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
             },
           }}
           datasource={value.length < 1 ? data : (filterData as ManifestReleasesTypes[])}
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);
           }}

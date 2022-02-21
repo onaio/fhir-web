@@ -139,7 +139,9 @@ describe('dataLoading', () => {
       try {
         const result = reader.result;
         expect(result).toEqual(JSON.stringify({ name: 'Ghost' }));
-      } catch (_) {}
+      } catch (_) {
+        // eslint-disable-next-line no-empty
+      }
     });
 
     await flushPromises();
@@ -180,7 +182,9 @@ describe('dataLoading', () => {
       try {
         const result = reader.result;
         expect(result).toEqual(JSON.stringify({ name: 'Ghost', uniqueId: '1' }));
-      } catch (_) {}
+      } catch (_) {
+        // eslint-disable-next-line no-empty
+      }
     });
 
     await flushPromises();

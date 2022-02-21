@@ -219,6 +219,7 @@ export const getKeycloakUsersByIds = (): OutputParametricSelector<
     getUserIds,
     getKeycloakUsersArray,
     (usersById, ids, usersArray) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ids === undefined) {
         return usersArray;
       }

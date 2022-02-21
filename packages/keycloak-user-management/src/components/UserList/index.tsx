@@ -221,6 +221,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                   {...tableProps}
                   columns={getTableColumns(sortedInfo)}
                   dataKeyAccessor="id"
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   onChange={(_, __, sorter) => setSortedInfo(sorter)}
                   actions={{
                     title: 'Actions',

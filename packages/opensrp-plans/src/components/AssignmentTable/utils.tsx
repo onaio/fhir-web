@@ -208,6 +208,7 @@ export const getPlanAssignmentColumns = (
   disableAssignments: boolean,
   langObj: Dictionary<string> = lang
 ) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
     const fullyGrouped = compressAssignments(assignments);
     const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);

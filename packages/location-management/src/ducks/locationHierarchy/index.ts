@@ -33,7 +33,8 @@ export interface FetchedTreeAction extends AnyAction {
 /** describes action to remove all trees */
 export interface DeforestAction extends AnyAction {
   type: typeof DEFOREST;
-  treeByRootId: {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  treeByRootId: Record<string, any>;
 }
 
 /** combined full action types | its a union */
@@ -74,7 +75,8 @@ export function deforest(): DeforestAction {
   The store's slice state
  */
 export interface TreeState {
-  treeByRootId: Dictionary<TreeNode> | {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  treeByRootId: Dictionary<TreeNode> | Record<string, any>;
 }
 
 /** Create an immutable tree state */

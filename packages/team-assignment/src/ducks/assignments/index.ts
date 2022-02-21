@@ -57,7 +57,8 @@ interface AssignmentsByPlanId {
 }
 /** interface for Assignments state in store */
 interface AssignmentsStoreState {
-  assignmentsByPlanId: AssignmentsByPlanId | {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  assignmentsByPlanId: AssignmentsByPlanId | Record<string, any>;
 }
 
 // immutable assignments state in dux

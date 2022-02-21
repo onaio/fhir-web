@@ -140,6 +140,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             },
           }}
           datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => setSortedInfo(sorter)}
         />
         {data.length > 0 && (
