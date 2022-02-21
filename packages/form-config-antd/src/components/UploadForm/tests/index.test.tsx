@@ -246,7 +246,7 @@ describe('components/UploadForm', () => {
     wrapper.update();
 
     expect(wrapper.find('Title').props()).toMatchSnapshot('title');
-    expect(wrapper.find('UploadForm').props()).toMatchSnapshot('UploadForm');
+    expect(wrapper.find('UploadForm').prop('initialValues')).toMatchSnapshot('UploadForm');
 
     expect(wrapper.find('input').at(0).props().value).toEqual('test publish');
 
