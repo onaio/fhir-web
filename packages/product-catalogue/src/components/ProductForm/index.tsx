@@ -164,6 +164,7 @@ const ProductForm = (props: ProductFormProps) => {
    * @param {Function} setFieldValue - the callback that updates formik state
    * for the photoURL field
    */
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
   const handleChange: (info: UploadChangeParam<any>, setFieldValue: Function) => void = (
     info,
     setFieldValue

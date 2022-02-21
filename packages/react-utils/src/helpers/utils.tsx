@@ -30,6 +30,7 @@ export const loadLanguageResources = (i18n: i18nInstance | undefined, resources:
  * @param bundle - a fhir resource bundle api response
  */
 export function getResourcesFromBundle<TResource>(bundle: IBundle) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const temp = bundle.entry?.filter((x) => x !== undefined);
   const rtn = temp?.map((e) => e.resource as TResource) ?? [];
   return rtn;

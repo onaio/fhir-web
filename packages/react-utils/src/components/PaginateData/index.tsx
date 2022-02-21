@@ -41,7 +41,9 @@ export interface PaginateData<Data, Response = Data[], Error = unknown> {
       ) => Promise<number> | number);
   children: (
     props: TableProps<Data> & {
+      // eslint-disable-next-line @typescript-eslint/ban-types
       fetchNextPage: Function;
+      // eslint-disable-next-line @typescript-eslint/ban-types
       fetchPreviousPage: Function;
     }
   ) => JSX.Element;
@@ -53,6 +55,7 @@ export interface PaginateData<Data, Response = Data[], Error = unknown> {
  * @param {PaginateData} props - component props
  * @returns {Element} - component
  */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export function PaginateData<Data extends object = Dictionary, Response = Data[]>(
   props: PaginateData<Data, Response>
 ) {
@@ -108,6 +111,7 @@ export function PaginateData<Data extends object = Dictionary, Response = Data[]
     );
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const data = query.data ? convertToDataRecord(query.data) : {};
 
   const fetchPage = useCallback(
@@ -125,6 +129,7 @@ export function PaginateData<Data extends object = Dictionary, Response = Data[]
   }, [JSON.stringify(props.queryPram)]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (data[currentPage] === undefined) fetchPage();
   }, [currentPage, data, fetchPage]);
 
@@ -146,6 +151,7 @@ export function PaginateData<Data extends object = Dictionary, Response = Data[]
         setProps((prev) => ({
           ...prev,
           currentPage: page,
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           pageSize: pagesize ?? pageSize,
           prevdata: tabledata,
         })),

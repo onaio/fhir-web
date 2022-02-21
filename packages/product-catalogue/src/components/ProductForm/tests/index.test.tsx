@@ -278,7 +278,9 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-      } catch (_) {}
+      } catch (_) {
+        // eslint-disable-next-line no-empty
+      }
     });
   });
 
@@ -400,7 +402,9 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-      } catch (_) {}
+      } catch (_) {
+        // eslint-disable-next-line no-empty
+      }
     });
   });
 
@@ -459,7 +463,9 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-      } catch (_) {}
+      } catch (_) {
+        // eslint-disable-next-line no-empty
+      }
     });
   });
 

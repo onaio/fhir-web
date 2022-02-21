@@ -7,7 +7,7 @@ import lang from '../../lang';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 
 export interface TeamsDetailProps extends Organization {
-  onClose?: Function;
+  onClose?: () => void;
   teamMembers: Practitioner[];
   assignedLocations: OpenSRPJurisdiction[];
 }

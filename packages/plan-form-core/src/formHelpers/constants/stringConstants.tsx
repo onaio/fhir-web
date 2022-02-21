@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-redeclare */
 export const A1 = 'A1';
 export const A2 = 'A2';
 export const B1 = 'B1';

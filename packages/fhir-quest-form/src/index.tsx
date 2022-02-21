@@ -12,7 +12,8 @@ import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 
-const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const store: Store<Record<string, any>> = createStore(rootReducer, applyMiddleware(thunk));
 
 /**
  * not clear in documentation ( notes on use of skjemautfyller):

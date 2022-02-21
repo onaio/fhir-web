@@ -7,9 +7,10 @@
  */
 export const downloadFile = (data: string, filename: string, type: string) => {
   const file = new Blob([data], { type });
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if ((window.navigator as any).msSaveOrOpenBlob) {
     // IE10+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window.navigator as any).msSaveOrOpenBlob(file, filename);
   } else {
     // Others

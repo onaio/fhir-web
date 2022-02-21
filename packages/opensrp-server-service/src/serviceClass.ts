@@ -71,7 +71,7 @@ export const customFetch: CustomFetch = async (...rest) => {
 };
 
 /** params option type */
-type paramsType = URLParams | null;
+type ParamsType = URLParams | null;
 
 /** get acess token call back fn type */
 export type GetAccessTokenType = () => Promise<string | null>;
@@ -102,10 +102,10 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * Constructor method
    *
-   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
+   * @param {Function | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
-   * @param {function()} getOptions - a function to get the payload
+   * @param {Function} getOptions - a function to get the payload
    * @param {AbortController} signal - abort signal
    */
   constructor(
@@ -130,7 +130,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @param {object} params - the url params object
    * @returns {string} the final url
    */
-  public static getURL(generalUrl: string, params: paramsType): string {
+  public static getURL(generalUrl: string, params: ParamsType): string {
     if (params) {
       return `${generalUrl}?${decodeURIComponent(queryString.stringify(params))}`;
     }
@@ -152,7 +152,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * process received access token
    *
-   * @param {function() | string} accessTokenCallBack - received access token
+   * @param {Function | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
     if (typeof accessTokenCallBack === 'function') {
@@ -173,7 +173,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    */
   public async create(
     data: PayloadT,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'POST'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
@@ -208,7 +208,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'GET'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -235,9 +235,9 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @param {string} method - the HTTP method
    * @returns {object} the object returned by API
    */
-  public async update<T>(
+  public async update(
     data: PayloadT,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'PUT'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
@@ -268,7 +268,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @returns {object} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
+  public async list(params: ParamsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
@@ -293,7 +293,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async delete(
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);

@@ -62,17 +62,20 @@ export async function loadSingleProduct(
   actionCreator: typeof fetchProducts = fetchProducts
 ) {
   const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
-  return serve
-    .read(id)
-    .then((response: ProductCatalogue | {}) => {
-      if (Object.keys(response).length === 0) {
-        return Promise.reject(new Error('Product not found in the catalogue'));
-      }
-      actionCreator([response as ProductCatalogue]);
-    })
-    .catch((err: Error) => {
-      throw err;
-    });
+  return (
+    serve
+      .read(id)
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      .then((response: ProductCatalogue | {}) => {
+        if (Object.keys(response).length === 0) {
+          return Promise.reject(new Error('Product not found in the catalogue'));
+        }
+        actionCreator([response as ProductCatalogue]);
+      })
+      .catch((err: Error) => {
+        throw err;
+      })
+  );
 }
 
 /**

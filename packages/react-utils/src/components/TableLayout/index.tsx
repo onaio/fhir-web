@@ -91,6 +91,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   }, [columns, actions]);
 
   const [tableState, setTableState] = useState<TableState>(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     id && tablesState[id] !== undefined ? tablesState[id] : {}
   );
 

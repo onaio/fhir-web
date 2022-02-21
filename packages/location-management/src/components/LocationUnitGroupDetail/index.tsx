@@ -5,6 +5,7 @@ import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import lang from '../../lang';
 
 export interface LocationUnitGroupDetailProps extends LocationUnitGroup {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onClose?: Function;
 }
 

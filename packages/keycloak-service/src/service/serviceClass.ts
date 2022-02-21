@@ -80,7 +80,7 @@ export const customFetch: CustomFetch = async (...rest) => {
 };
 
 /** params option type */
-type paramsType = URLParams | null;
+type ParamsType = URLParams | null;
 
 /** get acess token call back fn type */
 type GetAccessTokenType = () => Promise<string | null>;
@@ -111,7 +111,7 @@ export class KeycloakAPIService {
   /**
    * Constructor method
    *
-   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
+   * @param {Function | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base Keycloak API URL
    * @param {string} endpoint - the Keycloak endpoint
    * @param {object} getPayload - a function to get the payload
@@ -139,7 +139,7 @@ export class KeycloakAPIService {
    * @param {object} params - the url params object
    * @returns {string} the final url
    */
-  public static getURL(generalUrl: string, params: paramsType): string {
+  public static getURL(generalUrl: string, params: ParamsType): string {
     if (params) {
       return `${generalUrl}?${queryString.stringify(params)}`;
     }
@@ -149,7 +149,7 @@ export class KeycloakAPIService {
   /**
    * process received access token
    *
-   * @param {function() | string} accessTokenCallBack - received access token
+   * @param {Function | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
     if (typeof accessTokenCallBack === 'function') {
@@ -171,7 +171,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create<T>(
     data: T,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'POST'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -206,7 +206,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'GET'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -236,7 +236,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update<T>(
     data: T,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'PUT'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -267,7 +267,7 @@ export class KeycloakAPIService {
    * @returns {Promise<any>} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
+  public async list(params: ParamsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
@@ -291,7 +291,7 @@ export class KeycloakAPIService {
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
+  public async delete(params: ParamsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
