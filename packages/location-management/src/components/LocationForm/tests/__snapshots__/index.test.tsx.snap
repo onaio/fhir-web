@@ -102,7 +102,7 @@ exports[`LocationForm is able to edit a location unit: field label 4`] = `
 
 exports[`LocationForm renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn"
+  className="ant-btn ant-btn-default"
   id="location-form-cancel-button"
   onClick={[Function]}
   type="button"
