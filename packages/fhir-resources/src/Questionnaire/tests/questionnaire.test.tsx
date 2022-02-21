@@ -4,6 +4,25 @@ import { parseQuestionnaireResource, Questionnaire } from '../Questionnaire';
 import { openChoiceQuest, healthWorker } from './fixture';
 
 test('Questionnaire profile view renders correctly', () => {
+  const { getByText, queryByText } = render(<Questionnaire resource={healthWorker} />);
+
+  // we check details section
+  document.querySelectorAll('div.keyValueGrid-pair').forEach((pair) => {
+    expect(pair).toMatchSnapshot('questionnaire details keyValue pairs');
+  });
+
+  // questionnaire item preview
+  expect(queryByText(/Summary Census #ID/)).not.toBeInTheDocument();
+  fireEvent.click(getByText(/Preview items/));
+
+  expect(getByText(/Summary Census #ID/)).toBeInTheDocument();
+
+  document.querySelectorAll('li.questionnaireItemsList-title').forEach((li) => {
+    expect(li).toMatchSnapshot('questionnaire single item preview');
+  });
+});
+
+test('view details show when available', () => {
   const { getByText, queryByText } = render(<Questionnaire resource={openChoiceQuest} />);
 
   // we check details section

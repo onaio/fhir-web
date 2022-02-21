@@ -34,45 +34,193 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
 </div>
 `;
 
-exports[`Questionnaire profile view renders correctly: questionnaire items preview 1`] = `
-<ul
-  class="questionnaireItemsList"
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 3`] = `
+<div
+  class="keyValueGrid-pair"
 >
-  <li
-    class="questionnaireItemsList-title"
-    data-testid="linkId-/G1/Q4"
+  <dt
+    class="keyValueGrid-pair__label"
   >
-    <span
-      class="ant-typography"
-    >
-      What pizza toppings would you like?
-    </span>
-     
-    <span
-      class="ant-tag ant-tag-default"
-    >
-      linkId: 
-      /G1/Q4
-    </span>
-    <span
-      class="ant-tag ant-tag-default"
-    >
-      type: 
-      choice
-    </span>
-  </li>
-  <li>
-    <ul
-      class="questionnaireItemsList__questions-list"
-    >
-      <li
-        data-testid="linkId-/G1/Q4-help"
-      >
-        Favorite toppings
-      </li>
-    </ul>
-  </li>
-</ul>
+    Subject type:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    Organization
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 4`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Publisher:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    Health eData Inc
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 5`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Effective period start:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    2020-04-11T22:01:37.262Z
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 6`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Effective period end:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    2020-04-11T22:01:37.262Z
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 7`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Last reviewed date:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    4/11/2020
+  </dd>
+</div>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire single item preview 1`] = `
+<li
+  class="questionnaireItemsList-title"
+  data-testid="linkId-/G1"
+>
+  <span
+    class="ant-typography"
+  >
+    Facility MetaData
+  </span>
+   
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    linkId: 
+    /G1
+  </span>
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    type: 
+    group
+  </span>
+</li>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire single item preview 2`] = `
+<li
+  class="questionnaireItemsList-title"
+  data-testid="linkId-/G1/Q1"
+>
+  <span
+    class="ant-typography"
+  >
+    Facility ID
+  </span>
+   
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    linkId: 
+    /G1/Q1
+  </span>
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    type: 
+    string
+  </span>
+</li>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire single item preview 3`] = `
+<li
+  class="questionnaireItemsList-title"
+  data-testid="linkId-/G1/Q2"
+>
+  <span
+    class="ant-typography"
+  >
+    Summary Census #ID
+  </span>
+   
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    linkId: 
+    /G1/Q2
+  </span>
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    type: 
+    string
+  </span>
+</li>
+`;
+
+exports[`Questionnaire profile view renders correctly: questionnaire single item preview 4`] = `
+<li
+  class="questionnaireItemsList-title"
+  data-testid="linkId-/G1/Q3"
+>
+  <span
+    class="ant-typography"
+  >
+    Effective Date
+  </span>
+   
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    linkId: 
+    /G1/Q3
+  </span>
+  <span
+    class="ant-tag ant-tag-default"
+  >
+    type: 
+    date
+  </span>
+</li>
 `;
 
 exports[`no items edge case: questionnaire meta 1`] = `
@@ -192,4 +340,79 @@ exports[`no items edge case: questionnaire meta 7`] = `
     4/11/2020
   </dd>
 </div>
+`;
+
+exports[`view details show when available: questionnaire details keyValue pairs 1`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Last Changed:
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    4/11/2020
+  </dd>
+</div>
+`;
+
+exports[`view details show when available: questionnaire details keyValue pairs 2`] = `
+<div
+  class="keyValueGrid-pair"
+>
+  <dt
+    class="keyValueGrid-pair__label"
+  >
+    Version
+  </dt>
+  <dd
+    class="keyValueGrid-pair__value"
+  >
+    1
+  </dd>
+</div>
+`;
+
+exports[`view details show when available: questionnaire items preview 1`] = `
+<ul
+  class="questionnaireItemsList"
+>
+  <li
+    class="questionnaireItemsList-title"
+    data-testid="linkId-/G1/Q4"
+  >
+    <span
+      class="ant-typography"
+    >
+      What pizza toppings would you like?
+    </span>
+     
+    <span
+      class="ant-tag ant-tag-default"
+    >
+      linkId: 
+      /G1/Q4
+    </span>
+    <span
+      class="ant-tag ant-tag-default"
+    >
+      type: 
+      choice
+    </span>
+  </li>
+  <li>
+    <ul
+      class="questionnaireItemsList__questions-list"
+    >
+      <li
+        data-testid="linkId-/G1/Q4-help"
+      >
+        Favorite toppings
+      </li>
+    </ul>
+  </li>
+</ul>
 `;
