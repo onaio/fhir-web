@@ -146,11 +146,6 @@ describe('LocationForm', () => {
       { attachTo: div }
     );
 
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-    });
-    wrapper.update();
-
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -192,9 +187,6 @@ describe('LocationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseURL)
-      .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
-      .reply(200, fhirHierarchy)
       .post('/Location', (createdLocation1 as unknown) as RequestBodyMatcher)
       .reply(201, {})
       .persist();
@@ -260,8 +252,9 @@ describe('LocationForm', () => {
 
     await act(async () => {
       await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
     });
+    wrapper.update();
+
     wrapper.unmount();
   });
 
