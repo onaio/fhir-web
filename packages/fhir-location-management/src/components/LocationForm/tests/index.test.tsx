@@ -98,7 +98,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
 
@@ -147,13 +147,16 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
     });
     wrapper.update();
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
+      // TODO [circle ci specific] - the below assertions behave correctly only when we force promise resolution with
+      // both of these function invocations. I tried each one and both in a different order and it did not work.
+      await new Promise((resolve) => setImmediate(resolve));
       await flushPromises();
     });
     wrapper.update();
@@ -207,7 +210,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
     });
     wrapper.update();
 
@@ -256,7 +259,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
     wrapper.unmount();
@@ -284,7 +287,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
 
@@ -317,7 +320,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
 
@@ -349,7 +352,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await flushPromises();
+      await new Promise((resolve) => setImmediate(resolve));
       wrapper.update();
     });
 
