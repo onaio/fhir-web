@@ -4,7 +4,6 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, locationResourceType } from '../constants';
@@ -88,9 +87,6 @@ export const useGetLocationHierarchy = (baseUrl: string, rootIdentifier: string)
       );
     },
     {
-      onError: (err) => {
-        sendErrorNotification(err.message);
-      },
       select: (res: IBundle) => {
         return convertApiResToTree(res) as TreeNode;
       },

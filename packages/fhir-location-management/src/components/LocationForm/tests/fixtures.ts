@@ -1,4 +1,5 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 
 export const createdLocation1 = ({
   resourceType: 'Location',
@@ -21,7 +22,7 @@ export const createdLocation1 = ({
 } as unknown) as ILocation;
 
 export const createdLocation2 = {
-  ...createdLocation1,
+  ...onaOfficeSubLocation,
   status: 'active',
   name: 'Yosemite',
   alias: 'world wonder',

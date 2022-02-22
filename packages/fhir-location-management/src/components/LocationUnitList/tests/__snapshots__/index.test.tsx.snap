@@ -256,3 +256,159 @@ exports[`location-management/src/components/LocationUnitList works correctly: us
   Ona Office Sub Location
 </span>
 `;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expand 1`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Ona Office Sub Location"
+  >
+    Ona Office Sub Location
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expand 2`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Level 0"
+  >
+    Level 0
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expand 3`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Arundel mobile clinic"
+  >
+    Arundel mobile clinic
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expand 4`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Part Of Sub Location"
+  >
+    Part Of Sub Location
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 1`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Ona Office Sub Location"
+  >
+    Ona Office Sub Location
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 2`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Level 0"
+  >
+    Level 0
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 3`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Arundel mobile clinic"
+  >
+    Arundel mobile clinic
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 4`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Part Of Sub Location"
+  >
+    Part Of Sub Location
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 5`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Nairobii"
+  >
+    Nairobii
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 6`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Test Sub Loc"
+  >
+    Test Sub Loc
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 7`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Test Loc 113"
+  >
+    Test Loc 113
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 8`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="Test Loc 1145"
+  >
+    Test Loc 1145
+  </span>
+</span>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: visible nodes on expanding part of sub location 9`] = `
+<span
+  class="ant-tree-title"
+>
+  <span
+    title="MOH HQ 2"
+  >
+    MOH HQ 2
+  </span>
+</span>
+`;

@@ -14,34 +14,26 @@ export type LocationRouteProps = { id?: string };
 export interface NewEditLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
+      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successUrlGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
   fhirBaseURL: string;
   fhirRootLocationIdentifier: string;
-  cancelURLGenerator: () => string;
+  cancelUrlGenerator: () => string;
 }
-
-const defaultNewEditLocationUnitProps = {
-  hidden: [],
-  disabled: [],
-  fhirRootLocationIdentifier: '',
-  successURLGenerator: () => '',
-  cancelURLGenerator: () => '',
-};
 
 /** renders page where user can create new location unit
  *
  * @param props - this components props
  */
-const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
+export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const {
     hidden,
     disabled,
     fhirBaseURL,
     fhirRootLocationIdentifier,
-    successURLGenerator,
-    cancelURLGenerator,
+    successUrlGenerator,
+    cancelUrlGenerator,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
@@ -50,7 +42,7 @@ const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const sParams = new URLSearchParams(location.search);
 
   const cancelHandler = () => {
-    const cancelURL = cancelURLGenerator();
+    const cancelURL = cancelUrlGenerator();
     history.push(cancelURL);
   };
 
@@ -90,7 +82,7 @@ const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const locationFormProps: LocationFormProps = {
     initialValues,
     tree: data,
-    successURLGenerator: successURLGenerator,
+    successUrlGenerator: successUrlGenerator,
     hidden: hidden,
     disabled: disabled,
     onCancel: cancelHandler,
@@ -111,7 +103,3 @@ const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     </Row>
   );
 };
-
-NewEditLocationUnit.defaultProps = defaultNewEditLocationUnitProps;
-
-export { NewEditLocationUnit };

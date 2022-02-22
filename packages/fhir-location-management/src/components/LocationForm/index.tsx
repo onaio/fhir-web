@@ -9,7 +9,7 @@ import {
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { locationHierarchyResourceType, URL_LOCATION_UNIT } from '../../constants';
+import { locationHierarchyResourceType } from '../../constants';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
@@ -25,7 +25,7 @@ export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   tree: TreeNode;
-  successURLGenerator: (payload: ILocation) => string;
+  successUrlGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
   hidden: string[];
   disabled: string[];
@@ -35,11 +35,10 @@ export interface LocationFormProps
 
 const defaultProps = {
   initialValues: defaultFormField,
-  successURLGenerator: () => URL_LOCATION_UNIT,
+  successUrlGenerator: () => '#',
   hidden: [],
   disabled: [],
   onCancel: () => void 0,
-  afterSubmit: () => void 0,
 };
 
 /** responsive layout for the form labels and columns */
@@ -93,7 +92,7 @@ const LocationForm = (props: LocationFormProps) => {
     disabledTreeNodesCallback,
     fhirBaseURL,
     afterSubmit,
-    successURLGenerator,
+    successUrlGenerator: successURLGenerator,
     onCancel,
     tree,
   } = props;
@@ -152,12 +151,12 @@ const LocationForm = (props: LocationFormProps) => {
           postPutLocationUnit(payload, fhirBaseURL, isEditMode)
             .then(() => {
               const successUrl = successURLGenerator(payload);
-              setSuccessUrl(successUrl);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
               queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
+              setSuccessUrl(successUrl);
               setAreWeDoneHere(true);
             })
             .catch((err: Error) => {
