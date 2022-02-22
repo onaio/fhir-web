@@ -38,13 +38,13 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # - run:
-      #     name: Run linter
-      #     command: yarn lint
+      - run:
+          name: Run linter
+          command: yarn lint
 
       - run:
           name: Run test with coverage
-          command: yarn test packages/fhir-location-management --verbose --collectCoverage=true --forceExit --detectOpenHandles --maxWorkers=2
+          command: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles --maxWorkers=2
 
       - run:
           name: upload coverage to coveralls
