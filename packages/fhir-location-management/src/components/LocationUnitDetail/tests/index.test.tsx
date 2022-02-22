@@ -22,6 +22,7 @@ describe('location-management/src/components/LocationUnitDetail', () => {
     defaultOptions: {
       queries: {
         retry: false,
+        cacheTime: 0,
       },
     },
   });

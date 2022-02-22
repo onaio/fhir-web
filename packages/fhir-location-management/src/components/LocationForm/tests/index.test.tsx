@@ -13,7 +13,7 @@ import { createdLocation1, createdLocation2 } from './fixtures';
 import nock, { RequestBodyMatcher } from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
-import { fhirHierarchy } from '../../../ducks/tests/fixtures';
+import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { convertApiResToTree } from '../../../helpers/utils';
 import { cleanup, waitFor } from '@testing-library/react';
 
@@ -42,6 +42,7 @@ describe('LocationForm', () => {
     defaultOptions: {
       queries: {
         retry: false,
+        cacheTime: 0,
       },
     },
   });
@@ -199,7 +200,7 @@ describe('LocationForm', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <LocationForm successURLGenerator={successURLGeneratorMock} {...formProps} />
+        <LocationForm successUrlGenerator={successURLGeneratorMock} {...formProps} />
       </AppWrapper>,
       { attachTo: container }
     );
@@ -306,7 +307,7 @@ describe('LocationForm', () => {
       .reply(201, {})
       .persist();
 
-    const initialValues = getLocationFormFields(createdLocation1);
+    const initialValues = getLocationFormFields(onaOfficeSubLocation);
 
     const wrapper = mount(
       <AppWrapper>

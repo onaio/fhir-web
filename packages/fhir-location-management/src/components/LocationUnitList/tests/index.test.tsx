@@ -43,6 +43,7 @@ describe('location-management/src/components/LocationUnitList', () => {
         // react-query will retry failed request, this can cause some weird
         // behavior when testing a rejected request
         retry: false,
+        cacheTime: 0,
       },
     },
   });
@@ -156,5 +157,32 @@ describe('location-management/src/components/LocationUnitList', () => {
     // close view details section
     fireEvent.click(viewDetailsSection.querySelector('button.float-right'));
     expect(document.querySelector('[data-testid="view-details"]')).not.toBeInTheDocument();
+
+    // lets expand on tree search and select a node
+    const antTree = document.querySelector('.ant-tree-list');
+    const firstDownCaret = antTree.querySelector('.anticon-caret-down');
+    fireEvent.click(firstDownCaret);
+
+    // tree title visible now - represents nested nodes that are now visible
+    document.querySelectorAll('.ant-tree-title').forEach((nodeTitle) => {
+      expect(nodeTitle).toMatchSnapshot('visible nodes on expand');
+    });
+
+    const lastTextNode = screen.getByText('Part Of Sub Location');
+    fireEvent.click(lastTextNode);
+
+    // tree title visible now - represents nested nodes that are now visible
+    document.querySelectorAll('.ant-tree-title').forEach((nodeTitle) => {
+      expect(nodeTitle).toMatchSnapshot('visible nodes on expanding part of sub location');
+    });
+
+    // table change
+    expect(document.querySelectorAll('table tbody tr')).toHaveLength(5);
+
+    // deselect node
+    fireEvent.click(screen.getByTitle('Part Of Sub Location'));
+
+    // table change- node deselect
+    expect(document.querySelectorAll('table tbody tr')).toHaveLength(1);
   });
 });
