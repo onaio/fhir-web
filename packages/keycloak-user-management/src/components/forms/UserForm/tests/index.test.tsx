@@ -216,7 +216,9 @@ describe('components/forms/UserForm', () => {
 
     wrapper.update();
 
-    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([]);
+    await act(async () => {
+      expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([]);
+    });
 
     wrapper.unmount();
   });
