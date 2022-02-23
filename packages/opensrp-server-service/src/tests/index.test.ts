@@ -97,7 +97,7 @@ describe('services/OpenSRP', () => {
     try {
       await planService.list();
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService list on plans failed, HTTP status 500'));
     expect(error.name).toEqual('HTTPError');
@@ -158,7 +158,7 @@ describe('services/OpenSRP', () => {
     try {
       await service.delete({});
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(
       new Error('OpenSRPService delete on practitioners failed, HTTP status 500')
@@ -215,7 +215,7 @@ describe('services/OpenSRP', () => {
     try {
       await planService.read('0e85c238-39c1-4cea-a926-3d89f0c98427');
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService read on plans failed, HTTP status 500'));
     expect(error.description).toEqual(JSON.stringify(sampleErrorObj));
@@ -264,7 +264,7 @@ describe('services/OpenSRP', () => {
     try {
       await planService.create({ foo: 'bar' });
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService create on plans failed, HTTP status 500'));
     expect(error.description).toEqual(JSON.stringify(sampleErrorObj));
@@ -357,7 +357,7 @@ describe('services/OpenSRP', () => {
     try {
       await planService.update({ foo: 'bar' });
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService update on plans failed, HTTP status 500'));
   });
@@ -371,7 +371,7 @@ describe('services/OpenSRP', () => {
     try {
       await planService.update({ foo: 'bar' });
     } catch (e) {
-      if (e instanceof HTTPError) error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService update on plans failed, HTTP status 500'));
     expect(error.description).toEqual('"Some error happened"');
@@ -428,7 +428,7 @@ describe('src/errors', () => {
       const error = new SyntaxError();
       throwNetworkError(error);
     } catch (err) {
-      if (err instanceof HTTPError) expect(err.name).toEqual('SyntaxError');
+      expect((err as HTTPError).name).toEqual('SyntaxError');
     }
   });
 
@@ -438,7 +438,7 @@ describe('src/errors', () => {
       const error = new TypeError();
       throwNetworkError(error);
     } catch (err) {
-      if (err instanceof HTTPError) expect(err.name).toEqual('NetworkError');
+      expect((err as HTTPError).name).toEqual('NetworkError');
     }
   });
 
@@ -450,7 +450,7 @@ describe('src/errors', () => {
       });
       await throwHTTPError(sampleResponse);
     } catch (err) {
-      if (err instanceof HTTPError) expect(err.name).toEqual('HTTPError');
+      expect((err as HTTPError).name).toEqual('HTTPError');
     }
   });
 });
