@@ -16,6 +16,7 @@ import { locationHierarchyResourceType } from '../CustomTreeSelect';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { convertApiResToTree } from '../../../helpers/utils';
 import { cleanup, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -71,7 +72,6 @@ describe('LocationForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -100,7 +100,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -151,7 +151,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -191,7 +191,7 @@ describe('LocationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseURL)
-      .post('/Location', (createdLocation1 as unknown) as RequestBodyMatcher)
+      .post('/Location', createdLocation1 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
@@ -206,7 +206,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -255,7 +255,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -284,7 +284,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -303,7 +303,7 @@ describe('LocationForm', () => {
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: formProps.fhirRootLocationIdentifier })
       .reply(200, fhirHierarchy)
-      .post('/Location', (createdLocation2 as unknown) as RequestBodyMatcher)
+      .post('/Location', createdLocation2 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
@@ -317,7 +317,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -349,7 +349,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

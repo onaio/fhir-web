@@ -1,4 +1,5 @@
-/** simple store to track state of selected nodes
+/**
+  simple store to track state of selected nodes
  */
 
 import { Dictionary } from '@onaio/utils';

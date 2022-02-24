@@ -96,7 +96,7 @@ const LocationForm = (props: LocationFormProps) => {
     onCancel,
     tree,
   } = props;
-  const isEditMode = !!initialValues?.id;
+  const isEditMode = !!initialValues.id;
   const defaultParentNode =
     tree.first((node) => node.model.nodeId === initialValues.parentId) ?? tree;
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
