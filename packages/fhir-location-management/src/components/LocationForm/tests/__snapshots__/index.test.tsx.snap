@@ -2,7 +2,7 @@
 
 exports[`LocationForm renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn"
+  className="ant-btn ant-btn-default"
   id="location-form-cancel-button"
   onClick={[Function]}
   type="button"
@@ -40,6 +40,8 @@ exports[`LocationForm renders correctly: description field 1`] = `
   disabled={false}
   id="location-form_description"
   onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
   onKeyDown={[Function]}
   placeholder="Description"
   rows={4}
@@ -67,6 +69,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -77,6 +82,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -139,6 +147,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value="active"
   />,
@@ -149,6 +160,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value="inactive"
   />,
@@ -159,6 +173,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value="suspended"
   />,

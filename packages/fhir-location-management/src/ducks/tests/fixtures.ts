@@ -34,7 +34,7 @@ export const onaOfficeSubLocation = {
   },
 } as ILocation;
 
-export const fhirHierarchy = ({
+export const fhirHierarchy = {
   resourceType: 'Bundle',
   id: 'cc865903-180d-444c-968c-24fd935cc101',
   meta: {
@@ -45,8 +45,7 @@ export const fhirHierarchy = ({
   link: [
     {
       relation: 'self',
-      url:
-        'http://fhir.labs.smartregister.org/fhir/LocationHierarchy/?_format=json&identifier=eff94f33-c356-4634-8795-d52340706ba9',
+      url: 'http://fhir.labs.smartregister.org/fhir/LocationHierarchy/?_format=json&identifier=eff94f33-c356-4634-8795-d52340706ba9',
     },
   ],
   entry: [
@@ -997,8 +996,7 @@ export const fhirHierarchy = ({
                                                                             },
                                                                           ],
                                                                           status: 'active',
-                                                                          name:
-                                                                            'MOH SUB SUB SUB LOCATION',
+                                                                          name: 'MOH SUB SUB SUB LOCATION',
                                                                           alias: [
                                                                             'MOH SUB SUB SUB LOCATION',
                                                                           ],
@@ -1051,8 +1049,7 @@ export const fhirHierarchy = ({
                                                                                   },
                                                                                 ],
                                                                                 status: 'active',
-                                                                                name:
-                                                                                  'MOH SUB SUB SUB LOCATION 1',
+                                                                                name: 'MOH SUB SUB SUB LOCATION 1',
                                                                                 alias: [
                                                                                   'MOH SUB SUB SUB LOCATION 1',
                                                                                 ],
@@ -1181,7 +1178,7 @@ export const fhirHierarchy = ({
       },
     },
   ],
-} as unknown) as IBundle;
+} as unknown as IBundle;
 
 export const serializedSample =
   '["{\\"config\\":{\\"childrenPropertyName\\":\\"children\\"},\\"model\\":{\\"nodeId\\":\\"Location/2252\\",\\"label\\":\\"Root FHIR Location\\",\\"node\\":{\\"resourceType\\":\\"Location\\",\\"id\\":\\"2252\\",\\"meta\\":{\\"versionId\\":\\"3\\",\\"lastUpdated\\":\\"2021-10-14T13:10:14.524+00:00\\",\\"source\\":\\"#5887f723a045b500\\"},\\"identifier\\":[{\\"use\\":\\"official\\",\\"value\\":\\"eff94f33-c356-4634-8795-d52340706ba9\\"}],\\"status\\":\\"active\\",\\"name\\":\\"Root FHIR Location\\",\\"alias\\":[\\"Root Location\\"],\\"description\\":\\"This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.\\",\\"physicalType\\":{\\"coding\\":[{\\"system\\":\\"http://terminology.hl7.org/CodeSystem/location-physical-type\\",\\"code\\":\\"jdn\\",\\"display\\":\\"Jurisdiction\\"}]}},\\"children\\":[{\\"nodeId\\":\\"Location/303\\",\\"label\\":\\"Ona Office Sub Location\\",\\"node\\":{\\"resourceType\\":\\"Location\\",\\"id\\":\\"303\\",\\"meta\\":{\\"versionId\\":\\"4\\",\\"lastUpdated\\":\\"2021-10-14T13:12:22.740+00:00\\",\\"source\\":\\"#13bbc7f09daa1751\\"},\\"identifier\\":[{\\"use\\":\\"official\\",\\"value\\":\\"93bc9c3d-6321-41b0-9b93-1275d7114e22\\"}],\\"status\\":\\"active\\",\\"name\\":\\"Ona Office Sub Location\\",\\"alias\\":[\\"ona office\\"],\\"description\\":\\"The Sub location\\",\\"physicalType\\":{\\"coding\\":[{\\"system\\":\\"http://terminology.hl7.org/CodeSystem/location-physical-type\\",\\"code\\":\\"jdn\\",\\"display\\":\\"Jurisdiction\\"}]},\\"partOf\\":{\\"reference\\":\\"Location/2252\\",\\"display\\":\\"Root FHIR Location\\"}},\\"parent\\":\\"Location/2252\\",\\"children\\":[]}]},\\"children\\":[{\\"config\\":{\\"$ref\\":\\"$[\\\\\\"config\\\\\\"]\\"},\\"model\\":{\\"$ref\\":\\"$[\\\\\\"model\\\\\\"][\\\\\\"children\\\\\\"][0]\\"},\\"children\\":[],\\"parent\\":{\\"$ref\\":\\"$\\"}}]}"]';
