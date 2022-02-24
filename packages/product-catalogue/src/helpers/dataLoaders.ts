@@ -1,4 +1,5 @@
-/** get the full product Catalogue
+/**
+  get the full product Catalogue
  */
 
 import { store, makeAPIStateSelector } from '@opensrp/store';
@@ -29,7 +30,6 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
  * @param {string} baseURL -  base url of api
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
- *
  * @returns {Promise<void>}
  */
 export async function loadProductCatalogue(
@@ -53,7 +53,6 @@ export async function loadProductCatalogue(
  * @param {number | string} id - id of the product to be fetched
  * @param {OpenSRPService} service - the opensrp service
  * @param {fetchProducts}actionCreator - Action creator; creates actions thad adds products to the store
- *
  * @returns {Promise<void>}
  */
 export async function loadSingleProduct(
@@ -63,17 +62,20 @@ export async function loadSingleProduct(
   actionCreator: typeof fetchProducts = fetchProducts
 ) {
   const serve = new service(OPENSRP_PRODUCT_CATALOGUE, baseURL);
-  return serve
-    .read(id)
-    .then((response: ProductCatalogue | {}) => {
-      if (Object.keys(response).length === 0) {
-        return Promise.reject(new Error('Product not found in the catalogue'));
-      }
-      actionCreator([response as ProductCatalogue]);
-    })
-    .catch((err: Error) => {
-      throw err;
-    });
+  return (
+    serve
+      .read(id)
+      // eslint-disable-next-line @typescript-eslint/ban-types
+      .then((response: ProductCatalogue | {}) => {
+        if (Object.keys(response).length === 0) {
+          return Promise.reject(new Error('Product not found in the catalogue'));
+        }
+        actionCreator([response as ProductCatalogue]);
+      })
+      .catch((err: Error) => {
+        throw err;
+      })
+  );
 }
 
 /**

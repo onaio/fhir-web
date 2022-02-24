@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, Button } from 'antd';
 import lang from '../../lang';
 import { FileExcelOutlined } from '@ant-design/icons';
-import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
+import { INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
@@ -16,7 +16,8 @@ interface PreConfirmationErrorProps {
   errorObj?: BadRequestError;
 }
 
-/** Card shows errors from validation step
+/**
+ * Card shows errors from validation step
  *
  * @param props - components props
  */
@@ -27,12 +28,12 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
     {
       title: lang.ROW_NUMBER,
       dataIndex: 'row',
-      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}` as keyof TableData,
+      key: 'row',
     },
     {
       title: lang.ERRORS,
       dataIndex: 'failureReason',
-      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}` as keyof TableData,
+      key: 'failureReason',
     },
   ];
 

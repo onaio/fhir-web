@@ -68,7 +68,7 @@ const Table: React.FC<Props> = (props: Props) => {
           actions={{
             title: lang.ACTIONS,
             width: '10%',
-            // eslint-disable-next-line react/display-name
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             render: (_: unknown, record: Organization) => (
               <span className="d-flex justify-content-end align-items-center">
                 <Link to={URL_EDIT_TEAM + record.identifier.toString()}>

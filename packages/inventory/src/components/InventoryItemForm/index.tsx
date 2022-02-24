@@ -9,7 +9,7 @@ import { isDateFuture, isDatePastOrToday, submitForm } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { InventoryPost } from '../../ducks/inventory';
 
-/** interface for setting **/
+/** interface for setting */
 export interface Setting {
   key: string;
   value: string;
@@ -139,9 +139,11 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProduct, selectedDeliveryDate, form]);
 
-  /** Update form initial values when initialValues prop changes, without this
+  /**
+   * Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initiaValues is updated
-   * **/
+   *
+   */
   React.useEffect(() => {
     form.setFieldsValue({
       ...initialValues,

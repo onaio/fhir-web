@@ -1,4 +1,5 @@
-/** use this component as the temporary background view ,
+/**
+ * use this component as the temporary background view ,
  * when the app runs into an unrecoverable error.
  */
 import React, { useState } from 'react';
@@ -19,7 +20,8 @@ export const defaultProps = {
   title: lang.ERROR,
 };
 
-/** the component that renders a 500 view
+/**
+ * the component that renders a 500 view
  *
  * @param props - the component props
  */

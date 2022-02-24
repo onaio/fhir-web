@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { MoreOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';

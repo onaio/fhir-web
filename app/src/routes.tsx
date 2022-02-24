@@ -193,17 +193,6 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: langObj.PRODUCT_CATALOGUE,
-          key: 'product-catalogue',
-          enabled:
-            ENABLE_PRODUCT_CATALOGUE &&
-            roles &&
-            activeRoles.PRODUCT_CATALOGUE &&
-            isAuthorized(roles, activeRoles.PRODUCT_CATALOGUE.split(',')),
-          url: CATALOGUE_LIST_VIEW_URL,
-        },
-
-        {
           title: langObj.FORM_CONFIGURATION,
           key: 'form-config',
           enabled:

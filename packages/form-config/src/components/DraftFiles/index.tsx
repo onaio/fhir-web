@@ -282,7 +282,8 @@ interface DispatchedStateProps {
   data: ManifestFilesTypes[];
 }
 
-/** Map props to state
+/**
+ * Map props to state
  *
  * @param {Store} state - the  redux store
  * @returns {Dictionary} - dispatched props

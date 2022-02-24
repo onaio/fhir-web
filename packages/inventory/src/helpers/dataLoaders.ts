@@ -24,7 +24,8 @@ export interface SuccessfulResponse {
   rowCount: number;
 }
 
-/** parses a single error row and returns an easily code-readable object
+/**
+ * parses a single error row and returns an easily code-readable object
  *
  * @param errorRow - a row as string
  */
@@ -35,7 +36,8 @@ export const parseSingleErrorRow = (errorRow: string) => {
   return { row, failureReason };
 };
 
-/** parse error response which is text
+/**
+ * parse error response which is text
  *
  * @param resText - string response showing what lines in the uploaded csv were defective
  */

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin } from 'antd';
@@ -46,7 +46,8 @@ export interface AntTreeProps {
   children: AntTreeProps[];
 }
 
-/** Function to Load selected location unit for details
+/**
+ * Function to Load selected location unit for details
  *
  * @param {TableData} row data selected from the table
  * @param {string} opensrpBaseURL - base url
@@ -93,7 +94,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+            select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
       : []

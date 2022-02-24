@@ -12,9 +12,11 @@ import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 
-const store: Store<{}> = createStore(rootReducer, applyMiddleware(thunk));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const store: Store<Record<string, any>> = createStore(rootReducer, applyMiddleware(thunk));
 
-/** not clear in documentation ( notes on use of skjemautfyller):
+/**
+ * not clear in documentation ( notes on use of skjemautfyller):
  * gotchas:
  *  - dependencies are actually peer dependencies, versions are left to trial and error
  *  - node-sass is left out.
@@ -42,7 +44,11 @@ export const questionnaireResourceType = 'Questionnaire' as const;
 export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
   const { resourceId, fhirBaseURL, onSubmit, onCancel, isQuestionnaire } = props;
 
-  const { isLoading: questRespIsLoading, data: questResp, error: questRespError } = useQuery(
+  const {
+    isLoading: questRespIsLoading,
+    data: questResp,
+    error: questRespError,
+  } = useQuery(
     [questionnaireResponseResourceType, resourceId],
     () => new FHIRServiceClass(fhirBaseURL, questionnaireResponseResourceType).read(resourceId),
     {
@@ -53,7 +59,8 @@ export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
     }
   );
 
-  /** get relative url to questionnaire from questionnaireResponse
+  /**
+   * get relative url to questionnaire from questionnaireResponse
    * TODO: This does not account for qr.questionnaire containing absolute urls
    * we assume both questionnaires and questionnaireR are in the same server and linked using relative links
    */

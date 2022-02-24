@@ -1,5 +1,6 @@
 import { parseTextResponse, parseSingleErrorRow, uploadCSV } from '../dataLoaders';
 import axios from 'axios';
+import flushPromises from 'flush-promises';
 
 jest.mock('axios');
 
@@ -20,7 +21,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
       .catch((_) => {
         fail();
       });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('works with bad request errors', async () => {
@@ -36,7 +37,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     uploadCSV(mockFile, undefined, undefined, undefined, badRequestMock).catch((_) => {
       fail();
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expect(badRequestMock).toHaveBeenCalledWith({
       errors: [],
       rowsNumber: '0',
@@ -57,7 +58,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     uploadCSV(mockFile, undefined, undefined, undefined, badRequestMock).catch((err) => {
       expect(err.message).toEqual('Error');
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('handles request cancellation by user', async () => {
@@ -82,7 +83,7 @@ describe('helpers/dataLoader.uploadCSV', () => {
     ).catch((err) => {
       expect(err.message).toEqual('Error');
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expect(requestCancelMock).toHaveBeenCalled();
   });
 });

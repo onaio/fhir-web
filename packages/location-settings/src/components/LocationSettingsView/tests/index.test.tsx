@@ -31,7 +31,7 @@ describe('activate mission', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -62,7 +62,7 @@ describe('activate mission', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -396,7 +396,7 @@ describe('activate mission', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -420,7 +420,7 @@ describe('activate mission', () => {
     fetch.mockResponse(JSON.stringify(locationSettingsLevel1));
 
     await act(async () => {
-      await new Promise((r) => setImmediate(r));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -431,7 +431,7 @@ describe('activate mission', () => {
 
   it('handles errors', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(

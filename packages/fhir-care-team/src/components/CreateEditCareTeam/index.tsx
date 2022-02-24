@@ -87,7 +87,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
 
   const buildInitialValues = singleCareTeam.data
     ? {
-        uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as string,
+        uuid: (singleCareTeam.data.identifier as Dictionary[])[0].value as string,
         id: singleCareTeam.data.id,
         name: singleCareTeam.data.name,
         status: singleCareTeam.data.status ?? 'active',

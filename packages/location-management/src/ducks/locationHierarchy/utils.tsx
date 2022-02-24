@@ -14,7 +14,8 @@ import { LOCATION_UNIT_FIND_BY_PROPERTIES } from '../../constants';
 
 const { getFilterParams } = OpenSRPService;
 
-/** Parse the raw child hierarchy node map
+/**
+ * Parse the raw child hierarchy node map
  *
  * @param {RawHierarchyNodeMap} rawNodeMap - Object of raw hierarchy nodes
  * @param {string} parent - node parent id
@@ -35,7 +36,8 @@ const parseChildren = (rawNodeMap: RawHierarchyNodeMap, parent: string) => {
   });
 };
 
-/** parses the raw opensrp hierarchy to a hierarchy that we can quickly build
+/**
+ * parses the raw opensrp hierarchy to a hierarchy that we can quickly build
  * our tree model from.
  *
  * @param {RawOpenSRPHierarchy} raw - the response we get from opensrp
@@ -59,7 +61,8 @@ const parseHierarchy = (raw: RawOpenSRPHierarchy) => {
   return parsedNode;
 };
 
-/** takes the raw opensrp hierarchy response and creates a tree model structure
+/**
+ * takes the raw opensrp hierarchy response and creates a tree model structure
  *
  * @param {RawOpenSRPHierarchy} apiResponse - the response we get from opensrp
  * @returns {TreeNode} - returns root node
@@ -71,7 +74,8 @@ export const generateJurisdictionTree = (apiResponse: RawOpenSRPHierarchy): Tree
   return root;
 };
 
-/** Gets all the location unit at geographicLevel 0
+/**
+ * Gets all the location unit at geographicLevel 0
  *
  * @param {string} opensrpBaseURL - base url
  * @param {boolean} filterByParentId - boolean to filter root locations with parent id
@@ -83,11 +87,11 @@ export function getBaseTreeNode(
 ): Promise<LocationUnit[]> {
   const serve = new OpenSRPService(LOCATION_UNIT_FIND_BY_PROPERTIES, opensrpBaseURL);
   return serve.list({
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     is_jurisdiction: true,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     return_geometry: false,
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     properties_filter: getFilterParams({
       status: 'Active',
       ...{ ...(filterByParentId ? { parentId: null } : { geographicLevel: 0 }) },

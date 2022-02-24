@@ -73,7 +73,8 @@ export const getJurisdictionId = (_: Partial<Store>, props: Filters) => props.ju
  */
 export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel;
 
-/** gets all jurisdictions keyed by id
+/**
+ * gets all jurisdictions keyed by id
  *
  * @param state - the store
  * @param _ -  the filterProps
@@ -82,7 +83,8 @@ export const getGeoLevel = (_: Partial<Store>, props: Filters) => props.geoLevel
 export const getJurisdictionsById = (state: Partial<Store>, _: Filters): Dictionary<Jurisdiction> =>
   (state as Dictionary)[jurisdictionReducerName].objectsById;
 
-/** retrieve the Jurisdiction using an id
+/**
+ * retrieve the Jurisdiction using an id
  *
  * @returns returns single jurisdiction or null
  */
