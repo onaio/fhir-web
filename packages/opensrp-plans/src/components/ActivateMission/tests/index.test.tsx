@@ -7,6 +7,7 @@ import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import lang from '../../../lang';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -83,7 +84,7 @@ describe('activate mission', () => {
 
     // simulate click on activate mission button
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.find('button').simulate('click');
       wrapper.update();
     });
@@ -136,7 +137,7 @@ describe('activate mission', () => {
 
     // simulate click on activate mission button
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.find('button').simulate('click');
       wrapper.update();
     });

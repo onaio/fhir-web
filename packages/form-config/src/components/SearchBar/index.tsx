@@ -1,4 +1,5 @@
-/** This component has now been added to react-utils ,
+/**
+ * This component has now been added to react-utils ,
  * we can now remove this and use the one in react-utils,
  * https://github.com/OpenSRP/web/issues/365
  */
@@ -25,7 +26,8 @@ export interface SearchBarProps extends SearchBarDefaultProps {
 const SearchBar = (props: SearchBarProps) => {
   const { placeholder, debounceTime, onChangeHandler } = props;
 
-  /** inbuilt default onChangeHandler that debounces the passed changeHandler
+  /**
+   * inbuilt default onChangeHandler that debounces the passed changeHandler
    *
    * @param {ChangeEvent<HTMLInputElement>} event - the input event
    */

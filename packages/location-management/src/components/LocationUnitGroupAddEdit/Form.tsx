@@ -38,6 +38,7 @@ const userSchema = Yup.object().shape({
 interface Props {
   id?: string;
   opensrpBaseURL: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   setEditTitle: Function;
 }
 

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { store } from '@opensrp/store';
 import { mount } from 'enzyme';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
@@ -138,7 +138,7 @@ describe('location-management/src/components/LocationTagView', () => {
 
   it('hanldles failed deletion', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockReject(new Error(lang.ERROR_OCCURED));
 
     onDelete(sampleLocationUnitGroupPayload, baseURL);
 

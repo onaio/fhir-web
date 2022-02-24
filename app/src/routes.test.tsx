@@ -260,12 +260,6 @@ describe('routes', () => {
             title: 'Team Management',
           },
           {
-            enabled: true,
-            key: 'product-catalogue',
-            title: 'Product Catalogue',
-            url: '/admin/product-catalogue',
-          },
-          {
             children: [
               {
                 key: 'form-config-releases',

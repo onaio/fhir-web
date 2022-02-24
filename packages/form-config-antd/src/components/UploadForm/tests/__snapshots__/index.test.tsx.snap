@@ -1,165 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/UploadForm edits form correctly: card 1`] = `
+exports[`components/UploadForm edits form correctly: UploadForm 1`] = `
 Object {
-  "children": <ForwardRef(InternalForm)
-    initialValues={
-      Object {
-        "form": "",
-        "form_name": "test publish",
-        "form_relation": "",
-        "module": "",
-      }
-    }
-    labelCol={
-      Object {
-        "lg": Object {
-          "offset": 0,
-          "span": 6,
-        },
-        "md": Object {
-          "offset": 0,
-          "span": 8,
-        },
-        "sm": Object {
-          "offset": 2,
-          "span": 10,
-        },
-        "xs": Object {
-          "offset": 0,
-          "span": 16,
-        },
-      }
-    }
-    onFinish={[Function]}
-    wrapperCol={
-      Object {
-        "lg": Object {
-          "span": 10,
-        },
-        "md": Object {
-          "span": 12,
-        },
-        "sm": Object {
-          "span": 14,
-        },
-        "xs": Object {
-          "span": 24,
-        },
-      }
-    }
-  >
-    <FormItem
-      id="form_name"
-      label="Form Name"
-      name="form_name"
-      rules={
-        Array [
-          Object {
-            "message": "Form Name is required",
-            "required": true,
-          },
-        ]
-      }
-    >
-      <Input
-        disabled={true}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      id="module"
-      label="Module"
-      name="module"
-    >
-      <Input
-        disabled={true}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      id="form_relation"
-      label="Related to"
-      name="form_relation"
-    >
-      <Input
-        disabled={true}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      getValueFromEvent={[Function]}
-      id="form"
-      label="Form"
-      name="form"
-      rules={
-        Array [
-          Object {
-            "message": "Form is required",
-            "required": true,
-          },
-        ]
-      }
-      valuePropName="fileList"
-    >
-      <Upload
-        accept=""
-        action=""
-        beforeUpload={[Function]}
-        className=""
-        data={Object {}}
-        disabled={false}
-        listType="text"
-        multiple={false}
-        onRemove={[Function]}
-        showUploadList={true}
-        supportServerRender={true}
-        type="select"
-      >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          icon={<ForwardRef(UploadOutlined) />}
-          loading={false}
-        >
-          Click to upload
-        </Button>
-      </Upload>
-    </FormItem>
-    <FormItem
-      wrapperCol={
-        Object {
-          "lg": Object {
-            "offset": 6,
-            "span": 14,
-          },
-          "md": Object {
-            "offset": 8,
-            "span": 16,
-          },
-          "sm": Object {
-            "offset": 12,
-            "span": 24,
-          },
-          "xs": Object {
-            "offset": 0,
-            "span": 16,
-          },
-        }
-      }
-    >
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="submit"
-        loading={false}
-        type="primary"
-      >
-        Upload Form
-      </Button>
-    </FormItem>
-  </ForwardRef(InternalForm)>,
+  "form": Array [],
+  "form_name": "",
+  "form_relation": "",
+  "module": "",
 }
 `;
 
@@ -170,172 +16,47 @@ Object {
 }
 `;
 
-exports[`components/UploadForm renders correctly: card 1`] = `
+exports[`components/UploadForm renders correctly: UploadForm 1`] = `
 Object {
-  "children": <ForwardRef(InternalForm)
-    initialValues={
-      Object {
-        "form": "",
-        "form_name": "",
-        "form_relation": "",
-        "module": "",
-      }
-    }
-    labelCol={
-      Object {
-        "lg": Object {
-          "offset": 0,
-          "span": 6,
-        },
-        "md": Object {
-          "offset": 0,
-          "span": 8,
-        },
-        "sm": Object {
-          "offset": 2,
-          "span": 10,
-        },
-        "xs": Object {
-          "offset": 0,
-          "span": 16,
-        },
-      }
-    }
-    onFinish={[Function]}
-    wrapperCol={
-      Object {
-        "lg": Object {
-          "span": 10,
-        },
-        "md": Object {
-          "span": 12,
-        },
-        "sm": Object {
-          "span": 14,
-        },
-        "xs": Object {
-          "span": 24,
-        },
-      }
-    }
-  >
-    <FormItem
-      id="form_name"
-      label="Form Name"
-      name="form_name"
-      rules={
-        Array [
-          Object {
-            "message": "Form Name is required",
-            "required": true,
-          },
-        ]
-      }
-    >
-      <Input
-        disabled={false}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      id="module"
-      label="Module"
-      name="module"
-    >
-      <Input
-        disabled={false}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      id="form_relation"
-      label="Related to"
-      name="form_relation"
-    >
-      <Input
-        disabled={false}
-        type="text"
-      />
-    </FormItem>
-    <FormItem
-      getValueFromEvent={[Function]}
-      id="form"
-      label="Form"
-      name="form"
-      rules={
-        Array [
-          Object {
-            "message": "Form is required",
-            "required": true,
-          },
-        ]
-      }
-      valuePropName="fileList"
-    >
-      <Upload
-        accept=""
-        action=""
-        beforeUpload={[Function]}
-        className=""
-        data={Object {}}
-        disabled={false}
-        listType="text"
-        multiple={false}
-        onRemove={[Function]}
-        showUploadList={true}
-        supportServerRender={true}
-        type="select"
-      >
-        <Button
-          block={false}
-          ghost={false}
-          htmlType="button"
-          icon={<ForwardRef(UploadOutlined) />}
-          loading={false}
-        >
-          Click to upload
-        </Button>
-      </Upload>
-    </FormItem>
-    <FormItem
-      wrapperCol={
-        Object {
-          "lg": Object {
-            "offset": 6,
-            "span": 14,
-          },
-          "md": Object {
-            "offset": 8,
-            "span": 16,
-          },
-          "sm": Object {
-            "offset": 12,
-            "span": 24,
-          },
-          "xs": Object {
-            "offset": 0,
-            "span": 16,
-          },
-        }
-      }
-    >
-      <Button
-        block={false}
-        ghost={false}
-        htmlType="submit"
-        loading={false}
-        type="primary"
-      >
-        Upload Form
-      </Button>
-    </FormItem>
-  </ForwardRef(InternalForm)>,
-}
-`;
-
-exports[`components/UploadForm renders correctly: title 1`] = `
-Object {
-  "children": "Upload Form",
-  "level": 3,
+  "history": Object {
+    "action": "POP",
+    "block": [Function],
+    "createHref": [Function],
+    "go": [Function],
+    "goBack": [Function],
+    "goForward": [Function],
+    "length": 1,
+    "listen": [Function],
+    "location": Object {
+      "hash": "",
+      "pathname": "/",
+      "search": "",
+    },
+    "push": [Function],
+    "replace": [Function],
+  },
+  "initialValues": Object {
+    "form": Array [],
+    "form_name": "",
+    "form_relation": "",
+    "module": "",
+  },
+  "isJsonValidator": false,
+  "location": Object {
+    "hash": "",
+    "pathname": "/upload-form",
+    "search": "",
+    "state": Object {},
+  },
+  "match": Object {
+    "isExact": true,
+    "params": Object {
+      "formId": null,
+    },
+    "path": "/upload-form",
+    "url": "/upload-form",
+  },
+  "onSaveRedirectURL": "/foo",
+  "opensrpBaseURL": "https://test-example.com/rest/",
 }
 `;

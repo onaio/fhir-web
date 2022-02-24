@@ -10,6 +10,7 @@ import { act } from 'react-dom/test-utils';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '../../../constants';
 import { PlanStatus } from '@opensrp/plan-form-core';
 import * as planDux from '../../../ducks/planDefinitions';
+import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -56,7 +57,7 @@ describe('PlanAssignment Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -96,7 +97,7 @@ describe('PlanAssignment Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -138,7 +139,7 @@ describe('PlanAssignment Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -177,7 +178,7 @@ describe('PlanAssignment Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -217,7 +218,7 @@ describe('PlanAssignment Page', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"<Router />"`);
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.find('MissionData')).not.toBeNull();

@@ -34,12 +34,12 @@ export type UploadFilePropTypes = UploadFileProps & RouteComponentProps<RoutePar
 
 /** default form values */
 export const defaultInitialValues: UploadFileFieldTypes = {
-  // eslint-disable-next-line @typescript-eslint/camelcase
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   form_name: '',
-  // eslint-disable-next-line @typescript-eslint/camelcase
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   form_relation: '',
   module: '',
-  form: '',
+  form: [],
 };
 
 /** default component props */
@@ -70,9 +70,9 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   if (formId && formData) {
     formInitialValues = {
       ...formInitialValues,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       form_name: formData.label,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       form_relation: formData.form_relation,
       module: formData.module,
     };

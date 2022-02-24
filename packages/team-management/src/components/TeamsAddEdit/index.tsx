@@ -67,7 +67,7 @@ export async function getPractitionerDetail(id: string, opensrpBaseURL: string) 
 function setupInitialValue(
   id: string,
   opensrpBaseURL: string,
-  setInitialValue: Function,
+  setInitialValue: React.Dispatch<React.SetStateAction<FormField | null>>,
   langObj: Lang = lang
 ) {
   getTeamDetail(id, opensrpBaseURL)

@@ -26,7 +26,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -69,7 +69,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
 
   it('test error thrown if An error occurred', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockReject(new Error(lang.ERROR_OCCURED));
     mount(
       <Provider store={store}>
         <Router history={history}>

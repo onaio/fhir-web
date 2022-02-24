@@ -29,7 +29,8 @@ interface ActionColumnProps {
   disableAssignments: boolean;
 }
 
-/** rendered for each assignment table row in the actions columns
+/**
+ * rendered for each assignment table row in the actions columns
  *
  * @param props -  the props
  * @returns - the component
@@ -63,14 +64,17 @@ export const ActionColumn = (props: ActionColumnProps) => {
     };
   });
 
-  /** called when user saves assignment in teams assignment modal
+  /**
+   * called when user saves assignment in teams assignment modal
    * makes new assignments, retires removed assignments for the jurisdiction range in this row
    *
    * @param {SelectOption[]} selected - the selected organization options
    * @returns {Promise<void | Error>} - promise
    */
-  const teamsSaveHandler = (selected: SelectOption[]) => {
-    const selectedOrgIds = selected.map((option) => option.value);
+  const teamsSaveHandler = (selected: SelectOption | SelectOption[]) => {
+    const selectedOrgIds = Array.isArray(selected)
+      ? selected.map((option) => option.value)
+      : [selected.value];
     const initialOrgIds = assignedOrgsOptions.map((option) => option.value);
     const jurisdictions = assignedJursOptions.map((option) => option.value);
     const payload = getAllJursPayload(
@@ -83,15 +87,18 @@ export const ActionColumn = (props: ActionColumnProps) => {
     return updateAssignments(baseURL, payload, assignmentsCreator, serviceClass);
   };
 
-  /** called if user clicks save on areas assignment modal
+  /**
+   * called if user clicks save on areas assignment modal
    *
    * @param {SelectOption[]} selected - the selected jurisdiction options
    * @returns {Promise<void | Error>} - promise
    */
-  const areasSaveHandler = async (selected: SelectOption[]) => {
+  const areasSaveHandler = async (selected: SelectOption | SelectOption[]) => {
     // caveat - for MVP where we have one row; we can safely assume that removing an area is akin
     // to un-assigning it from the plan. This assumption will however fail once we have several rows
-    const selectedJurs = selected.map((option) => option.value);
+    const selectedJurs = Array.isArray(selected)
+      ? selected.map((option) => option.value)
+      : [selected.value];
     const plansPromise = putJurisdictionsToPlan(
       baseURL,
       plan,

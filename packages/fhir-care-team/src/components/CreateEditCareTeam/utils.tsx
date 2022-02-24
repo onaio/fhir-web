@@ -60,7 +60,8 @@ export const submitForm = async (
   history.push(URL_CARE_TEAM);
 };
 
-/** Util function to build out patient or practitioner name
+/**
+ * Util function to build out patient or practitioner name
  *
  * @param {object} patient - patient resource object
  * @returns {string} - returns patient or practitioner name string

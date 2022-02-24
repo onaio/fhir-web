@@ -69,6 +69,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -79,6 +82,9 @@ Array [
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -179,7 +185,6 @@ Object {
     <Radio
       disabled={false}
       name="active"
-      type="radio"
       value={true}
     >
       Yes
@@ -187,7 +192,6 @@ Object {
     <Radio
       disabled={false}
       name="active"
-      type="radio"
       value={false}
     >
       No
@@ -207,7 +211,6 @@ Object {
     <Radio
       disabled={false}
       name="active"
-      type="radio"
       value={true}
     >
       Yes
@@ -215,7 +218,6 @@ Object {
     <Radio
       disabled={false}
       name="active"
-      type="radio"
       value={false}
     >
       No

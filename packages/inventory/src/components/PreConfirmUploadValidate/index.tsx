@@ -16,7 +16,8 @@ const defaultProps = {
   filename: '',
 };
 
-/** rendered in csv upload, shown during pre confirmation upload and validation steps
+/**
+ * rendered in csv upload, shown during pre confirmation upload and validation steps
  *
  * @param props - component props
  */
