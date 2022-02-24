@@ -17,17 +17,16 @@ export enum UploadStatus {
   POST_CONFIRMATION_ERROR = 'postConfirmationError',
 }
 
-export const updateUrlWithStatusCreator = (props: RouteComponentProps) => (
-  status?: UploadStatus
-) => {
-  const allQueryParams = getQueryParams(props.location);
-  if (status) {
-    allQueryParams[BULK_UPLOAD_PARAM] = status;
-  } else {
-    delete allQueryParams[BULK_UPLOAD_PARAM];
-  }
-  props.history.push(`${props.match.url}?${queryString.stringify(allQueryParams)}`);
-};
+export const updateUrlWithStatusCreator =
+  (props: RouteComponentProps) => (status?: UploadStatus) => {
+    const allQueryParams = getQueryParams(props.location);
+    if (status) {
+      allQueryParams[BULK_UPLOAD_PARAM] = status;
+    } else {
+      delete allQueryParams[BULK_UPLOAD_PARAM];
+    }
+    props.history.push(`${props.match.url}?${queryString.stringify(allQueryParams)}`);
+  };
 
 interface CardTitleProps {
   IconRender: React.ReactNode;
@@ -40,7 +39,8 @@ export const CardTitle = ({ IconRender = null, text = '' }: CardTitleProps) => (
   </Space>
 );
 
-/** to pass to form, help decide what nodes in the tree select options will be disabled
+/**
+ * to pass to form, help decide what nodes in the tree select options will be disabled
  * returns true meaning disabled if node does not have the geographic level 3
  *
  * @param node - a single tree node

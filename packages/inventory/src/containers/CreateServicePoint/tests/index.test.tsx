@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { commonHiddenFields } from '../../../helpers/utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { baseLocationUnits, rawHierarchy } from '../../EditServicePoint/tests/fixtures';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -27,7 +28,7 @@ describe('CreateServicePoint', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -66,7 +67,7 @@ describe('CreateServicePoint', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 

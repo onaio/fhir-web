@@ -1,4 +1,4 @@
-import { ConnectedAPICallback, RouteParams } from '@onaio/gatekeeper';
+import { ConnectedAPICallback, RouteParams, APICallbackProps } from '@onaio/gatekeeper';
 import { getUser, User } from '@onaio/session-reducer';
 import { trimStart } from 'lodash';
 import querystring from 'querystring';
@@ -76,16 +76,15 @@ const BaseUnsuccessfulLogin: React.FC<RouteComponentProps> = (props: RouteCompon
 export const UnSuccessfulLogin = withRouter(BaseUnsuccessfulLogin);
 
 const CustomConnectedAPICallBack: React.FC<RouteComponentProps<RouteParams>> = (props) => {
-  return (
-    <ConnectedAPICallback
-      LoadingComponent={() => <Spin size="large" />}
-      // tslint:disable-next-line: jsx-no-lambda
-      UnSuccessfulLoginComponent={UnSuccessfulLogin}
-      SuccessfulLoginComponent={SuccessfulLoginComponent}
-      apiURL={EXPRESS_OAUTH_GET_STATE_URL}
-      {...props}
-    />
-  );
+  const unifiedProps = {
+    LoadingComponent: () => <Spin size="large" />,
+    UnSuccessfulLoginComponent: UnSuccessfulLogin,
+    SuccessfulLoginComponent: SuccessfulLoginComponent,
+    apiURL: EXPRESS_OAUTH_GET_STATE_URL,
+    ...props,
+    // ts bug - default props not working, ts asking for default props to be repassed https://github.com/microsoft/TypeScript/issues/31247
+  } as unknown as APICallbackProps<RouteParams>;
+  return <ConnectedAPICallback {...unifiedProps} />;
 };
 
 export default CustomConnectedAPICallBack;

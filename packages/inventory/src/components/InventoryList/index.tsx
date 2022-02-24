@@ -43,7 +43,8 @@ const defaultProps = {
   servicePointProfileURL: INVENTORY_SERVICE_POINT_PROFILE_VIEW,
 };
 
-/** component that renders Inventory list
+/**
+ * component that renders Inventory list
  *
  * @param props - the component props
  */

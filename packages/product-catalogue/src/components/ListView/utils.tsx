@@ -27,7 +27,8 @@ export const ActionsColumnCustomRender: Column<ProductCatalogue>['render'] = (re
   );
 };
 
-/** product Catalogue table columns
+/**
+ * product Catalogue table columns
  *
  * @param langObj - the lang translation object
  */

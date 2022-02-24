@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import { store } from '@opensrp/store';
 import App from '../App';
+import flushPromises from 'flush-promises';
 
 jest.mock('../../configs/env', () => ({
   PROJECT_LANGUAGE_CODE: 'eusm',
@@ -40,7 +41,7 @@ describe('App with active backend', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

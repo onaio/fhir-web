@@ -31,7 +31,7 @@ describe('View User Group Details', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -82,7 +82,7 @@ describe('View User Group Details', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -164,7 +164,7 @@ describe('View User Group Details', () => {
   });
 
   it('shows error notification when fetching group details fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.once(JSON.stringify(fixtures.userGroup1));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -180,7 +180,7 @@ describe('View User Group Details', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

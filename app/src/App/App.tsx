@@ -6,6 +6,7 @@ import {
   getOpenSRPUserInfo,
   RouteParams,
   useOAuthLogin,
+  OauthCallbackProps,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
@@ -202,19 +203,20 @@ export const SuccessfulLoginComponent = () => {
 };
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
+  const props = {
+    SuccessfulLoginComponent,
+    LoadingComponent,
+    providers,
+    oAuthUserInfoGetter: getOpenSRPUserInfo,
+    ...routeProps,
+    // ts bug - default props not working, ts asking for default props to be repassed https://github.com/microsoft/TypeScript/issues/31247
+  } as unknown as OauthCallbackProps<RouteParams>;
+
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
 
-  return (
-    <ConnectedOauthCallback
-      SuccessfulLoginComponent={SuccessfulLoginComponent}
-      LoadingComponent={LoadingComponent}
-      providers={providers}
-      oAuthUserInfoGetter={getOpenSRPUserInfo}
-      {...routeProps}
-    />
-  );
+  return <ConnectedOauthCallback {...props} />;
 };
 
 const App: React.FC = () => {

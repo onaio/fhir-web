@@ -1,6 +1,6 @@
 import { LocationUnitGroup } from '../location-unit-groups';
 import { LocationUnit, LocationUnitStatus } from '../location-units';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 export const locationUnitGroup1: LocationUnitGroup = {
   id: 1,

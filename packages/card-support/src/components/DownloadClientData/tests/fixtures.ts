@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const mother = {
   type: 'Client',
   dateCreated: '2020-11-26T04:43:26.392+01:00',

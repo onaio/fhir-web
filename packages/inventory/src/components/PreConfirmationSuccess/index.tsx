@@ -18,7 +18,8 @@ const defaultProps = {
   filename: '',
 };
 
-/** card rendered during csv upload, its shown after validation is successful
+/**
+ * card rendered during csv upload, its shown after validation is successful
  *
  * @param props - component props
  */
