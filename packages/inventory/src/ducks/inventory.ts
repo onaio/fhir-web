@@ -70,7 +70,8 @@ export const setTotalInventories = setTotalRecordsFactory(inventoryReducerName);
 export const getInventoriesArray = getItemsArrayFactory<Inventory>(inventoryReducerName);
 export const getTotalInventories = getTotalRecordsFactory(inventoryReducerName);
 
-/** gets all trees key'd by the rootNodes id
+/**
+ * gets all trees key'd by the rootNodes id
  *
  * @param store - the store
  */
@@ -85,7 +86,8 @@ interface Filters {
   expired?: boolean;
 }
 
-/** gets all trees key'd by the rootNodes id
+/**
+ * gets all trees key'd by the rootNodes id
  *
  * @param store - the store
  * @param props - the filterProps

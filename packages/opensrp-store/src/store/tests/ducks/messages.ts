@@ -59,7 +59,8 @@ export const sendMessage: ActionCreator<SendMessageAction> = (newMessage: Messag
   type: SEND_MESSAGE,
 });
 
-/** Action to remove all Messages from store
+/**
+ * Action to remove all Messages from store
  *
  * @returns {Object} to dispatch the action
  */
@@ -69,7 +70,8 @@ export const removeMessagesAction: ActionCreator<RemoveMessagesAction> = () => {
   };
 };
 
-/** select all messages
+/**
+ * select all messages
  *
  * @param {any} state -
  * @returns {Object} to dispatch the action
@@ -78,7 +80,8 @@ export function selectAllMessages(state: Partial<Store>): Message[] {
   return (state as { [key: string]: MessageState })[reducerName].messages;
 }
 
-/** select one message
+/**
+ * select one message
  *
  * @param {any} state -
  * @returns {Object} to dispatch the action

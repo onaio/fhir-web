@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useMemo } from 'react';
 import { Table as AntTable } from 'antd';
 import { ParsedHierarchyNode, getHierarchyNodeFromArray } from '@opensrp/location-management';

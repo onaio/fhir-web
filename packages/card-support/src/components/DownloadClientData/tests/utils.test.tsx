@@ -18,7 +18,7 @@ import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
 import * as functions from '../utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-empty-function */
 
 jest.mock('@opensrp/notifications', () => ({
@@ -180,7 +180,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('handles error if fetching Nested Location Ids fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
@@ -208,11 +208,11 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('handles error if submit form fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
 
     const mockRejectFn = jest.fn();
-    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(() => Promise.reject('API is down'));
+    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(new Error('API is down'));
 
     submitForm(
       values,
@@ -234,7 +234,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
   it('handles error if submission fails', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -390,13 +390,22 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       JSON.stringify([
         fixtures.mother,
         // remove registration_location_name from child1 and child2
+        // use location id for location that doesn't exist so that it's not auto filled with location matching location id
         {
           ...fixtures.child1,
-          attributes: { ...fixtures.child1.attributes, registration_location_name: '' },
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
         },
         {
           ...fixtures.child2,
-          attributes: { ...fixtures.child2.attributes, registration_location_name: '' },
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
         },
       ])
     );
@@ -433,6 +442,64 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     );
     expect(mockDownload.mock.calls[0][1]).toEqual(
       'Children_list__18_11_2020_(26-04-2020 - 26-12-2020).csv'
+    );
+  });
+
+  it('fetches registration location name using location id if registration_location_name is undefined', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        // use location id for location "CSB Hopital Bouficha"
+        {
+          ...fixtures.child1,
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+        {
+          ...fixtures.child2,
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+      ])
+    );
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {});
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(papaparseMock).toBeCalledWith(
+      [
+        {
+          ...fixtures.child1CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+        {
+          ...fixtures.child2CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+      ],
+      {
+        header: true,
+      }
+    );
+    expect(mockDownload.mock.calls[0][1]).toMatchInlineSnapshot(
+      `"Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020).csv"`
     );
   });
 });

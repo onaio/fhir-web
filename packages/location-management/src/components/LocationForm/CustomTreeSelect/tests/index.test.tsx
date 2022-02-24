@@ -8,6 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
 import { rootLocation, rootLocationHierarchy } from './fixtures';
 import { TreeNode } from '../../../../ducks/locationHierarchy/types';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -27,7 +28,7 @@ describe('FormComponents/ExtraFields', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -46,7 +47,7 @@ describe('FormComponents/ExtraFields', () => {
       </Form>
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('sends an error notification', async () => {
@@ -60,7 +61,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -83,7 +84,7 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -108,30 +109,27 @@ describe('FormComponents/ExtraFields', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((wrapper.find('Select').props() as any).options).toEqual([
+    expect((wrapper.find('TreeSelect').props() as any).treeData).toEqual([
       {
         children: [
           {
             disabled: false,
-            key: '421fe9fe-e48f-4052-8491-24d1e548daee',
             title: 'bbb',
             value: '421fe9fe-e48f-4052-8491-24d1e548daee',
           },
           {
             disabled: false,
-            key: '0836e054-30b1-4690-985c-b729aa5fcc53',
             title: 'aa',
             value: '0836e054-30b1-4690-985c-b729aa5fcc53',
           },
         ],
         // on parent id is disabled
         disabled: true,
-        key: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',
         title: 'The Root Location',
         value: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',
       },

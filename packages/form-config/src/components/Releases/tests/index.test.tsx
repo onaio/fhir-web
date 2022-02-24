@@ -113,7 +113,7 @@ describe('components/Releases', () => {
   });
 
   it('handles failure when fetching releases', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
 
     const wrapper = mount(
       <Provider store={store}>

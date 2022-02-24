@@ -27,7 +27,8 @@ export interface CareTeamFormProps {
   groups: Fields[];
 }
 
-/** Care Team form for editing/adding FHIR Care Teams
+/**
+ * Care Team form for editing/adding FHIR Care Teams
  *
  * @param {object} props - component props
  */
@@ -71,7 +72,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
-        {props.initialValues?.id
+        {props.initialValues.id
           ? `${lang.EDIT_CARE_TEAM} | ${initialValues.name}`
           : lang.CREATE_CARE_TEAM}
       </h5>
@@ -87,8 +88,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               fhirBaseURL,
               props.groups,
               props.practitioners,
-              props.initialValues?.id,
-              props.initialValues?.uuid
+              props.initialValues.id,
+              props.initialValues.uuid
             )
               .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
               .finally(() => setIsSubmitting(false));

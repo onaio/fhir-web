@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { GoalUnit, PlanDefinition } from '@opensrp/plan-form-core';
 import { Jurisdiction } from '../../../ducks/jurisdictions';
 

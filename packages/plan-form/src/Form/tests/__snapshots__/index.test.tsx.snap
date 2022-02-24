@@ -9,6 +9,7 @@ Array [
     "name": Array [
       "title",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -17,6 +18,7 @@ Array [
     "name": Array [
       "name",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -25,6 +27,7 @@ Array [
     "name": Array [
       "description",
     ],
+    "warnings": Array [],
   },
 ]
 `;
@@ -33,17 +36,9 @@ exports[`containers/forms/PlanForm Form validation works: Initial Errors, no err
 
 exports[`containers/forms/PlanForm Form validation works: date error 1`] = `Array []`;
 
-exports[`containers/forms/PlanForm Form validation works: dateRange required error 1`] = `
-Array [
-  "'dateRange' is required",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: dateRange required error 1`] = `Array []`;
 
-exports[`containers/forms/PlanForm Form validation works: description error 1`] = `
-Array [
-  "'description' is required",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: description error 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm Form validation works: description required error 1`] = `
 Array [
@@ -51,11 +46,7 @@ Array [
 ]
 `;
 
-exports[`containers/forms/PlanForm Form validation works: interventionType error 1`] = `
-Array [
-  "'interventionType' must be one of [Dynamic-FI, Dynamic-IRS, Dynamic-MDA, FI, IRS, IRS-Lite, MDA, MDA-Point, SM]",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: interventionType error 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm Form validation works: invalid data type Errors, we should have some errors 1`] = `
 Array [
@@ -66,6 +57,7 @@ Array [
     "name": Array [
       "interventionType",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -74,6 +66,7 @@ Array [
     "name": Array [
       "title",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -82,6 +75,7 @@ Array [
     "name": Array [
       "dateRange",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -90,6 +84,7 @@ Array [
     "name": Array [
       "description",
     ],
+    "warnings": Array [],
   },
 ]
 `;
@@ -103,6 +98,7 @@ Array [
     "name": Array [
       "interventionType",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -111,6 +107,7 @@ Array [
     "name": Array [
       "title",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -119,6 +116,7 @@ Array [
     "name": Array [
       "name",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -127,6 +125,7 @@ Array [
     "name": Array [
       "dateRange",
     ],
+    "warnings": Array [],
   },
   Object {
     "errors": Array [
@@ -135,21 +134,14 @@ Array [
     "name": Array [
       "description",
     ],
+    "warnings": Array [],
   },
 ]
 `;
 
-exports[`containers/forms/PlanForm Form validation works: name error 1`] = `
-Array [
-  "'name' is required",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: name error 1`] = `Array []`;
 
-exports[`containers/forms/PlanForm Form validation works: title error 1`] = `
-Array [
-  "'title' is required",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: title error 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm date range picker renders correctly for no mission end date: date range for no end date 1`] = `
 Array [
@@ -204,8 +196,9 @@ exports[`containers/forms/PlanForm renders correctly: date field 2`] = `
   className="ant-input"
   disabled={false}
   id="planForm_description"
-  maxLength={200}
   onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter the plan's description"
   rows={4}
@@ -308,6 +301,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 1`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="active"
 />
@@ -322,6 +318,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 2`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="complete"
 />
@@ -336,6 +335,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 3`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="draft"
 />
@@ -350,6 +352,9 @@ exports[`containers/forms/PlanForm renders correctly: status input 4`] = `
   onChange={[Function]}
   onClick={[Function]}
   onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
   type="radio"
   value="retired"
 />
@@ -3185,6 +3190,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3195,6 +3202,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3205,6 +3214,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3215,6 +3226,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3230,6 +3243,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3240,6 +3255,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3250,6 +3267,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3260,6 +3279,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3275,6 +3296,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3285,6 +3308,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3295,6 +3320,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3305,6 +3332,8 @@ Array [
     disabled={false}
     id="planForm_activities_0_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3320,6 +3349,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3330,6 +3361,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3345,6 +3378,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3355,6 +3390,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3370,6 +3407,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3380,6 +3419,8 @@ Array [
     disabled={false}
     id="planForm_activities_1_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3395,6 +3436,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3405,6 +3448,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3420,6 +3465,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3430,6 +3477,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3445,6 +3494,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3455,6 +3506,8 @@ Array [
     disabled={false}
     id="planForm_activities_2_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3470,6 +3523,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3480,6 +3535,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3495,6 +3552,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3505,6 +3564,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3520,6 +3581,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3530,6 +3593,8 @@ Array [
     disabled={false}
     id="planForm_activities_3_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3545,6 +3610,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3555,6 +3622,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3565,6 +3634,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3575,6 +3646,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3585,6 +3658,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3595,6 +3670,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3610,6 +3687,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3620,6 +3699,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3630,6 +3711,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3640,6 +3723,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3650,6 +3735,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3660,6 +3747,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3675,6 +3764,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3685,6 +3776,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3695,6 +3788,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3705,6 +3800,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3715,6 +3812,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3725,6 +3824,8 @@ Array [
     disabled={false}
     id="planForm_activities_4_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3740,6 +3841,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3750,6 +3853,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3765,6 +3870,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3775,6 +3882,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3790,6 +3899,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3800,6 +3911,8 @@ Array [
     disabled={false}
     id="planForm_activities_5_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3815,6 +3928,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3825,6 +3940,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3835,6 +3952,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3845,6 +3964,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3855,6 +3976,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3865,6 +3988,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3880,6 +4005,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3890,6 +4017,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3900,6 +4029,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3910,6 +4041,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3920,6 +4053,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3930,6 +4065,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3945,6 +4082,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3955,6 +4094,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3965,6 +4106,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3975,6 +4118,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_1_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3985,6 +4130,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -3995,6 +4142,8 @@ Array [
     disabled={false}
     id="planForm_activities_6_condition_2_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4010,6 +4159,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4020,6 +4171,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4035,6 +4188,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4045,6 +4200,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4060,6 +4217,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_expression"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
@@ -4070,6 +4229,8 @@ Array [
     disabled={false}
     id="planForm_activities_7_condition_0_description"
     onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
     onKeyDown={[Function]}
     required={true}
     style={Object {}}

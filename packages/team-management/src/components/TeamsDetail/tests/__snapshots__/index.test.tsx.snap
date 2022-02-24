@@ -4,12 +4,8 @@ exports[`components/TeamsDetail renders without crashing: Assigned Locations 1`]
 
 exports[`components/TeamsDetail renders without crashing: close button 1`] = `
 Object {
-  "block": false,
   "className": "float-right close-btn",
-  "ghost": false,
-  "htmlType": "button",
   "icon": <ForwardRef(CloseOutlined) />,
-  "loading": false,
   "onClick": [Function],
   "shape": "circle",
   "type": "text",

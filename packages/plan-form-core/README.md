@@ -58,7 +58,7 @@ export interface EnvConfig {
   defaultTime: string;
   defaultActivityDurationDays: number;
   displayedPlanTypes: InterventionType[];
-  taskGenerationStatus: taskGenerationStatusType;
+  taskGenerationStatus: TaskGenerationStatusType;
 }
 ```
 

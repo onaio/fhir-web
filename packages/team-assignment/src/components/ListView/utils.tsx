@@ -8,7 +8,8 @@ import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';
 
-/** component rendered in the action column of the table
+/**
+ * component rendered in the action column of the table
  *
  * @param record - table row record
  */
@@ -34,7 +35,8 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
   );
 };
 
-/** team assignment table columns factory
+/**
+ * team assignment table columns factory
  *
  * @param langObj -  the translation string lookup
  */

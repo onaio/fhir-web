@@ -3,7 +3,8 @@ import { Card, Spin } from 'antd';
 import lang from '../../lang';
 import { CardTitle } from '../../helpers/utils';
 
-/** shown during csv bulk upload when waiting for data to be committed to database
+/**
+ * shown during csv bulk upload when waiting for data to be committed to database
  * after user confirms validation
  */
 const PostConfirmationUpload = () => {

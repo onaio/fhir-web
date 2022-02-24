@@ -13,6 +13,7 @@ import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
 import lang from '../../../lang';
 import { PlanStatus } from '@opensrp/plan-form-core';
+import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
 const columns = getColumns(lang);
@@ -61,7 +62,7 @@ describe('List view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -96,7 +97,7 @@ describe('List view Page', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
@@ -136,7 +137,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -173,7 +174,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -210,7 +211,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -265,7 +266,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -324,7 +325,7 @@ describe('List view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -333,7 +334,7 @@ describe('List view Page', () => {
   });
 
   // test column sorter method
-
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const columnsSorter = columns[0].sorter as Function;
   expect(columnsSorter({ title: 4 }, { title: 1 })).toBe(-1);
   expect(columnsSorter({ title: 1 }, { title: 4 })).toBe(1);

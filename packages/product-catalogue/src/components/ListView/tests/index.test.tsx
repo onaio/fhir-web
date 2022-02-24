@@ -10,6 +10,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removeProducts } from '../../../ducks/productCatalogue';
+import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -55,7 +56,7 @@ describe('List view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -95,7 +96,7 @@ describe('List view Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -154,7 +155,7 @@ describe('List view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -198,7 +199,7 @@ describe('List view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

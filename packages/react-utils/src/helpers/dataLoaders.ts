@@ -37,7 +37,8 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
   }
 }
 
-/** A generic FHIR service class
+/**
+ * A generic FHIR service class
  *
  * Sample usage:
  * -------------
@@ -81,7 +82,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
     return {
       serverUrl: this.baseURL,
       tokenResponse: {
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         access_token: accessToken,
       },
     };

@@ -12,6 +12,7 @@ import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import lang from '../../../lang';
+import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -20,6 +21,8 @@ const fetch = require('jest-fetch-mock');
 const mission1 = eusmPlans[0];
 
 const history = createBrowserHistory();
+
+jest.setTimeout(10000);
 
 describe('CreateEditProduct Page', () => {
   beforeEach(() => {
@@ -61,7 +64,7 @@ describe('CreateEditProduct Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -116,7 +119,7 @@ describe('CreateEditProduct Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -192,7 +195,7 @@ describe('CreateEditProduct Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -231,7 +234,7 @@ describe('CreateEditProduct Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -273,7 +276,7 @@ describe('CreateEditProduct Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

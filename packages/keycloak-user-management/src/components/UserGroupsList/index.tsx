@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
@@ -72,7 +72,8 @@ const defaultProps = {
 
 export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
 
-/** Component which shows the list of all groups and their details
+/**
+ * Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display

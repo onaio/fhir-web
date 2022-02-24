@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
@@ -27,7 +27,8 @@ interface Props {
   fhirBaseURL: string;
 }
 
-/** Function which shows the list of all teams and there details
+/**
+ * Function which shows the list of all teams and there details
  *
  * @param {Object} props - TeamsList component props
  * @returns {Function} returns team display

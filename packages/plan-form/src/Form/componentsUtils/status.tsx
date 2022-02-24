@@ -13,7 +13,8 @@ interface PlanStatusRendererProps {
   assignedJurisdictions?: PlanFormFields['jurisdictions'];
 }
 
-/** renders the status fields on the planForm
+/**
+ * renders the status fields on the planForm
  * Wraps the radio buttons in a pop up confirmation box, this means
  * we need some custom logic upstream to change how antd form updates
  * values, so that when user does not confirm in the popup, we retain
