@@ -169,7 +169,7 @@ export const ENABLE_LANGUAGE_SWITCHER =
 
 export const ENABLE_FHIR_LOCATIONS = setEnv('REACT_APP_ENABLE_FHIR_LOCATIONS', 'false') === 'true';
 
-export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'false') === 'true';
+export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true') === 'true';
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
