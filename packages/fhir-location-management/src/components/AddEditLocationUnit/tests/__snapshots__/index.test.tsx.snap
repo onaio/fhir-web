@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly for edit locations: alias field 1`] = `
+<input
+  class="ant-input"
+  id="location-form_alias"
+  placeholder="Alias"
+  type="text"
+  value="creepTown"
+/>
+`;
+
+exports[`renders correctly for edit locations: name field 1`] = `
+<input
+  class="ant-input"
+  id="location-form_name"
+  placeholder="Enter a location name"
+  type="text"
+  value="area51"
+/>
+`;
+
+exports[`renders correctly for new locations: alias field 1`] = `
+<input
+  class="ant-input"
+  id="location-form_alias"
+  placeholder="Alias"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`renders correctly for new locations: name field 1`] = `
+<input
+  class="ant-input"
+  id="location-form_name"
+  placeholder="Enter a location name"
+  type="text"
+  value=""
+/>
+`;

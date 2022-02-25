@@ -54,8 +54,5 @@
     "marked": "^0.7.0",
     "redux-thunk": "^2.3.0",
     "tabbable": "^3.1.1"
-  },
-  "devDependencies": {
-    "node-sass": "^7.0.1"
   }
 }
