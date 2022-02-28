@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { DownloadClientData } from '..';
 import { OpenSRPService } from '@opensrp/server-service';
@@ -124,7 +124,8 @@ describe('components/DownloadClientData', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    /** @todo A dispatch should be made to remove all hierarchies after each test because
+    /**
+     * @todo A dispatch should be made to remove all hierarchies after each test because
      * each test adds hiearchies to existing hierarchies leading to duplicates, hence
      * the duplicate key warning when running tests
      *
@@ -177,16 +178,17 @@ describe('components/DownloadClientData', () => {
 
     await act(async () => {
       await flushPromises();
-      wrapper.update();
     });
+    wrapper.update();
 
     expect(fetch.mock.calls.map((res) => res[0])).toEqual([
       'https://unicef-tunisia-stage.smartregister.org/opensrp/security/authenticate',
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
     ]);
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').props()).toMatchSnapshot('title');
-    expect(content.find('Card').props()).toMatchSnapshot('card');
+
+    expect(wrapper.find('Title').text()).toMatchInlineSnapshot(`"Download Client Data"`);
+    // bug in toBeInTheDocument() assertion - https://github.com/testing-library/jest-dom/issues/313
+    expect(wrapper.find('Form')).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -391,7 +393,7 @@ describe('components/DownloadClientData', () => {
   });
 
   it('handles fetch error when fetching user data - team assignments', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
@@ -426,7 +428,7 @@ describe('components/DownloadClientData', () => {
 
   it('handles fetch error when fetching user location hierarchy', async () => {
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
 
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 

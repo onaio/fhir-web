@@ -6,6 +6,7 @@ import {
   getOpenSRPUserInfo,
   RouteParams,
   useOAuthLogin,
+  OauthCallbackProps,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
@@ -19,6 +20,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR_LOCATIONS,
   ENABLE_FHIR_TEAMS_MODULE,
 } from '../configs/env';
 import {
@@ -122,6 +124,10 @@ import {
   EditLocationUnit,
 } from '@opensrp/location-management';
 import {
+  LocationUnitList as FHIRLocationUnitList,
+  NewEditLocationUnit as FHIRNewEditLocationUnit,
+} from '@opensrp/fhir-location-management';
+import {
   BaseProps,
   jsonValidatorListProps,
   jsonValidatorFormProps,
@@ -206,19 +212,20 @@ export const SuccessfulLoginComponent = () => {
 };
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
+  const props = {
+    SuccessfulLoginComponent,
+    LoadingComponent,
+    providers,
+    oAuthUserInfoGetter: getOpenSRPUserInfo,
+    ...routeProps,
+    // ts bug - default props not working, ts asking for default props to be repassed https://github.com/microsoft/TypeScript/issues/31247
+  } as unknown as OauthCallbackProps<RouteParams>;
+
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
 
-  return (
-    <ConnectedOauthCallback
-      SuccessfulLoginComponent={SuccessfulLoginComponent}
-      LoadingComponent={LoadingComponent}
-      providers={providers}
-      oAuthUserInfoGetter={getOpenSRPUserInfo}
-      {...routeProps}
-    />
-  );
+  return <ConnectedOauthCallback {...props} />;
 };
 
 const App: React.FC = () => {
@@ -739,7 +746,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT}
               {...locationUnitProps}
-              component={LocationUnitList}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRLocationUnitList : LocationUnitList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -748,7 +755,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_ADD}
               {...newLocationUnitProps}
-              component={NewLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -757,7 +764,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_EDIT}
               {...editLocationProps}
-              component={EditLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

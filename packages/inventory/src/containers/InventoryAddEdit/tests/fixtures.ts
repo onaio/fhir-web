@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const inventoryNoProduct = {
   type: 'Stock',
   serverVersion: 12,

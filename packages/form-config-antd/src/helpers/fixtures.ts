@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const manifestRelease4 = {
   identifier: '1.0.30',
   json: '{"forms_version":"1.0.16","identifiers":["blood_screening.json"}',

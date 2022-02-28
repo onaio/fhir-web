@@ -22,7 +22,8 @@ interface ComponentProps extends Partial<RouteProps> {
   fhirBaseURL?: string;
 }
 
-/** Util wrapper around ConnectedPrivateRoute to render components
+/**
+ * Util wrapper around ConnectedPrivateRoute to render components
  *  that use private routes/ require authentication
  *
  * @param props - Component props object
@@ -52,7 +53,8 @@ export const PrivateComponent = (props: ComponentProps) => {
   return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
 };
 
-/** Util wrapper around Route for rendering components
+/**
+ * Util wrapper around Route for rendering components
  *  that use public routes/ dont require authentication
  *
  * @param props - Component props object
@@ -69,7 +71,8 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
   );
 };
 
-/** Util function to check if user is authorized to access a particular page
+/**
+ * Util function to check if user is authorized to access a particular page
  *
  * @param {string[]} roles - list of all user roles from keycloak
  * @param {string[]} activeRoles - list of roles required to access a module/page

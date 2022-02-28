@@ -28,6 +28,7 @@ export const KeyValueGrid = (props: KeyValuePairs) => {
  */
 export const SingleKeyNestedValue = (props: KeyValuePairs) => {
   const firstPair = Object.entries(props)[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
   return (

@@ -1,4 +1,5 @@
-/** component renders view where users can create plans
+/**
+  component renders view where users can create plans
  */
 import React from 'react';
 import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';

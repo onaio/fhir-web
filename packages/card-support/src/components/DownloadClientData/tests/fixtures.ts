@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const mother = {
   type: 'Client',
   dateCreated: '2020-11-26T04:43:26.392+01:00',
@@ -22,6 +22,7 @@ export const mother = {
     mother_tdv_doses: '2_plus_tdv_doses',
     mother_nationality: 'tunisian',
     registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+    registration_location_name: 'CSB Hopital Bouficha',
   },
   firstName: 'Massah',
   lastName: 'Nameless',
@@ -56,6 +57,7 @@ export const mother2 = {
     mother_tdv_doses: '2_plus_tdv_doses',
     mother_nationality: 'tunisian',
     registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+    registration_location_name: 'CSB Hopital Bouficha',
   },
   firstName: 'Massah',
   lastName: 'Nameless',
@@ -94,6 +96,7 @@ export const child1 = {
     place_of_birth: 'home',
     card_status_date: '2020-11-24T16:55:42.748Z',
     registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+    registration_location_name: 'CSB Hopital Bouficha',
   },
   firstName: 'Baby',
   lastName: 'Nameless',
@@ -137,6 +140,7 @@ export const child2 = {
     place_of_birth: 'hospital',
     card_status_date: '2020-11-24T16:55:42.748Z',
     registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+    registration_location_name: 'CSB Hopital Bouficha',
   },
   firstName: 'Baby',
   lastName: 'Hameed',

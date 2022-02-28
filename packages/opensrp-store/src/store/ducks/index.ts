@@ -72,7 +72,8 @@ export const fetchKeycloakUsers = (usersList: KeycloakUser[] = []): FetchKeycloa
   };
 };
 
-/** Remove users action creator
+/**
+ * Remove users action creator
  *
  * @returns {object} - the dispatcher to remove the user
  */
@@ -155,7 +156,8 @@ export const getUserIds = (_: Partial<Store>, props: KeycloakUsersFilters): stri
 export const getUsername = (_: Partial<Store>, props: KeycloakUsersFilters): string | undefined =>
   props.username;
 
-/** returns all users in the store as values whose keys are their respective ids
+/**
+ * returns all users in the store as values whose keys are their respective ids
  *
  * @param {any} state - the redux store
  * @returns {object} - users object as values, respective ids as keys
@@ -164,7 +166,8 @@ export function getKeycloakUsersById(state: Partial<Store>): { [key: string]: Ke
   return (state as Dictionary)[reducerName].usersById;
 }
 
-/** gets keycloak users as an array of user objects
+/**
+ * gets keycloak users as an array of user objects
  *
  * @param {any} state - the redux store
  * @returns {Array} - an array of users objs
@@ -216,6 +219,7 @@ export const getKeycloakUsersByIds = (): OutputParametricSelector<
     getUserIds,
     getKeycloakUsersArray,
     (usersById, ids, usersArray) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ids === undefined) {
         return usersArray;
       }
@@ -226,7 +230,8 @@ export const getKeycloakUsersByIds = (): OutputParametricSelector<
     }
   );
 
-/** practitioner array selector factory
+/**
+ * practitioner array selector factory
  * aggregates response from all applied filters and returns results
  *
  * @returns {Array} - aggregates response from all applied filters and returns results

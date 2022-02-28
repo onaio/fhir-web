@@ -20,6 +20,7 @@
     "@opensrp/ant-icons": "^0.0.1",
     "@opensrp/card-support": "^0.0.9",
     "@opensrp/error-boundary-fallback": "^0.0.7",
+    "@opensrp/fhir-location-management": "^0.0.1",
     "@opensrp/form-config-antd": "^0.0.4",
     "@opensrp/fhir-views": "^0.0.0",
     "@opensrp/fhir-quest-form": "^0.0.0",
@@ -36,7 +37,7 @@
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",
-    "@opensrp/fhir-team-management": "file:../packages/fhir-team-management",
+    "@opensrp/fhir-team-management": "^0.0.5",
     "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
     "@opensrp/user-management": "^0.1.19",
@@ -135,8 +136,8 @@
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
     "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1"
   },
   "devDependencies": {
     "i18next-parser": "^3.5.0"

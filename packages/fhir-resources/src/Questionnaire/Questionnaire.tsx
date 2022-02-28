@@ -42,7 +42,7 @@ const R4Parse = (resource: IQuestionnaire) => {
     publisher,
     effectivePeriod: effectivePeriod,
     lastReviewDate: intlFormatDateStrings(lastReviewDate),
-    date: intlFormatDateStrings((date as unknown) as string),
+    date: intlFormatDateStrings(date as unknown as string),
     description,
   };
 };

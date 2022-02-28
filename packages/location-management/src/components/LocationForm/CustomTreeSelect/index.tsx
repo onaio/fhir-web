@@ -23,7 +23,8 @@ const defaultProps = {
   baseURL: baseURL,
 };
 
-/** form field where user can select the parent location from a tree structure
+/**
+ * form field where user can select the parent location from a tree structure
  *
  * @param props - the component props
  */

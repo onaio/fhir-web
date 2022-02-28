@@ -1,11 +1,12 @@
-/** component renders view where users can edit products
+/**
+ * component renders view where users can edit products
  * in the catalogue
  */
 import { RouteParams } from '../../constants';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ProductForm } from '../ProductForm';
-import { Layout, PageHeader } from 'antd';
+import { Layout, PageHeader, Spin } from 'antd';
 import {
   fetchProducts,
   getProductById,
@@ -18,7 +19,6 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { CatalogueLoading } from '../ListView/utils';
 import Helmet from 'react-helmet';
 import { BrokenPage, useHandleBrokenPage } from '@opensrp/react-utils';
 import { Resource404 } from '@opensrp/react-utils';
@@ -68,7 +68,7 @@ const EditProductView = (props: EditProductViewTypes) => {
   }, [productId]);
 
   if (loading) {
-    return <CatalogueLoading />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (broken) {

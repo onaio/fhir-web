@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:14.9.0
+      - image: cimg/node:16.14.0
 
         environment:
           SKIP_PREFLIGHT_CHECK: 'true'
@@ -31,7 +31,7 @@ jobs:
 
       - run:
           name: build packages
-          command: yarn lerna:prepublish
+          command: yarn lerna:prepublish --concurrency=2
 
       - save_cache:
           paths:

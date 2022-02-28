@@ -6,6 +6,7 @@ import lang from '../../lang';
 import { Dictionary } from 'lodash';
 
 export interface TeamsDetailProps extends OrganizationDetail {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onClose?: Function;
 }
 

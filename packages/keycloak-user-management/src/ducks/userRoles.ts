@@ -61,7 +61,8 @@ export const fetchKeycloakUserRoles = (
   };
 };
 
-/** Remove user roles action creator
+/**
+ * Remove user roles action creator
  *
  * @returns {object} - the dispatcher to remove the user roles
  */
@@ -148,18 +149,20 @@ export const getRoleName = (_: Partial<Store>, props: Filters) => props.name;
  */
 export const getSearchText = (_: Partial<Store>, props: Filters) => props.searchText;
 
-/** returns all user roles in the store as values whose keys are their respective ids
+/**
+ * returns all user roles in the store as values whose keys are their respective ids
  *
  * @param {any} state - the redux store
  * @returns {object} - user roles object as values, respective ids as keys
  */
-export function getKeycloakUserRolesById(
-  state: Partial<Store>
-): { [key: string]: KeycloakUserRole } {
+export function getKeycloakUserRolesById(state: Partial<Store>): {
+  [key: string]: KeycloakUserRole;
+} {
   return (state as Dictionary)[reducerName].userRolesById;
 }
 
-/** gets keycloak user roles as an array of objects
+/**
+ * gets keycloak user roles as an array of objects
  *
  * @param {any} state - the redux store
  * @returns {Array} - an array of user roles objs
@@ -208,7 +211,8 @@ const userRolesByIdsSelector = getKeycloakUserRolesByIds();
 const userRolesByNameSelector = getUserRoleByName();
 
 export const makeKeycloakUserRolesSelector = () =>
-  /** user roles array selector factory
+  /**
+   * user roles array selector factory
    * aggregates response from all applied filters and returns results
    *
    * @returns {Array} - aggregates response from all applied filters and returns results

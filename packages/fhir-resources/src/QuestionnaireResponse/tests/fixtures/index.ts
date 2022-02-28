@@ -1,6 +1,10 @@
 import { IQuestionnaireResponse } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaireResponse';
 
+<<<<<<< HEAD
 export const openChoiceQuestRes = ({
+=======
+export const openChoiceQuestRes = {
+>>>>>>> 870-quest-questR-resources
   resourceType: 'QuestionnaireResponse',
   status: 'in-progress',
   questionnaire: 'Questionnaire/123',
@@ -17,4 +21,8 @@ export const openChoiceQuestRes = ({
       ],
     },
   ],
+<<<<<<< HEAD
 } as unknown) as IQuestionnaireResponse;
+=======
+} as unknown as IQuestionnaireResponse;
+>>>>>>> 870-quest-questR-resources
