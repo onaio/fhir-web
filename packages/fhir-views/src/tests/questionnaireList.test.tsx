@@ -1,7 +1,13 @@
 import React from 'react';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { QuestionnaireList } from '../QuestionnaireList';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -17,9 +23,15 @@ const props = {
   fhirBaseURL: 'http://example.com',
 };
 
-const rQClient = new QueryClient();
+const rQClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
-// TODO - boiler plate
 store.dispatch(
   authenticateUser(
     true,
@@ -28,7 +40,6 @@ store.dispatch(
       name: 'Bobbie',
       username: 'RobertBaratheon',
     },
-    // eslint-disable-next-line @typescript-eslint/camelcase
     { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
   )
 );
@@ -43,7 +54,19 @@ const App = (props: any) => {
     </Switch>
   );
 };
-nock.disableNetConnect();
+
+beforeAll(() => {
+  nock.disableNetConnect();
+});
+
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
 test('pagination events work correctly', async () => {
   const history = createMemoryHistory();
@@ -66,6 +89,7 @@ test('pagination events work correctly', async () => {
     })
     .reply(200, questionnairesPage2)
     .persist();
+
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
@@ -105,4 +129,6 @@ test('pagination events work correctly', async () => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
     });
   });
+
+  // search also works
 });
