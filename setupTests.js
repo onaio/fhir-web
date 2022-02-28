@@ -3,10 +3,11 @@
 // allows you to do things like:
 // learn more: https://github.com/testing-library/jest-dom
 import enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+// temp react 17 enzyme adapter before official adapter is released - https://github.com/enzymejs/enzyme/issues/2429#issuecomment-679265564
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { setLogger } from 'react-query';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { get, keyBy } from 'lodash';
-import { Spin, Button } from 'antd';
+import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
 import lang, { Lang } from '../../lang';
@@ -8,7 +8,8 @@ import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';
 
-/** component rendered in the action column of the table
+/**
+ * component rendered in the action column of the table
  *
  * @param record - table row record
  */
@@ -34,7 +35,8 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
   );
 };
 
-/** team assignment table columns factory
+/**
+ * team assignment table columns factory
  *
  * @param langObj -  the translation string lookup
  */
@@ -63,12 +65,6 @@ export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
   ];
 
   return columns;
-};
-
-/** util component shown when there is a pending promise */
-
-export const TeamAssignmentLoading = () => {
-  return <Spin size="large" />;
 };
 
 /**

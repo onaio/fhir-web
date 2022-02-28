@@ -1,4 +1,5 @@
-/** store location hierarchy information
+/**
+ * store location hierarchy information
  * - should be able to add a tree model
  * - modify the tree model in a manner such that shallow comparison would yield false
  * - provide the selectors
@@ -37,7 +38,8 @@ export type TreeActionTypes = FetchedTreeAction | SetLocationTreeStateAction | A
 
 // **************************** action creators ****************************
 
-/** action creator when adding a tree to store
+/**
+ * action creator when adding a tree to store
  *
  * @param {ParsedHierarchyNode} hierarchy - the raw hierarchy as received from opensrp
  * @returns {object} - action object
@@ -49,7 +51,8 @@ export function fetchAllHierarchies(hierarchy: ParsedHierarchyNode[]): FetchedTr
   };
 }
 
-/** action creator when adding a tree to store
+/**
+ * action creator when adding a tree to store
  *
  * @param {LocationTreeState} hierarchy - the tree state to be expanded
  * @returns {object} - action object
@@ -110,7 +113,8 @@ export function reducer(
   }
 }
 
-/** gets array of all hierarchies
+/**
+ * gets array of all hierarchies
  *
  * @param {Store} state - the store
  * @returns {object} - returns item from location-hierarchy reducer

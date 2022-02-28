@@ -5,6 +5,7 @@ import { LocationUnit } from '../../ducks/location-units';
 import lang from '../../lang';
 
 export interface Props extends LocationUnit {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onClose?: Function;
 }
 

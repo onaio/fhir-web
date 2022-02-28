@@ -13,7 +13,7 @@ import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-mana
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import lang, { Lang } from '../../lang';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 /** interface for user assignment response */
 export interface UserAssignment {
@@ -92,9 +92,8 @@ export const submitForm = async (
         ...flatNestedLocationIds,
         clientLocationId,
       ];
-      const stringifiedFlatNestedLocationIdsWithClientLocationId = flatNestedLocationIdsWithClientLocationId.join(
-        ','
-      );
+      const stringifiedFlatNestedLocationIdsWithClientLocationId =
+        flatNestedLocationIdsWithClientLocationId.join(',');
       return stringifiedFlatNestedLocationIdsWithClientLocationId;
     } catch (_) {
       sendErrorNotification(langObj.ERROR_OCCURRED);
@@ -141,7 +140,14 @@ export const submitForm = async (
             first_name: client.firstName,
             last_name: client.lastName,
             gender: client.gender,
-            facility_of_registration: location ? location.title : '',
+            // if registration location name does not exist,
+            // try extracting from location hierarchy using location id
+            facility_of_registration:
+              client.attributes.registration_location_name ??
+              // client.locationId has better occurrence than client.attributes.registration_location_id
+              // location.node.name has better occurrence than location.title or location.label
+              getLocationDetails(locations, client.locationId)?.node.name ??
+              '',
             date_of_registration: formatDDMMYYY(new Date(client.dateCreated.split('T')[0])),
             card_status: client.attributes.card_status,
             card_status_last_update: formatDDMMYYY(

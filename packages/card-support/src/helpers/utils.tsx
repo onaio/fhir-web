@@ -1,4 +1,5 @@
-/** Function to download data to a file
+/**
+ * Function to download data to a file
  *
  * @param {string} data - data to be written to file
  * @param {string} filename - name of the file to be saved
@@ -6,10 +7,11 @@
  */
 export const downloadFile = (data: string, filename: string, type: string) => {
   const file = new Blob([data], { type });
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (window.navigator.msSaveOrOpenBlob) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((window.navigator as any).msSaveOrOpenBlob) {
     // IE10+
-    window.navigator.msSaveOrOpenBlob(file, filename);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window.navigator as any).msSaveOrOpenBlob(file, filename);
   } else {
     // Others
     const docElement = document.createElement('a');

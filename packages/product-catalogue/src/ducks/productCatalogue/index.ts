@@ -1,4 +1,5 @@
-/** Redux module for product-catalogue
+/**
+ * Redux module for product-catalogue
  * initially developed for eusm-web
  */
 
@@ -13,7 +14,7 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 
-/** interface for a single Product catalogue as received from the api **/
+/** interface for a single Product catalogue as received from the api */
 export interface ProductCatalogue {
   productName: string;
   materialNumber: string;

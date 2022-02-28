@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../../ducks/practitioners';
 import { FormField } from '../Form';

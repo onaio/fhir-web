@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Store } from 'redux';
 import { loadSinglePlan } from '../../helpers/dataLoaders';
-import { PlansLoading } from '../ListView/utils';
 import { PlanAssignmentRouteParams } from '../../constants';
 import {
   plansReducer,
@@ -20,6 +19,8 @@ import PlanInfo from '../../components/PlanInfo';
 import { ActivateMissionCard } from '../../components/ActivateMission';
 import { ConnectedAssignmentTable } from '../../components/AssignmentTable';
 import { MissionData } from '../../components/MissionData';
+import { AssignmentTableProps } from '../../components/AssignmentTable';
+import { PlanLoading } from '../../helpers/utils';
 
 /** make sure plans reducer is registered */
 reducerRegistry.register(plansReducerName, plansReducer);
@@ -75,7 +76,7 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
   }, [planId]);
 
   if (loading) {
-    return <PlansLoading />;
+    return <PlanLoading />;
   }
 
   if (broken) {
@@ -102,7 +103,8 @@ const PlanAssignment = (props: PlanAssignmentTypes) => {
     plan,
     assignAtGeoLevel,
     disableAssignments: !planISDraftActive,
-  };
+    // ts bug - default props not working, ts asking for default props to be repassed https://github.com/microsoft/TypeScript/issues/31247
+  } as unknown as AssignmentTableProps;
 
   /** Page Header routes */
   return (

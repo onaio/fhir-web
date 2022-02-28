@@ -9,7 +9,7 @@ import {
   getTotalRecordsFactory,
 } from '@opensrp/reducer-factory';
 
-/** interface for location Unit Group **/
+/** interface for location Unit Group */
 export interface LocationUnitGroup {
   id: number;
   active: boolean;

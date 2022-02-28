@@ -12,6 +12,7 @@ import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import moment from 'moment';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -20,11 +21,14 @@ jest.mock('@opensrp/notifications', () => {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
 
-/** place to mount the application/component to the JSDOM document during testing.
+/**
+ * place to mount the application/component to the JSDOM document during testing.
  * https://github.com/reactstrap/reactstrap/issues/773#issuecomment-373451256
  */
 const div = document.createElement('div');
 document.body.appendChild(div);
+
+jest.setTimeout(30000);
 
 describe('containers/forms/PlanForm', () => {
   beforeEach(() => {
@@ -137,7 +141,6 @@ describe('containers/forms/PlanForm', () => {
   });
 
   it('Form validation works', async () => {
-    jest.setTimeout(10000);
     const container = document.createElement('div');
     document.body.appendChild(container);
 
@@ -159,7 +162,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -199,7 +202,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -245,7 +248,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -343,7 +346,7 @@ describe('containers/forms/PlanForm', () => {
       .simulate('change', { target: { name: 'description', value: 'Mission plan description' } });
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -352,7 +355,7 @@ describe('containers/forms/PlanForm', () => {
 
     await act(async () => {
       wrapper.find('form').simulate('submit');
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     expect(fetch).toHaveBeenCalled();
@@ -411,7 +414,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -470,7 +473,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -527,7 +530,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     wrapper.unmount();
@@ -567,7 +570,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -623,7 +626,7 @@ describe('containers/forms/PlanForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     // there are initially 4 activities
@@ -659,7 +662,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.removeActivity`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     // 1 less activity
@@ -699,7 +702,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.add-more-activities`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     // there should be one activity that can be added back
@@ -709,7 +712,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.find(`button.addActivity`).first().simulate('click');
     });
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     // we should have 6 activities again
@@ -800,7 +803,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise<any>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

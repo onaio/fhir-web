@@ -41,14 +41,8 @@ export const onDownloadClick = (
 };
 
 const TableActions = (props: TableActionsProps): JSX.Element => {
-  const {
-    file,
-    uploadFileURL,
-    accessToken,
-    opensrpBaseURL,
-    isJsonValidator,
-    customFetchOptions,
-  } = props;
+  const { file, uploadFileURL, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions } =
+    props;
 
   const menu = (
     <Menu>

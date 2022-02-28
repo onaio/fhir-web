@@ -41,7 +41,7 @@ describe('components/forms/UserFroupForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
       )
     );
@@ -137,7 +137,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -145,8 +145,7 @@ describe('components/forms/UserFroupForm', () => {
         {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
-          body:
-            '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Test1","path":"/Admin","subGroups":[]}',
+          body: '{"id":"283c5d6e-9b83-4954-9f3b-4c2103e4370c","name":"Test1","path":"/Admin","subGroups":[]}',
           headers: {
             accept: 'application/json',
             authorization: 'Bearer access token',
@@ -160,7 +159,7 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('usergroup is not created if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const wrapper = mount(<UserGroupForm {...props} />);
 
     await act(async () => {
@@ -177,14 +176,14 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
   });
 
   it('usergroup is not edited if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: fixtures.userGroup,
@@ -205,7 +204,7 @@ describe('components/forms/UserFroupForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();
@@ -223,7 +222,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     const button = wrapper.find('button.cancel-group');
     button.simulate('click');
@@ -232,7 +231,7 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('render correct user group name in header', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: fixtures.userGroup,

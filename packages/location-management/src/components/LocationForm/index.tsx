@@ -170,7 +170,7 @@ const LocationForm = (props: LocationFormProps) => {
             : lang.SUCCESSFULLY_CREATED_LOCATION;
 
           const params = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             is_jurisdiction: values.isJurisdiction,
           };
 

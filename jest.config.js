@@ -24,6 +24,7 @@ module.exports = {
       '<rootDir>/__mocks__/fileMock.js',
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
+  testEnvironment: 'jsdom',
 };
 
 // import dotenv from 'dotenv';

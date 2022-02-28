@@ -14,7 +14,8 @@ export const extraLinksDefault = {
   homeUrl: HOME_URL,
 };
 
-/** util component that is used in several other util-views that serve
+/**
+ * util component that is used in several other util-views that serve
  * as notification views
  */
 

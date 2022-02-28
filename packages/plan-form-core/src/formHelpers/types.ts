@@ -69,7 +69,7 @@ export type UseContextCodesType = typeof useContextCodes[number];
 export type PlanActionCodesType = typeof PlanActionCodes[number];
 
 /** Task generation status type */
-export type taskGenerationStatusType = keyof typeof taskGenerationStatuses;
+export type TaskGenerationStatusType = keyof typeof taskGenerationStatuses;
 
 /** Plan activity title type */
 export type PlanActivityTitlesType = typeof PlanActivityTitles[number];
@@ -137,7 +137,7 @@ export interface PlanFormFields {
   [opensrpEventId]?: string;
   [start]: DateType;
   [status]: PlanStatus;
-  [taskGenerationStatus]: taskGenerationStatusType;
+  [taskGenerationStatus]: TaskGenerationStatusType;
   [teamAssignmentStatus]?: string;
   [title]: string;
   [version]: string;
@@ -295,5 +295,5 @@ export interface EnvConfig {
   defaultTime: string;
   defaultActivityDurationDays: number;
   displayedPlanTypes: InterventionType[];
-  taskGenerationStatus: taskGenerationStatusType;
+  taskGenerationStatus: TaskGenerationStatusType;
 }

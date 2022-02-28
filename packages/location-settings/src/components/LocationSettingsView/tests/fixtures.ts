@@ -239,7 +239,7 @@ export const locationSettings: Setting[] = [
   },
 ];
 
-export const locationSettingslevel1: Setting[] = [
+export const locationSettingsLevel1: Setting[] = [
   {
     key: 'pop_hepc',
     value: 'false',
@@ -572,8 +572,7 @@ export const tree: ParsedHierarchyNode[] = [
                         },
                         parent: '44de66fb-e6c6-4bae-92bb-386dfe626eba',
                         title: 'Jambula Girls School',
-                        key:
-                          '982eb3f3-b7e3-450f-a38e-d067f2345212-02ebbc84-5e29-4cd5-9b79-c594058923e9',
+                        key: '982eb3f3-b7e3-450f-a38e-d067f2345212-02ebbc84-5e29-4cd5-9b79-c594058923e9',
                         children: [],
                       },
                       {
@@ -592,15 +591,13 @@ export const tree: ParsedHierarchyNode[] = [
                         },
                         parent: '44de66fb-e6c6-4bae-92bb-386dfe626eba',
                         title: 'Nsalo Secondary School',
-                        key:
-                          'ee08a6e0-3f73-4c28-b186-64d5cd06f4ce-02ebbc84-5e29-4cd5-9b79-c594058923e9',
+                        key: 'ee08a6e0-3f73-4c28-b186-64d5cd06f4ce-02ebbc84-5e29-4cd5-9b79-c594058923e9',
                         children: [],
                       },
                     ],
                     parent: '4e188e6d-2ffb-4b25-85f9-b9fbf5010d40',
                     title: 'Bukesa Urban Health Centre',
-                    key:
-                      '44de66fb-e6c6-4bae-92bb-386dfe626eba-02ebbc84-5e29-4cd5-9b79-c594058923e9',
+                    key: '44de66fb-e6c6-4bae-92bb-386dfe626eba-02ebbc84-5e29-4cd5-9b79-c594058923e9',
                   },
                 ],
                 parent: 'b1ef8a0b-275b-43fc-a580-1e21ceb34c78',
@@ -623,7 +620,7 @@ export const tree: ParsedHierarchyNode[] = [
   },
 ];
 
-export const securityauthenticateendpoint = {
+export const securityAuthenticateEndpoint = {
   jurisdictionIds: ['982eb3f3-b7e3-450f-a38e-d067f2345212', 'ee08a6e0-3f73-4c28-b186-64d5cd06f4ce'],
   locations: {
     locationsHierarchy: {

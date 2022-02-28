@@ -44,7 +44,7 @@
   "private": false,
   "dependencies": {
     "@helsenorge/core-utils": "^21.3.0-prerelease",
-    "@helsenorge/designsystem-react": ">=1.0.0-beta70",
+    "@helsenorge/designsystem-react": ">=1.0.0-beta109",
     "@helsenorge/skjemautfyller": "^7.11.0-prerelease2",
     "@helsenorge/toolkit": "^21.3.0-prerelease",
     "@opensrp/notifications": "^0.0.5",
@@ -54,8 +54,5 @@
     "marked": "^0.7.0",
     "redux-thunk": "^2.3.0",
     "tabbable": "^3.1.1"
-  },
-  "devDependencies": {
-    "sass": "^1.49.4"
   }
 }

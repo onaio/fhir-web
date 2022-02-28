@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { Button, Modal, Alert, Select } from 'antd';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
 import lang from '../../lang';
-import { SelectProps } from 'rc-select/lib/generate';
-import { Dictionary } from '@onaio/utils';
 
 /** describes how options should be formatted when passed to EditAssignment modals */
 export interface SelectOption {
@@ -14,7 +12,7 @@ export interface SelectOption {
 }
 
 export interface EditAssignmentsModalProps {
-  saveHandler?: (selectedOptions: SelectOption[]) => Promise<void | Error>;
+  saveHandler?: (selectedOptions: SelectOption | SelectOption[]) => Promise<void | Error>;
   cancelHandler?: () => void;
   existingOptions: SelectOption[];
   options: SelectOption[];
@@ -33,7 +31,8 @@ const defaultProps = {
   disabled: false,
 };
 
-/** Modal component used for either locations or teams assignments
+/**
+ * Modal component used for either locations or teams assignments
  *
  * @param {object} props - props
  * @returns {Element} -
@@ -52,7 +51,9 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
-  const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(existingOptions);
+  const [selectedOptions, setSelectedOptions] = useState<SelectOption | SelectOption[]>(
+    existingOptions
+  );
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -79,7 +80,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
     setIsModalVisible(false);
   };
 
-  const handleChange = (_: string[], options: SelectOption[]) => setSelectedOptions(options);
+  const handleChange = (_: string[], options: SelectOption | SelectOption[]) =>
+    setSelectedOptions(options);
   const defaultValue = existingOptions.map((option) => option.value);
 
   return (
@@ -104,10 +106,10 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
           style={{ width: '100%' }}
           placeholder={placeHolder}
           defaultValue={defaultValue}
-          onChange={handleChange as SelectProps<Dictionary[], string[]>['onChange']}
+          onChange={handleChange}
           options={options}
           showSearch={true}
-          filterOption={optionFilter as SelectProps<Dictionary[], string[]>['filterOption']}
+          filterOption={optionFilter}
         />
       </Modal>
     </>
@@ -118,11 +120,12 @@ EditAssignmentsModal.defaultProps = defaultProps;
 
 export { EditAssignmentsModal };
 
-/** filters what options to show depending on the string input
+/**
+ * filters what options to show depending on the string input
  *
  * @param input - the string input
  * @param option - a single option
  */
-export const optionFilter = (input: string, option: SelectOption) => {
-  return option.label.toLowerCase().includes(input.toLowerCase());
+export const optionFilter = (input: string, option?: SelectOption) => {
+  return option?.label.toLowerCase().includes(input.toLowerCase()) ?? false;
 };
