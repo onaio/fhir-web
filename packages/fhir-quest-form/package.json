@@ -44,7 +44,7 @@
   "private": false,
   "dependencies": {
     "@helsenorge/core-utils": "^21.3.0-prerelease",
-    "@helsenorge/designsystem-react": ">=1.0.0-beta109",
+    "@helsenorge/designsystem-react": ">=1.0.0-beta113",
     "@helsenorge/skjemautfyller": "^7.11.0-prerelease2",
     "@helsenorge/toolkit": "^21.3.0-prerelease",
     "@opensrp/notifications": "^0.0.5",
