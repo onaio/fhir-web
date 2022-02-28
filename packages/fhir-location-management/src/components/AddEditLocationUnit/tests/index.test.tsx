@@ -11,13 +11,11 @@ import { locationHierarchyResourceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
-
-nock.disableNetConnect();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,7 +49,13 @@ const AppWrapper = (props: any) => {
   );
 };
 
+afterEach(() => {
+  cleanup();
+  nock.cleanAll();
+});
+
 beforeAll(() => {
+  nock.disableNetConnect();
   store.dispatch(
     authenticateUser(
       true,
@@ -63,6 +67,10 @@ beforeAll(() => {
       { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
     )
   );
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
 });
 
 test('renders correctly for new locations', async () => {

@@ -60,6 +60,7 @@ const Questions = (props: QuestionProps) => {
   return (
     <ul className="questionnaireItemsList__questions-list">
       {questions.map((item, i) => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const hasLinkId = item.linkId === undefined || item.linkId === null;
         const type = item.type;
         const text = item.text;
