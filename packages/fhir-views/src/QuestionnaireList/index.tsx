@@ -13,6 +13,7 @@ import { PageHeader, Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { ParsedQuestionnaire, parseQuestionnaire } from '@opensrp/fhir-resources';
+import './index.css';
 
 /** props for the PlansList view */
 interface QuestionnaireListProps {

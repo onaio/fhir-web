@@ -124,9 +124,8 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Questionnaire resource={questData as IQuestionnaire} />,
       <Row className="list-view">
         <Col className="main-content">
-          <div className="main-content__header">
+          <div className="main-content__header flex-right">
             <Link
-              className="flex-right"
               to={`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`}
             >
               <Button type="primary">
