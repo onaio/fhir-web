@@ -1,8 +1,8 @@
-import { parseQuestionnaireResponseResource } from '../questionResponse';
+import { parseQuestionnaireResponse } from '../questionResponse';
 import { openChoiceQuestRes } from './fixtures';
 
 test('parse Resource is ok', () => {
-  expect(parseQuestionnaireResponseResource(openChoiceQuestRes)).toEqual({
+  expect(parseQuestionnaireResponse(openChoiceQuestRes)).toEqual({
     author: undefined,
     authoredDateTime: undefined,
     basedOn: undefined,
@@ -36,8 +36,6 @@ test('parse Resource is ok', () => {
 
   const qVersionTest = { ...openChoiceQuestRes, questionnaire: 'Questionnaire/3440/_history/20' };
   const qUndefVersionTest = { ...openChoiceQuestRes, questionnaire: undefined };
-  expect(parseQuestionnaireResponseResource(qVersionTest).questionnaireVersion).toEqual('20');
-  expect(parseQuestionnaireResponseResource(qUndefVersionTest).questionnaireVersion).toEqual(
-    'Current'
-  );
+  expect(parseQuestionnaireResponse(qVersionTest).questionnaireVersion).toEqual('20');
+  expect(parseQuestionnaireResponse(qUndefVersionTest).questionnaireVersion).toEqual('Current');
 });
