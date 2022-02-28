@@ -146,9 +146,9 @@ export function useSimpleTabularView<T extends Resource>(
     defaultPageSize,
     onChange: (current: number, pageSize?: number) => {
       if (current && pageSize) {
-        const newSParams = new URLSearchParams();
-        newSParams.append(pageSizeQuery, pageSize.toString());
-        newSParams.append(pageQuery, current.toString());
+        const newSParams = new URLSearchParams(location.search);
+        newSParams.set(pageSizeQuery, pageSize.toString());
+        newSParams.set(pageQuery, current.toString());
         history.push(`${match.url}?${newSParams.toString()}`);
       }
     },

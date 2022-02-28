@@ -126,6 +126,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <Link
+              className="flex-right"
               to={`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`}
             >
               <Button type="primary">
