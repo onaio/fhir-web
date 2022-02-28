@@ -92,8 +92,7 @@ test('questionnaireParsing - narrative preview extraction and missing title', ()
   const sampleNarrative = {
     text: {
       status: 'generated',
-      div:
-        '<div xmlns="http://www.w3.org/1999/xhtml">\n      <pre>\n            1.Comorbidity?\n              1.1 Cardial Comorbidity\n                1.1.1 Angina?\n                1.1.2 MI?\n              1.2 Vascular Comorbidity?\n              ...\n            Histopathology\n              Abdominal\n                pT category?\n              ...\n          </pre>\n    </div>',
+      div: '<div xmlns="http://www.w3.org/1999/xhtml">\n      <pre>\n            1.Comorbidity?\n              1.1 Cardial Comorbidity\n                1.1.1 Angina?\n                1.1.2 MI?\n              1.2 Vascular Comorbidity?\n              ...\n            Histopathology\n              Abdominal\n                pT category?\n              ...\n          </pre>\n    </div>',
     },
   };
   questClone.text = sampleNarrative.text;
