@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`pagination events work correctly: Search 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  <a
+    href="/quest-form/14159/Questionnaire"
+  >
+    Birth Notification CRVS sample
+  </a>
+</td>
+`;
+
+exports[`pagination events work correctly: Search 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  draft
+</td>
+`;
+
+exports[`pagination events work correctly: Search 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  ONA
+</td>
+`;
+
+exports[`pagination events work correctly: Search 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`pagination events work correctly: Search 1 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  
+</td>
+`;
+
+exports[`pagination events work correctly: Search 1 page 1 6`] = `
+<td
+  class="ant-table-cell"
+>
+  <a
+    href="/questR/14159"
+  >
+    View Questionnaire Responses
+  </a>
+</td>
+`;
+
 exports[`pagination events work correctly: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
@@ -31,9 +85,7 @@ exports[`pagination events work correctly: table row 1 page 1 3`] = `
 exports[`pagination events work correctly: table row 1 page 1 4`] = `
 <td
   class="ant-table-cell"
->
-  1
-</td>
+/>
 `;
 
 exports[`pagination events work correctly: table row 1 page 1 5`] = `
@@ -85,9 +137,7 @@ exports[`pagination events work correctly: table row 1 page 2 3`] = `
 exports[`pagination events work correctly: table row 1 page 2 4`] = `
 <td
   class="ant-table-cell"
->
-  1
-</td>
+/>
 `;
 
 exports[`pagination events work correctly: table row 1 page 2 5`] = `
@@ -139,9 +189,7 @@ exports[`pagination events work correctly: table row 2 page 1 3`] = `
 exports[`pagination events work correctly: table row 2 page 1 4`] = `
 <td
   class="ant-table-cell"
->
-  1
-</td>
+/>
 `;
 
 exports[`pagination events work correctly: table row 2 page 1 5`] = `
@@ -195,9 +243,7 @@ exports[`pagination events work correctly: table row 2 page 2 3`] = `
 exports[`pagination events work correctly: table row 2 page 2 4`] = `
 <td
   class="ant-table-cell"
->
-  1
-</td>
+/>
 `;
 
 exports[`pagination events work correctly: table row 2 page 2 5`] = `

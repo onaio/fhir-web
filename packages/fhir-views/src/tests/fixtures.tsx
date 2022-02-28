@@ -1531,3 +1531,204 @@ export const questRespPage2 = {
     },
   ],
 };
+
+export const questionnairesSearchPage = {
+  resourceType: 'Bundle',
+  id: '46ca50b7-f272-4a4e-b1a7-65e35086d2f7',
+  meta: {
+    lastUpdated: '2022-02-28T20:39:07.382+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'http://fhir.labs.smartregister.org/fhir/Questionnaire?_format=json&name%3Acontains=sample',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Questionnaire/14159',
+      resource: {
+        resourceType: 'Questionnaire',
+        id: '14159',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2022-01-11T18:28:15.337+00:00',
+          source: '#6ebf7edf6d9b5c60',
+          profile: ['http://ehelse.no/fhir/StructureDefinition/sdf-Questionnaire'],
+          tag: [
+            {
+              system: 'urn:ietf:bcp:47',
+              code: 'nb-NO',
+              display: 'Norsk Bokmål',
+            },
+          ],
+        },
+        language: 'en',
+        name: 'birth-notification-crvs-sample',
+        title: 'Birth Notification CRVS sample',
+        status: 'draft',
+        subjectType: ['Patient'],
+        publisher: 'ONA',
+        contact: [
+          {
+            name: 'http://ona.io',
+          },
+        ],
+        useContext: [
+          {
+            code: {
+              system: 'http://hl7.org/fhir/ValueSet/usage-context-type',
+              code: 'focus',
+              display: 'Clinical Focus',
+            },
+            valueCodeableConcept: {
+              coding: [
+                {
+                  system: 'urn:oid:2.16.578.1.12.4.1.1.8655',
+                },
+              ],
+            },
+          },
+        ],
+        item: [
+          {
+            linkId: '791e1b1c-a7f2-4f84-8af1-48fe6154cb26',
+            text: 'Child First Name ',
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '51e7a214-6e01-43ca-8adf-d07314eec2da',
+            text: 'Child Middle Name ',
+            type: 'string',
+            required: false,
+          },
+          {
+            linkId: '3139c685-4cb1-45ca-81cf-b5f2b5107e59',
+            text: 'Child Surname ',
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '1ebe07f7-7c49-4779-aa50-0f0ec8f1f59e',
+            text: 'Date of Birth/Delivery ',
+            type: 'date',
+            required: true,
+          },
+          {
+            linkId: '590b9eb1-3cb3-47cf-c1a5-505763edcff0',
+            text: 'Sex ',
+            type: 'choice',
+            required: true,
+            answerOption: [
+              {
+                valueCoding: {
+                  id: 'ee07abb9-f33e-419c-810a-8b10b4500d43',
+                  system: 'urn:uuid:23141177-da6c-4efe-dc0d-2c6e6b1a163c',
+                  code: 'male',
+                  display: 'Male',
+                },
+              },
+              {
+                valueCoding: {
+                  id: '84aabe6e-d482-476d-c5e4-d694e63aa96d',
+                  system: 'urn:uuid:23141177-da6c-4efe-dc0d-2c6e6b1a163c',
+                  code: 'female',
+                  display: 'Female',
+                },
+              },
+            ],
+          },
+          {
+            linkId: '71957883-b409-40e3-f797-33a8c4f9b023',
+            text: 'Place of Birth ',
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '8d8f5c59-0ede-4bd8-86d3-aee288cab9de',
+            text: 'Type of Birth Place ',
+            type: 'choice',
+            required: true,
+            answerOption: [
+              {
+                valueCoding: {
+                  id: '0a79e117-a96f-488d-ad0f-b34337a36240',
+                  system: 'urn:uuid:da1fd6e6-7b2f-4c7e-aae9-e62382069600',
+                  code: 'hospital',
+                  display: 'Hospital',
+                },
+              },
+              {
+                valueCoding: {
+                  id: '92fcf4f5-1f99-4df9-aad2-1fb23f42490b',
+                  system: 'urn:uuid:da1fd6e6-7b2f-4c7e-aae9-e62382069600',
+                  code: 'home',
+                  display: 'Home',
+                },
+              },
+              {
+                valueCoding: {
+                  id: '66145517-c676-43e4-9ee1-ba19e7c7f98f',
+                  system: 'urn:uuid:da1fd6e6-7b2f-4c7e-aae9-e62382069600',
+                  code: 'other',
+                  display: 'Other',
+                },
+              },
+            ],
+          },
+          {
+            linkId: '2d359883-06ad-4584-9442-9c97cdb72cde',
+            text: "Mother's Name ",
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '639753df-62f6-48c5-8173-b5e1bd8a61cb',
+            text: "Mother's National ID number ",
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '5f851424-9f29-4bfe-ea4f-fe6c8d33c8c2',
+            text: "Mother's DOB ",
+            type: 'date',
+            required: true,
+          },
+          {
+            linkId: '45bc011e-eff4-4a2c-8590-271362591bc6',
+            text: "Mother's Residence ",
+            type: 'string',
+            required: true,
+          },
+          {
+            linkId: '5ba77810-284e-4ed8-8795-c905f6e764af',
+            text: "Father's Name ",
+            type: 'string',
+          },
+          {
+            linkId: '89ce4928-1e0d-49b8-f4be-b57fa024e028',
+            text: "Father's National ID number ",
+            type: 'string',
+          },
+          {
+            linkId: '3dc8f0da-af3d-4835-af6c-386226d1efd5',
+            text: "Father's DOB ",
+            type: 'date',
+          },
+          {
+            linkId: '62ea4d5c-9b80-4a2e-b33c-3e8a67b43e55',
+            text: "Father's Residence ",
+            type: 'string',
+            required: true,
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
