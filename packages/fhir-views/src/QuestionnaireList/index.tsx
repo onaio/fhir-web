@@ -1,16 +1,18 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { BrokenPage, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   questionnaireResourceType,
   QUEST_FORM_VIEW_URL,
   QUEST_RESPONSE_VIEW_URL,
 } from '../constants';
 import { Column } from '@opensrp/react-utils';
-import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
-import { SimpleTabularView, SimpleTabularViewProps, TRQuery } from '../SimpleTabularView';
+import { useSimpleTabularView } from '../helpers/useSimpleTabularView';
+import { PageHeader, Row, Col, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Helmet } from 'react-helmet';
+import { ParsedQuestionnaire, parseQuestionnaire } from '@opensrp/fhir-resources';
 
 /** props for the PlansList view */
 interface QuestionnaireListProps {
@@ -22,7 +24,7 @@ interface QuestionnaireListProps {
  *
  * @param record - each data item
  */
-export const ActionsColumnCustomRender: Column<IQuestionnaire>['render'] = (
+export const ActionsColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
   record: IQuestionnaire
 ) => {
   return (
@@ -32,7 +34,7 @@ export const ActionsColumnCustomRender: Column<IQuestionnaire>['render'] = (
   );
 };
 
-export const NamesColumnCustomRender: Column<IQuestionnaire>['render'] = (
+export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
   record: IQuestionnaire
 ) => {
   return (
@@ -48,8 +50,8 @@ export const NamesColumnCustomRender: Column<IQuestionnaire>['render'] = (
  * generates columns for questionnaire rendering component
  *
  */
-export const getColumns = (): Column<IQuestionnaire>[] => {
-  const columns: Column<IQuestionnaire>[] = [
+export const getColumns = (): Column<ParsedQuestionnaire>[] => {
+  const columns: Column<ParsedQuestionnaire>[] = [
     {
       title: 'Name/Id',
       render: NamesColumnCustomRender,
@@ -57,21 +59,19 @@ export const getColumns = (): Column<IQuestionnaire>[] => {
     },
     {
       title: 'Status',
-      dataIndex: 'status',
+      dataIndex: 'status' as const,
     },
     {
       title: 'Publisher',
-      dataIndex: 'publisher',
+      dataIndex: 'publisher' as const,
     },
     {
       title: 'Version',
-      dataIndex: 'version',
-      render: (value, fullObj) => value ?? fullObj?.meta?.versionId ?? '',
+      dataIndex: 'version' as const,
     },
     {
       title: 'date',
-      dataIndex: 'date',
-      render: (value) => intlFormatDateStrings(value),
+      dataIndex: 'date' as const,
     },
     {
       title: 'Actions',
@@ -82,8 +82,6 @@ export const getColumns = (): Column<IQuestionnaire>[] => {
   return columns;
 };
 
-const questionnairesQueryKey = 'questionnaires';
-
 /**
  * api paginated table view listing questionnaires
  *
@@ -92,33 +90,49 @@ const questionnairesQueryKey = 'questionnaires';
 const QuestionnaireList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
 
-  type QueryKeyType = { queryKey: TRQuery };
-  const loadQuestionnaires = useCallback(
-    async ({ queryKey: [_, page, pageSize] }: QueryKeyType) => {
-      return new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).list({
-        _getpagesoffset: (page - 1) * pageSize,
-        _count: pageSize,
-      }) as Promise<IBundle>;
-    },
-    [fhirBaseURL]
+  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView(
+    fhirBaseURL,
+    questionnaireResourceType
   );
+  const { data, isFetching, isLoading, error } = queryValues;
 
-  const simpleTabularViewProps: SimpleTabularViewProps<IQuestionnaire> = {
-    queryKey: questionnairesQueryKey,
-    rQuery: {
-      queryFn: loadQuestionnaires,
-      select: (data: IBundle) => ({
-        records: (data?.entry?.map((dt) => dt.resource) ?? []) as IQuestionnaire[],
-        total: data.total ?? 0,
-      }),
-      keepPreviousData: true,
-      staleTime: 5000,
-    },
-    pageTitle: 'Questionnaire list view',
-    columns: getColumns(),
+  const columns = getColumns();
+  const dataSource = ((data?.records ?? []) as IQuestionnaire[]).map(parseQuestionnaire);
+  const tableProps = {
+    datasource: dataSource,
+    columns,
+    loading: isFetching || isLoading,
+    pagination: tablePaginationProps,
   };
 
-  return <SimpleTabularView {...simpleTabularViewProps} />;
+  if (error && !data) {
+    return <BrokenPage errorMessage={(error as Error).message} />;
+  }
+  const pageTitle = 'Questionnaire list view';
+
+  return (
+    <div className="content-section fhir-resource-container">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+
+      <Row className="list-view">
+        <Col className="main-content">
+          <div className="main-content__header">
+            <SearchForm {...searchFormProps} />
+            <Link to={'#'}>
+              <Button type="primary" disabled={true}>
+                <PlusOutlined />
+                Create questionnaire
+              </Button>
+            </Link>
+          </div>
+          <TableLayout {...tableProps} />
+        </Col>
+      </Row>
+    </div>
+  );
 };
 
 export { QuestionnaireList };
