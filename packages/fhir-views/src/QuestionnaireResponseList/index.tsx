@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { BrokenPage, TableLayout } from '@opensrp/react-utils';
+import { BrokenPage, Resource404, TableLayout } from '@opensrp/react-utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import {
   questionnaireResourceType,
@@ -104,6 +104,10 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
     return <BrokenPage errorMessage={'Problem loading questionnaire'} />;
   }
 
+  if (!questData) {
+    return <Resource404 />;
+  }
+
   const columns = getColumns();
   const dataSource = ((data?.records ?? []) as IQuestionnaireResponse[]).map(
     parseQuestionnaireResponse
@@ -121,7 +125,9 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <Link to={QUEST_FORM_VIEW_URL}>
+            <Link
+              to={`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`}
+            >
               <Button type="primary">
                 <PlusOutlined />
                 Fill form
