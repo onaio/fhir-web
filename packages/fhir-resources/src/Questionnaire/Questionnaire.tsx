@@ -34,6 +34,7 @@ const R4Parse = (resource: IQuestionnaire) => {
   let { title } = resource;
   title = title ?? id;
   return {
+    id,
     narrativePreview,
     title,
     rootItems,
