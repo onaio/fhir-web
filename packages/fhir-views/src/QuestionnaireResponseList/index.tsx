@@ -9,7 +9,7 @@ import {
 } from '../constants';
 import { useQuery } from 'react-query';
 import { Button, Col, Row, Spin } from 'antd';
-import { Column } from '@opensrp/react-utils';
+import { Column, intlFormatDateStrings } from '@opensrp/react-utils';
 import {
   parseQuestionnaireResponse,
   Questionnaire,
@@ -25,7 +25,7 @@ export interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
 
-export const qrListRouteKey = 'questId' as const;
+export const qrListRouteKey = 'id' as const;
 
 export interface RouteProps {
   [qrListRouteKey]: string;
@@ -58,6 +58,7 @@ const getColumns = (): Column<ParsedQuestionnaireResponse>[] => {
     {
       title: 'Date authored',
       dataIndex: 'authoredDateTime' as const,
+      render: (value) => intlFormatDateStrings(value),
     },
     {
       title: 'QuestionnaireVersion',
@@ -76,7 +77,7 @@ const getColumns = (): Column<ParsedQuestionnaireResponse>[] => {
 
 const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
-  const { questId } = useParams<RouteProps>();
+  const { id: questId } = useParams<RouteProps>();
 
   const {
     isLoading: QuestLoading,
