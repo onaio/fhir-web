@@ -47,9 +47,11 @@ const R4Parse = (resource: IQuestionnaire) => {
   };
 };
 
-export const parseQuestionnaireResource = (resource: IQuestionnaire) => {
+export const parseQuestionnaire = (resource: IQuestionnaire) => {
   return { ...commonParse(resource), ...R4Parse(resource) };
 };
+
+export type ParsedQuestionnaire = ReturnType<typeof parseQuestionnaire>;
 
 interface QuestionnaireProps {
   resource: IQuestionnaire;
@@ -67,7 +69,7 @@ export const Questionnaire = (props: QuestionnaireProps) => {
     subjectType,
     lastReviewDate,
     effectivePeriod,
-  } = parseQuestionnaireResource(resource);
+  } = parseQuestionnaire(resource);
   const questionnaireDetailProps: QuestionnaireDetailsProps = {
     title,
     publisher,

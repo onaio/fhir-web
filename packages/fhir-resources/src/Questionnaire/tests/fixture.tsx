@@ -1,6 +1,6 @@
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 
-export const openChoiceQuest = ({
+export const openChoiceQuest = {
   date: '2020-04-11T22:01:37.262Z',
   version: '1',
   status: 'draft',
@@ -59,9 +59,9 @@ export const openChoiceQuest = ({
       ],
     },
   ],
-} as unknown) as IQuestionnaire;
+} as unknown as IQuestionnaire;
 
-export const healthWorker = ({
+export const healthWorker = {
   meta: {
     profile: ['http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire|2.7'],
     tag: [
@@ -196,8 +196,7 @@ export const healthWorker = ({
           prefix: '3',
           item: [
             {
-              text:
-                'Required. Select the date for which the recorded data was collected for the following questions.',
+              text: 'Required. Select the date for which the recorded data was collected for the following questions.',
               type: 'display',
               linkId: '/G1/Q3-help',
               extension: [
@@ -221,4 +220,4 @@ export const healthWorker = ({
       ],
     },
   ],
-} as unknown) as IQuestionnaire;
+} as unknown as IQuestionnaire;
