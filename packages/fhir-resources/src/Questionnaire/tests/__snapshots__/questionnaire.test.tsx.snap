@@ -24,7 +24,7 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
   <dt
     class="keyValueGrid-pair__label"
   >
-    Version
+    Version:
   </dt>
   <dd
     class="keyValueGrid-pair__value"
@@ -247,7 +247,7 @@ exports[`no items edge case: questionnaire meta 2`] = `
   <dt
     class="keyValueGrid-pair__label"
   >
-    Version
+    Version:
   </dt>
   <dd
     class="keyValueGrid-pair__value"
@@ -366,7 +366,7 @@ exports[`view details show when available: questionnaire details keyValue pairs 
   <dt
     class="keyValueGrid-pair__label"
   >
-    Version
+    Version:
   </dt>
   <dd
     class="keyValueGrid-pair__value"

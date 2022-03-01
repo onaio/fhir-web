@@ -32,7 +32,7 @@ export const QuestionnaireDetails = (props: QuestionnaireDetailsProps) => {
     keyValuePairs['Last Changed:'] = date;
   }
   if (version) {
-    keyValuePairs['Version'] = version;
+    keyValuePairs['Version:'] = version;
   }
   if (subjectType) {
     keyValuePairs['Subject type:'] = subjectType;
