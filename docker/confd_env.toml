@@ -59,5 +59,6 @@ keys = [
     "/react/app/opensrp/web/version",
     "/react/app/opensrp/sentry/config/json",
     "/react/app/enable/fhir/locations",
-    "react/app/fhir/root/location/identifier"
+    "react/app/fhir/root/location/identifier",
+    "react/app/enable/quest"
 ]
