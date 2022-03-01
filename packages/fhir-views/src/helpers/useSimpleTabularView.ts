@@ -5,7 +5,7 @@ import { getConfig } from '@opensrp/pkg-config';
 import { RouteComponentProps, useHistory, useLocation, useRouteMatch } from 'react-router';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
-import { URLParams } from 'opensrp-server-service/dist/types';
+import { URLParams } from '@opensrp/server-service';
 
 interface FhirApiFilter {
   page: number;
