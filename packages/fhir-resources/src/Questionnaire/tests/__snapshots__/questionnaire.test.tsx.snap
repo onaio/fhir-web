@@ -34,47 +34,6 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
 </div>
 `;
 
-<<<<<<< HEAD
-exports[`Questionnaire profile view renders correctly: questionnaire items preview 1`] = `
-<ul
-  class="questionnaireItemsList"
->
-  <li
-    class="questionnaireItemsList-title"
-    data-testid="linkId-/G1/Q4"
-  >
-    <span
-      class="ant-typography"
-    >
-      What pizza toppings would you like?
-    </span>
-     
-    <span
-      class="ant-tag ant-tag-default"
-    >
-      linkId: 
-      /G1/Q4
-    </span>
-    <span
-      class="ant-tag ant-tag-default"
-    >
-      type: 
-      choice
-    </span>
-  </li>
-  <li>
-    <ul
-      class="questionnaireItemsList__questions-list"
-    >
-      <li
-        data-testid="linkId-/G1/Q4-help"
-      >
-        Favorite toppings
-      </li>
-    </ul>
-  </li>
-</ul>
-=======
 exports[`Questionnaire profile view renders correctly: questionnaire details keyValue pairs 3`] = `
 <div
   class="keyValueGrid-pair"
@@ -262,7 +221,6 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
     date
   </span>
 </li>
->>>>>>> 870-quest-questR-resources
 `;
 
 exports[`no items edge case: questionnaire meta 1`] = `
@@ -383,8 +341,6 @@ exports[`no items edge case: questionnaire meta 7`] = `
   </dd>
 </div>
 `;
-<<<<<<< HEAD
-=======
 
 exports[`view details show when available: questionnaire details keyValue pairs 1`] = `
 <div
@@ -460,4 +416,3 @@ exports[`view details show when available: questionnaire items preview 1`] = `
   </li>
 </ul>
 `;
->>>>>>> 870-quest-questR-resources
