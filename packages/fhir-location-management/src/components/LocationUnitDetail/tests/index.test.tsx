@@ -1,4 +1,4 @@
-import { render, waitForElementToBeRemoved, screen } from '@testing-library/react';
+import { render, waitForElementToBeRemoved, screen, cleanup } from '@testing-library/react';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LocationUnitDetail } from '..';
@@ -43,6 +43,11 @@ describe('location-management/src/components/LocationUnitDetail', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
+  });
+
+  afterEach(() => {
+    cleanup();
+    nock.cleanAll();
   });
 
   it('responds to errors', async () => {
