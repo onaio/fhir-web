@@ -54,8 +54,8 @@ window._env_ = {
   REACT_APP_ENABLE_SERVER_SETTINGS: "{{ getv "/react/app/enable/server/settings" "false" }}",
   REACT_APP_OPENSRP_API_V2_BASE_URL: "{{ getv "/react/app/opensrp/api/v2/base/url" "https://opensrp-stage.smartregister.org/opensrp/rest/v2/" }}",
   REACT_APP_OPENSRP_WEB_VERSION: "{{ getv "/react/app/opensrp/web/version" "" }}"
-  REACT_APP_SENTRY_CONFIG_JSON: "{{ getv "/react/app/opensrp/sentry/config/json"  ""}}"
+  REACT_APP_SENTRY_CONFIG_JSON: "{{ getv "/react/app/opensrp/sentry/config/json"  "" }}"
   REACT_APP_ENABLE_FHIR_LOCATIONS: "{{ getv "/react/app/enable/fhir/locations" "false" }}"
-  REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: "{{ getv "react/app/fhir/root/location/identifier" ""}}"
-  REACT_APP_ENABLE_QUEST: "{{getv "react/app/enable/quest" "false"}}"
+  REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: "{{ getv "react/app/fhir/root/location/identifier" "" }}"
+  REACT_APP_ENABLE_QUEST: "{{ getv "react/app/enable/quest" "false" }}"
 };
