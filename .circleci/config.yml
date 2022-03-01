@@ -11,6 +11,7 @@ jobs:
 
         environment:
           SKIP_PREFLIGHT_CHECK: 'true'
+          GENERATE_SOURCEMAP: 'false'
 
     working_directory: ~/web
 
