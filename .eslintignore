@@ -4,3 +4,4 @@ build/
 .eslintrc.js
 # testing
 coverage/
+jquery-3.2.1.slim.min.js
