@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
-import { parseQuestionnaireResource, Questionnaire } from '../Questionnaire';
+import { parseQuestionnaire, Questionnaire } from '../Questionnaire';
 import { openChoiceQuest, healthWorker } from './fixture';
 
 test('Questionnaire profile view renders correctly', () => {
@@ -96,7 +96,7 @@ test('questionnaireParsing - narrative preview extraction and missing title', ()
     },
   };
   questClone.text = sampleNarrative.text;
-  const got = parseQuestionnaireResource(questClone);
+  const got = parseQuestionnaire(questClone);
 
   expect(got.title).toEqual('12345');
   expect(got.narrativePreview).toBeDefined();

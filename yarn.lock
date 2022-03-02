@@ -1520,10 +1520,10 @@
   resolved "https://registry.yarnpkg.com/@helsenorge/core-utils/-/core-utils-21.3.0-prerelease.tgz#4adc1ccc3118c3461688a70ce989eb05110f0b6a"
   integrity sha512-Y76/s2UdNglnfR6ySADLp4uEHLl6LzRcaQU3ZZdDKMjEI03fjbb1O4rwQX9r6SDc8n9C5c8UYSXiyrBY4A7OVg==
 
-"@helsenorge/designsystem-react@>=1.0.0-beta109":
-  version "1.0.0-beta110"
-  resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta110.tgz#f0dad5a25abdf5127628a9c1ebc3cd3f2272c7d1"
-  integrity sha512-t2PQNzvkYhI4z+K9igZbw0LN01AVgB9iU2Mm/68hTj0blq0tvZjnHYVQNJNYolxugLX8vMuEW9HrauIWayo6sQ==
+"@helsenorge/designsystem-react@>=1.0.0-beta113":
+  version "1.0.0-beta113"
+  resolved "https://registry.yarnpkg.com/@helsenorge/designsystem-react/-/designsystem-react-1.0.0-beta113.tgz#30d1dfa518d97d98c1ebe7f7f4956de5a00b9d5a"
+  integrity sha512-dEhux2X3qO70MYMPOSqTYG93HVuoC6jM8fe2bjLj3XaYtJxZnFgrgDpYRmC3sKq9JvYIiSrUYvXNBa/1um3WXA==
   dependencies:
     bootstrap "4.6.1"
 
@@ -6380,6 +6380,21 @@ cheerio@^1.0.0-rc.2, cheerio@^1.0.0-rc.3:
     parse5-htmlparser2-tree-adapter "^6.0.1"
     tslib "^2.2.0"
 
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.3.0, chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.4.2, chokidar@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
+  integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
+  dependencies:
+    anymatch "~3.1.2"
+    braces "~3.0.2"
+    glob-parent "~5.1.2"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.6.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 chokidar@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
@@ -6398,21 +6413,6 @@ chokidar@^2.1.8:
     upath "^1.1.1"
   optionalDependencies:
     fsevents "^1.2.7"
-
-chokidar@^3.3.0, chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.4.2, chokidar@^3.5.3:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
-  integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
-  dependencies:
-    anymatch "~3.1.2"
-    braces "~3.0.2"
-    glob-parent "~5.1.2"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.6.0"
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 chownr@^1.1.1, chownr@^1.1.2, chownr@^1.1.4:
   version "1.1.4"
@@ -10446,10 +10446,10 @@ hsla-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/hsla-regex/-/hsla-regex-1.0.0.tgz#c1ce7a3168c8c6614033a4b5f7877f3b225f9c38"
   integrity sha1-wc56MWjIxmFAM6S194d/OyJfnDg=
 
-html-dom-parser@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/html-dom-parser/-/html-dom-parser-1.1.0.tgz#daf0ff559bb0c4ffe7543d507baeaf1e2ca14e2c"
-  integrity sha512-x3MOz8S8BkihGgggtp2N0U+JAWlD9iGERbjuBJH+gIGF9B1kGQh5x489IQ0YPqi8HyMIWCRLdJY1q3IaQlqG/Q==
+html-dom-parser@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/html-dom-parser/-/html-dom-parser-1.0.4.tgz#84878b54e1d434f25e611e44254b49d39340a81b"
+  integrity sha512-ThM/vK/18R5/cVB9UsqhNqbJU7LE2BmSA7C/FjYV88wIDW75GSUpvSE/JxE4mJ8bOuU6Kp15/I1giM2JbD+ieA==
   dependencies:
     domhandler "4.3.0"
     htmlparser2 "7.2.0"
@@ -10525,12 +10525,12 @@ html-parse-stringify@^3.0.1:
     void-elements "3.1.0"
 
 html-react-parser@^1.4.3:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-1.4.8.tgz#27bc0f9dc294c875daeca8a21a48d5b845a1364e"
-  integrity sha512-5XsBdFVhJLxdtRp7tWwZ6DwqOt6fJ+2lJc0lctwjX1yaxWNB41S5uzqii7vJcSCaabM+CK28U75e5f4wIMqdSg==
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-1.4.6.tgz#ad1ddf25f473377058c0580410e5f9c68ced6a49"
+  integrity sha512-tbKIw/aPsOmTZUs7sTSDDzfnBSAfHu8RpoNY8QhHloB//lr9eEM7qkzNbf/eXo4XIdo8ykZpB7ECQp3k+Iz10A==
   dependencies:
     domhandler "4.3.0"
-    html-dom-parser "1.1.0"
+    html-dom-parser "1.0.4"
     react-property "2.0.0"
     style-to-js "1.1.0"
 
@@ -10819,7 +10819,7 @@ immer@^9.0.7:
   resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.12.tgz#2d33ddf3ee1d247deab9d707ca472c8c942a0f20"
   integrity sha512-lk7UNmSbAukB5B6dh9fnh5D0bJTOFKxVg2cyJWTYrWRfhLrLMBquONcUs3aFq507hNoIZEDDh8lb8UtOizSMhA==
 
-"immutable@^3.8.1 || ^4.0.0":
+"immutable@^3.8.1 || ^4.0.0", immutable@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0.tgz#b86f78de6adef3608395efb269a91462797e2c23"
   integrity sha512-zIE9hX70qew5qTUjSS7wi1iwj/l7+m54KWU247nhM3v806UdGj1yDndXj+IOYxxtW9zyLI+xqFNZjTuDaLUqFw==
@@ -18887,6 +18887,15 @@ sass-loader@^12.3.0:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
+sass@^1.49.9:
+  version "1.49.9"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.49.9.tgz#b15a189ecb0ca9e24634bae5d1ebc191809712f9"
+  integrity sha512-YlYWkkHP9fbwaFRZQRXgDi3mXZShslVmmo+FVK3kHLUELHHEYrCmL1x6IUjC7wLS6VuJSAFXRQS/DxdsC4xL1A==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
+
 sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -19395,7 +19404,7 @@ source-list-map@^2.0.0, source-list-map@^2.0.1:
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
   integrity sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==
 
-source-map-js@^1.0.1, source-map-js@^1.0.2:
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.1, source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
