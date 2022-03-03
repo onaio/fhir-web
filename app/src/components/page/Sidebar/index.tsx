@@ -64,7 +64,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     <Layout.Sider width="275px" className="layout-sider">
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
+          <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" crossOrigin="use-credentials" />
         </Link>
         {OPENSRP_WEB_VERSION.length > 0 ? (
           <p className="sidebar-version">{OPENSRP_WEB_VERSION}</p>
