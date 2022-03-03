@@ -139,8 +139,5 @@
   },
   "devDependencies": {
     "i18next-parser": "^3.5.0"
-  },
-  "resolutions": {
-    "react-scripts/jest": "25.3.0"
   }
 }
