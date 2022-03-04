@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -23,9 +23,7 @@ import {
 import lang from '../../lang';
 import {
   KEYCLOAK_URL_USER_GROUPS,
-  ROUTE_PARAM_USER_GROUP_ID,
   SEARCH_QUERY_PARAM,
-  URL_USER_GROUPS,
   URL_USER_GROUP_CREATE,
   URL_USER_GROUP_EDIT,
 } from '../../constants';
@@ -85,9 +83,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     userGroupsSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const history = useHistory();
+  const [groupId, setGroupId] = useState<string | null>(null);
   const { keycloakBaseURL } = props;
-  const groupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID] ?? '';
 
   useEffect(() => {
     if (isLoading) {
@@ -159,9 +156,11 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                     overlay={
                       <Menu className="menu">
                         <Menu.Item
+                          key={record.id}
                           className="viewdetails"
                           onClick={() => {
-                            history.push(`${URL_USER_GROUPS}/${record.id}`);
+                            // open modal to view details and set group id
+                            setGroupId(record.id);
                           }}
                         >
                           {lang.VIEW_DETAILS}
@@ -179,7 +178,14 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             }}
           />
         </Col>
-        <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} />
+        {groupId ? (
+          <ViewDetails
+            // close modal
+            onClose={() => setGroupId(null)}
+            keycloakBaseURL={keycloakBaseURL}
+            groupId={groupId}
+          />
+        ) : null}
       </Row>
     </div>
   );

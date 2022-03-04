@@ -1,11 +1,10 @@
 import React from 'react';
 import { Col, Space, Typography, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { Resource404 } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Button } from 'antd';
-import { URL_USER_EDIT, URL_USER_GROUPS } from '../../constants';
+import { URL_USER_EDIT } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
 import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
 import { Link } from 'react-router-dom';
@@ -17,6 +16,7 @@ const { Text } = Typography;
 export interface ViewDetailsProps {
   groupId: string;
   keycloakBaseURL: string;
+  onClose: () => void;
 }
 
 /**
@@ -26,8 +26,7 @@ export interface ViewDetailsProps {
  * @param props - detail view component props
  */
 const ViewDetails = (props: ViewDetailsProps) => {
-  const { groupId, keycloakBaseURL } = props;
-  const history = useHistory();
+  const { groupId, keycloakBaseURL, onClose } = props;
   const [loading, setLoading] = React.useState<boolean>(true);
   const [userGroupMembers, setUserGroupMembers] = React.useState<UserGroupMembers[] | null>(null);
   const [singleUserGroup, setSingleUserGroup] = React.useState<KeycloakUserGroup | null>(null);
@@ -37,7 +36,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
       setLoading(true);
       const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
       const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
-      Promise.all([membersPromise, userGroupPromise])
+      Promise.allSettled([membersPromise, userGroupPromise])
         .catch(() => {
           sendErrorNotification(lang.ERROR_OCCURED);
         })
@@ -49,12 +48,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
   return (
     <Col className="view-details-content">
       <div className="flex-right">
-        <Button
-          icon={<CloseOutlined />}
-          shape="circle"
-          type="text"
-          onClick={() => history.push(URL_USER_GROUPS)}
-        />
+        <Button icon={<CloseOutlined />} shape="circle" type="text" onClick={() => onClose()} />
       </div>
       {loading ? (
         <Spin size="large" className="custom-ant-spin" />
@@ -68,6 +62,12 @@ const ViewDetails = (props: ViewDetailsProps) => {
           </Text>
           <Text type="secondary" className="display-block">
             {singleUserGroup?.name}
+          </Text>
+          <Text strong={true} className="display-block">
+            {lang.GROUP_UUID}
+          </Text>
+          <Text type="secondary" className="display-block">
+            {singleUserGroup?.id}
           </Text>
           <Text strong={true} className="display-block">
             {lang.ROLES}
