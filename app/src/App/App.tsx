@@ -174,6 +174,15 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
+import {
+  QuestionnaireList,
+  QuestionnaireResponseList,
+  QUEST_VIEW_URL,
+  QUEST_RESPONSE_VIEW_URL,
+  qrListRouteKey,
+  QUEST_FORM_VIEW_URL,
+} from '@opensrp/fhir-views';
+import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -243,6 +252,27 @@ const App: React.FC = () => {
               exact
               path={URL_HOME}
               component={ConnectedHomeComponent}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={`${QUEST_FORM_VIEW_URL}/:${resourceIdParam}/:${resourceTypeParam}`}
+              component={QuestRForm}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={`${QUEST_RESPONSE_VIEW_URL}/:${qrListRouteKey}`}
+              component={QuestionnaireResponseList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={QUEST_VIEW_URL}
+              component={QuestionnaireList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

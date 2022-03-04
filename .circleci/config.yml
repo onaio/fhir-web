@@ -11,6 +11,7 @@ jobs:
 
         environment:
           SKIP_PREFLIGHT_CHECK: 'true'
+          GENERATE_SOURCEMAP: 'false'
 
     working_directory: ~/web
 
@@ -31,7 +32,7 @@ jobs:
 
       - run:
           name: build packages
-          command: yarn lerna:prepublish
+          command: yarn lerna:prepublish --concurrency=2
 
       - save_cache:
           paths:
