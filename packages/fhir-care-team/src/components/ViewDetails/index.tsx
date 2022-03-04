@@ -78,7 +78,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         />
       </div>
       {isLoading ? (
-        <Spin size="large" className="custom-ant-spin" />
+        <Spin size="large" className="custom-spinner" />
       ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       !isLoading && careTeamId && !data ? (
         <Resource404 />
