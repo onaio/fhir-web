@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`components/CreateEditPractitionerRole renders correctly: full practitioner role form 1`] = `"Edit Practitioner Role | 388UUIDStatusActiveInactivePractitioner206Organization105SaveCancel"`;

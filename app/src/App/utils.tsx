@@ -43,8 +43,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamAffiliationProps = {
-  defaultPlanId: DEFAULT_PLAN_ID,
-  pageSize: FHIR_RESOURCES_PAGE_SIZE,
+  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
 };
 
 export const teamManagementProps = {

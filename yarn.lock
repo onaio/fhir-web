@@ -2855,34 +2855,11 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
-"@opensrp/fhir-team-management@file:packages/fhir-team-management":
-  version "0.0.5"
-  dependencies:
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.12"
-    uuid "^8.3.1"
-
 "@opensrp/notifications@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
   integrity sha512-7Gv+7x9OMc8nlAGnxid3fapU4vnpF4Dei64xZdxyWDvKRXVDzuP9a58E1UvDyfqTh/7F20YB9/f2YXutDVQprw==
   dependencies:
-    antd "^4.6.3"
-
-"@opensrp/react-utils@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@opensrp/react-utils/-/react-utils-0.0.10.tgz#94cd8dec89d63ec970661d0dd4b3e761efbb7685"
-  integrity sha512-RI2NAa1yPU0ayFjvtTLYn/sKK/9/NrKUeAGh0kbYNDkFwstCvxrXkBZORiv+sy0kpIkBjVBmtAM2mfjxsLxqIw==
-  dependencies:
-    "@onaio/connected-private-route" "^0.0.11"
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/session-reducer" "^0.0.12"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/server-service" "^0.0.17"
     antd "^4.6.3"
 
 "@opensrp/reducer-factory@^0.0.9":
@@ -2913,36 +2890,6 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
   integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
-
-"@opensrp/store@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@opensrp/store/-/store-0.0.9.tgz#e0b5cf49665e80ae377a2db40c046889d496f50a"
-  integrity sha512-v0JlRY51v/96Yw3IrM2E332cpv0FxS0Q4IE4yvVozZkDy4Hn0QQMVLOeExEMT2OHJq0XkwFXyHGdkBj21jVAeA==
-  dependencies:
-    "@onaio/connected-reducer-registry" "^0.0.3"
-    "@onaio/gatekeeper" "^0.1.1"
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/session-reducer" "^0.0.11"
-    "@onaio/utils" "^0.0.1"
-    connected-react-router "^6.8.0"
-    reselect "^4.0.0"
-
-"@opensrp/team-affiliation@file:packages/team-affiliation":
-  version "0.0.6"
-  dependencies:
-    "@onaio/redux-reducer-registry" "^0.0.9"
-    "@onaio/utils" "^0.0.1"
-    "@opensrp/location-management" "^0.0.15"
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/react-utils" "^0.0.12"
-    "@opensrp/reducer-factory" "^0.0.13"
-    "@opensrp/server-service" "^0.0.17"
-    "@opensrp/team-management" "^0.0.9"
-    antd "^4.6.3"
-    formik "^2.1.5"
-    formik-antd "2.0.1"
-    react-helmet "^6.1.0"
-    yup "^0.29.3"
 
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
@@ -8270,16 +8217,6 @@ fb-watchman@^2.0.0:
   integrity sha512-DkPJKQeY6kKwmuMretBhr7G6Vodr7bFwDYTXIkfG1gjvNpaxBTQV3PbXg6bR1c1UP4jPOX0jHUbbHANL9vRjVg==
   dependencies:
     bser "2.1.1"
-
-fhirclient@2.3.11:
-  version "2.3.11"
-  resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.3.11.tgz#daff5f605007d163a74cd7cd65130f0a60cef534"
-  integrity sha512-pBEcAJlMLeqrnDEYPDTV+BGooYIzwj0vsIjR7ppFF2qSHXEijgQ6IgyKkUB3EnnR4/UP91pCicjrnM/qFGV/2Q==
-  dependencies:
-    abortcontroller-polyfill "^1.5.0"
-    core-js "^3.6.5"
-    cross-fetch "^3.0.5"
-    debug "^4.1.1"
 
 fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"

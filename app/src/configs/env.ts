@@ -67,7 +67,7 @@ export const DEFAULT_PLAN_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_PLAN_DURATION_DAYS', 20)
 );
 
-export const ENABLE_FHIR_TEAMS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
+export const ENABLE_FHIR_TEAMS = setEnv('REACT_APP_ENABLE_FHIR_TEAMS', 'false') === 'true';
 
 /** Default plan id */
 export const DEFAULT_PLAN_ID = setEnv(
@@ -194,9 +194,6 @@ export const USER_FORM_RENDER_FIELDS = setEnv('REACT_APP_USER_FORM_RENDER_FIELDS
 export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000));
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
-
-export const ENABLE_FHIR_ORG_AFFILIATION =
-  setEnv('REACT_APP_ENABLE_FHIR_ORG_AFFILIATION', 'false') === 'true';
 
 export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
   'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
