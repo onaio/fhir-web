@@ -58,6 +58,7 @@ function fill() {
   lang.COMPOSITE = i18n.t(`Composite`, { ns: namespace });
   lang.DESCRIPTION = i18n.t(`Description`, { ns: namespace });
   lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.GROUP_UUID = i18n.t(`Group UUID`, { ns: namespace });
   lang.ROLES = i18n.t(`Roles`, { ns: namespace });
   lang.MEMBERS = i18n.t(`Members`, { ns: namespace });
   lang.ADD_USER = i18n.t(`Add User`, { ns: namespace });
