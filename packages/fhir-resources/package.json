@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/fhir-quest-form",
+  "name": "@opensrp/fhir-resources",
   "version": "0.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "fhir-quest-form"
+    "folderName": "fhir-resources"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
@@ -32,30 +32,14 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "antd": "^4.6.3",
     "react": "^16.18.1",
-    "react-query": "^3.34.8",
-    "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "antd": "^4.6.3"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@helsenorge/core-utils": "^21.3.0-prerelease",
-    "@helsenorge/designsystem-react": ">=1.0.0-beta113",
-    "@helsenorge/skjemautfyller": "^7.11.0-prerelease2",
-    "@helsenorge/toolkit": "^21.3.0-prerelease",
-    "@opensrp/notifications": "^0.0.5",
-    "@opensrp/react-utils": "^0.0.12",
-    "dompurify": "^2.0.8",
-    "fhirpath": "^2.7.3",
-    "marked": "^0.7.0",
-    "redux-thunk": "^2.3.0",
-    "tabbable": "^3.1.1"
-  },
-  "devDependencies": {
-    "sass": "^1.49.9"
+    "html-react-parser": "^1.4.3",
+    "@opensrp/react-utils": "0.0.12"
   }
 }
