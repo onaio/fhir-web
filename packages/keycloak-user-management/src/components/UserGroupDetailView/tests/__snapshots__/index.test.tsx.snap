@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View User Group Details works correctly: nominal display 1`] = `"NameProviderRolesPLANS_FOR_USERALL_EVENTSOPENMRSMembersdemoonadev"`;
+exports[`View User Group Details works correctly: nominal display 1`] = `"NameProviderGroup UUID261c67fe-918b-4369-a35f-095b5e284fcbRolesPLANS_FOR_USERALL_EVENTSOPENMRSMembersdemoonadev"`;
 
 exports[`View User Group Details works correctly: space element 1`] = `
 Object {
@@ -16,6 +16,18 @@ Object {
       type="secondary"
     >
       Provider
+    </Text>,
+    <Text
+      className="display-block"
+      strong={true}
+    >
+      Group UUID
+    </Text>,
+    <Text
+      className="display-block"
+      type="secondary"
+    >
+      261c67fe-918b-4369-a35f-095b5e284fcb
     </Text>,
     <Text
       className="display-block"

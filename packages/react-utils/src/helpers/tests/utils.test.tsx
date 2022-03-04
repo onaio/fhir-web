@@ -20,7 +20,7 @@ test('date formatting works correctly ', () => {
   jest.spyOn(config, 'getConfig').mockImplementation(() => {
     return { language: undefined };
   });
-  expect(intlFormatDateStrings('01 Jan 1970 00:00:00 GMT')).toEqual('1/1/1970');
+  expect(intlFormatDateStrings('01 Jan 1970 00:00:00 GMT')).toMatchInlineSnapshot(`"01/01/1970"`);
 
   jest.spyOn(config, 'getConfig').mockImplementation(() => {
     return { language: 'fr-FR' };

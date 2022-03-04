@@ -6,7 +6,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
 import { UserGroupsList } from '..';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -32,7 +32,8 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-const history = createBrowserHistory();
+const history = createMemoryHistory();
+history.push(URL_USER_GROUPS);
 
 const locationProps = {
   history,
@@ -279,6 +280,6 @@ describe('components/UserGroupsList', () => {
     wrapper.find('.viewdetails').at(0).simulate('click');
     wrapper.update();
     // Redirect to user group detail view
-    expect(history.location.pathname).toEqual(`${URL_USER_GROUPS}/${userGroups[0].id}`);
+    expect(history.location.pathname).toEqual(URL_USER_GROUPS);
   });
 });

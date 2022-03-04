@@ -8,13 +8,14 @@ import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import { ViewDetails } from '..';
 import * as fixtures from './fixtures';
-import { createBrowserHistory } from 'history';
+import { createMemoryHistory } from 'history';
 import { URL_USER_GROUPS } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import lang from '../../../lang';
 
-const history = createBrowserHistory();
+const history = createMemoryHistory();
+history.push(URL_USER_GROUPS);
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -47,6 +48,7 @@ describe('View User Group Details', () => {
       groupId: fixtures.userGroup1.id,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      onClose: jest.fn(),
     };
 
     const wrapper = mount(
@@ -72,6 +74,7 @@ describe('View User Group Details', () => {
       groupId: fixtures.userGroup1.id,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      onClose: jest.fn(),
     };
     const wrapper = mount(
       <Router history={history}>
@@ -124,6 +127,7 @@ describe('View User Group Details', () => {
       groupId: fixtures.userGroup1.id,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      onClose: jest.fn(),
     };
     const wrapper = mount(
       <Router history={history}>
@@ -147,6 +151,7 @@ describe('View User Group Details', () => {
       groupId: fixtures.userGroup1.id,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      onClose: jest.fn(),
     };
     const wrapper = mount(
       <Router history={history}>
@@ -172,6 +177,7 @@ describe('View User Group Details', () => {
       groupId: fixtures.userGroup1.id,
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      onClose: jest.fn(),
     };
     const wrapper = mount(
       <Router history={history}>
