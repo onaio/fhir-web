@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { StartUpload } from '..';
+import flushPromises from 'flush-promises';
 
 describe('upload start page', () => {
   it('renders and works correctly', async () => {
@@ -22,7 +23,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fileUploadMock).toHaveBeenCalledWith(file);
 
@@ -40,7 +41,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     wrapper.update();
   });
@@ -57,7 +58,7 @@ describe('upload start page', () => {
       wrapper.update();
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     wrapper.update();
   });

@@ -1,6 +1,6 @@
 import { fhirR4 } from '@smile-cdr/fhirts';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const userAuthData = {
   roles: ['ROLE_OPENMRS'],
   email: null,

@@ -24,7 +24,8 @@ export interface HierarchyNode<TChild> {
   parent?: string;
 }
 
-/** field that we will use to add ad-hoc information to a node
+/**
+ * field that we will use to add ad-hoc information to a node
  * this field will be added to each node during parsing the raw data from the api
  */
 export interface AddedFields {
@@ -35,12 +36,14 @@ export interface AddedFields {
 /** single node description after coming in from the api */
 export type RawHierarchyNode = HierarchyNode<RawHierarchyNodeMap>;
 
-/** single node description after our initial custom parsing in preparation of
+/**
+ * single node description after our initial custom parsing in preparation of
  * building the tree model
  */
 export type ParsedHierarchyNode = HierarchyNode<ParsedHierarchyNode[]> & AddedFields;
 
-/** in the opensrp api hierarchy response, the raw hierarchy will be key'd
+/**
+ * in the opensrp api hierarchy response, the raw hierarchy will be key'd
  * by the node's id
  */
 export interface RawHierarchyNodeMap {

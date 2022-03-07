@@ -9,7 +9,7 @@ import {
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { locationHierarchyResourceType, URL_LOCATION_UNIT } from '../../constants';
+import { locationHierarchyResourceType } from '../../constants';
 import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
@@ -25,7 +25,7 @@ export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   tree: TreeNode;
-  successURLGenerator: (payload: ILocation) => string;
+  successUrlGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
   hidden: string[];
   disabled: string[];
@@ -35,11 +35,10 @@ export interface LocationFormProps
 
 const defaultProps = {
   initialValues: defaultFormField,
-  successURLGenerator: () => URL_LOCATION_UNIT,
+  successUrlGenerator: () => '#',
   hidden: [],
   disabled: [],
-  onCancel: () => void 0,
-  afterSubmit: () => void 0,
+  onCancel: () => undefined,
 };
 
 /** responsive layout for the form labels and columns */
@@ -93,11 +92,11 @@ const LocationForm = (props: LocationFormProps) => {
     disabledTreeNodesCallback,
     fhirBaseURL,
     afterSubmit,
-    successURLGenerator,
+    successUrlGenerator: successURLGenerator,
     onCancel,
     tree,
   } = props;
-  const isEditMode = !!initialValues?.id;
+  const isEditMode = !!initialValues.id;
   const defaultParentNode =
     tree.first((node) => node.model.nodeId === initialValues.parentId) ?? tree;
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
@@ -152,12 +151,12 @@ const LocationForm = (props: LocationFormProps) => {
           postPutLocationUnit(payload, fhirBaseURL, isEditMode)
             .then(() => {
               const successUrl = successURLGenerator(payload);
-              setSuccessUrl(successUrl);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
               queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
+              setSuccessUrl(successUrl);
               setAreWeDoneHere(true);
             })
             .catch((err: Error) => {
@@ -168,112 +167,104 @@ const LocationForm = (props: LocationFormProps) => {
             });
         }}
       >
-        <>
-          <FormItem name="id" label={lang.ID_LABEL} rules={validationRules.id} hidden id="id">
-            <Input disabled></Input>
-          </FormItem>
+        <FormItem name="id" label={lang.ID_LABEL} rules={validationRules.id} hidden id="id">
+          <Input disabled></Input>
+        </FormItem>
 
-          <FormItem
-            id="parentId"
-            hidden={isHidden('parentId')}
-            label={lang.PARENT_LABEL}
-            name="parentId"
-            rules={validationRules.parentId}
-          >
-            <CustomTreeSelect
-              disabled={disabled.includes('parentId')}
-              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-              placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
-              disabledTreeNodesCallback={disabledTreeNodesCallback}
-              fullDataCallback={setParentNode}
-              tree={tree}
-            />
-          </FormItem>
+        <FormItem
+          id="parentId"
+          hidden={isHidden('parentId')}
+          label={lang.PARENT_LABEL}
+          name="parentId"
+          rules={validationRules.parentId}
+        >
+          <CustomTreeSelect
+            disabled={disabled.includes('parentId')}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
+            disabledTreeNodesCallback={disabledTreeNodesCallback}
+            fullDataCallback={setParentNode}
+            tree={tree}
+          />
+        </FormItem>
 
-          <FormItem
-            id="name"
-            rules={validationRules.name}
-            hidden={isHidden('name')}
-            name="name"
-            label={lang.NAME_LABEL}
-            hasFeedback
-          >
-            <Input
-              disabled={disabled.includes('name')}
-              placeholder={lang.ENTER_LOCATION_NAME_PLACEHOLDER}
-            ></Input>
-          </FormItem>
+        <FormItem
+          id="name"
+          rules={validationRules.name}
+          hidden={isHidden('name')}
+          name="name"
+          label={lang.NAME_LABEL}
+          hasFeedback
+        >
+          <Input
+            disabled={disabled.includes('name')}
+            placeholder={lang.ENTER_LOCATION_NAME_PLACEHOLDER}
+          ></Input>
+        </FormItem>
 
-          <FormItem
-            id="alias"
-            hidden={isHidden('alias')}
-            name="alias"
-            label={lang.ALIAS}
-            hasFeedback
-          >
-            <Input disabled={disabled.includes('description')} placeholder={lang.ALIAS}></Input>
-          </FormItem>
+        <FormItem id="alias" hidden={isHidden('alias')} name="alias" label={lang.ALIAS} hasFeedback>
+          <Input disabled={disabled.includes('description')} placeholder={lang.ALIAS}></Input>
+        </FormItem>
 
-          <FormItem
-            id="status"
-            rules={validationRules.status}
-            hidden={isHidden('status')}
-            label={lang.STATUS_LABEL}
-            name="status"
-          >
-            <Radio.Group name="active">
-              {status.map((e) => (
-                <Radio name="status" key={e.label} value={e.value}>
-                  {e.label}
-                </Radio>
-              ))}
-            </Radio.Group>
-          </FormItem>
+        <FormItem
+          id="status"
+          rules={validationRules.status}
+          hidden={isHidden('status')}
+          label={lang.STATUS_LABEL}
+          name="status"
+        >
+          <Radio.Group name="active">
+            {status.map((e) => (
+              <Radio name="status" key={e.label} value={e.value}>
+                {e.label}
+              </Radio>
+            ))}
+          </Radio.Group>
+        </FormItem>
 
-          <FormItem
-            hidden={isHidden('isJurisdiction')}
-            label={lang.PHYSICAL_TYPE}
-            name="isJurisdiction"
-            id="isJurisdiction"
-            rules={validationRules.isJurisdiction}
-          >
-            <Radio.Group
-              disabled={disabled.includes('isJurisdiction')}
-              options={locationCategoryOptions}
-            ></Radio.Group>
-          </FormItem>
+        <FormItem
+          hidden={isHidden('isJurisdiction')}
+          label={lang.PHYSICAL_TYPE}
+          name="isJurisdiction"
+          id="isJurisdiction"
+          rules={validationRules.isJurisdiction}
+        >
+          <Radio.Group
+            disabled={disabled.includes('isJurisdiction')}
+            options={locationCategoryOptions}
+          ></Radio.Group>
+        </FormItem>
 
-          <FormItem
-            id="description"
-            rules={validationRules.description}
-            hidden={isHidden('description')}
-            name="description"
-            label={lang.DESCRIPTION}
-            hasFeedback
-          >
-            <Input.TextArea
-              rows={4}
-              disabled={disabled.includes('description')}
-              placeholder={lang.DESCRIPTION}
-            />
-          </FormItem>
+        <FormItem
+          id="description"
+          rules={validationRules.description}
+          hidden={isHidden('description')}
+          name="description"
+          label={lang.DESCRIPTION}
+          hasFeedback
+        >
+          <Input.TextArea
+            rows={4}
+            disabled={disabled.includes('description')}
+            placeholder={lang.DESCRIPTION}
+          />
+        </FormItem>
 
-          <FormItem {...tailLayout}>
-            <Space>
-              <Button
-                type="primary"
-                id="location-form-submit-button"
-                disabled={isSubmitting}
-                htmlType="submit"
-              >
-                {isSubmitting ? lang.SAVING : lang.SAVE}
-              </Button>
-              <Button id="location-form-cancel-button" onClick={onCancel}>
-                {lang.CANCEL}
-              </Button>
-            </Space>
-          </FormItem>
-        </>
+        <FormItem {...tailLayout}>
+          <Space>
+            <Button
+              type="primary"
+              id="location-form-submit-button"
+              disabled={isSubmitting}
+              htmlType="submit"
+            >
+              {isSubmitting ? lang.SAVING : lang.SAVE}
+            </Button>
+            <Button id="location-form-cancel-button" onClick={onCancel}>
+              {lang.CANCEL}
+            </Button>
+          </Space>
+        </FormItem>
       </Form>
     </div>
   );

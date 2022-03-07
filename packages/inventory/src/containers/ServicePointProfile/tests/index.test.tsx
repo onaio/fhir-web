@@ -28,6 +28,8 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
 import { Helmet } from 'react-helmet';
+import flushPromises from 'flush-promises';
+
 reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 
 jest.mock('@opensrp/notifications', () => ({
@@ -72,7 +74,7 @@ store.dispatch(
       name: 'Bobbie',
       username: 'RobertBaratheon',
     },
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
   )
 );
@@ -99,7 +101,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -126,7 +128,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -170,7 +172,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -196,7 +198,7 @@ describe('Profile view Page', () => {
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -225,7 +227,7 @@ describe('Profile view Page', () => {
     /** loading view */
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

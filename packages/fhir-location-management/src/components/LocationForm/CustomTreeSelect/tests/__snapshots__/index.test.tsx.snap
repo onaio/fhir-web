@@ -24,7 +24,6 @@ exports[`FormComponents/CustomTreeSelect works correctly: selected option 1`] = 
 
 exports[`FormComponents/CustomTreeSelect works correctly: tree select combobox 1`] = `
 <input
-  aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
   aria-autocomplete="list"
   aria-controls="rc_select_TEST_OR_SSR_list"
   aria-haspopup="listbox"

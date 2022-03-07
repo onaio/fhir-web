@@ -59,19 +59,14 @@ const defaultProps = {
 
 export type ServicePointsListTypes = ServicePointsListProps & RouteComponentProps;
 
-/** component that renders service point list
+/**
+ * component that renders service point list
  *
  * @param props - the component props
  */
 const ServicePointList = (props: ServicePointsListTypes) => {
-  const {
-    trees,
-    rootLocations,
-    fetchLocationsCreator,
-    fetchTreesCreator,
-    baseURL,
-    structures,
-  } = props;
+  const { trees, rootLocations, fetchLocationsCreator, fetchTreesCreator, baseURL, structures } =
+    props;
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const [loadingStructures, setLoadingStructures] = useState<boolean>(structures.length === 0);
 
@@ -80,7 +75,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   useEffect(() => {
     const getCountParams = {
       serverVersion: 0,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: false,
     };
     loadCount(undefined, baseURL, getCountParams)
@@ -88,7 +83,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
         // get structures, this is the most important call for this page
         const params = {
           serverVersion: 0,
-          // eslint-disable-next-line @typescript-eslint/camelcase
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           is_jurisdiction: false,
           limit: count,
         };

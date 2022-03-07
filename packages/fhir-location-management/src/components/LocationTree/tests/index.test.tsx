@@ -38,6 +38,4 @@ describe('location-management/src/components/LocationTree', () => {
     await userEvent.type(input, 'laNgaTa');
     expect(screen.getByTitle(/langata/i)).toMatchSnapshot('langata search value');
   });
-
-  // TODO - test #474
 });

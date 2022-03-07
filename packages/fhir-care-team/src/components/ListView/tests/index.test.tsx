@@ -58,7 +58,7 @@ describe('Patients list view', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -154,7 +154,7 @@ describe('Patients list view', () => {
     wrapper.find('thead tr th').first().simulate('click');
 
     // look for pagination
-    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo to"`);
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo toPage"`);
     wrapper.find('.ant-pagination-item-2').simulate('click');
     await act(async () => {
       await flushPromises();
@@ -184,7 +184,7 @@ describe('Patients list view', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     wrapper.update();

@@ -18,6 +18,7 @@ const defaultRoles = {
   ORG_AFFILIATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  QUEST: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -170,7 +171,7 @@ export const ENABLE_LANGUAGE_SWITCHER =
 
 export const ENABLE_FHIR_LOCATIONS = setEnv('REACT_APP_ENABLE_FHIR_LOCATIONS', 'false') === 'true';
 
-export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'false') === 'true';
+export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true') === 'true';
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
@@ -197,7 +198,7 @@ export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_
 
 export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
   'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
-  'eff94f33-c356-4634-8795-d52340706ba9'
+  ''
 );
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
 
@@ -206,3 +207,5 @@ export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS',
 export const OPENSRP_WEB_VERSION = setEnv('REACT_APP_OPENSRP_WEB_VERSION', '');
 
 export const SENTRY_CONFIGS = JSON.parse(setEnv('REACT_APP_SENTRY_CONFIG_JSON', '{}'));
+
+export const ENABLE_QUEST = setEnv('REACT_APP_ENABLE_QUEST', 'false') === 'true';

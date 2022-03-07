@@ -4,6 +4,9 @@
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
+  "config": {
+    "folderName": "error-boundary-fallback"
+  },
   "scripts": {
     "test": " cd ../../ && pwd && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",

@@ -54,4 +54,5 @@ test('serializes tress', () => {
   expect(tree.all(() => true)).toHaveLength(2);
 
   expect(serializeTree([tree])).toEqual(serializedSample);
+  expect(serializeTree()).toBeUndefined();
 });

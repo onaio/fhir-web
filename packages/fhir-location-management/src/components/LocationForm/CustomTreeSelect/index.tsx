@@ -15,7 +15,8 @@ export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
 
 export const locationHierarchyResourceType = 'LocationHierarchy';
 
-/** form field where user can select the parent location from a tree structure
+/**
+ * form field where user can select the parent location from a tree structure
  *
  * @param props - the component props
  */
@@ -33,7 +34,7 @@ export const CustomTreeSelect = (props: CustomTreeSelectProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serializeTree(tree), fullDataCallback, value]);
 
-  const userDefinedRoots = tree?.children ?? [];
+  const userDefinedRoots = tree.children ?? [];
   const selectOptions = treeToOptions(userDefinedRoots, disabledTreeNodesCallback);
 
   const treeSelectProps: TreeSelectProps<DataNode> = {

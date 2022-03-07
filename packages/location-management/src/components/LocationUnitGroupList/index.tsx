@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input, Spin } from 'antd';

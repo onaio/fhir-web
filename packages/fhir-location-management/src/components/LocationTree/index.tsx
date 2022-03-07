@@ -65,7 +65,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
    * @param other -
    */
   function expandHandler(keys: Key[], other: unknown) {
-    const info = (other as unknown) as ExpandCallbackInfo;
+    const info = other as unknown as ExpandCallbackInfo;
     const thisNodeKey = info.node.data.model.nodeId;
     if (info.expanded) {
       setExpandedKeys([...expandedKeys, thisNodeKey]);
@@ -75,7 +75,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     }
   }
 
-  /** Function to handle event when tree search input changes value
+  /**
+   * Function to handle event when tree search input changes value
    *
    * @param {ChangeEvent<HTMLInputElement>} event the actual event
    */
@@ -84,7 +85,8 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     setSearchValue(value);
   }
 
-  /** process the data before it could be displayed in tree
+  /**
+   * process the data before it could be displayed in tree
    *
    * @param {Array<TreeNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
@@ -133,7 +135,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
       />
       <AntTree
         onSelect={(keys: Key[], other) => {
-          const info = (other as unknown) as SelectCallbackInfo;
+          const info = other as unknown as SelectCallbackInfo;
           if (info.selected) {
             onSelect(info.node.data);
           } else {

@@ -40,7 +40,8 @@ export const defaultProps = {
   extractViewDetails: defaultExtractViewDetails,
 };
 
-/** component that renders the view details to the right side
+/**
+ * component that renders the view details to the right side
  * of list view
  */
 

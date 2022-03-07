@@ -92,7 +92,7 @@ describe('Table Layout', () => {
     );
 
     await act(async () => {
-      wrapper.find('Table').find('.ant-pagination-item-3').simulate('click');
+      wrapper.find('TableLayout').find('.ant-pagination-item-3').simulate('click');
       wrapper.update();
     });
 
@@ -110,7 +110,7 @@ describe('Table Layout', () => {
     );
 
     await act(async () => {
-      wrapper1.find('Table').find('.ant-pagination-item-3').simulate('click');
+      wrapper1.find('TableLayout').find('.ant-pagination-item-3').simulate('click');
       wrapper1.update();
     });
 

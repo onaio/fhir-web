@@ -142,7 +142,7 @@ async function fetchOrgsRecursively(
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
+    (state) => getAllHierarchiesArray(state) as unknown as ParsedHierarchyNode[]
   );
   const assignmentsList: Assignment[] = useSelector((state) =>
     assignmentsSelector(state, { planId: defaultPlanId })

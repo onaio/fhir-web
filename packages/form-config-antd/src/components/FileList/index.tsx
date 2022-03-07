@@ -142,7 +142,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
           {!formVersion && (
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             <>
-              <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+              <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
                 {lang.UPLOAD_NEW_FILE}
               </Button>
@@ -170,6 +170,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             },
           }}
           datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => {
             setSortedInfo(sorter);
           }}

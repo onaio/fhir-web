@@ -11,19 +11,17 @@ import { locationHierarchyResourceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
-nock.disableNetConnect();
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
-      staleTime: 0,
+      cacheTime: 0,
     },
   },
 });
@@ -51,7 +49,13 @@ const AppWrapper = (props: any) => {
   );
 };
 
+afterEach(() => {
+  cleanup();
+  nock.cleanAll();
+});
+
 beforeAll(() => {
+  nock.disableNetConnect();
   store.dispatch(
     authenticateUser(
       true,
@@ -60,15 +64,20 @@ beforeAll(() => {
         name: 'Bobbie',
         username: 'RobertBaratheon',
       },
-      // eslint-disable-next-line @typescript-eslint/camelcase
       { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
     )
   );
 });
 
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
 test('renders correctly for new locations', async () => {
   const history = createMemoryHistory();
   history.push('/add');
+
+  const cancelUrlGenerator = '/cancelled';
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
@@ -79,7 +88,7 @@ test('renders correctly for new locations', async () => {
 
   render(
     <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+      <AppWrapper cancelUrlGenerator={cancelUrlGenerator} {...props}></AppWrapper>
     </Router>
   );
 
@@ -126,4 +135,50 @@ test('renders correctly for edit locations', async () => {
   // some small but incoclusive proof that the form rendered and has some initial values
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
   expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
+});
+
+test('data loading problem', async () => {
+  const history = createMemoryHistory();
+  history.push('/add');
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .replyWithError('something aweful happened');
+
+  nock(props.fhirBaseURL).get('/Location/someId').replyWithError('Throw in the towel, as well');
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // errors out
+  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
+});
+
+test('data loading but undefined', async () => {
+  const history = createMemoryHistory();
+  history.push('/add');
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .reply(200, null);
+
+  nock(props.fhirBaseURL).get('/Location/someId').reply(200, null);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // errors out
+  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
 });
