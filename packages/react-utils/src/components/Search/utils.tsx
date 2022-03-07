@@ -3,6 +3,8 @@ import queryString from 'querystring';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 
+// TODO - replace queryString(a node api) with an equivalent for the web. i.e URLSearchParams
+
 /** call handler function after this many milliseconds since when it was last invoked */
 export const DEBOUNCE_HANDLER_MS = 1000;
 
