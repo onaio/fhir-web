@@ -15,7 +15,8 @@ const defaultProps = {
   errorMessage: lang.RESOURCE_DOES_NOT_EXIST,
 };
 
-/** component shown when a requested resource is not found;
+/**
+ * component shown when a requested resource is not found;
  * the more canonical 404 component, is shown when a page is not yet bound
  * to the routing system, this component is to be used within an existing page
  * but where one or more resources to be shown on that page are deemed missing.

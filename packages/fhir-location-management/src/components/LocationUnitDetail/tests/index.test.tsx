@@ -1,4 +1,4 @@
-import { render, waitForElementToBeRemoved, screen } from '@testing-library/react';
+import { render, waitForElementToBeRemoved, screen, cleanup } from '@testing-library/react';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { LocationUnitDetail } from '..';
@@ -22,6 +22,7 @@ describe('location-management/src/components/LocationUnitDetail', () => {
     defaultOptions: {
       queries: {
         retry: false,
+        cacheTime: 0,
       },
     },
   });
@@ -39,10 +40,14 @@ describe('location-management/src/components/LocationUnitDetail', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
+  });
+
+  afterEach(() => {
+    cleanup();
+    nock.cleanAll();
   });
 
   it('responds to errors', async () => {

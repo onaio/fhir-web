@@ -40,7 +40,8 @@ export function descendingOrderSort<T extends object>(arr: T[], sortField: strin
   return arr;
 }
 
-/** a util to check if plan of type PlanDefinition is of the specified intervention type(s)
+/**
+ * a util to check if plan of type PlanDefinition is of the specified intervention type(s)
  *
  * @param {PlanDefinition} plan - the plan of interest
  * @param {InterventionType} interventionType if plan is of specified intervention type we return true

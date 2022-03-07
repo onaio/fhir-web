@@ -57,7 +57,8 @@ interface AssignmentsByPlanId {
 }
 /** interface for Assignments state in store */
 interface AssignmentsStoreState {
-  assignmentsByPlanId: AssignmentsByPlanId | {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  assignmentsByPlanId: AssignmentsByPlanId | Record<string, any>;
 }
 
 // immutable assignments state in dux
@@ -138,7 +139,8 @@ export const removeAssignmentsAction: RemoveAssignmentsAction = {
 
 // action creators
 
-/** creates action to add fetched assignments to store
+/**
+ * creates action to add fetched assignments to store
  *
  * @param assignmentsList - array of assignments to be added to store
  * @param overwrite - whether to overwrite assignments
@@ -164,7 +166,8 @@ export const fetchAssignments = (
   };
 };
 
-/** creates action to reset plan
+/**
+ * creates action to reset plan
  *
  * @param assignmentsByPlanId object with updated assignment arrays, keyed by planId
  * @returns action to clean plan assignments dux
@@ -185,18 +188,19 @@ interface AssignmentFilters {
   planId?: string;
 }
 
-/** get assignments as an object where their ids are the keys and the objects
+/**
+ * get assignments as an object where their ids are the keys and the objects
  * the values
  *
  * @param {object} state - Portion of the store
- *
  * @returns map of assignments key'ed by the plan ids
  */
 export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: Assignment[] } {
   return (state as Dictionary)[assignmentsReducerName].assignmentsByPlanId;
 }
 
-/** get plan id from filters
+/**
+ * get plan id from filters
  *
  * @param _ - the store
  * @param props - the props
@@ -204,7 +208,8 @@ export function getAssignmentsByPlanId(state: Partial<Store>): { [key: string]: 
  */
 export const getPlanId = (_: Partial<Store>, props: AssignmentFilters) => props.planId;
 
-/** Get all assignments as an array by id
+/**
+ * Get all assignments as an array by id
  *
  * @returns selector that gets assignments by planId in store as an array
  */

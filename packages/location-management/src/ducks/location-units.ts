@@ -15,7 +15,7 @@ import { Store } from 'redux';
 import { values } from 'lodash';
 import intersect from 'fast_array_intersect';
 
-/** interface for extra fields in location properties **/
+/** interface for extra fields in location properties */
 
 export interface ExtraField {
   key: string; // key with which the the payload will be sent to server
@@ -91,7 +91,8 @@ export const defaultFetchLocations = fetchActionCreatorFactory<LocationUnit>(
 );
 
 // modify actionCreator to add isJurisdiction information to location
-/** action creator to add locations to store,
+/**
+ * action creator to add locations to store,
  *
  * @param locations - the location objects
  * @param isJurisdiction - if the location is a jurisdiction or structure
@@ -121,14 +122,16 @@ export interface LocationUnitSelectFilters {
   ids?: string[];
 }
 
-/** get the searchQuery from filter props
+/**
+ * get the searchQuery from filter props
  *
  * @param _ the store
  * @param props - the filter props
  */
 const getSearchQuery = (_: Partial<Store>, props: LocationUnitSelectFilters) => props.searchQuery;
 
-/** get the isJurisdiction from filter props
+/**
+ * get the isJurisdiction from filter props
  *
  * @param _ the store
  * @param props - the filter props
@@ -136,7 +139,8 @@ const getSearchQuery = (_: Partial<Store>, props: LocationUnitSelectFilters) => 
 const getIsJurisdiction = (_: Partial<Store>, props: LocationUnitSelectFilters) =>
   props.isJurisdiction;
 
-/** get the ids from filter props
+/**
+ * get the ids from filter props
  *
  * @param _ the store
  * @param props - the filter props

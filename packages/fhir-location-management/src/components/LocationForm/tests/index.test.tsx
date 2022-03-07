@@ -13,8 +13,10 @@ import { createdLocation1, createdLocation2 } from './fixtures';
 import nock, { RequestBodyMatcher } from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
-import { fhirHierarchy } from '../../../ducks/tests/fixtures';
+import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { convertApiResToTree } from '../../../helpers/utils';
+import { cleanup, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -41,6 +43,7 @@ describe('LocationForm', () => {
     defaultOptions: {
       queries: {
         retry: false,
+        cacheTime: 0,
       },
     },
   });
@@ -69,7 +72,6 @@ describe('LocationForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -77,6 +79,7 @@ describe('LocationForm', () => {
 
   afterEach(() => {
     nock.cleanAll();
+    cleanup();
   });
 
   it('renders correctly', async () => {
@@ -97,7 +100,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -145,17 +148,17 @@ describe('LocationForm', () => {
       { attachTo: div }
     );
 
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-    });
-    wrapper.update();
-
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
+
+    await waitFor(() => {
+      const atLeastOneError = document.querySelector('.ant-form-item-explain-error');
+      expect(atLeastOneError).toBeInTheDocument();
+    });
 
     // not required
     expect(wrapper.find('FormItem#parentId').text()).toMatchInlineSnapshot(
@@ -188,10 +191,7 @@ describe('LocationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseURL)
-      .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
-      .reply(200, fhirHierarchy)
-      .post('/Location', (createdLocation1 as unknown) as RequestBodyMatcher)
+      .post('/Location', createdLocation1 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
@@ -200,13 +200,13 @@ describe('LocationForm', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <LocationForm successURLGenerator={successURLGeneratorMock} {...formProps} />
+        <LocationForm successUrlGenerator={successURLGeneratorMock} {...formProps} />
       </AppWrapper>,
       { attachTo: container }
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -255,9 +255,10 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
+      await flushPromises();
     });
+    wrapper.update();
+
     wrapper.unmount();
   });
 
@@ -283,7 +284,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -302,11 +303,11 @@ describe('LocationForm', () => {
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: formProps.fhirRootLocationIdentifier })
       .reply(200, fhirHierarchy)
-      .post('/Location', (createdLocation2 as unknown) as RequestBodyMatcher)
+      .post('/Location', createdLocation2 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
-    const initialValues = getLocationFormFields(createdLocation1);
+    const initialValues = getLocationFormFields(onaOfficeSubLocation);
 
     const wrapper = mount(
       <AppWrapper>
@@ -316,7 +317,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -348,7 +349,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

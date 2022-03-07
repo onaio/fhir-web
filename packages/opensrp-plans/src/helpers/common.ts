@@ -34,7 +34,8 @@ export const redirectMapping = {
   [PlanStatus.RETIRED]: RETIRED_PLANS_LIST_VIEW_URL,
 };
 
-/** plan form will redirect to the returned path after form submission based on the plan status
+/**
+ * plan form will redirect to the returned path after form submission based on the plan status
  *
  * @param {PlanStatus} status - status of the plan
  * @returns {string} - the redirect url

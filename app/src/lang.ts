@@ -47,6 +47,7 @@ export function lang(t: TFunction) {
     ADD_INVENTORY_VIA_CSV: t(`Add inventory via CSV`, { ns: namespace }),
     ORG_AFFILIATION: t(`Organization Affiliation`, { ns: namespace }),
     CARE_TEAM: t(`Care Teams Management`, { ns: namespace }),
+    QUESTIONNAIRE: t(`Questionnaire`, { ns: namespace }),
   };
 }
 

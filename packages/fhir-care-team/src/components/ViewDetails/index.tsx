@@ -18,7 +18,8 @@ export interface ViewDetailsProps {
   fhirBaseURL: string;
 }
 
-/** component that renders the details view to the right side
+/**
+ * component that renders the details view to the right side
  * of list view
  *
  * @param props - detail view component props

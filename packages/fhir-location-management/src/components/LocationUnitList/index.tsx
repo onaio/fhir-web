@@ -38,7 +38,8 @@ export interface AntTreeData {
   children: AntTreeData[];
 }
 
-/** Parse the hierarchy node into table data
+/**
+ * Parse the hierarchy node into table data
  *
  * @param  hierarchy - hierarchy node to be parsed
  * @returns array of table data
@@ -72,11 +73,11 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
 
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
-  const { data: treeData, isLoading: treeIsLoading, error: treeError } = useQuery<
-    IBundle,
-    Error,
-    TreeNode | undefined
-  >(
+  const {
+    data: treeData,
+    isLoading: treeIsLoading,
+    error: treeError,
+  } = useQuery<IBundle, Error, TreeNode | undefined>(
     [locationHierarchyResourceType, hierarchyParams],
     async () => {
       return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(

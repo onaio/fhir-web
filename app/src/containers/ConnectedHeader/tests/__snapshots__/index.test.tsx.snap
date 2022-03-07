@@ -2,12 +2,8 @@
 
 exports[`components/ConnectedHeader renders the ConnectedHeader component: child 1`] = `
 <Button
-  block={false}
   className="bg-transparent border-0"
-  ghost={false}
-  htmlType="button"
   icon={<ForwardRef(BellOutlined) />}
-  loading={false}
   type="primary"
 >
   <Link

@@ -4,13 +4,13 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, locationResourceType } from '../constants';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
-/** Parse the raw child hierarchy node map
+/**
+ * Parse the raw child hierarchy node map
  *
  * @param rawNodeMap - Object of raw hierarchy nodes
  * @returns Array of Parsed hierarchy nodes
@@ -49,9 +49,7 @@ export const generateFhirLocationTree = (rootNode: LocationHierarchyResource) =>
 };
 
 export const convertApiResToTree = (apiRes: IBundle) => {
-  const rootNode = (apiRes.entry?.[0].resource as Resource) as
-    | LocationHierarchyResource
-    | undefined;
+  const rootNode = apiRes.entry?.[0].resource as Resource as LocationHierarchyResource | undefined;
   if (!rootNode) {
     return;
   }
@@ -71,7 +69,8 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
   return JSON.stringify(sanitizeTrees.map((tree) => JSON.stringify(cycle.decycle(tree))));
 };
 
-/** get the location hierarchy of location with given identifier
+/**
+ * get the location hierarchy of location with given identifier
  *
  * @param baseUrl - the server base url
  * @param rootIdentifier - the location identifier
@@ -88,9 +87,6 @@ export const useGetLocationHierarchy = (baseUrl: string, rootIdentifier: string)
       );
     },
     {
-      onError: (err) => {
-        sendErrorNotification(err.message);
-      },
       select: (res: IBundle) => {
         return convertApiResToTree(res) as TreeNode;
       },

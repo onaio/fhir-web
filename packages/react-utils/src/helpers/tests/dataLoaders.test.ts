@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as dataLoaders from '../dataLoaders';
 import nock from 'nock';
@@ -13,12 +13,8 @@ import * as registry from '@onaio/connected-reducer-registry';
 import flushPromises from 'flush-promises';
 import { fhirR4 } from '@smile-cdr/fhirts';
 
-const {
-  fetchProtectedImage,
-  OpenSRPService,
-  handleSessionOrTokenExpiry,
-  FHIRServiceClass,
-} = dataLoaders;
+const { fetchProtectedImage, OpenSRPService, handleSessionOrTokenExpiry, FHIRServiceClass } =
+  dataLoaders;
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
@@ -53,7 +49,7 @@ describe('helpers/dataLoaders/fetchProtectedImage', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -161,7 +157,7 @@ describe('dataLoaders/OpenSRPService', () => {
 
     // refresh token throws an error
     const errorMessage = 'API is down';
-    fetch.mockRejectOnce(() => Promise.reject(errorMessage));
+    fetch.mockRejectOnce(new Error(errorMessage));
     store.dispatch(updateExtraData(authDataCopy));
     await handleSessionOrTokenExpiry().catch((e) => {
       expect(e.message).toEqual('Session Expired');
@@ -183,7 +179,7 @@ describe('dataloaders/FHIRService', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );

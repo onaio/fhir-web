@@ -72,7 +72,8 @@ const defaultProps = {
   disableAssignments: false,
 };
 
-/** Table component for eusm plan assignments, requires plan
+/**
+ * Table component for eusm plan assignments, requires plan
  *
  * @param props -the props
  */

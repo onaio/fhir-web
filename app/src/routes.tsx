@@ -22,8 +22,8 @@ import {
   OPENSRP_ROLES,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
+  ENABLE_QUEST,
 } from './configs/env';
-
 import {
   URL_USER,
   URL_LOCATION_UNIT,
@@ -41,6 +41,7 @@ import {
   URL_ADMIN,
 } from './constants';
 import lang, { TFunction } from './lang';
+import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 
 /** Interface for menu items */
 export interface Route {
@@ -190,6 +191,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               enabled: true,
             },
           ],
+        },
+        {
+          title: langObj.QUESTIONNAIRE,
+          key: 'fhir-quest',
+          enabled:
+            ENABLE_QUEST &&
+            roles &&
+            activeRoles.QUEST &&
+            isAuthorized(roles, activeRoles.QUEST.split(',')),
+          url: QUEST_VIEW_URL,
         },
         {
           title: langObj.FORM_CONFIGURATION,

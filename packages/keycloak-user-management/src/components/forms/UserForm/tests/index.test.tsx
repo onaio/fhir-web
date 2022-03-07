@@ -23,7 +23,7 @@ import { UserFormProps } from '../types';
 import { getFormValues } from '../utils';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 
@@ -73,7 +73,7 @@ describe('components/forms/UserForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'access token', state: 'abcde' } }
       )
     );
@@ -156,58 +156,80 @@ describe('components/forms/UserForm', () => {
   });
 
   it('form validation works for contact field', async () => {
-    const wrapper = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper1 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
 
     // found
-    expect(toJson(wrapper.find('#contact label'))).toMatchSnapshot('contact label');
-    expect(toJson(wrapper.find('#contact input'))).toMatchSnapshot('contact input');
+    expect(toJson(wrapper1.find('#contact label'))).toMatchSnapshot('contact label');
+    expect(toJson(wrapper1.find('#contact input'))).toMatchSnapshot('contact input');
 
     // empty error message; contact is required
-    wrapper.find('form').simulate('submit');
     await act(async () => {
+      wrapper1.find('form').simulate('submit');
       await flushPromises();
-      wrapper.update();
     });
-    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
+
+    wrapper1.update();
+
+    expect(wrapper1.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
+
+    const wrapper2 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
 
     // regex validation
-    wrapper
+    wrapper2
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: 'Test' } });
-    wrapper.find('form').simulate('submit');
+
     await act(async () => {
+      wrapper2.find('form').simulate('submit');
       await flushPromises();
-      wrapper.update();
     });
-    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
+
+    wrapper2.update();
+
+    expect(wrapper2.find('FormItemInput#contact').prop('errors')).toEqual([
       'Contact should be 10 digits and start with 0',
     ]);
+
+    const wrapper3 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
 
     // regex validation more than 10 alphanumerics
-    wrapper
+    wrapper3
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: '012345678910' } });
-    wrapper.find('form').simulate('submit');
+
     await act(async () => {
+      wrapper3.find('form').simulate('submit');
       await flushPromises();
-      wrapper.update();
     });
-    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([
+
+    wrapper3.update();
+
+    expect(wrapper3.find('FormItemInput#contact').prop('errors')).toEqual([
       'Contact should be 10 digits and start with 0',
     ]);
 
+    const wrapper4 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+
     // should now not have an error.
-    wrapper
+    wrapper4
       .find('input#contact')
       .simulate('change', { target: { name: 'contact', value: '0123456789' } });
-    wrapper.find('form').simulate('submit');
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    expect(wrapper.find('FormItemInput#contact').prop('errors')).toEqual([]);
 
-    wrapper.unmount();
+    await act(async () => {
+      wrapper4.find('form').simulate('submit');
+      await flushPromises();
+    });
+
+    wrapper4.update();
+
+    await act(async () => {
+      expect(wrapper4.find('FormItemInput#contact').prop('errors')).toEqual([]);
+    });
+
+    wrapper1.unmount();
+    wrapper2.unmount();
+    wrapper3.unmount();
+    wrapper4.unmount();
   });
 
   it('adds user', async () => {
@@ -302,7 +324,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fetch.mock.calls[0]).toEqual([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
@@ -377,7 +399,7 @@ describe('components/forms/UserForm', () => {
   });
 
   it('user is not created if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const wrapper = mount(<UserForm {...props} />);
 
     await act(async () => {
@@ -406,13 +428,13 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
 
   it('user is not edited if api is down', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: getFormValues(keycloakUser),
@@ -435,7 +457,7 @@ describe('components/forms/UserForm', () => {
     await act(async () => {
       wrapper.update();
     });
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
   });
@@ -452,7 +474,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     const button = wrapper.find('button.cancel-user');
     button.simulate('click');
@@ -460,7 +482,7 @@ describe('components/forms/UserForm', () => {
   });
 
   it('render correct user name in header', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const propEdit = {
       ...props,
       initialValues: keycloakUser,
