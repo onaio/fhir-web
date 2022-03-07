@@ -1,28 +1,20 @@
 /** Just shows a table that lists organizations, allows users to filter and
  * search organizations, and links to create/edit organization views.
  */
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { SearchForm, BrokenPage, TableLayout, getResourcesFromBundle } from '@opensrp/react-utils';
-import lang from '../../../lang';
+import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import {
   ADD_EDIT_ORGANIZATION_URL,
   ORGANIZATION_LIST_URL,
   organizationResourceType,
-  pageQuery,
-  pageSizeQuery,
-  searchQuery,
 } from '../../../constants';
 import { parseOrganization, ViewDetailsWrapper } from '../ViewDetails';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { getConfig } from '@opensrp/pkg-config';
-import { useQuery } from 'react-query';
-import { getNumberSearchParam, getStringSearchParam, listDataFetcher } from './utils';
 
 export type TRQuery = [string, number, number];
 
@@ -40,60 +32,22 @@ interface RouteParams {
  */
 export const OrganizationList = (props: OrganizationListProps) => {
   const { fhirBaseURL } = props;
-  const history = useHistory();
-  const location = useLocation();
-  const match = useRouteMatch();
 
-  const defaultPage = 1;
-  const page = getNumberSearchParam(location, pageQuery, defaultPage);
-  const search = getStringSearchParam(location, searchQuery);
-  const defaultPageSize = (getConfig('defaultTablesPageSize') as number | undefined) ?? 20;
-  const pageSize = getNumberSearchParam(location, pageSizeQuery, defaultPageSize);
-  const { id: resourceId } = useParams<RouteParams>();
-
-  type TRQuery = [string, number, number, string];
-  type QueryKeyType = { queryKey: TRQuery };
-  const loadResources = useCallback(
-    async (rOptions) => {
-      const {
-        queryKey: [qKey, page, pageSize, search],
-      }: QueryKeyType = rOptions;
-      return listDataFetcher(fhirBaseURL, qKey, { page, pageSize, search });
-    },
-    [fhirBaseURL]
+  const {id: resourceId} = useParams<RouteParams>()
+  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IOrganization>(
+    fhirBaseURL,
+    organizationResourceType
   );
-  const rQuery = {
-    queryFn: loadResources,
-    select: (data: IBundle) => ({
-      records: getResourcesFromBundle<IOrganization>(data),
-      total: data.total ?? 0,
-    }),
-    keepPreviousData: true,
-    staleTime: 5000,
-    queryKey: [organizationResourceType, page, pageSize, search] as TRQuery,
-  };
-  const { data, error, isFetching } = useQuery(rQuery);
+  const { data, isFetching, isLoading, error } = queryValues;
+
+  if (error && !data) {
+    return <BrokenPage errorMessage={(error as Error).message} />;
+  }
 
   if (error && !data) {
     return <BrokenPage errorMessage={'Problem loading data'} />;
   }
 
-  const searchFormProps = {
-    defaultValue: getStringSearchParam(location, searchQuery) ?? undefined,
-    onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => {
-      const searchText = event.target.value;
-      let nextUrl = match.url;
-      const currentSParams = new URLSearchParams(location.search);
-      if (searchText) {
-        currentSParams.set(searchQuery, searchText);
-        currentSParams.set(pageQuery, defaultPage.toString());
-      } else {
-        currentSParams.delete(searchQuery);
-      }
-      nextUrl = `${nextUrl}?${currentSParams.toString()}`;
-      history.push(nextUrl);
-    },
-  };
 
   const tableData = (data?.records ?? []).map((org: IOrganization, index: number) => {
     return {
@@ -146,22 +100,9 @@ export const OrganizationList = (props: OrganizationListProps) => {
 
   const tableProps = {
     datasource: tableData,
-    columns: columns,
-    loading: isFetching,
-    pagination: {
-      current: page,
-      pageSize,
-      total: data?.total,
-      defaultPageSize,
-      onChange: (current: number, pageSize?: number) => {
-        if (current && pageSize) {
-          const newSParams = new URLSearchParams(location.search);
-          newSParams.append(pageSizeQuery, pageSize.toString());
-          newSParams.append(pageQuery, current.toString());
-          history.push(`${match.url}?${newSParams.toString()}`);
-        }
-      },
-    },
+    columns,
+    loading: isFetching || isLoading,
+    pagination: tablePaginationProps,
   };
 
   return (

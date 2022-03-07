@@ -9,19 +9,30 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { organizationResourceType, ORGANIZATION_LIST_URL } from '../../../constants';
+import { organizationResourceType, ORGANIZATION_LIST_URL } from '../../../../constants';
 import { organizationSearchPage1, organizationsPage1, organizationsPage2 } from './fixtures';
 import userEvents from '@testing-library/user-event';
-import _ from 'lodash';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
-const actualDebounce = _.debounce;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const customDebounce = (callback: any) => callback;
-_.debounce = customDebounce;
+jest.mock('@opensrp/react-utils', () => {
+  const actual = jest.requireActual('@opensrp/react-utils');
+
+ const SearchForm = (props: any) => {
+  const { onChangeHandler, ...otherProps } = props;
+  return (
+    <div className="search-input-wrapper">
+      <input onChange={onChangeHandler} data-testid="search-form"></input>
+    </div>
+  );
+};
+  return {
+    ...actual,
+    SearchForm
+  }
+})
 
 nock.disableNetConnect();
 
@@ -77,7 +88,6 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  _.debounce = actualDebounce;
   nock.enableNetConnect();
 });
 
@@ -157,8 +167,8 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // remove search.
-  await userEvents.type(searchForm, '');
-  expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
+  await userEvents.clear(searchForm);
+  expect(history.location.search).toEqual('?pageSize=20&page=1');
 
   // view details
   nock(props.fhirBaseURL)
@@ -211,5 +221,5 @@ test('responds as expected to errors', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(screen.getByText(/Problem loading data/)).toBeInTheDocument();
+  expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

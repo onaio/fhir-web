@@ -69,7 +69,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
           [key]: value,
         };
         return value ? (
-          <div key={key} data-testId="key-value">
+          <div key={key} data-testid="key-value">
             <SingleKeyNestedValue {...props} />
           </div>
         ) : null;
