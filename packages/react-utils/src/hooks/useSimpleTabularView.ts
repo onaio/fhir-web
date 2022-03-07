@@ -1,5 +1,7 @@
 import { ChangeEvent, useCallback } from 'react';
-import { FHIRServiceClass, getQueryParams, getResourcesFromBundle } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '../helpers/dataLoaders';
+import {getQueryParams} from '../components/Search/utils';
+import { getResourcesFromBundle} from '../helpers/utils';
 import { useQuery } from 'react-query';
 import { getConfig } from '@opensrp/pkg-config';
 import { RouteComponentProps, useHistory, useLocation, useRouteMatch } from 'react-router';
@@ -47,7 +49,7 @@ const getNumberParam = (
 };
 
 /**
- * Unified function that gets a list of fhir resources from any endpoint
+ * Unified function that gets a list of FHIR resources from a FHIR hapi server
  *
  * @param baseUrl - base url
  * @param resourceType - resource type as endpoint
@@ -76,6 +78,7 @@ const loadResources = (
 
 /**
  * Re-usable hook that abstracts search and table pagination for usual list view component
+ * Should only be used when getting data from a server that follows the hapi FHIR spec
  *
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
