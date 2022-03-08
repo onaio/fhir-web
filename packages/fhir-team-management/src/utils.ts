@@ -1,26 +1,28 @@
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
-import { flatten, keyBy, transform } from 'lodash';
-import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
-import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+import { keyBy, transform } from 'lodash';
 import {
-  IdentifierUseCodes,
-  organizationAffiliationResourceType,
   organizationResourceType,
-  OrganizationTypeVS,
   practitionerResourceType,
   practitionerRoleResourceType,
 } from './constants';
 import { v4 } from 'uuid';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
-import { Dictionary } from '@onaio/utils';
-import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
-import { sendSuccessNotification } from '@opensrp/notifications';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { URLParams } from 'opensrp-server-service/dist/types';
+import { OrganizationFormFields } from './components/AddEditOrganization/utils';
+import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
-const getObjLike = <T extends object>(
+/**
+ * retrieve object(s) from an array if it has a property with specified value
+ *
+ * @param objArr - array of objects
+ * @param key - the accessor
+ * @param value - the value the accessor should have
+ * @param all - whether to return all values that are matched or just the first
+ */
+export const getObjLike = <T extends object>(
   objArr: T[] | undefined,
   key: string,
   value: unknown,
@@ -35,105 +37,18 @@ const getObjLike = <T extends object>(
       result.push(thisObj);
     }
     if (result.length > 0 && !all) {
-      return result[0];
+      return result;
     }
   }
   return result;
 };
 
-export const getOrgFormFields = (
-  org?: IOrganization,
-  assignedPractitioners: IPractitionerRole[] = []
-): OrganizationFormFields => {
-  const organizationTypeValueSet = 'http://terminology.hl7.org/CodeSystem/organization-type';
-  if (!org) {
-    return {};
-  }
-  const { id, name, alias, active, identifier, type } = org;
-  // collect all codings in codeableconcepts for organization.type
-  const allTypeCodings = flatten(
-    (type ?? []).map((codeConcept) => Object.values(codeConcept.coding ?? {}))
-  );
-  // collect just codings fo the organizationTypeValueSet system
-  const valueSetCodings = getObjLike(
-    allTypeCodings,
-    'system',
-    organizationTypeValueSet,
-    true
-  ) as Coding[];
-
-  const identifierObj = getObjLike(identifier, 'use', IdentifierUseCodes.OFFICIAL) as Identifier;
-  const formFields = {
-    id,
-    identifier: identifierObj?.value,
-    active,
-    name,
-    alias: alias?.[0],
-    type: valueSetCodings,
-    members: assignedPractitioners.map((pract) => pract.practitioner?.reference as string),
-  };
-  return formFields;
-};
-
-export interface OrganizationFormFields {
-  id?: string;
-  identifier?: string;
-  active?: boolean;
-  name?: string;
-  alias?: string;
-  type?: Coding[];
-  members?: string[];
-}
-
-export const getOrgTypeSelectOptions = () => {
-  const { system, codings } = OrganizationTypeVS;
-  return codings.map((coding) => {
-    return {
-      label: coding.display,
-      value: coding.code,
-      system,
-    };
-  });
-};
-
-export const getAssignedPractsOptions = (roles: IPractitionerRole[]) => {
-  return roles.map((role) => {
-    const { practitioner } = role;
-    return {
-      label: practitioner?.display,
-      value: practitioner?.reference as string,
-      roleId: role.id,
-    };
-  });
-};
-
-export const generateOrgPayload = (values: OrganizationFormFields): IOrganization => {
-  const { id, identifier: rawIdentifier, active, name, alias: rawAlias } = values;
-  const payload: IOrganization = {
-    resourceType: organizationResourceType,
-    active: !!active,
-    name,
-    id,
-  };
-
-  let identifier = rawIdentifier;
-  if (!rawIdentifier) {
-    identifier = v4();
-  }
-  payload.identifier = [
-    {
-      value: identifier,
-      use: IdentifierUseCodes.OFFICIAL,
-    },
-  ];
-
-  if (rawAlias) {
-    payload.alias = [rawAlias];
-  }
-
-  return payload;
-};
-
+/**
+ * either posts or puts an organization payload to fhir server
+ *
+ * @param baseUrl - server base url
+ * @param payload - the organization payload
+ */
 export const postPutOrganization = (baseUrl: string, payload: IOrganization) => {
   const { id } = payload;
   const isEdit = !!id;
@@ -144,58 +59,28 @@ export const postPutOrganization = (baseUrl: string, payload: IOrganization) => 
   return serve.create(payload);
 };
 
-const x = (baseUrl: string, orgId: string) => {
-  const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerRoleResourceType);
-  const params = {
-    organization: orgId,
-    _include: 'PractitionerRole:practitioner',
-  };
-  return serve.list(params);
-};
-
-export const loadPractitionerRoles = (baseUrl: string, orgId: string) => {
-  const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerRoleResourceType);
-  const params = {
-    organization: orgId,
-    _include: 'PractitionerRole:practitioner',
-  };
-  return serve.list(params);
-};
-
-interface FhirApiFilters {
-  page: number;
-  pageSize: number;
-  search?: string;
+interface SelectOption {
+  value: string;
+  label: string;
 }
-
-export const loadOrganization = (
-  baseUrl: string,
-  orgId: string
-  // pagination: FhirApiPagination
-) => {
-  const serve = new FHIRServiceClass(baseUrl, organizationResourceType);
-  return serve.read(orgId);
-};
-
-export const loadPractitioners = (baseUrl: string, search?: string) => {
-  const filterParams: Dictionary = {};
-  if (search) {
-    filterParams['name:contains'] = search;
-  }
-  return new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType).list(filterParams);
-};
 
 /**
  * filter practitioners select on search
  *
  * @param inputValue search term
  * @param option select option to filter against
- * @returns boolean - whether select option matches condition
  */
-export const practitionersFilterFunction = (inputValue: string, option?: any) => {
+export const practitionersFilterFunction = (inputValue: string, option?: SelectOption) => {
   return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
 };
 
+/**
+ * fetch all resources for a certain endpoint
+ *
+ * @param baseUrl - the fhir server url
+ * @param resourceType - the resource type
+ * @param extraFilters - extra filters
+ */
 export const loadAllResources = async (
   baseUrl: string,
   resourceType: string,
@@ -278,16 +163,6 @@ export const loadAllResources = async (
 //   });
 // };
 
-export const getPractitionerOptions = (practitioners: IPractitioner[]) => {
-  return practitioners.map((pract) => {
-    // TODO pract.name has not robustness- better have the full name
-    return {
-      value: `${practitionerResourceType}/${pract.id}`,
-      label: pract.name?.[0]?.given?.[0] ?? '',
-    };
-  });
-};
-
 const arrKeyBy = (arr: string[]) =>
   transform(
     arr,
@@ -313,6 +188,7 @@ export const updatePractitionerRoles = (
   const initialMembers = initialValues.members ?? [];
   const membersById = arrKeyBy(members);
   const initialMembersById = arrKeyBy(initialMembers);
+  const practitionersById = keyBy(practitioners, 'id');
 
   const toAdd: any[] = [];
   const toRemove: any[] = [];
@@ -332,9 +208,11 @@ export const updatePractitionerRoles = (
   const existingRolesByOrgPractIds = transform(
     existingRoles,
     (acc, value) => {
-      acc[value.organization?.reference!] = {
-        [value.practitioner?.reference!]: value,
-      };
+      const orgReference = value.organization?.reference as string;
+      if (!(acc[orgReference] as Reference | undefined)) {
+        acc[orgReference] = {};
+      }
+      acc[orgReference][value.practitioner?.reference as string] = value;
     },
     {} as Record<string, Record<string, IPractitionerRole>>
   );
@@ -343,13 +221,11 @@ export const updatePractitionerRoles = (
   const serve = new FHIRServiceClass<IPractitionerRole>(baseUrl, practitionerRoleResourceType);
   const removePromises = toRemove.map((practId) => {
     const sd = id as string;
-    const role =
-      existingRolesByOrgPractIds[`${organizationResourceType}/${sd}`][
-        `${practitionerResourceType}/${practId}`
-      ];
+    const role = existingRolesByOrgPractIds[`${organizationResourceType}/${sd}`][practId];
     return serve.delete(role.id as string);
   });
 
+  // TODO - possibility of posting this as a bundle in a single api call
   const additionPromises = toAdd
     .map((practId) => {
       const practitionerRole: IPractitionerRole = {
@@ -361,7 +237,7 @@ export const updatePractitionerRoles = (
         },
         practitioner: {
           reference: practId,
-          display: values.name,
+          // display: practitionersById[values.id].name,
         },
         identifier: [
           {

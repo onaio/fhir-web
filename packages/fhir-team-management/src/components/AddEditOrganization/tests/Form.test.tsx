@@ -1,65 +1,74 @@
-import React from 'react';
-import { mount } from 'enzyme';
-import { Router } from 'react-router';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { history } from '@onaio/connected-reducer-registry';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
-import {
-  team,
-  practitioner102,
-  practitioner116,
-  practitioner104,
-  practitionerRole,
-  practitioner,
-  team212,
-  teamsDetail,
-} from '../../../tests/fixtures';
-import Form, { FormField, onSubmit } from '../Form';
-import * as fhirCient from 'fhirclient';
-import * as notifications from '@opensrp/notifications';
-import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
-import { Require } from '@opensrp/react-utils';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import * as React from 'react';
+import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router';
+import { OrganizationForm } from '../Form';
+import { createBrowserHistory } from 'history';
+import { authenticateUser } from '@onaio/session-reducer';
+import nock from 'nock';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
+import { organizationResourceType, practitionerResourceType } from '../../../constants';
+import {
+  allPractitioners,
+  createdOrg,
+  createdRole1,
+  createdRole2,
+  org105,
+  org105Practitioners,
+} from './fixtures';
+import { getResourcesFromBundle } from '@opensrp/react-utils';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { getOrgFormFields } from '../utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-jest.mock('antd', () => {
-  const antd = jest.requireActual('antd');
+const history = createBrowserHistory();
+nock.disableNetConnect();
 
-  /* eslint-disable react/prop-types */
-  const select = ({ children, onChange, id }) => (
-    <select onChange={(e) => onChange(e.target.value)} id={id}>
-      {children}
-    </select>
-  );
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-  const Option = ({ children, ...otherProps }) => {
-    return <option {...otherProps}>{children}</option>;
-  };
-  /* eslint-disable react/prop-types */
-
-  select.Option = Option;
-
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
   return {
-    __esModule: true,
-    ...antd,
-    Select: select,
+    ...actual,
+    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
   };
 });
 
-const fhirBaseURL = 'https://fhirBaseURL.com';
-const fhir = jest.spyOn(fhirCient, 'client');
+describe('OrganizationForm', () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
 
-const TeamValue: Require<FormField, 'active' | 'name'> = {
-  ...teamsDetail,
-  practitioners: ['116', '102'],
-};
+  const AppWrapper = (props: { children: React.ReactNode }) => {
+    return (
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+      </Router>
+    );
+  };
 
-describe('Team-management/TeamsAddEdit/Form', () => {
+  const formProps = {
+    fhirBaseUrl: 'http://test.server.org',
+    practitioners: getResourcesFromBundle<IPractitioner>(allPractitioners),
+    existingPractitionerRoles: [],
+  };
+
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -69,234 +78,270 @@ describe('Team-management/TeamsAddEdit/Form', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
   });
 
-  beforeEach(() => {
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization') return Promise.resolve(team);
-          if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole') return Promise.resolve(practitionerRole);
-          else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
-          else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
-          else if (url === 'Practitioner/104') return Promise.resolve(practitioner104);
-          else {
-            // eslint-disable-next-line no-console
-            console.error('response not found', url);
-          }
-        }),
-        create: jest.fn((payload) => Promise.resolve(payload)),
-        update: jest.fn((payload) => Promise.resolve(payload)),
-        delete: jest.fn(() => Promise.resolve(true)),
-      }))
-    );
-  });
-
   afterEach(() => {
-    jest.clearAllMocks();
+    nock.cleanAll();
+    cleanup();
   });
 
-  it('renders without crashing', () => {
-    const queryClient = new QueryClient();
+  it('renders correctly', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
-          />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <OrganizationForm {...formProps} />
+      </AppWrapper>,
+      { attachTo: div }
     );
 
-    expect(wrapper.find('form')).toHaveLength(1);
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(toJson(wrapper.find('FormItem#id label'))).toMatchSnapshot('id label');
+    expect(toJson(wrapper.find('FormItem#id input'))).toMatchSnapshot('id field');
+
+    expect(toJson(wrapper.find('FormItem#identifier label'))).toMatchSnapshot('identifier label');
+    expect(toJson(wrapper.find('FormItem#identifier input'))).toMatchSnapshot('identifier field');
+
+    expect(toJson(wrapper.find('FormItem#name label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('FormItem#name input'))).toMatchSnapshot('name field');
+
+    expect(toJson(wrapper.find('FormItem#alias label'))).toMatchSnapshot('alias label');
+    expect(toJson(wrapper.find('FormItem#alias input'))).toMatchSnapshot('alias field');
+
+    expect(toJson(wrapper.find('FormItem#status label').first())).toMatchSnapshot('status label');
+    expect(toJson(wrapper.find('FormItem#status input'))).toMatchSnapshot('status field');
+
+    expect(toJson(wrapper.find('FormItem#type label').first())).toMatchSnapshot('type label');
+    expect(toJson(wrapper.find('FormItem#type select'))).toMatchSnapshot('type field');
+
+    expect(toJson(wrapper.find('FormItem#members label'))).toMatchSnapshot('members label');
+    expect(toJson(wrapper.find('FormItem#members select'))).toMatchSnapshot('members field');
+
+    expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
+    expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
+
+    wrapper.unmount();
   });
 
-  it('renders without crashing with id', () => {
-    const queryClient = new QueryClient();
+  it('form validation works', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
-            value={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <OrganizationForm {...formProps} />
+      </AppWrapper>,
+      { attachTo: div }
     );
 
-    expect(wrapper.find('Form').prop('value')).toMatchObject(TeamValue);
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
-
-  it('Cancel button', () => {
-    const historyback = jest.spyOn(history, 'goBack');
-    const queryClient = new QueryClient();
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
-            value={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('button#cancel').simulate('click');
-    expect(historyback).toBeCalled();
-    expect(history.location.pathname).toBe('/');
-  });
-
-  it('Create Team', async () => {
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    const thenfn = jest.fn();
-    const catchfn = jest.fn();
-
-    onSubmit(
-      fhirBaseURL,
-      {},
-      TeamValue,
-      practitioner.entry.map((e) => e.resource),
-      practitionerRole.entry.map((e) => e.resource)
-    )
-      .then(thenfn)
-      .catch(catchfn);
+    wrapper.find('form').simulate('submit');
 
     await act(async () => {
       await flushPromises();
     });
+    wrapper.update();
 
-    expect(thenfn).toBeCalled();
-    expect(catchfn).not.toBeCalled();
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
-      2,
-      'Successfully Assigned Practitioners'
-    );
-  });
-
-  it('Edit Team', async () => {
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    const thenfn = jest.fn();
-    const catchfn = jest.fn();
-    onSubmit(
-      fhirBaseURL,
-      TeamValue,
-      { ...TeamValue, name: 'new name', practitioners: ['116', '104'] },
-      practitioner.entry.map((e) => e.resource),
-      practitionerRole.entry.map((e) => e.resource)
-    )
-      .then(thenfn)
-      .catch(catchfn);
-
-    await act(async () => {
-      await flushPromises();
+    await waitFor(() => {
+      const atLeastOneError = document.querySelector('.ant-form-item-explain-error');
+      expect(atLeastOneError).toBeInTheDocument();
     });
 
-    expect(thenfn).toBeCalled();
-    expect(catchfn).not.toBeCalled();
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Updated Teams');
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
-      2,
-      'Successfully Assigned Practitioners'
+    // not required
+    expect(wrapper.find('FormItem#id').text()).toMatchInlineSnapshot(`"Id"`);
+
+    // name is required and has no default
+    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameRequired"`);
+
+    // alias is not required required and has no default
+    expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
+
+    // status has no
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(
+      `"StatusInactiveactiveRequired"`
     );
+
+    // has default value
+    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
+
+    // not required
+    expect(wrapper.find('FormItem#members').text()).toMatchInlineSnapshot(
+      `"Practitioners Select user (practitioners only)"`
+    );
+
+    wrapper.unmount();
   });
 
-  it('test call onsubmit with correct values', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
+  it('submits new organization and practitioner roles', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
+    const someMockURL = '/someURL';
+
+    nock(formProps.fhirBaseUrl)
+      .post(`/${organizationResourceType}`, createdOrg)
+      .reply(200, { ...createdOrg, id: '123' })
+      .post(`/${practitionerResourceType}`, createdRole1)
+      .reply(200, {})
+      .post(`/${practitionerResourceType}`, createdRole2)
+      .reply(200, {})
+      .persist();
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
-          />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <OrganizationForm successUrl={someMockURL} {...formProps} />
+      </AppWrapper>,
+      { attachTo: container }
     );
 
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('input#name').simulate('change', {
-      target: { value: 'my name' },
-    });
-
+    // simulate active change
     wrapper
-      .find('select#practitioners')
+      .find('FormItem#status input')
       .last()
       .simulate('change', {
-        target: { value: teamsDetail.practitionerInfo.map((e) => e.id) },
+        target: { checked: true },
       });
 
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'Seal team' } });
+
+    wrapper
+      .find('FormItem#alias input')
+      .simulate('change', { target: { name: 'alias', value: 'ghosts' } });
+
+    // simulate value selection for members
+    wrapper.find('input#members').simulate('mousedown');
+    // check options
+    document
+      .querySelectorAll('#members_list .ant-select-item ant-select-item-option')
+      .forEach((option) => {
+        expect(option).toMatchSnapshot('practitioner option');
+      });
+
+    fireEvent.click(document.querySelector('[title="Allay"]'));
+
+    // simulate value selection for type
+    wrapper.find('input#type').simulate('mousedown');
+    document
+      .querySelectorAll('#type_list .ant-select-item ant-select-item-option')
+      .forEach((option) => {
+        expect(option).toMatchSnapshot('types option');
+      });
+
+    fireEvent.click(document.querySelector('[title="Organizational team"]'));
+
+    await flushPromises();
+    wrapper.update();
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
 
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Added Teams');
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
-      2,
-      'Successfully Assigned Practitioners'
-    );
+    wrapper.unmount();
   });
 
-  it('fail and test call onsubmit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
+  it('cancel handler is called on cancel', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject('Mock Api Fail')),
-        create: jest.fn(() => Promise.reject('Mock Api Fail')),
-        update: jest.fn(() => Promise.reject('Mock Api Fail')),
-        delete: jest.fn(() => Promise.reject('Mock Api Fail')),
-      }))
-    );
-
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+    const cancelUrl = '/canceled';
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
-            value={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <OrganizationForm cancelUrl={cancelUrl} {...formProps} />
+      </AppWrapper>,
+
+      { attachTo: container }
     );
 
-    expect(wrapper.find('form')).toHaveLength(1);
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    wrapper.find('button#cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(history.location.pathname).toEqual('/canceled');
+    wrapper.unmount();
+  });
+
+  it('Edits organization and associated practitioners', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    nock(formProps.fhirBaseUrl)
+      .put(`/${organizationResourceType}`, createdOrg)
+      .reply(200, { ...createdOrg, id: '123' })
+      // .post(`/${practitionerResourceType}`, createdRole1).reply(200, {})
+      // .post(`/${practitionerResourceType}`, createdRole2).reply(200, {})
+      .persist();
+
+    const existingPractitionerRoles =
+      getResourcesFromBundle<IPractitionerRole>(org105Practitioners);
+
+    const initialValues = getOrgFormFields(org105, existingPractitionerRoles);
+
+    const localProps = {
+      ...formProps,
+      initialValues,
+      existingPractitionerRoles,
+    };
+
+    const wrapper = mount(
+      <AppWrapper>
+        <OrganizationForm {...localProps} />
+      </AppWrapper>,
+      { attachTo: container }
+    );
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'Owls of Minerva' } });
+
+    // simulate active check to be active
+    wrapper
+      .find('FormItem#status input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate value selection for members
+    wrapper.find('input#members').simulate('mousedown');
+    // check options
+    document
+      .querySelectorAll('#members_list .ant-select-item ant-select-item-option')
+      .forEach((option) => {
+        expect(option).toMatchSnapshot('practitioner option');
+      });
+
+    fireEvent.click(document.querySelector('[title="test"]'));
+
+    wrapper
+      .find('FormItem#alias input')
+      .simulate('change', { target: { name: 'alias', value: 'Ss' } });
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    wrapper.unmount();
   });
 });

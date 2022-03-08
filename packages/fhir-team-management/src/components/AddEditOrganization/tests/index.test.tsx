@@ -1,151 +1,141 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { mount } from 'enzyme';
-import { MemoryRouter, Route, Router } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import * as notifications from '@opensrp/notifications';
-import { createBrowserHistory } from 'history';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
-import TeamsAddEdit from '..';
-import {
-  team,
-  practitioner102,
-  practitioner116,
-  practitionerRole,
-  practitioner,
-  team212,
-} from '../../../tests/fixtures';
-import * as fhirCient from 'fhirclient';
-import { authenticateUser } from '@onaio/session-reducer';
+import { AddEditOrganization } from '..';
+import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
+import nock from 'nock';
+import { cleanup, render, screen } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { createMemoryHistory } from 'history';
+import { authenticateUser } from '@onaio/session-reducer';
+import { organizationResourceType, practitionerResourceType } from '../../../constants';
+import { allPractitioners, org105 } from '../tests/fixtures';
 
-const history = createBrowserHistory();
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-jest.mock('@opensrp/notifications', () => ({
-  __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
-}));
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
-const fhirBaseURL = 'https://fhirBaseURL.com';
-const fhir = jest.spyOn(fhirCient, 'client');
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+};
 
-describe('components/TeamsAddEdit', () => {
-  beforeAll(() => {
-    store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
-      )
-    );
-  });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path="/add">
+            <AddEditOrganization {...props} />
+          </Route>
+          <Route exact path="/add/:id">
+            <AddEditOrganization {...props} />
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
 
-  beforeEach(() => {
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(team);
-          if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
-            return Promise.resolve(practitionerRole);
-          else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
-          else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
-          else {
-            // eslint-disable-next-line no-console
-            console.error(url);
-          }
-        }),
-      }))
-    );
-  });
+afterEach(() => {
+  cleanup();
+  nock.cleanAll();
+});
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-  it('renders correctly when creating Team', async () => {
-    const queryClient = new QueryClient();
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <TeamsAddEdit fhirBaseURL={fhirBaseURL} />
-        </QueryClientProvider>
-      </Router>
-    );
+test('renders correctly for new organizations', async () => {
+  const history = createMemoryHistory();
+  history.push('/add');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  nock(props.fhirBaseURL).get(`/${practitionerResourceType}/_search`).reply(200, allPractitioners);
 
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-  it('renders correctly when Editting Team', async () => {
-    const queryClient = new QueryClient();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route
-            path="/:id"
-            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
-          />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
+  expect(document.querySelector('title')).toMatchInlineSnapshot(`null`);
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  // some small but incoclusive proof that the form rendered
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
+});
 
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
+test('renders correctly for edit locations', async () => {
+  const history = createMemoryHistory();
+  history.push(`/add/${org105.id}`);
 
-  it('show error message when cant load data from server', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
+  nock(props.fhirBaseURL).get(`/${practitionerResourceType}/_search`).reply(200, allPractitioners);
+  nock(props.fhirBaseURL).get(`/${organizationResourceType}/${org105.id}`).reply(200, org105);
+  nock(props.fhirBaseURL).get(`/${practitionerResourceType}`).query({}).reply(200, org105);
 
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject('Mock Api Fail')),
-      }))
-    );
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route
-            path="/:id"
-            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
-          />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
+  expect(document.querySelector('title')).toMatchInlineSnapshot(`
+    <title>
+      Edit team | OpenSRP web Test Organisation
+    </title>
+  `);
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  // some small but incoclusive proof that the form rendered and has some initial values
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
+});
 
-    expect(notificationErrorMock.mock.calls).toMatchObject([
-      ['An error occurred'],
-      ['An error occurred'],
-      ['An error occurred'],
-    ]);
-  });
+test('data loading problem', async () => {
+  const history = createMemoryHistory();
+  history.push(`/add/${org105.id}`);
+
+  nock(props.fhirBaseURL)
+    .get(`/${organizationResourceType}/${org105.id}`)
+    .replyWithError('something aweful happened');
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // errors out
+  expect(screen.getByText(/something aweful happened/)).toBeInTheDocument();
 });

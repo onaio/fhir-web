@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select, Button, Form, Radio, Input, Space } from 'antd';
-import { identifier, active, alias, id, name, type, members } from '../../constants';
-import { useQueryClient } from 'react-query';
+import {
+  identifier,
+  active,
+  alias,
+  id,
+  name,
+  type,
+  members,
+  organizationResourceType,
+} from '../../constants';
+import { useQueryClient, useMutation } from 'react-query';
 import lang from '../../lang';
 import { SelectProps } from 'antd/lib/select';
 import {
-  getOrgTypeSelectOptions,
-  OrganizationFormFields,
   practitionersFilterFunction,
-  getPractitionerOptions,
-  generateOrgPayload,
   postPutOrganization,
   updatePractitionerRoles,
 } from '../../utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { useHistory } from 'react-router';
+import {
+  generateOrgPayload,
+  getPractitionerOptions,
+  getOrgTypeSelectOptions,
+  OrganizationFormFields,
+  validationRulesFactory,
+} from './utils';
 
 const { Item: FormItem } = Form;
 
@@ -65,7 +78,8 @@ interface OrganizationFormProps {
   fhirBaseUrl: string;
   initialValues: OrganizationFormFields;
   disabled: string[];
-  cancelHandler?: () => void;
+  cancelUrl?: string;
+  successUrl?: string;
   practitioners: IPractitioner[];
   existingPractitionerRoles: IPractitionerRole[];
 }
@@ -80,12 +94,45 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     fhirBaseUrl,
     initialValues,
     disabled,
-    cancelHandler,
+    cancelUrl,
+    successUrl,
     practitioners,
     existingPractitionerRoles,
   } = props;
+
   const queryClient = useQueryClient();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const history = useHistory();
+  const goTo = (url = '#') => history.push(url);
+
+  const { mutate, isLoading } = useMutation(
+    (values: OrganizationFormFields) => {
+      const payload = generateOrgPayload(values);
+      return postPutOrganization(fhirBaseUrl, payload).then((organization) => {
+        sendSuccessNotification('Organization updated successfully');
+        updatePractitionerRoles(
+          fhirBaseUrl,
+          values,
+          initialValues,
+          organization,
+          practitioners,
+          existingPractitionerRoles
+        )
+          .then(() => {
+            sendSuccessNotification('Practitioner assignments updated successfully');
+          })
+          .catch(() => {
+            throw new Error('Failed to update practitioner assignments');
+          });
+      });
+    },
+    {
+      onError: (err: Error) => sendErrorNotification(err.message),
+      onSuccess: () => {
+        queryClient.invalidateQueries([organizationResourceType]).catch(() => undefined);
+        goTo(successUrl);
+      },
+    }
+  );
 
   /** antd select component options */
   interface SelectOption {
@@ -99,78 +146,41 @@ const OrganizationForm = (props: OrganizationFormProps) => {
   ];
 
   const practitionersSelectOptions = getPractitionerOptions(practitioners);
+  const validationRules = validationRulesFactory();
 
   return (
     <Form
       {...formItemLayout}
       onFinish={(values) => {
-        setIsSubmitting(true);
-        const payload = generateOrgPayload(values);
-        postPutOrganization(fhirBaseUrl, payload)
-          .then((organization) => {
-            console.log('Updating organization response', organization);
-            sendSuccessNotification('Organization updated successfully');
-            updatePractitionerRoles(
-              fhirBaseUrl,
-              values,
-              initialValues,
-              organization,
-              practitioners,
-              existingPractitionerRoles
-            )
-              .then(() => {
-                sendSuccessNotification('Practitioner assignments updated successfully');
-              })
-              .catch(() => {
-                throw new Error('Failed to update practitioner assignments');
-              });
-          })
-          .catch((err) => {
-            sendErrorNotification(err.message);
-          })
-          .finally(() => {
-            setIsSubmitting(false);
-          });
+        mutate(values);
       }}
       initialValues={initialValues}
     >
-      <FormItem name={id} label={'id'} hidden={true}>
+      <FormItem name={id} label="Id" id="id" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem name={identifier} label={'identifier'} hidden={true}>
+      <FormItem name={identifier} label="Identifier" id="identifier" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem name={name} rules={[{ required: true, message: lang.REQUIRED_FIELD }]} label="Name">
+      <FormItem name={name} rules={validationRules.name} id="name" label="Name">
         <Input placeholder="Enter team name" />
       </FormItem>
 
-      <FormItem
-        name={alias}
-        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
-        label="Alias"
-      >
-        <Input placeholder="Enter team name" />
+      <FormItem name={alias} rules={validationRules.alias} id="alias" label="Alias">
+        <Input placeholder="Enter team alias" />
       </FormItem>
 
-      <FormItem name={active} label="status">
+      <FormItem id="status" name={active} label="Status" rules={validationRules.status}>
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem name={type} label="status">
-        <Select
-          mode="multiple"
-          disabled={disabled.includes(type)}
-          options={getOrgTypeSelectOptions()}
-        ></Select>
+      <FormItem id="type" name={type} label="Type" rules={validationRules.type}>
+        <Select disabled={disabled.includes(type)} options={getOrgTypeSelectOptions()}></Select>
       </FormItem>
 
-      <FormItem
-        name={members}
-        label="Members"
-        rules={[{ required: true, message: lang.REQUIRED_FIELD }]}
-      >
+      <FormItem id="members" name={members} label="Practitioners" rules={validationRules.members}>
         <Select
           allowClear
           mode="multiple"
@@ -183,15 +193,15 @@ const OrganizationForm = (props: OrganizationFormProps) => {
 
       <FormItem {...tailLayout}>
         <Space>
-          <Button
-            type="primary"
-            id="location-form-submit-button"
-            disabled={isSubmitting}
-            htmlType="submit"
-          >
-            {isSubmitting ? lang.SAVING : lang.SAVE}
+          <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
+            {isLoading ? 'Saving' : 'save'}
           </Button>
-          <Button id="location-form-cancel-button" onClick={cancelHandler}>
+          <Button
+            id="cancel-button"
+            onClick={() => {
+              goTo(cancelUrl);
+            }}
+          >
             {lang.CANCEL}
           </Button>
         </Space>
