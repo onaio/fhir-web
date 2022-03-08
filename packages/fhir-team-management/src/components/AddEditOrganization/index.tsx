@@ -12,10 +12,10 @@ import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
-import { getOrgFormFields, loadAllResources } from '../../utils';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { loadAllResources } from '../../utils';
 import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
+import { getOrgFormFields } from './utils';
 
 export interface AddEditOrganizationProps {
   fhirBaseURL: string;
@@ -43,7 +43,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
 
   const practitioners = useQuery(
     [practitionerResourceType],
-    () => new FHIRServiceClass<IBundle>(fhirBaseUrl, practitionerResourceType).list(),
+    () => loadAllResources(fhirBaseUrl, practitionerResourceType),
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
       onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
@@ -53,7 +53,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   // practitioners already assigned to this organization
   const assignedPractitioners = useQuery(
     [practitionerResourceType, organizationResourceType, orgId],
-    async () =>
+    () =>
       loadAllResources(fhirBaseUrl, practitionerRoleResourceType, {
         organization: orgId as string,
       }),
@@ -80,7 +80,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const initialValues = getOrgFormFields(organization.data, assignedPractitioners.data);
 
   const pageTitle = organization.data
-    ? `Edit team | ${organization.data?.name ?? ''}`
+    ? `Edit team | ${organization.data.name ?? ''}`
     : 'Create team';
 
   return (
