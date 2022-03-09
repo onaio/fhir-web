@@ -59,7 +59,7 @@ export const postPutOrganization = (baseUrl: string, payload: IOrganization) => 
   return serve.create(payload);
 };
 
-interface SelectOption {
+export interface SelectOption {
   value: string;
   label: string;
 }
@@ -101,67 +101,6 @@ export const loadAllResources = async (
   return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(fetchAllFilter);
 };
 
-// export const postPutAffiliations = (
-//   baseUrl: string,
-//   values: any,
-//   initialValues: any,
-//   locationName: string,
-//   locationId: string
-// ) => {
-//   // separate values that were removed and those that need to be created
-//   const toAdd: any[] = [];
-//   const toRemove: any[] = [];
-
-//   const valuesById = keyBy(values.assignedTeams, 'value');
-//   const initialValuesById = keyBy(initialValues.assignedTeams, 'value');
-
-//   values.assignedTeams.forEach((option: any) => {
-//     if (!initialValues[option.value]) {
-//       toAdd.push(option);
-//     }
-//   });
-
-//   initialValues.assignedTeams.forEach((option: any) => {
-//     if (initialValues[option.value]) {
-//       toRemove.push(option);
-//     }
-//   });
-
-//   // remove promises
-//   const serve = new FHIRServiceClass<any>(baseUrl, organizationAffiliationResourceType);
-//   const removalPromises = toRemove.map((option) => {
-//     return serve.delete(option.affiliationId);
-//   });
-
-//   // creation promises
-//   const addPromises = toAdd.map((option) => {
-//     const orgPayload: IOrganizationAffiliation = {
-//       resourceType: organizationAffiliationResourceType,
-//       identifier: [
-//         {
-//           use: 'official',
-//           value: v4(),
-//         },
-//       ],
-//       active: true,
-//       organization: {
-//         reference: `Organization/${option.value}`,
-//         display: option.label,
-//       },
-//       location: [
-//         {
-//           reference: `Location/${locationId}`,
-//           display: locationName,
-//         },
-//       ],
-//     };
-//     return new Promise((re) => re(serve.create(orgPayload)));
-//   });
-
-//   Promise.all([...removalPromises, ...addPromises]).then(() => {
-//     sendSuccessNotification('Affiliations updated');
-//   });
-// };
 
 const arrKeyBy = (arr: string[]) =>
   transform(
