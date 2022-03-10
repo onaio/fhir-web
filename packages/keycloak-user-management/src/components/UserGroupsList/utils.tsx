@@ -12,22 +12,19 @@ import lang, { Lang } from '../../lang';
  *
  * @param {string} groupId - user group id
  * @param {string} baseURL - keycloak base url
- * @param {Function} callback - callback function to set group members from api to state
  * @param {Lang} langObj - the translation strings lookup
  */
-export const loadGroupMembers = async (
-  groupId: string,
-  baseURL: string,
-  callback: (members: UserGroupMembers[]) => void,
-  langObj: Lang = lang
-) => {
+export const loadGroupMembers = async (groupId: string, baseURL: string, langObj: Lang = lang) => {
   const serve = new KeycloakService(`${KEYCLOAK_URL_USER_GROUPS}/${groupId}/members`, baseURL);
   return await serve
     .list()
     .then((response: UserGroupMembers[]) => {
-      callback(response);
+      return response;
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+    .catch(() => {
+      sendErrorNotification(langObj.ERROR_OCCURED);
+      return Promise.reject();
+    });
 };
 
 /**
@@ -35,20 +32,17 @@ export const loadGroupMembers = async (
  *
  * @param {string} groupId - user group id
  * @param {string} baseURL - keycloak base url
- * @param {Function} callback - callback function to set group members from api to state
  * @param {Lang} langObj - the translation strings lookup
  */
-export const loadGroupDetails = async (
-  groupId: string,
-  baseURL: string,
-  callback: (userGroups: KeycloakUserGroup) => void,
-  langObj: Lang = lang
-) => {
+export const loadGroupDetails = async (groupId: string, baseURL: string, langObj: Lang = lang) => {
   const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, baseURL);
   return await serve
     .read(groupId)
     .then((response: KeycloakUserGroup) => {
-      callback(response);
+      return response;
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURED));
+    .catch(() => {
+      sendErrorNotification(langObj.ERROR_OCCURED);
+      return Promise.reject();
+    });
 };
