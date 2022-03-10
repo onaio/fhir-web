@@ -40,6 +40,7 @@
   "private": false,
   "dependencies": {
     "@opensrp/react-utils": "0.0.12",
-    "@opensrp/pkg-config": "0.0.9"
+    "@opensrp/pkg-config": "0.0.9",
+    "@opensrp/fhir-resources": "0.0.0"
   }
 }
