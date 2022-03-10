@@ -1,84 +1,128 @@
-import { Modal, Button, Form, Select } from 'antd';
-import { postPutAffiliations } from '../../utils';
-import React from 'react';
+import { Modal, Button, Select } from 'antd';
+import React, { useState } from 'react';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
-import { AffiliationsByLocationId, getOptionsFromAffiliations, getOrgSelectOptions } from './utils';
+import {
+  AffiliationsByLocationId,
+  getOrgOptionsFromAffiliations,
+  getOrgSelectOptions,
+  OrgSelectOptions,
+  postPutAffiliations,
+} from './utils';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { locationResourceType } from '@opensrp/fhir-location-management';
+import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
+import { organizationAffiliationResourceType } from '../../constants';
+import { useQueryClient, useMutation } from 'react-query';
+import {
+  sendErrorNotification,
+  sendInfoNotification,
+  sendSuccessNotification,
+} from '@opensrp/notifications';
 
-interface OAffiliationFormProps {
+interface AffiliationModalProps {
   baseUrl: string;
   allOrgs: IOrganization[];
-  locationName: string;
+  location?: ILocation;
   visible: boolean;
   handleCancel: () => void;
-  locationId: string;
   affiliationsByLoc: AffiliationsByLocationId;
+  allAffiliations: IOrganizationAffiliation[];
 }
 
 /**
- * AffiliationForm will have to pull the options it can show. On search it will make another request
+ * Modal that shows a select where users can assign organizations to locations
  *
- * @param props
+ * @param props - component props
  */
-export const AffiliationForm = (props: OAffiliationFormProps) => {
-  const { baseUrl, locationName, handleCancel, visible, allOrgs, affiliationsByLoc, locationId } =
+export const AffiliationModal = (props: AffiliationModalProps) => {
+  const { handleCancel, visible, allOrgs, affiliationsByLoc, baseUrl, location, allAffiliations } =
     props;
 
-  const [form] = Form.useForm();
+  const locationName = location?.name as string;
+  const locationId = location?.id;
+
   const orgSelectOptions = getOrgSelectOptions(allOrgs);
-  const initialValues = {
-    assignedOrgs: getOptionsFromAffiliations(affiliationsByLoc[locationId]),
+  const currentAffiliations = affiliationsByLoc[`${locationResourceType}/${locationId}`];
+  const defaultOrgsValues = getOrgOptionsFromAffiliations(currentAffiliations);
+  const [values, setValues] = useState<OrgSelectOptions[]>(defaultOrgsValues);
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation(
+    () =>
+      postPutAffiliations(
+        baseUrl,
+        values,
+        defaultOrgsValues,
+        location as ILocation,
+        allAffiliations
+      ),
+    {
+      onError: (err: Error) => sendErrorNotification(err.message),
+      onSuccess: () => {
+        sendSuccessNotification('Team assignments updated successfully');
+        queryClient.invalidateQueries([organizationAffiliationResourceType]).catch(() => {
+          sendInfoNotification(
+            'Failed to refresh assignments, Please Refresh the page to see the changes'
+          );
+        });
+      },
+    }
+  );
+
+  if (!locationId) {
+    return null;
+  }
+
+  const handleChange = (_: string[], fullOption: OrgSelectOptions | OrgSelectOptions[]) => {
+    const options = Array.isArray(fullOption) ? fullOption : [fullOption];
+    setValues(options);
+  };
+
+  const submit = () => {
+    return mutate();
   };
 
   return (
-    <Form
-      form={form}
-      onFinish={(values) => {
-        // eventually send only organizationAffiliation payloads, one to remove and another to add.
-        postPutAffiliations(baseUrl, values, initialValues, locationName, locationId);
-      }}
-      initialValues={initialValues}
+    <Modal
+      destroyOnClose={true}
+      title={`Assign/Unassign Teams | ${locationName}`}
+      visible={visible}
+      okText="Save"
+      onCancel={handleCancel}
+      cancelText="Cancel"
+      footer={[
+        <Button
+          data-testid="submit-affiliations"
+          disabled={isLoading}
+          onClick={submit}
+          type="primary"
+          key="submit"
+        >
+          {isLoading ? 'Saving' : 'save'}
+        </Button>,
+        <Button
+          data-testid="cancel-affiliations"
+          id={'cancel'}
+          key="cancel"
+          onClick={() => {
+            handleCancel();
+          }}
+        >
+          {'Cancel'}
+        </Button>,
+      ]}
+      okType="default"
     >
-      <Modal
-        destroyOnClose={true}
-        title={`Assign/Unassign Teams | ${locationName}`}
-        visible={visible}
-        okText="Save"
-        onCancel={handleCancel}
-        cancelText="Cancel"
-        footer={[
-          <Button
-            onClick={() => form.submit()}
-            type="primary"
-            form="teamAssignment"
-            key="submit"
-            htmlType="submit"
-          >
-            {'save'}
-          </Button>,
-          <Button
-            id={'cancel'}
-            key="cancel"
-            onClick={() => {
-              handleCancel();
-            }}
-          >
-            {'Cancel'}
-          </Button>,
-        ]}
-        okType="default"
-      >
-        <div className="form-container">
-          <Form.Item label="Teams" name="assignedOrgs">
-            <Select
-              mode="multiple"
-              allowClear
-              showSearch
-              placeholder="Select teams"
-              options={orgSelectOptions}
-            ></Select>
-          </Form.Item>
-        </div>
-      </Modal>
-    </Form>
+      <Select
+        data-testid="affiliation-select"
+        mode="multiple"
+        allowClear
+        showSearch
+        placeholder="Select teams"
+        options={orgSelectOptions}
+        defaultValue={defaultOrgsValues as unknown as string[]}
+        onChange={handleChange}
+      ></Select>
+    </Modal>
   );
 };
