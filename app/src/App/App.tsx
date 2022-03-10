@@ -114,7 +114,7 @@ import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
-  // AffiliationList as FhirTeamAssignment
+  AffiliationList as FhirTeamAssignment
 } from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
@@ -608,7 +608,7 @@ const App: React.FC = () => {
               {...teamAssignmentProps}
               component={ENABLE_FHIR_TEAMS ? FhirTeamsList : TeamsView}
             />
-                        {/* <PrivateComponent
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
@@ -616,7 +616,7 @@ const App: React.FC = () => {
               path={URL_TEAM_ASSIGNMENT}
               {...teamAffiliationProps}
               component={ENABLE_FHIR_TEAMS ? FhirTeamAssignment : TeamsView}
-            /> */}
+            />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
