@@ -73,7 +73,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
-
+import { TeamAssignmentView } from '@opensrp/team-assignment';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -608,15 +608,15 @@ const App: React.FC = () => {
               {...teamAssignmentProps}
               component={ENABLE_FHIR_TEAMS ? FhirTeamsList : TeamsView}
             />
-                        {/* <PrivateComponent
+            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAM_ASSIGNMENT}
-              {...teamAffiliationProps}
-              component={ENABLE_FHIR_TEAMS ? FhirTeamAssignment : TeamsView}
-            /> */}
+              {...teamAssignmentProps}
+              component={TeamAssignmentView}
+            />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
