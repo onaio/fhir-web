@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import { get } from 'lodash';
-import { Row, Col, Button, Spin } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-import { FHIRServiceClass, BrokenPage, Resource404, getResourcesFromBundle } from '@opensrp/react-utils';
-import { organizationAffiliationResourceType, organizationResourceType } from '../../constants';
+import { Row, Col, Spin } from 'antd';
+import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import lang from '../../lang';
-import AffiliationTable, { TableData } from './Table';
+import AffiliationTable from './Table';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -19,15 +15,8 @@ import {
   TreeNode,
   locationTreeStateDucks,
 } from '@opensrp/fhir-location-management';
-import { loadAllResources } from '../../utils';
-import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
-import { sendErrorNotification } from 'opensrp-notifications/dist/types';
-import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 
-const { reducerName,
-  reducer,
-  setSelectedNode,
-  getSelectedNode, } = locationTreeStateDucks;
+const { reducerName, reducer, setSelectedNode, getSelectedNode } = locationTreeStateDucks;
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -36,11 +25,8 @@ interface LocationUnitListProps {
   fhirRootLocationIdentifier: string;
 }
 
-
-
 export const AffiliationList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
   const { fhirBaseURL, fhirRootLocationIdentifier } = props;
-  const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
 
@@ -50,11 +36,11 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
 
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
-  const { data: treeData, isLoading: treeIsLoading, error: treeError } = useQuery<
-    IBundle,
-    Error,
-    TreeNode | undefined
-  >(
+  const {
+    data: treeData,
+    isLoading: treeIsLoading,
+    error: treeError,
+  } = useQuery<IBundle, Error, TreeNode | undefined>(
     [locationHierarchyResourceType, hierarchyParams],
     async () => {
       return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
@@ -67,7 +53,6 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
       },
     }
   );
-
 
   if (treeIsLoading) {
     return <Spin size={'large'} />;
@@ -93,7 +78,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     tableNodes = [selectedNode, ...sortedNodes];
   }
 
-  // TODO - title changes, 
+  // TODO - title changes,
   return (
     <section className="layout-content">
       <Helmet>
@@ -111,12 +96,9 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
             }}
           />
         </Col>
-        <Col className="bg-white p-3 border-left" >
+        <Col className="bg-white p-3 border-left">
           <div className="bg-white p-3">
-            <AffiliationTable
-              baseUrl={fhirBaseURL}
-              locationNodes={tableNodes}
-            />
+            <AffiliationTable baseUrl={fhirBaseURL} locationNodes={tableNodes} />
           </div>
         </Col>
       </Row>

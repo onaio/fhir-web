@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Button, Divider, Dropdown, Menu } from 'antd';
+import { Button } from 'antd';
 import lang from '../../lang';
 import { BrokenPage, Column, getResourcesFromBundle, TableLayout } from '@opensrp/react-utils';
 import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
-import { AffiliationForm } from './Form';
+import { AffiliationModal } from './Form';
 import { get } from 'lodash';
-import { TreeNode } from '@opensrp/fhir-location-management';
+import { locationResourceType, TreeNode } from '@opensrp/fhir-location-management';
 import { organizationAffiliationResourceType, organizationResourceType } from '../../constants';
 import { loadAllResources } from '../../utils';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { reformatOrganizationByLocation } from './utils';
 import { useQuery } from 'react-query';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 export interface TableData {
   id: string;
@@ -21,14 +21,13 @@ export interface TableData {
   status?: string;
   physicalType?: string;
   partOf?: string;
+  node: ILocation;
 }
 
 /**
  * Parse the hierarchy node into table data
  *
- * @param  hierarchy - hierarchy node to be parsed
- * @param locationNode
- * @returns array of table data
+ * @param  locationNode - list of location nodes
  */
 export function parseTableData(locationNode: TreeNode[]) {
   const data: TableData[] = [];
@@ -43,6 +42,7 @@ export function parseTableData(locationNode: TreeNode[]) {
       description,
       status,
       physicalType: get(model.node, 'physicalType.coding.0.display'),
+      node: location.model.node,
     });
   });
   return data;
@@ -56,7 +56,7 @@ export interface Props {
 const AffiliationTable: React.FC<Props> = (props: Props) => {
   const { baseUrl, locationNodes } = props;
   const [seeModal, setSeeModal] = useState<boolean>(false);
-  const [locationDets, setLocationDets] = useState<{ id: string; name: string }>();
+  const [location, setLocation] = useState<ILocation>();
 
   const {
     data: affiliationsData,
@@ -98,10 +98,13 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       title: 'Assigned teams',
       render: (_, record) => {
         const { id } = record;
-        const affiliations = affiliationsByLocId[id];
-        return affiliations.map((affiliation) => {
-          return <span key={affiliation.orgId}>{affiliation.orgName}</span>;
-        });
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const affiliations = affiliationsByLocId[`${locationResourceType}/${id}`] ?? [];
+        return affiliations
+          .map((affiliation) => {
+            return affiliation.organization?.display;
+          })
+          .join(', ');
       },
     },
     {
@@ -113,8 +116,9 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
           type="link"
           className="action-button"
           onClick={() => {
-            const { id, name } = record;
-            setLocationDets({ id, name });
+            const { node } = record;
+
+            setLocation(node);
             setSeeModal(true);
           }}
         >
@@ -128,14 +132,14 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <AffiliationForm
+      <AffiliationModal
         baseUrl={baseUrl}
-        locationName={locationDets?.name as string}
+        location={location as ILocation}
         visible={seeModal}
         allOrgs={orgsData ?? []}
-        locationId={locationDets?.id as string}
         affiliationsByLoc={affiliationsByLocId}
         handleCancel={modalCancel}
+        allAffiliations={affiliationsData ?? []}
       />
       <TableLayout
         loading={orgsLoading || affiliationsLoading}
