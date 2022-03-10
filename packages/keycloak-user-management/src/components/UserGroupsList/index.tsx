@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -14,8 +14,10 @@ import {
   SearchForm,
   TableLayout,
   Column,
+  Resource404,
 } from '@opensrp/react-utils';
 import { KeycloakService } from '@opensrp/keycloak-service';
+import { useQuery } from 'react-query';
 import {
   reducerName as keycloakUserGroupsReducerName,
   reducer as keycloakUserGroupsReducer,
@@ -26,6 +28,7 @@ import {
   SEARCH_QUERY_PARAM,
   URL_USER_GROUP_CREATE,
   URL_USER_GROUP_EDIT,
+  URL_USER_GROUPS,
 } from '../../constants';
 import {
   fetchKeycloakUserGroups,
@@ -33,6 +36,7 @@ import {
   makeKeycloakUserGroupsSelector,
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
+import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -77,33 +81,49 @@ export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
  * @returns {Function} returns User Groups list display
  */
 export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
+  const { keycloakBaseURL } = props;
+  const history = useHistory();
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
     userGroupsSelector(state, { searchText: searchQuery })
   );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [groupId, setGroupId] = useState<string | null>(null);
-  const { keycloakBaseURL } = props;
 
-  useEffect(() => {
-    if (isLoading) {
-      const serve = new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL);
-      serve
-        .list()
-        .then((response: KeycloakUserGroup[]) => {
-          dispatch(fetchKeycloakUserGroups(response));
-        })
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
-        })
-        .finally(() => setIsLoading(false));
+  const { isLoading: isUserGroupsLoading, isError: isUserGroupsError } = useQuery(
+    ['fetchKeycloakUserGroups', KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL],
+    () => new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL).list(),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onSuccess: (response: KeycloakUserGroup[]) => dispatch(fetchKeycloakUserGroups(response)),
     }
-  });
+  );
 
-  if (isLoading) {
-    return <Spin data-testid="group-list-loader" size="large" />;
-  }
+  const {
+    isLoading: isGroupDetailsLoading,
+    isError: isGroupDetailsError,
+    data: GroupDetails,
+  } = useQuery(
+    ['loadGroupDetails', groupId, keycloakBaseURL],
+    () => loadGroupDetails(groupId as string, keycloakBaseURL),
+    {
+      enabled: groupId !== null,
+      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+    }
+  );
+
+  const {
+    isLoading: isUserGroupMembersLoading,
+    isError: isUserGroupMembersError,
+    data: userGroupMembers,
+  } = useQuery(
+    ['loadGroupMembers', groupId, keycloakBaseURL],
+    () => loadGroupMembers(groupId as string, keycloakBaseURL),
+    {
+      enabled: groupId !== null,
+      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+    }
+  );
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
@@ -117,6 +137,22 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
   ];
+
+  React.useEffect(() => {
+    if (groupId) {
+      // add record id to url
+      history.replace(`${URL_USER_GROUPS}/${groupId}`);
+    } else {
+      // remove record id from url
+      history.replace(URL_USER_GROUPS);
+    }
+  }, [groupId, history]);
+
+  if (isUserGroupsLoading) {
+    return <Spin data-testid="group-list-loader" size="large" />;
+  }
+
+  if (isUserGroupsError) return <Resource404 />;
 
   return (
     <div className="content-section user-group">
@@ -180,10 +216,16 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         </Col>
         {groupId ? (
           <ViewDetails
+            isUserGroupMembersLoading={isUserGroupMembersLoading}
+            isUserGroupMembersError={isUserGroupMembersError}
+            userGroupMembers={userGroupMembers}
+            isGroupDetailsLoading={isGroupDetailsLoading}
+            isGroupDetailsError={isGroupDetailsError}
+            GroupDetails={GroupDetails}
             // close modal
-            onClose={() => setGroupId(null)}
-            keycloakBaseURL={keycloakBaseURL}
-            groupId={groupId}
+            onClose={() => {
+              setGroupId(null);
+            }}
           />
         ) : null}
       </Row>
