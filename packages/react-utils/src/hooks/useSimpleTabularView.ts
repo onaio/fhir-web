@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback } from 'react';
 import { FHIRServiceClass } from '../helpers/dataLoaders';
-import {getQueryParams} from '../components/Search/utils';
-import { getResourcesFromBundle} from '../helpers/utils';
+import { getQueryParams } from '../components/Search/utils';
+import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
 import { getConfig } from '@opensrp/pkg-config';
 import { RouteComponentProps, useHistory, useLocation, useRouteMatch } from 'react-router';

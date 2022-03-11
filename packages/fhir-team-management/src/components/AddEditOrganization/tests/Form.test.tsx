@@ -9,22 +9,12 @@ import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor, screen } from '@testing-library/react';
 import flushPromises from 'flush-promises';
 import { organizationResourceType, practitionerRoleResourceType } from '../../../constants';
-import {
-  allPractitioners,
-  createdOrg,
-  createdRole1,
-  createdRole2,
-  editedOrg,
-  org105,
-  org105Practitioners,
-} from './fixtures';
+import { allPractitioners, createdOrg, createdRole2 } from './fixtures';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
-import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
-import { getOrgFormFields } from '../utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -177,8 +167,8 @@ describe('OrganizationForm', () => {
     expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
 
     // not required
-    expect(wrapper.find('FormItem#members').text()).toMatchInlineSnapshot(
-      `"Practitioners Select user (practitioners only)"`
+    expect(wrapper.find('FormItem#members').text()).toMatchSnapshot(
+      `"Practitioners Select user (practitioners only)"`
     );
 
     wrapper.unmount();
@@ -247,16 +237,12 @@ describe('OrganizationForm', () => {
 
     wrapper.find('form').simulate('submit');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    await waitFor(() => {
+      expect(screen.getByText(/Organization updated successfully/)).toBeInTheDocument();
+      expect(screen.getByText(/Practitioner assignments updated successfully/)).toBeInTheDocument();
     });
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
+    expect(nock.isDone()).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -283,86 +269,6 @@ describe('OrganizationForm', () => {
     wrapper.update();
 
     expect(history.location.pathname).toEqual('/canceled');
-    wrapper.unmount();
-  });
-
-  it('Edits organization and associated practitioners', async () => {
-    const container = document.createElement('div');
-    document.body.appendChild(container);
-
-    nock(formProps.fhirBaseUrl)
-      .put(`/${organizationResourceType}/${org105.id}`, editedOrg)
-      .reply(200, editedOrg)
-      .delete(`/${practitionerRoleResourceType}/392`)
-      .reply(200, {})
-      .post(`/${practitionerRoleResourceType}`, createdRole1)
-      .reply(201, {})
-      .persist();
-
-    const existingPractitionerRoles =
-      getResourcesFromBundle<IPractitionerRole>(org105Practitioners);
-
-    const initialValues = getOrgFormFields(org105, existingPractitionerRoles);
-
-    const localProps = {
-      ...formProps,
-      initialValues,
-      existingPractitionerRoles,
-    };
-
-    const wrapper = mount(
-      <AppWrapper>
-        <OrganizationForm {...localProps} />
-      </AppWrapper>,
-      { attachTo: container }
-    );
-
-    // simulate name change
-    wrapper
-      .find('FormItem#name input')
-      .simulate('change', { target: { name: 'name', value: 'Owls of Minerva' } });
-
-    // simulate active check to be active
-    wrapper
-      .find('FormItem#status input')
-      .first()
-      .simulate('change', {
-        target: { checked: true },
-      });
-
-    // simulate value selection for members
-    wrapper.find('input#members').simulate('mousedown');
-    // check options
-    document
-      .querySelectorAll('#members_list .ant-select-item ant-select-item-option')
-      .forEach((option) => {
-        expect(option).toMatchSnapshot('practitioner option');
-      });
-
-    fireEvent.click(document.querySelector('[title="test, fhir"]'));
-
-    // remove one of the previously selected options - Bobi, mapesa
-    const bobiMapesaOption = wrapper.find('span[title="Bobi, mapesa"]');
-    const bobiRemoveAction = bobiMapesaOption.find('span.ant-select-selection-item-remove');
-
-    bobiRemoveAction.simulate('click');
-
-    wrapper
-      .find('FormItem#alias input')
-      .simulate('change', { target: { name: 'alias', value: 'Ss' } });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
     wrapper.unmount();
   });
 });

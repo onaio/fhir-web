@@ -131,6 +131,16 @@ const arrKeyBy = (arr: string[]) =>
     {} as Record<string, string>
   );
 
+/**
+ * Updates practitioner roles after organization creation
+ *
+ * @param baseUrl - the server base url
+ * @param values - form field values
+ * @param initialValues - initial form field values
+ * @param organization -  all organizations
+ * @param practitioners - all practitioners
+ * @param existingRoles - all existing practitioner assignments to organizations
+ */
 export const updatePractitionerRoles = (
   baseUrl: string,
   values: OrganizationFormFields,

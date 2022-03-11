@@ -61,10 +61,12 @@ export const OrganizationList = (props: OrganizationListProps) => {
     {
       title: 'Team name',
       dataIndex: 'name' as const,
+      key: 'name' as const,
     },
     {
       title: 'Type',
       dataIndex: 'type' as const,
+      key: 'type' as const,
     },
     {
       title: 'Actions',
@@ -81,7 +83,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="view-details">
+                <Menu.Item key="view-details" className="view-details">
                   <Link to={`${ORGANIZATION_LIST_URL}/${record.id}`}>View Details</Link>
                 </Menu.Item>
               </Menu>
