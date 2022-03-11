@@ -372,7 +372,34 @@ export const createdOrg = {
   name: 'Seal team',
   identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
   alias: ['ghosts'],
+  type: [
+    {
+      coding: [{ code: 'team', system: 'http://terminology.hl7.org/CodeSystem/organization-type' }],
+    },
+  ],
 };
-export const createdRole1 = {};
 
-export const createdRole2 = {};
+export const editedOrg = {
+  resourceType: 'Organization',
+  active: false,
+  name: 'Owls of Minerva',
+  id: '105',
+  identifier: [{ value: '105', use: 'official' }],
+  alias: ['Ss'],
+};
+
+export const createdRole1 = {
+  resourceType: 'PractitionerRole',
+  active: true,
+  organization: { reference: 'Organization/105', display: 'Owls of Minerva' },
+  practitioner: { reference: 'Practitioner/114', display: 'test, fhir' },
+  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+};
+
+export const createdRole2 = {
+  resourceType: 'PractitionerRole',
+  active: true,
+  organization: { reference: 'Organization/123', display: 'Seal team' },
+  practitioner: { reference: 'Practitioner/206', display: 'Allay, Allan' },
+  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+};

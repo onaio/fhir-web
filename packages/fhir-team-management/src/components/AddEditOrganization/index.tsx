@@ -6,6 +6,7 @@ import {
   practitionerResourceType,
   organizationResourceType,
   practitionerRoleResourceType,
+  ORGANIZATION_LIST_URL,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
@@ -95,6 +96,8 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
           initialValues={initialValues}
           practitioners={practitioners.data ?? []}
           existingPractitionerRoles={assignedPractitioners.data ?? []}
+          cancelUrl={ORGANIZATION_LIST_URL}
+          successUrl={ORGANIZATION_LIST_URL}
         />
       </div>
     </section>
