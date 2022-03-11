@@ -86,8 +86,6 @@ test('renders correctly for new organizations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('title')).toMatchInlineSnapshot(`null`);
-
   // some small but incoclusive proof that the form rendered
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
   expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');

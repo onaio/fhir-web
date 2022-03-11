@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`OrganizationForm form validation works: "Practitioners Select user (practitioners only)" 1`] = `"Practitioners Select user (practitioners only)"`;
+
 exports[`OrganizationForm renders correctly: alias field 1`] = `
 <input
   className="ant-input"

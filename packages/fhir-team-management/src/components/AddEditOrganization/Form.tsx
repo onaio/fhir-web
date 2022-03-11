@@ -113,20 +113,16 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       const payload = generateOrgPayload(values);
       return postPutOrganization(fhirBaseUrl, payload).then((organization) => {
         sendSuccessNotification('Organization updated successfully');
-        updatePractitionerRoles(
+        return updatePractitionerRoles(
           fhirBaseUrl,
           values,
           initialValues,
           organization,
           practitioners,
           existingPractitionerRoles
-        )
-          .then(() => {
-            sendSuccessNotification('Practitioner assignments updated successfully');
-          })
-          .catch(() => {
-            throw new Error('Failed to update practitioner assignments');
-          });
+        ).then(() => {
+          sendSuccessNotification('Practitioner assignments updated successfully');
+        });
       });
     },
     {
@@ -134,7 +130,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
         sendErrorNotification(err.message);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries([organizationResourceType]).catch((err) => {
+        queryClient.invalidateQueries([organizationResourceType]).catch(() => {
           sendInfoNotification('Failed to refresh data, please refresh the page');
         });
         goTo(successUrl);
