@@ -44,10 +44,6 @@ export const OrganizationList = (props: OrganizationListProps) => {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  if (error && !data) {
-    return <BrokenPage errorMessage={'Problem loading data'} />;
-  }
-
   const tableData = (data?.records ?? []).map((org: IOrganization, index: number) => {
     return {
       ...parseOrganization(org),
