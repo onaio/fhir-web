@@ -32,6 +32,17 @@ export enum IdentifierUseCodes {
   SECONDARY = 'secondary',
   OLD = 'old',
 }
+
+export enum HumanNameUseCodes {
+  USUAL = 'usual',
+  OFFICIAL = 'official',
+  TEMP = 'temp',
+  NICKNAME = 'nickname',
+  ANONYMOUS = 'anonymous',
+  OLD = 'old',
+  MAIDEN = 'maiden',
+}
+
 export const organizationTypeValueSetUrl =
   'http://terminology.hl7.org/CodeSystem/organization-type';
 

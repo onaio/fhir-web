@@ -1,7 +1,7 @@
 import { store } from '@opensrp/store';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import * as React from 'react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { OrganizationForm } from '../Form';
@@ -11,12 +11,13 @@ import nock from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import flushPromises from 'flush-promises';
-import { organizationResourceType, practitionerResourceType } from '../../../constants';
+import { organizationResourceType, practitionerRoleResourceType } from '../../../constants';
 import {
   allPractitioners,
   createdOrg,
   createdRole1,
   createdRole2,
+  editedOrg,
   org105,
   org105Practitioners,
 } from './fixtures';
@@ -31,7 +32,6 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const history = createBrowserHistory();
-nock.disableNetConnect();
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -70,6 +70,7 @@ describe('OrganizationForm', () => {
   };
 
   beforeAll(() => {
+    nock.disableNetConnect();
     store.dispatch(
       authenticateUser(
         true,
@@ -81,6 +82,10 @@ describe('OrganizationForm', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
+  });
+
+  afterAll(() => {
+    nock.enableNetConnect();
   });
 
   afterEach(() => {
@@ -188,9 +193,7 @@ describe('OrganizationForm', () => {
     nock(formProps.fhirBaseUrl)
       .post(`/${organizationResourceType}`, createdOrg)
       .reply(200, { ...createdOrg, id: '123' })
-      .post(`/${practitionerResourceType}`, createdRole1)
-      .reply(200, {})
-      .post(`/${practitionerResourceType}`, createdRole2)
+      .post(`/${practitionerRoleResourceType}`, createdRole2)
       .reply(200, {})
       .persist();
 
@@ -227,7 +230,7 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="Allay"]'));
+    fireEvent.click(document.querySelector('[title="Allay, Allan"]'));
 
     // simulate value selection for type
     wrapper.find('input#type').simulate('mousedown');
@@ -243,6 +246,11 @@ describe('OrganizationForm', () => {
     wrapper.update();
 
     wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     await act(async () => {
       await flushPromises();
@@ -283,10 +291,12 @@ describe('OrganizationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseUrl)
-      .put(`/${organizationResourceType}`, createdOrg)
-      .reply(200, { ...createdOrg, id: '123' })
-      // .post(`/${practitionerResourceType}`, createdRole1).reply(200, {})
-      // .post(`/${practitionerResourceType}`, createdRole2).reply(200, {})
+      .put(`/${organizationResourceType}/${org105.id}`, editedOrg)
+      .reply(200, editedOrg)
+      .delete(`/${practitionerRoleResourceType}/392`)
+      .reply(200, {})
+      .post(`/${practitionerRoleResourceType}`, createdRole1)
+      .reply(201, {})
       .persist();
 
     const existingPractitionerRoles =
@@ -329,13 +339,24 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="test"]'));
+    fireEvent.click(document.querySelector('[title="test, fhir"]'));
+
+    // remove one of the previously selected options - Bobi, mapesa
+    const bobiMapesaOption = wrapper.find('span[title="Bobi, mapesa"]');
+    const bobiRemoveAction = bobiMapesaOption.find('span.ant-select-selection-item-remove');
+
+    bobiRemoveAction.simulate('click');
 
     wrapper
       .find('FormItem#alias input')
       .simulate('change', { target: { name: 'alias', value: 'Ss' } });
 
     wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     await act(async () => {
       await flushPromises();

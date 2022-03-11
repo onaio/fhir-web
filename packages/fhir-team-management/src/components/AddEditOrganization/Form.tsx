@@ -20,7 +20,11 @@ import {
 } from '../../utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import {
+  sendErrorNotification,
+  sendInfoNotification,
+  sendSuccessNotification,
+} from '@opensrp/notifications';
 import { useHistory } from 'react-router';
 import {
   generateOrgPayload,
@@ -126,9 +130,13 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       });
     },
     {
-      onError: (err: Error) => sendErrorNotification(err.message),
+      onError: (err: Error) => {
+        sendErrorNotification(err.message);
+      },
       onSuccess: () => {
-        queryClient.invalidateQueries([organizationResourceType]).catch(() => undefined);
+        queryClient.invalidateQueries([organizationResourceType]).catch((err) => {
+          sendInfoNotification('Failed to refresh data, please refresh the page');
+        });
         goTo(successUrl);
       },
     }

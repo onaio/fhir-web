@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrganizationForm renders correctly: alias field 1`] = `
+<input
+  className="ant-input"
+  id="alias"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Enter team alias"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`OrganizationForm renders correctly: alias label 1`] = `
+<label
+  className=""
+  htmlFor="alias"
+  title="Alias"
+>
+  Alias
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: cancel button 1`] = `
+<button
+  className="ant-btn ant-btn-default"
+  id="cancel-button"
+  onClick={[Function]}
+  type="button"
+>
+  <LoadingIcon
+    existIcon={false}
+    loading={false}
+    prefixCls="ant-btn"
+  >
+    <CSSMotion
+      motionName="ant-btn-loading-icon-motion"
+      onAppearActive={[Function]}
+      onAppearStart={[Function]}
+      onEnterActive={[Function]}
+      onEnterStart={[Function]}
+      onLeaveActive={[Function]}
+      onLeaveStart={[Function]}
+      removeOnLeave={true}
+      visible={false}
+    >
+      <DomWrapper />
+    </CSSMotion>
+  </LoadingIcon>
+  <span
+    key=".0"
+  >
+    Cancel
+  </span>
+</button>
+`;
+
+exports[`OrganizationForm renders correctly: id field 1`] = `
+<input
+  className="ant-input"
+  id="id"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`OrganizationForm renders correctly: id label 1`] = `
+<label
+  className=""
+  htmlFor="id"
+  title="Id"
+>
+  Id
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: identifier field 1`] = `
+<input
+  className="ant-input"
+  id="identifier"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`OrganizationForm renders correctly: identifier label 1`] = `
+<label
+  className=""
+  htmlFor="identifier"
+  title="Identifier"
+>
+  Identifier
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: members field 1`] = `null`;
+
+exports[`OrganizationForm renders correctly: members label 1`] = `
+<label
+  className=""
+  htmlFor="members"
+  title="Practitioners"
+>
+  Practitioners
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: name field 1`] = `
+<input
+  className="ant-input"
+  id="name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Enter team name"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`OrganizationForm renders correctly: name label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="name"
+  title="Name"
+>
+  Name
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: status field 1`] = `
+Array [
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
+    type="radio"
+    value={false}
+  />,
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
+    type="radio"
+    value={true}
+  />,
+]
+`;
+
+exports[`OrganizationForm renders correctly: status label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="active"
+  title="Status"
+>
+  Status
+</label>
+`;
+
+exports[`OrganizationForm renders correctly: submit button 1`] = `
+<button
+  className="ant-btn ant-btn-primary"
+  disabled={false}
+  id="submit-button"
+  onClick={[Function]}
+  type="submit"
+>
+  <LoadingIcon
+    existIcon={false}
+    loading={false}
+    prefixCls="ant-btn"
+  >
+    <CSSMotion
+      motionName="ant-btn-loading-icon-motion"
+      onAppearActive={[Function]}
+      onAppearStart={[Function]}
+      onEnterActive={[Function]}
+      onEnterStart={[Function]}
+      onLeaveActive={[Function]}
+      onLeaveStart={[Function]}
+      removeOnLeave={true}
+      visible={false}
+    >
+      <DomWrapper />
+    </CSSMotion>
+  </LoadingIcon>
+  <span
+    key=".0"
+  >
+    save
+  </span>
+</button>
+`;
+
+exports[`OrganizationForm renders correctly: type field 1`] = `null`;
+
+exports[`OrganizationForm renders correctly: type label 1`] = `
+<label
+  className=""
+  htmlFor="type"
+  title="Type"
+>
+  Type
+</label>
+`;
