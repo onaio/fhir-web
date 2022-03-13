@@ -2,7 +2,7 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
 import { locationResourceType } from '@opensrp/fhir-location-management';
-import { keyBy } from 'lodash';
+import { keyBy, transform } from 'lodash';
 import {
   IdentifierUseCodes,
   organizationAffiliationResourceType,
@@ -10,6 +10,7 @@ import {
 } from '../../constants';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { v4 } from 'uuid';
+import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
 export interface OrgSelectOptions {
   value: string;
@@ -71,6 +72,30 @@ export const getOrgOptionsFromAffiliations = (
 };
 
 /**
+ * key affiliations bye orgId and then locationID
+ *
+ * @param affiliations - affiliation
+ */
+export const keyAffiliationsByOrgLocIds = (affiliations: IOrganizationAffiliation[]) => {
+  const affiliationsByOrgLocIds = transform(
+    affiliations,
+    (acc, value) => {
+      const orgReference = value.organization?.reference as string;
+      if (!(acc[orgReference] as Reference | undefined)) {
+        acc[orgReference] = {};
+      }
+      const { location } = value;
+      location?.forEach((location) => {
+        const locReference = location.reference as string;
+        acc[orgReference][locReference] = value;
+      });
+    },
+    {} as Record<string, Record<string, IOrganizationAffiliation>>
+  );
+  return affiliationsByOrgLocIds;
+};
+
+/**
  * @param baseUrl - fhir base url
  * @param currentOptions - affiliations after user selection
  * @param initialOptions - affiliations before user selection
@@ -90,7 +115,7 @@ export const postPutAffiliations = (
 
   const currentOptionsById = keyBy(currentOptions, 'value');
   const initialOptionsById = keyBy(initialOptions, 'value');
-  const affiliationsByOrgId = keyBy(allAffiliations, 'organization.reference');
+  const affsByOrgLoc = keyAffiliationsByOrgLocIds(allAffiliations);
 
   // know which orgIds to add
   currentOptions.forEach((option: OrgSelectOptions) => {
@@ -111,13 +136,13 @@ export const postPutAffiliations = (
     baseUrl,
     organizationAffiliationResourceType
   );
-  const promises: Promise<unknown>[] = [];
+  const promises: (() => Promise<unknown>)[] = [];
   // remove affiliations
   toRemove.forEach((option: OrgSelectOptions) => {
     // check if a mapping for this org-location exists in one of the current affiliations
-    const existingAffiliation = affiliationsByOrgId[option.value] as
-      | IOrganizationAffiliation
-      | undefined;
+    const existingAffiliation = affsByOrgLoc[option.value][
+      `${locationResourceType}/${location.id}`
+    ] as IOrganizationAffiliation | undefined;
     if (existingAffiliation) {
       const locations = existingAffiliation.location ?? [];
       const remainingLocations = locations.filter((loc) => {
@@ -125,12 +150,12 @@ export const postPutAffiliations = (
       });
       if (remainingLocations.length === 0) {
         // no locations mapped to this org, so remove the affiliation
-        promises.push(serve.delete(existingAffiliation.id as string));
+        promises.push(() => serve.delete(existingAffiliation.id as string));
       }
       if (remainingLocations.length !== locations.length) {
         // means that we are merely updating the existingAffiliation
         existingAffiliation.location = remainingLocations;
-        promises.push(serve.update(existingAffiliation));
+        promises.push(() => serve.update(existingAffiliation));
       }
     } else {
       // invariant: we are removing an affiliation, so one has to exist
@@ -139,47 +164,29 @@ export const postPutAffiliations = (
 
   // adding new entries
   toAdd.forEach((option: OrgSelectOptions) => {
-    // check if a mapping for this org-location exists in one of the current affiliations
-    const existingAffiliation = affiliationsByOrgId[option.value] as
-      | IOrganizationAffiliation
-      | undefined;
-    if (existingAffiliation) {
-      // if there is an affiliation that exists for this organization, then we edit that.
-      const locations = existingAffiliation.location ?? [];
-      existingAffiliation.location = [
-        ...locations,
+    // we create a wholly new affiliation
+    const affiliationPayload: IOrganizationAffiliation = {
+      resourceType: organizationAffiliationResourceType,
+      identifier: [
+        {
+          use: IdentifierUseCodes.OFFICIAL,
+          value: v4(),
+        },
+      ],
+      active: true,
+      organization: {
+        reference: option.value,
+        display: option.label,
+      },
+      location: [
         {
           reference: `${locationResourceType}/${location.id}`,
           display: location.name,
         },
-      ];
-      promises.push(serve.update(existingAffiliation));
-    } else {
-      // we create a new affiliation
-      const affiliationPayload: IOrganizationAffiliation = {
-        resourceType: organizationAffiliationResourceType,
-        identifier: [
-          {
-            use: IdentifierUseCodes.OFFICIAL,
-            value: v4(),
-          },
-        ],
-        active: true,
-        organization: {
-          reference: option.value,
-          display: option.label,
-        },
-        location: [
-          {
-            reference: `${locationResourceType}/${location.id}`,
-            display: location.name,
-          },
-        ],
-      };
-      promises.push(serve.create(affiliationPayload));
-    }
+      ],
+    };
+    promises.push(() => serve.create(affiliationPayload));
   });
 
-  console.log('===>', { toAdd, toRemove: toRemove[0].affiliation, promises });
-  return Promise.all(promises);
+  return Promise.all(promises.map((p) => p()));
 };

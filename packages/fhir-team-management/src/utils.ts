@@ -122,7 +122,6 @@ export const loadAllResources = async (
   return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(fetchAllFilter);
 };
 
-
 const arrKeyBy = (arr: string[]) =>
   transform(
     arr,

@@ -1240,6 +1240,38 @@ export const allAffiliations = {
       },
     },
     {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/OrganizationAffiliation/1529',
+      resource: {
+        resourceType: 'OrganizationAffiliation',
+        id: '1529',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-08-26T08:50:28.044+00:00',
+          source: '#4b824c3c076ead0b',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '317fddbb-132e-498c-b672-b18802f9deaf',
+          },
+        ],
+        active: true,
+        organization: {
+          reference: 'Organization/362',
+          display: 'Test Team 3',
+        },
+        location: [
+          {
+            reference: 'Location/3701',
+            display: 'Langata',
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
       fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/OrganizationAffiliation/1575',
       resource: {
         resourceType: 'OrganizationAffiliation',
