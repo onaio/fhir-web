@@ -9,12 +9,23 @@ import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { cleanup, fireEvent, waitFor, screen } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import flushPromises from 'flush-promises';
 import { organizationResourceType, practitionerRoleResourceType } from '../../../constants';
-import { allPractitioners, createdOrg, createdRole2 } from './fixtures';
+import {
+  allPractitioners,
+  createdOrg,
+  createdRole1,
+  createdRole2,
+  editedOrg,
+  org105,
+  org105Practitioners,
+} from './fixtures';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { getOrgFormFields } from '../utils';
+import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -81,6 +92,7 @@ describe('OrganizationForm', () => {
   afterEach(() => {
     nock.cleanAll();
     cleanup();
+    jest.resetAllMocks();
   });
 
   it('renders correctly', async () => {
@@ -123,6 +135,7 @@ describe('OrganizationForm', () => {
     expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
     expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
 
+    wrapper.find('button#cancel-button').simulate('click');
     wrapper.unmount();
   });
 
@@ -177,6 +190,10 @@ describe('OrganizationForm', () => {
   it('submits new organization and practitioner roles', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
+
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
 
     const someMockURL = '/someURL';
 
@@ -238,8 +255,10 @@ describe('OrganizationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await waitFor(() => {
-      expect(screen.getByText(/Organization updated successfully/)).toBeInTheDocument();
-      expect(screen.getByText(/Practitioner assignments updated successfully/)).toBeInTheDocument();
+      expect(successNoticeMock.mock.calls).toEqual([
+        ['Organization updated successfully'],
+        ['Practitioner assignments updated successfully'],
+      ]);
     });
 
     expect(nock.isDone()).toBeTruthy();
@@ -269,6 +288,98 @@ describe('OrganizationForm', () => {
     wrapper.update();
 
     expect(history.location.pathname).toEqual('/canceled');
+    wrapper.unmount();
+  });
+
+  it('Edits organization and associated practitioners', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
+
+    const errorNoticeMock = jest
+      .spyOn(notifications, 'sendErrorNotification')
+      .mockImplementation(() => undefined);
+
+    nock(formProps.fhirBaseUrl)
+      .put(`/${organizationResourceType}/${org105.id}`, editedOrg)
+      .reply(200, editedOrg)
+      .delete(`/${practitionerRoleResourceType}/392`)
+      .reply(200, {})
+      .post(`/${practitionerRoleResourceType}`, createdRole1)
+      .replyWithError('Failed operation outcome')
+      .persist();
+
+    const existingPractitionerRoles =
+      getResourcesFromBundle<IPractitionerRole>(org105Practitioners);
+
+    const initialValues = getOrgFormFields(org105, existingPractitionerRoles);
+
+    const localProps = {
+      ...formProps,
+      initialValues,
+      existingPractitionerRoles,
+    };
+
+    const wrapper = mount(
+      <AppWrapper>
+        <OrganizationForm {...localProps} />
+      </AppWrapper>,
+      { attachTo: container }
+    );
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'Owls of Minerva' } });
+
+    // simulate active check to be active
+    wrapper
+      .find('FormItem#status input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate value selection for members
+    wrapper.find('input#members').simulate('mousedown');
+    // check options
+    document
+      .querySelectorAll('#members_list .ant-select-item ant-select-item-option')
+      .forEach((option) => {
+        expect(option).toMatchSnapshot('practitioner option');
+      });
+
+    fireEvent.click(document.querySelector('[title="test, fhir"]'));
+
+    // remove one of the previously selected options - Bobi, mapesa
+    const bobiMapesaOption = wrapper.find('span[title="Bobi, mapesa"]');
+    const bobiRemoveAction = bobiMapesaOption.find('span.ant-select-selection-item-remove');
+
+    bobiRemoveAction.simulate('click');
+
+    wrapper
+      .find('FormItem#alias input')
+      .simulate('change', { target: { name: 'alias', value: 'Ss' } });
+
+    await flushPromises();
+    wrapper.update();
+
+    wrapper.find('form').simulate('submit');
+
+    await waitFor(() => {
+      expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
+      expect(errorNoticeMock.mock.calls).toEqual([
+        [
+          'request to http://test.server.org/PractitionerRole failed, reason: Failed operation outcome',
+        ],
+      ]);
+    });
+
+    expect(nock.isDone()).toBeTruthy();
+
     wrapper.unmount();
   });
 });
