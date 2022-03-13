@@ -18,7 +18,6 @@ export const URL_USER_EDIT = `${URL_USER}/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
 export const URL_SERVER_SETTINGS = `${URL_ADMIN}/server-settings`;
 export const URL_TEAM_ASSIGNMENT = `${URL_TEAMS}/team-assignment`;
-export const URL_TEAM_AFFILIATION = `${URL_TEAMS}/team-affiliation`;
 export const URL_TEAMS_ADD_EDIT = `${URL_TEAMS}/add-edit`;
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';

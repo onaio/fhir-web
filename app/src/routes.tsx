@@ -23,6 +23,7 @@ import {
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
   ENABLE_QUEST,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
 } from './configs/env';
 import {
   URL_USER,
@@ -188,7 +189,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               title: langObj.TEAM_ASSIGNMENT,
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
-              enabled: true,
+              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
         },

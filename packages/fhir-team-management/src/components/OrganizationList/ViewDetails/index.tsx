@@ -9,7 +9,8 @@ import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrgani
 import { get } from 'lodash';
 import './index.css';
 
-/** parse an organization to object we can easily consume
+/**
+ * parse an organization to object we can easily consume in Table layout
  *
  * @param org - the organization resource object
  */
@@ -26,23 +27,30 @@ export const parseOrganization = (org: IOrganization) => {
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
-  resourceId?: string;
+  resourceId: string;
   fhirBaseURL: string;
 }
 
-/** Displays Organization Details
+export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
+  resourceId?: string;
+};
+
+/**
+ * Displays Organization Details
  *
  * @param props - detail view component props
  */
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseURL } = props;
 
-  const { data: organization, isLoading: orgIsLoading, error: orgError } = useQuery(
-    [organizationResourceType, resourceId],
-    () =>
-      new FHIRServiceClass<IOrganization>(fhirBaseURL, organizationResourceType).read(
-        resourceId as string
-      )
+  const {
+    data: organization,
+    isLoading: orgIsLoading,
+    error: orgError,
+  } = useQuery([organizationResourceType, resourceId], () =>
+    new FHIRServiceClass<IOrganization>(fhirBaseURL, organizationResourceType).read(
+      resourceId as string
+    )
   );
 
   if (orgIsLoading) {
@@ -78,12 +86,13 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   );
 };
 
-/** component that renders the details view to the right side
+/**
+ * component that renders the details view to the right side
  * of list view
  *
  * @param props - detail view component props
  */
-export const ViewDetailsWrapper = (props: ViewDetailsProps) => {
+export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
   const { resourceId, fhirBaseURL } = props;
   const history = useHistory();
 

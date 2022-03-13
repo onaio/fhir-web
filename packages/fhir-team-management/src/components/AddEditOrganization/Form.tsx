@@ -20,7 +20,11 @@ import {
 } from '../../utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import {
+  sendErrorNotification,
+  sendInfoNotification,
+  sendSuccessNotification,
+} from '@opensrp/notifications';
 import { useHistory } from 'react-router';
 import {
   generateOrgPayload,
@@ -109,26 +113,26 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       const payload = generateOrgPayload(values);
       return postPutOrganization(fhirBaseUrl, payload).then((organization) => {
         sendSuccessNotification('Organization updated successfully');
-        updatePractitionerRoles(
+        return updatePractitionerRoles(
           fhirBaseUrl,
           values,
           initialValues,
           organization,
           practitioners,
           existingPractitionerRoles
-        )
-          .then(() => {
-            sendSuccessNotification('Practitioner assignments updated successfully');
-          })
-          .catch(() => {
-            throw new Error('Failed to update practitioner assignments');
-          });
+        ).then(() => {
+          sendSuccessNotification('Practitioner assignments updated successfully');
+        });
       });
     },
     {
-      onError: (err: Error) => sendErrorNotification(err.message),
+      onError: (err: Error) => {
+        sendErrorNotification(err.message);
+      },
       onSuccess: () => {
-        queryClient.invalidateQueries([organizationResourceType]).catch(() => undefined);
+        queryClient.invalidateQueries([organizationResourceType]).catch(() => {
+          sendInfoNotification('Failed to refresh data, please refresh the page');
+        });
         goTo(successUrl);
       },
     }

@@ -15,9 +15,8 @@ import { Router, Route, Switch } from 'react-router';
 import { TableLayout } from '../../components/TableLayout';
 import { useSimpleTabularView } from '../useSimpleTabularView';
 import nock from 'nock';
-import { before } from 'lodash';
 import { dataPage1, dataPage2, searchData } from './fixtures';
-import userEvents from '@testing-library/user-event'
+import userEvents from '@testing-library/user-event';
 import { Input } from 'antd';
 
 jest.mock('fhirclient', () => {
@@ -25,12 +24,12 @@ jest.mock('fhirclient', () => {
 });
 
 const rQClient = new QueryClient({
-  defaultOptions:{
-    queries:{
+  defaultOptions: {
+    queries: {
       retry: false,
       cacheTime: 0,
-    }
-  }
+    },
+  },
 });
 
 // TODO - boiler plate
@@ -47,13 +46,13 @@ store.dispatch(
 );
 
 // we first setup the wrapper components, somewhere to run the hooks during tests
-const props = {
+const options = {
   baseUrl: 'http://example.com',
-  endpoint: 'data'
+  endpoint: 'data',
 };
 
-
- const SearchForm = (props: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const SearchForm = (props: any) => {
   const { onChangeHandler, ...otherProps } = props;
 
   return (
@@ -66,20 +65,21 @@ const props = {
 // minimal app to wrap our hook.
 const SampleApp = () => {
   const { tablePaginationProps, queryValues, searchFormProps } = useSimpleTabularView(
-    props.baseUrl,
-    props.endpoint
+    options.baseUrl,
+    options.endpoint
   );
 
-  console.log(queryValues);
   const { data, isFetching, isLoading } = queryValues;
 
-  const columns = [{
+  const columns = [
+    {
+      title: 'Name/Id',
+      dataIndex: 'title',
+      width: '20%',
+    },
+  ];
 
-    title: 'Name/Id',
-    dataIndex: 'title',
-    width: '20%',
-  }]
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tableProps: any = {
     datasource: data?.records ?? [],
     columns,
@@ -87,11 +87,13 @@ const SampleApp = () => {
     pagination: tablePaginationProps,
   };
 
-  return <div>
-    <SearchForm {...searchFormProps} data-testid="search-form" />
-    <TableLayout {...tableProps} />
-  </div>
-}
+  return (
+    <div>
+      <SearchForm {...searchFormProps} data-testid="search-form" />
+      <TableLayout {...tableProps} />
+    </div>
+  );
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
@@ -110,43 +112,44 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  nock.enableNetConnect
+  nock.enableNetConnect();
 });
 
 afterEach(() => {
   nock.cleanAll();
   cleanup();
-})
+});
 
 test('pagination and search work correctly', async () => {
   const history = createMemoryHistory();
   history.push('/qr');
 
-  nock(props.baseUrl)
-    .get(`/${props.endpoint}/_search`)
+  nock(options.baseUrl)
+    .get(`/${options.endpoint}/_search`)
     .query({
       _getpagesoffset: 0,
       _count: 20,
-    }).reply(200, dataPage1)
+    })
+    .reply(200, dataPage1)
     .persist();
 
-
-  nock(props.baseUrl)
-    .get(`/${props.endpoint}/_search`)
+  nock(options.baseUrl)
+    .get(`/${options.endpoint}/_search`)
     .query({
       _getpagesoffset: 20,
       _count: 20,
-    }).reply(200, dataPage2)
+    })
+    .reply(200, dataPage2)
     .persist();
 
-
-  nock(props.baseUrl)
-    .get(`/${props.endpoint}/_search`)
+  nock(options.baseUrl)
+    .get(`/${options.endpoint}/_search`)
     .query({
       _getpagesoffset: 0,
       _count: 20,
-      'name:contains': '345'
-    }).reply(200, searchData)
+      'name:contains': '345',
+    })
+    .reply(200, searchData)
     .persist();
 
   render(
@@ -194,7 +197,6 @@ test('pagination and search work correctly', async () => {
   });
 
   // remove search.
-  await userEvents.clear(searchForm);
+  userEvents.clear(searchForm);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
-
 });

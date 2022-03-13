@@ -1,7 +1,7 @@
 import { store } from '@opensrp/store';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import * as React from 'react';
+import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
 import { OrganizationForm } from '../Form';
@@ -11,12 +11,13 @@ import nock from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import flushPromises from 'flush-promises';
-import { organizationResourceType, practitionerResourceType } from '../../../constants';
+import { organizationResourceType, practitionerRoleResourceType } from '../../../constants';
 import {
   allPractitioners,
   createdOrg,
   createdRole1,
   createdRole2,
+  editedOrg,
   org105,
   org105Practitioners,
 } from './fixtures';
@@ -24,6 +25,7 @@ import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { getOrgFormFields } from '../utils';
+import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -31,7 +33,6 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const history = createBrowserHistory();
-nock.disableNetConnect();
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -70,6 +71,7 @@ describe('OrganizationForm', () => {
   };
 
   beforeAll(() => {
+    nock.disableNetConnect();
     store.dispatch(
       authenticateUser(
         true,
@@ -83,9 +85,14 @@ describe('OrganizationForm', () => {
     );
   });
 
+  afterAll(() => {
+    nock.enableNetConnect();
+  });
+
   afterEach(() => {
     nock.cleanAll();
     cleanup();
+    jest.resetAllMocks();
   });
 
   it('renders correctly', async () => {
@@ -128,6 +135,7 @@ describe('OrganizationForm', () => {
     expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
     expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
 
+    wrapper.find('button#cancel-button').simulate('click');
     wrapper.unmount();
   });
 
@@ -172,8 +180,8 @@ describe('OrganizationForm', () => {
     expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
 
     // not required
-    expect(wrapper.find('FormItem#members').text()).toMatchInlineSnapshot(
-      `"Practitioners Select user (practitioners only)"`
+    expect(wrapper.find('FormItem#members').text()).toMatchSnapshot(
+      `"Practitioners Select user (practitioners only)"`
     );
 
     wrapper.unmount();
@@ -183,14 +191,16 @@ describe('OrganizationForm', () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
+
     const someMockURL = '/someURL';
 
     nock(formProps.fhirBaseUrl)
       .post(`/${organizationResourceType}`, createdOrg)
       .reply(200, { ...createdOrg, id: '123' })
-      .post(`/${practitionerResourceType}`, createdRole1)
-      .reply(200, {})
-      .post(`/${practitionerResourceType}`, createdRole2)
+      .post(`/${practitionerRoleResourceType}`, createdRole2)
       .reply(200, {})
       .persist();
 
@@ -227,7 +237,7 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="Allay"]'));
+    fireEvent.click(document.querySelector('[title="Allay, Allan"]'));
 
     // simulate value selection for type
     wrapper.find('input#type').simulate('mousedown');
@@ -244,11 +254,14 @@ describe('OrganizationForm', () => {
 
     wrapper.find('form').simulate('submit');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    await waitFor(() => {
+      expect(successNoticeMock.mock.calls).toEqual([
+        ['Organization updated successfully'],
+        ['Practitioner assignments updated successfully'],
+      ]);
     });
 
+    expect(nock.isDone()).toBeTruthy();
     wrapper.unmount();
   });
 
@@ -282,11 +295,21 @@ describe('OrganizationForm', () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
+
+    const errorNoticeMock = jest
+      .spyOn(notifications, 'sendErrorNotification')
+      .mockImplementation(() => undefined);
+
     nock(formProps.fhirBaseUrl)
-      .put(`/${organizationResourceType}`, createdOrg)
-      .reply(200, { ...createdOrg, id: '123' })
-      // .post(`/${practitionerResourceType}`, createdRole1).reply(200, {})
-      // .post(`/${practitionerResourceType}`, createdRole2).reply(200, {})
+      .put(`/${organizationResourceType}/${org105.id}`, editedOrg)
+      .reply(200, editedOrg)
+      .delete(`/${practitionerRoleResourceType}/392`)
+      .reply(200, {})
+      .post(`/${practitionerRoleResourceType}`, createdRole1)
+      .replyWithError('Failed operation outcome')
       .persist();
 
     const existingPractitionerRoles =
@@ -329,18 +352,33 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="test"]'));
+    fireEvent.click(document.querySelector('[title="test, fhir"]'));
+
+    // remove one of the previously selected options - Bobi, mapesa
+    const bobiMapesaOption = wrapper.find('span[title="Bobi, mapesa"]');
+    const bobiRemoveAction = bobiMapesaOption.find('span.ant-select-selection-item-remove');
+
+    bobiRemoveAction.simulate('click');
 
     wrapper
       .find('FormItem#alias input')
       .simulate('change', { target: { name: 'alias', value: 'Ss' } });
 
+    await flushPromises();
+    wrapper.update();
+
     wrapper.find('form').simulate('submit');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    await waitFor(() => {
+      expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
+      expect(errorNoticeMock.mock.calls).toEqual([
+        [
+          'request to http://test.server.org/PractitionerRole failed, reason: Failed operation outcome',
+        ],
+      ]);
     });
+
+    expect(nock.isDone()).toBeTruthy();
 
     wrapper.unmount();
   });

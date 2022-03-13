@@ -73,7 +73,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
-
+import { TeamAssignmentView } from '@opensrp/team-assignment';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -614,8 +614,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAM_ASSIGNMENT}
-              {...teamAffiliationProps}
-              component={ENABLE_FHIR_TEAMS ? FhirTeamAssignment : TeamsView}
+              {...(ENABLE_FHIR_TEAMS ? teamAffiliationProps : teamAssignmentProps)}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamAssignment : TeamAssignmentView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

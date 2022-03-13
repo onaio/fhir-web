@@ -10,8 +10,12 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
-import { organizationResourceType, practitionerResourceType } from '../../../constants';
-import { allPractitioners, org105 } from '../tests/fixtures';
+import {
+  organizationResourceType,
+  practitionerResourceType,
+  practitionerRoleResourceType,
+} from '../../../constants';
+import { allPractitioners, org105, org105Practitioners } from '../tests/fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -86,8 +90,6 @@ test('renders correctly for new organizations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('title')).toMatchInlineSnapshot(`null`);
-
   // some small but incoclusive proof that the form rendered
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
   expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
@@ -97,9 +99,23 @@ test('renders correctly for edit locations', async () => {
   const history = createMemoryHistory();
   history.push(`/add/${org105.id}`);
 
-  nock(props.fhirBaseURL).get(`/${practitionerResourceType}/_search`).reply(200, allPractitioners);
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, allPractitioners);
+
   nock(props.fhirBaseURL).get(`/${organizationResourceType}/${org105.id}`).reply(200, org105);
-  nock(props.fhirBaseURL).get(`/${practitionerResourceType}`).query({}).reply(200, org105);
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({ _summary: 'count', organization: '105' })
+    .reply(200, { total: 1000 })
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({ _count: 1000, organization: '105' })
+    .reply(200, org105Practitioners);
 
   render(
     <Router history={history}>
