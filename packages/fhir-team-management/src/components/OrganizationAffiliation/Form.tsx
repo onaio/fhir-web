@@ -114,6 +114,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
       okType="default"
     >
       <Select
+        className="full-width"
         data-testid="affiliation-select"
         mode="multiple"
         allowClear

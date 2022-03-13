@@ -54,7 +54,7 @@ export const getOrgSelectOptions = (orgs: IOrganization[] = []): OrgSelectOption
   return orgs.map((org) => {
     return {
       value: `${organizationResourceType}/${org.id}` as string,
-      label: org.name, // TODO - alias
+      label: org.name,
     };
   });
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col, Spin, PageHeader } from 'antd';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
-import lang from '../../lang';
 import AffiliationTable from './Table';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
@@ -55,7 +54,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
   );
 
   if (treeIsLoading) {
-    return <Spin size={'large'} />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (treeError && !treeData) {
@@ -78,13 +77,13 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     tableNodes = [selectedNode, ...sortedNodes];
   }
 
-  // TODO - title changes,
+  const pageTitle = 'Team Assignment';
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.LOCATION_UNIT}</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
+      <PageHeader title={pageTitle} className="page-header"></PageHeader>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
@@ -96,7 +95,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
             }}
           />
         </Col>
-        <Col className="bg-white p-3 border-left">
+        <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <AffiliationTable baseUrl={fhirBaseURL} locationNodes={tableNodes} />
           </div>
