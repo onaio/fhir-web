@@ -3,12 +3,14 @@ import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import {
+  HumanNameUseCodes,
   IdentifierUseCodes,
   organizationResourceType,
+  organizationTypeValueSetUrl,
   OrganizationTypeVS,
   practitionerResourceType,
 } from '../../constants';
-import { getObjLike } from '../../utils';
+import { getObjLike, parseFhirHumanName } from '../../utils';
 import { flatten } from 'lodash';
 import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
@@ -57,20 +59,21 @@ export const getOrgFormFields = (
   org?: IOrganization,
   assignedPractitioners: IPractitionerRole[] = []
 ): OrganizationFormFields => {
-  const organizationTypeValueSet = 'http://terminology.hl7.org/CodeSystem/organization-type';
   if (!org) {
     return {};
   }
   const { id, name, alias, active, identifier, type } = org;
+
   // collect all codings in codeableconcepts for organization.type
   const allTypeCodings = flatten(
     (type ?? []).map((codeConcept) => Object.values(codeConcept.coding ?? {}))
   );
+
   // collect just codings fo the organizationTypeValueSet system
   const valueSetCodings = getObjLike(
     allTypeCodings,
     'system',
-    organizationTypeValueSet,
+    organizationTypeValueSetUrl,
     true
   ) as Coding[];
 
@@ -166,10 +169,10 @@ export const getAssignedPractsOptions = (roles: IPractitionerRole[]) => {
  */
 export const getPractitionerOptions = (practitioners: IPractitioner[]) => {
   return practitioners.map((pract) => {
-    // TODO pract.name has not robustness- better have the full name
+    const nameObj = getObjLike(pract.name, 'use', HumanNameUseCodes.OFFICIAL)[0];
     return {
       value: `${practitionerResourceType}/${pract.id}`,
-      label: pract.name?.[0]?.given?.[0] ?? '',
+      label: parseFhirHumanName(nameObj),
     };
   });
 };

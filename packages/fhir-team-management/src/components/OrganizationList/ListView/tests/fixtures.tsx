@@ -9,13 +9,11 @@ export const organizationsPage1 = {
   link: [
     {
       relation: 'self',
-      url:
-        'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=3&_format=json&_getpagesoffset=0',
+      url: 'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=3&_format=json&_getpagesoffset=0',
     },
     {
       relation: 'next',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=3&_count=3&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=3&_count=3&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
@@ -102,18 +100,15 @@ export const organizationsPage2 = {
   link: [
     {
       relation: 'self',
-      url:
-        'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=3&_format=json&_getpagesoffset=3',
+      url: 'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=3&_format=json&_getpagesoffset=3',
     },
     {
       relation: 'next',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=6&_count=3&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=6&_count=3&_format=json&_pretty=true&_bundletype=searchset',
     },
     {
       relation: 'previous',
-      url:
-        'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=0&_count=3&_format=json&_pretty=true&_bundletype=searchset',
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=4918ec94-22f4-484a-bb70-fe403359c07f&_getpagesoffset=0&_count=3&_format=json&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
@@ -199,8 +194,7 @@ export const organizationSearchPage1 = {
   link: [
     {
       relation: 'self',
-      url:
-        'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=10&_format=json&_getpagesoffset=0&name%3Acontains=345',
+      url: 'http://fhir.labs.smartregister.org/fhir/Organization/_search?_count=10&_format=json&_getpagesoffset=0&name%3Acontains=345',
     },
   ],
   entry: [

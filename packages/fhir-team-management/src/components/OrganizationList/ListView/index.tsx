@@ -1,4 +1,5 @@
-/** Just shows a table that lists organizations, allows users to filter and
+/**
+ * Just shows a table that lists organizations, allows users to filter and
  * search organizations, and links to create/edit organization views.
  */
 import React from 'react';
@@ -26,28 +27,22 @@ interface RouteParams {
   id?: string;
 }
 
-/** Renders organization in a table
+/**
+ * Renders organization in a table
  *
  * @param props -  component props
  */
 export const OrganizationList = (props: OrganizationListProps) => {
   const { fhirBaseURL } = props;
 
-  const {id: resourceId} = useParams<RouteParams>()
-  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IOrganization>(
-    fhirBaseURL,
-    organizationResourceType
-  );
+  const { id: resourceId } = useParams<RouteParams>();
+  const { searchFormProps, tablePaginationProps, queryValues } =
+    useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
   const { data, isFetching, isLoading, error } = queryValues;
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
-
-  if (error && !data) {
-    return <BrokenPage errorMessage={'Problem loading data'} />;
-  }
-
 
   const tableData = (data?.records ?? []).map((org: IOrganization, index: number) => {
     return {
@@ -60,12 +55,14 @@ export const OrganizationList = (props: OrganizationListProps) => {
 
   const columns = [
     {
-      title: "Team name",
+      title: 'Team name',
       dataIndex: 'name' as const,
+      key: 'name' as const,
     },
     {
       title: 'Type',
       dataIndex: 'type' as const,
+      key: 'type' as const,
     },
     {
       title: 'Actions',
@@ -82,7 +79,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item className="viewdetails">
+                <Menu.Item key="view-details" className="view-details">
                   <Link to={`${ORGANIZATION_LIST_URL}/${record.id}`}>View Details</Link>
                 </Menu.Item>
               </Menu>

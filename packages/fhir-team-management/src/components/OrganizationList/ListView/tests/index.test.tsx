@@ -20,19 +20,20 @@ jest.mock('fhirclient', () => {
 jest.mock('@opensrp/react-utils', () => {
   const actual = jest.requireActual('@opensrp/react-utils');
 
- const SearchForm = (props: any) => {
-  const { onChangeHandler, ...otherProps } = props;
-  return (
-    <div className="search-input-wrapper">
-      <input onChange={onChangeHandler} data-testid="search-form"></input>
-    </div>
-  );
-};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SearchForm = (props: any) => {
+    const { onChangeHandler } = props;
+    return (
+      <div className="search-input-wrapper">
+        <input onChange={onChangeHandler} data-testid="search-form"></input>
+      </div>
+    );
+  };
   return {
     ...actual,
-    SearchForm
-  }
-})
+    SearchForm,
+  };
+});
 
 nock.disableNetConnect();
 
@@ -76,7 +77,6 @@ beforeAll(() => {
         name: 'Bobbie',
         username: 'RobertBaratheon',
       },
-      // eslint-disable-next-line @typescript-eslint/camelcase
       { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
     )
   );
@@ -167,7 +167,7 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // remove search.
-  await userEvents.clear(searchForm);
+  userEvents.clear(searchForm);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
 
   // view details
