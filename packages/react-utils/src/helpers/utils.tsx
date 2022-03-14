@@ -2,8 +2,6 @@ import { Dictionary } from '@onaio/utils';
 import type { i18n as i18nInstance } from 'i18next';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { getConfig } from '@opensrp/pkg-config';
-import { URLParams } from '@opensrp/server-service';
-import { FHIRServiceClass } from '../helpers/dataLoaders';
 
 /**
  * From T, convert a set of keys to optional, that are in the union K.
@@ -67,31 +65,4 @@ export const intlFormatDateStrings = (dateString = '') => {
   } catch (error) {
     return '';
   }
-};
-
-// TODO - duplicate in #896
-/**
- * fetch all resources for a certain endpoint
- *
- * @param baseUrl - the fhir server url
- * @param resourceType - the resource type
- * @param extraFilters - extra filters
- */
-export const loadAllResources = async (
-  baseUrl: string,
-  resourceType: string,
-  extraFilters: URLParams = {}
-) => {
-  // first get total
-  const summaryFilters = {
-    _summary: 'count',
-    ...extraFilters,
-  };
-  const summary = await new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(summaryFilters);
-  const { total } = summary;
-  const fetchAllFilter = {
-    _count: total,
-    ...extraFilters,
-  };
-  return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(fetchAllFilter);
 };

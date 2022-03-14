@@ -5,7 +5,7 @@ import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps, useParams } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { BrokenPage, FHIRServiceClass, loadAllResources } from '@opensrp/react-utils';
+import { BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -16,7 +16,7 @@ import {
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../constants';
 import { CareTeamForm, FormFields } from './Form';
-import { getPatientName } from './utils';
+import { getPatientName, loadAllResources } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
 import { get } from 'lodash';
 
