@@ -109,7 +109,6 @@ export const loadAllResources = async (
 ) => {
   // first get total
   const summaryFilters = {
-    // TODO - magic strings
     _summary: 'count',
     ...extraFilters,
   };
