@@ -188,5 +188,70 @@ test('Edits organization affiliation correctly', async () => {
     expect(screen.getByText(/Team assignments updated successfully/)).toBeInTheDocument();
   });
 
+  // lets expand on tree search and select a node
+  const antTree = document.querySelector('.ant-tree-list');
+  const firstDownCaret = antTree.querySelector('.anticon-caret-down');
+  fireEvent.click(firstDownCaret);
+
+  // tree title visible now - represents nested nodes that are now visible
+  document.querySelectorAll('.ant-tree-title').forEach((nodeTitle) => {
+    expect(nodeTitle).toMatchSnapshot('visible nodes on expand');
+  });
+
+  const lastTextNode = screen.getByText('Part Of Sub Location');
+  fireEvent.click(lastTextNode);
+
+  // tree title visible now - represents nested nodes that are now visible
+  document.querySelectorAll('.ant-tree-title').forEach((nodeTitle) => {
+    expect(nodeTitle).toMatchSnapshot('visible nodes on expanding part of sub location');
+  });
+
+  // table change
+  expect(document.querySelectorAll('table tbody tr')).toHaveLength(5);
+
   expect(nock.isDone()).toBeTruthy();
+});
+
+test('api error response', async () => {
+  const history = createMemoryHistory();
+  history.push('/assignments');
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .replyWithError('Something awful happened');
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // error page
+  expect(screen.getByText(/Something awful happened/)).toBeInTheDocument();
+});
+
+test('api undefined response', async () => {
+  const history = createMemoryHistory();
+  history.push('/assignments');
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .reply(200, null);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // error page
+  expect(
+    screen.getByText(/Sorry, the resource you requested for, does not exist/)
+  ).toBeInTheDocument();
 });
