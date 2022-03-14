@@ -1,3 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`components/CreateEditCareTeam renders correctly: full care tem form 1`] = `"Edit Care Team | Care Team OneUUIDNameStatusActiveInactiveParticipant206103 Subject306SaveCancel"`;
+exports[`renders correctly for create care team: name field 1`] = `
+<input
+  class="ant-input"
+  id="name"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`renders correctly for create care team: uuid field 1`] = `
+<input
+  class="ant-input"
+  id="uuid"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`renders correctly for edit care team: name field 1`] = `
+<input
+  class="ant-input"
+  id="name"
+  type="text"
+  value="Care Team One"
+/>
+`;
+
+exports[`renders correctly for edit care team: uuid field 1`] = `
+<input
+  class="ant-input"
+  id="uuid"
+  type="text"
+  value="93bc9c3d-6321-41b0-9b93-1275d7114e22"
+/>
+`;
