@@ -39,7 +39,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
-  } = useQuery<IBundle, Error, TreeNode | undefined>(
+  } = useQuery<IBundle | undefined, Error, TreeNode | undefined>(
     [locationHierarchyResourceType, hierarchyParams],
     async () => {
       return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
@@ -48,7 +48,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     },
     {
       select: (res) => {
-        return convertApiResToTree(res);
+        return res && convertApiResToTree(res);
       },
     }
   );
