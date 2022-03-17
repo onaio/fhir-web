@@ -26,6 +26,7 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { getOrgFormFields } from '../utils';
 import * as notifications from '@opensrp/notifications';
+import userEvents from '@testing-library/user-event';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -230,14 +231,40 @@ describe('OrganizationForm', () => {
 
     // simulate value selection for members
     wrapper.find('input#members').simulate('mousedown');
-    // check options
-    document
-      .querySelectorAll('#members_list .ant-select-item ant-select-item-option')
-      .forEach((option) => {
-        expect(option).toMatchSnapshot('practitioner option');
-      });
 
-    fireEvent.click(document.querySelector('[title="Allay, Allan"]'));
+    const optionTexts = [
+      ...document.querySelectorAll(
+        '#members_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(optionTexts).toHaveLength(5);
+    expect(optionTexts).toEqual([
+      'Practitioner/5123',
+      'Bobi mapesa',
+      'Ward N Williams MD',
+      'Allay Allan',
+      'test fhir',
+    ]);
+
+    // filter searching through members works
+    await userEvents.type(document.querySelector('input#members'), 'allan');
+
+    // options after search
+    const afterFilterOptionTexts = [
+      ...document.querySelectorAll(
+        '#members_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(afterFilterOptionTexts).toHaveLength(1);
+    expect(afterFilterOptionTexts).toEqual(['Allay Allan']);
+
+    fireEvent.click(document.querySelector('[title="Allay Allan"]'));
 
     // simulate value selection for type
     wrapper.find('input#type').simulate('mousedown');
@@ -352,10 +379,10 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="test, fhir"]'));
+    fireEvent.click(document.querySelector('[title="test fhir"]'));
 
-    // remove one of the previously selected options - Bobi, mapesa
-    const bobiMapesaOption = wrapper.find('span[title="Bobi, mapesa"]');
+    // remove one of the previously selected options - Bobi mapesa
+    const bobiMapesaOption = wrapper.find('span[title="Bobi mapesa"]');
     const bobiRemoveAction = bobiMapesaOption.find('span.ant-select-selection-item-remove');
 
     bobiRemoveAction.simulate('click');
