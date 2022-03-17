@@ -27,12 +27,12 @@ export const parseFhirHumanName = (hName?: HumanName) => {
   }
   const { family, given, suffix, prefix } = hName;
   const namesArray: string[] = [
-    (prefix ?? []).join(','),
+    (prefix ?? []).join(' '),
     (given ?? []).join(' '),
     family ?? '',
-    (suffix ?? []).join(','),
+    (suffix ?? []).join(' '),
   ].filter((txt) => !!txt);
-  return namesArray.join(', ');
+  return namesArray.join(' ');
 };
 
 /**

@@ -170,9 +170,11 @@ export const getAssignedPractsOptions = (roles: IPractitionerRole[]) => {
 export const getPractitionerOptions = (practitioners: IPractitioner[]) => {
   return practitioners.map((pract) => {
     const nameObj = getObjLike(pract.name, 'use', HumanNameUseCodes.OFFICIAL)[0];
+    const value = `${practitionerResourceType}/${pract.id}`;
+    const label = parseFhirHumanName(nameObj);
     return {
-      value: `${practitionerResourceType}/${pract.id}`,
-      label: parseFhirHumanName(nameObj),
+      value,
+      label: label ?? value,
     };
   });
 };
