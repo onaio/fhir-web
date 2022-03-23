@@ -1,13 +1,16 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // learn more: https://github.com/testing-library/jest-dom
 import enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+// temp react 17 enzyme adapter before official adapter is released - https://github.com/enzymejs/enzyme/issues/2429#issuecomment-679265564
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { setLogger } from 'react-query';
 
 const configuredLanguage = `en_core`;
 
@@ -19,12 +22,22 @@ i18n
     interpolation: { escapeValue: false },
     returnEmptyString: false,
     nsSeparator: '::',
+    resources: {
+      en_core: {
+        translation: {
+          key: 'hello world',
+        },
+      },
+    },
     keySeparator: false,
     react: {
       useSuspense: false,
     },
   })
   .catch((err) => err);
+
+// force i18n to be initialized
+i18n.changeLanguage(configuredLanguage).catch((err) => err);
 
 setAllConfigs({
   i18n: i18n,
@@ -66,3 +79,11 @@ jest.mock('fhirclient', () => ({
     };
   }),
 }));
+
+// disable react-query errors and warning on console during tests
+// eg "API is down" when testing api failure
+setLogger({
+  log: () => {},
+  warn: () => {},
+  error: () => {},
+});

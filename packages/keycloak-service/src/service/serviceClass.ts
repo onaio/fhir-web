@@ -31,7 +31,8 @@ export function getDefaultHeaders(
   };
 }
 
-/** converts filter params object to string
+/**
+ * converts filter params object to string
  *
  * @param {object} obj - the object representing filter params
  * @returns {string} filter params as a string
@@ -74,17 +75,18 @@ export const customFetch: CustomFetch = async (...rest) => {
   try {
     return await fetch(...rest);
   } catch (err) {
-    throwNetworkError(err);
+    throwNetworkError(err as Error);
   }
 };
 
 /** params option type */
-type paramsType = URLParams | null;
+type ParamsType = URLParams | null;
 
 /** get acess token call back fn type */
 type GetAccessTokenType = () => Promise<string | null>;
 
-/** The Keycloak service class
+/**
+ * The Keycloak service class
  *
  * Sample usage:
  * -------------
@@ -109,7 +111,7 @@ export class KeycloakAPIService {
   /**
    * Constructor method
    *
-   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
+   * @param {Function | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base Keycloak API URL
    * @param {string} endpoint - the Keycloak endpoint
    * @param {object} getPayload - a function to get the payload
@@ -137,7 +139,7 @@ export class KeycloakAPIService {
    * @param {object} params - the url params object
    * @returns {string} the final url
    */
-  public static getURL(generalUrl: string, params: paramsType): string {
+  public static getURL(generalUrl: string, params: ParamsType): string {
     if (params) {
       return `${generalUrl}?${queryString.stringify(params)}`;
     }
@@ -147,7 +149,7 @@ export class KeycloakAPIService {
   /**
    * process received access token
    *
-   * @param {function() | string} accessTokenCallBack - received access token
+   * @param {Function | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
     if (typeof accessTokenCallBack === 'function') {
@@ -156,7 +158,8 @@ export class KeycloakAPIService {
     return accessTokenCallBack;
   }
 
-  /** create method
+  /**
+   * create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
    *
@@ -168,7 +171,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async create<T>(
     data: T,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'POST'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -191,7 +194,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** read method
+  /**
+   * read method
    * Send a GET request to the url for the specific object
    *
    * @param {string|number} id - the identifier of the object
@@ -202,7 +206,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'GET'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -219,7 +223,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** update method
+  /**
+   * update method
    * Simply send the updated object as PUT request to the general endpoint URL
    * Successful requests will result in a HTTP status 200/201 response with no body
    *
@@ -231,7 +236,7 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async update<T>(
     data: T,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'PUT'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -253,7 +258,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** list method
+  /**
+   * list method
    * Send a GET request to the general API endpoint
    *
    * @param {object} params - the url params object
@@ -261,7 +267,7 @@ export class KeycloakAPIService {
    * @returns {Promise<any>} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
+  public async list(params: ParamsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
@@ -275,7 +281,8 @@ export class KeycloakAPIService {
     }
   }
 
-  /** delete method
+  /**
+   * delete method
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
    *
@@ -284,7 +291,7 @@ export class KeycloakAPIService {
    * @returns {Promise<any>} the object returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async delete(params: paramsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
+  public async delete(params: ParamsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
     const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
     const response = await fetch(url, this.getOptions(this.signal, accessToken, method));

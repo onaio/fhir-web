@@ -24,8 +24,6 @@ import { Dispatch } from 'redux';
 import { fetchManifestReleases, ManifestReleasesTypes } from '../ducks/manifestReleases';
 import { format } from 'date-fns';
 
-type StrNum = string | number;
-
 /**
  * format long date to YYY-mm-dd
  *
@@ -56,8 +54,8 @@ export const downloadManifestFile = async (
 ) => {
   const { identifier } = obj;
   const params: URLParams = {
-    form_identifier: identifier, // eslint-disable-line @typescript-eslint/camelcase
-    form_version: obj.version, // eslint-disable-line @typescript-eslint/camelcase
+    form_identifier: identifier, // eslint-disable-line @typescript-eslint/naming-convention
+    form_version: obj.version, // eslint-disable-line @typescript-eslint/naming-convention
   };
   if (isJsonValidator) {
     params['is_json_validator'] = true;
@@ -161,7 +159,7 @@ export const makeRelease = (
 ) => {
   const identifiers = data.map((form) => form.identifier);
   const json = {
-    /* eslint-disable-next-line @typescript-eslint/camelcase */
+    /* eslint-disable-next-line @typescript-eslint/naming-convention */
     forms_version: data[0].version,
     identifiers,
   };
@@ -213,7 +211,7 @@ export const fetchDrafts = (
 ) => {
   /** get manifest Draftfiles */
   setLoading(true);
-  /* eslint-disable-next-line @typescript-eslint/camelcase */
+  /* eslint-disable-next-line @typescript-eslint/naming-convention */
   const params = { is_draft: true };
   const clientService = new OpenSRPService(
     accessToken,
@@ -315,7 +313,7 @@ export const fetchManifests = (
   setLoading(true);
   let params = null;
   // if form version is available -  means request is to get manifest files else get json validator files
-  /* eslint-disable-next-line @typescript-eslint/camelcase */
+  /* eslint-disable-next-line @typescript-eslint/naming-convention */
   params = formVersion ? { identifier: formVersion } : { is_json_validator: true };
 
   if (dispatch) {

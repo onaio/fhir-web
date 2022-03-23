@@ -41,11 +41,12 @@ export function lang(t: TFunction) {
     ADMINISTRATION: t(`Administration`, { ns: namespace }),
     MISSIONS: t(`Missions`, { ns: namespace }),
     WELCOME_TO_OPENSRP: t(`Welcome to OpenSRP`, { ns: namespace }),
-    HEALTHCARESERVICES_MANAGEMENT: t(`Health Care Services Management`, { ns: namespace }),
+    HEALTHCARE_SERVICES_MANAGEMENT: t(`HealthCare Services Management`, { ns: namespace }),
     INVENTORY: t(`Inventory`, { ns: namespace }),
     SERVICE_POINT_INVENTORY: t(`Service point inventory`, { ns: namespace }),
     ADD_INVENTORY_VIA_CSV: t(`Add inventory via CSV`, { ns: namespace }),
-    CARE_TEAM: t(`Care Team`, { ns: namespace }),
+    CARE_TEAM: t(`Care Teams Management`, { ns: namespace }),
+    QUESTIONNAIRE: t(`Questionnaire`, { ns: namespace }),
   };
 }
 

@@ -44,7 +44,7 @@ describe('location-management/src/components/LocationUnitList', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -255,7 +255,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   it('test fail loadSingleLocation', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
-    fetch.mockReject();
+    fetch.mockRejectOnce(new Error('API is down'));
 
     const row: TableData = {
       geographicLevel: parsedHierarchy[0].node.attributes.geographicLevel,
@@ -281,7 +281,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     const response = await getBaseTreeNode(baseURL);
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expect(response).toMatchObject(baseLocationUnits);
     expect(fetch.mock.calls).toEqual([
       [
@@ -304,7 +304,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     await getBaseTreeNode(baseURL, true);
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expect(fetch.mock.calls).toEqual([
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,parentId:null',
@@ -324,7 +324,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('fail loading location ', async () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
-    fetch.mockReject();
+    fetch.mockRejectOnce();
     const queryClient = new QueryClient();
 
     const wrapper = mount(
@@ -353,7 +353,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     const notificationErrorMock = jest.spyOn(notification, 'error');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
-    fetch.mockReject();
+    fetch.mockRejectOnce();
     const queryClient = new QueryClient();
 
     const wrapper = mount(

@@ -7,7 +7,8 @@ import lang, { Lang } from '../../lang';
 
 // data loader utils for user group detail view
 
-/** Function to fetch group members from keycloak
+/**
+ * Function to fetch group members from keycloak
  *
  * @param {string} groupId - user group id
  * @param {string} baseURL - keycloak base url

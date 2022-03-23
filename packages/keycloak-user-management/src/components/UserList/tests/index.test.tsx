@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
@@ -89,7 +89,7 @@ describe('components/UserList', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'simple-token', state: 'abcde' } }
       )
     );
@@ -199,7 +199,7 @@ describe('components/UserList', () => {
     });
 
     await act(async () => {
-      await new Promise((res) => setTimeout(res, 2000));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -207,6 +207,17 @@ describe('components/UserList', () => {
     expect(fetch.mock.calls).toMatchObject([
       [
         'https://some-keycloak.server/auth/admin/realms/some-realm/users?first=0&max=20&search=opensrp',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer simple-token',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
+        },
+      ],
+      [
+        'https://some-keycloak.server/auth/admin/realms/some-realm/users/count?search=opensrp',
         {
           headers: {
             accept: 'application/json',
@@ -252,7 +263,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo to"`
+      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo toPage"`
     );
   });
 
@@ -282,7 +293,7 @@ describe('components/UserList', () => {
   });
 
   it('handles user list fetch failure', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockReject(new Error('API is down'));
 
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 

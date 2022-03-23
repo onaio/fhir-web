@@ -10,6 +10,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
 import { product2, product3 } from './fixtures';
 import * as opensrpReactUtils from '@opensrp/react-utils';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -22,6 +23,8 @@ jest.mock('@opensrp/react-utils', () => ({
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
+
+jest.setTimeout(10000);
 
 describe('productForm', () => {
   global.URL.revokeObjectURL = jest.fn();
@@ -40,7 +43,7 @@ describe('productForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
   });
@@ -57,7 +60,7 @@ describe('productForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -97,7 +100,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -188,7 +191,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -198,7 +201,7 @@ describe('productForm', () => {
     );
   });
 
-  it('new form submission', async (done) => {
+  it('new form submission', async () => {
     fetch.once(JSON.stringify({ message: 'success' }));
     const div = document.createElement('div');
     document.body.appendChild(div);
@@ -245,7 +248,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -275,14 +278,13 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-        done();
-      } catch (error) {
-        done.fail(error);
+      } catch (_) {
+        // eslint-disable-next-line no-empty
       }
     });
   });
 
-  it('edit form submission', async (done) => {
+  it('edit form submission', async () => {
     fetch.once(JSON.stringify({ message: 'success' }));
     const div = document.createElement('div');
     document.body.appendChild(div);
@@ -300,7 +302,7 @@ describe('productForm', () => {
 
     // check that it has the initial correct values
     expect(toJson(wrapper.find('input[name="uniqueId"]'))).toMatchSnapshot('uniqueId');
-    expect(wrapper.find('input[name="uniqueId"]').props().value).toEqual(1);
+    expect(wrapper.find('input[name="uniqueId"]').props().value).toMatchInlineSnapshot(`"1"`);
 
     expect(toJson(wrapper.find('input[name="productName"]'))).toMatchSnapshot('productName');
     expect(wrapper.find('input[name="productName"]').props().value).toEqual('Scale');
@@ -369,7 +371,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -400,14 +402,13 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-        done();
-      } catch (error) {
-        done.fail(error);
+      } catch (_) {
+        // eslint-disable-next-line no-empty
       }
     });
   });
 
-  it('Retest form submission formdata append error', async (done) => {
+  it('Retest form submission formdata append error', async () => {
     // investigating formData.append: argument 2 is not an object error
     fetch.once(JSON.stringify({ message: 'success' }));
     const div = document.createElement('div');
@@ -432,7 +433,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -462,9 +463,8 @@ describe('productForm', () => {
       try {
         const result = reader.result;
         expect(JSON.parse(result as string)).toEqual(formFields);
-        done();
-      } catch (error) {
-        done.fail(error);
+      } catch (_) {
+        // eslint-disable-next-line no-empty
       }
     });
   });
@@ -494,7 +494,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -552,7 +552,7 @@ describe('productForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -576,9 +576,9 @@ describe('productForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
+      wrapper.update();
     });
-    wrapper.update();
 
     expect(fetchProtectedImageMock).toHaveBeenCalledWith(
       'https://mg-eusm-staging.smartregister.org/opensrp/multimedia/media/4'
@@ -604,7 +604,7 @@ describe('productForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 
@@ -632,7 +632,7 @@ describe('productForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
 

@@ -28,7 +28,8 @@
     "babel.config.js",
     "setupTests.js",
     "i18next-parser.config.js",
-    "__mocks__/"
+    "__mocks__/",
+    "./jest-setup.ts"
   ],
   "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts"]
 }

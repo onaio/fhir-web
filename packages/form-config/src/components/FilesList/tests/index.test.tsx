@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
@@ -228,7 +228,7 @@ describe('components/manifestFiles', () => {
   });
 
   it('handles failure if fetching mainfest files fails', async () => {
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     fetch.once(JSON.stringify(downloadFile));
 
     const wrapper = mount(
@@ -252,7 +252,7 @@ describe('components/manifestFiles', () => {
 
   it('handles download file failure', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
-    fetch.mockRejectOnce(() => Promise.reject('Cannot fetch file'));
+    fetch.mockRejectOnce(new Error('Cannot fetch file'));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -277,7 +277,7 @@ describe('components/manifestFiles', () => {
     });
 
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('Cannot fetch file', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('Error: Cannot fetch file', { type: 'error' });
     wrapper.unmount();
   });
 });

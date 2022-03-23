@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as React from 'react';
 import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';

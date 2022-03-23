@@ -25,7 +25,8 @@ const defaultProps = {
   },
 };
 
-/** renders a card with a button to effect the activate mission worfklow
+/**
+ * renders a card with a button to effect the activate mission worfklow
  *
  * @param props - the component props
  */

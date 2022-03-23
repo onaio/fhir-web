@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
@@ -72,7 +72,8 @@ const defaultProps = {
 
 export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
 
-/** Component which shows the list of all groups and their details
+/**
+ * Component which shows the list of all groups and their details
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns User Groups list display
@@ -96,12 +97,16 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         .then((response: KeycloakUserGroup[]) => {
           dispatch(fetchKeycloakUserGroups(response));
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setIsLoading(false));
     }
   });
 
-  if (isLoading) return <Spin size="large" />;
+  if (isLoading) {
+    return <Spin data-testid="group-list-loader" size="large" />;
+  }
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],

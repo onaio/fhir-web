@@ -9,7 +9,8 @@ export const OPENSRP_API_BASE_URL = 'https://opensrp-stage.smartregister.org/ope
 /** allowed http methods */
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-/** get default HTTP headers for OpenSRP service
+/**
+ * get default HTTP headers for OpenSRP service
  *
  * @param {string} accessToken - the access token
  * @param {string} accept - the MIME type to accept
@@ -65,17 +66,18 @@ export const customFetch: CustomFetch = async (...rest) => {
   try {
     return await fetch(...rest);
   } catch (err) {
-    throwNetworkError(err);
+    throwNetworkError(err as Error);
   }
 };
 
 /** params option type */
-type paramsType = URLParams | null;
+type ParamsType = URLParams | null;
 
 /** get acess token call back fn type */
 export type GetAccessTokenType = () => Promise<string | null>;
 
-/** The OpenSRP service class
+/**
+ * The OpenSRP service class
  *
  * Sample usage:
  * -------------
@@ -100,10 +102,10 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * Constructor method
    *
-   * @param {function() | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
+   * @param {Function | string } accessTokenOrCallBack - asyc fn for getting the access token or access token
    * @param {string} baseURL - the base OpenSRP API URL
    * @param {string} endpoint - the OpenSRP endpoint
-   * @param {function()} getOptions - a function to get the payload
+   * @param {Function} getOptions - a function to get the payload
    * @param {AbortController} signal - abort signal
    */
   constructor(
@@ -121,20 +123,22 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     this.accessTokenOrCallBack = accessTokenOrCallBack;
   }
 
-  /** appends any query params to the url as a querystring
+  /**
+   * appends any query params to the url as a querystring
    *
    * @param {string} generalUrl - the url
    * @param {object} params - the url params object
    * @returns {string} the final url
    */
-  public static getURL(generalUrl: string, params: paramsType): string {
+  public static getURL(generalUrl: string, params: ParamsType): string {
     if (params) {
       return `${generalUrl}?${decodeURIComponent(queryString.stringify(params))}`;
     }
     return generalUrl;
   }
 
-  /** converts filter params object to string
+  /**
+   * converts filter params object to string
    *
    * @param {object} obj - the object representing filter params
    * @returns {string} filter params as a string
@@ -148,7 +152,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   /**
    * process received access token
    *
-   * @param {function() | string} accessTokenCallBack - received access token
+   * @param {Function | string} accessTokenCallBack - received access token
    */
   public static async processAcessToken(accessTokenCallBack: GetAccessTokenType | string) {
     if (typeof accessTokenCallBack === 'function') {
@@ -157,7 +161,8 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     return accessTokenCallBack;
   }
 
-  /** create method
+  /**
+   * create method
    * Send a POST request to the general endpoint containing the new object data
    * Successful requests will result in a HTTP status 201 response with no body
    *
@@ -168,7 +173,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    */
   public async create(
     data: PayloadT,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'POST'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
@@ -191,7 +196,8 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     return {};
   }
 
-  /** read method
+  /**
+   * read method
    * Send a GET request to the url for the specific object
    *
    * @param {string|number} id - the identifier of the object
@@ -202,7 +208,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async read(
     id: string | number,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'GET'
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -219,7 +225,8 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     }
   }
 
-  /** update method
+  /**
+   * update method
    * Simply send the updated object as PUT request to the general endpoint URL
    * Successful requests will result in a HTTP status 200/201 response with no body
    *
@@ -228,9 +235,9 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @param {string} method - the HTTP method
    * @returns {object} the object returned by API
    */
-  public async update<T>(
+  public async update(
     data: PayloadT,
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'PUT'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);
@@ -252,7 +259,8 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     return {};
   }
 
-  /** list method
+  /**
+   * list method
    * Send a GET request to the general API endpoint
    *
    * @param {params} params - the url params object
@@ -260,7 +268,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    * @returns {object} list of objects returned by API
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public async list(params: paramsType = null, method: HTTPMethod = 'GET'): Promise<any> {
+  public async list(params: ParamsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = OpenSRPService.getURL(this.generalURL, params);
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
@@ -274,7 +282,8 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
     }
   }
 
-  /** delete method
+  /**
+   * delete method
    * Send a DELETE request to the general endpoint
    * Successful requests will result in a HTTP status 204
    *
@@ -284,7 +293,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async delete(
-    params: paramsType = null,
+    params: ParamsType = null,
     method: HTTPMethod = 'DELETE'
   ): Promise<Record<string, unknown>> {
     const url = OpenSRPService.getURL(this.generalURL, params);

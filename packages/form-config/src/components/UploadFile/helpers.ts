@@ -9,7 +9,7 @@ export interface InitialValuesTypes {
 }
 
 /** Yup client upload validation schema */
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const uploadValidationSchema = Yup.object().shape({
   form: Yup.mixed().required(),
   form_name: Yup.string().required(),

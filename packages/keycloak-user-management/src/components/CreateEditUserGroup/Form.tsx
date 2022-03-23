@@ -58,7 +58,8 @@ export const defaultProps: Partial<UserGroupFormProps> = {
   keycloakBaseURL: '',
 };
 
-/** Util function that updates assigned/available roles on keycloak
+/**
+ * Util function that updates assigned/available roles on keycloak
  *
  * @param {KeycloakUserGroup} initialValues - form initial values
  * @param {string[]} targetSelectedKeys - target choice box selected keys
@@ -80,7 +81,8 @@ export const handleTransferChange = async (
   }
 };
 
-/** User group form for editing/adding user groups
+/**
+ * User group form for editing/adding user groups
  *
  * @param {object} props - component props
  */
@@ -117,9 +119,11 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
     },
   };
 
-  /** Update form initial values when initialValues prop changes, without this
+  /**
+   * Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initiaValues is updated
-   * **/
+   *
+   */
   React.useEffect(() => {
     form.setFieldsValue({
       ...initialValues,
@@ -167,11 +171,9 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             // remove roles array from payload
             delete values.roles;
             setIsSubmitting(true);
-            submitForm(
-              { ...initialValues, ...values },
-              keycloakBaseURL,
-              setIsSubmitting
-            ).catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+            submitForm({ ...initialValues, ...values }, keycloakBaseURL, setIsSubmitting).catch(
+              () => sendErrorNotification(lang.ERROR_OCCURED)
+            );
           }}
         >
           <Form.Item
