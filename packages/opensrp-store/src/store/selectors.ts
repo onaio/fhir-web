@@ -3,7 +3,8 @@ import { Store } from 'redux';
 import { Dictionary } from '@onaio/utils';
 import { createSelector } from 'reselect';
 
-/** get API Token from the Redux store
+/**
+ * get API Token from the Redux store
  *
  * @param {any} state - the redux store
  */
@@ -19,7 +20,8 @@ interface APIFilters {
   providerState?: boolean;
 }
 
-/** Fetch access token from store if access_token filter val is true
+/**
+ * Fetch access token from store if access_token filter val is true
  *
  * @param {object} _ - redux store
  * @param {object} props - api filters object
@@ -28,7 +30,8 @@ interface APIFilters {
 export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.accessToken ? props.accessToken : null;
 
-/** Fetch api token from store if api_token filter val is true
+/**
+ * Fetch api token from store if api_token filter val is true
  *
  * @param {object} _ redux store
  * @param {object} props api filters object
@@ -37,7 +40,8 @@ export const fetchAccessToken = (_: Partial<Store>, props: APIFilters): boolean 
 export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.apiToken ? props.apiToken : null;
 
-/** Fetch oauth provider state from store if providerState filter val is true
+/**
+ * Fetch oauth provider state from store if providerState filter val is true
  *
  * @param {Object} _ redux store
  * @param {Object} props api filters object
@@ -46,7 +50,8 @@ export const fetchApiToken = (_: Partial<Store>, props: APIFilters): boolean | n
 export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): boolean | null =>
   props.providerState ? props.providerState : null;
 
-/** Gets extra data object from store
+/**
+ * Gets extra data object from store
  *
  * @param {object} state - redux store
  * @returns {Object}
@@ -55,7 +60,8 @@ export const fetchOauthProviderState = (_: Partial<Store>, props: APIFilters): b
 export const getExtraData = (state: Partial<Store>): Dictionary =>
   (state as StoreState)[sessionReducerName].extraData;
 
-/** API state selector
+/**
+ * API state selector
  *
  * @returns {Object} - the states
  */

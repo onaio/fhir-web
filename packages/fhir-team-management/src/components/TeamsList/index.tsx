@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input } from 'antd';
@@ -19,21 +19,22 @@ import { Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
 import { loadTeamPractitionerInfo } from '../../utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 interface Props {
   fhirBaseURL: string;
 }
 
-/** Function which shows the list of all teams and there details
+/**
+ * Function which shows the list of all teams and there details
  *
  * @param {Object} props - TeamsList component props
  * @returns {Function} returns team display
  */
 export const TeamsList: React.FC<Props> = (props: Props) => {
   const { fhirBaseURL } = props;
-  const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   const fhirParams = {
     _count: FHIR_RESOURCES_PAGE_SIZE,
     _getpagesoffset: 0,
@@ -41,18 +42,31 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
   const [detail, setDetail] = useState<OrganizationDetail | 'loading' | null>(null);
   const [filterData, setfilterData] = useState<{ search?: string; data?: Organization[] }>({});
 
-  const teams = useQuery(ORGANIZATION_ENDPOINT, async () => serve.list(fhirParams), {
-    onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res) => res.entry.map((e) => e.resource),
-  });
+  const serve = new FHIRServiceClass<IBundle>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
+  const { data, error, isLoading } = useQuery(
+    ORGANIZATION_ENDPOINT,
+    async () => serve.list(fhirParams),
+    {
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      select: (res) => getResourcesFromBundle<Organization>(res),
+    }
+  );
 
   const tableData: Organization[] = useMemo(() => {
-    if (teams.data) {
-      return teams.data.map((team, i) => {
+    if (data) {
+      return data.map((team, i) => {
         return { ...team, key: i.toString() } as Organization;
       });
     } else return [];
-  }, [teams.data]);
+  }, [data]);
+
+  if (isLoading) {
+    return <Spin size="large" />;
+  }
+
+  if (error && !data) {
+    return <BrokenPage errorMessage={`${error}`} />;
+  }
 
   /**
    * Returns filted list of teams
@@ -66,8 +80,6 @@ export const TeamsList: React.FC<Props> = (props: Props) => {
     );
     setfilterData({ search: currentValue, data: filteredData });
   };
-
-  if (!tableData.length) return <Spin size="large" />;
 
   return (
     <section className="layout-content">

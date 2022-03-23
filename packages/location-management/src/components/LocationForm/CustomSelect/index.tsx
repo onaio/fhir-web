@@ -3,11 +3,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { sendErrorNotification } from '@opensrp/notifications';
 import React from 'react';
 import { Dictionary } from '@onaio/utils';
-import { SelectProps } from 'antd/lib/select';
-import { OptionData } from 'rc-select/lib/interface/';
+import { SelectProps, DefaultOptionType } from 'antd/lib/select';
 
 type RawValueType = string | number | (string | number)[];
-export type GetOptions<T> = (data: T[]) => OptionData[];
+export type GetOptions<T> = (data: T[]) => DefaultOptionType[];
 export type GetSelectedFullData<T> = (
   data: T[],
   getOptions: GetOptions<T>,
@@ -30,7 +29,10 @@ export function getSelectedFullData<T>(
 ) {
   const selected = data.filter((dt) => {
     const option = getOptions([dt])[0];
-    return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
+    return (
+      (Array.isArray(value) && option.value && value.includes(option.value)) ||
+      value === option.value
+    );
   });
   return selected;
 }
@@ -48,26 +50,21 @@ const defaultServiceTypeProps = {
   getOptions: () => [],
   getSelectedFullData,
   showSearch: true,
-  filterOption: (inputValue: string, option?: OptionData) => {
+  filterOption: (inputValue: string, option?: DefaultOptionType) => {
     return !!option?.label?.toString().toLowerCase().includes(inputValue.toLowerCase());
   },
 };
 
-/** custom select,  gets options from the api
+/**
+ * custom select,  gets options from the api
  *
  * @param props - the component props
  */
 function CustomSelect<T>(props: CustomSelectProps<T>) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<T[]>([]);
-  const {
-    loadData,
-    getOptions,
-    value,
-    fullDataCallback,
-    getSelectedFullData,
-    ...restProps
-  } = props;
+  const { loadData, getOptions, value, fullDataCallback, getSelectedFullData, ...restProps } =
+    props;
 
   useEffect(() => {
     loadData(setData)

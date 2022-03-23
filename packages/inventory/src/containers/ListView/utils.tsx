@@ -1,6 +1,5 @@
 import React from 'react';
-import { Spin, Alert } from 'antd';
-import { INVENTORY_SERVICE_POINT_PROFILE_VIEW, TableColumnsNamespace } from '../../constants';
+import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
 import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
@@ -14,7 +13,8 @@ export interface TableData {
   servicePointId: string;
 }
 
-/** component rendered in the action column of the table
+/**
+ * component rendered in the action column of the table
  *
  * @param record - record to show in row
  */
@@ -28,7 +28,8 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
   );
 };
 
-/** service point list table columns factory
+/**
+ * service point list table columns factory
  *
  * @param langObj - the language translations lookup
  */
@@ -37,7 +38,7 @@ export const columnsFactory = (langObj: Lang = lang) => {
     {
       title: langObj.SERVICE_POINT_TH,
       dataIndex: 'serviceName',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_TH}` as keyof TableData,
+      key: 'serviceName',
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.serviceName > rec2.serviceName) {
@@ -52,38 +53,20 @@ export const columnsFactory = (langObj: Lang = lang) => {
     {
       title: langObj.TYPE_TH,
       dataIndex: 'type',
-      key: `${TableColumnsNamespace}-${langObj.TYPE_TH}` as keyof TableData,
+      key: 'type',
     },
     {
       title: langObj.LOCATION_TH,
       dataIndex: 'location',
-      key: `${TableColumnsNamespace}-${langObj.LOCATION_TH}` as keyof TableData,
+      key: 'location',
     },
     {
       title: langObj.SERVICE_POINT_ID_TH,
       dataIndex: 'servicePointId',
-      key: `${TableColumnsNamespace}-${langObj.SERVICE_POINT_ID_TH}` as keyof TableData,
+      key: 'servicePointId',
     },
   ];
   return columns;
-};
-
-/**
- * util component shown when there is a pending promise
- *
- * @param root0 - object argument containing below args
- * @param root0.message - message to show as title
- * @param root0.description - description of error to show
- */
-export const ServicePointsLoading = ({
-  message = lang.FETCHING_LOCATIONS,
-  description = lang.FETCHING_LOCATIONS_DESCRIPTION,
-}) => {
-  return (
-    <Spin tip={lang.LOADING_ELLIPSIS}>
-      <Alert message={message} description={description} type="info" />
-    </Spin>
-  );
 };
 
 /**

@@ -8,6 +8,7 @@ import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
 import { ProductForm } from '../../ProductForm';
 import { act } from 'react-dom/test-utils';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -29,7 +30,7 @@ describe('CreateEditProduct Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

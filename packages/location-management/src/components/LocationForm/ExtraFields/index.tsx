@@ -1,4 +1,5 @@
-/** this component renders adhoc fields for arbitrary values in locationUnit.properties
+/**
+ * this component renders adhoc fields for arbitrary values in locationUnit.properties
  * we get the property names for the shown fields from the settings endpoint
  */
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -24,7 +25,8 @@ const defaultExtraFieldProps = {
   hidden: false,
 };
 
-/** renders the extra fields form fields
+/**
+ * renders the extra fields form fields
  *
  * @param props - the components props
  */

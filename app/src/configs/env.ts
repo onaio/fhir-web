@@ -18,6 +18,7 @@ const defaultRoles = {
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  QUEST: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 export const OPENSRP_ROLES =
@@ -35,8 +36,8 @@ export const ENABLE_PLANS = setEnv('REACT_APP_ENABLE_PLANS', 'false') === 'true'
 export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
 
 /** Activate the healthcare menu */
-export const ENABLE_HEALTHCARESERVICES =
-  setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE', 'false') === 'true';
+export const ENABLE_HEALTHCARE_SERVICES =
+  setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES', 'false') === 'true';
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
@@ -52,7 +53,7 @@ export const ACTION_UUID_NAMESPACE = setEnv('REACT_APP_ACTION_UUID_NAMESPACE', '
 
 export const DEFAULT_PLAN_VERSION = setEnv('REACT_APP_DEFAULT_PLAN_VERSION', '1');
 
-export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'internal');
+export const TASK_GENERATION_STATUS = setEnv('REACT_APP_TASK_GENERATION_STATUS', 'False');
 
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
   setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0)
@@ -167,12 +168,12 @@ export const PROJECT_LANGUAGE_CODE = setEnv('REACT_APP_PROJECT_LANGUAGE_CODE', '
 
 export const ENABLE_INVENTORY = setEnv('REACT_APP_ENABLE_INVENTORY', 'false') === 'true';
 
-export const SENTRY_DSN = setEnv('REACT_APP_SENTRY_DSN', '');
-
 export const SUPPORTED_LANGUAGES = setEnv('REACT_APP_SUPPORTED_LANGUAGES', '').split(',');
 
 export const ENABLE_LANGUAGE_SWITCHER =
   setEnv('REACT_APP_ENABLE_LANGUAGE_SWITCHER', 'false') === 'true';
+
+export const ENABLE_FHIR_LOCATIONS = setEnv('REACT_APP_ENABLE_FHIR_LOCATIONS', 'false') === 'true';
 
 export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true') === 'true';
 
@@ -199,8 +200,16 @@ export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000))
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
 
+export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
+  'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
+  ''
+);
 export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
 
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
 
 export const OPENSRP_WEB_VERSION = setEnv('REACT_APP_OPENSRP_WEB_VERSION', '');
+
+export const SENTRY_CONFIGS = JSON.parse(setEnv('REACT_APP_SENTRY_CONFIG_JSON', '{}'));
+
+export const ENABLE_QUEST = setEnv('REACT_APP_ENABLE_QUEST', 'false') === 'true';

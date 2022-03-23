@@ -59,7 +59,8 @@ const defaultEditLocationUnitProps = {
   cancelURLGenerator: () => '',
 };
 
-/** renders page where user can Edit already created location unit
+/**
+ * renders page where user can Edit already created location unit
  *
  * @param props - this components props
  */
@@ -95,17 +96,17 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
     const commonParams = {
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       return_geometry: true,
     };
     const structureParams = {
       ...commonParams,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: false,
     };
     const jurisdictionParams = {
       ...commonParams,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: true,
     };
 
@@ -161,7 +162,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
+            select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
       : []

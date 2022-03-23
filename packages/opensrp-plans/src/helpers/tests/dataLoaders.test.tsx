@@ -15,6 +15,7 @@ import lang from '../../lang';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
 import { processRawAssignments } from '@opensrp/team-assignment';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -34,7 +35,7 @@ describe('dataLoading', () => {
     loadPlans(mockBaseURL).catch((e) => {
       throw e;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(creatorSpy).toHaveBeenCalledWith(eusmPlans);
     creatorSpy.mockRestore();
@@ -60,7 +61,7 @@ describe('dataLoading', () => {
       expect(e.message).toEqual('No data found');
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(creatorSpy).toHaveBeenCalled();
     creatorSpy.mockRestore();
@@ -84,7 +85,7 @@ describe('dataLoading', () => {
       expect(e.message).toEqual('No data found');
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(creatorSpy).not.toHaveBeenCalled();
     creatorSpy.mockRestore();
@@ -108,7 +109,7 @@ describe('dataLoading', () => {
     loadAssignments(mockBaseURL, 'planId').catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
@@ -134,7 +135,7 @@ describe('dataLoading', () => {
       throw e;
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expect(mockCreator).not.toHaveBeenCalled();
   });
 
@@ -154,7 +155,7 @@ describe('dataLoading', () => {
     ).catch(() => {
       return;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     let expectedMockedPlan = {
       ...mockPlan,
       jurisdiction: [{ code: 'code1' }, { code: 'code2' }],
@@ -173,7 +174,7 @@ describe('dataLoading', () => {
     ).catch(() => {
       return;
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
     expectedMockedPlan = {
       ...mockPlan,
       jurisdiction: [{ code: 'code2' }],
@@ -211,7 +212,7 @@ describe('dataLoading', () => {
     loadJurisdictions(mockBaseURL, 2).catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [

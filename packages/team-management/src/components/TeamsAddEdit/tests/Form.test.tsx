@@ -113,7 +113,7 @@ describe('HealthCareAddEdit/Form', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -176,7 +176,7 @@ describe('HealthCareAddEdit/Form', () => {
 
   it('fail and test call onsubmit', async () => {
     const mockNotificationError = jest.spyOn(notification, 'error');
-    fetch.mockReject();
+    fetch.mockReject(new Error('An error occurred'));
 
     const wrapper = mount(
       <Provider store={store}>

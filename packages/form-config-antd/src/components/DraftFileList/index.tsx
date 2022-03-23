@@ -115,7 +115,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
-          <Button type="primary" onClick={() => history.push(uploadFileURL)}>
+          <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
             {lang.UPLOAD_NEW_FILE}
           </Button>
@@ -140,6 +140,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             },
           }}
           datasource={value.length < 1 ? data : (filterData as ManifestFilesTypes[])}
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           onChange={(_: Dictionary, __: Dictionary, sorter: Dictionary) => setSortedInfo(sorter)}
         />
         {data.length > 0 && (
@@ -147,6 +148,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
           <Space style={{ float: 'right' }}>
             <Button
               type="primary"
+              id="makeRelease"
               onClick={() =>
                 makeRelease(
                   data,

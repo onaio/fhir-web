@@ -67,7 +67,8 @@ export const fetchKeycloakUserGroups = (
   };
 };
 
-/** Remove users action creator
+/**
+ * Remove users action creator
  *
  * @returns {object} - the dispatcher to remove the user groups
  */
@@ -154,18 +155,20 @@ export const getGroupName = (_: Partial<Store>, props: Filters) => props.name;
  */
 export const getSearchText = (_: Partial<Store>, props: Filters) => props.searchText;
 
-/** returns all user groups in the store as values whose keys are their respective ids
+/**
+ * returns all user groups in the store as values whose keys are their respective ids
  *
  * @param {any} state - the redux store
  * @returns {object} - users object as values, respective ids as keys
  */
-export function getKeycloakUserGroupsById(
-  state: Partial<Store>
-): { [key: string]: KeycloakUserGroup } {
+export function getKeycloakUserGroupsById(state: Partial<Store>): {
+  [key: string]: KeycloakUserGroup;
+} {
   return (state as Dictionary)[reducerName].userGroupsById;
 }
 
-/** gets keycloak users as an array of user objects
+/**
+ * gets keycloak users as an array of user objects
  *
  * @param {any} state - the redux store
  * @returns {Array} - an array of users objs
@@ -214,7 +217,8 @@ const userGroupsByIdsSelector = getKeycloakUserGroupsByIds();
 const userGroupsByNameSelector = getUserGroupByName();
 
 export const makeKeycloakUserGroupsSelector = () =>
-  /** practitioner array selector factory
+  /**
+   * practitioner array selector factory
    * aggregates response from all applied filters and returns results
    *
    * @returns {Array} - aggregates response from all applied filters and returns results

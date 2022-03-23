@@ -23,6 +23,8 @@ import {
   rawOpenSRPHierarchy1,
   serviceTypeSettings,
 } from './fixtures';
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
 
 const history = createBrowserHistory();
 
@@ -47,7 +49,7 @@ describe('LocationForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -71,7 +73,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -136,14 +138,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -179,47 +181,28 @@ describe('LocationForm', () => {
   });
 
   it('form validation works for wrong data types', async () => {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
     fetch.mockResponse(JSON.stringify([]));
 
-    const wrapper = mount(
+    const { getByLabelText, getByText, getAllByText, unmount } = render(
       <Router history={history}>
         <LocationForm />
-      </Router>,
-      { attachTo: div }
+      </Router>
     );
 
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
+    const longitudeInput = getByLabelText('Longitude');
+    const latitudeInput = getByLabelText('Latitude');
+    fireEvent.change(longitudeInput, { target: { value: '432dsff', name: 'longitude' } });
+    fireEvent.change(latitudeInput, { target: { value: '43f', name: 'latitude' } });
+
+    const submitButton = getByText('Save');
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(getAllByText('Only decimal values allowed')).toHaveLength(2);
     });
 
-    // set longitude, and latitude to invalid values
-    wrapper
-      .find('FormItem#longitude input')
-      .simulate('change', { target: { value: '432dsff', name: 'longitude' } });
-
-    wrapper
-      .find('FormItem#latitude input')
-      .simulate('change', { target: { value: '43f', name: 'latitude' } });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItemInput#longitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-    expect(wrapper.find('FormItemInput#latitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-
-    wrapper.unmount();
+    unmount();
   });
 
   it('form validation works for eusm instance', async () => {
@@ -240,14 +223,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -295,7 +278,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -347,7 +330,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -388,7 +371,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -440,7 +423,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -466,7 +449,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -502,7 +485,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -568,7 +551,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -618,7 +601,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -644,7 +627,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -693,7 +676,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -702,7 +685,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -765,7 +748,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

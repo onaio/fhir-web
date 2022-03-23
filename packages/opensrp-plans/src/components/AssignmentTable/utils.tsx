@@ -20,7 +20,8 @@ export interface TableData {
   organizations: string;
 }
 
-/** create a map such that we can group common assignments for jurisdictions and teams i.e
+/**
+ * create a map such that we can group common assignments for jurisdictions and teams i.e
  * [{org: orgA, area: area1}, {org: orgA, area: area2}] => {org: [orgA], area: [area1, area2]}
  *
  * @param {Assignment[]} assignments - assignments response from api per plan
@@ -54,7 +55,8 @@ export const compressAssignments = (assignments: Assignment[]) => {
   return fullyGrouped;
 };
 
-/** describes what we should eventually have after compressing the assignments and merging the ids
+/**
+ * describes what we should eventually have after compressing the assignments and merging the ids
  * with names, this prepares the data such that it can be used in a select field
  */
 export interface MappedOptions {
@@ -120,7 +122,8 @@ export const mergeIdsWithNames = (
   return merged;
 };
 
-/** factory: creates data to be fed into table
+/**
+ * factory: creates data to be fed into table
  *
  * @param {Organization[]} organizations - a list of all organizations
  * @param {Jurisdiction[]} jurisdictions - all jurisdictions that can be assigned
@@ -159,7 +162,8 @@ export const getDataSource = (
   return dataSource;
 };
 
-/** non dynamic columns for assignment table component
+/**
+ * non dynamic columns for assignment table component
  *
  * @param langObj - the translation lookup object
  */
@@ -204,6 +208,7 @@ export const getPlanAssignmentColumns = (
   disableAssignments: boolean,
   langObj: Dictionary<string> = lang
 ) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
     const fullyGrouped = compressAssignments(assignments);
     const planJurisdictions = plan.jurisdiction.map((jur) => jur.code);

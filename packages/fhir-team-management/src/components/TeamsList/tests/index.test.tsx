@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { mount } from 'enzyme';
 import { Router } from 'react-router';
@@ -12,6 +12,7 @@ import { team, practitioner102, practitioner116, practitionerRole } from '../../
 import * as fhirCient from 'fhirclient';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
+import { render, waitFor } from '@testing-library/react';
 
 const history = createBrowserHistory();
 
@@ -32,7 +33,7 @@ describe('components/TeamsList', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
       )
     );
@@ -83,6 +84,34 @@ describe('components/TeamsList', () => {
     expect(wrapper.find('table')).toHaveLength(1);
   });
 
+  test('loader views and error view', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn(async () => {
+          throw new Error('Something went wrong');
+        }),
+      }))
+    );
+
+    const { container, getByText } = render(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <TeamsList fhirBaseURL={fhirBaseURL} />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+
+    expect(getByText(/Something went wrong/)).toBeInTheDocument();
+  });
+
   it('Search works correctly', async () => {
     const queryClient = new QueryClient({
       defaultOptions: { queries: { retry: false } },
@@ -106,7 +135,7 @@ describe('components/TeamsList', () => {
     await act(async () => {
       wrapper.update();
     });
-    expect(((input.instance() as unknown) as HTMLInputElement).value).toEqual('Sample');
+    expect((input.instance() as unknown as HTMLInputElement).value).toEqual('Sample');
   });
 
   it('show error message when cant load teams from server', async () => {

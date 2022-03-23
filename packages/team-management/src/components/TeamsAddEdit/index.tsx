@@ -45,7 +45,7 @@ export async function getTeamDetail(id: string, opensrpBaseURL: string) {
 }
 
 /**
- * Gets Practioners assigned to a team
+ * Gets practitioners assigned to a team
  *
  * @param {string} id id of the team
  * @param {string} opensrpBaseURL - base url
@@ -67,7 +67,7 @@ export async function getPractitionerDetail(id: string, opensrpBaseURL: string) 
 function setupInitialValue(
   id: string,
   opensrpBaseURL: string,
-  setInitialValue: Function,
+  setInitialValue: React.Dispatch<React.SetStateAction<FormField | null>>,
   langObj: Lang = lang
 ) {
   getTeamDetail(id, opensrpBaseURL)
@@ -237,7 +237,9 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
           setPractitioners(filteredResponse);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURRED);
+        });
     }
   }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole]);
 

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "dist/types"
+  },
+  "include": ["src", "../react-utils/src/components/FhirForm", "../react-utils/src/components/ui"],
+  "exclude": ["**/node_modules", "**/coverage", "**/dist", "**/*.spec.ts", "**/*tests"]
+}

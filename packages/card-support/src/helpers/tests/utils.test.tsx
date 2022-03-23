@@ -33,11 +33,9 @@ describe('helpers/utils/downloadFile', () => {
   it('it should download for IE browser', () => {
     (global as any).navigator.msSaveOrOpenBlob = jest.fn().mockReturnValue(1);
 
-    afterEach(() => {
-      (global as any).URL.createObjectURL.mockReset();
-      (global as any).URL.revokeObjectURL.mockReset();
-      (global as any).navigator.msSaveOrOpenBlob.mockReset();
-    });
+    (global as any).URL.createObjectURL.mockReset();
+    (global as any).URL.revokeObjectURL.mockReset();
+    (global as any).navigator.msSaveOrOpenBlob.mockReset();
 
     downloadFile(testData, 'sample-file', 'application/json');
 

@@ -65,8 +65,8 @@ export async function onSubmit(
   const team = await setTeam(fhirBaseURL, payload);
 
   // Filter and seperate the practitioners uuid
-  const toAdd = values.practitioners.filter((val) => !initialValue?.practitioners?.includes(val));
-  const toRem = initialValue?.practitioners?.filter((val) => !values.practitioners.includes(val));
+  const toAdd = values.practitioners.filter((val) => !initialValue.practitioners?.includes(val));
+  const toRem = initialValue.practitioners?.filter((val) => !values.practitioners.includes(val));
 
   await SetPractitioners(fhirBaseURL, team, toAdd, toRem ?? [], practitioners, PractitionerRoles);
 }

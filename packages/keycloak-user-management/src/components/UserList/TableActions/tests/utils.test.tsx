@@ -36,7 +36,7 @@ describe('components/UserList/utils/deleteUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -97,7 +97,7 @@ describe('components/UserList/utils/deleteUser', () => {
 
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.mockReject(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
       () => 'obligatory catch'
     );
@@ -111,7 +111,7 @@ describe('components/UserList/utils/deleteUser', () => {
 
   it('handles API error when calling the fetch endpoints', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.once(JSON.stringify([])).mockRejectOnce(new Error('API is down'));
     deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
       () => 'obligatory catch'
     );
