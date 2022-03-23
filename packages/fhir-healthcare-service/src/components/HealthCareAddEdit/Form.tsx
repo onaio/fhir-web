@@ -1,135 +1,142 @@
-import React, { useState } from 'react';
-import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
-import { v4 } from 'uuid';
-import { HEALTH_CARE_SERVICE_ENDPOINT, healthCareServiceResourceType } from '../../constants';
-import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
-import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
-import { HealthcareService } from '../../types';
-import { useQueryClient } from 'react-query';
+import React from 'react';
+import { Select, Button, Form, Radio, Input, Space } from 'antd';
+import {
+  healthCareServiceResourceType,
+  extraDetails,
+  providedBy,
+  active,
+  comment,
+  name,
+} from '../../constants';
+import {
+  sendSuccessNotification,
+  sendErrorNotification,
+  sendInfoNotification,
+} from '@opensrp/notifications';
+import { useQueryClient, useMutation } from 'react-query';
+import { formLayout, tailLayout } from '@opensrp/react-utils';
+import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
+import { useHistory } from 'react-router';
+import {
+  generateHealthCarePayload,
+  getOrgSelectOptions,
+  HealthCareFormFields,
+  orgFilterFunction,
+  postPutHealthCareService,
+  SelectOption,
+} from './utils';
+import { SelectProps } from 'antd/lib/select';
 
-import lang from '../../lang';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+const { Item: FormItem } = Form;
 
-const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
-const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
-
-export interface FormField extends Partial<HealthcareService> {
-  name: string;
-  active: boolean;
-  comment: string;
-  extraDetails: string;
+interface HealthCareFormProps {
+  fhirBaseUrl: string;
+  initialValues: HealthCareFormFields;
+  disabled: string[];
+  cancelUrl?: string;
+  successUrl?: string;
+  organizations: IOrganization[];
 }
 
-interface Props {
-  fhirBaseURL: string;
-  initialValue?: FormField;
-  organizations: Organization[];
-  onCancel?: () => void;
-  onSuccess?: () => void;
-}
+const defaultProps = {
+  initialValues: {},
+  disabled: [],
+};
 
-/**
- * Handle form submission
- *
- * @param {string} fhirBaseURL - base url
- * @param {object} values value of form fields
- */
-export async function onSubmit(fhirBaseURL: string, values: FormField) {
-  const identifier = values.id ? values.identifier?.find((e) => e.use === 'official')?.value : v4();
+const HealthCareForm = (props: HealthCareFormProps) => {
+  const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl, organizations } = props;
 
-  const payload: Omit<HealthcareService, 'meta'> = {
-    resourceType: healthCareServiceResourceType,
-    id: values.id ? values.id : '',
-    active: values.active,
-    identifier: [{ use: 'official', value: identifier }],
-    comment: values.comment,
-    extraDetails: values.extraDetails,
-    providedBy: { reference: `Organization/${values?.providedBy?.reference?.split('/')[1]}` },
-    name: values.name,
-  };
-
-  const serve = new FHIRServiceClass<HealthcareService>(
-    fhirBaseURL,
-    healthCareServiceResourceType
-  );
-  if (values.id) {
-    await serve.update(payload);
-    sendSuccessNotification(lang.MSG_HEALTHCARES_UPDATE_SUCCESS);
-  } else {
-    await serve.create(payload);
-    sendSuccessNotification(lang.MSG_HEALTHCARES_CREATE_SUCCESS);
-  }
-}
-
-export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { fhirBaseURL, organizations, onCancel, onSuccess } = props;
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const initialValue: FormField = props.initialValue ?? {
-    active: true,
-    name: '',
-    comment: '',
-    extraDetails: '',
-  };
+  const history = useHistory();
+  const goTo = (url = '#') => history.push(url);
+
+  const { mutate, isLoading } = useMutation(
+    (values: HealthCareFormFields) => {
+      const payload = generateHealthCarePayload(values, organizations);
+      return postPutHealthCareService(fhirBaseUrl, payload);
+    },
+    {
+      onError: (err: Error) => {
+        sendErrorNotification(err.message);
+      },
+      onSuccess: () => {
+        sendSuccessNotification('Organization updated successfully');
+        queryClient.invalidateQueries([healthCareServiceResourceType]).catch(() => {
+          sendInfoNotification('Failed to refresh data, please refresh the page');
+        });
+        goTo(successUrl);
+      },
+    }
+  );
+
+  const statusOptions = [
+    { label: 'Inactive', value: false },
+    { label: 'active', value: true },
+  ];
+
+  const orgOptions = getOrgSelectOptions(organizations);
 
   return (
-    <AntdForm
+    <Form
       requiredMark={false}
-      {...layout}
+      {...formLayout}
       onFinish={(values) => {
-        setIsSubmitting(true);
-        onSubmit(fhirBaseURL, values)
-          .then(() => {
-            Promise.all([
-              queryClient.invalidateQueries(ORGANIZATION_ENDPOINT),
-              queryClient.invalidateQueries(HEALTH_CARE_SERVICE_ENDPOINT),
-            ]).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            onSuccess?.();
-          })
-          .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
-          .finally(() => setIsSubmitting(false));
+        mutate(values);
       }}
-      initialValues={initialValue}
+      initialValues={initialValues}
     >
-      <AntdForm.Item name="name" label={lang.HEALTHCARE_NAME}>
-        <Input placeholder={lang.ENTER_HEALTHCARE_NAME} />
-      </AntdForm.Item>
+      <FormItem name={name} label="Name">
+        <Input disabled={disabled.includes(name)} placeholder={'Name'} />
+      </FormItem>
 
-      <AntdForm.Item name="active" label={lang.STATUS}>
-        <Radio.Group>
-          <Radio value={true}>{lang.ACTIVE}</Radio>
-          <Radio value={false}>{lang.INACTIVE}</Radio>
-        </Radio.Group>
-      </AntdForm.Item>
+      <FormItem name={active} label="Status">
+        <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
+      </FormItem>
 
-      <AntdForm.Item name="comment" label={lang.COMMENT}>
-        <Input.TextArea rows={2} placeholder={lang.ENTER_COMMENT} />
-      </AntdForm.Item>
+      <FormItem name={comment} label="Comment">
+        <Input.TextArea
+          disabled={disabled.includes(comment)}
+          rows={2}
+          placeholder="Enter comment"
+        />
+      </FormItem>
 
-      <AntdForm.Item name="extraDetails" label={lang.EXTRADETAILS}>
-        <Input.TextArea rows={4} placeholder={lang.ENTER_EXTRADETAILS} />
-      </AntdForm.Item>
+      <FormItem name={extraDetails} label="Extra details">
+        <Input.TextArea
+          disabled={disabled.includes(extraDetails)}
+          rows={4}
+          placeholder="Enter extra details"
+        />
+      </FormItem>
 
-      <AntdForm.Item name="organizationid" label={lang.ORGANIZATION}>
-        <Select placeholder={lang.ENTER_ORGANIZATION}>
-          {organizations.map((org) => (
-            <Select.Option key={org.id} value={org.id}>
-              {org.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </AntdForm.Item>
+      <FormItem name={providedBy} label="Provided by">
+        <Select
+          disabled={disabled.includes(providedBy)}
+          placeholder="Select organization"
+          options={orgOptions}
+          filterOption={orgFilterFunction as SelectProps<SelectOption[]>['filterOption']}
+        ></Select>
+      </FormItem>
 
-      <AntdForm.Item {...offsetLayout}>
-        <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
-          {isSubmitting ? lang.SAVING : lang.SAVE}
-        </Button>
-        <Button id="cancel" onClick={onCancel} type="dashed">
-          {lang.CANCEL}
-        </Button>
-      </AntdForm.Item>
-    </AntdForm>
+      <FormItem {...tailLayout}>
+        <Space>
+          <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
+            {isLoading ? 'Saving' : 'save'}
+          </Button>
+          <Button
+            id="cancel-button"
+            onClick={() => {
+              goTo(cancelUrl);
+            }}
+          >
+            Cancel
+          </Button>
+        </Space>
+      </FormItem>
+    </Form>
   );
 };
 
-export default Form;
+HealthCareForm.defaultProps = defaultProps;
+
+export { HealthCareForm };

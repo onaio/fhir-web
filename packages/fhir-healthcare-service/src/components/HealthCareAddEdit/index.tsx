@@ -1,91 +1,86 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import { HealthcareService } from '../../types';
-import Form, { FormField } from './Form';
+import { HealthCareForm} from './Form';
 import { useParams } from 'react-router';
-import { HEALTH_CARE_SERVICE_ENDPOINT, healthCareServiceResourceType } from '../../constants';
+import {
+  healthCareServiceResourceType,
+  organizationResourceType,
+  LIST_HEALTHCARE_URL,
+} from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { history } from '@onaio/connected-reducer-registry';
-import { FHIRServiceClass } from '@opensrp/react-utils';
-import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
-import { getConfig } from '@opensrp/pkg-config';
-export interface Props {
-  resourcePageSize?: number;
+import {
+  FHIRServiceClass,
+  BrokenPage,
+  getResourcesFromBundle,
+  loadAllResources,
+} from '@opensrp/react-utils';
+import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
+import { getHealthCareFormFields } from './utils';
+
+export interface HealthCareAddEditProps {
+  fhirBaseURL: string;
 }
 
-export const HealthCareAddEdit: React.FC<Props> = (props: Props) => {
-  const { resourcePageSize = 20 } = props;
-  const fhirParams = {
-    _count: resourcePageSize,
-    _getpagesoffset: 0,
-  };
+export interface RouteParams {
+  id?: string;
+}
 
-  const fhirBaseURL = getConfig('fhirBaseURL') ?? '';
+export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
+  const { fhirBaseURL: fhirBaseUrl } = props;
 
-  const healthcareServiceAPI = new FHIRServiceClass<HealthcareService>(
-    fhirBaseURL,
-    healthCareServiceResourceType
-  );
-  const organizationAPI = new FHIRServiceClass<Organization>(
-    fhirBaseURL,
-    healthCareServiceResourceType
-  );
-  const params: { id?: string } = useParams();
-  const [initialValue, setInitialValue] = useState<FormField>();
+  const { id: resourceId } = useParams<RouteParams>();
 
-  const healthcares = useQuery(
-    [HEALTH_CARE_SERVICE_ENDPOINT, params.id],
-    async () => healthcareServiceAPI.read(`${params.id}`),
+  const healthCareService = useQuery(
+    [healthCareServiceResourceType, resourceId],
+    async () =>
+      new FHIRServiceClass<IHealthcareService>(fhirBaseUrl, healthCareServiceResourceType).read(
+        resourceId as string
+      ),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res: HealthcareService) => res,
-      enabled: params.id !== undefined,
+      enabled: !!resourceId,
     }
   );
 
   const organizations = useQuery(
-    ORGANIZATION_ENDPOINT,
-    async () => organizationAPI.list(fhirParams),
+    [organizationResourceType],
+    () => loadAllResources(fhirBaseUrl, organizationResourceType),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-      select: (res) => res.entry.map((e) => e.resource),
+      select: (res) => getResourcesFromBundle(res) as IHealthcareService[],
+      onError: () => sendErrorNotification('Unable to fetch organizations'),
     }
   );
 
-  useEffect(() => {
-    if (params.id && healthcares.data && !initialValue) {
-      setInitialValue({ comment: '', extraDetails: '', ...healthcares.data });
-    }
-  }, [params.id, healthcares.data, initialValue]);
+  if ((!healthCareService.isIdle && healthCareService.isLoading) || organizations.isLoading) {
+    return <Spin size="large" className="custom-spinner"></Spin>;
+  }
 
-  if (!organizations.data || (params.id && !initialValue)) return <Spin size={'large'} />;
+  if (healthCareService.error && !healthCareService.data) {
+    return <BrokenPage errorMessage={(healthCareService.error as Error).message} />;
+  }
+
+  const initialValues = getHealthCareFormFields(healthCareService.data);
+
+  const pageTitle = healthCareService.data
+    ? `Edit team | ${healthCareService.data.name ?? ''}`
+    : 'Create team';
 
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{params.id ? lang.EDIT : lang.CREATE} Healthcare</title>
+        <title>{pageTitle}</title>
       </Helmet>
-
-      <h5 className="mb-3 header-title">
-        {initialValue?.name
-          ? `${lang.EDIT_HEALTHCARE} | ${initialValue.name}`
-          : lang.CREATE_HEALTHCARE}
-      </h5>
-
+      <h5 className="mb-3 header-title">{pageTitle}</h5>
       <div className="bg-white p-5">
-        <Form
-          fhirBaseURL={fhirBaseURL}
-          initialValue={initialValue}
-          organizations={organizations.data}
-          onCancel={() => history.goBack()}
-          onSuccess={() => history.goBack()}
+        <HealthCareForm
+          fhirBaseUrl={fhirBaseUrl}
+          initialValues={initialValues}
+          organizations={organizations.data ?? []}
+          cancelUrl={LIST_HEALTHCARE_URL}
+          successUrl={LIST_HEALTHCARE_URL}
         />
       </div>
     </section>
   );
 };
-
-export default HealthCareAddEdit;
