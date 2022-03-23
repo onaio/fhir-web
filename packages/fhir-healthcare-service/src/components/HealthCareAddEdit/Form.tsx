@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { v4 } from 'uuid';
-import { HEALTH_CARE_SERVICE_ENDPOINT, HEALTH_CARE_SERVICE_RESOURCE_TYPE } from '../../constants';
+import { HEALTH_CARE_SERVICE_ENDPOINT, healthCareServiceResourceType } from '../../constants';
 import { Organization, ORGANIZATION_ENDPOINT } from '@opensrp/fhir-team-management';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { HealthcareService } from '../../types';
@@ -38,7 +38,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
   const identifier = values.id ? values.identifier?.find((e) => e.use === 'official')?.value : v4();
 
   const payload: Omit<HealthcareService, 'meta'> = {
-    resourceType: HEALTH_CARE_SERVICE_RESOURCE_TYPE,
+    resourceType: healthCareServiceResourceType,
     id: values.id ? values.id : '',
     active: values.active,
     identifier: [{ use: 'official', value: identifier }],
@@ -50,7 +50,7 @@ export async function onSubmit(fhirBaseURL: string, values: FormField) {
 
   const serve = new FHIRServiceClass<HealthcareService>(
     fhirBaseURL,
-    HEALTH_CARE_SERVICE_RESOURCE_TYPE
+    healthCareServiceResourceType
   );
   if (values.id) {
     await serve.update(payload);

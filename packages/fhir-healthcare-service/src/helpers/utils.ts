@@ -1,6 +1,6 @@
 import { Organization, ORGANIZATION_RESOURCE_TYPE } from '@opensrp/fhir-team-management';
 import { FHIRServiceClass } from '@opensrp/react-utils';
-import { HealthcareService, HealthcareServiceDetail } from '.';
+import { HealthcareService, HealthcareServiceDetail } from '..';
 
 /**
  * Function to load selected healthcareservice for details

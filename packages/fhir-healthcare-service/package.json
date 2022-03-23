@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/fhir-health-care-service",
+  "name": "@opensrp/fhir-healthcare-service",
   "version": "1.0.0",
   "description": "Team management components for opensrp web",
   "main": "dist/index.js",
@@ -11,16 +11,16 @@
     "access": "public"
   },
   "repository": "https://github.com/OpenSRP/web/",
+  "config": {
+    "folderName": "fhir-healthcare-service"
+  },
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test packages/fhir-health-care-service --verbose --collectCoverage=true -u && cd packages/fhir-health-care-service",
-    "test:watch": "cd ../../ && yarn test packages/fhir-health-care-service --verbose --watch && cd packages/fhir-health-care-service",
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
     "tsc": "tsc",
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
