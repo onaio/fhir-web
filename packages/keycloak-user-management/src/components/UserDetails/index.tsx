@@ -7,6 +7,7 @@ import { Practitioner, KeycloakUser } from '../../ducks/user';
 import { Spin } from 'antd';
 
 interface UserDetailProps {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onClose: Function;
   keycloakUser: KeycloakUser;
   practitioner?: Practitioner;

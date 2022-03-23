@@ -26,6 +26,7 @@ import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import flushPromises from 'flush-promises';
 
 const history = createBrowserHistory();
 
@@ -73,7 +74,7 @@ describe('opensrp-plans/assignmentTable', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -90,7 +91,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -154,7 +155,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -182,7 +183,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -206,7 +207,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -239,7 +240,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedJurisdiction = jursToOptions([jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     // what fetch calls were made:
@@ -294,7 +295,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -320,7 +321,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedOrgs = orgsToOptions([organizations[0]]);
     (teamAssignmentModal.props() as Dictionary).saveHandler(selectedOrgs);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     // what fetch calls were made:
@@ -359,7 +360,7 @@ describe('opensrp-plans/assignmentTable', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -385,7 +386,7 @@ describe('opensrp-plans/assignmentTable', () => {
     const selectedJurisdiction = jursToOptions([jurisdictions[1], jurisdictions[0]]);
     (jurisdictionAssignmentModal.props() as Dictionary).saveHandler(selectedJurisdiction);
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     // what fetch calls were made:

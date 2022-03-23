@@ -25,10 +25,8 @@ export const fetchManifestDraftFiles = fetchActionCreatorFactory<ManifestFilesTy
 export const removeManifestDraftFiles = removeActionCreatorFactory(draftReducerName);
 
 // selectors
-export const getAllManifestDraftFilesById = getItemsByIdFactory<ManifestFilesTypes>(
-  draftReducerName
-);
+export const getAllManifestDraftFilesById =
+  getItemsByIdFactory<ManifestFilesTypes>(draftReducerName);
 export const getManifestDraftFilesById = getItemByIdFactory<ManifestFilesTypes>(draftReducerName);
-export const getAllManifestDraftFilesArray = getItemsArrayFactory<ManifestFilesTypes>(
-  draftReducerName
-);
+export const getAllManifestDraftFilesArray =
+  getItemsArrayFactory<ManifestFilesTypes>(draftReducerName);

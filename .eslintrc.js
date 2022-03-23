@@ -11,7 +11,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
-    'prettier/@typescript-eslint',
+    'prettier',
     'plugin:prettier/recommended',
     'plugin:cypress/recommended',
     'typestrict',
@@ -31,6 +31,20 @@ module.exports = {
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
     'jest/no-large-snapshots': ['warn', { maxSize: 50, inlineMaxSize: 6 }],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      // variableLike - matches the same as variable, function and parameter
+      {
+        selector: 'variableLike',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+        leadingUnderscore: 'allow',
+      },
+      // typeLike - matches the same as class, interface, typeAlias, enum, typeParameter
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ],
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'jest', 'jsdoc'],
   parserOptions: {

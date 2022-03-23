@@ -110,8 +110,8 @@ export const populateTeamDetails = (
  */
 const jurisdictionPromises = (rawAssignments: RawAssignment[], opensrpBaseURL: string) => {
   // wrap promises in plain functions to avoid immediate evocation
-  return rawAssignments.map((assignment) => () =>
-    jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
+  return rawAssignments.map(
+    (assignment) => () => jurisdictionFromId(assignment.jurisdictionId, opensrpBaseURL)
   );
 };
 
@@ -141,7 +141,8 @@ const defaultProps = {
 
 export type TeamsViewTypes = Props & RouteComponentProps;
 
-/** Function which shows the list of all teams and there details
+/**
+ * Function which shows the list of all teams and there details
  *
  * @param {Object} props - TeamsView component props
  * @returns {Function} returns team display

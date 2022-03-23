@@ -40,7 +40,8 @@ export const defaultProps = {
   extractViewDetails: defaultExtractViewDetails,
 };
 
-/** component that renders the view details to the right side
+/**
+ * component that renders the view details to the right side
  * of list view
  */
 
@@ -62,7 +63,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         />
       </div>
       {objectId && !object ? (
-        <Resource404></Resource404>
+        <Resource404 />
       ) : (
         <div className="p-10">
           {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {

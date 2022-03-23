@@ -120,8 +120,8 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
         accessToken,
         opensrpBaseURL,
         OPENSRP_URL_LOCATION_HIERARCHY
-        // eslint-disable-next-line @typescript-eslint/camelcase
-      ).read(userLocSettings?.data?.uuid ?? '', { is_jurisdiction: true }),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+      ).read(userLocSettings.data?.uuid ?? '', { is_jurisdiction: true }),
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
@@ -133,7 +133,8 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     }
   );
 
-  /** Function to parse the hierarchy tree into TreeSelect node format
+  /**
+   * Function to parse the hierarchy tree into TreeSelect node format
    *
    * @param {Array<ParsedHierarchyNode>} hierarchyNode the tree node to parse
    * @returns {Array<React.ReactNode>} the parsed format of for Ant TreeSelect
@@ -159,7 +160,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                 ...values,
                 clientLocation: values.clientLocation
                   ? values.clientLocation
-                  : userLocSettings?.data?.uuid ?? '',
+                  : userLocSettings.data?.uuid ?? '',
                 cardOrderDate,
               },
               accessToken,
@@ -167,7 +168,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               opensrpServiceClass,
               locationHierarchies,
               setSubmitting
-            );
+            ).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
           }}
         >
           <Form.Item name="clientLocation" label={lang.CLIENT_LOCATION}>

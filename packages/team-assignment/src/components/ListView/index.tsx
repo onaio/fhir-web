@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Row, PageHeader, Col, Button, Modal, Form, Select } from 'antd';
-import {
-  TeamAssignmentLoading,
-  columnsFactory,
-  getPayload,
-  ActionsColumnCustomRender,
-} from './utils';
+import { Row, PageHeader, Col, Button, Modal, Form, Select, Spin } from 'antd';
+import { columnsFactory, getPayload, ActionsColumnCustomRender } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
-import { OpenSRPService, TableLayout } from '@opensrp/react-utils';
+import { OpenSRPService, TableLayout, BrokenPage } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
   reducer as organizationsReducer,
@@ -147,7 +142,7 @@ async function fetchOrgsRecursively(
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
   const Treedata = useSelector(
-    (state) => (getAllHierarchiesArray(state) as unknown) as ParsedHierarchyNode[]
+    (state) => getAllHierarchiesArray(state) as unknown as ParsedHierarchyNode[]
   );
   const assignmentsList: Assignment[] = useSelector((state) =>
     assignmentsSelector(state, { planId: defaultPlanId })
@@ -156,6 +151,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(false);
+  const [apiError, setApiError] = useState<boolean>(false);
   const [assignedLocAndTeams, setAssignedLocAndTeams] = useState<AssignedLocationAndTeams | null>(
     null
   );
@@ -166,24 +162,19 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   React.useEffect(() => {
     if (loading) {
       const plansService = new OpenSRPService(PLANS_ENDPOINT, opensrpBaseURL);
-      const plansPromise = plansService
-        .read(defaultPlanId)
-        .then((response: PlanDefinition[]) => {
-          const getJurisdictionCode = response[0].jurisdiction[0].code;
-          const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
-          hierarchyService
-            .read(getJurisdictionCode)
-            .then((response: RawOpenSRPHierarchy) => {
-              const hierarchy = generateJurisdictionTree(response);
-              dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
-            })
-            .catch(() => {
-              sendErrorNotification(lang.ERROR_OCCURED);
-            });
-        })
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
-        });
+      const plansPromise = plansService.read(defaultPlanId).then((response: PlanDefinition[]) => {
+        const getJurisdictionCode = response[0].jurisdiction[0].code;
+        const hierarchyService = new OpenSRPService(LOCATION_HIERARCHY_ENDPOINT, opensrpBaseURL);
+        hierarchyService
+          .read(getJurisdictionCode)
+          .then((response: RawOpenSRPHierarchy) => {
+            const hierarchy = generateJurisdictionTree(response);
+            dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
+          })
+          .catch((err) => {
+            return err;
+          });
+      });
       // get all assignments
       const asssignmentService = new OpenSRPService(ASSIGNMENTS_ENDPOINT, opensrpBaseURL);
       const assignmentsPromise = asssignmentService
@@ -191,19 +182,19 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         .then((response: RawAssignment[]) => {
           const parsedAssignments = processRawAssignments(response);
           dispatch(fetchAssignments(parsedAssignments, assignmentsList.length > 0));
-        })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+        });
 
       // fetch all organizations (pagination enabled)
-      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000)
-        .then((orgs: Organization[]) => {
+      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000).then(
+        (orgs: Organization[]) => {
           dispatch(fetchOrganizationsAction(orgs));
-        })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+        }
+      );
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
           sendErrorNotification(lang.ERROR_OCCURED);
+          setApiError(true);
         })
         .finally(() => {
           setLoading(false);
@@ -224,8 +215,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     setVisible(false);
   };
 
+  if (apiError) {
+    return <BrokenPage />;
+  }
+
   if (loading) {
-    return <TeamAssignmentLoading />;
+    return <Spin size="large" />;
   }
 
   /**

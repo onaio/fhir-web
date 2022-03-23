@@ -223,7 +223,8 @@ UploadConfigFile.defaultProps = defaultProps;
 /** ownprops interface */
 interface OwnProps extends UploadConfigFileProps, UploadDefaultProps {}
 
-/** Map props to state
+/**
+ * Map props to state
  *
  * @param {Store} state - the  redux store
  * @param {Dictionary} ownProps - props passed to component
@@ -237,7 +238,7 @@ const mapStateToProps = (state: Partial<Store>, ownProps: OwnProps): UploadDefau
     formData = getManifestFilesById(state, formId);
   }
   if (formId && formData) {
-    /* eslint-disable @typescript-eslint/camelcase */
+    /* eslint-disable @typescript-eslint/naming-convention */
     formInitialValues = {
       form: null,
       form_name: formData.label,

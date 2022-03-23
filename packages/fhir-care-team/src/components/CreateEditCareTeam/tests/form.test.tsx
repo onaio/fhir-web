@@ -12,7 +12,7 @@ import { CareTeamForm } from '../Form';
 import { getPatientName } from '../utils';
 import Client from 'fhirclient/lib/Client';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -225,7 +225,7 @@ describe('components/forms/CreateTeamForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();

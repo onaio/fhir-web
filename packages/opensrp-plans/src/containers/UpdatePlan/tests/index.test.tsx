@@ -12,6 +12,8 @@ import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import lang from '../../../lang';
+import flushPromises from 'flush-promises';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -19,6 +21,8 @@ const fetch = require('jest-fetch-mock');
 const mission1 = eusmPlans[0];
 
 const history = createBrowserHistory();
+
+jest.setTimeout(10000);
 
 describe('CreateEditProduct Page', () => {
   beforeEach(() => {
@@ -57,12 +61,10 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -114,12 +116,10 @@ describe('CreateEditProduct Page', () => {
     );
 
     // loading
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -192,10 +192,10 @@ describe('CreateEditProduct Page', () => {
     );
 
     // show loading screen
-    expect(wrapper.text()).toMatchSnapshot('show loader');
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -231,12 +231,10 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -275,19 +273,15 @@ describe('CreateEditProduct Page', () => {
     );
 
     // should be in loading screen
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     /** should still be loading page */
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Loading...Fetching planPlease wait, as we fetch the plan."`
-    );
+    expect(toJson(wrapper.find('.ant-spin'))).not.toBeNull();
 
     expect(fetch).not.toHaveBeenCalled();
   });

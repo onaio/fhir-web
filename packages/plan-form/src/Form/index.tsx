@@ -84,7 +84,8 @@ const defaultEnvs = defaultEnvConfig;
 const defaultPlanActivitiesMap = getPlanActivitiesMap(defaultEnvs);
 const defaultFiReasonRoutine = FIReasons[0];
 
-/** caveats due to current way to configure limitation
+/**
+ * caveats due to current way to configure limitation
  * https://github.com/OpenSRP/web/issues/202
  * the initialValues if not explicitly passed through the props,
  * they will not be subject to the envConfigs variables,
@@ -110,7 +111,8 @@ export const defaultInitialValues: PlanFormFields = {
   jurisdictions: initialJurisdictionValues,
 };
 
-/** render Prop interface for render function that planForm
+/**
+ * render Prop interface for render function that planForm
  * passes to Whatever component that is rendering the jurisdictionNames.
  */
 export type LocationChildRenderProp = (
@@ -222,7 +224,8 @@ const PlanForm = (props: PlanFormProps) => {
     }
   }
 
-  /** get the source list of activities
+  /**
+   * get the source list of activities
    * This is used to filter out activities selected but not in the "source"
    *
    * @param {BasePlanFormFields} values - current form values
@@ -522,9 +525,8 @@ const PlanForm = (props: PlanFormProps) => {
                 return (
                   <div>
                     {(() => {
-                      const planActivities: BasePlanFormFields[activities] = form.getFieldValue(
-                        activities
-                      );
+                      const planActivities: BasePlanFormFields[activities] =
+                        form.getFieldValue(activities);
                       const allValues = form.getFieldValue([]);
 
                       const conditionsDisabledDates = (current: Moment) => {
@@ -547,7 +549,8 @@ const PlanForm = (props: PlanFormProps) => {
                                     aria-label="Close"
                                     icon={<CloseOutlined />}
                                     onClick={() => {
-                                      /** when we remove an item, we want to also remove its value from
+                                      /**
+                                       * when we remove an item, we want to also remove its value from
                                        * the values object otherwise the Formik state gets out of sync
                                        */
                                       remove(index);
@@ -720,8 +723,7 @@ const PlanForm = (props: PlanFormProps) => {
                                       <Input
                                         type="hidden"
                                         value={
-                                          (planActivities[index]
-                                            .timingPeriodEnd as unknown) as string
+                                          planActivities[index].timingPeriodEnd as unknown as string
                                         }
                                       />
                                     </FormItem>

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 export const rootLocation = {
   type: 'Feature',
   id: '95310ca2-02df-47ba-80fc-bf31bfaa88d7',

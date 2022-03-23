@@ -171,14 +171,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/product-catalogue"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
       title="Form Configuration"
     >

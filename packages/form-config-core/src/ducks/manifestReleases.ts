@@ -40,12 +40,9 @@ export const fetchManifestReleases = fetchActionCreatorFactory<ManifestReleasesT
 export const removeManifestReleases = removeActionCreatorFactory(releasesReducerName);
 
 // selectors
-export const getAllManifestReleasesById = getItemsByIdFactory<ManifestReleasesTypes>(
-  releasesReducerName
-);
-export const getManifestReleasesById = getItemByIdFactory<ManifestReleasesTypes>(
-  releasesReducerName
-);
-export const getAllManifestReleasesArray = getItemsArrayFactory<ManifestReleasesTypes>(
-  releasesReducerName
-);
+export const getAllManifestReleasesById =
+  getItemsByIdFactory<ManifestReleasesTypes>(releasesReducerName);
+export const getManifestReleasesById =
+  getItemByIdFactory<ManifestReleasesTypes>(releasesReducerName);
+export const getAllManifestReleasesArray =
+  getItemsArrayFactory<ManifestReleasesTypes>(releasesReducerName);

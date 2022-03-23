@@ -19,6 +19,7 @@ describe('components/PaginateData', () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MockComponent: React.FC<any> = jest.fn(
+    // eslint-disable-next-line @typescript-eslint/ban-types
     (data: TableProps<TableData> & { fetchNextPage: Function; fetchPreviousPage: Function }) => {
       return (
         <div>

@@ -8,6 +8,7 @@ export const PROJECT_LANGUAGE_CODE = 'eusm';
 export const SUPPORTED_LANGUAGES = ['en', 'fr'];
 export const ENABLE_LANGUAGE_SWITCHER = true;
 export const ENABLE_OPENSRP_OAUTH = false;
+
 export const OPENSRP_ROLES = {
   USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
   PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -18,9 +19,12 @@ export const OPENSRP_ROLES = {
   PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
   FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
   SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
+  QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
 };
+
 export const MAIN_LOGO_SRC =
   'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png';
+
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = 1;
 
 export const OPENSRP_LOGOUT_URL = 'https://opensrp-stage.smartregister.org/opensrp/logout.do';
@@ -49,3 +53,5 @@ export const EXPRESS_OAUTH_LOGOUT_URL = 'http://localhost:3000/logout';
 export const DOMAIN_NAME = 'http://localhost:3000';
 
 export const OPENSRP_WEB_VERSION = '';
+
+export const ENABLE_QUEST = true;

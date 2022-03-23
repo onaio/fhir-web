@@ -21,9 +21,9 @@ import { Button, Row, Col } from 'reactstrap';
 import { Redirect } from 'react-router';
 import { Cell } from 'react-table';
 import { Link } from 'react-router-dom';
-import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import lang from '../../lang';
+import type { Dictionary } from '@onaio/utils';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -282,7 +282,8 @@ interface DispatchedStateProps {
   data: ManifestFilesTypes[];
 }
 
-/** Map props to state
+/**
+ * Map props to state
  *
  * @param {Store} state - the  redux store
  * @returns {Dictionary} - dispatched props

@@ -16,7 +16,8 @@ const defaultProps = {
   ...defaultCommonProps,
 };
 
-/** Service point add edit form page
+/**
+ * Service point add edit form page
  *
  * @param props - the component props
  */
