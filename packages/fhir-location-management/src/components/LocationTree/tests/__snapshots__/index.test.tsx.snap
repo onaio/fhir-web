@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`location-management/src/components/LocationTree works correctly: langata search value 1`] = `
+<span
+  title="Langata"
+>
+  
+  <span
+    class="searchValue"
+  >
+    laNgaTa
+  </span>
+  
+</span>
+`;
+
+exports[`location-management/src/components/LocationTree works correctly: search input 1`] = `
+<input
+  class="ant-input ant-input-lg"
+  placeholder="Search"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`location-management/src/components/LocationTree works correctly: single top record 1`] = `
+<span
+  class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-close"
+  title=""
+>
+  <span
+    class="ant-tree-title"
+  >
+    <span
+      title="Ona Office Sub Location"
+    >
+      Ona Office Sub Location
+    </span>
+  </span>
+</span>
+`;

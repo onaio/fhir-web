@@ -29,6 +29,7 @@ import {
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
+  FHIR_ROOT_LOCATION_IDENTIFIER,
   FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
@@ -49,6 +50,7 @@ export const teamManagementProps = {
 
 export const locationUnitProps = {
   filterByParentId: FILTER_BY_PARENT_ID,
+  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
 };
 
 export const newLocationUnitProps = {

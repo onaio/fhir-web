@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { OpenSRPService } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 import {
@@ -27,7 +27,8 @@ export const defaultHierarchyParams: LoadHierarchyParams = {
   return_structure_count: false,
 };
 
-/** get the jurisdiction Tree given the rootJurisdiction Id
+/**
+ * get the jurisdiction Tree given the rootJurisdiction Id
  *
  * @param rootJurisdictionId - id of top level jurisdiction
  * @param dispatcher - dispatches an action to add hierarchy to store
@@ -128,7 +129,8 @@ export const defaultSettingsParams = {
   serverVersion: '0',
 };
 
-/** request to get service points from settings
+/**
+ * request to get service points from settings
  *
  * @param settingsIdentifier - id for settings to query from api
  * @param baseURL - the openSRP api base url
@@ -158,7 +160,8 @@ export async function loadSettings<T>(
     });
 }
 
-/** gets location tags from the api
+/**
+ * gets location tags from the api
  *
  * @param baseURL - openSRP base url
  * @param callback - callback to call with response data

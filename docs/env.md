@@ -228,6 +228,12 @@ Below is a list of currently supported environment variables:
   - **optional**
   - default: `''`
 
+- **REACT_APP_ENABLE_FHIR_LOCATIONS**
+
+  - Enables FHIR location management module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
 - **REACT_APP_ENABLE_FHIR_CARE_TEAM**
 
   - Enables the FHIR Care Team module
@@ -238,7 +244,12 @@ Below is a list of currently supported environment variables:
 
   - Default number of rows per table page
   - default: 5
-  - `Enum: 5, 10, 20 , 50, 100
+  - `Enum: 5, 10, 20 , 50, 100`
+
+- **REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER**
+
+  - FHIR Hierarchy root location UUID
+  - **Optional**_(`string`)_
 
 - **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
 
@@ -265,7 +276,13 @@ Below is a list of currently supported environment variables:
   - default: ""
 
 - **REACT_APP_SENTRY_CONFIG_JSON**
+
   - Stringified json That has sentry custom sentry configurations, refer to [the sdk](https://docs.sentry.io/platforms/javascript/guides/react/enriching-events/tags/) for more information on custom Sentry tags.
   - The full enum space of the keys that can be passed in the config object can be described as: {...[key in [doc](https://getsentry.github.io/sentry-javascript/interfaces/browser.browseroptions-2.html) where value is json serializable]: value, tags:{ // any key value pair }}
   - **Optional**(_string_)
   - default: ""
+
+- **REACT_APP_ENABLE_QUEST**
+  - Enable the fhir Quest views
+  - **Optional**(_'true'|'false'_)
+  - default: 'false'

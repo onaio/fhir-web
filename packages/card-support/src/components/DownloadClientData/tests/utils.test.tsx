@@ -16,8 +16,10 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
+import * as functions from '../utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-empty-function */
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -145,6 +147,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   const setSubmittingMock = jest.fn();
 
   it('submits the form correctly', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     submitForm(
@@ -154,23 +157,16 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
     });
 
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
 
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
@@ -183,8 +179,10 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     );
   });
 
-  it('handles error if submission fails', async () => {
-    fetch.mockReject(() => Promise.reject('API is down'));
+  it('handles error if fetching Nested Location Ids fails', async () => {
+    fetch.mockReject(new Error('API is down'));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     submitForm(
@@ -194,21 +192,68 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}&attribute=card_status:${cardStatus}`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
+    ]);
+    expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
+    expect(papaparseMock).not.toHaveBeenCalled();
+    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+  });
+
+  it('handles error if submit form fails', async () => {
+    fetch.mockReject(new Error('API is down'));
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+
+    const mockRejectFn = jest.fn();
+    jest.spyOn(functions, 'submitForm').mockRejectedValueOnce(new Error('API is down'));
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {
+      mockRejectFn();
+    });
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    expect(mockRejectFn).toHaveBeenCalled();
+  });
+
+  it('handles error if submission fails', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockReject(new Error('API is down'));
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {});
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7&attribute=card_status:needs_card',
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
@@ -216,6 +261,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('calls API correctly if card status is empty', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
     submitForm(
@@ -228,21 +274,15 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=${clientLocation}`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer hunter2',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
+    expect(fetch.mock.calls.map((res) => res[0])).toEqual([
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7',
+      'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/client/search?locationIds=325b9549-80fa-4dd0-9cf8-f0538cbebb18,e2b4a441-21b5-4d03-816b-09d45b17cad7,72f8ae88-58c9-40b4-863a-1c7bc6549a8b,52c10f07-6653-470d-9fee-14b0bb111c2a,d309898b-3925-494f-a30c-689222d3fcce,dbacb5dc-c8a3-439d-b407-13ffd570b9ef,27400130-8127-4f54-b14f-e26f20ecae14,14e83edc-5a54-44f5-816e-c96c61b5d911,9c183088-e498-4183-af41-b29bd32d94b6,66c88197-8281-4eb4-ae2e-4a89ae8419ed,1018b255-0889-492c-b5dd-31a50cb3db4d,5d99a60e-126e-4c40-b5ce-439f920de090,9a0e7727-b011-458f-832a-61108b2fe381,70589012-899c-401d-85a1-13fabce26aab,e5631d3e-70c3-4083-ac17-46f9467c6dd5,e447d5bb-8d42-4be4-b91d-b8d185cf81a6,18b3841b-b5b1-4971-93d0-d36ac20c4565,fee237ef-75e8-4ada-b15f-6d1a92633f33,16c58ef5-3b19-4ec2-ba9c-aefac3d08a66,7a663f5e-2619-4a2d-a7df-7250263f47d2,e2b4a441-21b5-4d03-816b-09d45b17cad7',
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).toBeCalledWith([fixtures.child1CsvEntry, fixtures.child2CsvEntry], {
@@ -262,7 +302,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -285,7 +326,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
@@ -298,6 +339,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
   it('filters correctly if registration date does not meet range', async () => {
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+
     submitForm(
       {
         ...values,
@@ -308,7 +350,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
 
     await act(async () => {
       await flushPromises();
@@ -332,7 +374,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -341,8 +384,31 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(papaparseMock).not.toHaveBeenCalled();
   });
 
-  it('creates csv correctly if location is not found in hierarchy', async () => {
-    fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
+  it('creates csv correctly if location name is not found', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        // use location id for location that doesn't exist so that it's not auto filled with location matching location id
+        {
+          ...fixtures.child1,
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
+        },
+        {
+          ...fixtures.child2,
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'faux-id',
+            registration_location_name: '',
+          },
+        },
+      ])
+    );
 
     submitForm(
       {
@@ -354,7 +420,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       OpenSRPService,
       fixtures.locations,
       setSubmittingMock
-    );
+    ).catch(() => {});
+
     await act(async () => {
       await flushPromises();
     });
@@ -375,6 +442,64 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     );
     expect(mockDownload.mock.calls[0][1]).toEqual(
       'Children_list__18_11_2020_(26-04-2020 - 26-12-2020).csv'
+    );
+  });
+
+  it('fetches registration location name using location id if registration_location_name is undefined', async () => {
+    fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
+    fetch.mockResponse(
+      JSON.stringify([
+        fixtures.mother,
+        // remove registration_location_name from child1 and child2
+        // use location id for location "CSB Hopital Bouficha"
+        {
+          ...fixtures.child1,
+          attributes: {
+            ...fixtures.child1.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+        {
+          ...fixtures.child2,
+          attributes: {
+            ...fixtures.child2.attributes,
+            registration_location_id: 'e2b4a441-21b5-4d03-816b-09d45b17cad7',
+            registration_location_name: undefined,
+          },
+        },
+      ])
+    );
+
+    submitForm(
+      values,
+      accessToken,
+      opensrpBaseURL,
+      OpenSRPService,
+      fixtures.locations,
+      setSubmittingMock
+    ).catch(() => {});
+
+    await act(async () => {
+      await flushPromises();
+    });
+    expect(papaparseMock).toBeCalledWith(
+      [
+        {
+          ...fixtures.child1CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+        {
+          ...fixtures.child2CsvEntry,
+          facility_of_registration: 'CSB Hopital Bouficha',
+        },
+      ],
+      {
+        header: true,
+      }
+    );
+    expect(mockDownload.mock.calls[0][1]).toMatchInlineSnapshot(
+      `"Children_list_CSB Hopital Bouficha_18_11_2020_(26-04-2020 - 26-12-2020).csv"`
     );
   });
 });

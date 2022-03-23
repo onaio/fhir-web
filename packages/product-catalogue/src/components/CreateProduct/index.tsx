@@ -1,4 +1,5 @@
-/** component renders view where users can create products
+/**
+ * component renders view where users can create products
  * in the catalogue
  */
 import React from 'react';

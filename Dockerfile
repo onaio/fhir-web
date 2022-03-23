@@ -1,13 +1,14 @@
 FROM alpine/git AS sources
 
-RUN git clone --depth=1 --branch=v1.3.0 https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --depth=1 --branch=v1.3.4 https://github.com/onaio/express-server.git /usr/src/express-server
 
-FROM node:14.9.0-alpine as build
+FROM node:16.14.0-alpine as build
 
 COPY ./ /project
 
 WORKDIR /project
 ENV PATH /project/node_modules/.bin:$PATH
+ENV NODE_OPTIONS --max_old_space_size=4096
 
 RUN chown -R node .
 USER node
@@ -20,17 +21,16 @@ RUN chown -R node .
 USER node
 RUN yarn lerna:prepublish
 
-FROM node:14.9.0-alpine as nodejsbuild
+FROM node:16.14.0-alpine as nodejsbuild
 COPY --from=sources /usr/src/express-server /usr/src/express-server
 
 WORKDIR /usr/src/express-server
 RUN yarn && yarn tsc && npm prune -production
-RUN yarn add lodash && npm prune -production
 
 # Remove unused dependencies
 RUN rm -rf ./node_modules/typescript
 
-FROM node:14.9.0-alpine as final
+FROM node:16.14.0-alpine as final
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
 RUN apk add --no-cache tini curl

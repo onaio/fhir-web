@@ -18,7 +18,8 @@ export let REMOVE = 'opensrp/reducer/objects/REMOVE';
 /** SET_TOTAL_RECORDS action type */
 export let SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
 
-/** interface for authorize action
+/**
+ * interface for authorize action
  *  generic type - object type being handled by this function
  */
 export interface FetchAction<ObjectType> extends AnyAction {
@@ -46,19 +47,21 @@ export type ItemsActionTypes<ObjectType> = FetchAction<ObjectType> | RemoveActio
 
 // factory methods for action creators
 
-/** creates the action creator
+/**
+ * creates the action creator
  * ObjectType - generic type - object type being handled by this function
  *
  * @param {string} reducerName - generic name of reducer
  * @param {object} idField - key value whose value is more like an id for the objects,
  * this needs to be unique
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export function fetchActionCreatorFactory<ObjectType>(
   reducerName: string,
   idField: ItemsIdFieldType<ObjectType>
 ) {
-  /** Fetch action
+  /**
+   * Fetch action
    *
    * @param {object []} objectsList - objects array to add to store
    * @returns {Function} - an action to add objects to redux store
@@ -67,17 +70,18 @@ export function fetchActionCreatorFactory<ObjectType>(
     /** HACK: casting object[field] to unknown since i don't know how to better handle this */
     objectsById: keyBy<ObjectType>(
       objectsList,
-      (object: ObjectType) => (object[idField] as unknown) as string
+      (object: ObjectType) => object[idField] as unknown as string
     ),
     type: FETCHED,
     reducerName,
   });
 }
 
-/** removeAction action ; action creator factory
+/**
+ * removeAction action ; action creator factory
  *
  * @param {string} reducerName - name of reducer
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export const removeActionCreatorFactory = (reducerName: string) => (): RemoveAction => ({
   objectsById: {},
@@ -89,13 +93,14 @@ export const removeActionCreatorFactory = (reducerName: string) => (): RemoveAct
  * creates actions to set total records
  *
  * @param {string} reducerName - generic name of the reducer
- * @returns {function()} - the action creator
+ * @returns {Function} - the action creator
  */
 export function setTotalRecordsFactory(reducerName: string) {
-  /** setTotalRecords action
+  /**
+   * setTotalRecords action
    *
    * @param {number} totalCount -  the number of records got form api
-   * @returns {function()} - the action creator
+   * @returns {Function} - the action creator
    */
   return (totalCount: number): SetTotalRecordsAction => ({
     totalRecords: totalCount,
@@ -106,7 +111,8 @@ export function setTotalRecordsFactory(reducerName: string) {
 
 // The reducer
 
-/** interface for object state in redux store
+/**
+ * interface for object state in redux store
  * ObjectType - generic type - objects type being handled by this function
  */
 interface ObjectState<ObjectType> {
@@ -114,7 +120,8 @@ interface ObjectState<ObjectType> {
   totalRecords: number;
 }
 
-/** Create an immutable object state
+/**
+ * Create an immutable object state
  * ObjectType - generic type - object type being handled by this function
  */
 export type ImmutableObjectState<ObjectType> = ObjectState<ObjectType> &
@@ -182,16 +189,18 @@ export const reducerFactory = <ObjectType>(
 
 // Selectors
 
-/** factory function that creates selector
+/**
+ * factory function that creates selector
  *  ObjectType - generic type - object type being handled by this function
  *
  *  @param {string} reducerName - the reducerName
- *  @returns {function()} - function that returns the state
+ *  @returns {Function} - function that returns the state
  */
 export const getItemsByIdFactory = <ObjectType>(
   reducerName: string
 ): ((state: Partial<Store>) => Dictionary<ObjectType>) => {
-  /** returns all objects in the store as values whose keys are their respective ids
+  /**
+   * returns all objects in the store as values whose keys are their respective ids
    *
    * @param {object} state - the redux store
    * @returns {object} - an object whose keys are the ids
@@ -202,13 +211,15 @@ export const getItemsByIdFactory = <ObjectType>(
   };
 };
 
-/** factory function that creates selector
+/**
+ * factory function that creates selector
  *
  * @param {string} reducerName - name of the reducer
- * @returns {function()} - an array of object type being handled by this function
+ * @returns {Function} - an array of object type being handled by this function
  */
 export const getItemsArrayFactory = <ObjectType>(reducerName: string) =>
-  /** gets an array of objects
+  /**
+   * gets an array of objects
    *
    * @param {Dictionary} state - the redux store
    * @returns {object[]} - an array of objs
@@ -218,13 +229,15 @@ export const getItemsArrayFactory = <ObjectType>(reducerName: string) =>
     return values<ObjectType>(getItemsById(state));
   };
 
-/** factory function that creates selector
+/**
+ * factory function that creates selector
  *
  * @param {string} reducerName -  name of reducer
- * @returns {function()} - object type being handled by this function
+ * @returns {Function} - object type being handled by this function
  */
 export const getItemByIdFactory = <ObjectType>(reducerName: string) =>
-  /** get a specific object by their id
+  /**
+   * get a specific object by their id
    *
    * @param {Dictionary} state - the redux store
    * @returns {Dictionary | null} a obj if the id is found else null
@@ -235,13 +248,15 @@ export const getItemByIdFactory = <ObjectType>(reducerName: string) =>
       : null;
   };
 
-/** factory function that creates selector
+/**
+ * factory function that creates selector
  *
  * @param {string} reducerName -  name of reducer
- * @returns {function()} - function that returns the total number of records
+ * @returns {Function} - function that returns the total number of records
  */
 export const getTotalRecordsFactory = (reducerName: string) =>
-  /** returns the count of all records present in server
+  /**
+   * returns the count of all records present in server
    *
    * @param {Dictionary} state - the redux store
    * @returns { number } - total records value from the store

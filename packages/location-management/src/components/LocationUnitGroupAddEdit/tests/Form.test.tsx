@@ -28,7 +28,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -178,7 +178,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on fetching single tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -202,7 +202,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on creating tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
@@ -236,7 +236,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
   });
 
   it('Handles errors on editing tag', async () => {
-    fetch.mockRejectOnce(() => Promise.reject(lang.ERROR_OCCURED));
+    fetch.mockRejectOnce(new Error(lang.ERROR_OCCURED));
     const mockNotificationError = jest.spyOn(notification, 'error');
     onSubmit(
       fixtures.sampleLocationUnitGroupPayload,

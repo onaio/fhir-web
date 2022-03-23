@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
@@ -87,7 +87,7 @@ describe('componentUtils', () => {
     );
     await act(async () => {
       await flushPromises();
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
     wrapper.update();
     // test if isAuthorized is called
@@ -151,7 +151,7 @@ describe('componentUtils', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     expect(wrapper.exists(MockComponent)).toBeFalsy();
