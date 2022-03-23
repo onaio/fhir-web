@@ -2937,14 +2937,6 @@
     "@ant-design/icons" "^4.0.0"
     react "^16.14.0"
 
-"@opensrp/fhir-team-management@file:packages/fhir-team-management":
-  version "0.0.5"
-  dependencies:
-    "@opensrp/notifications" "^0.0.5"
-    "@opensrp/pkg-config" "^0.0.9"
-    "@opensrp/react-utils" "^0.0.12"
-    uuid "^8.3.1"
-
 "@opensrp/notifications@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@opensrp/notifications/-/notifications-0.0.4.tgz#c97b991ed7f820f1b6d2b9d447ec9169772c29ab"
