@@ -11,7 +11,7 @@
     "access": "public"
   },
   "config": {
-    "folderName": "fhir-group"
+    "folderName": "fhir-group-management"
   },
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Groups } from '../../types';
+import { Group } from '../../types';
 import Form, { FormField } from './Form';
 import { useParams } from 'react-router';
 import { GROUP_GET } from '../../constants';
@@ -23,7 +23,7 @@ export const GroupAddEdit: React.FC<Props> = (props: Props) => {
 
   const group = useQuery([GROUP_GET, params.id], () => serve.request(GROUP_GET + params.id), {
     onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-    select: (res: Groups) => res,
+    select: (res: Group) => res,
     enabled: params.id !== undefined,
   });
 
