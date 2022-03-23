@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { HealthCareForm} from './Form';
+import { HealthCareForm } from './Form';
 import { useParams } from 'react-router';
 import {
   healthCareServiceResourceType,

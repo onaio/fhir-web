@@ -31,7 +31,7 @@ export const getObjLike = <T extends object>(
   return result;
 };
 
-// fhir constants and  value sets TODO - dry out after #695
+// fhir constants and  value sets TODO - dry out after #896
 // fhir constants
 export enum IdentifierUseCodes {
   USUAL = 'usual',
@@ -41,7 +41,7 @@ export enum IdentifierUseCodes {
   OLD = 'old',
 }
 
-// TODO - dry out after #695
+// TODO - dry out after #896
 /**
  * fetch all resources for a certain endpoint
  *
