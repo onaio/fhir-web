@@ -21,7 +21,7 @@ interface RouteParams {
 }
 
 /**
- * Shows the list of all healthcares and there details
+ * Shows the list of all healthcare service
  *
  * @param props -  component props
  * @returns returns healthcare display
