@@ -4,7 +4,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import { GROUP_GET } from '../../constants';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
-import { Groups } from '../../types';
+import { Group } from '../../types';
 import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
@@ -20,7 +20,7 @@ export interface FormField {
 
 interface Props {
   fhirBaseURL: string;
-  initialValue?: FormField & Partial<Groups>;
+  initialValue?: FormField & Partial<Group>;
 }
 
 /**
@@ -36,12 +36,12 @@ export async function onSubmit(
   fhirBaseURL: string,
   setIsSubmitting: (value: boolean) => void,
   values: FormField,
-  initialValue: FormField & Partial<Groups>
+  initialValue: FormField & Partial<Group>
 ) {
   setIsSubmitting(true);
   const Groupid = initialValue.id ? initialValue.id : v4();
 
-  const payload: Omit<Groups, 'meta'> = {
+  const payload: Omit<Group, 'meta'> = {
     resourceType: 'Group',
     id: Groupid,
     active: values.active,
