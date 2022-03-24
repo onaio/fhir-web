@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { TableActions } from '..';
@@ -12,10 +12,11 @@ describe('components/UserList/TableActions', () => {
     record: fixtures.keycloakUser,
     fetchKeycloakUsersCreator: fetchUsersMock,
     removeKeycloakUsersCreator: removeUsersMock,
-    isLoadingCallback: jest.fn(),
     accessToken: 'sometoken',
     extraData: { user_id: 'e8b07278-c75b-4dc7-b1f4-bcbf01b7d353' },
+    opensrpBaseURL: 'https://test.smartregister.org/opensrp/rest/',
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+    setDetailsCallback: jest.fn(),
   };
 
   it('does not crash', () => {

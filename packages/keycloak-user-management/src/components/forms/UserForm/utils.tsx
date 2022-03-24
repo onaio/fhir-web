@@ -250,6 +250,7 @@ export const getUserFormPayload = (values: FormFields) => {
 
   const cleanedAttributes = pickBy(
     preUserAttributes,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (value) => value !== undefined && value !== null
   );
 

@@ -33,6 +33,7 @@ import {
 } from './fixtures';
 import toJson from 'enzyme-to-json';
 import { Dictionary } from '@onaio/utils';
+import { cleanup, render, waitForElementToBeRemoved } from '@testing-library/react';
 
 const { fetchAllHierarchies } = locationHierachyDucks;
 
@@ -49,6 +50,36 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+const props = {
+  history,
+  opensrpBaseURL: OPENSRP_API_BASE_URL,
+  defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
+  location: {
+    hash: '',
+    pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+    search: '',
+    state: {},
+  },
+  match: {
+    isExact: true,
+    params: {},
+    path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+    url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
+  },
+};
+
+const mockFetches = () => {
+  fetch.mockResponses(
+    /** Get plan hierarchy */
+    [JSON.stringify([samplePlan]), { status: 200 }],
+    [JSON.stringify(assignments), { status: 200 }],
+    [JSON.stringify(20), { status: 200 }],
+    [JSON.stringify(sampleHierarchy), { status: 200 }],
+    [JSON.stringify(organizations), { status: 200 }]
+    /** These calls are made by PlanAssignment */
+  );
+};
+
 describe('List view Page', () => {
   beforeAll(() => {
     store.dispatch(
@@ -59,7 +90,7 @@ describe('List view Page', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -67,6 +98,8 @@ describe('List view Page', () => {
 
   beforeEach(() => {
     fetch.mockClear();
+    fetch.resetMocks();
+    jest.clearAllMocks();
     jest.spyOn(React, 'useLayoutEffect').mockImplementation(() => false);
   });
 
@@ -75,34 +108,10 @@ describe('List view Page', () => {
   });
 
   it('works as expected', async () => {
-    fetch.mockResponses(
-      /** Get plan hierarchy */
-      [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by PlanAssignment */
-      [JSON.stringify(assignments), { status: 200 }],
-      [JSON.stringify(organizations), { status: 200 }]
-    );
+    mockFetches();
 
     const hierarchy = generateJurisdictionTree(sampleHierarchy);
     store.dispatch(fetchAllHierarchies([hierarchy.model]));
-
-    const props = {
-      history,
-      opensrpBaseURL: OPENSRP_API_BASE_URL,
-      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
-      location: {
-        hash: '',
-        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        search: '',
-        state: {},
-      },
-      match: {
-        isExact: true,
-        params: {},
-        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-      },
-    };
 
     const wrapper = mount(
       <Provider store={store}>
@@ -117,7 +126,13 @@ describe('List view Page', () => {
       wrapper.update();
     });
 
-    // expect(toJson(wrapper.find('TeamAssignmentView'))).toEqual('');
+    expect(fetch.mock.calls.map((d) => d[0])).toEqual([
+      'https://opensrp-staging.smartregister.org/opensrp/rest/plans/27362060-0309-411a-910c-64f55ede3758',
+      'https://opensrp-staging.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans?plan=27362060-0309-411a-910c-64f55ede3758',
+      'https://opensrp-staging.smartregister.org/opensrp/rest/organization/count',
+      'https://opensrp-staging.smartregister.org/opensrp/rest/location/hierarchy/b652b2f4-a95d-489b-9e28-4629746db96a',
+      'https://opensrp-staging.smartregister.org/opensrp/rest/organization?pageNumber=1&pageSize=1000',
+    ]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"Team AssignmentKenyaNameAssigned TeamsActionsKenya-Edit15 / page"`
@@ -125,10 +140,33 @@ describe('List view Page', () => {
     wrapper.unmount();
   });
 
+  test('renders error page on request rejection', async () => {
+    fetch.mockReject(new Error('coughid'));
+
+    const hierarchy = generateJurisdictionTree(sampleHierarchy);
+    store.dispatch(fetchAllHierarchies([hierarchy.model]));
+
+    const { container } = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <TeamAssignmentView {...props} />
+        </Router>
+      </Provider>
+    );
+
+    await waitForElementToBeRemoved(container.querySelector('.ant-spin'));
+
+    expect(document.querySelector('.ant-result.ant-result-500')).toBeInTheDocument();
+
+    cleanup();
+  });
+
   it('works correctly with store', async () => {
     fetch.mockResponses(
       /** Get plan */
       [JSON.stringify([samplePlan]), { status: 200 }],
+      [JSON.stringify(sampleHierarchy), { status: 200 }],
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -179,6 +217,8 @@ describe('List view Page', () => {
     fetch.mockResponses(
       /** Get plan */
       [JSON.stringify([samplePlan]), { status: 200 }],
+      [JSON.stringify(sampleHierarchy), { status: 200 }],
+      [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -271,13 +311,7 @@ describe('List view Page', () => {
   });
 
   it('on submit works correctly', async () => {
-    fetch.mockResponses(
-      /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by TeamAssignment */
-      [JSON.stringify(assignments), { status: 200 }],
-      [JSON.stringify(organizations), { status: 200 }]
-    );
+    mockFetches();
 
     const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
 
@@ -369,36 +403,14 @@ describe('List view Page', () => {
   });
 
   it('correctly updates unassigning/assigning teams on table', async () => {
-    fetch.mockResponses(
-      /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
-      /** These calls are made by TeamAssignment */
-      [JSON.stringify(assignments), { status: 200 }],
-      [JSON.stringify(organizations), { status: 200 }]
-    );
+    mockFetches();
+    fetch.mockResponseOnce(JSON.stringify({}), { status: 200 });
+    mockFetches();
 
     store.dispatch(fetchAssignments(assignments));
     store.dispatch(fetchOrganizationsAction(organizations));
     const hierarchy = generateJurisdictionTree(sampleHierarchy);
     store.dispatch(fetchAllHierarchies([hierarchy.model]));
-
-    const props = {
-      history,
-      opensrpBaseURL: OPENSRP_API_BASE_URL,
-      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
-      location: {
-        hash: '',
-        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        search: '',
-        state: {},
-      },
-      match: {
-        isExact: true,
-        params: {},
-        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-      },
-    };
 
     const wrapper = mount(
       <Provider store={store}>
@@ -492,7 +504,8 @@ describe('List view Page', () => {
         toDate: '2017-07-13T19:31:00+00:00',
       },
     ];
-    expect(fetch.mock.calls[3]).toEqual([
+
+    expect(fetch.mock.calls[5]).toEqual([
       'https://opensrp-staging.smartregister.org/opensrp/rest/organization/assignLocationsAndPlans',
       {
         'Cache-Control': 'no-cache',
@@ -512,7 +525,7 @@ describe('List view Page', () => {
   it('closes modal on cancel button click', async () => {
     fetch.mockResponses(
       /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
+      [JSON.stringify([samplePlan]), { status: 200 }],
       /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
@@ -575,7 +588,7 @@ describe('List view Page', () => {
   it('updates table when clicking on tree node', async () => {
     fetch.mockResponses(
       /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
+      [JSON.stringify([samplePlan]), { status: 200 }],
       /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
@@ -585,24 +598,6 @@ describe('List view Page', () => {
     store.dispatch(fetchOrganizationsAction(organizations));
     const hierarchy = generateJurisdictionTree(sampleHierarchy);
     store.dispatch(fetchAllHierarchies([hierarchy.model]));
-
-    const props = {
-      history,
-      opensrpBaseURL: OPENSRP_API_BASE_URL,
-      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
-      location: {
-        hash: '',
-        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        search: '',
-        state: {},
-      },
-      match: {
-        isExact: true,
-        params: {},
-        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-      },
-    };
 
     const wrapper = mount(
       <Provider store={store}>
@@ -631,8 +626,9 @@ describe('List view Page', () => {
   it('handles save error', async () => {
     fetch.mockResponses(
       /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
+      [JSON.stringify([samplePlan]), { status: 200 }],
       /** These calls are made by TeamAssignment */
+      // [JSON.stringify(20), { status: 200 }],
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
     );
@@ -643,24 +639,6 @@ describe('List view Page', () => {
     store.dispatch(fetchOrganizationsAction(organizations));
     const hierarchy = generateJurisdictionTree(sampleHierarchy);
     store.dispatch(fetchAllHierarchies([hierarchy.model]));
-
-    const props = {
-      history,
-      opensrpBaseURL: OPENSRP_API_BASE_URL,
-      defaultPlanId: '27362060-0309-411a-910c-64f55ede3758',
-      location: {
-        hash: '',
-        pathname: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        search: '',
-        state: {},
-      },
-      match: {
-        isExact: true,
-        params: {},
-        path: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-        url: `${TEAM_ASSIGNMENT_LIST_VIEW_URL}`,
-      },
-    };
 
     const wrapper = mount(
       <Provider store={store}>
@@ -684,20 +662,20 @@ describe('List view Page', () => {
       ['4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4'],
       [{ label: 'Demo Team', value: '4c506c98-d3a9-11e9-bb65-2a2ae2dbcce4' }]
     );
-    fetch.mockRejectOnce(() => Promise.reject('API is down'));
+    fetch.mockRejectOnce(new Error('API is down'));
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('Error', 'API is down');
     wrapper.unmount();
   });
 
   it('filters select options by text', async () => {
     fetch.mockResponses(
       /** Get plan */
-      [JSON.stringify(samplePlan), { status: 200 }],
+      [JSON.stringify([samplePlan]), { status: 200 }],
       /** These calls are made by TeamAssignment */
       [JSON.stringify(assignments), { status: 200 }],
       [JSON.stringify(organizations), { status: 200 }]
@@ -742,10 +720,7 @@ describe('List view Page', () => {
     // simulate to open modal
     wrapper.find('button').at(0).simulate('click');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    wrapper.update();
 
     // find antd Select with id 'teamAssignment_assignTeams'
     const teamAssignmentSelect = wrapper.find('Select#teamAssignment_assignTeams');
@@ -753,10 +728,7 @@ describe('List view Page', () => {
     // simulate click on select - to show dropdown items
     teamAssignmentSelect.find('.ant-select-selector').simulate('mousedown');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    wrapper.update();
 
     // expect to see all options
     const teamAssignmentSelect2 = wrapper.find('Select#teamAssignment_assignTeams');
@@ -792,5 +764,6 @@ describe('List view Page', () => {
         "Test Demo Team",
       ]
     `);
+    wrapper.unmount();
   });
 });

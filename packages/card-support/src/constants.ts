@@ -1,5 +1,5 @@
 // OPENSRP API endpoints
-export const OPENSRP_URL_USER_ASSIGNMENT = 'organization/user-assignment';
+export const SECURITY_AUTHENTICATE = 'security/authenticate';
 export const OPENSRP_URL_CLIENT_SEARCH = 'client/search';
 export const OPENSRP_URL_LOCATION_HIERARCHY = 'location/hierarchy';
 

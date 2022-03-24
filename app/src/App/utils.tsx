@@ -8,7 +8,6 @@ import {
 } from '../constants';
 import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
-
 import {
   ACTION_UUID_NAMESPACE,
   DATE_FORMAT,
@@ -17,19 +16,21 @@ import {
   DEFAULT_PLAN_VERSION,
   DEFAULT_TIME,
   OPENSRP_API_BASE_URL,
+  OPENSRP_API_V2_BASE_URL,
   PLAN_ASSIGNMENT_AT_GEO_LEVEL,
   PLAN_UUID_NAMESPACE,
   TASK_GENERATION_STATUS,
   DEFAULT_PLAN_ID,
+  FHIR_API_BASE_URL,
   FILTER_BY_PARENT_ID,
   KEYCLOAK_USERS_PAGE_SIZE,
-  FHIR_API_BASE_URL,
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
   FHIR_PATIENT_SORT_FIELDS,
   FHIR_PATIENT_BUNDLE_SIZE,
+  FHIR_ROOT_LOCATION_IDENTIFIER,
   FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
@@ -50,6 +51,7 @@ export const teamManagementProps = {
 
 export const locationUnitProps = {
   filterByParentId: FILTER_BY_PARENT_ID,
+  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
 };
 
 export const newLocationUnitProps = {
@@ -69,6 +71,12 @@ export const usersListProps = {
 };
 export const inventoryServiceProps = {
   baseURL: OPENSRP_API_BASE_URL,
+};
+
+export const serverSettingsProps = {
+  baseURL: OPENSRP_API_BASE_URL.replace('/rest', ''),
+  restBaseURL: OPENSRP_API_BASE_URL,
+  v2BaseURL: OPENSRP_API_V2_BASE_URL,
 };
 
 export const jsonValidatorListProps = {

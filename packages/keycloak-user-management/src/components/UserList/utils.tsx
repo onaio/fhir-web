@@ -29,11 +29,8 @@ export const getTableColumns = (
       dataIndex: field as keyof KeycloakUser,
       key: field as keyof KeycloakUser,
       sorter: (a: Dictionary, b: Dictionary) => {
-        if (a[field] > b[field]) {
-          return -1;
-        } else if (a[field] < b[field]) {
-          return 1;
-        }
+        if (a[field] > b[field]) return -1;
+        else if (a[field] < b[field]) return 1;
         return 0;
       },
       sortOrder: sortedInfo && sortedInfo.columnKey === field && sortedInfo.order,

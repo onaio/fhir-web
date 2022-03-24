@@ -5,6 +5,7 @@ import React from 'react';
 import MapMarkerOutlineIcon from '@opensrp/ant-icons/lib/MapMarkerOutline';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import ArchiveOutlineIcon from '@opensrp/ant-icons/lib/ArchiveOutline';
+
 jest.mock('./configs/env');
 
 describe('routes', () => {
@@ -110,7 +111,9 @@ describe('routes', () => {
     envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
     envModule.ENABLE_PRODUCT_CATALOGUE = true;
     envModule.ENABLE_PLANS = true;
+    envModule.ENABLE_SERVER_SETTINGS = true;
     envModule.ENABLE_CARD_SUPPORT = true;
+    envModule.ENABLE_QUEST = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
       PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -120,6 +123,8 @@ describe('routes', () => {
       TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
       PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
       FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
+      SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
     const routes = getRoutes(
@@ -197,8 +202,8 @@ describe('routes', () => {
           {
             children: [
               {
-                key: 'user',
-                title: 'User Management',
+                key: 'users',
+                title: 'Users',
                 url: '/admin/users',
               },
               {
@@ -213,14 +218,14 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'users',
-            title: 'Users',
+            key: 'user-management',
+            title: 'User Management',
           },
           {
             children: [
               {
                 key: 'location-unit',
-                title: 'Location unit',
+                title: 'Location units',
                 url: '/admin/location/unit',
               },
               {
@@ -230,8 +235,8 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'location',
-            title: 'Locations',
+            key: 'location-management',
+            title: 'Location Management',
           },
           {
             enabled: true,
@@ -242,7 +247,7 @@ describe('routes', () => {
           {
             children: [
               {
-                key: 'teams-list',
+                key: 'TEAMS',
                 title: 'Teams',
                 url: '/admin/teams',
               },
@@ -254,9 +259,10 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'teams',
-            title: 'Teams',
+            key: 'team-management',
+            title: 'Team Management',
           },
+          { enabled: true, key: 'fhir-quest', title: 'Questionnaire', url: '/quest' },
           {
             children: [
               {
@@ -279,13 +285,19 @@ describe('routes', () => {
             key: 'form-config',
             title: 'Form Configuration',
           },
+          {
+            enabled: true,
+            key: 'server-settings',
+            title: 'Server Settings',
+            url: '/admin/server-settings',
+          },
         ],
         enabled: true,
-        key: 'admin',
+        key: 'administration',
         otherProps: {
           icon: <DashboardOutlined />,
         },
-        title: 'Admin',
+        title: 'Administration',
         url: '/admin',
       },
     ]);

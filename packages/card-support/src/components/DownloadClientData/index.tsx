@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
@@ -12,10 +12,11 @@ import {
   ParsedHierarchyNode,
 } from '@opensrp/location-management';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { submitForm, handleCardOrderDateChange, UserAssignment } from './utils';
-import { OPENSRP_URL_LOCATION_HIERARCHY, OPENSRP_URL_USER_ASSIGNMENT } from '../../constants';
+import { submitForm, handleCardOrderDateChange } from './utils';
+import { OPENSRP_URL_LOCATION_HIERARCHY, SECURITY_AUTHENTICATE } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import lang from '../../lang';
+import { useQuery } from 'react-query';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 
@@ -59,9 +60,8 @@ export const initialFormValues: Partial<DownloadClientDataFormFields> = {
  */
 const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadClientDataProps) => {
   const { opensrpBaseURL, opensrpServiceClass, fetchAllHierarchiesActionCreator } = props;
-  const [cardOrderDate, setCardOrderDate] = React.useState<[string, string]>(['', '']);
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [defaultLocationId, setDefaultLocationId] = React.useState<string>('');
+  const [cardOrderDate, setCardOrderDate] = useState<[string, string]>(['', '']);
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const locationHierarchies = useSelector((state) =>
     locationHierachyDucks.getAllHierarchiesArray(state)
   );
@@ -93,42 +93,48 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     return current > moment().startOf('day');
   };
 
-  React.useEffect(() => {
-    const serve = new opensrpServiceClass(accessToken, opensrpBaseURL, OPENSRP_URL_USER_ASSIGNMENT);
-    serve
-      .list()
-      .then((assignment: UserAssignment) => {
-        const { jurisdictions } = assignment;
-        const defaultLocationId = jurisdictions[0];
-        setDefaultLocationId(defaultLocationId);
-        const serve = new opensrpServiceClass(
-          accessToken,
-          opensrpBaseURL,
-          OPENSRP_URL_LOCATION_HIERARCHY
-        );
-        serve
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          .read(defaultLocationId, { is_jurisdiction: true })
-          .then((res: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(res);
-            dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
-          })
-          .catch((_: Error) => {
-            sendErrorNotification(lang.ERROR_OCCURRED);
-          });
-      })
-      .catch((_: Error) => {
-        sendErrorNotification(lang.ERROR_OCCURRED);
-      });
-  }, [
-    accessToken,
-    opensrpBaseURL,
-    fetchAllHierarchiesActionCreator,
-    opensrpServiceClass,
-    dispatch,
-  ]);
+  interface DefaultLocation {
+    display: string;
+    name: string;
+    uuid: string;
+  }
 
-  /** Function to parse the hierarchy tree into TreeSelect node format
+  // remove '/rest' from base opensrp url (https://some.open.opensrp.url/opensrp/rest/)
+  const BASE_URL = opensrpBaseURL.replace('/rest', '');
+
+  // fetch logged in user data including team assigned to and location assigned to the team
+  const userLocSettings = useQuery(
+    SECURITY_AUTHENTICATE,
+    () => new opensrpServiceClass(accessToken, BASE_URL, SECURITY_AUTHENTICATE).list(),
+    {
+      onError: () => sendErrorNotification(lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED),
+      select: (res: { team: { team: { location: DefaultLocation } } }) => res.team.team.location,
+    }
+  );
+
+  // fetch location hierarchy for location assigned to the team
+  useQuery(
+    OPENSRP_URL_LOCATION_HIERARCHY,
+    () =>
+      new opensrpServiceClass(
+        accessToken,
+        opensrpBaseURL,
+        OPENSRP_URL_LOCATION_HIERARCHY
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+      ).read(userLocSettings.data?.uuid ?? '', { is_jurisdiction: true }),
+    {
+      // start fetching when userLocSettings hook succeeds
+      enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
+      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onSuccess: (res: RawOpenSRPHierarchy) => {
+        const hierarchy = generateJurisdictionTree(res);
+        dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
+      },
+    }
+  );
+
+  /**
+   * Function to parse the hierarchy tree into TreeSelect node format
    *
    * @param {Array<ParsedHierarchyNode>} hierarchyNode the tree node to parse
    * @returns {Array<React.ReactNode>} the parsed format of for Ant TreeSelect
@@ -152,7 +158,9 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
             submitForm(
               {
                 ...values,
-                clientLocation: values.clientLocation ? values.clientLocation : defaultLocationId,
+                clientLocation: values.clientLocation
+                  ? values.clientLocation
+                  : userLocSettings.data?.uuid ?? '',
                 cardOrderDate,
               },
               accessToken,
@@ -160,7 +168,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               opensrpServiceClass,
               locationHierarchies,
               setSubmitting
-            );
+            ).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
           }}
         >
           <Form.Item name="clientLocation" label={lang.CLIENT_LOCATION}>

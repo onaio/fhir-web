@@ -9,12 +9,11 @@ import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
-  ...jest.requireActual('@opensrp/notifications'),
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
 describe('components/UserList/utils/deleteUser', () => {
   const removeUsersMock = jest.fn();
-  const isLoadingCallback = jest.fn();
   const keycloakBaseURL = 'https://some.keycloak.url';
   const opensrpBaseURL = 'https://some.opensrp.url/';
   const userId = '1';
@@ -37,7 +36,7 @@ describe('components/UserList/utils/deleteUser', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -53,7 +52,7 @@ describe('components/UserList/utils/deleteUser', () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fetch.mockResponseOnce(JSON.stringify(practitioner));
 
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
       () => 'obligatory catch'
     );
 
@@ -89,7 +88,6 @@ describe('components/UserList/utils/deleteUser', () => {
     ]);
 
     expect(removeUsersMock).toHaveBeenCalledTimes(1);
-    expect(isLoadingCallback).toHaveBeenCalledTimes(2);
     expect(notificationSuccessMock.mock.calls).toMatchObject([
       ['User deleted successfully'],
       ['Practitioner unassigned successfully'],
@@ -99,8 +97,8 @@ describe('components/UserList/utils/deleteUser', () => {
 
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.mockReject(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+    fetch.mockRejectOnce(new Error('API is down'));
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
       () => 'obligatory catch'
     );
 
@@ -113,8 +111,8 @@ describe('components/UserList/utils/deleteUser', () => {
 
   it('handles API error when calling the fetch endpoints', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
-    fetch.once(JSON.stringify([])).mockRejectOnce(() => Promise.reject('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, isLoadingCallback).catch(
+    fetch.once(JSON.stringify([])).mockRejectOnce(new Error('API is down'));
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
       () => 'obligatory catch'
     );
 

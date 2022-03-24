@@ -4,6 +4,9 @@
 export const SEARCH_QUERY_PARAM = 'searchQuery';
 
 // FHIR API strings
+export const careTeamResourceType = 'CareTeam';
+export const groupResourceType = 'Group';
+export const practitionerResourceType = 'Practitioner';
 export const URL_ADMIN = '/admin';
 export const FHIR_CARE_TEAM = 'CareTeam';
 export const FHIR_GROUPS = 'Group';

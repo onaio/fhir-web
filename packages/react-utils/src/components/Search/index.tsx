@@ -28,14 +28,16 @@ export const defaultSearchProps: SearchFormProps = {
   allowClear: true,
 };
 
-/** Base SearchForm component
+/**
+ * Base SearchForm component
  *
  * @param props - the component's props
  */
 const SearchForm = (props: SearchFormProps) => {
   const { onChangeHandler } = props;
 
-  /** inbuilt default onChangeHandler that debounces the passed changeHandler
+  /**
+   * inbuilt default onChangeHandler that debounces the passed changeHandler
    *
    * @param {ChangeEvent<HTMLInputElement>} event - the input event
    */

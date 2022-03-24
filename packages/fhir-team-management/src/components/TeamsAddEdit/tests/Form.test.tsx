@@ -10,14 +10,17 @@ import {
   practitioner102,
   practitioner116,
   practitioner104,
-  practitionerrole,
+  practitionerRole,
   practitioner,
   team212,
-  teamsdetail,
+  teamsDetail,
 } from '../../../tests/fixtures';
 import Form, { FormField, onSubmit } from '../Form';
 import * as fhirCient from 'fhirclient';
 import * as notifications from '@opensrp/notifications';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
+import { Require } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -51,20 +54,35 @@ jest.mock('antd', () => {
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
-const TeamValue: FormField = {
-  ...teamsdetail,
+const TeamValue: Require<FormField, 'active' | 'name'> = {
+  ...teamsDetail,
   practitioners: ['116', '102'],
 };
 
 describe('Team-management/TeamsAddEdit/Form', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization') return Promise.resolve(team);
           if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner') return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole') return Promise.resolve(practitionerRole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else if (url === 'Practitioner/104') return Promise.resolve(practitioner104);
@@ -91,9 +109,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
-            fhirbaseURL={fhirBaseURL}
+            fhirBaseURL={fhirBaseURL}
             practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
           />
         </QueryClientProvider>
       </Router>
@@ -109,9 +127,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
-            fhirbaseURL={fhirBaseURL}
+            fhirBaseURL={fhirBaseURL}
             practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
             value={TeamValue}
           />
         </QueryClientProvider>
@@ -129,9 +147,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
-            fhirbaseURL={fhirBaseURL}
+            fhirBaseURL={fhirBaseURL}
             practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
             value={TeamValue}
           />
         </QueryClientProvider>
@@ -154,7 +172,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       {},
       TeamValue,
       practitioner.entry.map((e) => e.resource),
-      practitionerrole.entry.map((e) => e.resource)
+      practitionerRole.entry.map((e) => e.resource)
     )
       .then(thenfn)
       .catch(catchfn);
@@ -181,7 +199,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       TeamValue,
       { ...TeamValue, name: 'new name', practitioners: ['116', '104'] },
       practitioner.entry.map((e) => e.resource),
-      practitionerrole.entry.map((e) => e.resource)
+      practitionerRole.entry.map((e) => e.resource)
     )
       .then(thenfn)
       .catch(catchfn);
@@ -210,9 +228,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
-            fhirbaseURL={fhirBaseURL}
+            fhirBaseURL={fhirBaseURL}
             practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
           />
         </QueryClientProvider>
       </Router>
@@ -227,7 +245,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       .find('select#practitioners')
       .last()
       .simulate('change', {
-        target: { value: teamsdetail.practitionerInfo.map((e) => e.id) },
+        target: { value: teamsDetail.practitionerInfo.map((e) => e.id) },
       });
 
     wrapper.find('form').simulate('submit');
@@ -263,9 +281,9 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       <Router history={history}>
         <QueryClientProvider client={queryClient}>
           <Form
-            fhirbaseURL={fhirBaseURL}
+            fhirBaseURL={fhirBaseURL}
             practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
+            practitionerRoles={practitionerRole.entry.map((e) => e.resource)}
             value={TeamValue}
           />
         </QueryClientProvider>
@@ -280,40 +298,5 @@ describe('Team-management/TeamsAddEdit/Form', () => {
     });
 
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
-  });
-
-  it('fail Invalidate Query After Submit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirbaseURL={fhirBaseURL}
-            practitioners={practitioner.entry.map((e) => e.resource)}
-            practitionerRoles={practitionerrole.entry.map((e) => e.resource)}
-            value={TeamValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(1, 'Successfully Updated Teams');
-    expect(mockSuccessNotification).toHaveBeenNthCalledWith(
-      2,
-      'Successfully Assigned Practitioners'
-    );
-
-    // expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 });

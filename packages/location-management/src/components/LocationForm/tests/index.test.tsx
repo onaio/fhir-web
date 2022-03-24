@@ -23,6 +23,8 @@ import {
   rawOpenSRPHierarchy1,
   serviceTypeSettings,
 } from './fixtures';
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
 
 const history = createBrowserHistory();
 
@@ -47,7 +49,7 @@ describe('LocationForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -71,7 +73,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -136,14 +138,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -163,7 +165,9 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // not required for core
-    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
+      `"TypeSelect the service point type"`
+    );
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
 
@@ -177,47 +181,28 @@ describe('LocationForm', () => {
   });
 
   it('form validation works for wrong data types', async () => {
-    const div = document.createElement('div');
-    document.body.appendChild(div);
-
     fetch.mockResponse(JSON.stringify([]));
 
-    const wrapper = mount(
+    const { getByLabelText, getByText, getAllByText, unmount } = render(
       <Router history={history}>
         <LocationForm />
-      </Router>,
-      { attachTo: div }
+      </Router>
     );
 
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
+    const longitudeInput = getByLabelText('Longitude');
+    const latitudeInput = getByLabelText('Latitude');
+    fireEvent.change(longitudeInput, { target: { value: '432dsff', name: 'longitude' } });
+    fireEvent.change(latitudeInput, { target: { value: '43f', name: 'latitude' } });
+
+    const submitButton = getByText('Save');
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(getAllByText('Only decimal values allowed')).toHaveLength(2);
     });
 
-    // set longitude, and latitude to invalid values
-    wrapper
-      .find('FormItem#longitude input')
-      .simulate('change', { target: { value: '432dsff', name: 'longitude' } });
-
-    wrapper
-      .find('FormItem#latitude input')
-      .simulate('change', { target: { value: '43f', name: 'latitude' } });
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
-      wrapper.update();
-    });
-
-    expect(wrapper.find('FormItemInput#longitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-    expect(wrapper.find('FormItemInput#latitude').prop('errors')).toEqual([
-      'Only decimal values allowed',
-    ]);
-
-    wrapper.unmount();
+    unmount();
   });
 
   it('form validation works for eusm instance', async () => {
@@ -238,14 +223,14 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -266,7 +251,7 @@ describe('LocationForm', () => {
 
     // service types is required for eusm
     expect(wrapper.find('FormItem#serviceType').text()).toMatchInlineSnapshot(
-      `"TypeService types is required"`
+      `"TypeSelect the service point typeService types is required"`
     );
 
     expect(wrapper.find('FormItem#externalId').text()).toMatchInlineSnapshot(`"External ID"`);
@@ -293,7 +278,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -345,7 +330,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -386,7 +371,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -438,7 +423,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -464,7 +449,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -500,7 +485,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -566,7 +551,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -616,7 +601,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -642,7 +627,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -691,7 +676,7 @@ describe('LocationForm', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -700,7 +685,7 @@ describe('LocationForm', () => {
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -722,6 +707,83 @@ describe('LocationForm', () => {
         },
       ],
     ]);
+    wrapper.unmount();
+  });
+
+  it('issue 850 - form re renders invalidates and clears filled in values', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const MockComponent = () => {
+      const [counter, setCounter] = React.useState<number>(0);
+      const props = {
+        initialValues: { ...getLocationFormFields(), latitude: undefined, longitude: undefined },
+        filterByParentId: false,
+        successURLGenerator: () => '/',
+        hidden: [],
+        disabled: [],
+        onCancel: () => void 0,
+        username: '',
+        opensrpBaseURL: 'http://example.com',
+        afterSubmit: () => {
+          return;
+        },
+      };
+
+      return (
+        <>
+          <button id="render" onClick={() => setCounter(counter + 1)}></button>
+          <LocationForm {...props} />
+        </>
+      );
+    };
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const wrapper = mount(
+      <Router history={history}>
+        <MockComponent />
+      </Router>,
+      { attachTo: div }
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    let formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toBeUndefined();
+    expect(formValues.longitude).toBeUndefined();
+
+    wrapper.find('FormItem#latitude input').simulate('change', {
+      target: { value: '34.56' },
+    });
+
+    wrapper.find('FormItem#longitude input').simulate('change', {
+      target: { value: '19.56' },
+    });
+
+    wrapper.update();
+
+    // expect that the above data is recorded by form.
+    formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toEqual('34.56');
+    expect(formValues.longitude).toEqual('19.56');
+
+    // force a rerender that reloads initial values in form
+    wrapper.find('#render').simulate('click');
+    wrapper.update();
+
+    // see if the values that were field above persisted,
+    // the before behavior is that the below fields would have taken their initialValues which is undefined
+    formValues = formInstance.getFieldsValue();
+    expect(formValues.latitude).toEqual('34.56');
+    expect(formValues.longitude).toEqual('19.56');
+
     wrapper.unmount();
   });
 });

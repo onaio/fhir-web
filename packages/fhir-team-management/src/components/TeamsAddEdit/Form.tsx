@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Select, Button, Form as AntdForm, Radio, Input } from 'antd';
 import { history } from '@onaio/connected-reducer-registry';
-import { FHIRService } from '@opensrp/react-utils';
 import { v4 } from 'uuid';
 import {
-  TEAMS_GET,
-  PRACTITIONERROLE_DEL,
-  PRACTITIONERROLE_GET,
-  PRACTITIONER_GET,
+  ORGANIZATION_ENDPOINT,
+  PRACTITIONERROLE_ENDPOINT,
+  PRACTITIONER_ENDPOINT,
+  ORGANIZATION_RESOURCE_TYPE,
+  PRACTITIONERROLE_RESOURCE_TYPE,
 } from '../../constants';
 import {
   sendSuccessNotification,
@@ -19,7 +19,7 @@ import { useQueryClient } from 'react-query';
 
 import lang from '../../lang';
 import { SelectProps } from 'antd/lib/select';
-import { Require } from 'react-utils/dist/types';
+import { FHIRServiceClass, Require } from '@opensrp/react-utils';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -29,7 +29,7 @@ export interface FormField extends Partial<Organization> {
 }
 
 interface Props {
-  fhirbaseURL: string;
+  fhirBaseURL: string;
   practitioners: Practitioner[];
   practitionerRoles?: PractitionerRole[];
   value?: Partial<FormField>;
@@ -38,64 +38,64 @@ interface Props {
 /**
  * Handle form submission
  *
- * @param {string} fhirbaseURL - base url
+ * @param {string} fhirBaseURL - base url
  * @param {object} initialValue initialValue of form fields
  * @param {object} values value of form fields
  * @param {Practitioner} practitioners list of practitioner to refer to when adding or removing
  * @param {PractitionerRole} PractitionerRoles list of practitionerRole to remove or add
  */
 export async function onSubmit(
-  fhirbaseURL: string,
+  fhirBaseURL: string,
   initialValue: Partial<FormField>,
   values: Require<FormField, 'active' | 'name'>,
   practitioners: Practitioner[],
   PractitionerRoles?: PractitionerRole[]
 ) {
-  const officialidentifier =
-    initialValue.identifier?.find((e) => e.use === 'official')?.value ?? v4();
+  const officialIdentifier =
+    initialValue.identifier?.find((identifier) => identifier.use === 'official')?.value ?? v4();
 
   const payload: Organization = {
-    resourceType: 'Organization',
+    resourceType: ORGANIZATION_RESOURCE_TYPE,
     id: initialValue.id ?? '',
     active: values.active,
-    identifier: [{ use: 'official', value: officialidentifier }],
+    identifier: [{ use: 'official', value: officialIdentifier }],
     name: values.name,
   };
 
-  const team = await setTeam(fhirbaseURL, payload);
+  const team = await setTeam(fhirBaseURL, payload);
 
   // Filter and seperate the practitioners uuid
-  const toAdd = values.practitioners.filter((val) => !initialValue?.practitioners?.includes(val));
-  const toRem = initialValue?.practitioners?.filter((val) => !values.practitioners.includes(val));
+  const toAdd = values.practitioners.filter((val) => !initialValue.practitioners?.includes(val));
+  const toRem = initialValue.practitioners?.filter((val) => !values.practitioners.includes(val));
 
-  await SetPractitioners(fhirbaseURL, team, toAdd, toRem ?? [], practitioners, PractitionerRoles);
+  await SetPractitioners(fhirBaseURL, team, toAdd, toRem ?? [], practitioners, PractitionerRoles);
 }
 
 /**
  * handle Practitioners
  *
- * @param {string} fhirbaseURL - base url
+ * @param {string} fhirBaseURL - base url
  * @param {Organization} team Oganization to be used to Practitioner
  * @param {string[]} toAdd list of practitioner uuid to add
  * @param {string[]} toRemove list of practitioner uuid to remove
  * @param {Practitioner[]} practitioner list of practitioner to refer to when adding or removing
- * @param {PractitionerRole[]} practitionerrole list of practitionerRole to remove or add
+ * @param {PractitionerRole[]} practitionerRole list of practitionerRole to remove or add
  */
 async function SetPractitioners(
-  fhirbaseURL: string,
+  fhirBaseURL: string,
   team: Organization,
   toAdd: string[],
   toRemove: string[],
   practitioner: Practitioner[],
-  practitionerrole?: PractitionerRole[]
+  practitionerRole?: PractitionerRole[]
 ) {
   sendInfoNotification(lang.MSG_ASSIGN_PRACTITIONERS);
-  const serve = await FHIRService(fhirbaseURL);
+  const serve = new FHIRServiceClass(fhirBaseURL, PRACTITIONERROLE_RESOURCE_TYPE);
 
   // Api Call to delete practitioners
-  const toremoveroles = toRemove
+  const toRemoveRoles = toRemove
     .map((id) =>
-      practitionerrole?.find(
+      practitionerRole?.find(
         (role) =>
           role.organization.reference === `Organization/${team.id}` &&
           role.practitioner.reference === `Practitioner/${id}`
@@ -105,28 +105,30 @@ async function SetPractitioners(
     .filter((e) => !!e)
     .map((role) => role?.id);
 
-  const rempromises = toremoveroles.map((roles) => serve.delete(`${PRACTITIONERROLE_DEL}${roles}`));
-  await Promise.all(rempromises);
+  const remPromises = toRemoveRoles.map((roles) =>
+    serve.delete(`${PRACTITIONERROLE_ENDPOINT}${roles}`)
+  );
+  await Promise.all(remPromises);
 
   // Api Call to add practitioners
   const toAddPractitioner = practitioner.filter((e) => toAdd.includes(e.id));
 
-  const addpromises = toAddPractitioner.map((prac) => {
+  const addPromises = toAddPractitioner.map((prac) => {
     const id = v4();
-    const pracname = prac.name
+    const pracName = prac.name
       .find((e) => e.use === 'official')
       ?.given?.reduce((fullname, name) => `${fullname} ${name}`, '');
     const payload: Omit<PractitionerRole, 'meta'> = {
-      resourceType: 'PractitionerRole',
+      resourceType: PRACTITIONERROLE_RESOURCE_TYPE,
       active: true,
       id: id,
       identifier: [{ use: 'official', value: id }],
-      practitioner: { display: pracname ?? '', reference: `Practitioner/${prac.id}` },
+      practitioner: { display: pracName ?? '', reference: `Practitioner/${prac.id}` },
       organization: { display: team.name, reference: `Organization/${team.id}` },
     };
     return serve.create(payload);
   });
-  await Promise.all(addpromises);
+  await Promise.all(addPromises);
 
   sendSuccessNotification(lang.MSG_ASSIGN_PRACTITONERS_SUCCESS);
 }
@@ -134,11 +136,11 @@ async function SetPractitioners(
 /**
  * Function to make teams API call
  *
- * @param {string} fhirbaseURL - base url
+ * @param {string} fhirBaseURL - base url
  * @param {Organization} payload payload To send
  */
-export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, 'meta'>) {
-  const serve = await FHIRService(fhirbaseURL);
+export async function setTeam(fhirBaseURL: string, payload: Omit<Organization, 'meta'>) {
+  const serve = new FHIRServiceClass<Organization>(fhirBaseURL, ORGANIZATION_RESOURCE_TYPE);
   if (payload.id) {
     const resp: Organization = await serve.update(payload);
     sendSuccessNotification(lang.MSG_TEAMS_UPDATE_SUCCESS);
@@ -152,7 +154,7 @@ export async function setTeam(fhirbaseURL: string, payload: Omit<Organization, '
 
 export const Form: React.FC<Props> = (props: Props) => {
   const queryClient = useQueryClient();
-  const { practitioners: Practitioners, practitionerRoles: PractitionerRoles, fhirbaseURL } = props;
+  const { practitioners, practitionerRoles, fhirBaseURL } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const initialValue = props.value ?? {
     active: true,
@@ -177,7 +179,7 @@ export const Form: React.FC<Props> = (props: Props) => {
       label:
         practitioner.name
           .find((e) => e.use === 'official')
-          ?.given?.reduce((fullname, name) => `${fullname} ${name}`) ?? '',
+          ?.given?.reduce((fullName, name) => `${fullName} ${name}`) ?? '',
       value: practitioner.id,
     }));
 
@@ -197,19 +199,16 @@ export const Form: React.FC<Props> = (props: Props) => {
       {...layout}
       onFinish={(values) => {
         setIsSubmitting(true);
-        onSubmit(fhirbaseURL, initialValue, values, Practitioners, PractitionerRoles)
+        onSubmit(fhirBaseURL, initialValue, values, practitioners, practitionerRoles)
           .then(() => {
             queryClient
-              .invalidateQueries(TEAMS_GET)
+              .invalidateQueries(ORGANIZATION_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries(PRACTITIONERROLE_GET)
+              .invalidateQueries(PRACTITIONERROLE_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             queryClient
-              .invalidateQueries(PRACTITIONER_GET)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
-            queryClient
-              .invalidateQueries([TEAMS_GET, initialValue?.id])
+              .invalidateQueries(PRACTITIONER_ENDPOINT)
               .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
             history.goBack();
           })

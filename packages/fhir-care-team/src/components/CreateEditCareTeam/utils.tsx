@@ -1,12 +1,14 @@
 import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import lang from '../../lang';
 import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Fields, FormFields } from './Form';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { URLParams } from 'opensrp-server-service/dist/types';
 
 export const submitForm = async (
   values: FormFields,
@@ -45,7 +47,7 @@ export const submitForm = async (
         };
       }) ?? [],
   };
-  const serve = await FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   if (id) {
     await serve
       .update(payload)
@@ -60,7 +62,8 @@ export const submitForm = async (
   history.push(URL_CARE_TEAM);
 };
 
-/** Util function to build out patient or practitioner name
+/**
+ * Util function to build out patient or practitioner name
  *
  * @param {object} patient - patient resource object
  * @returns {string} - returns patient or practitioner name string
@@ -93,3 +96,30 @@ export function getPatientName(patient: Dictionary | undefined) {
     .filter(Boolean)
     .join(' ');
 }
+
+// TODO - duplicate in #896
+/**
+ * fetch all resources for a certain endpoint
+ *
+ * @param baseUrl - the fhir server url
+ * @param resourceType - the resource type
+ * @param extraFilters - extra filters
+ */
+export const loadAllResources = async (
+  baseUrl: string,
+  resourceType: string,
+  extraFilters: URLParams = {}
+) => {
+  // first get total
+  const summaryFilters = {
+    _summary: 'count',
+    ...extraFilters,
+  };
+  const summary = await new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(summaryFilters);
+  const { total } = summary;
+  const fetchAllFilter = {
+    _count: total,
+    ...extraFilters,
+  };
+  return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(fetchAllFilter);
+};

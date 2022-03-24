@@ -74,7 +74,8 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
   description: [{ type: 'string', required: true }] as Rule[],
 });
 
-/** util that changes date fields in activities to use moment
+/**
+ * util that changes date fields in activities to use moment
  *
  * @param {PlanActivityFormFields[]} planActivities -  the plan activities
  * @returns {PlanActivityFormFields[]} -
@@ -88,7 +89,8 @@ export const processActivitiesDates = (planActivities: PlanActivityFormFields[])
   return values;
 };
 
-/** Takes our form values and transforms that to a form value object that plan-form-core can parse
+/**
+ * Takes our form values and transforms that to a form value object that plan-form-core can parse
  *
  * @param {PlanFormFields} formValues - formValues straight from the form
  * @returns {BasePlanFormFields} formValues as described in form-core
@@ -104,7 +106,8 @@ export const processToBasePlanForm = (formValues: PlanFormFields): BasePlanFormF
   return baseFormValues;
 };
 
-/** Takes formValues as created by form-core and changes the dates structures to use moment
+/**
+ * Takes formValues as created by form-core and changes the dates structures to use moment
  *
  * @param {BasePlanFormFields} baseFormValues - formValues as parsed by form-core utils
  * @returns {PlanFormFields} formValues that can has a Moment as date type
@@ -124,7 +127,8 @@ export const parseBasePlanFormValues = (baseFormValues: BasePlanFormFields): Pla
   return formValues;
 };
 
-/** a wrapper around form-core that generates formValues from a plan definition,
+/**
+ * a wrapper around form-core that generates formValues from a plan definition,
  *
  * @param {PlanDefinition} plan - the plan object
  * @returns {PlanFormFields} - the form values
@@ -139,7 +143,8 @@ export const getPlanFormValues = (plan: PlanDefinition) => {
   return finalFormValues;
 };
 
-/** A wrapper around form-core plan generation, generates a plan definition object
+/**
+ * A wrapper around form-core plan generation, generates a plan definition object
  * from form values
  *
  * @param {PlanFormFields} planFormValues - the form values

@@ -12,7 +12,8 @@ export const createTestQueryClient = () =>
     },
   });
 
-/** Test util function to render element with react query provider
+/**
+ * Test util function to render element with react query provider
  *
  * @param ui - element to be rendered
  * @returns {React.ReactElement} - returns element with react query provider wrapper
@@ -29,7 +30,8 @@ export function renderWithClient(ui: React.ReactElement) {
   };
 }
 
-/** Test Util function to create element wrapper
+/**
+ * Test Util function to create element wrapper
  *
  * @returns {React.ReactElement} - returns element with react query provider wrapper
  */

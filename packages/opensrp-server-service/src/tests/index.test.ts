@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { getDefaultHeaders, OpenSRPService, OPENSRP_API_BASE_URL } from '..';
 import { createPlan, plansListResponse } from './fixtures/plans';
 import { sampleErrorObj } from './fixtures/session';
-import { throwNetworkError, throwHTTPError } from '../errors';
+import { throwNetworkError, throwHTTPError, HTTPError } from '../errors';
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const fetch = require('jest-fetch-mock');
 const getAccessToken = (): Promise<string> =>
@@ -93,11 +93,11 @@ describe('services/OpenSRP', () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify(sampleErrorObj), { status: 500, statusText });
     const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await planService.list();
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService list on plans failed, HTTP status 500'));
     expect(error.name).toEqual('HTTPError');
@@ -154,11 +154,11 @@ describe('services/OpenSRP', () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify(sampleErrorObj), { status: 500, statusText });
     const service = new OpenSRPService('hunter2', OPENSRP_API_BASE_URL, 'practitioners');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await service.delete({});
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(
       new Error('OpenSRPService delete on practitioners failed, HTTP status 500')
@@ -211,11 +211,11 @@ describe('services/OpenSRP', () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify(sampleErrorObj), { status: 500, statusText });
     const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await planService.read('0e85c238-39c1-4cea-a926-3d89f0c98427');
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService read on plans failed, HTTP status 500'));
     expect(error.description).toEqual(JSON.stringify(sampleErrorObj));
@@ -260,11 +260,11 @@ describe('services/OpenSRP', () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify(sampleErrorObj), { status: 500, statusText });
     const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await planService.create({ foo: 'bar' });
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService create on plans failed, HTTP status 500'));
     expect(error.description).toEqual(JSON.stringify(sampleErrorObj));
@@ -353,11 +353,11 @@ describe('services/OpenSRP', () => {
   it('OpenSRPService update method should handle http errors', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 500 });
     const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await planService.update({ foo: 'bar' });
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService update on plans failed, HTTP status 500'));
   });
@@ -367,11 +367,11 @@ describe('services/OpenSRP', () => {
     const statusText = 'something happened';
     fetch.mockResponseOnce(JSON.stringify('Some error happened'), { status: 500, statusText });
     const planService = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'plans');
-    let error;
+    let error: HTTPError = new HTTPError({} as Response, '');
     try {
       await planService.update({ foo: 'bar' });
     } catch (e) {
-      error = e;
+      error = e as HTTPError;
     }
     expect(error).toEqual(new Error('OpenSRPService update on plans failed, HTTP status 500'));
     expect(error.description).toEqual('"Some error happened"');
@@ -428,7 +428,7 @@ describe('src/errors', () => {
       const error = new SyntaxError();
       throwNetworkError(error);
     } catch (err) {
-      expect(err.name).toEqual('SyntaxError');
+      expect((err as HTTPError).name).toEqual('SyntaxError');
     }
   });
 
@@ -438,7 +438,7 @@ describe('src/errors', () => {
       const error = new TypeError();
       throwNetworkError(error);
     } catch (err) {
-      expect(err.name).toEqual('NetworkError');
+      expect((err as HTTPError).name).toEqual('NetworkError');
     }
   });
 
@@ -450,7 +450,7 @@ describe('src/errors', () => {
       });
       await throwHTTPError(sampleResponse);
     } catch (err) {
-      expect(err.name).toEqual('HTTPError');
+      expect((err as HTTPError).name).toEqual('HTTPError');
     }
   });
 });

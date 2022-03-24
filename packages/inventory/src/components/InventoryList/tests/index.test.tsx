@@ -18,6 +18,7 @@ import { InventoryList } from '..';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -35,7 +36,7 @@ store.dispatch(
       name: 'Bobbie',
       username: 'RobertBaratheon',
     },
-    // eslint-disable-next-line @typescript-eslint/camelcase
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     { api_token: 'hunter2', oAuth2Data: { access_token: 'bamboocha', state: 'abcde' } }
   )
 );
@@ -57,7 +58,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -78,7 +79,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -100,7 +101,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -108,7 +109,7 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit1"`
+      `"Inventory items+ Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
     );
 
     expect(toJson(wrapper.find('.inventory-profile a'))).toMatchSnapshot(
@@ -130,7 +131,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -151,7 +152,7 @@ describe('Inventory list Page', () => {
     );
 
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     wrapper.update();

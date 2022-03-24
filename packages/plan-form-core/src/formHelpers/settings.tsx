@@ -1,4 +1,5 @@
-/** This is the main configuration module
+/**
+ * This is the main configuration module
  *
  * **** CODE RULES ****
  * To keep things simple, the code in this module should be simple statements.  Use of

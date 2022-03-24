@@ -17,8 +17,12 @@ export const team: FHIRResponse<Organization> = {
     },
     {
       relation: 'next',
+<<<<<<< HEAD
       url:
         'http://fhir.labs.smartregister.org/fhir?_getpages=cb83f799-a14e-41e5-87c6-2b19019f3d31&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+=======
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=cb83f799-a14e-41e5-87c6-2b19019f3d31&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+>>>>>>> master
     },
   ],
   entry: [
@@ -499,7 +503,11 @@ export const team212: Organization = {
   name: 'My Team',
 };
 
+<<<<<<< HEAD
 export const practitionerrole: FHIRResponse<PractitionerRole> = {
+=======
+export const practitionerRole: FHIRResponse<PractitionerRole> = {
+>>>>>>> master
   resourceType: 'Bundle',
   id: '3b2e3407-4b10-45da-800b-5c971acd7b65',
   meta: {
@@ -514,8 +522,12 @@ export const practitionerrole: FHIRResponse<PractitionerRole> = {
     },
     {
       relation: 'next',
+<<<<<<< HEAD
       url:
         'http://fhir.labs.smartregister.org/fhir?_getpages=3b2e3407-4b10-45da-800b-5c971acd7b65&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+=======
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=3b2e3407-4b10-45da-800b-5c971acd7b65&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+>>>>>>> master
     },
   ],
   entry: [
@@ -1149,8 +1161,12 @@ export const practitioner: FHIRResponse<Practitioner> = {
     },
     {
       relation: 'next',
+<<<<<<< HEAD
       url:
         'http://fhir.labs.smartregister.org/fhir?_getpages=66a3df9d-3d9e-47fb-be64-24bbf69a9cdb&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+=======
+      url: 'http://fhir.labs.smartregister.org/fhir?_getpages=66a3df9d-3d9e-47fb-be64-24bbf69a9cdb&_getpagesoffset=20&_count=20&_format=json&_pretty=true&_bundletype=searchset',
+>>>>>>> master
     },
   ],
   entry: [
@@ -2157,7 +2173,11 @@ export const practitioner104: Practitioner = {
   birthDate: '1996-11-22',
 };
 
+<<<<<<< HEAD
 export const teamsdetail: TeamsDetailProps = {
+=======
+export const teamsDetail: TeamsDetailProps = {
+>>>>>>> master
   active: false,
   id: '212',
   identifier: [

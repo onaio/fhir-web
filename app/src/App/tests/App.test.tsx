@@ -21,6 +21,8 @@ import {
 } from '@opensrp/product-catalogue';
 import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
 import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import flushPromises from 'flush-promises';
 
 jest.mock('../../configs/env');
 
@@ -58,10 +60,10 @@ describe('App - unauthenticated', () => {
       </Provider>
     );
     // before resolving get oauth state request, the user is logged out
-    expect(wrapper.text()).toMatchInlineSnapshot(`"AdminLogin"`);
+    expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -75,7 +77,7 @@ describe('App - unauthenticated', () => {
   });
 
   it('Callback component Renders correctly', async () => {
-    const routeProps: RouteComponentProps<{ id: string }> = {
+    const routeProps = {
       history,
       location: {
         hash: '',
@@ -86,7 +88,8 @@ describe('App - unauthenticated', () => {
       match: {
         params: { id: 'OpenSRP' },
       },
-    };
+    } as RouteComponentProps<{ id: string }>;
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/` }]}>
@@ -174,11 +177,11 @@ describe('App - authenticated', () => {
     );
     // before resolving get oauth state request, the user is logged out
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"InventoryAdmintHat ParttHat PartWelcome to OpenSRP"`
+      `"InventoryAdministrationtHat ParttHat PartWelcome to OpenSRP"`
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -204,7 +207,7 @@ describe('App - authenticated', () => {
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -221,16 +224,22 @@ describe('App - authenticated', () => {
     const envModule = require('../../configs/env');
     envModule.DEFAULT_HOME_MODE = 'tunisia';
     history.push(URL_DOWNLOAD_CLIENT_DATA);
+
+    // card support uses react query (component at history.push)
+    const queryClient = new QueryClient();
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -253,7 +262,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
     expect(mock).toHaveBeenCalled();
@@ -269,7 +278,7 @@ describe('App - authenticated', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise<unknown>((resolve) => setImmediate(resolve));
+      await flushPromises();
       wrapper.update();
     });
 

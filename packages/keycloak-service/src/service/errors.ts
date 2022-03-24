@@ -8,7 +8,8 @@ class BaseError extends Error {
   }
 }
 
-/** used when we have an error arising from a non-200 http status
+/**
+ * used when we have an error arising from a non-200 http status
  * code in the response. It returns the error message or json description
  * provided by the api as part of the error object
  */

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { getConfig } from '@opensrp/pkg-config';
 import { loadLanguageResources } from './helpers/utils';
 import type { i18n as i18nInstance } from 'i18next';
@@ -23,6 +23,9 @@ const eusmFrJson = require('../locales/eusm/fr.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmArJson = require('../locales/eusm/ar.json');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const coreViJson = require('../locales/core/vi.json');
+
 export const namespace = 'react-utils';
 
 // the format to load the resource files: <languageCode>_<projectCode>. in small
@@ -44,6 +47,9 @@ const resources = {
   },
   en_eusm: {
     [namespace]: eusmEnJson,
+  },
+  vi_core: {
+    [namespace]: coreViJson,
   },
 };
 
