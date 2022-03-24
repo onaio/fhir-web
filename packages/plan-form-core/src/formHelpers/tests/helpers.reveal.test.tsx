@@ -321,35 +321,35 @@ describe('containers/forms/PlanForm/helpers', () => {
   it('able to generate the correct task generationStatus value', () => {
     // when configured env is undefined
     let configuredEnv;
-    let sampleDynamicPlan = cloneDeep((DynamicFIPlan as unknown) as PlanDefinition);
+    let sampleDynamicPlan = cloneDeep(DynamicFIPlan as unknown as PlanDefinition);
     let res = getTaskGenerationValue(configuredEnv, sampleDynamicPlan);
     expect(res).toEqual(undefined);
 
     // here everything is in the nominal case
     configuredEnv = 'internal';
-    sampleDynamicPlan = cloneDeep((DynamicFIPlan as unknown) as PlanDefinition);
+    sampleDynamicPlan = cloneDeep(DynamicFIPlan as unknown as PlanDefinition);
     res = getTaskGenerationValue(configuredEnv, sampleDynamicPlan);
     expect(res).toEqual('internal');
 
     // here the env is invalid
     configuredEnv = 'invalid';
-    sampleDynamicPlan = cloneDeep((DynamicFIPlan as unknown) as PlanDefinition);
+    sampleDynamicPlan = cloneDeep(DynamicFIPlan as unknown as PlanDefinition);
     res = getTaskGenerationValue(configuredEnv, sampleDynamicPlan);
     expect(res).toEqual(undefined);
 
     // here the plan is not dynamic
     configuredEnv = 'internal';
-    sampleDynamicPlan = cloneDeep((fiReasonTestPlan as unknown) as PlanDefinition);
+    sampleDynamicPlan = cloneDeep(fiReasonTestPlan as unknown as PlanDefinition);
     res = getTaskGenerationValue(configuredEnv, sampleDynamicPlan);
     expect(res).toEqual(undefined);
   });
 
   it('getPlanFormValues gets the correct value for task generationStatus', () => {
-    let sampleDynamicPlan = cloneDeep((DynamicFIPlan as unknown) as PlanDefinition);
+    let sampleDynamicPlan = cloneDeep(DynamicFIPlan as unknown as PlanDefinition);
     let res = getPlanFormValues(sampleDynamicPlan);
     expect(res.taskGenerationStatus).toEqual('True');
 
-    sampleDynamicPlan = cloneDeep((DynamicFIPlan as unknown) as PlanDefinition);
+    sampleDynamicPlan = cloneDeep(DynamicFIPlan as unknown as PlanDefinition);
     sampleDynamicPlan.useContext = [
       { code: 'interventionType', valueCodableConcept: 'Dynamic-FI' },
       { code: 'taskGenerationStatus', valueCodableConcept: 'internal' },
@@ -357,7 +357,7 @@ describe('containers/forms/PlanForm/helpers', () => {
     res = getPlanFormValues(sampleDynamicPlan);
     expect(res.taskGenerationStatus).toEqual('internal');
 
-    sampleDynamicPlan = cloneDeep((fiReasonTestPlan as unknown) as PlanDefinition);
+    sampleDynamicPlan = cloneDeep(fiReasonTestPlan as unknown as PlanDefinition);
     res = getPlanFormValues(sampleDynamicPlan);
     expect(res.taskGenerationStatus).toEqual('False');
   });

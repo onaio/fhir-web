@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Spin, PageHeader } from 'antd';
@@ -43,7 +43,8 @@ const defaultProps = {
   keycloakBaseURL: '',
 };
 
-/** Function which shows the list of all roles and their details
+/**
+ * Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display
@@ -62,7 +63,9 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   useEffect(() => {
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch)
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+        .catch(() => {
+          sendErrorNotification(lang.ERROR_OCCURED);
+        })
         .finally(() => setIsLoading(false));
     }
   });

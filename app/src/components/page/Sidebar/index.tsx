@@ -7,7 +7,7 @@ import { URL_HOME } from '../../../constants';
 import { useTranslation } from 'react-i18next';
 import { Route, getRoutes } from '../../../routes';
 import { getActiveKey } from './utils';
-import { MAIN_LOGO_SRC } from '../../../configs/env';
+import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import './Sidebar.css';
 
 /** interface for SidebarProps */
@@ -66,6 +66,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         <Link to={URL_HOME}>
           <img src={MAIN_LOGO_SRC} className="img-fluid" alt="" />
         </Link>
+        {OPENSRP_WEB_VERSION.length > 0 ? (
+          <p className="sidebar-version">{OPENSRP_WEB_VERSION}</p>
+        ) : null}
       </div>
 
       <Menu

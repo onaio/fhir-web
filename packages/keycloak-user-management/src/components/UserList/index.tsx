@@ -1,11 +1,17 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
-import { Spin } from 'antd';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { Dictionary } from '@onaio/utils';
-import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
+import {
+  createChangeHandler,
+  getQueryParams,
+  SearchForm,
+  TableLayout,
+  PaginateData,
+  OpenSRPService,
+} from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { PlusOutlined } from '@ant-design/icons';
 import {
@@ -14,26 +20,26 @@ import {
   removeKeycloakUsers,
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
-  makeKeycloakUsersSelector,
+  Practitioner,
 } from '../../ducks/user';
 import {
   URL_USER_CREATE,
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_USERS_COUNT,
   SEARCH_QUERY_PARAM,
+  OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
+  ORGANIZATION_BY_PRACTITIONER,
 } from '../../constants';
 import lang from '../../lang';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PaginationProps } from 'antd/lib/pagination';
 import { TableActions } from './TableActions';
+import { UserDetails, UserDetailType } from '../UserDetails';
+import { Organization } from '@opensrp/team-management';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
-
-// Define selector instance
-const usersSelector = makeKeycloakUsersSelector();
 
 /** interface for component props */
 export interface Props {
@@ -66,79 +72,120 @@ const UserList = (props: UserListTypes): JSX.Element => {
     serviceClass,
     fetchKeycloakUsersCreator,
     removeKeycloakUsersCreator,
-    keycloakUsers,
     keycloakBaseURL,
     opensrpBaseURL,
     extraData,
     usersPageSize,
   } = props;
 
-  const [sortedInfo, setSortedInfo] = React.useState<Dictionary>();
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [usersCount, setUsersCount] = React.useState<number>(0);
-  const [page, setPage] = React.useState<Pick<PaginationProps, 'current' | 'pageSize'>>({
-    current: 1,
-    pageSize: usersPageSize,
-  });
-
-  const isLoadingCallback = (isLoading: boolean) => {
-    setIsLoading(isLoading);
-  };
   const history = useHistory();
 
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
+  const [sortedInfo, setSortedInfo] = useState<Dictionary>();
+  const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
 
-  React.useEffect(() => {
-    const { current, pageSize } = page;
-    let filterParams: Dictionary = {
-      first: (current ?? 1) * (pageSize ?? usersPageSize) - (pageSize ?? usersPageSize),
-      max: pageSize ?? usersPageSize,
-    };
-    if (searchParam) {
-      filterParams = {
-        ...filterParams,
-        first: 0,
-        search: searchParam,
-      };
-    }
-    const usersCountService = new serviceClass(`${KEYCLOAK_URL_USERS_COUNT}`, keycloakBaseURL);
-    const usersCountPromise = usersCountService.list().then((res: number) => {
-      setUsersCount(res);
-    });
+  /**
+   * Function to fetch Users
+   *
+   * @param {number} page - current Page number in Table
+   * @param {number} pageSize - Page Size of the table
+   * @param {string|undefined} searchquery - searchquery generated from Paginated data
+   * @returns {Promise<KeycloakUser[]>} Return data Fetched from server
+   */
+  async function FetchData(
+    page: number,
+    pageSize: number,
+    searchquery?: string
+  ): Promise<KeycloakUser[]> {
+    let filterParams: Dictionary = { first: page * pageSize - pageSize, max: pageSize };
+    if (searchquery) filterParams = { ...filterParams, search: searchParam };
     const usersService = new serviceClass(KEYCLOAK_URL_USERS, keycloakBaseURL);
-    const usersListPromise = usersService
-      .list(filterParams as Dictionary)
-      .then((res: KeycloakUser[]) => {
-        fetchKeycloakUsersCreator(res, true);
-      });
-
-    Promise.all([usersCountPromise, usersListPromise])
-      .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
-      .finally(() => setIsLoading(false));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParam, JSON.stringify(page)]);
-
-  if (isLoading) {
-    return <Spin size="large" />;
+    const keycloakUsers: KeycloakUser[] = await usersService.list(filterParams as Dictionary);
+    fetchKeycloakUsersCreator(keycloakUsers, true);
+    return keycloakUsers;
   }
 
-  const tableData: KeycloakUser[] = keycloakUsers;
+  const isSearchActive = searchParam && searchParam.length;
 
-  const searchFormProps = {
-    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
-    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+  // fetch practitioner tied to keycloak user
+  const fetchPractitioner = async (userId: string) => {
+    const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
+    try {
+      const practitioner: Practitioner | undefined = await serve.read(userId);
+      return practitioner;
+    } catch (error) {
+      sendErrorNotification(lang.ERROR_OCCURED);
+      return undefined;
+    }
   };
 
-  const isSearchActive = searchParam && searchParam.length;
+  // fetch teams (organizations) a practitioner is assigned to
+  const fetchAssignedTeams = async (practitionerId: string) => {
+    const serve = new OpenSRPService(ORGANIZATION_BY_PRACTITIONER, opensrpBaseURL);
+    try {
+      const organizations: Organization[] = await serve.read(practitionerId);
+      return organizations;
+    } catch (error) {
+      sendErrorNotification(lang.ERROR_OCCURED);
+      return [];
+    }
+  };
+
+  // Callback function that populates the user details section from table row data (keycloak user)
+  const setDetailsCallback = async (keycloakUser: KeycloakUser) => {
+    // show spinner between evaluations without closing modal
+    onCloseCallback();
+
+    // open details section
+    setOpenDetails(true);
+
+    // fetch practitioner
+    fetchPractitioner(keycloakUser.id)
+      .then((practitioner: Practitioner | undefined) => {
+        if (practitioner) {
+          // fetch assigned teams
+          fetchAssignedTeams(practitioner.identifier)
+            .then((assignedTeams: Organization[]) => {
+              setUserDetails({
+                keycloakUser: keycloakUser,
+                practitioner: practitioner,
+                assignedTeams: assignedTeams,
+              });
+            })
+            .catch(() => {
+              sendErrorNotification(lang.ERROR_OCCURED);
+            });
+        } else {
+          setUserDetails({
+            keycloakUser: keycloakUser,
+            practitioner: practitioner,
+            assignedTeams: [],
+          });
+        }
+      })
+      .catch(() => {
+        sendErrorNotification(lang.ERROR_OCCURED);
+      });
+  };
+
+  // reset values and close modal
+  const onCloseCallback = () => {
+    setUserDetails(null);
+    setOpenDetails(false);
+  };
 
   return (
     <section className="layout-content">
       <h5 className="mb-3">{lang.USER_MANAGEMENT_PAGE_HEADER}</h5>
       <Row className="list-view">
-        <Col className="main-content" span={24}>
+        <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
-            <SearchForm {...searchFormProps} size={'middle'} />
+            <SearchForm
+              defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
+              onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
+              size={'middle'}
+            />
             <Space style={{ marginBottom: 16, float: 'right' }}>
               <Button
                 type="primary"
@@ -151,40 +198,56 @@ const UserList = (props: UserListTypes): JSX.Element => {
             </Space>
           </div>
           <Space>
-            <TableLayout
-              columns={getTableColumns(sortedInfo)}
-              datasource={tableData}
-              dataKeyAccessor="id"
-              pagination={{
-                current: page.current,
-                pageSize: page.pageSize,
-                total: isSearchActive ? keycloakUsers.length : usersCount,
+            <PaginateData<KeycloakUser>
+              queryFn={FetchData}
+              onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
+              queryPram={{ searchParam }}
+              pageSize={usersPageSize}
+              queryid="Users"
+              total={() => {
+                const usersCountService = new serviceClass(
+                  `${KEYCLOAK_URL_USERS_COUNT}`,
+                  keycloakBaseURL
+                );
+
+                let filterParams: Dictionary | undefined = undefined;
+                if (isSearchActive) filterParams = { search: searchParam };
+
+                return usersCountService.list(filterParams);
               }}
-              onChange={(pagination, __, sorter) => {
-                setPage({
-                  current: pagination.current ?? 1,
-                  pageSize: pagination.pageSize ?? usersPageSize,
-                });
-                setSortedInfo(sorter);
-              }}
-              actions={{
-                title: 'Actions',
-                // eslint-disable-next-line react/display-name
-                render: (_: string, record) => {
-                  const tableActionsProps = {
-                    removeKeycloakUsersCreator,
-                    keycloakBaseURL,
-                    opensrpBaseURL,
-                    isLoadingCallback,
-                    record,
-                    extraData,
-                  };
-                  return <TableActions {...tableActionsProps} />;
-                },
-              }}
-            />
+            >
+              {(tableProps) => (
+                <TableLayout
+                  {...tableProps}
+                  columns={getTableColumns(sortedInfo)}
+                  dataKeyAccessor="id"
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  onChange={(_, __, sorter) => setSortedInfo(sorter)}
+                  actions={{
+                    title: 'Actions',
+                    // eslint-disable-next-line react/display-name
+                    render: (_, record) => {
+                      const tableActionsProps = {
+                        removeKeycloakUsersCreator,
+                        keycloakBaseURL,
+                        opensrpBaseURL,
+                        record,
+                        extraData,
+                        setDetailsCallback,
+                      };
+                      return <TableActions {...tableActionsProps} />;
+                    },
+                  }}
+                />
+              )}
+            </PaginateData>
           </Space>
         </Col>
+        {openDetails ? (
+          <Col className="pl-3" span={5}>
+            <UserDetails onClose={() => onCloseCallback()} {...userDetails} />
+          </Col>
+        ) : null}
       </Row>
     </section>
   );
@@ -195,15 +258,13 @@ export { UserList };
 
 /** Interface for connected state to props */
 interface DispatchedProps {
-  keycloakUsers: KeycloakUser[];
   extraData: Dictionary;
 }
 
 // connect to store
 const mapStateToProps = (state: Partial<Store>): DispatchedProps => {
-  const keycloakUsers = usersSelector(state, {});
   const extraData = getExtraData(state);
-  return { keycloakUsers, extraData };
+  return { extraData };
 };
 
 /** map props to action creators */

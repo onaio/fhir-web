@@ -13,6 +13,7 @@ import { CallbackComponent } from '../../../../App/App';
 
 jest.mock('../../../../configs/env', () => ({
   ENABLE_OPENSRP_OAUTH: true,
+  OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
   DOMAIN_NAME: 'http://localhost:3000',
   OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
 }));
@@ -139,7 +140,7 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
   afterAll(() => {
     window.location = ActualWindowLocation;
   });
-  delete window.location;
+  delete (window as any).location;
   const applyHrefMock = (mock: jest.Mock) => {
     (window.location as unknown) = {
       set href(url: string) {
@@ -202,7 +203,7 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
   });
 
   it('Correctly sets oauth scopes', async () => {
-    const routeProps: RouteComponentProps<{ id: string }> = {
+    const routeProps = {
       history,
       location: {
         hash: '',
@@ -213,7 +214,8 @@ describe('src/components/page/CustomCallback.UnsuccessfulLogin', () => {
       match: {
         params: { id: 'OpenSRP' },
       },
-    };
+    } as RouteComponentProps<{ id: string }>;
+
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/` }]}>

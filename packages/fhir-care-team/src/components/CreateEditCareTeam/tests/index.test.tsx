@@ -1,294 +1,205 @@
-import { mount, shallow } from 'enzyme';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { history } from '@onaio/connected-reducer-registry';
-import { Router } from 'react-router';
-import * as reactQuery from 'react-query';
+import { store } from '@opensrp/store';
+import nock from 'nock';
+import { authenticateUser } from '@onaio/session-reducer';
+import { Route, Router, Switch } from 'react-router';
 import * as fixtures from './fixtures';
-import flushPromises from 'flush-promises';
-import { createTestQueryClient } from '../../ListView/tests/utils';
-import * as notifications from '@opensrp/notifications';
-import { defaultInitialValues, CreateEditCareTeam } from '..';
-import lang from '../../../lang';
-import { Dictionary } from '@onaio/utils';
-import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
-import { getPatientName } from '../utils';
-import * as functions from '..';
+import { CreateEditCareTeam } from '..';
+import { cleanup, fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { Provider } from 'react-redux';
+import { createMemoryHistory } from 'history';
+import {
+  careTeamResourceType,
+  groupResourceType,
+  practitionerResourceType,
+  ROUTE_PARAM_CARE_TEAM_ID,
+} from '../../../constants';
+import { screen, render } from '@testing-library/react';
 
-const { QueryClientProvider } = reactQuery;
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-const testQueryClient = createTestQueryClient();
-
-/* eslint-disable @typescript-eslint/camelcase */
-
-jest.mock('@opensrp/notifications', () => ({
-  __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
-}));
-
-describe('components/CreateEditCareTeam', () => {
-  const props = {
-    history,
-    fhirBaseURL: 'https://r4.smarthealthit.org/',
-    location: {
-      hash: '',
-      pathname: '/CareTeam/edit',
-      search: '',
-      state: '',
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
     },
-    match: {
-      isExact: true,
-      params: { careTeamId: fixtures.careTeam1.id },
-      path: `/CareTeam/edit/:careTeamId`,
-      url: `/CareTeam/edit/${fixtures.careTeam1.id}`,
-    },
-    resourcePageSize: 500,
-  };
+  },
+});
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+};
 
-  it('renders without crashing', () => {
-    act(() => {
-      shallow(
-        <Router history={history}>
-          <QueryClientProvider client={testQueryClient}>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path="/add">
             <CreateEditCareTeam {...props} />
-          </QueryClientProvider>
-        </Router>
-      );
-    });
-  });
+          </Route>
+          <Route exact path={`/add/:${ROUTE_PARAM_CARE_TEAM_ID}`}>
+            <CreateEditCareTeam {...props} />
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
 
-  it('renders correctly', async () => {
-    // mock react query return value
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.careTeam1,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.groups,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+afterEach(() => {
+  cleanup();
+  nock.cleanAll();
+});
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    const row = wrapper.find('Row').at(0);
-
-    expect(row.text()).toMatchSnapshot('full care tem form');
-
-    wrapper.unmount();
-  });
-
-  it('renders correctly for create care team', async () => {
-    const propsCreate = {
-      history,
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-      location: {
-        hash: '',
-        pathname: '/CareTeam/new',
-        search: '',
-        state: '',
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
       },
-      match: {
-        isExact: true,
-        params: { careTeamId: '' },
-        path: `/CareTeam/new`,
-        url: `/CareTeam/new`,
-      },
-      resourcePageSize: 500,
-    };
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-    // mock react query return value
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockReturnValueOnce({
-      data: undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.groups,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...propsCreate} />
-        </QueryClientProvider>
-      </Router>
-    );
+test('renders correctly for create care team', async () => {
+  const history = createMemoryHistory();
+  history.push('/add');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${groupResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, fixtures.groups);
 
-    const row = wrapper.find('Row').at(0);
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, fixtures.practitioners);
 
-    expect(row.find('CareTeamForm').prop('initialValues')).toEqual(defaultInitialValues);
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    wrapper.unmount();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
   });
 
-  it('fetches care team if page is refreshed', async () => {
-    // mock react query return value
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.careTeam1,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.groups,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
+  // some small but incoclusive proof that the form rendered
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/uuid/i)).toMatchSnapshot('uuid field');
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+  // does not show inactive practitioners
+  // find antd Select with id 'practitionersId' in the component
+  const practitionersSelect = document.querySelector('[data-testid="practitionersId"]');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(practitionersSelect.querySelector('.ant-select-selector'));
 
-    // check if form initial values are set
-    expect(wrapper.find('CareTeamForm').props().initialValues).toEqual({
-      groupsId: '306',
-      id: '308',
-      name: 'Care Team One',
-      practitionersId: ['206', '103'],
-      status: 'active',
-      uuid: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
-    });
+  // expect to see all options (practitioners)
 
-    wrapper.unmount();
+  // find antd select options
+  const selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  // expect all practitioners (except inactive ones)
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    'Ward N Williams MD',
+    'Ward N Williams MD',
+    'Ward N Williams MD',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+  ]);
+});
+
+test('renders correctly for edit care team', async () => {
+  const history = createMemoryHistory();
+  const careTeamId = fixtures.careTeam1.id;
+  history.push(`/add/${careTeamId}`);
+
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/${careTeamId}`)
+    .reply(200, fixtures.careTeam1);
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${groupResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, fixtures.groups);
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, fixtures.practitioners);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
   });
 
-  it('handles error if fetch fails when page reloads', async () => {
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+  // some small but incoclusive proof that the form rendered and has some initial values
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/uuid/i)).toMatchSnapshot('uuid field');
+});
 
-    const mockFetchFailure = jest.spyOn(functions, 'fetchPractitionersRecursively');
-    mockFetchFailure.mockRejectedValueOnce('rejected');
+test('data loading problem', async () => {
+  const history = createMemoryHistory();
+  const careTeamId = fixtures.careTeam1.id;
+  history.push(`/add/${careTeamId}`);
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/${careTeamId}`)
+    .replyWithError('Something awful happened');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
-    wrapper.unmount();
-  });
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  it('does not show inactive practitioners', async () => {
-    // mock react query return value
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.careTeam1,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.groups,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-    reactQueryMock.mockReturnValueOnce({
-      data: fixtures.practitionerBundle,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-
-    // get list of all inactive practitioners
-    const inactivePractitioners = fixtures.practitionerBundle.flatMap((e: Dictionary) =>
-      (e.resource as Practitioner).active === false ? [getPatientName(e.resource)] : []
-    );
-
-    expect(inactivePractitioners).toStrictEqual([
-      'Allay Allan',
-      'brian krebs',
-      'marcus brownlee',
-      'julian assange',
-    ]);
-
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <CreateEditCareTeam {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // find antd Select with id 'practitionersId' in the component
-    const practitionersSelect = wrapper.find('CareTeamForm').find('Select#practitionersId');
-
-    // simulate click on select - to show dropdown items
-    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // expect to see all options (practitioners)
-    const practitionersSelect2 = wrapper.find('CareTeamForm').find('Select#practitionersId');
-    // find antd select options
-    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
-
-    // expect all practitioners (except inactive ones)
-    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
-      'Ward N Williams MD',
-      'Ward N Williams MD',
-      'Ward N Williams MD',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-    ]);
-
-    wrapper.unmount();
-  });
+  // errors out
+  expect(screen.getByText(/Something awful happened/)).toBeInTheDocument();
 });

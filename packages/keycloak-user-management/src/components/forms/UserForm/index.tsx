@@ -54,9 +54,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     { label: 'No', value: false },
   ];
 
-  /** Update form initial values when initialValues prop changes, without this
+  /**
+   * Update form initial values when initialValues prop changes, without this
    * the form fields initial values will not change if props.initialValues update
-   * **/
+   *
+   */
   useEffect(() => {
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);

@@ -12,7 +12,7 @@ import { CareTeamForm } from '../Form';
 import { getPatientName } from '../utils';
 import Client from 'fhirclient/lib/Client';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -158,7 +158,7 @@ describe('components/forms/CreateTeamForm', () => {
     wrapper.update();
 
     expect(wrapper.find('form').text()).toMatchInlineSnapshot(
-      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaAllay Allanbrian krebsmarcus brownleejulian assangeSubjectSavingCancel"`
+      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaAllay Allanbrian krebsmarcus brownleejulian assangeSubjectSaveCancel"`
     );
     wrapper.unmount();
   });
@@ -225,7 +225,7 @@ describe('components/forms/CreateTeamForm', () => {
       wrapper.update();
     });
 
-    await new Promise<unknown>((resolve) => setImmediate(resolve));
+    await flushPromises();
     wrapper.update();
     expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
     wrapper.unmount();

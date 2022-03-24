@@ -21,7 +21,8 @@ const defaultProps = {
   supportedLanguages: [],
 };
 
-/** returns section of all the options that will be rendered as option in the ui
+/**
+ * returns section of all the options that will be rendered as option in the ui
  *
  * @param languageOptions - a map of all allowed language options
  * @param supportedLanguages - an array of the keys for options that will be displayed
@@ -36,7 +37,7 @@ function getSupportedLanguageOptions(
     return supported;
   }
   Object.keys(languageOptions).forEach((languageCode) => {
-    if (supportedLanguages?.includes(languageCode as LanguageCode)) {
+    if (supportedLanguages.includes(languageCode as LanguageCode)) {
       const code = languageCode as LanguageCode;
       supported[code] = languageOptions[code];
     }
@@ -44,7 +45,8 @@ function getSupportedLanguageOptions(
   return supported;
 }
 
-/** globe icon ui that can be used to change the language of the application
+/**
+ * globe icon ui that can be used to change the language of the application
  *
  * @param props - component props
  */

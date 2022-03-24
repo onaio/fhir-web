@@ -1,10 +1,12 @@
-/** shown during inventory csv bulk upload when committing entries
- * to the db fails and returns a csv error */
+/**
+ * shown during inventory csv bulk upload when committing entries
+ * to the db fails and returns a csv error
+ */
 import React from 'react';
 import { Card, Divider } from 'antd';
 import lang from '../../lang';
 import { WarningOutlined } from '@ant-design/icons';
-import { errorsTableColumnsNameSpace, INVENTORY_BULK_UPLOAD_URL } from '../../constants';
+import { INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
@@ -23,7 +25,8 @@ const defaultProps = {
   filename: '',
 };
 
-/** Card shows errors from validation step
+/**
+ * Card shows errors from validation step
  *
  * @param props - components props
  */
@@ -34,12 +37,12 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
     {
       title: lang.ROW_NUMBER,
       dataIndex: 'row',
-      key: `${errorsTableColumnsNameSpace}-${lang.ROW_NUMBER}` as keyof TableData,
+      key: 'row',
     },
     {
       title: lang.ERRORS,
       dataIndex: 'failureReason',
-      key: `${errorsTableColumnsNameSpace}-${lang.ERRORS}` as keyof TableData,
+      key: 'failureReason',
     },
   ];
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { authenticateUser } from '@onaio/session-reducer';
 import { CareTeamList, deleteCareTeam, useCareTeamsHook } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -49,6 +50,18 @@ const careTeamProps = {
 
 describe('Patients list view', () => {
   beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
     nock('https://r4.smarthealthit.org').get('/CareTeam').reply(200, careTeams);
   });
 
@@ -141,7 +154,7 @@ describe('Patients list view', () => {
     wrapper.find('thead tr th').first().simulate('click');
 
     // look for pagination
-    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo to"`);
+    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo toPage"`);
     wrapper.find('.ant-pagination-item-2').simulate('click');
     await act(async () => {
       await flushPromises();
@@ -171,7 +184,7 @@ describe('Patients list view', () => {
       </Provider>
     );
     await act(async () => {
-      await new Promise((resolve) => setImmediate(resolve));
+      await flushPromises();
     });
 
     wrapper.update();

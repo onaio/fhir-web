@@ -122,7 +122,11 @@ const LocationForm = (props: LocationFormProps) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldsValue({ ...initialValues });
+    // #850 - initial Values would override any values so far fed into  the form,
+    form.setFieldsValue({
+      ...initialValues,
+      ...form.getFieldsValue(),
+    });
   }, [form, initialValues]);
 
   const status = [
@@ -166,7 +170,7 @@ const LocationForm = (props: LocationFormProps) => {
             : lang.SUCCESSFULLY_CREATED_LOCATION;
 
           const params = {
-            // eslint-disable-next-line @typescript-eslint/camelcase
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             is_jurisdiction: values.isJurisdiction,
           };
 

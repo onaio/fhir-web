@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import {
@@ -16,9 +16,8 @@ import {
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 import { useQuery } from 'react-query';
-import { FHIRService } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
@@ -72,20 +71,22 @@ export const fetchCareTeams = async (
   pageSize: number,
   pageOffset: number,
   setPayloadCount: (count: number) => void
-): Promise<IfhirR4.IBundle> => {
-  const serve = await FHIRService(fhirBaseURL);
-  return serve
-    .request(`${FHIR_CARE_TEAM}/_search?_count=${pageSize}&_getpagesoffset=${pageOffset}`)
-    .then((res: IfhirR4.IBundle) => {
-      setPayloadCount(res.total as number);
-      return res;
-    });
+) => {
+  const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
+  const params = {
+    _count: pageSize,
+    _getpagesoffset: pageOffset,
+  };
+  return serve.list(params).then((res) => {
+    setPayloadCount(res.total as number);
+    return res;
+  });
 };
 
 export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
-  const serve = await FHIRService(fhirBaseURL);
+  const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   return serve
-    .delete(`${FHIR_CARE_TEAM}/${id}`)
+    .delete(id)
     .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
@@ -105,7 +106,8 @@ export const useCareTeamsHook = (
   );
 };
 
-/** Function which shows the list of all roles and their details
+/**
+ * Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display

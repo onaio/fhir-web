@@ -69,14 +69,15 @@ export const defaultFormField: LocationFormFields = {
   name: '',
   status: LocationUnitStatus.ACTIVE,
   isJurisdiction: true,
-  serviceType: '',
+  serviceType: undefined,
   locationTags: [],
   externalId: '',
   extraFields: [],
   username: '',
 };
 
-/** helps compute the default values of the location form field values
+/**
+ * helps compute the default values of the location form field values
  *
  * @param location - the location unit
  * @param instance - the form instance
@@ -90,15 +91,8 @@ export const getLocationFormFields = (
   const commonValues = { instance, isJurisdiction: location?.isJurisdiction ?? isJurisdiction };
   if (!location) return { ...defaultFormField, ...commonValues };
 
-  const {
-    name,
-    status,
-    parentId,
-    username,
-    externalId,
-    type,
-    ...restProperties
-  } = location.properties;
+  const { name, status, parentId, username, externalId, type, ...restProperties } =
+    location.properties;
 
   // derive latitude and longitudes for point
   const { geometry: geoObject } = location;
@@ -125,7 +119,8 @@ export const getLocationFormFields = (
   return formFields;
 };
 
-/** removes empty undefined and null objects before they payload is sent to server
+/**
+ * removes empty undefined and null objects before they payload is sent to server
  *
  * @param {Dictionary} obj object to remove empty keys from
  */
@@ -153,17 +148,8 @@ export const generateLocationUnit = (
   selectedTags: LocationUnitTag[] = [],
   parentNode?: TreeNode
 ): LocationUnit => {
-  const {
-    serviceType,
-    id,
-    externalId,
-    parentId,
-    name,
-    status,
-    geometry,
-    extraFields,
-    username,
-  } = formValues;
+  const { serviceType, id, externalId, parentId, name, status, geometry, extraFields, username } =
+    formValues;
 
   const parentGeographicLevel = parentNode?.model.node.attributes.geographicLevel ?? 0;
   const thisGeoLevel = parentId ? (parentGeographicLevel as number) + 1 : 0;
@@ -180,7 +166,7 @@ export const generateLocationUnit = (
       externalId: externalId,
       parentId: parentId ?? '',
       name,
-      // eslint-disable-next-line @typescript-eslint/camelcase
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       name_en: name,
       status: status,
       type: serviceType,
@@ -323,7 +309,8 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
   ],
 });
 
-/** given a value retrun a rejected promise if value is not parseable as number
+/**
+ * given a value retrun a rejected promise if value is not parseable as number
  *
  * @param value - value to parse into string
  * @param message - error message to show
@@ -336,10 +323,10 @@ const rejectIfNan = (value: string, message: string) => {
   }
 };
 
-/** gets location tag options for location form location tags select field
+/**
+ * gets location tag options for location form location tags select field
  *
  * @param tags - location unit tags
- *
  */
 export const getLocationTagOptions = (tags: LocationUnitTag[]) => {
   return tags.map((locationTag) => {
@@ -368,7 +355,10 @@ export const getSelectedLocTagObj: GetSelectedFullData<LocationUnitTag> = (
   const uniqData = uniqBy(data, (obj) => obj.id);
   const selected = uniqData.filter((dt) => {
     const option = getOptions([dt])[0];
-    return (Array.isArray(value) && value.includes(option.value)) || value === option.value;
+    return (
+      (Array.isArray(value) && option.value && value.includes(option.value)) ||
+      value === option.value
+    );
   });
   return selected;
 };
@@ -430,7 +420,8 @@ export const getPointCoordinates = (geoText: string) => {
   return { longitude, latitude };
 };
 
-/** handles form values change , creates a values change handler that listens for
+/**
+ * handles form values change , creates a values change handler that listens for
  * changes to geometry, latitude and longitude and syncs changes across the 3 fields
  *
  * @param form - the form instance

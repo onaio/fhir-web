@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { mount } from 'enzyme';
 import { Router } from 'react-router';
@@ -8,8 +8,11 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 import TeamsList from '..';
-import { team, practitioner102, practitioner116, practitionerrole } from '../../../tests/fixtures';
+import { team, practitioner102, practitioner116, practitionerRole } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
+import { render, waitFor } from '@testing-library/react';
 
 const history = createBrowserHistory();
 
@@ -21,12 +24,29 @@ jest.mock('@opensrp/notifications', () => ({
 const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 describe('components/TeamsList', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(team);
+          else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(practitionerRole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else {
@@ -43,7 +63,9 @@ describe('components/TeamsList', () => {
   });
 
   it('renders correctly', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -62,8 +84,38 @@ describe('components/TeamsList', () => {
     expect(wrapper.find('table')).toHaveLength(1);
   });
 
+  test('loader views and error view', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    fhir.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: jest.fn(async () => {
+          throw new Error('Something went wrong');
+        }),
+      }))
+    );
+
+    const { container, getByText } = render(
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>
+          <TeamsList fhirBaseURL={fhirBaseURL} />
+        </QueryClientProvider>
+      </Router>
+    );
+
+    await waitFor(() => {
+      expect(container.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+
+    expect(getByText(/Something went wrong/)).toBeInTheDocument();
+  });
+
   it('Search works correctly', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -83,7 +135,7 @@ describe('components/TeamsList', () => {
     await act(async () => {
       wrapper.update();
     });
-    expect(((input.instance() as unknown) as HTMLInputElement).value).toEqual('Sample');
+    expect((input.instance() as unknown as HTMLInputElement).value).toEqual('Sample');
   });
 
   it('show error message when cant load teams from server', async () => {
@@ -116,7 +168,9 @@ describe('components/TeamsList', () => {
   });
 
   it('Test Open Table View Detail', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -145,7 +199,9 @@ describe('components/TeamsList', () => {
   });
 
   it('Test Close Table View Detail', async () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
 
     const wrapper = mount(
       <Router history={history}>
@@ -190,7 +246,8 @@ describe('components/TeamsList', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(team);
           else return Promise.reject('Mock Api Fail');
         }),
       }))

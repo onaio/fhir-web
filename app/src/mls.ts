@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { LANGUAGE_CODE, PROJECT_LANGUAGE_CODE } from './configs/env';

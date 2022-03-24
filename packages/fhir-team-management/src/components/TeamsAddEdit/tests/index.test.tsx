@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { mount } from 'enzyme';
 import { MemoryRouter, Route, Router } from 'react-router';
@@ -12,11 +12,13 @@ import {
   team,
   practitioner102,
   practitioner116,
-  practitionerrole,
+  practitionerRole,
   practitioner,
   team212,
 } from '../../../tests/fixtures';
 import * as fhirCient from 'fhirclient';
+import { authenticateUser } from '@onaio/session-reducer';
+import { store } from '@opensrp/store';
 
 const history = createBrowserHistory();
 
@@ -29,14 +31,32 @@ const fhirBaseURL = 'https://fhirBaseURL.com';
 const fhir = jest.spyOn(fhirCient, 'client');
 
 describe('components/TeamsAddEdit', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => ({
         request: jest.fn((url) => {
-          if (url === 'Organization/') return Promise.resolve(team);
+          if (url === 'Organization/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(team);
           if (url === 'Organization/212') return Promise.resolve(team212);
-          else if (url === 'Practitioner/') return Promise.resolve(practitioner);
-          else if (url === 'PractitionerRole/') return Promise.resolve(practitionerrole);
+          else if (url === 'Practitioner/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(practitioner);
+          else if (url === 'PractitionerRole/_search?_count=500&_getpagesoffset=0')
+            return Promise.resolve(practitionerRole);
           else if (url === 'Practitioner/116') return Promise.resolve(practitioner116);
           else if (url === 'Practitioner/102') return Promise.resolve(practitioner102);
           else {
@@ -77,7 +97,10 @@ describe('components/TeamsAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
         <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+          <Route
+            path="/:id"
+            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+          />
         </QueryClientProvider>
       </MemoryRouter>
     );
@@ -106,7 +129,10 @@ describe('components/TeamsAddEdit', () => {
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: `/212`, hash: '', search: '', state: {} }]}>
         <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={TeamsAddEdit} />
+          <Route
+            path="/:id"
+            render={(props) => <TeamsAddEdit {...props} fhirBaseURL={fhirBaseURL} />}
+          />
         </QueryClientProvider>
       </MemoryRouter>
     );

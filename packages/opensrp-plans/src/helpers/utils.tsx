@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { InterventionType, PlanDefinition, UseContext } from '@opensrp/plan-form-core';
-import { Alert, Spin } from 'antd';
+import { Spin } from 'antd';
 import React from 'react';
 import { OPENSRP_TASK_EXPORT_DATA } from '../constants';
 import {
@@ -40,7 +40,8 @@ export function descendingOrderSort<T extends object>(arr: T[], sortField: strin
   return arr;
 }
 
-/** a util to check if plan of type PlanDefinition is of the specified intervention type(s)
+/**
+ * a util to check if plan of type PlanDefinition is of the specified intervention type(s)
  *
  * @param {PlanDefinition} plan - the plan of interest
  * @param {InterventionType} interventionType if plan is of specified intervention type we return true
@@ -57,13 +58,8 @@ export const isPlanDefinitionOfType = (
 };
 
 /** util component shown when there is a pending promise */
-
 export const PlanLoading = () => {
-  return (
-    <Spin tip="Loading...">
-      <Alert message="Fetching plan" description="Please wait, as we fetch the plan." type="info" />
-    </Spin>
-  );
+  return <Spin size="large" className="custom-spinner"></Spin>;
 };
 
 export const BuildDownloadUrl = (baseURL: string, planId: string) => {

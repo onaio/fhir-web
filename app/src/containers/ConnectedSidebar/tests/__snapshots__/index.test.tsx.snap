@@ -4,17 +4,17 @@ exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
 Array [
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
-    title="Admin"
+    title="Administration"
   >
     <SubMenu
-      title="Users"
+      title="User Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/users"
         >
-          User Management
+          Users
         </Link>
       </MenuItem>
       <MenuItem>
@@ -121,17 +121,17 @@ Array [
   </SubMenu>,
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
-    title="Admin"
+    title="Administration"
   >
     <SubMenu
-      title="Locations"
+      title="Location Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location unit
+          Location units
         </Link>
       </MenuItem>
       <MenuItem>
@@ -152,7 +152,7 @@ Array [
       </Link>
     </MenuItem>
     <SubMenu
-      title="Teams"
+      title="Team Management"
     >
       <MenuItem>
         <Link
@@ -242,7 +242,7 @@ Object {
       >
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
-          title="Admin"
+          title="Administration"
         />
       </Menu>
     </div>,
@@ -262,17 +262,17 @@ exports[`components/ConnectedSidebar renders user managment menu for users with 
 Array [
   <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
-    title="Admin"
+    title="Administration"
   >
     <SubMenu
-      title="Users"
+      title="User Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/users"
         >
-          User Management
+          Users
         </Link>
       </MenuItem>
       <MenuItem>

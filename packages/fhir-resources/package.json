@@ -1,0 +1,47 @@
+{
+  "name": "@opensrp/fhir-resources",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "fhir-resources"
+  },
+  "scripts": {
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "peerDependencies": {
+    "antd": "^4.6.3",
+    "react": "^16.18.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@opensrp/react-utils": "0.0.12",
+    "@smile-cdr/fhirts": "^1.3.1",
+    "html-react-parser": "^1.4.3"
+  }
+}

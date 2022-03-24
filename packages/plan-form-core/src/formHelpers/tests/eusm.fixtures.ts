@@ -1,7 +1,7 @@
 import { parseISO } from 'date-fns';
 import { PlanDefinition } from '../../formHelpers/types';
 
-export const mission1 = ({
+export const mission1 = {
   identifier: '2acf6908-911e-5969-b492-6d37c39c8e70',
   description: 'structure id is included in product-check action',
   version: '1',
@@ -389,7 +389,7 @@ export const mission1 = ({
     },
   ],
   experimental: false,
-} as unknown) as PlanDefinition;
+} as unknown as PlanDefinition;
 
 export const generatedMissionForm1 = {
   activities: [

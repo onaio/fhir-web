@@ -6,6 +6,7 @@ import {
   getOpenSRPUserInfo,
   RouteParams,
   useOAuthLogin,
+  OauthCallbackProps,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Helmet } from 'react-helmet';
@@ -20,6 +21,7 @@ import {
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
   ENABLE_FHIR,
+  ENABLE_FHIR_LOCATIONS,
   ENABLE_FHIR_TEAMS_MODULE,
 } from '../configs/env';
 import {
@@ -44,6 +46,7 @@ import {
   URL_UPLOAD_DRAFT_FILE,
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
+  URL_SERVER_SETTINGS,
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
@@ -114,10 +117,15 @@ import {
   ReleaseList,
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config-antd';
+import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-heatlhcareservice';
+import {
+  TeamsList as FhirTeamsView,
+  TeamsAddEdit as FhirTeamsAddEdit,
+} from '@opensrp/fhir-team-management';
 import {
   TeamsList as FhirTeamsView,
   TeamsAddEdit as FhirTeamsAddEdit,
@@ -129,6 +137,10 @@ import {
   NewLocationUnit,
   EditLocationUnit,
 } from '@opensrp/location-management';
+import {
+  LocationUnitList as FHIRLocationUnitList,
+  NewEditLocationUnit as FHIRNewEditLocationUnit,
+} from '@opensrp/fhir-location-management';
 import {
   BaseProps,
   jsonValidatorListProps,
@@ -150,6 +162,7 @@ import {
   inventoryItemAddEditProps,
   editLocationProps,
   newLocationUnitProps,
+  serverSettingsProps,
   locationUnitProps,
   usersListProps,
   createEditUserProps,
@@ -178,6 +191,15 @@ import {
   URL_INVENTORY_EDIT,
   URL_INVENTORY_ADD,
 } from '@opensrp/inventory';
+import {
+  QuestionnaireList,
+  QuestionnaireResponseList,
+  QUEST_VIEW_URL,
+  QUEST_RESPONSE_VIEW_URL,
+  qrListRouteKey,
+  QUEST_FORM_VIEW_URL,
+} from '@opensrp/fhir-views';
+import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -209,19 +231,20 @@ export const SuccessfulLoginComponent = () => {
 };
 
 export const CallbackComponent = (routeProps: RouteComponentProps<RouteParams>) => {
+  const props = {
+    SuccessfulLoginComponent,
+    LoadingComponent,
+    providers,
+    oAuthUserInfoGetter: getOpenSRPUserInfo,
+    ...routeProps,
+    // ts bug - default props not working, ts asking for default props to be repassed https://github.com/microsoft/TypeScript/issues/31247
+  } as unknown as OauthCallbackProps<RouteParams>;
+
   if (BACKEND_ACTIVE) {
     return <CustomConnectedAPICallBack {...routeProps} />;
   }
 
-  return (
-    <ConnectedOauthCallback
-      SuccessfulLoginComponent={SuccessfulLoginComponent}
-      LoadingComponent={LoadingComponent}
-      providers={providers}
-      oAuthUserInfoGetter={getOpenSRPUserInfo}
-      {...routeProps}
-    />
-  );
+  return <ConnectedOauthCallback {...props} />;
 };
 
 const App: React.FC = () => {
@@ -249,6 +272,27 @@ const App: React.FC = () => {
               exact
               path={URL_HOME}
               component={ConnectedHomeComponent}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={`${QUEST_FORM_VIEW_URL}/:${resourceIdParam}/:${resourceTypeParam}`}
+              component={QuestRForm}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={`${QUEST_RESPONSE_VIEW_URL}/:${qrListRouteKey}`}
+              component={QuestionnaireResponseList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
+              path={QUEST_VIEW_URL}
+              component={QuestionnaireList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -626,7 +670,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_TEAMS_ADD}
-              {...BaseProps}
               {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
@@ -636,7 +679,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_TEAMS_EDIT}/:id`}
-              {...BaseProps}
               {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
             />
@@ -742,7 +784,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT}
               {...locationUnitProps}
-              component={LocationUnitList}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRLocationUnitList : LocationUnitList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -751,7 +793,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_ADD}
               {...newLocationUnitProps}
-              component={NewLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : NewLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -760,7 +802,7 @@ const App: React.FC = () => {
               exact
               path={URL_LOCATION_UNIT_EDIT}
               {...editLocationProps}
-              component={EditLocationUnit}
+              component={ENABLE_FHIR_LOCATIONS ? FHIRNewEditLocationUnit : EditLocationUnit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -793,6 +835,14 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.SERVER_SETTINGS && activeRoles.SERVER_SETTINGS.split(',')}
+              path={URL_SERVER_SETTINGS}
+              {...serverSettingsProps}
+              component={LocationSettingsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

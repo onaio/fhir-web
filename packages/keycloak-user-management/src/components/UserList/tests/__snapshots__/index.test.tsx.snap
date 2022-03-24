@@ -2,6 +2,6 @@
 
 exports[`components/UserList renders user list correctly: header actions col props 1`] = `"Add UserEmailFirst NameLast NameUsernameActionsdubdabasoduba@gmail.comBenjaminMwalimumwalimuEditOnakenyaonaEdittest@onatest.comOnaAdminona-adminEditDemokenyaopensrpEdit120 / page"`;
 
-exports[`components/UserList renders user list correctly: table text 1`] = `"EmailFirst NameLast NameUsernameActionsdubdabasoduba@gmail.comBenjaminMwalimumwalimuEditOnakenyaonaEdittest@onatest.comOnaAdminona-adminEditDemokenyaopensrpEdit120 / page"`;
+exports[`components/UserList renders user list correctly: table text 1`] = `"EmailFirst NameLast NameUsernameActionsdubdabasoduba@gmail.comBenjaminMwalimumwalimuEditOnakenyaonaEdittest@onatest.comOnaAdminona-adminEditDemokenyaopensrpEdit"`;
 
 exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsdubdabasoduba@gmail.comBenjaminMwalimumwalimuEditOnakenyaonaEdittest@onatest.comOnaAdminona-adminEditDemokenyaopensrpEdit120 / page"`;

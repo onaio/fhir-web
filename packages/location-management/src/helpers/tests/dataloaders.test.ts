@@ -8,6 +8,7 @@ import {
 } from '../dataLoaders';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import flushPromises from 'flush-promises';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -22,7 +23,7 @@ describe('src/helpers/dataloaders', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
@@ -39,7 +40,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadHierarchy(mockRootId, mockDispatcher, mockBaseUrl).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -65,7 +66,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadHierarchy(mockRootId, mockDispatcher).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -97,7 +98,7 @@ describe('src/helpers/dataloaders', () => {
         fail();
       });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('loadHierarchy works with error', async () => {
@@ -111,7 +112,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage)
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('loadJurisdictions', async () => {
@@ -121,7 +122,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadJurisdictions(mockDispatcher, mockBaseUrl).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -150,7 +151,7 @@ describe('src/helpers/dataloaders', () => {
       fail()
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -175,7 +176,7 @@ describe('src/helpers/dataloaders', () => {
 
     loadJurisdictions(mockDispatcher).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith([]);
 
@@ -208,7 +209,7 @@ describe('src/helpers/dataloaders', () => {
       true // set filterByParentId
     ).catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(fetch.mock.calls).toEqual([
       [
@@ -235,7 +236,7 @@ describe('src/helpers/dataloaders', () => {
       })
       .catch((_: Error) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('loadJurisdictions works with error', async () => {
@@ -248,7 +249,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage)
     );
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('load jurisdiction dispatches when dispatcher and response', async () => {
@@ -257,7 +258,7 @@ describe('src/helpers/dataloaders', () => {
     const mockDispatcher = jest.fn();
     loadJurisdiction('id', mockDispatcher).catch((_) => fail());
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
 
     expect(mockDispatcher).toHaveBeenCalledWith({});
   });
@@ -275,7 +276,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage);
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('load location tags', async () => {
@@ -287,7 +288,7 @@ describe('src/helpers/dataloaders', () => {
       expect(err.message).toEqual(errorMessage);
     });
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 
   it('load settings uses callback only when present', async () => {
@@ -300,6 +301,6 @@ describe('src/helpers/dataloaders', () => {
     // no assertion here intentionally, we cannot check that a callback that
     // was not provided was called
 
-    await new Promise((resolve) => setImmediate(resolve));
+    await flushPromises();
   });
 });

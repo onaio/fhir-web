@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { LocationUnit } from '@opensrp/location-management/src/ducks/location-units';
 import { Inventory } from '../../../ducks/inventory';
 

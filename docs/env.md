@@ -63,11 +63,6 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
 
-- **REACT_APP_SENTRY_DSN**
-
-  - URL to send crash reports
-  - **Required**
-
 - **REACT_APP_ENABLE_CARD_SUPPORT**
 
   - Enables the card support module
@@ -92,9 +87,15 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
-  - **REACT_APP_ENABLE_TEAMS**
+- **REACT_APP_ENABLE_TEAMS**
 
   - Enables the teams module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_TEAMS**
+
+  - Enables the Fhir teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -239,6 +240,12 @@ Below is a list of currently supported environment variables:
   - **optional**
   - default: `''`
 
+- **REACT_APP_ENABLE_FHIR_LOCATIONS**
+
+  - Enables FHIR location management module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
 - **REACT_APP_ENABLE_FHIR_CARE_TEAM**
 
   - Enables the FHIR Care Team module
@@ -263,7 +270,43 @@ Below is a list of currently supported environment variables:
   - **Optional**(`strng`)
   - default: 5000
 
+- **REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER**
+
+  - FHIR Hierarchy root location UUID
+  - **Optional**_(`string`)_
+
 - **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
+
   - Default FHIR resource page count
   - **Required**
   - default: 500
+
+- **REACT_APP_ENABLE_SERVER_SETTINGS**
+
+  - Enables the server settings module
+  - **Optional**(_string_)
+  - default: `"false"`
+
+- **REACT_APP_OPENSRP_API_V2_BASE_URL**
+
+  - Opensrp server V2 base URL
+  - **Required**
+  - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
+
+- **REACT_APP_OPENSRP_WEB_VERSION**
+
+  - Opensrp web version deployed
+  - **Optional**(_string_)
+  - default: ""
+
+- **REACT_APP_SENTRY_CONFIG_JSON**
+
+  - Stringified json That has sentry custom sentry configurations, refer to [the sdk](https://docs.sentry.io/platforms/javascript/guides/react/enriching-events/tags/) for more information on custom Sentry tags.
+  - The full enum space of the keys that can be passed in the config object can be described as: {...[key in [doc](https://getsentry.github.io/sentry-javascript/interfaces/browser.browseroptions-2.html) where value is json serializable]: value, tags:{ // any key value pair }}
+  - **Optional**(_string_)
+  - default: ""
+
+- **REACT_APP_ENABLE_QUEST**
+  - Enable the fhir Quest views
+  - **Optional**(_'true'|'false'_)
+  - default: 'false'

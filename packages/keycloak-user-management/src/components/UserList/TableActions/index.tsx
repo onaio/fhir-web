@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as React from 'react';
 import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
@@ -14,8 +14,8 @@ export interface Props {
   keycloakBaseURL: string;
   opensrpBaseURL: string;
   record: KeycloakUser;
-  isLoadingCallback: (loading: boolean) => void;
   extraData: Dictionary;
+  setDetailsCallback: (keycloakUser: KeycloakUser) => void;
 }
 
 /**
@@ -30,8 +30,8 @@ const TableActions = (props: Props): JSX.Element => {
     removeKeycloakUsersCreator,
     keycloakBaseURL,
     opensrpBaseURL,
-    isLoadingCallback,
     extraData,
+    setDetailsCallback,
   } = props;
   const { user_id } = extraData;
   const menu = (
@@ -42,13 +42,7 @@ const TableActions = (props: Props): JSX.Element => {
           okText="Yes"
           cancelText="No"
           onConfirm={() =>
-            deleteUser(
-              removeKeycloakUsersCreator,
-              keycloakBaseURL,
-              opensrpBaseURL,
-              record.id,
-              isLoadingCallback
-            )
+            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, opensrpBaseURL, record.id)
           }
         >
           {user_id &&
@@ -65,6 +59,15 @@ const TableActions = (props: Props): JSX.Element => {
             <Button type="link">Credentials</Button>
           </Link>
         }
+      </Menu.Item>
+      <Menu.Item
+        className="viewDetails"
+        style={{
+          textAlign: 'center',
+        }}
+        onClick={() => setDetailsCallback(record)}
+      >
+        {lang.VIEW_DETAILS}
       </Menu.Item>
     </Menu>
   );

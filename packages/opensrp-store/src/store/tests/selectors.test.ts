@@ -3,7 +3,7 @@ import { FlushThunks } from 'redux-testkit';
 import { store } from '../store';
 import { makeAPIStateSelector } from '../selectors';
 
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 
 describe('store/selectors', () => {
   beforeEach(() => {

@@ -1,4 +1,6 @@
 import { mount } from 'enzyme';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Router } from 'react-router';
@@ -23,6 +25,20 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 describe('View Care Team Details', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
   it('works correctly', async () => {
     const fhir = jest.spyOn(fhirCient, 'client');
     fhir.mockImplementation(

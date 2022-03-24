@@ -3,72 +3,35 @@ import { Col, Row } from 'antd';
 import { useQuery } from 'react-query';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useParams } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { FHIRService } from '@opensrp/react-utils';
+import { BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
   FHIR_GROUPS,
   FHIR_PRACTITIONERS,
+  groupResourceType,
+  practitionerResourceType,
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../constants';
-import { IfhirR4 } from '@smile-cdr/fhirts';
 import { CareTeamForm, FormFields } from './Form';
-import { getPatientName } from './utils';
-import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
+import { getPatientName, loadAllResources } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
+import { get } from 'lodash';
 
 // Interface for route params
 interface RouteParams {
-  careTeamId: string;
+  [ROUTE_PARAM_CARE_TEAM_ID]?: string;
 }
 
 /** props for editing a user view */
 export interface EditCareTeamProps {
   fhirBaseURL: string;
-  resourcePageSize: number;
 }
 
 /** type intersection for all types that pertain to the props */
 export type CreateEditCareTeamProps = EditCareTeamProps & RouteComponentProps<RouteParams>;
-
-/** default props for editing user component */
-export const defaultEditCareTeamsProps: EditCareTeamProps = {
-  fhirBaseURL: '',
-  resourcePageSize: 20,
-};
-
-export const fetchPractitionersCount = async (fhirBaseURL: string): Promise<number> => {
-  const serve = await FHIRService(fhirBaseURL);
-  return serve.request(`${FHIR_PRACTITIONERS}`).then((res: IfhirR4.IBundle) => {
-    return res.total as number;
-  });
-};
-
-export const fetchPractitionersRecursively = async (
-  fhirBaseURL: string,
-  pageSize: number,
-  pageOffset: number
-) => {
-  let data: IfhirR4.IBundle;
-  let offsetStart: number = pageOffset;
-  const careTeamsCount = await fetchPractitionersCount(fhirBaseURL);
-  const allData: BundleEntry[] = [];
-  const serve = await FHIRService(fhirBaseURL);
-  if (typeof pageSize !== 'undefined') {
-    do {
-      data = await serve.request(
-        `${FHIR_PRACTITIONERS}/_search?_count=${pageSize}&_getpagesoffset=${offsetStart}`
-      );
-      allData.push(...(data.entry as BundleEntry[]));
-      if (data.entry) {
-        offsetStart = offsetStart + (data.entry.length as number);
-      }
-    } while (offsetStart < careTeamsCount);
-  }
-  return allData;
-};
 
 export const defaultInitialValues: FormFields = {
   uuid: '',
@@ -84,41 +47,52 @@ export const defaultInitialValues: FormFields = {
  */
 
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
-  const { fhirBaseURL, resourcePageSize } = props;
-  const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID];
+  const { fhirBaseURL } = props;
+  const params = useParams<RouteParams>();
+  const careTeamId = params[ROUTE_PARAM_CARE_TEAM_ID];
+
   const singleCareTeam = useQuery(
-    `${FHIR_CARE_TEAM}/${careTeamId}`,
-    async () =>
-      careTeamId
-        ? (await FHIRService(fhirBaseURL)).request(`${FHIR_CARE_TEAM}/${careTeamId}`)
-        : undefined,
+    [FHIR_CARE_TEAM, careTeamId],
+    async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId as string),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.ICareTeam) => res,
+      select: (res) => res,
+      enabled: !!careTeamId,
     }
   );
 
   const fhirGroups = useQuery(
     FHIR_GROUPS,
-    async () => (await FHIRService(fhirBaseURL)).request(FHIR_GROUPS),
+    async () => loadAllResources(fhirBaseURL, groupResourceType),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: IfhirR4.IBundle) => res,
+      select: (res) => res,
     }
   );
 
   const fhirPractitioners = useQuery(
     FHIR_PRACTITIONERS,
-    async () => await fetchPractitionersRecursively(fhirBaseURL, resourcePageSize, 0),
+    async () => loadAllResources(fhirBaseURL, practitionerResourceType),
     {
       onError: () => sendErrorNotification(lang.ERROR_OCCURED),
-      select: (res: BundleEntry[]) => res,
+      select: (res) => res,
     }
   );
 
+  if (
+    fhirPractitioners.isLoading ||
+    fhirGroups.isLoading ||
+    (!singleCareTeam.isIdle && singleCareTeam.isLoading)
+  ) {
+    return <Spin size="large" className="custom-spinner" />;
+  }
+
+  if (singleCareTeam.error && !singleCareTeam.data) {
+    return <BrokenPage errorMessage={(singleCareTeam.error as Error).message} />;
+  }
+
   const buildInitialValues = singleCareTeam.data
     ? {
-        uuid: (singleCareTeam.data?.identifier as Dictionary[])[0].value as string,
+        uuid: get(singleCareTeam.data, 'identifier.0.value', undefined),
         id: singleCareTeam.data.id,
         name: singleCareTeam.data.name,
         status: singleCareTeam.data.status ?? 'active',
@@ -134,7 +108,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     initialValues: buildInitialValues,
     // filter for only active practitioners and map output to object with id and name
     practitioners:
-      fhirPractitioners.data?.flatMap((e: Dictionary) =>
+      fhirPractitioners.data?.entry?.flatMap((e: Dictionary) =>
         (e.resource as Practitioner).active
           ? [
               {
@@ -151,14 +125,6 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
       })) ?? [],
   };
 
-  if (
-    fhirPractitioners.isLoading ||
-    fhirGroups.isLoading ||
-    (careTeamId && !buildInitialValues.id)
-  ) {
-    return <Spin size="large" />;
-  }
-
   return (
     <Row>
       <Col span={24}>
@@ -167,7 +133,5 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     </Row>
   );
 };
-
-CreateEditCareTeam.defaultProps = defaultEditCareTeamsProps;
 
 export { CreateEditCareTeam };

@@ -7,6 +7,7 @@ export const TEAM_ASSIGNMENT_CREATE_VIEW_URL = 'team-assignment/new';
 export const ORGANIZATION_ENDPOINT = 'organization';
 export const HOME_URL = '/';
 export const LOCATION_HIERARCHY_ENDPOINT = 'location/hierarchy';
+export const ORGANIZATION_COUNT_ENDPOINT = 'organization/count';
 export const PLANS_ENDPOINT = 'plans';
 export const POST_ASSIGNMENTS_ENDPOINT = 'organization/assignLocationsAndPlans';
 export const ASSIGNMENTS_ENDPOINT = 'organization/assignedLocationsAndPlans';

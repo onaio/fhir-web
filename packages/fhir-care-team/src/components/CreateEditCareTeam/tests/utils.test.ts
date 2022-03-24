@@ -1,5 +1,7 @@
 import { getPatientName, submitForm } from '../utils';
 import { act } from 'react-dom/test-utils';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
 import * as fhirCient from 'fhirclient';
 import { history } from '@onaio/connected-reducer-registry';
@@ -28,6 +30,21 @@ describe('forms/utils/submitForm', () => {
     name: group.resource.name,
     id: group.resource.id,
   }));
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
 
   beforeEach(() => {
     jest.resetAllMocks();
