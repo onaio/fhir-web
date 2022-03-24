@@ -66,3 +66,36 @@ export const intlFormatDateStrings = (dateString = '') => {
     return '';
   }
 };
+
+/**
+ * Function to save blob response to file
+ *
+ * @param {string} blob - blob data to be written to file
+ * @param {string} filename - name of the file to be saved
+ * @param {string} contentType - MIME type for the file
+ */
+export const downloadFile = (
+  blob: string | Blob,
+  filename: string,
+  contentType = 'application/octet-stream'
+) => {
+  const blobFile = typeof blob === 'string' ? new Blob([blob], { type: contentType }) : blob;
+  // IE10+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((window.navigator as any).msSaveOrOpenBlob) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window.navigator as any).msSaveOrOpenBlob(blobFile, filename);
+  } else {
+    // Others
+    const url = window.URL.createObjectURL(blobFile);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 200);
+  }
+};

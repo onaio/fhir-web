@@ -8,7 +8,7 @@ import {
   OPENSRP_URL_LOCATION_HIERARCHY,
 } from '../../constants';
 import { Client } from '../../ducks/clients';
-import { downloadFile } from '../../helpers/utils';
+import { downloadFile } from '@opensrp/react-utils';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
