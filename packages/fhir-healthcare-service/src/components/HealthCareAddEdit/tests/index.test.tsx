@@ -1,182 +1,158 @@
-/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { mount } from 'enzyme';
-import { MemoryRouter, Route, Router } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import * as notifications from '@opensrp/notifications';
-import { createBrowserHistory } from 'history';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
-import HealthCareAddEdit from '..';
-import {
-  team,
-  team366,
-  healthcareService,
-  healthcareService323,
-  healthcareService313,
-} from '../../../tests/fixtures';
-import * as fhirCient from 'fhirclient';
+import { HealthCareAddEdit } from '..';
+import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
+import nock from 'nock';
+import { cleanup, render, screen } from '@testing-library/react';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
+import {
+  organizationResourceType,
+} from '../../../constants';
+import { allOrgs, healthCare313 } from './fixtures';
 
-const history = createBrowserHistory();
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-jest.mock('@opensrp/notifications', () => ({
-  __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
-}));
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
-const fhirBaseURL = 'https://fhirBaseURL.com';
-const fhir = jest.spyOn(fhirCient, 'client');
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+};
 
-describe('components/TeamsAddEdit', () => {
-  beforeAll(() => {
-    store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
-      )
-    );
-  });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path="/add">
+            <HealthCareAddEdit {...props} />
+          </Route>
+          <Route exact path="/add/:id">
+            <HealthCareAddEdit {...props} />
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
 
-  beforeEach(() => {
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(team);
-          if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(healthcareService);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
-          else {
-            // eslint-disable-next-line no-console
-            console.error('response not found', url);
-          }
-        }),
-      }))
-    );
-  });
+afterEach(() => {
+  cleanup();
+  nock.cleanAll();
+});
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-  it('renders correctly when creating Team', async () => {
-    const queryClient = new QueryClient();
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <HealthCareAddEdit fhirBaseURL={fhirBaseURL} />
-        </QueryClientProvider>
-      </Router>
-    );
+test('renders correctly for new organizations', async () => {
+  const history = createMemoryHistory();
+  history.push('/add');
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  nock(props.fhirBaseURL)
+  .get(`/${organizationResourceType}/_search`)
+  .query({ _summary: 'count' })
+  .reply(200, { total: 1000 })
+  .get(`/${organizationResourceType}/_search`)
+  .query({ _count: 1000 })
+  .reply(200, allOrgs);
 
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-  it('renders correctly when Editting Team', async () => {
-    const queryClient = new QueryClient();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/323`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={HealthCareAddEdit} />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
+  // some small but incoclusive proof that the form rendered
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/comment/i)).toMatchSnapshot('comment field');
+});
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+test('renders correctly for edit locations', async () => {
+  const history = createMemoryHistory();
+  history.push(`/add/${healthCare313.id}`);
 
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
+  nock(props.fhirBaseURL)
+  .get(`/${organizationResourceType}/_search`)
+  .query({ _summary: 'count' })
+  .reply(200, { total: 1000 })
+  .get(`/${organizationResourceType}/_search`)
+  .query({ _count: 1000 })
+  .reply(200, allOrgs);
 
-  it('show error message when cant load data from server', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
+  nock(props.fhirBaseURL).get(`/${healthCare313}/${healthCare313.id}`).reply(200, healthCare313);
 
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject('Mock Api Fail')),
-      }))
-    );
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/323`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={HealthCareAddEdit} />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
+  expect(document.querySelector('title')).toMatchInlineSnapshot(`
+    <title>
+      Edit team | OpenSRP web Test Organisation
+    </title>
+  `);
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+  // some small but incoclusive proof that the form rendered and has some initial values
+  expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
+  expect(screen.getByLabelText(/comment/i)).toMatchSnapshot('comment field');
+});
 
-    expect(notificationErrorMock.mock.calls).toMatchObject([
-      ['An error occurred'],
-      ['An error occurred'],
-    ]);
-  });
+test('data loading problem', async () => {
+  const history = createMemoryHistory();
+  history.push(`/add/${healthCare313.id}`);
 
-  it('show error message when cant team details', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
+  nock(props.fhirBaseURL)
+    .get(`/${healthCare313}/${healthCare313.id}`)
+    .replyWithError('something aweful happened');
 
-    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+    nock(props.fhirBaseURL)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .replyWithError('Could not get count')
 
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(team);
-          if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(healthcareService);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
-          else {
-            // eslint-disable-next-line no-console
-            console.error('response not found', url);
-          }
-        }),
-      }))
-    );
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: `/323`, hash: '', search: '', state: {} }]}>
-        <QueryClientProvider client={queryClient}>
-          <Route path="/:id" fhirBaseURL={fhirBaseURL} component={HealthCareAddEdit} />
-        </QueryClientProvider>
-      </MemoryRouter>
-    );
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(notificationErrorMock.mock.calls).toMatchObject([]);
-  });
+  // errors out
+  expect(screen.getByText(/something aweful happened/)).toBeInTheDocument();
 });

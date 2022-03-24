@@ -24,6 +24,7 @@ import {
   orgFilterFunction,
   postPutHealthCareService,
   SelectOption,
+  validationRulesFactory,
 } from './utils';
 import { SelectProps } from 'antd/lib/select';
 
@@ -75,25 +76,26 @@ const HealthCareForm = (props: HealthCareFormProps) => {
   ];
 
   const orgOptions = getOrgSelectOptions(organizations);
+  const validationRules = validationRulesFactory();
 
   return (
     <Form
       requiredMark={false}
       {...formLayout}
-      onFinish={(values) => {
+      onFinish={(values: HealthCareFormFields) => {
         mutate(values);
       }}
       initialValues={initialValues}
     >
-      <FormItem name={name} label="Name">
+      <FormItem id="name" name={name} rules={validationRules.name} label="Name">
         <Input disabled={disabled.includes(name)} placeholder={'Name'} />
       </FormItem>
 
-      <FormItem name={active} label="Status">
+      <FormItem id="active" rules={validationRules.active} name={active} label="Status">
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem name={comment} label="Comment">
+      <FormItem id="comment" rules={validationRules.comment} name={comment} label="Comment">
         <Input.TextArea
           disabled={disabled.includes(comment)}
           rows={2}
@@ -101,7 +103,12 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         />
       </FormItem>
 
-      <FormItem name={extraDetails} label="Extra details">
+      <FormItem
+        id="extra-details"
+        rules={validationRules.extraDetails}
+        name={extraDetails}
+        label="Extra details"
+      >
         <Input.TextArea
           disabled={disabled.includes(extraDetails)}
           rows={4}
@@ -109,7 +116,12 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         />
       </FormItem>
 
-      <FormItem name={providedBy} label="Provided by">
+      <FormItem
+        id="provided-by"
+        name={providedBy}
+        rules={validationRules.providedBy}
+        label="Provided by"
+      >
         <Select
           disabled={disabled.includes(providedBy)}
           placeholder="Select organization"
