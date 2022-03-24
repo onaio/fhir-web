@@ -24,6 +24,8 @@ export const parseGroup = (obj: IGroup) => {
     active: obj.active,
     id: obj.id,
     lastUpdated: intlFormatDateStrings(get(obj, 'meta.lastUpdated')),
+    members: obj.member,
+    quantity: obj.quantity,
   };
 };
 
@@ -58,12 +60,14 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   const org = data as Group;
-  const { name, active, lastUpdated, id } = parseGroup(org);
+  const { name, active, lastUpdated, id, quantity, members } = parseGroup(org);
   const keyValues = {
     Id: id,
     Name: name,
     Active: active ? 'Active' : 'Inactive',
     'Last updated': lastUpdated,
+    'No. of Members': quantity,
+    Members: members?.map((member) => member.entity.display).join(', '),
   };
 
   return (
