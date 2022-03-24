@@ -1,48 +1,68 @@
-import React from 'react';
-import { mount } from 'enzyme';
-import { Router } from 'react-router';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { history } from '@onaio/connected-reducer-registry';
-import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
-import {
-  team,
-  healthcareService,
-  healthcareService313,
-  healthcareService323,
-  team366,
-} from '../../../tests/fixtures';
-import Form, { FormField, onSubmit } from '../Form';
-import * as fhirCient from 'fhirclient';
-import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { Router } from 'react-router';
+import { HealthCareForm } from '../Form';
+import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
+import nock from 'nock';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
+import flushPromises from 'flush-promises';
+import { healthCareServiceResourceType } from '../../../constants';
+import { allOrgs, editedHealthCare, healthCare313 } from './fixtures';
+import { getResourcesFromBundle } from '@opensrp/react-utils';
+import { getHealthCareFormFields } from '../utils';
+import * as notifications from '@opensrp/notifications';
+import userEvents from '@testing-library/user-event';
+import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-const fhirBaseURL = 'https://fhirBaseURL.com';
-const fhir = jest.spyOn(fhirCient, 'client');
+const history = createBrowserHistory();
 
-const FormIntialValue: FormField = {
-  active: true,
-  name: '',
-  comment: '',
-  extraDetails: '',
-};
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-const healthcareServiceValue: FormField = {
-  comment: 'test comment',
-  extraDetails: 'test extra comment',
-  active: false,
-  name: 'My Team',
-  identifier: [{ use: 'official', value: '12312421' }],
-};
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
+  return {
+    ...actual,
+    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
+  };
+});
 
-describe('components/HealthCareAddEdit/Form', () => {
+describe('Health care form', () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        cacheTime: 0,
+      },
+    },
+  });
+
+  const AppWrapper = (props: { children: React.ReactNode }) => {
+    return (
+      <Router history={history}>
+        <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+      </Router>
+    );
+  };
+
+  const formProps = {
+    fhirBaseUrl: 'http://test.server.org',
+    organizations: getResourcesFromBundle<IOrganization>(allOrgs),
+  };
+
   beforeAll(() => {
+    nock.disableNetConnect();
     store.dispatch(
       authenticateUser(
         true,
@@ -51,192 +71,302 @@ describe('components/HealthCareAddEdit/Form', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'hunter2', state: 'abcde' } }
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
   });
 
-  beforeEach(() => {
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn((url) => {
-          if (url === 'Organization/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(team);
-          if (url === 'Organization/366') return Promise.resolve(team366);
-          else if (url === 'HealthcareService/_search?_count=20&_getpagesoffset=0')
-            return Promise.resolve(healthcareService);
-          else if (url === 'HealthcareService/323') return Promise.resolve(healthcareService323);
-          else if (url === 'HealthcareService/313') return Promise.resolve(healthcareService313);
-          else {
-            // eslint-disable-next-line no-console
-            console.error('response not found', url);
-          }
-        }),
-        update: jest.fn((payload) => Promise.resolve(payload)),
-        create: jest.fn((payload) => Promise.resolve(payload)),
-      }))
-    );
+  afterAll(() => {
+    nock.enableNetConnect();
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    nock.cleanAll();
+    cleanup();
+    jest.resetAllMocks();
   });
 
-  it('renders without crashing', () => {
-    const queryClient = new QueryClient();
+  it('renders correctly', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form fhirBaseURL={fhirBaseURL} organizations={team.entry.map((e) => e.resource)} />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <HealthCareForm {...formProps} />
+      </AppWrapper>,
+      { attachTo: div }
     );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
-
-  it('renders without crashing with id', () => {
-    const queryClient = new QueryClient();
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            organizations={team.entry.map((e) => e.resource)}
-            initialValue={healthcareServiceValue}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('Form').prop('initialValue')).toMatchObject(healthcareServiceValue);
-    expect(wrapper.find('form')).toHaveLength(1);
-  });
-
-  it('Cancel button', () => {
-    const goBackFN = jest.fn();
-    const queryClient = new QueryClient();
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            organizations={team.entry.map((e) => e.resource)}
-            initialValue={healthcareServiceValue}
-            onCancel={goBackFN}
-          />
-        </QueryClientProvider>
-      </Router>
-    );
-
-    expect(wrapper.find('form')).toHaveLength(1);
-    wrapper.find('button#cancel').simulate('click');
-    expect(goBackFN).toBeCalled();
-  });
-
-  it('Create Team', async () => {
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    const thenfn = jest.fn();
-    const catchfn = jest.fn();
-
-    onSubmit(fhirBaseURL, healthcareServiceValue).then(thenfn).catch(catchfn);
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
 
-    expect(catchfn).not.toBeCalled();
-    expect(thenfn).toBeCalled();
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Created Healthcares');
-  });
+    expect(toJson(wrapper.find('FormItem#name label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('FormItem#name input'))).toMatchSnapshot('name field');
 
-  it('Edit Team', async () => {
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-    const thenfn = jest.fn();
-    const catchfn = jest.fn();
-    onSubmit(fhirBaseURL, {
-      ...healthcareServiceValue,
-      name: 'new name',
-      id: '12312',
-    })
-      .then(thenfn)
-      .catch(catchfn);
+    expect(toJson(wrapper.find('FormItem#active label').first())).toMatchSnapshot('active label');
+    expect(toJson(wrapper.find('FormItem#active input'))).toMatchSnapshot('active field');
 
-    await act(async () => {
-      await flushPromises();
-    });
+    expect(toJson(wrapper.find('FormItem#comment label').first())).toMatchSnapshot('comment label');
+    expect(toJson(wrapper.find('FormItem#comment textarea'))).toMatchSnapshot('comment field');
 
-    expect(catchfn).not.toBeCalled();
-    expect(thenfn).toBeCalled();
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Updated Healthcares');
-  });
-
-  it('test call onsubmit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
-
-    const mockSuccessNotification = jest.spyOn(notifications, 'sendSuccessNotification');
-
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            organizations={team.entry.map((e) => e.resource)}
-            initialValue={FormIntialValue}
-          />
-        </QueryClientProvider>
-      </Router>
+    expect(toJson(wrapper.find('FormItem#extra-details label').first())).toMatchSnapshot(
+      'extraDetails label'
+    );
+    expect(toJson(wrapper.find('FormItem#extra-details textarea'))).toMatchSnapshot(
+      'extraDetails field'
     );
 
-    expect(wrapper.find('form')).toHaveLength(1);
+    expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
+    expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
+
+    wrapper.find('button#cancel-button').simulate('click');
+    wrapper.unmount();
+  });
+
+  it('form validation works', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    const wrapper = mount(
+      <AppWrapper>
+        <HealthCareForm {...formProps} />
+      </AppWrapper>,
+      { attachTo: div }
+    );
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
       await flushPromises();
     });
+    wrapper.update();
 
-    expect(mockSuccessNotification).toBeCalledWith('Successfully Created Healthcares');
-  });
-
-  it('fail and test call onsubmit', async () => {
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
+    await waitFor(() => {
+      const atLeastOneError = document.querySelector('.ant-form-item-explain-error');
+      expect(atLeastOneError).toBeInTheDocument();
     });
 
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => ({
-        request: jest.fn(() => Promise.reject('Mock Api Fail')),
-        create: jest.fn(() => Promise.reject('Mock Api Fail')),
-        update: jest.fn(() => Promise.reject('Mock Api Fail')),
-        delete: jest.fn(() => Promise.reject('Mock Api Fail')),
-      }))
+    // name is required and has no default
+    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameRequired"`);
+
+    // comment is not required required and has no default
+    expect(wrapper.find('FormItem#comment').text()).toMatchInlineSnapshot(`"Alias"`);
+
+    // status has no
+    expect(wrapper.find('FormItem#active').text()).toMatchInlineSnapshot(
+      `"StatusInactiveactiveRequired"`
     );
 
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
+    // not required
+    expect(wrapper.find('FormItem#extra-details').text()).toMatchInlineSnapshot(`"Type"`);
+
+    // not required?
+    expect(wrapper.find('FormItem#provided-by').text()).toMatchSnapshot(
+      `"Practitioners Select user (practitioners only)"`
+    );
+
+    wrapper.unmount();
+  });
+
+  it('submits new health care', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
+
+    const someMockURL = '/someURL';
+
+    nock(formProps.fhirBaseUrl)
+      .post(`/${healthCareServiceResourceType}`, createdHealthCareService)
+      .reply(200, { ...createdHealthCareService, id: '123' })
+      .persist();
 
     const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <Form
-            fhirBaseURL={fhirBaseURL}
-            organizations={team.entry.map((e) => e.resource)}
-            initialValue={FormIntialValue}
-          />
-        </QueryClientProvider>
-      </Router>
+      <AppWrapper>
+        <HealthCareForm successUrl={someMockURL} {...formProps} />
+      </AppWrapper>,
+      { attachTo: container }
     );
 
-    expect(wrapper.find('form')).toHaveLength(1);
+    // simulate active change
+    wrapper
+      .find('FormItem#active input')
+      .last()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'Good doctor' } });
+
+    wrapper
+      .find('FormItem#comment textarea')
+      .simulate('change', { target: { name: 'alias', value: 'Best services ever' } });
+
+    wrapper.find('FormItem#extra-details textarea').simulate('change', {
+      target: { name: 'alias', value: 'Treatment using cutting-edge stuff' },
+    });
+
+    // simulate value selection for members
+    wrapper.find('input#members').simulate('mousedown');
+
+    const optionTexts = [
+      ...document.querySelectorAll(
+        '#provided-by_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(optionTexts).toHaveLength(5);
+    expect(optionTexts).toEqual([
+      'Practitioner/5123',
+      'Bobi mapesa',
+      'Ward N Williams MD',
+      'Allay Allan',
+      'test fhir',
+    ]);
+
+    // filter searching through members works
+    await userEvents.type(document.querySelector('input#provided-by'), 'allan');
+
+    // options after search
+    const afterFilterOptionTexts = [
+      ...document.querySelectorAll(
+        '#members_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(afterFilterOptionTexts).toHaveLength(1);
+    expect(afterFilterOptionTexts).toEqual(['Allay Allan']);
+
+    fireEvent.click(document.querySelector('[title="Allay Allan"]'));
+
+    await flushPromises();
+    wrapper.update();
+
     wrapper.find('form').simulate('submit');
+
+    await waitFor(() => {
+      expect(successNoticeMock.mock.calls).toEqual([
+        ['Organization updated successfully'],
+        ['Practitioner assignments updated successfully'],
+      ]);
+    });
+
+    expect(nock.isDone()).toBeTruthy();
+    wrapper.unmount();
+  });
+
+  it('cancel handler is called on cancel', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const cancelUrl = '/canceled';
+
+    const wrapper = mount(
+      <AppWrapper>
+        <HealthCareForm cancelUrl={cancelUrl} {...formProps} />
+      </AppWrapper>,
+
+      { attachTo: container }
+    );
 
     await act(async () => {
       await flushPromises();
+      wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    wrapper.find('button#cancel-button').simulate('click');
+    wrapper.update();
+
+    expect(history.location.pathname).toEqual('/canceled');
+    wrapper.unmount();
+  });
+
+  it('Edits organization and associated practitioners', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const successNoticeMock = jest
+      .spyOn(notifications, 'sendSuccessNotification')
+      .mockImplementation(() => undefined);
+
+    const errorNoticeMock = jest
+      .spyOn(notifications, 'sendErrorNotification')
+      .mockImplementation(() => undefined);
+
+    nock(formProps.fhirBaseUrl)
+      .put(`/${healthCareServiceResourceType}/${healthCare313.id}`, editedHealthCare)
+      .replyWithError('Failed to update healthCare')
+      .persist();
+
+    const initialValues = getHealthCareFormFields(healthCare313);
+
+    const localProps = {
+      ...formProps,
+      initialValues,
+    };
+
+    const wrapper = mount(
+      <AppWrapper>
+        <HealthCareForm {...localProps} />
+      </AppWrapper>,
+      { attachTo: container }
+    );
+
+    // simulate name change
+    wrapper
+      .find('FormItem#name input')
+      .simulate('change', { target: { name: 'name', value: 'Medieval healers' } });
+
+    // simulate active check to be active
+    wrapper
+      .find('FormItem#status input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate value selection for members
+    wrapper.find('input#provided-by').simulate('mousedown');
+    // check options
+    document
+      .querySelectorAll('#provided-by_list .ant-select-item ant-select-item-option')
+      .forEach((option) => {
+        expect(option).toMatchSnapshot('organizations option');
+      });
+
+    fireEvent.click(document.querySelector('[title="test fhir"]'));
+
+    wrapper
+      .find('FormItem#comment input')
+      .simulate('change', { target: { name: 'alias', value: 'Eat shrubs' } });
+
+    await flushPromises();
+    wrapper.update();
+
+    wrapper.find('form').simulate('submit');
+
+    await waitFor(() => {
+      expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
+      expect(errorNoticeMock.mock.calls).toEqual([
+        [
+          'request to http://test.server.org/PractitionerRole failed, reason: Failed operation outcome',
+        ],
+      ]);
+    });
+
+    expect(nock.isDone()).toBeTruthy();
+
+    wrapper.unmount();
   });
 });
