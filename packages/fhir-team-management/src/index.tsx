@@ -1,4 +1,3 @@
 import './index.css';
-export * from './components/TeamsAddEdit';
-export * from './components/TeamsList';
-export * from './types';
+export * from './components/AddEditOrganization';
+export * from './components/OrganizationList/ListView';

@@ -57,7 +57,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         />
       </div>
       {loading ? (
-        <Spin size="large" className="custom-ant-spin" />
+        <Spin size="large" className="custom-spinner" />
       ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       !loading && groupId && (!singleUserGroup || !userGroupMembers) ? (
         <Resource404 />
