@@ -80,7 +80,7 @@ export const postPutOrganization = (baseUrl: string, payload: IOrganization) => 
   return serve.create(payload);
 };
 
-interface SelectOption {
+export interface SelectOption {
   value: string;
   label: string;
 }
