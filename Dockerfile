@@ -1,6 +1,6 @@
 FROM alpine/git AS sources
 
-RUN git clone --depth=1 --branch=v1.3.1 https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --depth=1 --branch=v1.3.4 https://github.com/onaio/express-server.git /usr/src/express-server
 
 FROM node:16.14.0-alpine as build
 
@@ -8,6 +8,7 @@ COPY ./ /project
 
 WORKDIR /project
 ENV PATH /project/node_modules/.bin:$PATH
+ENV NODE_OPTIONS --max_old_space_size=4096
 
 RUN chown -R node .
 USER node
