@@ -116,6 +116,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             </Radio.Group>
           </Form.Item>
           <Form.Item
+            data-testid="practitionersId"
             name="practitionersId"
             id="practitionersId"
             label={lang.PARTICIPANTS}
