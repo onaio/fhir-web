@@ -246,6 +246,12 @@ Below is a list of currently supported environment variables:
   - default: 5
   - `Enum: 5, 10, 20 , 50, 100`
 
+- **REACT_APP_ENABLE_FHIR_TEAMS**
+
+  - Enables the FHIR Organization module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
 - **REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER**
 
   - FHIR Hierarchy root location UUID
