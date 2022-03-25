@@ -114,7 +114,6 @@ import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
-  // AffiliationList as FhirTeamAssignment
 } from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
