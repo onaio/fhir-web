@@ -95,7 +95,7 @@ afterAll(() => {
   nock.enableNetConnect();
 });
 
-test('renders correctly when listing organizations', async () => {
+test('renders correctly when listing resources', async () => {
   const history = createMemoryHistory();
   history.push(LIST_HEALTHCARE_URL);
 
@@ -180,13 +180,13 @@ test('renders correctly when listing organizations', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/admin/teams/205"
+      href="/healthcare/list/323"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/admin/teams/205');
+  expect(history.location.pathname).toEqual('/healthcare/list/323');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -194,7 +194,7 @@ test('renders correctly when listing organizations', async () => {
   const closeButton = document.querySelector('[data-testid="close-button"]');
   fireEvent.click(closeButton);
 
-  expect(history.location.pathname).toEqual('/admin/teams');
+  expect(history.location.pathname).toEqual('/healthcare/list');
 
   expect(nock.isDone()).toBeTruthy();
 });
