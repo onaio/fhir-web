@@ -43,10 +43,11 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/group/add-edit//49778"
+      href="/groups/list"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
+        disabled=""
         type="button"
       >
         <span>
@@ -117,10 +118,11 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/group/add-edit//49779"
+      href="/groups/list"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
+        disabled=""
         type="button"
       >
         <span>
@@ -191,10 +193,11 @@ exports[`renders correctly when listing resources: table row 1 page 2 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/group/add-edit//49779"
+      href="/groups/list"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
+        disabled=""
         type="button"
       >
         <span>
@@ -265,10 +268,11 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/group/add-edit//49778"
+      href="/groups/list"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
+        disabled=""
         type="button"
       >
         <span>
@@ -339,10 +343,11 @@ exports[`renders correctly when listing resources: table row 2 page 2 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/group/add-edit//49778"
+      href="/groups/list"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
+        disabled=""
         type="button"
       >
         <span>
