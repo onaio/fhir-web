@@ -114,6 +114,7 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import { HealthCareList, HealthCareAddEdit, LIST_HEALTHCARE_URL, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '@opensrp/fhir-healthcare-service';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
@@ -188,6 +189,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import {} from '@opensrp/fhir-group-management';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -197,8 +199,6 @@ import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
 import { useTranslation } from 'react-i18next';
-import { GroupList } from '../fhir-group/src/components/GroupList';
-import { GroupAddEdit } from '../fhir-group/src';
 
 const { Content } = Layout;
 
@@ -243,6 +243,7 @@ const App: React.FC = () => {
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
   useTranslation();
+
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -823,12 +824,24 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
+              component={HealthCareAddEdit}
+            />            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={URL_GROUP_EDIT}
               {...groupProps}
               component={GroupAddEdit}
             />
             <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
+              component={HealthCareAddEdit}
+            />            <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
@@ -839,10 +852,23 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${LIST_HEALTHCARE_URL}/:id`}
+              component={HealthCareList}
+            />            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={URL_GROUP}
               {...groupProps}
               component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={LIST_HEALTHCARE_URL}
+              component={HealthCareList}
             />
             <Route
               exact

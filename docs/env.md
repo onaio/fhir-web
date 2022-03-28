@@ -81,6 +81,12 @@ Below is a list of currently supported environment variables:
   - **Optional**(_string_)
   - default: `"false"`
 
+- **REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES**
+
+  - Enables the Fhir Healthcare services module
+  - **Optional**(_string_)
+  - default: `"false"`
+
 - **REACT_APP_ENABLE_LOCATIONS**
 
   - Enables the location module
