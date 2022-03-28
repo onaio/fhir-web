@@ -12,7 +12,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { cleanup, fireEvent, waitFor } from '@testing-library/react';
 import flushPromises from 'flush-promises';
 import { healthCareServiceResourceType } from '../../../constants';
-import { allOrgs, editedHealthCare, healthCare313 } from './fixtures';
+import { allOrgs, createdHealthCareService, editedHealthCare, healthCare313 } from './fixtures';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { getHealthCareFormFields } from '../utils';
 import * as notifications from '@opensrp/notifications';
@@ -152,7 +152,7 @@ describe('Health care form', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameRequired"`);
 
     // comment is not required required and has no default
-    expect(wrapper.find('FormItem#comment').text()).toMatchInlineSnapshot(`"Alias"`);
+    expect(wrapper.find('FormItem#comment').text()).toMatchInlineSnapshot(`"Comment"`);
 
     // status has no
     expect(wrapper.find('FormItem#active').text()).toMatchInlineSnapshot(
@@ -160,10 +160,10 @@ describe('Health care form', () => {
     );
 
     // not required
-    expect(wrapper.find('FormItem#extra-details').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#extraDetails').text()).toMatchInlineSnapshot(`"Extra details"`);
 
     // not required?
-    expect(wrapper.find('FormItem#provided-by').text()).toMatchSnapshot(
+    expect(wrapper.find('FormItem#providedBy').text()).toMatchSnapshot(
       `"Practitioners Select user (practitioners only)"`
     );
 
@@ -209,16 +209,16 @@ describe('Health care form', () => {
       .find('FormItem#comment textarea')
       .simulate('change', { target: { name: 'alias', value: 'Best services ever' } });
 
-    wrapper.find('FormItem#extra-details textarea').simulate('change', {
+    wrapper.find('FormItem#extraDetails textarea').simulate('change', {
       target: { name: 'alias', value: 'Treatment using cutting-edge stuff' },
     });
 
     // simulate value selection for members
-    wrapper.find('input#members').simulate('mousedown');
+    wrapper.find('input#providedBy').simulate('mousedown');
 
     const optionTexts = [
       ...document.querySelectorAll(
-        '#provided-by_list+div.rc-virtual-list .ant-select-item-option-content'
+        '#providedBy_list+div.rc-virtual-list .ant-select-item-option-content'
       ),
     ].map((option) => {
       return option.textContent;
@@ -226,29 +226,29 @@ describe('Health care form', () => {
 
     expect(optionTexts).toHaveLength(5);
     expect(optionTexts).toEqual([
-      'Practitioner/5123',
-      'Bobi mapesa',
-      'Ward N Williams MD',
-      'Allay Allan',
-      'test fhir',
+      'Test Team 4',
+      'Test Team 5',
+      'Test Team 5',
+      'Test Team 5',
+      'Test Team One',
     ]);
 
     // filter searching through members works
-    await userEvents.type(document.querySelector('input#provided-by'), 'allan');
+    await userEvents.type(document.querySelector('input#providedBy'), 'one');
 
     // options after search
     const afterFilterOptionTexts = [
       ...document.querySelectorAll(
-        '#members_list+div.rc-virtual-list .ant-select-item-option-content'
+        '#providedBy_list+div.rc-virtual-list .ant-select-item-option-content'
       ),
     ].map((option) => {
       return option.textContent;
     });
 
     expect(afterFilterOptionTexts).toHaveLength(1);
-    expect(afterFilterOptionTexts).toEqual(['Allay Allan']);
+    expect(afterFilterOptionTexts).toEqual(['Test Team One']);
 
-    fireEvent.click(document.querySelector('[title="Allay Allan"]'));
+    fireEvent.click(document.querySelector('[title="Test Team One"]'));
 
     await flushPromises();
     wrapper.update();
@@ -256,10 +256,7 @@ describe('Health care form', () => {
     wrapper.find('form').simulate('submit');
 
     await waitFor(() => {
-      expect(successNoticeMock.mock.calls).toEqual([
-        ['Organization updated successfully'],
-        ['Practitioner assignments updated successfully'],
-      ]);
+      expect(successNoticeMock.mock.calls).toEqual([['Health care service updated successfully']]);
     });
 
     expect(nock.isDone()).toBeTruthy();
@@ -292,13 +289,9 @@ describe('Health care form', () => {
     wrapper.unmount();
   });
 
-  it('Edits organization and associated practitioners', async () => {
+  it('edits resource', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
-
-    const successNoticeMock = jest
-      .spyOn(notifications, 'sendSuccessNotification')
-      .mockImplementation(() => undefined);
 
     const errorNoticeMock = jest
       .spyOn(notifications, 'sendErrorNotification')
@@ -330,25 +323,25 @@ describe('Health care form', () => {
 
     // simulate active check to be active
     wrapper
-      .find('FormItem#status input')
+      .find('FormItem#active input')
       .first()
       .simulate('change', {
         target: { checked: true },
       });
 
     // simulate value selection for members
-    wrapper.find('input#provided-by').simulate('mousedown');
+    wrapper.find('input#providedBy').simulate('mousedown');
     // check options
     document
-      .querySelectorAll('#provided-by_list .ant-select-item ant-select-item-option')
+      .querySelectorAll('#providedBy_list .ant-select-item ant-select-item-option')
       .forEach((option) => {
         expect(option).toMatchSnapshot('organizations option');
       });
 
-    fireEvent.click(document.querySelector('[title="test fhir"]'));
+    fireEvent.click(document.querySelector('[title="Test Team 4"]'));
 
     wrapper
-      .find('FormItem#comment input')
+      .find('FormItem#comment textarea')
       .simulate('change', { target: { name: 'alias', value: 'Eat shrubs' } });
 
     await flushPromises();
@@ -357,10 +350,9 @@ describe('Health care form', () => {
     wrapper.find('form').simulate('submit');
 
     await waitFor(() => {
-      expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
       expect(errorNoticeMock.mock.calls).toEqual([
         [
-          'request to http://test.server.org/PractitionerRole failed, reason: Failed operation outcome',
+          'request to http://test.server.org/HealthcareService/313 failed, reason: Failed to update healthCare',
         ],
       ]);
     });

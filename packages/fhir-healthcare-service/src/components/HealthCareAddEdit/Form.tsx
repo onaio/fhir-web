@@ -7,6 +7,8 @@ import {
   active,
   comment,
   name,
+  id,
+  identifier,
 } from '../../constants';
 import {
   sendSuccessNotification,
@@ -14,7 +16,7 @@ import {
   sendInfoNotification,
 } from '@opensrp/notifications';
 import { useQueryClient, useMutation } from 'react-query';
-import { formLayout, tailLayout } from '@opensrp/react-utils';
+import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { useHistory } from 'react-router';
 import {
@@ -53,7 +55,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
 
   const { mutate, isLoading } = useMutation(
     (values: HealthCareFormFields) => {
-      const payload = generateHealthCarePayload(values, organizations);
+      const payload = generateHealthCarePayload(values, organizations, initialValues);
       return postPutHealthCareService(fhirBaseUrl, payload);
     },
     {
@@ -61,7 +63,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         sendErrorNotification(err.message);
       },
       onSuccess: () => {
-        sendSuccessNotification('Organization updated successfully');
+        sendSuccessNotification('Health care service updated successfully');
         queryClient.invalidateQueries([healthCareServiceResourceType]).catch(() => {
           sendInfoNotification('Failed to refresh data, please refresh the page');
         });
@@ -81,12 +83,20 @@ const HealthCareForm = (props: HealthCareFormProps) => {
   return (
     <Form
       requiredMark={false}
-      {...formLayout}
+      {...formItemLayout}
       onFinish={(values: HealthCareFormFields) => {
         mutate(values);
       }}
       initialValues={initialValues}
     >
+      <FormItem id="id" name={id} label="Id">
+        <Input disabled={true} />
+      </FormItem>
+
+      <FormItem id="identifier" name={identifier} label="Identifier">
+        <Input disabled={true} />
+      </FormItem>
+
       <FormItem id="name" name={name} rules={validationRules.name} label="Name">
         <Input disabled={disabled.includes(name)} placeholder={'Name'} />
       </FormItem>
@@ -104,7 +114,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       </FormItem>
 
       <FormItem
-        id="extra-details"
+        id="extraDetails"
         rules={validationRules.extraDetails}
         name={extraDetails}
         label="Extra details"
@@ -117,7 +127,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       </FormItem>
 
       <FormItem
-        id="provided-by"
+        id="providedBy"
         name={providedBy}
         rules={validationRules.providedBy}
         label="Provided by"
@@ -126,6 +136,8 @@ const HealthCareForm = (props: HealthCareFormProps) => {
           disabled={disabled.includes(providedBy)}
           placeholder="Select organization"
           options={orgOptions}
+          allowClear={true}
+          showSearch={true}
           filterOption={orgFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         ></Select>
       </FormItem>

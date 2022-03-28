@@ -1,4 +1,5 @@
-import { IHealthcareService } from "@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService";
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
 
 export const allOrgs = {
   resourceType: 'Bundle',
@@ -136,7 +137,7 @@ export const allOrgs = {
       },
     },
   ],
-};
+} as unknown as IBundle;
 
 export const healthCare313 = {
   resourceType: 'HealthcareService',
@@ -161,6 +162,23 @@ export const healthCare313 = {
   extraDetails: 'ANC Service',
 } as IHealthcareService;
 
-export const createdHealthCareService = {};
+export const createdHealthCareService = {
+  resourceType: 'HealthcareService',
+  active: true,
+  name: 'Good doctor',
+  identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
+  providedBy: { reference: 'Organization/361', display: 'Test Team One' },
+  extraDetails: 'Treatment using cutting-edge stuff',
+  comment: 'Best services ever',
+};
 
-export const editedHealthCare = {}
+export const editedHealthCare = {
+  resourceType: 'HealthcareService',
+  id: '313',
+  identifier: [{ value: '313', use: 'official' }],
+  active: false,
+  providedBy: { reference: 'Organization/363', display: 'Test Team 4' },
+  name: 'Medieval healers',
+  comment: 'Eat shrubs',
+  extraDetails: 'ANC Service',
+};
