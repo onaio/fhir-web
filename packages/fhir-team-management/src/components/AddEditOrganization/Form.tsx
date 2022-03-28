@@ -33,51 +33,9 @@ import {
   OrganizationFormFields,
   validationRulesFactory,
 } from './utils';
+import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 
 const { Item: FormItem } = Form;
-
-// TODO - dry this out, does not need to change across packages.
-/** responsive layout for the form labels and columns */
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 4,
-    },
-    md: {
-      span: 4,
-    },
-    lg: {
-      span: 6,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 18,
-    },
-    md: {
-      span: 16,
-    },
-    lg: {
-      span: 14,
-    },
-  },
-};
-
-const tailLayout = {
-  wrapperCol: {
-    xs: { offset: 0, span: 16 },
-    sm: { offset: 12, span: 24 },
-    md: { offset: 8, span: 16 },
-    lg: { offset: 6, span: 14 },
-  },
-};
-
 interface OrganizationFormProps {
   fhirBaseUrl: string;
   initialValues: OrganizationFormFields;

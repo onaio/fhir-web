@@ -10,6 +10,8 @@ export const healthCareServiceResourceType = 'HealthcareService';
 export const organizationResourceType = 'Organization';
 
 // form constants
+export const id = 'id' as const;
+export const identifier = 'identifier' as const;
 export const name = 'name' as const;
 export const active = 'active' as const;
 export const comment = 'comment' as const;

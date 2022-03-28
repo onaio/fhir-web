@@ -12,8 +12,12 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import lang from '../../lang';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
-import { loadAllResources } from '../../utils';
+import {
+  FHIRServiceClass,
+  BrokenPage,
+  getResourcesFromBundle,
+  loadAllResources,
+} from '@opensrp/react-utils';
 import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { getOrgFormFields } from './utils';

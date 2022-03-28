@@ -4,13 +4,12 @@ import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrgani
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import {
   HumanNameUseCodes,
-  IdentifierUseCodes,
   organizationResourceType,
   organizationTypeValueSetUrl,
   OrganizationTypeVS,
   practitionerResourceType,
 } from '../../constants';
-import { getObjLike, parseFhirHumanName } from '../../utils';
+import { getObjLike, parseFhirHumanName, IdentifierUseCodes } from '@opensrp/react-utils';
 import { flatten } from 'lodash';
 import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';

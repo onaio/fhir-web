@@ -15,6 +15,7 @@ export interface HealthCareFormFields {
   comment?: string;
   extraDetails?: string;
   providedBy?: string;
+  initialObject?: IHealthcareService;
 }
 
 /**
@@ -37,6 +38,7 @@ export const validationRulesFactory = () => ({
     },
   ] as Rule[],
   providedBy: [{ type: 'string' }, { required: false }] as Rule[],
+  extraDetails: [{ type: 'string' }, { required: false }] as Rule[],
 });
 
 /**
@@ -44,21 +46,24 @@ export const validationRulesFactory = () => ({
  *
  * @param obj - the organization resource
  */
-export const getHealthCareFormFields = (obj?: IHealthcareService): HealthCareFormFields => {
+export const getHealthCareFormFields = (obj?: IHealthcareService) => {
   if (!obj) {
     return {};
   }
-  const { id, name, active, identifier, providedBy } = obj;
+  const { id, name, active, identifier, providedBy, comment, extraDetails } = obj;
 
   // collect just codings fo the organizationTypeValueSet system
 
   const identifierObj = getObjLike(identifier, 'use', IdentifierUseCodes.OFFICIAL) as Identifier[];
-  const formFields = {
+  const formFields: HealthCareFormFields = {
+    initialObject: obj,
     id,
     identifier: get(identifierObj, '0.value'),
     active,
     name,
     providedBy: get(providedBy, 'reference', undefined),
+    comment,
+    extraDetails,
   };
   return formFields;
 };
@@ -68,21 +73,37 @@ export const getHealthCareFormFields = (obj?: IHealthcareService): HealthCareFor
  *
  * @param values - form values
  * @param orgs - the organizations
+ * @param initialValues - initial form values
  */
 export const generateHealthCarePayload = (
   values: HealthCareFormFields,
-  orgs: IOrganization[]
+  orgs: IOrganization[],
+  initialValues: HealthCareFormFields
 ): IHealthcareService => {
-  const { id, identifier: rawIdentifier, active, name, providedBy } = values;
+  const { id, identifier: rawIdentifier, active, name, providedBy, extraDetails, comment } = values;
+  const { initialObject } = initialValues;
   const orgsById = keyBy(orgs, (org) => {
     return `${organizationResourceType}/${org.id}`;
   });
-  const payload: IHealthcareService = {
+  let payload: IHealthcareService = {
     resourceType: healthCareServiceResourceType,
     active: !!active,
-    name,
-    id,
   };
+  // preserve resource details that we are not interested in editing.
+  if (initialObject) {
+    const { meta, ...rest } = initialObject;
+    payload = {
+      ...rest,
+      ...payload,
+    };
+  }
+
+  if (name) {
+    payload.name = name;
+  }
+  if (id) {
+    payload.id = id;
+  }
 
   let identifier = rawIdentifier;
   if (!rawIdentifier) {
@@ -100,6 +121,13 @@ export const generateHealthCarePayload = (
       reference: providedBy,
       display: get(orgsById[providedBy], 'name', ''),
     };
+  }
+  if (extraDetails) {
+    payload.extraDetails = extraDetails;
+  }
+
+  if (comment) {
+    payload.comment = comment;
   }
 
   return payload;
