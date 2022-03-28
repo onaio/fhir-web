@@ -177,5 +177,6 @@ export const groupProps = {
   fhirBaseURL: FHIR_API_BASE_URL,
 };
 export const careTeamProps = {
+  ...BaseProps,
   resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };

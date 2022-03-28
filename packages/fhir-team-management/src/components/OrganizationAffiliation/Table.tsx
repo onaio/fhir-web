@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
 import lang from '../../lang';
-import { BrokenPage, Column, getResourcesFromBundle, TableLayout } from '@opensrp/react-utils';
+import {
+  BrokenPage,
+  Column,
+  getResourcesFromBundle,
+  TableLayout,
+  loadAllResources,
+} from '@opensrp/react-utils';
 import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { AffiliationModal } from './Form';
 import { get } from 'lodash';
 import { locationResourceType, TreeNode } from '@opensrp/fhir-location-management';
 import { organizationAffiliationResourceType, organizationResourceType } from '../../constants';
-import { loadAllResources } from '../../utils';
 import { reformatOrganizationByLocation } from './utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';

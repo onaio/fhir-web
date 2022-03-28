@@ -76,7 +76,7 @@ jest.mock('antd', () => {
   return { ...antd, Select };
 });
 
-describe('Team-management/TeamsAddEdit/Form', () => {
+describe('HealthCareAddEdit/Form', () => {
   const members = [
     {
       identifier: '3',
