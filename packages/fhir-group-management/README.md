@@ -6,5 +6,5 @@ This package has components for creating, editing, viewing or deleting a group.
 
 ```sh
 
-yarn add @opensrp/fhir-group
+yarn add @opensrp/fhir-group-management
 ```

@@ -173,9 +173,6 @@ export const createEditUserProps = {
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
 };
 
-export const groupProps = {
-  fhirBaseURL: FHIR_API_BASE_URL,
-};
 export const careTeamProps = {
   ...BaseProps,
   resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,

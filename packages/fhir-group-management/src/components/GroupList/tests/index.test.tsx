@@ -1,4 +1,4 @@
-import { GroupList, OrganizationList } from '..';
+import { GroupList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
@@ -9,8 +9,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { groupResourceType, ORGANIZATION_LIST_URL } from '../../../constants';
-import { groupsPage2, groupsPageSearch, organizationSearchPage1, organizationsPage1, organizationsPage2 } from './fixtures';
+import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
+import { groupsPage2, groupsPageSearch, groupspage1 } from './fixtures';
 import userEvents from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
@@ -56,10 +56,10 @@ const AppWrapper = (props: any) => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Switch>
-          <Route exact path={`${ORGANIZATION_LIST_URL}`}>
+          <Route exact path={`${LIST_GROUP_URL}`}>
             {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
           </Route>
-          <Route exact path={`${ORGANIZATION_LIST_URL}/:id`}>
+          <Route exact path={`${LIST_GROUP_URL}/:id`}>
             {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
           </Route>
         </Switch>
@@ -91,9 +91,9 @@ afterAll(() => {
   nock.enableNetConnect();
 });
 
-test('renders correctly when listing organizations', async () => {
+test('renders correctly when listing resources', async () => {
   const history = createMemoryHistory();
-  history.push(ORGANIZATION_LIST_URL);
+  history.push(LIST_GROUP_URL);
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
@@ -131,7 +131,7 @@ test('renders correctly when listing organizations', async () => {
 
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
-      Organization list
+      Groups list
     </title>
   `);
 
@@ -172,8 +172,8 @@ test('renders correctly when listing organizations', async () => {
 
   // view details
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/205`)
-    .reply(200, organizationSearchPage1.entry[0].resource);
+    .get(`/${groupResourceType}/49778`)
+    .reply(200, groupspage1.entry[1].resource);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -182,13 +182,13 @@ test('renders correctly when listing organizations', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/admin/teams/205"
+      href="/groups/list/49778"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/admin/teams/205');
+  expect(history.location.pathname).toEqual('/groups/list/49778');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -196,14 +196,13 @@ test('renders correctly when listing organizations', async () => {
   const closeButton = document.querySelector('[data-testid="close-button"]');
   fireEvent.click(closeButton);
 
-  expect(history.location.pathname).toEqual('/admin/teams');
-
+  expect(history.location.pathname).toEqual('/groups/list');
   expect(nock.isDone()).toBeTruthy();
 });
 
 test('responds as expected to errors', async () => {
   const history = createMemoryHistory();
-  history.push(ORGANIZATION_LIST_URL);
+  history.push(LIST_GROUP_URL);
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)

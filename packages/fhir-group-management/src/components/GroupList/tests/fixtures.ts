@@ -5,7 +5,7 @@ export const groupspage1 = {
     lastUpdated: '2022-03-24T11:19:12.342+00:00',
   },
   type: 'searchset',
-  total: 8,
+  total: 51,
   link: [
     {
       relation: 'self',
@@ -73,7 +73,7 @@ export const groupsPage2 = {
     lastUpdated: '2022-03-24T11:19:12.342+00:00',
   },
   type: 'searchset',
-  total: 8,
+  total: 51,
   link: [
     {
       relation: 'self',
@@ -141,7 +141,7 @@ export const groupsPageSearch = {
     lastUpdated: '2022-03-24T11:22:38.586+00:00',
   },
   type: 'searchset',
-  total: 8,
+  total: 51,
   link: [
     {
       relation: 'self',

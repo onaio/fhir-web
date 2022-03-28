@@ -32,7 +32,6 @@ import {
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
-  URL_GROUP,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -46,7 +45,8 @@ import {
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
-import {LIST_HEALTHCARE_URL} from '@opensrp/fhir-healthcare-service'
+import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
+import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 /** Interface for menu items */
 export interface Route {
@@ -200,8 +200,10 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.GROUP,
           key: 'fhir-group',
-          url: URL_GROUP,
-          enabled: ENABLE_GROUP,
+          url: LIST_GROUP_URL,
+          enabled: ENABLE_GROUP && roles &&
+            activeRoles.GROUP &&
+            isAuthorized(roles, activeRoles.GROUP.split(',')),
         }, {
           title: langObj.QUESTIONNAIRE,
           key: 'fhir-quest',
