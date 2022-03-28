@@ -173,10 +173,6 @@ export const createEditUserProps = {
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
 };
 
-export const heatlhcareProps = {
-  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
-};
-
 export const careTeamProps = {
   ...BaseProps,
   resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,

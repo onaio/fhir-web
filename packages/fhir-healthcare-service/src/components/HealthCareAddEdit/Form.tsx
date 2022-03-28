@@ -89,11 +89,11 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem id="id" name={id} label="Id">
+      <FormItem hidden={true} id="id" name={id} label="Id">
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem id="identifier" name={identifier} label="Identifier">
+      <FormItem hidden={true} id="identifier" name={identifier} label="Identifier">
         <Input disabled={true} />
       </FormItem>
 
@@ -136,7 +136,6 @@ const HealthCareForm = (props: HealthCareFormProps) => {
           disabled={disabled.includes(providedBy)}
           placeholder="Select organization"
           options={orgOptions}
-          allowClear={true}
           showSearch={true}
           filterOption={orgFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         ></Select>
