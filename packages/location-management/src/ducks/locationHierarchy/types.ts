@@ -12,6 +12,7 @@ export interface HierarchyNode<TChild> {
   id: string;
   label: string;
   node: {
+    id?: string;
     locationId: string;
     name: string;
     tags?: string[];
@@ -53,7 +54,7 @@ export interface RawHierarchyNodeMap {
 export interface RawOpenSRPHierarchy {
   locationsHierarchy: {
     map: RawHierarchyNodeMap;
-    parentChildren: Dictionary<string[]>;
+    parentChildren?: Dictionary<string[]>;
   };
 }
 

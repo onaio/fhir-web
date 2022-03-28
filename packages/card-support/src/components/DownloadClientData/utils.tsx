@@ -84,7 +84,9 @@ export const submitForm = async (
       // parentChildren is an object with keys as parent location ids
       // and values as arrays of children location ids
       // each children location with children itself has an entry in the object
-      const nestedLocationIds = Object.values(res.locationsHierarchy.parentChildren);
+      const nestedLocationIds = Object.values(
+        res.locationsHierarchy.parentChildren as Dictionary<string[]>
+      );
       const flatNestedLocationIds = nestedLocationIds.flat();
       // all keys (nested children location ids) are present as values of the primary location id values (clientLocationId)
       // except the primary location id itself - thus the re-add
