@@ -47,9 +47,9 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseURL } = props;
 
-  const { data, isLoading, error } = useQuery([groupResourceType, resourceId], () =>
-    new FHIRServiceClass<Group>(fhirBaseURL, groupResourceType).read(resourceId as string)
-  );
+  const { data, isLoading, error } = useQuery([groupResourceType, resourceId], () => {
+    return new FHIRServiceClass<Group>(fhirBaseURL, groupResourceType).read(resourceId);
+  });
 
   if (isLoading) {
     return <Spin size="large" className="custom-spinner" />;

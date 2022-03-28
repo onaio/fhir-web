@@ -1,15 +1,13 @@
 import { ViewDetails } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, render, screen } from '@testing-library/react';
-import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
+import { groupResourceType } from '../../../constants';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -19,6 +17,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
+      cacheTime: 0,
       staleTime: 0,
     },
   },
@@ -26,10 +25,11 @@ const queryClient = new QueryClient({
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
-  resourceId: 345,
+  resourceId: 405,
 };
 
 beforeAll(() => {
+  nock.disableNetConnect();
   store.dispatch(
     authenticateUser(
       true,
@@ -43,9 +43,13 @@ beforeAll(() => {
   );
 });
 
-afterAll(() => {
+afterEach(() => {
   nock.cleanAll();
   cleanup();
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,18 +64,13 @@ const AppWrapper = (props: any) => {
 };
 
 test('responds as expected to errors', async () => {
-  const history = createMemoryHistory();
-  history.push(LIST_GROUP_URL);
+  nock(props.fhirBaseURL).get(`/${groupResourceType}/405`).replyWithError('coughid');
 
-  nock(props.fhirBaseURL).get(`/${groupResourceType}/345`).replyWithError('coughid');
-
-  render(
-    <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
-    </Router>
-  );
+  render(<AppWrapper {...props}></AppWrapper>);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
+
+  expect(nock.isDone()).toBeTruthy();
 });
