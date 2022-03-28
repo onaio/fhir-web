@@ -6,7 +6,11 @@ import { useQuery } from 'react-query';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
 import { useHistory } from 'react-router';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
-import { intlFormatDateString, FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import {
+  intlFormatDateStrings,
+  FHIRServiceClass,
+  SingleKeyNestedValue,
+} from '@opensrp/react-utils';
 
 export const parseHealthCare = (obj: IHealthcareService) => {
   const { comment, meta, name, active, id, providedBy } = obj;
@@ -16,7 +20,7 @@ export const parseHealthCare = (obj: IHealthcareService) => {
     comment,
     active,
     providedBy,
-    lastUpdated: intlFormatDateString(get(meta, 'lastUpdated')),
+    lastUpdated: intlFormatDateStrings(get(meta, 'lastUpdated')),
   };
 };
 
