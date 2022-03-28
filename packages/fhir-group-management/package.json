@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/fhir-group",
+  "name": "@opensrp/fhir-group-management",
   "version": "0.0.5",
   "description": "group management components for opensrp web",
   "main": "dist/index.js",

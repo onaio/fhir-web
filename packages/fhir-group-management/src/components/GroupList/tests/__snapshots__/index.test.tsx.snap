@@ -1,0 +1,380 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when listing resources: Header title 1`] = `
+<span
+  class="ant-page-header-heading-title"
+  title="Groups list"
+>
+  Groups list
+</span>
+`;
+
+exports[`renders correctly when listing resources: Search 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Jan27Test
+</td>
+`;
+
+exports[`renders correctly when listing resources: Search 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Yes
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: Search 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  1/27/2022
+</td>
+`;
+
+exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/group/add-edit//49778"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Jan27
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Yes
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  1/27/2022
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/group/add-edit//49779"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 2 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Jan27
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 2 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Yes
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 2 3`] = `
+<td
+  class="ant-table-cell"
+>
+  1/27/2022
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 2 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/group/add-edit//49779"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Jan27Test
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Yes
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  1/27/2022
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/group/add-edit//49778"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 2 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Jan27Test
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 2 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Yes
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 2 3`] = `
+<td
+  class="ant-table-cell"
+>
+  1/27/2022
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 2 page 2 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/group/add-edit//49778"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
