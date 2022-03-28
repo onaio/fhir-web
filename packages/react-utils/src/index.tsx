@@ -12,3 +12,4 @@ export * from './components/TableLayout';
 export * from './components/PaginateData';
 export * from './components/KeyValuePairs';
 export * from './helpers/fhir-utils';
+export * from './hooks/useSimpleTabularView';
