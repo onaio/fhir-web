@@ -34,6 +34,3 @@ export const URL_UPLOAD_DRAFT_FILE = `${URL_ADMIN}/form-config/drafts/upload`;
 export const URL_MANIFEST_RELEASE_LIST = `${URL_ADMIN}/form-config/releases`;
 export const URL_FHIR_CARE_TEAM = `${URL_ADMIN}/CareTeams`;
 export const URL_DOWNLOAD_CLIENT_DATA = '/card-support/download-client-data';
-export const URL_HEALTHCARE_SERVICES = `/healthcare`;
-export const URL_HEALTHCARE_ADD = `${URL_HEALTHCARE_SERVICES}/add`;
-export const URL_HEALTHCARE_EDIT = `${URL_HEALTHCARE_SERVICES}/edit/:id`;

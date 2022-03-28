@@ -31,7 +31,6 @@ import {
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
-  URL_HEALTHCARE_SERVICES,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -45,6 +44,7 @@ import {
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
+import {LIST_HEALTHCARE_URL} from '@opensrp/fhir-healthcare-service'
 
 /** Interface for menu items */
 export interface Route {
@@ -208,12 +208,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.HEALTHCARE_SERVICES_MANAGEMENT,
           key: 'healthcare',
-          url: URL_HEALTHCARE_SERVICES,
+          url: LIST_HEALTHCARE_URL,
           enabled:
             ENABLE_HEALTHCARE_SERVICES &&
             roles &&
-            activeRoles.HEALTH_CARE &&
-            isAuthorized(roles, activeRoles.HEALTH_CARE.split(',')),
+            activeRoles.HEALTHCARE_SERVICE &&
+            isAuthorized(roles, activeRoles.HEALTHCARE_SERVICE.split(',')),
         },
         {
           title: langObj.FORM_CONFIGURATION,
