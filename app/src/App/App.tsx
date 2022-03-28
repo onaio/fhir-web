@@ -114,7 +114,7 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
-import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-health-care-service';
+import { HealthCareList, HealthCareAddEdit } from '@opensrp/fhir-healthcare-service';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
