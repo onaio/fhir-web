@@ -24,6 +24,7 @@ import {
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
   ENABLE_QUEST,
+  ENABLE_REPORTS,
 } from './configs/env';
 import {
   URL_USER,
@@ -40,6 +41,7 @@ import {
   URL_SERVER_SETTINGS,
   URL_FHIR_CARE_TEAM,
   URL_ADMIN,
+  URL_DOWNLOAD_DISTRICT_REPORT,
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
@@ -234,6 +236,26 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.SERVER_SETTINGS &&
             isAuthorized(roles, activeRoles.SERVER_SETTINGS.split(',')),
           url: URL_SERVER_SETTINGS,
+        },
+        {
+          title: langObj.REPORTS,
+          key: 'reports',
+          enabled:
+            ENABLE_REPORTS &&
+            roles &&
+            activeRoles.REPORTS &&
+            isAuthorized(roles, activeRoles.REPORTS.split(',')),
+          children: [
+            {
+              title: langObj.DISTRICT_REPORT,
+              key: 'district-report',
+              enabled:
+                roles &&
+                activeRoles.DISTRICT_REPORT &&
+                isAuthorized(roles, activeRoles.DISTRICT_REPORT.split(',')),
+              url: URL_DOWNLOAD_DISTRICT_REPORT,
+            },
+          ],
         },
       ],
     },
