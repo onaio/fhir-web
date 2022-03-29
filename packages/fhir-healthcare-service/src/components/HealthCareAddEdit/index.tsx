@@ -2,11 +2,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { HealthCareForm } from './Form';
 import { useParams } from 'react-router';
-import {
-  healthCareServiceResourceType,
-  organizationResourceType,
-  LIST_HEALTHCARE_URL,
-} from '../../constants';
+import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
+import { organizationResourceType } from '@opensrp/fhir-team-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
