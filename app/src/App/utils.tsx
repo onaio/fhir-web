@@ -30,7 +30,6 @@ import {
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
   FHIR_ROOT_LOCATION_IDENTIFIER,
-  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {

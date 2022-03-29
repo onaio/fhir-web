@@ -263,12 +263,6 @@ Below is a list of currently supported environment variables:
   - FHIR Hierarchy root location UUID
   - **Optional**_(`string`)_
 
-- **REACT_APP_FHIR_RESOURCES_PAGE_SIZE**
-
-  - Default FHIR resource page count
-  - **Required**
-  - default: 500
-
 - **REACT_APP_ENABLE_SERVER_SETTINGS**
 
   - Enables the server settings module
