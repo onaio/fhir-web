@@ -38,8 +38,7 @@ export const ENABLE_PLANS = setEnv('REACT_APP_ENABLE_PLANS', 'false') === 'true'
 export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
 
 /** Activate the healthcare menu */
-export const ENABLE_HEALTHCARE_SERVICES = true;
-  // setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES', 'false') === 'true';
+export const ENABLE_HEALTHCARE_SERVICES = setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES', 'false') === 'true';
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';

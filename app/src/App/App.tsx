@@ -155,7 +155,6 @@ import {
   usersListProps,
   createEditUserProps,
   teamManagementProps,
-  careTeamProps,
 } from './utils';
 import './App.css';
 import {
@@ -333,7 +332,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
-              {...careTeamProps}
               component={CreateEditCareTeam}
             />
             <PrivateComponent
@@ -342,7 +340,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_CREATE_CARE_TEAM}
-              {...careTeamProps}
               component={CreateEditCareTeam}
             />
             <PrivateComponent

@@ -4,8 +4,9 @@ import { v4 } from 'uuid';
 import { getObjLike, IdentifierUseCodes, FHIRServiceClass } from '@opensrp/react-utils';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { get, keyBy } from 'lodash';
-import { healthCareServiceResourceType, organizationResourceType } from '../../constants';
+import { healthCareServiceResourceType } from '../../constants';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
+import { organizationResourceType } from '@opensrp/fhir-team-management';
 
 export interface HealthCareFormFields {
   id?: string;
@@ -51,8 +52,6 @@ export const getHealthCareFormFields = (obj?: IHealthcareService) => {
     return {};
   }
   const { id, name, active, identifier, providedBy, comment, extraDetails } = obj;
-
-  // collect just codings fo the organizationTypeValueSet system
 
   const identifierObj = getObjLike(identifier, 'use', IdentifierUseCodes.OFFICIAL) as Identifier[];
   const formFields: HealthCareFormFields = {
