@@ -20,7 +20,7 @@ import {
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
-  ENABLE_GROUP,
+  ENABLE_FHIR_GROUP,
   OPENSRP_ROLES,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
@@ -201,7 +201,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: langObj.GROUP,
           key: 'fhir-group',
           url: LIST_GROUP_URL,
-          enabled: ENABLE_GROUP && roles &&
+          enabled: ENABLE_FHIR_GROUP && roles &&
             activeRoles.GROUP &&
             isAuthorized(roles, activeRoles.GROUP.split(',')),
         }, {
