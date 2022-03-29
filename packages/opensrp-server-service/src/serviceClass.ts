@@ -307,4 +307,19 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
 
     return {};
   }
+
+  public async download(params: ParamsType = null, method: HTTPMethod = 'GET') {
+    const url = OpenSRPService.getURL(this.generalURL, params);
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
+
+    if (response) {
+      if (response.ok) {
+        return await response.blob();
+      }
+      const defaultMessage = `OpenSRPService download from ${this.endpoint} failed, HTTP status ${response.status}`;
+      await throwHTTPError(response, defaultMessage);
+    }
+    return Promise.reject(response);
+  }
 }
