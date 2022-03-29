@@ -50,6 +50,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  URL_DOWNLOAD_DISTRICT_REPORT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -183,6 +184,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import { DistrictReport } from '@opensrp/reports';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -813,6 +815,14 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.DISTRICT_REPORT && activeRoles.DISTRICT_REPORT.split(',')}
+              exact
+              path={URL_DOWNLOAD_DISTRICT_REPORT}
+              component={DistrictReport}
             />
             <Route
               exact
