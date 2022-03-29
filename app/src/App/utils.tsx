@@ -172,8 +172,3 @@ export const createEditUserProps = {
   userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
 };
-
-export const careTeamProps = {
-  ...BaseProps,
-  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
-};
