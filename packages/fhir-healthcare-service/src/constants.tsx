@@ -6,8 +6,6 @@ export const LIST_HEALTHCARE_URL = '/healthcare/list';
 // constants
 //
 export const healthCareServiceResourceType = 'HealthcareService';
-// TODO - dry out after #685
-export const organizationResourceType = 'Organization';
 
 // form constants
 export const id = 'id' as const;

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HealthCareAddEdit/Form renders with default team members with option to add: default practitioner objects 1`] = `
+exports[`Team-management/TeamsAddEdit/Form renders with default team members with option to add: default practitioner objects 1`] = `
 Array [
   Object {
     "active": true,
