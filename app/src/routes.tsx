@@ -243,8 +243,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           enabled:
             ENABLE_REPORTS &&
             roles &&
-            activeRoles.REPORTS &&
-            isAuthorized(roles, activeRoles.REPORTS.split(',')),
+            activeRoles.MANAGE_REPORTS &&
+            isAuthorized(roles, activeRoles.MANAGE_REPORTS.split(',')),
           children: [
             {
               title: langObj.DISTRICT_REPORT,
