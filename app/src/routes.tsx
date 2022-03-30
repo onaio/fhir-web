@@ -17,24 +17,22 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_TEAMS,
-  ENABLE_TEAMS_ASSIGNMENT_MODULE,
-  ENABLE_HEALTHCARE,
+  ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
-  ENABLE_GROUP,
+  ENABLE_FHIR_GROUP,
   OPENSRP_ROLES,
   ENABLE_PATIENTS_MODULE,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
   ENABLE_QUEST,
+  ENABLE_TEAMS_ASSIGNMENT_MODULE,
 } from './configs/env';
 import {
   URL_USER,
   URL_LOCATION_UNIT,
   URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
-  URL_HEALTHCARE,
-  URL_GROUP,
   URL_MANIFEST_RELEASE_LIST,
   URL_DRAFT_FILE_LIST,
   URL_TEAM_ASSIGNMENT,
@@ -48,6 +46,8 @@ import {
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
+import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
+import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 /** Interface for menu items */
 export interface Route {
@@ -199,16 +199,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: langObj.HEALTHCARE,
-          key: 'healthcare',
-          url: URL_HEALTHCARE,
-          enabled: ENABLE_HEALTHCARE,
-        },
-        {
           title: langObj.GROUP,
-          key: 'group',
-          url: URL_GROUP,
-          enabled: ENABLE_GROUP,
+          key: 'fhir-group',
+          url: LIST_GROUP_URL,
+          enabled: ENABLE_FHIR_GROUP && roles &&
+            activeRoles.GROUP &&
+            isAuthorized(roles, activeRoles.GROUP.split(',')),
         }, {
           title: langObj.QUESTIONNAIRE,
           key: 'fhir-quest',
@@ -218,6 +214,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.QUEST &&
             isAuthorized(roles, activeRoles.QUEST.split(',')),
           url: QUEST_VIEW_URL,
+        },
+        {
+          title: langObj.HEALTHCARE_SERVICES_MANAGEMENT,
+          key: 'healthcare',
+          url: LIST_HEALTHCARE_URL,
+          enabled:
+            ENABLE_HEALTHCARE_SERVICES &&
+            roles &&
+            activeRoles.HEALTHCARE_SERVICE &&
+            isAuthorized(roles, activeRoles.HEALTHCARE_SERVICE.split(',')),
         },
         {
           title: langObj.FORM_CONFIGURATION,

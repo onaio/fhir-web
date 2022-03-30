@@ -8,7 +8,7 @@ import {
 } from '../constants';
 import { Column } from '@opensrp/react-utils';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
-import { useSimpleTabularView } from '../helpers/useSimpleTabularView';
+import { useSimpleTabularView } from '@opensrp/react-utils';
 import { PageHeader, Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
