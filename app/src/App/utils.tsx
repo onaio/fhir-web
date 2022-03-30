@@ -31,7 +31,6 @@ import {
   FHIR_PATIENT_SORT_FIELDS,
   FHIR_PATIENT_BUNDLE_SIZE,
   FHIR_ROOT_LOCATION_IDENTIFIER,
-  FHIR_RESOURCES_PAGE_SIZE,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -41,6 +40,10 @@ export const BaseProps = {
 
 export const teamAssignmentProps = {
   defaultPlanId: DEFAULT_PLAN_ID,
+};
+
+export const teamAffiliationProps = {
+  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
 };
 
 export const teamManagementProps = {
@@ -170,19 +173,7 @@ export const createEditUserProps = {
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
 };
 
-export const heatlhcareProps = {
-  fhirBaseURL: FHIR_API_BASE_URL,
-};
-
-export const groupProps = {
-  fhirBaseURL: FHIR_API_BASE_URL,
-};
-
 export const patientProps = {
   sortFields: FHIR_PATIENT_SORT_FIELDS,
   patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
-};
-
-export const careTeamProps = {
-  resourcePageSize: FHIR_RESOURCES_PAGE_SIZE,
 };

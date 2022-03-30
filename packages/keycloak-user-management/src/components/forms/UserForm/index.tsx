@@ -188,7 +188,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item name="userGroups" id="userGroups" label={lang.GROUPS}>
+          <Form.Item name="userGroups" id="userGroups" label={lang.GROUP}>
             <Select<SelectOption[]>
               mode="multiple"
               allowClear

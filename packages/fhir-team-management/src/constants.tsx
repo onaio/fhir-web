@@ -1,25 +1,55 @@
-// url
-export const URL_ADMIN = 'admin';
-export const URL_LIST_TEAMS = `${URL_ADMIN}/teams/`;
-export const URL_ADD_TEAM = 'teams/add/';
-export const URL_EDIT_TEAM = 'teams/edit/';
+// Query params
+export const pageSizeQuery = 'pageSize';
+export const pageQuery = 'page';
+export const searchQuery = 'search';
 
-//
-// Practitioner
-//
-export const PRACTITIONERROLE_RESOURCE_TYPE = 'PractitionerRole';
-export const PRACTITIONERROLE_ENDPOINT = 'PractitionerRole/';
+// FHIR API strings
+export const organizationAffiliationResourceType = 'OrganizationAffiliation';
+export const organizationResourceType = 'Organization';
+export const practitionerRoleResourceType = 'PractitionerRole';
+export const practitionerResourceType = 'Practitioner';
 
-//
-// Practitioner Role
-//
-export const PRACTITIONER_RESOURCE_TYPE = 'Practitioner';
-export const PRACTITIONER_ENDPOINT = 'Practitioner/';
+// TODO -  temporal coupling of routes in packages and those used in app
+export const URL_ADMIN = '/admin';
+export const ADD_EDIT_ORGANIZATION_URL = `${URL_ADMIN}/teams/add-edit`;
+export const ORGANIZATION_LIST_URL = `${URL_ADMIN}/teams`;
 
-//
-// Organization
-//
-export const ORGANIZATION_RESOURCE_TYPE = 'Organization';
-export const ORGANIZATION_ENDPOINT = 'Organization/';
+// form fields constants
+export const id = 'id' as const;
+export const name = 'name' as const;
+export const active = 'active' as const;
+export const alias = 'alias' as const;
+export const identifier = 'identifier' as const;
+export const type = 'type' as const;
+export const members = 'members' as const;
 
-export const FHIR_RESOURCES_PAGE_SIZE = 500;
+// fhir constants and  value sets
+// fhir constants
+
+export enum HumanNameUseCodes {
+  USUAL = 'usual',
+  OFFICIAL = 'official',
+  TEMP = 'temp',
+  NICKNAME = 'nickname',
+  ANONYMOUS = 'anonymous',
+  OLD = 'old',
+  MAIDEN = 'maiden',
+}
+
+export const organizationTypeValueSetUrl =
+  'http://terminology.hl7.org/CodeSystem/organization-type';
+
+// fhir value sets
+export const OrganizationTypeVS = {
+  system: organizationTypeValueSetUrl,
+  codings: [
+    {
+      code: 'prov',
+      display: 'Healthcare Provider',
+    },
+    {
+      code: 'team',
+      display: 'Organizational team',
+    },
+  ],
+};
