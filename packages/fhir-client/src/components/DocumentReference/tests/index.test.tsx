@@ -2,11 +2,11 @@ import React from 'react';
 import { DocumentReferenceDetails } from '../index';
 import docResources from './docReference.json';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import '@testing-library/jest-dom';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
-import { mountWithProviders } from '../../helpers/testUtils';
+import { mountWithProviders } from '../../../helpers/testUtils';
 import fhir from 'fhirclient';
+import flushPromises from 'flush-promises';
 
 describe('DocumentReference', () => {
   test('documentDetails works correctly', async () => {
@@ -16,7 +16,7 @@ describe('DocumentReference', () => {
     const wrapper = mountWithProviders(
       <DocumentReferenceDetails
         fhirBaseApiUrl={mockBaseUrl}
-        documentResources={([docResources] as unknown) as IfhirR4.IDocumentReference[]}
+        documentResources={[docResources] as unknown as IfhirR4.IDocumentReference[]}
       />
     );
 
@@ -36,7 +36,7 @@ describe('DocumentReference', () => {
     firstCollapseHeader.simulate('click');
 
     await act(async () => {
-      await new Promise((r) => setImmediate(r));
+      await flushPromises();
       wrapper.update();
     });
 
@@ -53,11 +53,11 @@ describe('DocumentReference', () => {
     });
 
     await act(async () => {
-      await new Promise((r) => setImmediate(r));
+      await flushPromises();
       wrapper.update();
     });
 
-    // focument Download link
+    // document Download link
     const linkTd = wrapper
       .find('.doc-resource__content_table tr')
       .at(1)

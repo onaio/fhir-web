@@ -3,26 +3,26 @@ import React from 'react';
 import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin, Layout } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import FHIR from 'fhirclient';
 import get from 'lodash/get';
 import { BrokenPage, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { fhirclient } from 'fhirclient/lib/types';
 import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
-import { resourcesSchema } from '../PatientsList/resourcesSchema';
+import { resourcesSchema } from '../../helpers/resourcesSchema';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { DocumentReferenceDetails } from '../DocumentReference';
+import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
+import { patientResourceType } from 'fhir-client/src/constants';
+import { useQuery } from 'react-query';
 
 const { Header, Sider, Content } = Layout;
 
-const queryClient = new QueryClient();
-
 // Interface for route params
 interface RouteParams {
-  patientId: string;
+  id: string;
 }
 
 // Interface for resourceTypeMap
@@ -45,16 +45,18 @@ export const defaultEditPatientProps: PatientDetailProps = {
   patientBundleSize: 1000,
 };
 
-/** Component which shows FHIR resource details of a single patient
+/**
+ * Component which shows FHIR resource details of a single patient
  *
  * @param {Object} props - PatientDetails component props
  * @returns {React.FC} returns patient resources display
  */
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL, patientBundleSize } = props;
+  const patientId = props.match.params['id'];
+
   const [resourceType, setResourceType] = React.useState<string>('Patient');
-  const patientId = props.match.params['patientId'];
-  const { error, data, isLoading } = useQuery('fetchPatient', async () => {
+  const { error, data, isLoading } = useQuery([patientResourceType, patientId], async () => {
     const token = await handleSessionOrTokenExpiry();
     return await FHIR.client(fhirBaseURL)
       .request({
@@ -70,41 +72,41 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   });
 
   if (isLoading) {
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (error) {
-    return <BrokenPage errorMessage={'An error occured'} />;
+    return <BrokenPage errorMessage="An error occurred" />;
   }
 
   const resourceTypeMap: ResourceTypeMap = {};
 
   if (data && data.entry?.length) {
     for (const datum of data.entry) {
-      const resourceTypeStr = (datum.resource && datum.resource.resourceType) as string;
+      const resourceTypeStr = datum.resource.resourceType as string;
       if (!resourceTypeMap[resourceTypeStr]) {
         resourceTypeMap[resourceTypeStr] = {
           count: 1,
           data: [datum.resource],
         };
       } else {
-        const resourceCount = Number(resourceTypeMap[resourceTypeStr].count) + 1;
+        const resourceCount = resourceTypeMap[resourceTypeStr].count + 1;
         resourceTypeMap[resourceTypeStr] = {
           count: resourceCount,
-          data: [...resourceTypeMap[resourceTypeStr]?.data, datum.resource],
+          data: [...(resourceTypeMap[resourceTypeStr]?.data ?? []), datum.resource],
         };
       }
     }
   }
 
-  const dataSource = resourceTypeMap[resourceType]?.data.map((d: Dictionary, index: number) => {
-    const key = `${index}`;
+  const dataSource = resourceTypeMap[resourceType]?.data.map((d: Dictionary) => {
+    const key = d.id;
     const id = d.id;
     const city = get(d, 'address.city');
     const country = get(d, 'address.country');
     const state = get(d, 'address.state');
     const name =
-      getPatientName(d) ||
+      getPatientName(d as IPatient) ||
       get(d, 'code.coding.0.display') ||
       get(d, 'code.text') ||
       get(d, 'modifierExtension.0.valueReference.display') ||
@@ -188,7 +190,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     };
   });
 
-  const patientName = getPatientName(resourceTypeMap['Patient'].data[0]);
+  const patientName = getPatientName(resourceTypeMap['Patient'].data[0] as IPatient);
   const currentPatient = resourceTypeMap['Patient'].data[0];
   const { gender, birthDate } = currentPatient;
   const avatarLink = `https://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
@@ -322,17 +324,4 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
 
 PatientDetails.defaultProps = defaultEditPatientProps;
 
-const PatientComponent = withRouter(PatientDetails);
-
-/** Wrap component in QueryClientProvider
- *
- * @param {Object} props - component props
- * @returns {React.FC} - returns patients list view
- */
-export function ConnectedPatientDetails(props: PatientDetailPropTypes) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <PatientComponent {...props} />
-    </QueryClientProvider>
-  );
-}
+export { PatientDetails };

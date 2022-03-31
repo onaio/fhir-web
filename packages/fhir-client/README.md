@@ -1,11 +1,11 @@
-# Package
+# Fhir Clients
 
 <!-- package description -->
 
 ## Installation
 
 ```sh
-yarn add @opensrp/template
+yarn add @opensrp/fhir-client
 ```
 
 <!-- 

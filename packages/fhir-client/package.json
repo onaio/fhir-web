@@ -33,24 +33,22 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "react-query": "^3.5.0",
-    "antd": "4.6.3",
     "lodash": "^4.17.15",
     "@onaio/utils": "0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/react-utils": "^0.0.11",
+    "@opensrp/react-utils": "^0.0.12",
     "react-i18next": "^11.8.10"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
+    "antd": "^4.6.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
+    "react-query": "^3.5.0",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
     "redux": "^4.0.5"
   },
   "author": "OpenSRP Engineering",
