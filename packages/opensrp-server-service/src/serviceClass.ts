@@ -315,7 +315,7 @@ export class OpenSRPService<PayloadT extends object = Dictionary> {
 
     if (response) {
       if (response.ok) {
-        return await response.blob();
+        return response;
       }
       const defaultMessage = `OpenSRPService download from ${this.endpoint} failed, HTTP status ${response.status}`;
       await throwHTTPError(response, defaultMessage);
