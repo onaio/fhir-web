@@ -2,7 +2,7 @@ import { getResourcesFromBundle, intlFormatDateStrings } from '../utils';
 import * as config from '@opensrp/pkg-config';
 import { careTeams } from './fixtures';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { downloadFile } from '../utils';
+import { downloadFile, getFileNameFromCDHHeader } from '../utils';
 
 jest.mock('@opensrp/pkg-config', () => ({
   __esModule: true,
@@ -74,5 +74,16 @@ describe('helpers/utils/downloadFile', () => {
 
     expect((global as any).URL.createObjectURL).not.toHaveBeenCalled();
     expect((global as any).navigator.msSaveOrOpenBlob).toHaveBeenCalledWith(blob, 'sample-file');
+  });
+});
+
+describe('helpers/utils/getFileNameFromCDHHeader', () => {
+  it('should return file name from CDH headers', () => {
+    const CDHeader1 = 'attachment; filename=test.pdf';
+    const CDHeader2 = 'attachment;filename=test.csv';
+    const CDHeader3 = 'attachment; filename=test.xhtml;some-other-value';
+    expect(getFileNameFromCDHHeader(CDHeader1)).toEqual('test.pdf');
+    expect(getFileNameFromCDHHeader(CDHeader2)).toEqual('test.csv');
+    expect(getFileNameFromCDHHeader(CDHeader3)).toEqual('test.xhtml');
   });
 });
