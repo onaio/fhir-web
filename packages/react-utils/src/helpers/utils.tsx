@@ -99,3 +99,17 @@ export const downloadFile = (
     }, 200);
   }
 };
+
+/**
+ * extract file name from content-disposition header.
+ * matches CDHeader = attachment;(space)filename=sample-downloaded-report-file-2022-02.xlsx(;)(other-parameters)
+ * where content in brackets is optional.
+ * caveat is if filename itself contains a semicolon
+ *
+ * @param CDHeader content-disposition header
+ * @returns filename extracted from content-disposition header
+ */
+export const getFileNameFromCDHHeader = (CDHeader: string) => {
+  const fileName = CDHeader.split('filename=')[1].split(';')[0];
+  return fileName;
+};
