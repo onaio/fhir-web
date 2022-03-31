@@ -1,161 +1,104 @@
 /* eslint-disable react/display-name */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Table, Spin, PageHeader, Tag } from 'antd';
+import { Row, Col, Button, PageHeader, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
-import FHIR from 'fhirclient';
-import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
-import { BrokenPage, createChangeHandler, getQueryParams, SearchForm } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp/react-utils';
+import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
-import { getPatientName } from './utils';
-import { fhirclient } from 'fhirclient/lib/types';
-
-const queryClient = new QueryClient();
-
-// route params for patients
-interface RouteParams {
-  patientId: string | undefined;
-}
+import { getPatientName, useSortParams } from './utils';
+import { useSimpleTabularView } from '@opensrp/react-utils';
+import { IPatient, Patient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
+import { patientResourceType } from '../../constants';
+import { SortOrder } from 'antd/lib/table/interface';
 
 interface TableData {
-  key: number | string;
-  id: string | undefined;
-  name: string;
-  dob: string;
-  gender: string;
-  deceased: string | boolean;
+  key?: string;
+  id?: string;
+  name?: string;
+  dob?: string;
+  gender?: Patient.GenderEnum;
+  deceased?: boolean;
 }
 
-interface Props {
+interface PatientListProps {
   fhirBaseURL: string;
-  sortFields: string[];
 }
 
-export interface PaginationProps {
-  currentPage: number;
-  pageSize: number | undefined;
-}
-
-export type PatientsListTypes = Props & RouteComponentProps<RouteParams>;
-
-/** default component props */
-const defaultProps: Partial<PatientsListTypes> = {
-  fhirBaseURL: '',
-};
-
-export const fetchPatients = async (
-  fhirBaseURL: string,
-  pageSize: number,
-  pageOffset: number,
-  searchParam: string | undefined,
-  sortFields: string[] | undefined,
-  setUsersCountCallback: (count: number) => void
-) => {
-  const token = await handleSessionOrTokenExpiry();
-  return await FHIR.client(fhirBaseURL)
-    .request({
-      url: `Patient/_search?_count=${pageSize}${
-        sortFields ? '&_sort=' + sortFields.join() : ''
-      }&_getpagesoffset=${pageOffset}${searchParam ? '&name=' + searchParam : ''}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((res: fhirclient.FHIR.Bundle) => {
-      setUsersCountCallback(res.total as number);
-      return res;
-    });
-};
-
-/** Component which shows the list of all patients in FHIR server
+/**
+ * Component which shows the list of all patients in FHIR server
  *
  * @param {Object} props - UserGoupsList component props
  * @returns {Function} returns patients list display
  */
-const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListTypes) => {
-  const { fhirBaseURL, sortFields } = props;
-  const [usersCount, setUsersCount] = React.useState<number>(0);
-  const [pageProps, setPageProps] = React.useState<PaginationProps>({
-    currentPage: 1,
-    pageSize: 20,
-  });
-  const { currentPage, pageSize } = pageProps;
-  const pageOffset = (currentPage - 1) * (pageSize ?? 20);
-  const searchParam = getQueryParams(props.location)['querySearch'];
-  const { data, error, isFetching, refetch } = useQuery<fhirclient.FHIR.Bundle, Error>(
-    'fetchPatients',
-    () =>
-      fetchPatients(
-        fhirBaseURL,
-        pageSize as number,
-        pageOffset,
-        searchParam as string,
-        sortFields,
-        setUsersCount
-      ),
-    { refetchOnWindowFocus: false }
+export const PatientsList = (props: PatientListProps) => {
+  const { fhirBaseURL } = props;
+  const { filters, toggleSort, isAscending, isDescending } = useSortParams();
+
+  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
+    fhirBaseURL,
+    patientResourceType,
+    filters
   );
+  const { data, isFetching, isLoading, error } = queryValues;
 
-  React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    refetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(pageProps), searchParam]);
-
-  if (isFetching) return <Spin size="large" />;
-
-  if (error) {
-    return <BrokenPage errorMessage={'An error occured'} />;
+  if (error && !data) {
+    return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData: TableData[] | undefined =
-    data &&
-    data.entry?.map((datum: fhirclient.FHIR.BundleEntry, index: number) => {
-      return {
-        key: `${index}`,
-        id: datum.resource.id,
-        name: getPatientName(datum.resource),
-        dob: datum.resource.birthDate,
-        gender: datum.resource.gender,
-        deceased: datum.resource.deceasedBoolean || datum.resource.deceasedDateTime,
-      };
-    });
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const tableData: TableData[] = (data?.records ?? []).map((patient: IPatient) => {
+    const { id, birthDate, gender, deceasedBoolean } = patient;
+    return {
+      key: id as string,
+      id: id,
+      name: getPatientName(patient),
+      dob: birthDate,
+      gender: gender,
+      deceased: deceasedBoolean,
+    };
+  });
+  const sortKeyDirection = (key: string): SortOrder =>
+    isAscending(key) ? 'ascend' : isDescending(key) ? 'descend' : null;
 
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
+      dataIndex: 'name' as const,
+      key: 'name' as const,
+      sorter: () => {
+        toggleSort('name');
+        return 0;
+      },
+      sortDirections: [sortKeyDirection('name')],
       render: (name: string, record: TableData) => {
         return (
           <>
-            {' '}
             <span>
               {name} {record.deceased ? <Tag color="red">Deceased</Tag> : null}
-            </span>{' '}
+            </span>
           </>
         );
       },
     },
     {
       title: 'Date Of Birth',
-      dataIndex: 'dob',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.dob.localeCompare(b.name),
+      dataIndex: 'dob' as const,
+      key: 'dob' as const,
+      sorter: () => {
+        toggleSort('date');
+        return 0;
+      },
+      sortDirections: [sortKeyDirection('date')],
     },
     {
       title: 'Gender',
-      dataIndex: 'gender',
-      editable: true,
-      sorter: (a: TableData, b: TableData) => a.gender.localeCompare(b.name),
+      dataIndex: 'gender' as const,
+      key: 'gender' as const,
     },
     {
       title: 'Actions',
       width: '20%',
-
       // eslint-disable-next-line react/display-name
       render: (record: TableData) => (
         <span className="d-flex justify-content-start align-items-center">
@@ -169,9 +112,11 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
     },
   ];
 
-  const searchFormProps = {
-    defaultValue: getQueryParams(props.location)['querySearch'],
-    onChangeHandler: createChangeHandler('querySearch', props),
+  const tableProps = {
+    datasource: tableData,
+    columns,
+    loading: isFetching || isLoading,
+    pagination: tablePaginationProps,
   };
 
   return (
@@ -191,44 +136,9 @@ const PatientsListComponent: React.FC<PatientsListTypes> = (props: PatientsListT
               </Button>
             </Link>
           </div>
-          <Table
-            dataSource={tableData}
-            columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: 20,
-              onChange: (page: number, pageSize: number | undefined) => {
-                setPageProps({
-                  currentPage: page,
-                  pageSize: pageSize,
-                });
-              },
-              current: currentPage,
-              total: usersCount,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
-            }}
-          />
+          <TableLayout {...tableProps} />
         </Col>
-        {/* <ViewDetails keycloakBaseURL={keycloakBaseURL} groupId={groupId} /> */}
       </Row>
     </div>
   );
 };
-
-PatientsListComponent.defaultProps = defaultProps;
-
-const PatientsComponent = withRouter(PatientsListComponent);
-
-/** Wrap component in QueryClientProvider
- *
- * @param props - component props
- * @returns {React.FC} - returns patients list view
- */
-export function PatientsList(props: PatientsListTypes) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <PatientsComponent {...props} />
-    </QueryClientProvider>
-  );
-}

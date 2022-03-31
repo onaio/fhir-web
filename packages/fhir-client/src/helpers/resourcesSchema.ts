@@ -1,5 +1,5 @@
 import { Dictionary } from '@onaio/utils';
-import { dateStringSorterFn } from './utils';
+import { dateStringSorterFn } from '../components/PatientsList/utils';
 
 export const resourcesSchema: Dictionary = {
   Patient: {

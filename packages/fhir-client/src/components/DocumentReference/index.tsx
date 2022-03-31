@@ -2,8 +2,8 @@
 import React from 'react';
 import { Collapse } from 'antd';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { processDocumentReferences } from './helpers/utils';
-import { DocPropertyDisplay, DocTitle } from './helpers/components';
+import { processDocumentReferences } from './utils/utils';
+import { DocPropertyDisplay, DocTitle } from './utils/components';
 
 const { Panel } = Collapse;
 
@@ -12,7 +12,8 @@ export interface DocumentReferenceDetailsProps {
   fhirBaseApiUrl: string;
 }
 
-/** Renders details within a documentReference resource
+/**
+ * Renders details within a documentReference resource
  *
  * @param props - the props
  */

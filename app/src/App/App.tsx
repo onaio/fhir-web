@@ -63,7 +63,7 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
-import { PatientsList, ConnectedPatientDetails } from '@opensrp/fhir-client';
+import { PatientsList, PatientDetails } from '@opensrp/fhir-client';
 import {
   ConnectedPlansList,
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -311,10 +311,10 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={`${'/admin/patients'}/:${'patientId'}`}
+              path={`${'/admin/patients'}/:${'id'}`}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               {...patientProps}
-              component={ConnectedPatientDetails}
+              component={PatientDetails}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
