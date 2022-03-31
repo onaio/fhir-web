@@ -1,6 +1,6 @@
 import { OpenSRPService } from '@opensrp/server-service';
 import { OPENSRP_URL_DOWNLOAD_REPORT } from '../../constants';
-import { downloadFile } from '@opensrp/react-utils';
+import { downloadFile, getFileNameFromCDHHeader } from '@opensrp/react-utils';
 
 export const submitForm = async (
   districtId: string,
@@ -11,7 +11,16 @@ export const submitForm = async (
   const COMPOSED_DOWNLOAD_REPORT_URL = `${OPENSRP_URL_DOWNLOAD_REPORT}/${districtId}/${period}`;
 
   const serve = new OpenSRPService(accessToken, openSRPBaseURL, COMPOSED_DOWNLOAD_REPORT_URL);
-  const blob = await serve.download();
+  const response = await serve.download();
 
-  downloadFile(blob, `district_report_${period}.csv`);
+  // get filename from content-disposition header
+  const contentDispositionHeader = response.headers.get('content-disposition');
+  const fileName = contentDispositionHeader
+    ? getFileNameFromCDHHeader(contentDispositionHeader)
+    : `district_report_${period}.xlsx`;
+
+  // get blob data from response
+  const blob = await response.blob();
+
+  downloadFile(blob, fileName);
 };
