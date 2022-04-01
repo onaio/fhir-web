@@ -48,6 +48,7 @@ import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
 import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
+import { LIST_PATIENTS_URL } from '@opensrp/fhir-client'
 
 /** Interface for menu items */
 export interface Route {
@@ -264,7 +265,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       title: langObj.PATIENTS,
       key: 'fhir-patients',
       enabled: ENABLE_PATIENTS_MODULE,
-      url: '/admin/patients',
+      url: LIST_PATIENTS_URL,
     },
   ];
 
