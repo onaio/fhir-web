@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, PageHeader, Tag } from 'antd';
@@ -6,11 +5,10 @@ import { Link } from 'react-router-dom';
 import { TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
-import { getPatientName, useSortParams } from './utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { IPatient, Patient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { patientResourceType } from '../../constants';
-import { SortOrder } from 'antd/lib/table/interface';
+import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
+import { getPatientName } from './utils';
 
 interface TableData {
   key?: string;
@@ -33,12 +31,10 @@ interface PatientListProps {
  */
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
-  const { filters, toggleSort, isAscending, isDescending } = useSortParams();
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
     fhirBaseURL,
-    patientResourceType,
-    filters
+    patientResourceType
   );
   const { data, isFetching, isLoading, error } = queryValues;
 
@@ -52,25 +48,18 @@ export const PatientsList = (props: PatientListProps) => {
     return {
       key: id as string,
       id: id,
-      name: getPatientName(patient),
+      name: getPatientName(patient) ?? id,
       dob: birthDate,
       gender: gender,
       deceased: deceasedBoolean,
     };
   });
-  const sortKeyDirection = (key: string): SortOrder =>
-    isAscending(key) ? 'ascend' : isDescending(key) ? 'descend' : null;
 
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name' as const,
       key: 'name' as const,
-      sorter: () => {
-        toggleSort('name');
-        return 0;
-      },
-      sortDirections: [sortKeyDirection('name')],
       render: (name: string, record: TableData) => {
         return (
           <>
@@ -85,11 +74,6 @@ export const PatientsList = (props: PatientListProps) => {
       title: 'Date Of Birth',
       dataIndex: 'dob' as const,
       key: 'dob' as const,
-      sorter: () => {
-        toggleSort('date');
-        return 0;
-      },
-      sortDirections: [sortKeyDirection('date')],
     },
     {
       title: 'Gender',
@@ -102,7 +86,7 @@ export const PatientsList = (props: PatientListProps) => {
       // eslint-disable-next-line react/display-name
       render: (record: TableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${'/admin/patients'}/${record.id}`}>
+          <Link to={`${LIST_PATIENTS_URL}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
               View
             </Button>
@@ -122,9 +106,9 @@ export const PatientsList = (props: PatientListProps) => {
   return (
     <div className="content-section">
       <Helmet>
-        <title>{'Patients'}</title>
+        <title>Patients</title>
       </Helmet>
-      <PageHeader title={'Patients'} className="page-header" />
+      <PageHeader title="Patients" className="page-header" />
       <Row className="list-view">
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">
@@ -132,7 +116,7 @@ export const PatientsList = (props: PatientListProps) => {
             <Link to="#">
               <Button type="primary">
                 <PlusOutlined />
-                {'Add patient'}
+                Add patient
               </Button>
             </Link>
           </div>

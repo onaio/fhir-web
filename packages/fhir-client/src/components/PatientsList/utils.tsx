@@ -77,8 +77,8 @@ export function buildObservationValueString(obj: Dictionary): string {
 export const dateStringSorterFn = (d1: string, d2: string) => Date.parse(d1) - Date.parse(d2);
 
 export enum SortDirection {
-  ASC = 'asc',
-  DESC = 'desc',
+  ASC = '',
+  DESC = '-',
 }
 /**
  * help manage sort key state in tables that render fhir data where
@@ -97,11 +97,12 @@ export function useSortParams() {
     }
     if (currentDir === SortDirection.DESC) {
       newSortKeysState = { ...sortKeys, [key]: { dir: SortDirection.ASC, time: timestamp } };
+    } else {
+      newSortKeysState = {
+        ...sortKeys,
+        [key]: { dir: SortDirection.DESC, time: timestamp },
+      };
     }
-    newSortKeysState = {
-      ...sortKeys,
-      [key]: { dir: SortDirection.DESC, time: timestamp },
-    };
     setSortKeys(newSortKeysState);
   };
 
