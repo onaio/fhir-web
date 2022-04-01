@@ -266,6 +266,7 @@ export const DownloadLink = (props: DownloadLinkProps) => {
       <a download={filename} className={isLoading || isError ? 'disabled-link' : ''} href={dataUrl}>
         Download
       </a>
+      &nbsp;&nbsp;
       {isLoading && <SyncOutlined spin />}
     </>
   );
