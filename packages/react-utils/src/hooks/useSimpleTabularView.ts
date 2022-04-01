@@ -133,6 +133,7 @@ export function useSimpleTabularView<T extends Resource>(
       if (searchText) {
         currentSParams.set(searchQuery, searchText);
         currentSParams.set(pageQuery, defaultPage.toString());
+        currentSParams.set(pageSizeQuery, defaultPageSize.toString());
       } else {
         currentSParams.delete(searchQuery);
       }
