@@ -179,6 +179,7 @@ const getColumns = (
 ): Column<ParsedDocReference[0]['content'][0]>[] => [
   {
     title: 'S.no',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     render: function SerialNumber(_, __, index) {
       return <span>{index + 1}</span>;
     },
@@ -237,12 +238,15 @@ interface DownloadLinkProps {
  */
 export const DownloadLink = (props: DownloadLinkProps) => {
   const { linkToResource, fhirBaseUrl, filename } = props;
-  /** using the url direct as a href of an anchor tag downloads the file with
+  /**
+   * using the url direct as a href of an anchor tag downloads the file with
    * the backend predefined filename, We have to download the file's binary data
    * and have the user download with a customizable filename
    */
-  const { isLoading, data, isError } = useQuery(linkToResource, () =>
-    fetchAttachmentForDownload(fhirBaseUrl, linkToResource)
+  const { isLoading, data, isError } = useQuery(
+    linkToResource,
+    () => fetchAttachmentForDownload(fhirBaseUrl, linkToResource),
+    { retry: false }
   );
 
   const [dataUrl, setDataUrl] = React.useState<string>();

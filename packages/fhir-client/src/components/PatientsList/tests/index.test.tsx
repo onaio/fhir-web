@@ -1,171 +1,164 @@
-import React from 'react';
-import { Provider } from 'react-redux';
 import { PatientsList } from '..';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
-import flushPromises from 'flush-promises';
-import * as reactQuery from 'react-query';
-import { act } from 'react-dom/test-utils';
+import React from 'react';
 import { store } from '@opensrp/store';
+import { createMemoryHistory } from 'history';
+import { Route, Router, Switch } from 'react-router';
+import { Provider } from 'react-redux';
+import { authenticateUser } from '@onaio/session-reducer';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import nock from 'nock';
+import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { cleanup, render, screen } from '@testing-library/react';
 import { patients } from './fixtures';
-import { mount, shallow } from 'enzyme';
-import * as fhirCient from 'fhirclient';
-import toJson from 'enzyme-to-json';
+import userEvents from '@testing-library/user-event';
+import { LIST_PATIENTS_URL, patientResourceType } from '../../../constants';
 
-const { QueryClient, QueryClientProvider } = reactQuery;
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-const queryClient = new QueryClient();
+jest.mock('@opensrp/react-utils', () => {
+  const actual = jest.requireActual('@opensrp/react-utils');
 
-jest.mock('@opensrp/notifications', () => ({
-  __esModule: true,
-  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
-}));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const SearchForm = (props: any) => {
+    const { onChangeHandler } = props;
+    return (
+      <div className="search-input-wrapper">
+        <input onChange={onChangeHandler} data-testid="search-form"></input>
+      </div>
+    );
+  };
+  return {
+    ...actual,
+    SearchForm,
+  };
+});
 
-const history = createBrowserHistory();
+nock.disableNetConnect();
 
-describe('Patients list view', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path={`${LIST_PATIENTS_URL}`}>
+            {(routeProps) => <PatientsList {...{ ...props, ...routeProps }} />}
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
+
+beforeAll(() => {
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
+
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
+test('renders correctly when listing organizations', async () => {
+  const history = createMemoryHistory();
+  history.push(LIST_PATIENTS_URL);
+
+  nock(props.fhirBaseURL)
+    .get(`/${patientResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+    })
+    .reply(200, patients)
+    .persist();
+
+  nock(props.fhirBaseURL)
+    .get(`/${patientResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+      'name:contains': '345',
+    })
+    .reply(200, patients);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+
+  document.querySelectorAll('tr').forEach((tr, idx) => {
+    tr.querySelectorAll('td').forEach((td) => {
+      expect(td).toMatchSnapshot(`table row ${idx} page 1`);
+    });
   });
 
-  it('renders patients table without crashing', async () => {
-    shallow(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
-        </QueryClientProvider>
-      </Router>
-    );
-  });
+  // works with search as well.
+  const searchForm = document.querySelector('[data-testid="search-form"]');
+  userEvents.paste(searchForm as HTMLElement, '345');
 
-  it('renders correctly', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(patients),
-        };
-      })
-    );
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-    expect(wrapper.text()).toMatchSnapshot();
+  expect(history.location.search).toEqual('?search=345&page=1&pageSize=20');
 
-    // test sorting
-    // find table (sorted by default order)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`table rows - default order ${index}`);
-    });
+  // remove search.
+  userEvents.clear(searchForm);
+  expect(history.location.search).toEqual('?page=1&pageSize=20');
+  expect(nock.isDone()).toBeTruthy();
+});
 
-    // sort by username
-    // click on sort to change the order (ascending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
+test('responds as expected to errors', async () => {
+  const history = createMemoryHistory();
+  history.push(LIST_PATIENTS_URL);
 
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - ascending ${index}`);
-    });
+  nock(props.fhirBaseURL)
+    .get(`/${patientResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+    })
+    .replyWithError('An error happened');
 
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - descending ${index}`);
-    });
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    // cancel sort
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
-
-    // sort by dob
-    // click on sort to change the order (ascending)
-    expect(wrapper.find('thead tr th').at(1).text()).toEqual('Date Of Birth');
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-    // check new sort order by dob (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by dob - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(1).simulate('click');
-    wrapper.update();
-
-    // check new sort order by email (descending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by dob - descending ${index}`);
-    });
-    wrapper.update();
-    // sort by gender
-    // click on sort to change the order (ascending)
-    wrapper.find('thead tr th').at(2).simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by gender - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(2).simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by gender - descending ${index}`);
-    });
-
-    // cancel sort
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').at(2).simulate('click');
-    wrapper.unmount();
-  });
-
-  it('shows broken page if fhir api is down', async () => {
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockImplementation(
-      () =>
-        ({
-          data: undefined,
-          error: 'Something went wrong',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any)
-    );
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <PatientsList fhirBaseURL="https://r4.smarthealthit.org/" />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.update();
-    /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
-    wrapper.unmount();
-  });
+  expect(screen.getByText(/An error happened/)).toBeInTheDocument();
 });

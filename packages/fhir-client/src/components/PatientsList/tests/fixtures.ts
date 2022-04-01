@@ -25,8 +25,7 @@ export const patients = {
         },
         text: {
           status: 'generated',
-          div:
-            '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Apple <b>PARK </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Apple <b>PARK </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
         },
         name: [
           {
@@ -73,8 +72,7 @@ export const patients = {
         },
         text: {
           status: 'generated',
-          div:
-            '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Jane <b>DOE </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Jane <b>DOE </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
         },
         name: [
           {
@@ -121,8 +119,7 @@ export const patients = {
         },
         text: {
           status: 'generated',
-          div:
-            '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">John <b>DOE </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">John <b>DOE </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
         },
         name: [
           {
@@ -169,8 +166,7 @@ export const patients = {
         },
         text: {
           status: 'generated',
-          div:
-            '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Albert <b>EINSTEIN </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Albert <b>EINSTEIN </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>213,One Pademore </span><br/><span>Nairobi </span><span>Kenya </span></td></tr><tr><td>Date of birth</td><td><span>04 August 1988</span></td></tr></tbody></table></div>',
         },
         deceasedBoolean: true,
         name: [

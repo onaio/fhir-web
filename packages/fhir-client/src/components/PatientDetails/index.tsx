@@ -3,11 +3,10 @@ import React from 'react';
 import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin, Layout } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useParams } from 'react-router-dom';
 import FHIR from 'fhirclient';
 import get from 'lodash/get';
 import { BrokenPage, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { fhirclient } from 'fhirclient/lib/types';
 import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
 import { resourcesSchema } from '../../helpers/resourcesSchema';
@@ -15,7 +14,7 @@ import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { DocumentReferenceDetails } from '../DocumentReference';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { patientResourceType } from 'fhir-client/src/constants';
+import { patientResourceType } from '../../constants';
 import { useQuery } from 'react-query';
 
 const { Header, Sider, Content } = Layout;
@@ -53,22 +52,17 @@ export const defaultEditPatientProps: PatientDetailProps = {
  */
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL, patientBundleSize } = props;
-  const patientId = props.match.params['id'];
+  const { id: patientId } = useParams<RouteParams>();
 
-  const [resourceType, setResourceType] = React.useState<string>('Patient');
+  const [resourceType, setResourceType] = React.useState<string>(patientResourceType);
   const { error, data, isLoading } = useQuery([patientResourceType, patientId], async () => {
     const token = await handleSessionOrTokenExpiry();
-    return await FHIR.client(fhirBaseURL)
-      .request({
-        url: `Patient/${patientId}/$everything?_count=${patientBundleSize}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res: fhirclient.FHIR.Bundle) => {
-        return res;
-      })
-      .catch((_) => sendErrorNotification('Error Occured'));
+    return await FHIR.client(fhirBaseURL).request({
+      url: `Patient/${patientId}/$everything?_count=${patientBundleSize}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   });
 
   if (isLoading) {
