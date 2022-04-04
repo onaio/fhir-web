@@ -28,28 +28,41 @@ import { getExtraData } from '@onaio/session-reducer';
 import '../../index.css';
 import { FormFields, UserFormProps } from '../forms/UserForm/types';
 import { defaultUserFormInitialValues, UserForm } from '../forms/UserForm';
-import { getFormValues } from '../forms/UserForm/utils';
+import { getFormValues, postPutPractitioner } from '../forms/UserForm/utils';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 /** inteface for route params */
 export interface RouteParams {
-  userId: string;
+  userId?: string;
 }
 
 /** props for editing a user view */
-export interface EditUserProps {
+export interface CreateEditUserProps {
   keycloakUser: KeycloakUser | null;
   keycloakBaseURL: string;
-  opensrpBaseURL: string;
+  baseUrl: string;
   extraData: Dictionary;
   fetchKeycloakUsersCreator: typeof fetchKeycloakUsers;
   userFormHiddenFields?: UserFormProps['hiddenFields'];
   userFormRenderFields?: UserFormProps['renderFields'];
+  getPractitionerFun: (baseUrl: string, userId: string) => Promise<Practitioner | IPractitioner>;
+  postPutPractitionerFactory: UserFormProps['practitionerUpdaterFactory'];
 }
 
+const getOpenSrpPractitioner = (baseUrl: string, userId: string) => {
+  const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, baseUrl);
+  return serve.read(userId);
+};
+
+const defaultProps = {
+  getPractitionerFun: getOpenSrpPractitioner,
+  postPutPractitionerFactory: postPutPractitioner,
+};
+
 /** type intersection for all types that pertain to the props */
-export type CreateEditPropTypes = EditUserProps & RouteComponentProps<RouteParams>;
+export type CreateEditPropTypes = CreateEditUserProps & RouteComponentProps<RouteParams>;
 
 /**
  *
@@ -63,16 +76,18 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [userGroups, setUserGroups] = useState<UserGroup[]>([]);
   const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
-  const [practitioner, setPractitioner] = useState<Practitioner>();
+  const [practitioner, setPractitioner] = useState<Practitioner | IPractitioner>();
 
   const {
     keycloakUser,
     keycloakBaseURL,
-    opensrpBaseURL,
+    baseUrl,
     extraData,
     fetchKeycloakUsersCreator,
     userFormHiddenFields,
     userFormRenderFields,
+    getPractitionerFun,
+    postPutPractitionerFactory,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -89,7 +104,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         })
         .finally(() => setUserGroupsLoading(false));
     }
-  }, [keycloakBaseURL, opensrpBaseURL, userGroups.length]);
+  }, [keycloakBaseURL, baseUrl, userGroups.length]);
 
   /**
    * Fetch user if userId changes (editing a different user)
@@ -138,25 +153,24 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   useEffect(() => {
     if (userId) {
       setPractitionerLoading(true);
-      const serve = new OpenSRPService(OPENSRP_CREATE_PRACTITIONER_ENDPOINT, opensrpBaseURL);
-      serve
-        .read(userId)
-        .then((response: Practitioner | undefined) => {
-          setPractitioner(response);
+      getPractitionerFun(baseUrl, userId)
+        .then((response) => {
+          const res = response as Practitioner | undefined;
+          setPractitioner(res);
         })
         .catch((_: Error) => {
           sendErrorNotification(lang.ERROR_OCCURED);
         })
         .finally(() => setPractitionerLoading(false));
     }
-  }, [userId, opensrpBaseURL]);
+  }, [userId, baseUrl, getPractitionerFun]);
 
   useEffect(() => {
     setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
   }, [keycloakUser, practitioner, assignedUserGroups]);
 
   if (userGroupsLoading || keyCloakUserLoading || userGroupLoading || practitionerLoading)
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
 
   return (
     <Row>
@@ -164,16 +178,19 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         <UserForm
           initialValues={initialValues}
           keycloakBaseURL={keycloakBaseURL}
-          opensrpBaseURL={opensrpBaseURL}
+          baseUrl={baseUrl}
           userGroups={userGroups}
           extraData={extraData}
           hiddenFields={userFormHiddenFields}
           renderFields={userFormRenderFields}
+          practitionerUpdaterFactory={postPutPractitionerFactory}
         />
       </Col>
     </Row>
   );
 };
+
+CreateEditUser.defaultProps = defaultProps;
 
 export { CreateEditUser };
 

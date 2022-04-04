@@ -1,4 +1,4 @@
-import { submitForm, createOrEditPractitioners, getUserFormPayload } from '../utils';
+import { submitForm, postPutPractitioner } from '../utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -64,7 +64,13 @@ describe('forms/utils/submitForm', () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     const historyPushMock = jest.spyOn(history, 'push');
 
-    submitForm(value, keycloakBaseURL, OPENSRP_API_BASE_URL, userGroup, []).catch(jest.fn());
+    submitForm(
+      value,
+      keycloakBaseURL,
+      userGroup,
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
+    ).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -166,9 +172,9 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, userGroups: [], practitioner: undefined },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       userGroup,
-      []
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(mockErrorCallback);
 
     await act(async () => {
@@ -189,9 +195,9 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, practitioner: undefined },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       userGroup,
-      []
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn());
 
     await act(async () => {
@@ -209,9 +215,10 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, id: mockV4, practitioner: practitioner1 },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
+
       userGroup,
-      []
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn());
 
     await act(async () => {
@@ -308,9 +315,9 @@ describe('forms/utils/submitForm', () => {
         practitioner: practitioner1,
       },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       userGroup,
-      ['4dd15e66-7132-429b-8939-d1e601611464', 'cab07278-c77b-4bc7-b154-bcbf01b7d35b']
+      ['4dd15e66-7132-429b-8939-d1e601611464', 'cab07278-c77b-4bc7-b154-bcbf01b7d35b'],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn());
 
     await act(async () => {
@@ -338,9 +345,9 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, practitioner: practitioner1 },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       userGroup,
-      []
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn);
 
     await act(async () => {
@@ -358,9 +365,9 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, practitioner: practitioner1, id: id },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       userGroup,
-      []
+      [],
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn);
 
     await act(async () => {
@@ -378,11 +385,7 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    const { practitioner, practitionerIsEditMode } = getUserFormPayload(valuesCopy);
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, practitioner, practitionerIsEditMode).catch(
-      jest.fn
-    );
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -396,7 +399,7 @@ describe('forms/utils/submitForm', () => {
           active: true,
           identifier: mockV4,
           name: `${value.firstName} ${value.lastName}`,
-          userId: '',
+          userId: keycloakUser.id,
           username: value.username,
         }),
         headers: {
@@ -419,11 +422,7 @@ describe('forms/utils/submitForm', () => {
       practitioner: practitioner1,
     };
 
-    const { practitioner, practitionerIsEditMode } = getUserFormPayload(valuesCopy);
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, practitioner, practitionerIsEditMode).catch(
-      jest.fn
-    );
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -465,11 +464,7 @@ describe('forms/utils/submitForm', () => {
       practitioner: practitioner1,
     };
 
-    const { practitioner, practitionerIsEditMode } = getUserFormPayload(valuesCopy);
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, practitioner, practitionerIsEditMode).catch(
-      jest.fn
-    );
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -508,11 +503,7 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    const { practitioner, practitionerIsEditMode } = getUserFormPayload(valuesCopy);
-
-    createOrEditPractitioners(OPENSRP_API_BASE_URL, practitioner, practitionerIsEditMode).catch(
-      jest.fn
-    );
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -530,9 +521,9 @@ describe('forms/utils/submitForm', () => {
     submitForm(
       { ...value, id: id, userGroups: undefined, practitioner: practitioner1 },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       [],
-      undefined
+      undefined,
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn());
 
     await act(async () => {
@@ -583,9 +574,9 @@ describe('forms/utils/submitForm', () => {
       // initialize values for new user creation
       { ...value, id: undefined, userGroups: undefined },
       keycloakBaseURL,
-      OPENSRP_API_BASE_URL,
       [],
-      undefined
+      undefined,
+      postPutPractitioner(OPENSRP_API_BASE_URL)
     ).catch(jest.fn());
 
     await act(async () => {

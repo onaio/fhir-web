@@ -120,3 +120,5 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
 UserRolesList.defaultProps = defaultProps;
 
 export default UserRolesList;
+
+export { fetchAllRoles };

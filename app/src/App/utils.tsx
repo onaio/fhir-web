@@ -171,7 +171,13 @@ export const createEditUserProps = {
   // that is closer to the code.
   userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
+  baseUrl: OPENSRP_API_BASE_URL,
 };
+
+export const  fhirCreateEditUserProps = {
+  ...createEditUserProps,
+  baseUrl: FHIR_API_BASE_URL,
+}
 
 export const patientProps = {
   sortFields: FHIR_PATIENT_SORT_FIELDS,

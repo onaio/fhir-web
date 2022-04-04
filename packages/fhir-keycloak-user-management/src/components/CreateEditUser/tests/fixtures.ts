@@ -1,7 +1,7 @@
-import { KeycloakUserGroup } from '../../../ducks/userGroups';
 
-export const userGroups: KeycloakUserGroup[] = [
+export const userGroup = [
   { id: '283c5d6e-9b83-4954-9f3b-4c2103e4370c', name: 'Admin', path: '/Admin', subGroups: [] },
+  { id: 'a55f0b02-950f-4c6a-9857-667ffbba1dd5', name: 'Admin 2', path: '/Admin 2', subGroups: [] },
   {
     id: '4dd15e66-7132-429b-8939-d1e601611464',
     name: 'New Group',
@@ -21,10 +21,3 @@ export const userGroups: KeycloakUserGroup[] = [
     subGroups: [],
   },
 ];
-
-export const userGroup: KeycloakUserGroup = {
-  id: '283c5d6e-9b83-4954-9f3b-4c2103e4370c',
-  name: 'Admin',
-  path: '/Admin',
-  subGroups: [],
-};

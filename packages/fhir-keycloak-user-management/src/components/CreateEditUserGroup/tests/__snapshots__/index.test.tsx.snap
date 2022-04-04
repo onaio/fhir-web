@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`components/CreateEditUserGroup renders correctly: full user group form 1`] = `"Edit User Group | AdminNameRealm Roles2 itemsAvailable RolesEDIT_KEYCLOAK_USERSVIEW_KEYCLOAK_USERS6 itemsAssigned RolesOPENMRSALL_EVENTSPLANS_FOR_USERrealm-adminoffline_accessuma_authorizationEffective RolesOPENMRSALL_EVENTSPLANS_FOR_USERrealm-adminoffline_accessuma_authorizationSaveCancel"`;
