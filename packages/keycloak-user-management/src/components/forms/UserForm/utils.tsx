@@ -12,10 +12,12 @@ import {
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import lang, { Lang } from '../../../lang';
-import { FormFields, SelectOption } from './types';
+import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+
 /**
  * Utility function to get new user UUID from POST response location header
  *
@@ -116,25 +118,20 @@ const createEditKeycloakUser = async (
  *
  * @param values - form values
  * @param keycloakBaseURL - keycloak API base URL
- * @param opensrpBaseURL - opensrp api base url
  * @param allUserGroups - Array of Usergroups to get data from when sending payload of user groups
  * @param previousUserGroupIds - An array of previously selected user group ids
+ * @param practitionerUpdater - async function that updates practitioner records
  * @param langObj - the translations object lookup
  */
 export const submitForm = async (
   values: FormFields,
   keycloakBaseURL: string,
-  opensrpBaseURL: string,
   allUserGroups: UserGroup[],
   previousUserGroupIds: string[] | undefined,
+  practitionerUpdater: PractitionerUpdaterFun,
   langObj: Lang = lang
 ): Promise<void> => {
-  const {
-    isEditMode,
-    keycloakUser,
-    practitioner: practitionerValue,
-    practitionerIsEditMode,
-  } = getUserFormPayload(values);
+  const { isEditMode, keycloakUser } = getUserAndGroupsPayload(values);
 
   /**
    * callback to update groups and practitioners upon successfully updating keycloak user
@@ -144,10 +141,7 @@ export const submitForm = async (
   const updateGroupsAndPractitioner = async (keycloakUserId: string) => {
     const promises: Promise<void>[] = [];
 
-    const practitionerPayload = { ...practitionerValue, userId: keycloakUserId };
-    promises.push(
-      createOrEditPractitioners(opensrpBaseURL, practitionerPayload, practitionerIsEditMode)
-    );
+    promises.push(practitionerUpdater(values, keycloakUserId));
 
     // Assign User Group to user
     if (values.userGroups) {
@@ -207,7 +201,7 @@ export const submitForm = async (
  */
 export const getFormValues = (
   keycloakUser?: KeycloakUser,
-  practitioner?: Practitioner,
+  practitioner?: Practitioner | IPractitioner,
   userGroups?: UserGroup[]
 ): FormFields => {
   if (!keycloakUser) {
@@ -238,12 +232,11 @@ export const getFormValues = (
  *
  * @param values - the form's values
  */
-export const getUserFormPayload = (values: FormFields) => {
+export const getUserAndGroupsPayload = (values: FormFields) => {
   const isEditMode = !!values.id;
   // possibility of creating a practitioner for an existing user if one was not created before
-  const practitionerIsEditMode = !!values.practitioner?.identifier;
 
-  const { id, username, firstName, lastName, email, enabled, contact, active } = values;
+  const { id, username, firstName, lastName, email, enabled, contact } = values;
   const preUserAttributes = {
     ...(contact ? { contact: [contact] } : {}),
   };
@@ -265,34 +258,9 @@ export const getUserFormPayload = (values: FormFields) => {
     ...(some(cleanedAttributes) ? { attributes: cleanedAttributes } : {}),
   };
 
-  // initialize for new practitioner
-  const practitionerId = v4();
-  let practitioner = {
-    active: true,
-    identifier: practitionerId,
-    name: `${firstName} ${lastName}`,
-    userId: '', // need to override this with the new keycloak users' id
-    username,
-  };
-
-  // if the base keycloak user is disabled, also disable the tied opensrp practitioner
-  // otherwise follow the practitioner's activation field
-  const practitionerActive = enabled === false ? false : active === undefined ? false : active;
-  if (values.practitioner?.identifier) {
-    practitioner = {
-      ...values.practitioner,
-      active: practitionerActive,
-      name: `${firstName} ${lastName}`,
-      userId: id,
-      username,
-    };
-  }
-
   return {
-    practitionerIsEditMode,
     isEditMode,
     keycloakUser,
-    practitioner,
     userGroups: values.userGroups ?? [],
   };
 };
@@ -315,4 +283,35 @@ export const getUserGroupsOptions = (userGroups: UserGroup[]): SelectOption[] =>
  */
 export const userGroupOptionsFilter = (inputValue: string, option?: SelectOption) => {
   return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
+};
+
+export const postPutPractitioner = (baseUrl: string) => (values: FormFields, userId: string) => {
+  const { id, username, firstName, lastName, enabled, active } = values;
+  // initialize for new practitioner
+  const practitionerId = v4();
+  let practitioner: Practitioner = {
+    active: true,
+    identifier: practitionerId,
+    name: `${firstName} ${lastName}`,
+    userId,
+    username,
+  };
+
+  // if the base keycloak user is disabled, also disable the tied opensrp practitioner
+  // otherwise follow the practitioner's activation field
+  const practitionerActive = enabled === false ? false : active === undefined ? false : active;
+  const practObj = values.practitioner as Practitioner | undefined;
+  if (practObj?.identifier) {
+    practitioner = {
+      ...practObj,
+      active: practitionerActive,
+      name: `${firstName} ${lastName}`,
+      userId: id,
+      username,
+    };
+  }
+
+  const practitionerIsEditMode = !!values.practitioner?.identifier;
+
+  return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode);
 };

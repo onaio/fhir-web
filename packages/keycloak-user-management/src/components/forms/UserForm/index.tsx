@@ -2,7 +2,12 @@ import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import lang from '../../../lang';
-import { getUserGroupsOptions, submitForm, userGroupOptionsFilter } from './utils';
+import {
+  getUserGroupsOptions,
+  postPutPractitioner,
+  submitForm,
+  userGroupOptionsFilter,
+} from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
 import {
@@ -18,7 +23,8 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
     initialValues,
     keycloakBaseURL,
-    opensrpBaseURL,
+    baseUrl,
+    practitionerUpdaterFactory,
     extraData,
     userGroups,
     renderFields,
@@ -26,6 +32,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
+  const practitionerUpdater = practitionerUpdaterFactory(baseUrl);
 
   // hook into the form lifecycle methods
   const [form] = Form.useForm();
@@ -102,9 +109,9 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             submitForm(
               { ...initialValues, ...values },
               keycloakBaseURL,
-              opensrpBaseURL,
               userGroups,
-              initialValues.userGroups as string[]
+              initialValues.userGroups as string[],
+              practitionerUpdater
             )
               .catch((_: Error) => {
                 sendErrorNotification(lang.ERROR_OCCURED);
@@ -226,6 +233,7 @@ export const defaultUserFormInitialValues: FormFields = {
 
 UserForm.defaultProps = {
   initialValues: defaultUserFormInitialValues,
+  practitionerUpdaterFactory: postPutPractitioner,
 };
 
 export { UserForm };

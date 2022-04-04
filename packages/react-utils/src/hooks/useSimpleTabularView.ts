@@ -99,17 +99,17 @@ export function useSimpleTabularView<T extends Resource>(
   const defaultPageSize = (getConfig('defaultTablesPageSize') as number | undefined) ?? 20;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
 
-  type TRQuery = [string, number, number, string];
+  type TRQuery = [string, number, number, string, URLParams];
   type QueryKeyType = { queryKey: TRQuery };
 
   const queryFn = useCallback(
-    async ({ queryKey: [_, page, pageSize, search] }: QueryKeyType) =>
+    async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) =>
       loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams),
-    [extraParams, fhirBaseUrl, resourceType]
+    [fhirBaseUrl, resourceType]
   );
 
   const rQuery = {
-    queryKey: [resourceType, page, pageSize, search] as TRQuery,
+    queryKey: [resourceType, page, pageSize, search, extraParams] as TRQuery,
     queryFn,
     select: (data: IBundle) => ({
       records: getResourcesFromBundle<T>(data),

@@ -256,4 +256,4 @@ exports[`DocumentReference documentDetails works correctly 8`] = `
 
 exports[`DocumentReference documentDetails works correctly: table tr 1`] = `"S.noNameFormatPreview/Download"`;
 
-exports[`DocumentReference documentDetails works correctly: table tr 2`] = `"1History and Physical Specificationurn:ihe:pcc:handp:2008Download"`;
+exports[`DocumentReference documentDetails works correctly: table tr 2`] = `"1History and Physical Specificationurn:ihe:pcc:handp:2008Download  "`;

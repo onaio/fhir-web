@@ -17,6 +17,7 @@ import { getAllConfigs } from '@opensrp/pkg-config';
 import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
+import Client from 'fhirclient/lib/Client';
 
 const configs = getAllConfigs();
 
@@ -160,4 +161,35 @@ export const fetchProtectedImage = async (imageURL: string) => {
   }
 
   return null;
+};
+
+// TODO - deprecate in favour of FHIRServiceClass.
+/**
+ * Higher order function that creates the FHIR Client instance and passes token
+ * to request header
+ *
+ * Usage
+ * -----------
+ * const serve = await FHIRService("fhir base url")
+ *
+ * **To make a GET request: serve.request('fhir-resource-type')
+ *
+ * **To make a POST request: serve.create('fhir-resource-payload')
+ *
+ * **To make a PUT request: serve.update('fhir-resource-payload')
+ *
+ * **To DELETE a resource: serve.delete('<fhir-resource-type>/<id>')
+ *
+ * @param {string} fhirBaseURL - FHIR base URL
+ */
+
+export const FHIRService = async (fhirBaseURL: string) => {
+  const token = await handleSessionOrTokenExpiry();
+  const serve = new Client({} as never, {
+    serverUrl: fhirBaseURL,
+    tokenResponse: {
+      access_token: token as string,
+    },
+  });
+  return serve;
 };

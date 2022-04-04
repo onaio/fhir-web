@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`components/forms/UserFroupForm renders correctly 1`] = `"New User GroupNameSaveCancel"`;

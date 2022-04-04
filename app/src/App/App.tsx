@@ -100,7 +100,7 @@ import {
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
-import { ConnectedCreateEditUser as FHIRConnectedCreateEditUser } from '@opensrp/fhir-user-management';
+import { CreateEditUser as FHIRConnectedCreateEditUser } from '@opensrp/fhir-user-management';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
   UploadForm,
@@ -159,6 +159,7 @@ import {
   createEditUserProps,
   teamManagementProps,
   patientProps,
+  fhirCreateEditUserProps,
 } from './utils';
 import './App.css';
 import {
@@ -585,7 +586,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
-              {...createEditUserProps}
+              {...(ENABLE_FHIR ? fhirCreateEditUserProps : createEditUserProps)}
               component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
@@ -610,7 +611,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
-              {...createEditUserProps}
+              {...(ENABLE_FHIR ? fhirCreateEditUserProps : createEditUserProps)}
               component={ENABLE_FHIR ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent

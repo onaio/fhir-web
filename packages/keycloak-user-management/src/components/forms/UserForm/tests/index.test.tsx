@@ -20,7 +20,7 @@ import { Router } from 'react-router';
 import { Form } from 'antd';
 import { URL_USER } from '../../../../constants';
 import { UserFormProps } from '../types';
-import { getFormValues } from '../utils';
+import { getFormValues, postPutPractitioner } from '../utils';
 import { Dictionary } from '@onaio/utils/dist/types/types';
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -59,9 +59,10 @@ describe('components/forms/UserForm', () => {
   const props: UserFormProps = {
     initialValues: defaultUserFormInitialValues,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    opensrpBaseURL: OPENSRP_API_BASE_URL,
+    baseUrl: OPENSRP_API_BASE_URL,
     extraData: {},
     userGroups: userGroup,
+    practitionerUpdaterFactory: postPutPractitioner,
   };
 
   beforeAll(() => {
