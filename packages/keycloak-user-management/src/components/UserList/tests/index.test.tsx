@@ -158,6 +158,7 @@ describe('components/UserList', () => {
 
     expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
     expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
+    // look for the delete button and click, expect that the removed user is not present in the final render.
     // look for pagination
     expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"120 / page"`);
     wrapper.unmount();
