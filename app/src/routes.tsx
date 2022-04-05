@@ -17,6 +17,7 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
   ENABLE_TEAMS,
+  ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
   OPENSRP_ROLES,
@@ -43,6 +44,7 @@ import {
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
+import {LIST_HEALTHCARE_URL} from '@opensrp/fhir-healthcare-service'
 
 /** Interface for menu items */
 export interface Route {
@@ -202,6 +204,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.QUEST &&
             isAuthorized(roles, activeRoles.QUEST.split(',')),
           url: QUEST_VIEW_URL,
+        },
+        {
+          title: langObj.HEALTHCARE_SERVICES_MANAGEMENT,
+          key: 'healthcare',
+          url: LIST_HEALTHCARE_URL,
+          enabled:
+            ENABLE_HEALTHCARE_SERVICES &&
+            roles &&
+            activeRoles.HEALTHCARE_SERVICE &&
+            isAuthorized(roles, activeRoles.HEALTHCARE_SERVICE.split(',')),
         },
         {
           title: langObj.FORM_CONFIGURATION,

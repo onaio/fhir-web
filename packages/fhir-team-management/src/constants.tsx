@@ -25,13 +25,6 @@ export const members = 'members' as const;
 
 // fhir constants and  value sets
 // fhir constants
-export enum IdentifierUseCodes {
-  USUAL = 'usual',
-  OFFICIAL = 'official',
-  TEMP = 'temp',
-  SECONDARY = 'secondary',
-  OLD = 'old',
-}
 
 export enum HumanNameUseCodes {
   USUAL = 'usual',
