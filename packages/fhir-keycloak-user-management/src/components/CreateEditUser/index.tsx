@@ -27,14 +27,14 @@ const getPractitioner = (baseUrl: string, userId: string) => {
 
 const practitionerUpdater = (baseUrl: string) => (values: FormFields, userId: string) => {
   const isEditMode = !!values.practitioner;
-  const successMessage = values.practitioner
+  const successMessage = isEditMode
     ? 'Practitioner updated successfully'
     : 'Practitioner created successfully';
 
   let officialIdentifier;
   let secondaryIdentifier;
-  const currentIdentifiers = (values.practitioner as IPractitioner).identifier;
   if (values.practitioner) {
+    const currentIdentifiers = (values.practitioner as IPractitioner).identifier;
     officialIdentifier = getObjLike(currentIdentifiers, 'use', IdentifierUseCodes.OFFICIAL)[0];
     secondaryIdentifier = getObjLike(currentIdentifiers, 'use', IdentifierUseCodes.SECONDARY)[0];
   }
@@ -97,7 +97,7 @@ export function CreateEditUser(props: CreateEditPropTypes) {
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
-    practitionerUpdaterFactory: practitionerUpdater,
+    postPutPractitionerFactory: practitionerUpdater,
   };
 
   return <BaseCreateEditUser {...baseCompProps} />;
