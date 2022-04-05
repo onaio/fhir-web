@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Health care form form validation works: "Practitioners Select user (practitioners only)" 1`] = `"Provided bySelect organization"`;
+
+exports[`Health care form renders correctly: active field 1`] = `
+Array [
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
+    type="radio"
+    value={false}
+  />,
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
+    type="radio"
+    value={true}
+  />,
+]
+`;
+
+exports[`Health care form renders correctly: active label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="active"
+  title="Status"
+>
+  Status
+</label>
+`;
+
+exports[`Health care form renders correctly: cancel button 1`] = `
+<button
+  className="ant-btn ant-btn-default"
+  id="cancel-button"
+  onClick={[Function]}
+  type="button"
+>
+  <LoadingIcon
+    existIcon={false}
+    loading={false}
+    prefixCls="ant-btn"
+  >
+    <CSSMotion
+      motionName="ant-btn-loading-icon-motion"
+      onAppearActive={[Function]}
+      onAppearStart={[Function]}
+      onEnterActive={[Function]}
+      onEnterStart={[Function]}
+      onLeaveActive={[Function]}
+      onLeaveStart={[Function]}
+      removeOnLeave={true}
+      visible={false}
+    >
+      <DomWrapper />
+    </CSSMotion>
+  </LoadingIcon>
+  <span
+    key=".0"
+  >
+    Cancel
+  </span>
+</button>
+`;
+
+exports[`Health care form renders correctly: comment field 1`] = `
+<textarea
+  className="ant-input"
+  disabled={false}
+  id="comment"
+  onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Enter comment"
+  rows={2}
+  style={Object {}}
+  value=""
+/>
+`;
+
+exports[`Health care form renders correctly: comment label 1`] = `
+<label
+  className=""
+  htmlFor="comment"
+  title="Comment"
+>
+  Comment
+</label>
+`;
+
+exports[`Health care form renders correctly: extraDetails field 1`] = `null`;
+
+exports[`Health care form renders correctly: extraDetails label 1`] = `null`;
+
+exports[`Health care form renders correctly: name field 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="Name"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`Health care form renders correctly: name label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="name"
+  title="Name"
+>
+  Name
+</label>
+`;
+
+exports[`Health care form renders correctly: submit button 1`] = `
+<button
+  className="ant-btn ant-btn-primary"
+  disabled={false}
+  id="submit-button"
+  onClick={[Function]}
+  type="submit"
+>
+  <LoadingIcon
+    existIcon={false}
+    loading={false}
+    prefixCls="ant-btn"
+  >
+    <CSSMotion
+      motionName="ant-btn-loading-icon-motion"
+      onAppearActive={[Function]}
+      onAppearStart={[Function]}
+      onEnterActive={[Function]}
+      onEnterStart={[Function]}
+      onLeaveActive={[Function]}
+      onLeaveStart={[Function]}
+      removeOnLeave={true}
+      visible={false}
+    >
+      <DomWrapper />
+    </CSSMotion>
+  </LoadingIcon>
+  <span
+    key=".0"
+  >
+    save
+  </span>
+</button>
+`;

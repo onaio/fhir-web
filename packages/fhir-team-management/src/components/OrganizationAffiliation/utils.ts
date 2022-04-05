@@ -3,12 +3,8 @@ import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrgani
 import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
 import { locationResourceType } from '@opensrp/fhir-location-management';
 import { keyBy, transform } from 'lodash';
-import {
-  IdentifierUseCodes,
-  organizationAffiliationResourceType,
-  organizationResourceType,
-} from '../../constants';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { organizationAffiliationResourceType, organizationResourceType } from '../../constants';
+import { FHIRServiceClass, IdentifierUseCodes } from '@opensrp/react-utils';
 import { v4 } from 'uuid';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 

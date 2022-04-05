@@ -111,6 +111,7 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import { HealthCareList, HealthCareAddEdit, LIST_HEALTHCARE_URL, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '@opensrp/fhir-healthcare-service';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
@@ -154,7 +155,6 @@ import {
   usersListProps,
   createEditUserProps,
   teamManagementProps,
-  careTeamProps,
 } from './utils';
 import './App.css';
 import {
@@ -237,6 +237,7 @@ const App: React.FC = () => {
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
   useTranslation();
+
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -330,7 +331,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
-              {...careTeamProps}
               component={CreateEditCareTeam}
             />
             <PrivateComponent
@@ -339,7 +339,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_CREATE_CARE_TEAM}
-              {...careTeamProps}
               component={CreateEditCareTeam}
             />
             <PrivateComponent
@@ -813,6 +812,34 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${LIST_HEALTHCARE_URL}/:id`}
+              component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={LIST_HEALTHCARE_URL}
+              component={HealthCareList}
             />
             <Route
               exact
