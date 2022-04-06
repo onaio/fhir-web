@@ -60,7 +60,7 @@ const TableActions = (props: Props): JSX.Element => {
         >
           {user_id &&
             (record.id === user_id ? null : (
-              <Button danger type="link" style={{ color: '#' }}>
+              <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
                 Delete
               </Button>
             ))}
@@ -90,9 +90,10 @@ const TableActions = (props: Props): JSX.Element => {
         {lang.EDIT}
       </Link>
       <Divider type="vertical" />
-      <Dropdown overlay={menu}>
+      <Dropdown overlay={menu} placement="bottomRight" arrow trigger={['click']}>
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
+            data-testid="action-dropdown"
             className="more-options"
             style={{ fontSize: '16px', padding: 0, margin: 0 }}
           />
