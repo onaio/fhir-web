@@ -100,7 +100,7 @@ test('renders correctly for new locations', async () => {
     </title>
   `);
 
-  // some small but incoclusive proof that the form rendered
+  // some small but inconclusive proof that the form rendered
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
   expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
 });
@@ -126,13 +126,7 @@ test('renders correctly for edit locations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('title')).toMatchInlineSnapshot(`
-    <title>
-      Edit &gt; area51
-    </title>
-  `);
-
-  // some small but incoclusive proof that the form rendered and has some initial values
+  // some small but inconclusive proof that the form rendered and has some initial values
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
   expect(screen.getByLabelText(/alias/i)).toMatchSnapshot('alias field');
 });

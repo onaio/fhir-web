@@ -15,6 +15,7 @@ const defaultRoles = {
   HEALTHCARE_SERVICE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   TEAMS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   PRODUCT_CATALOGUE: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  GROUP: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   FORM_CONFIGURATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   ORG_AFFILIATION: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
@@ -37,11 +38,15 @@ export const ENABLE_PLANS = setEnv('REACT_APP_ENABLE_PLANS', 'false') === 'true'
 export const ENABLE_TEAMS = setEnv('REACT_APP_ENABLE_TEAMS', 'false') === 'true';
 
 /** Activate the healthcare menu */
-export const ENABLE_HEALTHCARE_SERVICES = setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES', 'false') === 'true';
+export const ENABLE_HEALTHCARE_SERVICES =
+  setEnv('REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES', 'false') === 'true';
 
 /** Activate the plans menu */
 export const ENABLE_LOCATIONS = setEnv('REACT_APP_ENABLE_LOCATIONS', 'false') === 'true';
 export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'profile').split(',');
+
+/** Activate the teams menu */
+export const ENABLE_FHIR_GROUP = setEnv('REACT_APP_ENABLE_FHIR_GROUP', 'false') === 'true';
 
 export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
   setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
