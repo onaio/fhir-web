@@ -36,7 +36,6 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
     "@onaio/utils": "^0.0.1",
     "date-fns": "2.11.1",
