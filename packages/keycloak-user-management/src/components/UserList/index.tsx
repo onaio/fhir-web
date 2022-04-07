@@ -29,6 +29,7 @@ import {
   SEARCH_QUERY_PARAM,
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
   ORGANIZATION_BY_PRACTITIONER,
+  UserQueryId,
 } from '../../constants';
 import lang from '../../lang';
 import { getTableColumns } from './utils';
@@ -203,7 +204,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
-              queryid="Users"
+              queryid={UserQueryId}
               total={() => {
                 const usersCountService = new serviceClass(
                   `${KEYCLOAK_URL_USERS_COUNT}`,
