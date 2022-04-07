@@ -4,11 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { TableActions } from '..';
 import * as fixtures from './fixtures';
 import { shallow, mount } from 'enzyme';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, act } from '@testing-library/react';
 import * as reactQuery from 'react-query';
 import * as utils from '../utils';
 import flushPromises from 'flush-promises';
-import { act } from 'react-dom/test-utils';
 
 jest.mock('react-query');
 
