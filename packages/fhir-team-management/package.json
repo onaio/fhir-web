@@ -33,7 +33,6 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
@@ -41,9 +40,9 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@smile-cdr/fhirts": "1.2.5",
     "@types/uuid": "8.3.1",
-    "i18next-parser": "^3.5.0",
-    "@smile-cdr/fhirts": "1.2.5"
+    "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
     "i18next": "^19.8.4",

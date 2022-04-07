@@ -129,5 +129,6 @@
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
     "tsd": "^0.19.1"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
