@@ -32,7 +32,6 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.4",
     "@opensrp/pkg-config": "^0.0.9",

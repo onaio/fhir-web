@@ -43,8 +43,8 @@
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
     "antd": "^4.6.3",
-    "react-query": "^3.15.1",
-    "fhirclient": "^2.4.0"
+    "fhirclient": "^2.4.0",
+    "react-query": "^3.15.1"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
@@ -59,6 +59,5 @@
     "nock": "^13.0.6"
   },
   "author": "OpenSRP Engineering",
-  "license": "Apache-2.0",
-  "private": false
+  "license": "Apache-2.0"
 }
