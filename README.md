@@ -6,48 +6,49 @@ The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](h
 the data collected on the server, configuration options as well as any
 functionality provided by the API server.
 
-The initial priorities are to support:
+This repository is divided into 2 [workTrees](), the first contains the actual react application workspace `app`, the second contain the different workspace packages that `app` consumes.
 
-1. Authentication through Keycloak
-2. User management - pull some functionality, not all, that currently can be achieved by Keycloak.
-3. Team management
-4. Jurisdiction/Location management: user or team assignment,
+## Run the app
 
-The hope is to build on the work done on other attempts so far.
+```sh
+# create a .env file in the repo/app folder, you can copy the .env.sample and then override its values
+# cp .env.sample app/.env
 
-This repository intends to be a monorepo of all components that you will use
-to provide all the functionality for an OpenSRP frontend UI.
+# Build the packages, this involves generating their type definitions and transpiling using babel to cjs
+yarn lerna:prepublish
 
-## Code
+# start the react app
+yarn start
+```
+
+** Gotcha **
+
+<details>
+  <summary>Skip preflight check error on yarn start</summary>
+  
+  ** Error: ** 
+  If you would prefer to ignore this check, add SKIP_PREFLIGHT_CHECK=true to an .env file in your project.
+  That will permanently disable this message but you might encounter other issues.
+
+  ** Fix **
+  Make sure you have added the .env file in the app folder, and has the SKIP_PREFLIGHT_CHECK=true env
+
+</details>
+
+You can get the list of all configurable envs, their descriptions and sane defaults in the [env docs file](docs/env.md)
+
+## setting up with docker
+
+TBD
+
+## Testing
+
+```sh
+yarn lerna:prepublish
+yarn test
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ## Contributing
 
