@@ -127,9 +127,5 @@
     "app",
     "packages/*"
   ],
-  "installConfig": {
-    "hoistingLimits": "none",
-    "selfReferences": true
-  },
   "packageManager": "yarn@1.18.0"
 }

@@ -21,7 +21,7 @@ yarn lerna:prepublish
 yarn start
 ```
 
-** Gotcha **
+**Gotcha**
 
 <details>
   <summary>Skip preflight check error on yarn start</summary>
