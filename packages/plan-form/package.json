@@ -52,7 +52,6 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.16",
     "lodash": "^4.17.20",
-    "moment": "^2.29.2",
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"
   },
