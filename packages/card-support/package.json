@@ -51,9 +51,8 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
-    "@opensrp/reducer-factory": "^0.0.9",
-    "@opensrp/server-service": "^0.0.16",
-    "moment": "^2.29.2",
+    "@opensrp/reducer-factory": "^0.0.13",
+    "@opensrp/server-service": "^0.0.17",
     "papaparse": "^5.3.0",
     "react-i18next": "^11.8.10"
   },
