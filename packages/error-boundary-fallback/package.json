@@ -34,6 +34,7 @@
     "react": "^16.13.1"
   },
   "dependencies": {
+    "@onaio/utils": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "react-i18next": "^11.8.10"
