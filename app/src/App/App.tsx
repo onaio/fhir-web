@@ -184,6 +184,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -840,6 +841,20 @@ const App: React.FC = () => {
               activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
               path={LIST_HEALTHCARE_URL}
               component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={`${LIST_GROUP_URL}/:id`}
+              component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={LIST_GROUP_URL}
+              component={GroupList}
             />
             <Route
               exact

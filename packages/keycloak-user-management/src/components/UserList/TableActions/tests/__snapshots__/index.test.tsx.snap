@@ -48,6 +48,7 @@ Object {
 
 exports[`components/UserList/TableActions renders correctly: dots menu 1`] = `
 Object {
+  "arrow": true,
   "children": <Button
     style={
       Object {
@@ -59,6 +60,7 @@ Object {
   >
     <ForwardRef(MoreOutlined)
       className="more-options"
+      data-testid="action-dropdown"
       style={
         Object {
           "fontSize": "16px",
@@ -85,6 +87,7 @@ Object {
       >
         <Button
           danger={true}
+          data-testid="delete-user"
           style={
             Object {
               "color": "#",
@@ -119,6 +122,10 @@ Object {
       View Details
     </MenuItem>
   </Menu>,
+  "placement": "bottomRight",
+  "trigger": Array [
+    "click",
+  ],
 }
 `;
 
@@ -145,6 +152,7 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
     >
       <Button
         danger={true}
+        data-testid="delete-user"
         style={
           Object {
             "color": "#",
@@ -179,4 +187,15 @@ exports[`components/UserList/TableActions shows delete element if entry is not l
     View Details
   </MenuItem>
 </Menu>
+`;
+
+exports[`components/UserList/TableActions shows delete element if entry is not logged in user: yes button 1`] = `
+<button
+  class="ant-btn ant-btn-primary ant-btn-sm"
+  type="button"
+>
+  <span>
+    Yes
+  </span>
+</button>
 `;
