@@ -12,7 +12,7 @@ This repository is divided into 2 [workTrees](), the first contains the actual r
 
 ```sh
 # create a .env file in the repo/app folder, you can copy the .env.sample and then override its values
-# cp .env.sample app/.env
+# cp app/.env.sample app/.env
 
 # Build the packages, this involves generating their type definitions and transpiling using babel to cjs
 yarn lerna:prepublish
