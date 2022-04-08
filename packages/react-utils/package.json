@@ -34,6 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "^0.1.1",
@@ -49,6 +50,8 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
+    "i18next": "^19.8.4",
+    "lodash": "^4.17.21",
     "react": "^16.18.1",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",

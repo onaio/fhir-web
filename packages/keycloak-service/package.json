@@ -36,6 +36,7 @@
     "@opensrp/store": "^0.0.10"
   },
   "dependencies": {
+    "@onaio/utils": "^0.0.1",
     "@opensrp/react-utils": "^0.0.12"
   }
 }

@@ -37,7 +37,11 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "i18next": "^19.8.4",
-    "react": "^16.18.1"
+    "react": "^16.18.1",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1",
+    "redux": "^4.1.2"
   },
   "dependencies": {
     "@onaio/utils": "^0.0.1",

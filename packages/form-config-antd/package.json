@@ -43,6 +43,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/session-reducer": "^0.0.13",
     "@onaio/utils": "^0.0.1",
     "@opensrp/form-config-core": "^0.0.4",
     "@opensrp/notifications": "^0.0.5",
