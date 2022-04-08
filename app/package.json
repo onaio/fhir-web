@@ -20,6 +20,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/card-support": "^0.0.9",
     "@opensrp/error-boundary-fallback": "^0.0.7",
+    "@opensrp/fhir-care-team": "^0.0.1",
     "@opensrp/fhir-healthcare-service": "^0.0.1",
     "@opensrp/fhir-location-management": "^0.0.1",
     "@opensrp/fhir-quest-form": "^0.0.0",
@@ -32,6 +33,8 @@
     "@opensrp/location-settings": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/plan-form": "^0.0.4",
+    "@opensrp/plan-form-core": "^0.0.4",
     "@opensrp/plans": "^0.0.10",
     "@opensrp/product-catalogue": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
@@ -57,7 +60,6 @@
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "react-i18next": "^11.8.10",
-    "@smile-cdr/fhirts": "1.2.5",
     "react-query": "^3.15.1",
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
@@ -143,6 +145,7 @@
     "react-router-dom": "^5.2.1"
   },
   "devDependencies": {
-    "i18next-parser": "^3.5.0"
+    "i18next-parser": "^3.5.0",
+    "@smile-cdr/fhirts": "1.2.5"
   }
 }
