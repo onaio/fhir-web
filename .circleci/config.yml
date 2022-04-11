@@ -13,6 +13,7 @@ jobs:
           SKIP_PREFLIGHT_CHECK: 'true'
           GENERATE_SOURCEMAP: 'false'
           NODE_OPTIONS: '--max-old-space-size=4096'
+          TSC_WATCHFILE: 'UseFsEventsWithFallbackDynamicPolling'
 
     working_directory: ~/web
 
