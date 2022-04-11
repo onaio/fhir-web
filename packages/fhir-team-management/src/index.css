@@ -54,3 +54,11 @@
   font-size: 80%;
   font-weight: 400;
 }
+
+.action-button{
+  padding: 4px 0
+}
+
+.full-width{
+  width: 100%;
+}

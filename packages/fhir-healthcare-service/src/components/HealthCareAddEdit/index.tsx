@@ -1,0 +1,83 @@
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import { HealthCareForm } from './Form';
+import { useParams } from 'react-router';
+import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
+import { organizationResourceType } from '@opensrp/fhir-team-management';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { Spin } from 'antd';
+import { useQuery } from 'react-query';
+import {
+  FHIRServiceClass,
+  BrokenPage,
+  getResourcesFromBundle,
+  loadAllResources,
+} from '@opensrp/react-utils';
+import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
+import { getHealthCareFormFields } from './utils';
+
+export interface HealthCareAddEditProps {
+  fhirBaseURL: string;
+}
+
+export interface RouteParams {
+  id?: string;
+}
+
+export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
+  const { fhirBaseURL: fhirBaseUrl } = props;
+
+  const { id: resourceId } = useParams<RouteParams>();
+
+  const healthCareService = useQuery(
+    [healthCareServiceResourceType, resourceId],
+    async () =>
+      new FHIRServiceClass<IHealthcareService>(fhirBaseUrl, healthCareServiceResourceType).read(
+        resourceId as string
+      ),
+    {
+      enabled: !!resourceId,
+    }
+  );
+
+  const organizations = useQuery(
+    [organizationResourceType],
+    () => loadAllResources(fhirBaseUrl, organizationResourceType),
+    {
+      select: (res) => getResourcesFromBundle(res) as IHealthcareService[],
+      onError: () => sendErrorNotification('Unable to fetch organizations'),
+    }
+  );
+
+  if ((!healthCareService.isIdle && healthCareService.isLoading) || organizations.isLoading) {
+    return <Spin size="large" className="custom-spinner"></Spin>;
+  }
+
+  if (healthCareService.error && !healthCareService.data) {
+    return <BrokenPage errorMessage={(healthCareService.error as Error).message} />;
+  }
+
+  const initialValues = getHealthCareFormFields(healthCareService.data);
+
+  const pageTitle = healthCareService.data
+    ? `Edit team | ${healthCareService.data.name ?? ''}`
+    : 'Create team';
+
+  return (
+    <section className="layout-content">
+      <Helmet>
+        <title>{pageTitle}</title>
+      </Helmet>
+      <h5 className="mb-3 header-title">{pageTitle}</h5>
+      <div className="bg-white p-5">
+        <HealthCareForm
+          fhirBaseUrl={fhirBaseUrl}
+          initialValues={initialValues}
+          organizations={organizations.data ?? []}
+          cancelUrl={LIST_HEALTHCARE_URL}
+          successUrl={LIST_HEALTHCARE_URL}
+        />
+      </div>
+    </section>
+  );
+};
