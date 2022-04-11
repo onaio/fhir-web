@@ -43,6 +43,7 @@ jobs:
 
       - run:
           name: build packages
+          no_output_timeout: 30m
           command: export NODE_OPTIONS="--max-old-space-size=8192" && yarn lerna:prepublish --concurrency=1
 
       - save_cache:
