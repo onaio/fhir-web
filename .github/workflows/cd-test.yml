@@ -22,8 +22,8 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      - name: Lint
-        run: yarn lint
+        #      - name: Lint
+        #        run: yarn lint
 
         # cache and only build packages that were changed
       - name: Build packages
