@@ -34,6 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
     "@opensrp/location-management": "^0.0.15",
@@ -46,16 +47,16 @@
     "react-i18next": "^11.8.10"
   },
   "peerDependencies": {
-    "react-query": "^3.15.1",
     "@opensrp/store": "^0.0.9",
+    "antd": "^4.8.2",
+    "i18next": "^19.8.4",
     "react": "^16.18.1",
+    "react-query": "^3.15.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1",
-    "redux": "^4.0.1",
-    "antd": "^4.8.2"
+    "redux": "^4.0.1"
   },
   "author": "OpenSRP Engineering",
-  "license": "Apache-2.0",
-  "private": false
+  "license": "Apache-2.0"
 }
