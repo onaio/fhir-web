@@ -20,6 +20,7 @@ import {
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
+  ENABLE_FHIR_GROUP,
   OPENSRP_ROLES,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
@@ -46,7 +47,8 @@ import {
 } from './constants';
 import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
-import {LIST_HEALTHCARE_URL} from '@opensrp/fhir-healthcare-service'
+import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
+import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 /** Interface for menu items */
 export interface Route {
@@ -198,6 +200,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
+          title: langObj.GROUP,
+          key: 'fhir-group',
+          url: LIST_GROUP_URL,
+          enabled: ENABLE_FHIR_GROUP && roles &&
+            activeRoles.GROUP &&
+            isAuthorized(roles, activeRoles.GROUP.split(',')),
+        }, {
           title: langObj.QUESTIONNAIRE,
           key: 'fhir-quest',
           enabled:
