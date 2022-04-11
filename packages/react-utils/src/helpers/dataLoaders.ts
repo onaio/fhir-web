@@ -125,7 +125,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
  *
  * @param langObject - look up of translations
  */
-export const handleSessionOrTokenExpiry = async (langObject: Lang = lang) => {
+export const handleSessionOrTokenExpiry = (async (langObject: Lang = lang) => {
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
@@ -137,7 +137,7 @@ export const handleSessionOrTokenExpiry = async (langObject: Lang = lang) => {
   } else {
     return getAccessToken(store.getState());
   }
-};
+}) as GetAccessTokenType;
 
 /**
  * Fetch an image that requires authentication and returns an
