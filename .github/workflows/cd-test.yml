@@ -1,0 +1,46 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build and test opensrp web
+on: [ "push", "pull_request" ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          cache-dependency-path: "**/yarn.lock"
+
+      - name: cp envs
+        run: cp app/.env.sample app/.env
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+        # TODO: cache and only build packages that were changed
+      - name: Build packages
+        run: yarn lerna:prepublish 
+
+      - name: Run all tests
+        run: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true
