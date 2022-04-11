@@ -32,7 +32,11 @@ jobs:
 
       - run:
           name: build packages
-          command: yarn lerna:prepublish --concurrency=2
+          command: yarn lerna:prepublish --concurrency=2 --no-private
+
+      - run:
+          name: Build web application
+          command: yarn build
 
       - save_cache:
           paths:
