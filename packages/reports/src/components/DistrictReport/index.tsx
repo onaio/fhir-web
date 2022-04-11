@@ -126,7 +126,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
               loading={!userLocSettings.isError && (isIdle || isLoading)}
               notFoundContent={
                 !userLocSettings.isError && (isIdle || isLoading) ? (
-                  <Spin size="small" style={{ height: 'auto' }} />
+                  <Spin size="small" style={{ height: 'auto', marginLeft: '50%' }} />
                 ) : userLocSettings.isError ? (
                   <Alert message="Error loading locations" type="error" showIcon />
                 ) : null
@@ -143,9 +143,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
             <DatePicker
               disabledDate={(current) => current > moment().endOf('month')}
               picker="month"
-              onChange={(_, dateString) => {
-                setReportDate(dateString);
-              }}
+              onChange={(_, dateString) => setReportDate(dateString)}
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
