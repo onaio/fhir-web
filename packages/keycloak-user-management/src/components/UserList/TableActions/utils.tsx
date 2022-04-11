@@ -102,7 +102,7 @@ async function unassignAndDeactivatePractitioner(
 ) {
   // delete practitioner role
   const openSrpDeletePractitionerRole = new OpenSRPService(
-    deletePractitionerRoleEndpoint + practitioner.identifier,
+    `${deletePractitionerRoleEndpoint}${practitioner.identifier}`,
     opensrpBaseURL
   );
 
