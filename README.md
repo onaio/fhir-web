@@ -6,7 +6,7 @@ The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](h
 the data collected on the server, configuration options as well as any
 functionality provided by the API server.
 
-This repository is divided into 2 [workTrees](), the first contains the actual react application workspace `app`, the second contain the different workspace packages that `app` consumes.
+This repository is divided into 2 [workTrees](https://yarnpkg.com/features/workspaces), the first contains the actual react application workspace `app`, the second contain the different workspace packages that `app` consumes.
 
 ## Run the app
 
