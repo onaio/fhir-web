@@ -36,18 +36,14 @@ jobs:
               echo "======"
             done
           background: true
-          
+
       - run:
           name: Install dependencies
           command: yarn install
 
       - run:
           name: build packages
-          command: yarn lerna:prepublish --concurrency=2 --no-private
-
-      - run:
-          name: Build web application
-          command: yarn build
+          command: yarn lerna:prepublish --concurrency=1
 
       - save_cache:
           paths:
@@ -65,6 +61,4 @@ jobs:
       - run:
           name: upload coverage to coveralls
           command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-      - run:
-          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
-          when: always
+
