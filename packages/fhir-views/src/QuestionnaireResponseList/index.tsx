@@ -17,7 +17,7 @@ import {
 } from '@opensrp/fhir-resources';
 import type { IQuestionnaireResponse } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaireResponse';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
-import { useSimpleTabularView } from '../helpers/useSimpleTabularView';
+import { useSimpleTabularView } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 
 /** props for the PlansList view */

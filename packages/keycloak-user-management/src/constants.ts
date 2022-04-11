@@ -32,5 +32,7 @@ export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
 // practitioner role
 export const DELETE_PRACTITIONER_ROLE = 'practitionerRole/delete/';
 
-// Query patams
+// Query params
 export const SEARCH_QUERY_PARAM = 'searchQuery';
+
+export const UserQueryId = 'User';

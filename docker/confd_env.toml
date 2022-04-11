@@ -60,5 +60,7 @@ keys = [
     "/react/app/opensrp/sentry/config/json",
     "/react/app/enable/fhir/locations",
     "/react/app/fhir/root/location/identifier",
-    "/react/app/enable/quest"
+    "/react/app/enable/quest",
+    "/react/app/enable/fhir/healthcare/services",
+    "/react/app/enable/fhir/group"
 ]

@@ -21,7 +21,7 @@ import {
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
   ENABLE_FHIR_LOCATIONS,
-  ENABLE_FHIR_TEAMS_MODULE,
+  ENABLE_FHIR_TEAMS,
 } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
@@ -31,8 +31,7 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
-  URL_TEAMS_EDIT,
-  URL_TEAMS_ADD,
+  URL_TEAMS_ADD_EDIT,
   URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
@@ -46,10 +45,10 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_MANIFEST_RELEASE_LIST,
   URL_SERVER_SETTINGS,
-  URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  URL_TEAM_ASSIGNMENT,
 } from '../constants';
 import { providers } from '../configs/settings';
 import ConnectedHeader from '../containers/ConnectedHeader';
@@ -74,6 +73,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
+import { TeamAssignmentView } from '@opensrp/team-assignment';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -98,7 +98,6 @@ import {
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
-import { TeamAssignmentView } from '@opensrp/team-assignment';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
   UploadForm,
@@ -112,9 +111,11 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
+import { HealthCareList, HealthCareAddEdit, LIST_HEALTHCARE_URL, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '@opensrp/fhir-healthcare-service';
 import {
-  TeamsList as FhirTeamsView,
-  TeamsAddEdit as FhirTeamsAddEdit,
+  OrganizationList as FhirTeamsList,
+  AddEditOrganization as FhirTeamsAddEdit,
+  AffiliationList as FhirTeamAssignment,
 } from '@opensrp/fhir-team-management';
 import {
   LocationUnitList,
@@ -144,6 +145,7 @@ import {
   retiredPlansListStatusProp,
   missionAssignmentProps,
   teamAssignmentProps,
+  teamAffiliationProps,
   inventoryServiceProps,
   inventoryItemAddEditProps,
   editLocationProps,
@@ -153,7 +155,6 @@ import {
   usersListProps,
   createEditUserProps,
   teamManagementProps,
-  careTeamProps,
 } from './utils';
 import './App.css';
 import {
@@ -183,6 +184,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -236,6 +238,7 @@ const App: React.FC = () => {
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
   useTranslation();
+
   return (
     <Layout>
       <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
@@ -312,15 +315,6 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={URL_TEAMS}
-              {...teamManagementProps}
-              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsView : TeamsView}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-              exact
               path={URL_FHIR_CARE_TEAM}
               component={CareTeamList}
             />
@@ -338,7 +332,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
-              {...careTeamProps}
               component={CreateEditCareTeam}
             />
             <PrivateComponent
@@ -347,17 +340,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_CREATE_CARE_TEAM}
-              {...careTeamProps}
               component={CreateEditCareTeam}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-              exact
-              path={URL_TEAM_ASSIGNMENT}
-              {...teamAssignmentProps}
-              component={TeamAssignmentView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -368,7 +351,6 @@ const App: React.FC = () => {
               {...planCreateProps}
               component={CreatePlanView}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -379,7 +361,6 @@ const App: React.FC = () => {
               {...activePlansListStatusProp}
               component={ConnectedPlansList}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -390,7 +371,6 @@ const App: React.FC = () => {
               {...missionAssignmentProps}
               component={ConnectedPlanAssignment}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -400,7 +380,6 @@ const App: React.FC = () => {
               {...planEditProps}
               component={ConnectedEditPlanView}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -411,7 +390,6 @@ const App: React.FC = () => {
               {...draftPlansListStatusProp}
               component={ConnectedPlansList}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -422,7 +400,6 @@ const App: React.FC = () => {
               {...missionAssignmentProps}
               component={ConnectedPlanAssignment}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -432,7 +409,6 @@ const App: React.FC = () => {
               {...planEditProps}
               component={ConnectedEditPlanView}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -443,7 +419,6 @@ const App: React.FC = () => {
               {...completedPlansListStatusProp}
               component={ConnectedPlansList}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -474,7 +449,6 @@ const App: React.FC = () => {
               {...retiredPlansListStatusProp}
               component={ConnectedPlansList}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -494,7 +468,6 @@ const App: React.FC = () => {
               {...planEditProps}
               component={ConnectedEditPlanView}
             />
-
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -631,8 +604,26 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={URL_TEAMS_ADD}
-              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
+              path={URL_TEAMS}
+              {...teamAssignmentProps}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamsList : TeamsView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_TEAM_ASSIGNMENT}
+              {...(ENABLE_FHIR_TEAMS ? teamAffiliationProps : teamAssignmentProps)}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamAssignment : TeamAssignmentView}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={URL_TEAMS_ADD_EDIT}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamsAddEdit : TeamsAddEdit}
               {...teamManagementProps}
             />
             <PrivateComponent
@@ -640,9 +631,18 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={`${URL_TEAMS_EDIT}/:id`}
+              path={`${URL_TEAMS_ADD_EDIT}/:id`}
               {...teamManagementProps}
-              component={ENABLE_FHIR_TEAMS_MODULE ? FhirTeamsAddEdit : TeamsAddEdit}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamsAddEdit : TeamsAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
+              exact
+              path={`${URL_TEAMS}/:id`}
+              {...teamAffiliationProps}
+              component={FhirTeamsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -813,6 +813,48 @@ const App: React.FC = () => {
               path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
               {...inventoryItemAddEditProps}
               component={ConnectedInventoryAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
+              component={HealthCareAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={`${LIST_HEALTHCARE_URL}/:id`}
+              component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              path={LIST_HEALTHCARE_URL}
+              component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={`${LIST_GROUP_URL}/:id`}
+              component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={LIST_GROUP_URL}
+              component={GroupList}
             />
             <Route
               exact
