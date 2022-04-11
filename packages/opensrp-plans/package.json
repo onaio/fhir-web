@@ -37,6 +37,7 @@
     "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
     "i18next": "^19.8.4",
+    "lodash": "^4.17.21",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.1",
@@ -45,9 +46,11 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
+    "@onaio/utils": "^0.0.1",
+    "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/plan-form": "^0.0.4",
     "@opensrp/plan-form-core": "^0.0.4",
@@ -55,7 +58,12 @@
     "@opensrp/server-service": "^0.0.17",
     "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
-    "react-i18next": "^11.8.10"
+    "fast_array_intersect": "^1.1.0",
+    "geojson": "^0.5.0",
+    "moment": "^2.29.2",
+    "react-i18next": "^11.8.10",
+    "reselect": "^4.1.5",
+    "seamless-immutable": "^7.1.4"
   },
   "devDependencies": {
     "i18next-parser": "^3.5.0"

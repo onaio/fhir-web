@@ -63,7 +63,7 @@ export const loadAllResources = async (
   const summary = await new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(summaryFilters);
   const { total } = summary;
   const fetchAllFilter = {
-    _count: total,
+    ...(total ? { _count: total } : {}),
     ...extraFilters,
   };
   return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(fetchAllFilter);
