@@ -11,14 +11,14 @@ export const URL_LOGOUT = '/logout';
 export const URL_HOME = '/';
 
 export const URL_USER = `${URL_ADMIN}/users`;
+export const URL_ORG_AFFILIATION = `${URL_ADMIN}/OrgAffiliation`;
 export const URL_USER_GROUPS = `${URL_USER}/groups`;
 export const URL_USER_ROLES = `${URL_USER}/roles`;
 export const URL_USER_EDIT = `${URL_USER}/edit`;
 export const URL_TEAMS = `${URL_ADMIN}/teams`;
 export const URL_SERVER_SETTINGS = `${URL_ADMIN}/server-settings`;
 export const URL_TEAM_ASSIGNMENT = `${URL_TEAMS}/team-assignment`;
-export const URL_TEAMS_EDIT = `${URL_TEAMS}/edit`;
-export const URL_TEAMS_ADD = `${URL_TEAMS}/add`;
+export const URL_TEAMS_ADD_EDIT = `${URL_TEAMS}/add-edit`;
 export const URL_BACKEND_LOGIN = '/fe/login';
 export const URL_BACKEND_CALLBACK = '/fe/oauth/callback/opensrp';
 export const URL_LOCATION_UNIT = `${URL_ADMIN}/location/unit`;

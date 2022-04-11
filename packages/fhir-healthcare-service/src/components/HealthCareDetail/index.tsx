@@ -1,0 +1,118 @@
+import React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
+import { Button, Col, Spin, Alert, Space } from 'antd';
+import { get } from 'lodash';
+import { useQuery } from 'react-query';
+import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
+import { useHistory } from 'react-router';
+import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
+import {
+  intlFormatDateStrings,
+  FHIRServiceClass,
+  SingleKeyNestedValue,
+} from '@opensrp/react-utils';
+
+export const parseHealthCare = (obj: IHealthcareService) => {
+  const { comment, meta, name, active, id, providedBy } = obj;
+  return {
+    id,
+    name,
+    comment,
+    active,
+    providedBy,
+    lastUpdated: intlFormatDateStrings(get(meta, 'lastUpdated')),
+  };
+};
+
+/** typings for the view details component */
+export interface ViewDetailsProps {
+  resourceId: string;
+  fhirBaseURL: string;
+}
+
+export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
+  resourceId?: string;
+};
+
+/**
+ * Displays Health Care Details
+ *
+ * @param props - detail view component props
+ */
+export const ViewDetails = (props: ViewDetailsProps) => {
+  const { resourceId, fhirBaseURL } = props;
+
+  const {
+    data: organization,
+    isLoading: orgIsLoading,
+    error: orgError,
+  } = useQuery([healthCareServiceResourceType, resourceId], () =>
+    new FHIRServiceClass<IHealthcareService>(fhirBaseURL, healthCareServiceResourceType).read(
+      resourceId as string
+    )
+  );
+
+  if (orgIsLoading) {
+    return <Spin size="large" className="custom-spinner" />;
+  }
+
+  if (orgError && !organization) {
+    return <Alert type="error" message={`${orgError}`} />;
+  }
+
+  const org = organization as IHealthcareService;
+  const { id, name, comment, active, providedBy, lastUpdated } = parseHealthCare(org);
+  const keyValues = {
+    Id: id,
+    Name: name,
+    Status: active ? 'Active' : 'Inactive',
+    'Last Updated': lastUpdated,
+    'Provided By': get(providedBy, 'reference.display'),
+    Comment: comment,
+  };
+
+  return (
+    <Space direction="vertical">
+      {Object.entries(keyValues).map(([key, value]) => {
+        const props = {
+          [key]: value,
+        };
+        return value ? (
+          <div key={key} data-testid="key-value">
+            <SingleKeyNestedValue {...props} />
+          </div>
+        ) : null;
+      })}
+    </Space>
+  );
+};
+
+/**
+ * component that renders the details view to the right side
+ * of list view
+ *
+ * @param props - detail view component props
+ */
+export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
+  const { resourceId, fhirBaseURL } = props;
+  const history = useHistory();
+
+  if (!resourceId) {
+    return null;
+  }
+
+  return (
+    <Col className="view-details-content">
+      <div className="flex-right">
+        <Button
+          data-testid="close-button"
+          icon={<CloseOutlined />}
+          shape="circle"
+          type="text"
+          onClick={() => history.push(LIST_HEALTHCARE_URL)}
+        />
+      </div>
+      <ViewDetails resourceId={resourceId} fhirBaseURL={fhirBaseURL} />
+    </Col>
+  );
+};

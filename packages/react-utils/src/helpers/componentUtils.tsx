@@ -80,3 +80,46 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
 export const isAuthorized = (roles: string[], activeRoles: string[]) => {
   return activeRoles.some((r: string) => roles.includes(r));
 };
+
+/** Dry-ed out form layout configs */
+
+/** responsive layout for the form labels and columns */
+export const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 4,
+    },
+    md: {
+      span: 4,
+    },
+    lg: {
+      span: 6,
+    },
+  },
+  wrapperCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 18,
+    },
+    md: {
+      span: 16,
+    },
+    lg: {
+      span: 14,
+    },
+  },
+};
+
+export const tailLayout = {
+  wrapperCol: {
+    xs: { offset: 0, span: 16 },
+    sm: { offset: 12, span: 24 },
+    md: { offset: 8, span: 16 },
+    lg: { offset: 6, span: 14 },
+  },
+};
