@@ -7,12 +7,20 @@ import { store } from '@opensrp/store';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import fetch from 'jest-fetch-mock';
-import { OpenSRPService } from '@opensrp/server-service';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { authenticateUser } from '@onaio/session-reducer';
+import MockDate from 'mockdate';
+import * as notifications from '@opensrp/notifications';
+import { sampleTeamAssignment, locationsHierarchy } from './fixtures';
+import lang from '../../../lang';
 
 const history = createBrowserHistory();
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 describe('DistrictReport', () => {
   const downloadProps = {
@@ -52,19 +60,8 @@ describe('DistrictReport', () => {
   });
 
   it('renders correct elements', async () => {
-    fetch.mockOnce(
-      JSON.stringify({
-        team: {
-          team: {
-            location: {
-              display: 'Tunisia',
-              name: 'Tunisia',
-              uuid: 'a26ca9c8-1441-495a-83b6-bb5df7698996',
-            },
-          },
-        },
-      })
-    );
+    fetch.mockOnce(JSON.stringify(sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(locationsHierarchy));
 
     const queryClient = new QueryClient();
 
@@ -83,7 +80,106 @@ describe('DistrictReport', () => {
       wrapper.update();
     });
 
-    console.log(fetch.mock.calls);
     expect(wrapper.find('Title').text()).toMatchInlineSnapshot(`"Download District Report"`);
+    expect(wrapper.find('label[htmlFor="location"]').text()).toMatchInlineSnapshot(`"Location"`);
+    expect(wrapper.find('label[htmlFor="reportDate"]').text()).toMatchInlineSnapshot(
+      `"Report Date"`
+    );
+  });
+
+  it('submit is disabled until location and date range are selected', async () => {
+    MockDate.set('2022-01-13T19:31:00.000Z');
+
+    fetch.mockOnce(JSON.stringify(sampleTeamAssignment));
+    fetch.mockOnce(JSON.stringify(locationsHierarchy));
+
+    const queryClient = new QueryClient();
+
+    const wrapper = mount(
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DistrictReport {...downloadProps} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('Button[htmlType="submit"]').prop('disabled')).toEqual(true);
+
+    // Submit disabled if user selects date without location
+
+    // click select to see dropdown items
+    wrapper.find('input#reportDate').simulate('mousedown');
+
+    // simulate value selection - click tree node with title = mock date
+    wrapper.find('td[title="2022-01"]').simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(wrapper.find('Button[htmlType="submit"]').prop('disabled')).toEqual(true);
+
+    // Submit is enabled if both date range and location are selected
+
+    // click select to see dropdown items
+    wrapper.find('input[role="combobox"]').simulate('mousedown');
+
+    // simulate value selection - click tree node with title = sample location name/label
+    wrapper
+      .find(
+        `span[title="${locationsHierarchy.locationsHierarchy.map['some-location-uuid'].label}"]`
+      )
+      .simulate('click');
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    wrapper.update();
+
+    expect(wrapper.find('Button[htmlType="submit"]').prop('disabled')).toEqual(false);
+  });
+
+  it('handles fetch error when fetching user data - team assignments', async () => {
+    fetch.mockRejectOnce(new Error('API is down'));
+
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
+
+    // turn retries off - makes fetch fail on first try
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    });
+
+    const wrapper = mount(
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <Router history={history}>
+            <DistrictReport {...downloadProps} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
+    );
   });
 });
