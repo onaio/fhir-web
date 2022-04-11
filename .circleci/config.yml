@@ -12,6 +12,7 @@ jobs:
         environment:
           SKIP_PREFLIGHT_CHECK: 'true'
           GENERATE_SOURCEMAP: 'false'
+          NODE_OPTIONS: '--max-old-space-size=4096'
 
     working_directory: ~/web
 
