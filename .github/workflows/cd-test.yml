@@ -20,6 +20,9 @@ jobs:
           cache: "yarn"
           cache-dependency-path: "**/yarn.lock"
 
+      - name: cp envs
+        run: cp app/.env.sample app/.env
+
       - run: yarn install --frozen-lockfile
 
         #      - name: Lint
