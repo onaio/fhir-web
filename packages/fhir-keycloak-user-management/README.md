@@ -1,29 +1,24 @@
-# Keycloak User Management Module
+# Fhir User Management Module
 
-This package has a set of components that are used to interact with keycloak api. It currently has 3 components
+This package has a set of components that are used to interact with keycloak api. It exports components that can perform different user management tasks, like creating users in a keycloak servers, and creating associated practitioners in a fhir hapi server.
 
-- UserListView - Shows a list of keycloak users, also allows the admin to create, edit or delete users
-- CreateEditView - A user form to allow admin to update user info
-- Credentials - Allows the admin to set passords to newly created users or update passwords for existing users
+This module builds upon `@opensrp/user-management` module. Alot of the ui workflows are very similary and the only differences yet, is that this package edits practitioners to the fhir-server while the `@opensrp/user-management` does the same to the opensrp web server.
 
 ## Installation
 
 ```node
-yarn add @opensrp/keycloak-user-management
+yarn add @opensrp/fhir-user-management
 ```
 
 ## Code example
 
 ```JSX
 import {
-  ConnectedUserList,
-  ConnectedCreateEditUser,
-  ConnectedUserCredentials,
+  UserList,
+  CreateEditUser,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
-  URL_USER_CREATE,
-  URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
 
 const App = () => {
@@ -37,7 +32,10 @@ const App = () => {
               exact
               path={URL_USER}
               component={(props: any) => (
-                <ConnectedUserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <UserList {...props} 
+                keycloakBaseURL={KEYCLOAK_API_BASE_URL}
+                firBaseUrl=""
+                 />
               )}
             />
             <ConnectedPrivateRoute
@@ -46,25 +44,9 @@ const App = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               component={(props: any) => (
-                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
-              )}
-            />
-            <ConnectedPrivateRoute
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              exact
-              path={URL_USER_CREATE}
-              component={(props: any) => (
-                <ConnectedCreateEditUser {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
-              )}
-            />
-            <ConnectedPrivateRoute
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              exact
-              path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
-              component={(props: any) => (
-                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <UserList {...props} 
+                keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                firBaseUrl=""
               )}
             />
         </Switch>
