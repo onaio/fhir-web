@@ -32,12 +32,14 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
+    "antd": "^4.6.3",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "react-query": "^3.15.1"
   },
   "dependencies": {
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -45,7 +47,10 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
+    "@opensrp/keycloak-service": "^0.0.17",
     "@opensrp/user-management": "^0.1.19",
+    "@ant-design/icons":"^4.7.0",
+
     "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"
   },
