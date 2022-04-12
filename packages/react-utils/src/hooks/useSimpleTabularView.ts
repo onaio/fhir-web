@@ -9,7 +9,7 @@ import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle'
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
 
-interface FhirApiFilter {
+export interface FhirApiFilter {
   page: number;
   pageSize: number;
   search: string | null;
@@ -25,7 +25,7 @@ export const searchQuery = 'search';
  * @param location - route information
  * @param paramKey - search param key
  */
-const getStringParam = (location: RouteComponentProps['location'], paramKey: string) => {
+export const getStringParam = (location: RouteComponentProps['location'], paramKey: string) => {
   const sParams = new URLSearchParams(location.search);
   return sParams.get(paramKey);
 };
@@ -37,7 +37,7 @@ const getStringParam = (location: RouteComponentProps['location'], paramKey: str
  * @param paramKey - search param key
  * @param fallback - fallback if key not found, or malformed
  */
-const getNumberParam = (
+export const getNumberParam = (
   location: RouteComponentProps['location'],
   paramKey: string,
   fallback: number | null = null
