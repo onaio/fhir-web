@@ -27,6 +27,7 @@ import {
   ENABLE_SERVER_SETTINGS,
   ENABLE_QUEST,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
+  ENABLE_USER_MANAGEMENT,
 } from './configs/env';
 import {
   URL_USER,
@@ -137,7 +138,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.USER_MANAGEMENT,
           key: 'user-management',
-          enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
+          enabled: ENABLE_USER_MANAGEMENT && roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
             { title: langObj.USERS, key: 'users', url: URL_USER },
             { title: langObj.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },

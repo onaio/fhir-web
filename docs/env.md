@@ -201,9 +201,15 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://fhir.labs.smartregister.org/fhir`
 
-- **REACT_APP_ENABLE_FHIR**
+- **REACT_APP_ENABLE_USER_MANAGEMENT**
 
-  - Enables modules that fetch resources from FHIR server
+  - Enables user management module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_USER_MANAGEMENT**
+
+  - Enable fhir in the  user management module
   - **Optional**(`boolean`)
   - default: `"false"`
 
