@@ -14,7 +14,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
 
   const detail = {
     [t('Team Name')]: name,
-    [t('Status')]: active ? 'Active' : 'Inactive',
+    [t('Status')]: active ? t('Active') : t('Inactive'),
     [t('Identifier')]: id,
     [t('Team Members')]: practitionerInfo.length
       ? practitionerInfo.map((prac) => <div key={prac.id}>{prac.name}</div>)

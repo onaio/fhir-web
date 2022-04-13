@@ -27,7 +27,7 @@ const Table: React.FC<Props> = (props: Props) => {
       title: t('Status'),
       dataIndex: 'active',
       // eslint-disable-next-line react/display-name
-      render: (value) => <div>{value ? 'Active' : 'Inactive'}</div>,
+      render: (value) => <div>{value ? t('Active') : t('Inactive')}</div>,
     },
     {
       title: t('Actions'),
