@@ -23,7 +23,7 @@ const eusmFrJson = require('../locales/eusm/fr.json');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const eusmArJson = require('../locales/eusm/ar.json');
 
-export const namespace = 'card-support';
+export const namespace = 'reports';
 
 // the format to load the resource files: <languageCode>_<projectCode>. in small
 const resources = {
