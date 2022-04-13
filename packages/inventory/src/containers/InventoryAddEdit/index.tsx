@@ -169,7 +169,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   ]);
 
   if (isLoading) {
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (!servicePoint) {

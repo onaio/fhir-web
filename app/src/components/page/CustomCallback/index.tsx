@@ -77,7 +77,7 @@ export const UnSuccessfulLogin = withRouter(BaseUnsuccessfulLogin);
 
 const CustomConnectedAPICallBack: React.FC<RouteComponentProps<RouteParams>> = (props) => {
   const unifiedProps = {
-    LoadingComponent: () => <Spin size="large" />,
+    LoadingComponent: () => <Spin size="large" className="custom-spinner" />,
     UnSuccessfulLoginComponent: UnSuccessfulLogin,
     SuccessfulLoginComponent: SuccessfulLoginComponent,
     apiURL: EXPRESS_OAUTH_GET_STATE_URL,

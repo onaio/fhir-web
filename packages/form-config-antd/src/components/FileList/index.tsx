@@ -109,7 +109,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   );
 
   if (loading) {
-    return <Spin />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

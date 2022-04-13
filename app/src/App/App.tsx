@@ -209,7 +209,7 @@ const { Content } = Layout;
  * @param routeProps - Component route props object
  */
 
-export const LoadingComponent = () => <Spin size="large" />;
+export const LoadingComponent = () => <Spin size="large" className="custom-spinner" />;
 export const SuccessfulLoginComponent = () => {
   if (DEFAULT_HOME_MODE === 'eusm') {
     return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
