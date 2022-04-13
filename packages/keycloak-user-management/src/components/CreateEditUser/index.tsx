@@ -156,7 +156,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   }, [keycloakUser, practitioner, assignedUserGroups]);
 
   if (userGroupsLoading || keyCloakUserLoading || userGroupLoading || practitionerLoading)
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
 
   return (
     <Row>

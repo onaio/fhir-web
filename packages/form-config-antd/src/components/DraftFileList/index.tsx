@@ -81,7 +81,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
   }, [accessToken, opensrpBaseURL, customFetchOptions, fetchDraftFiles, dispatch]);
 
   if (loading) {
-    return <Spin />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (ifDoneHere && onMakeReleaseRedirectURL) {

@@ -90,7 +90,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   }
 
   if (locationSettings.isLoading || userLocSettings.isLoading) {
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   return (

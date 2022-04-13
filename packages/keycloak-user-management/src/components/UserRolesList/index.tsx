@@ -70,7 +70,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     }
   });
 
-  if (isLoading) return <Spin size="large" />;
+  if (isLoading) return <Spin size="large" className="custom-spinner" />;
 
   const searchFormProps = {
     defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],

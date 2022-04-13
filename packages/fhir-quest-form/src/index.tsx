@@ -81,7 +81,7 @@ export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
   );
 
   if (isLoading || questRespIsLoading) {
-    return <Spin />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (error && !data && questRespError && !questResp) {

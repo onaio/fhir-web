@@ -3,12 +3,13 @@
 exports[`components/Logout renders logout component 1`] = `
 <CustomLogout>
   <Spin
+    className="custom-spinner"
     size="large"
     spinning={true}
     wrapperClassName=""
   >
     <div
-      className="ant-spin ant-spin-lg ant-spin-spinning"
+      className="ant-spin ant-spin-lg ant-spin-spinning custom-spinner"
     >
       <span
         className="ant-spin-dot ant-spin-dot-spin"
