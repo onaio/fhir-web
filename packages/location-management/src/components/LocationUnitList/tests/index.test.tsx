@@ -28,6 +28,8 @@ import {
 import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { TableData } from '../Table';
+import toJson from 'enzyme-to-json';
+import { waitFor } from '@testing-library/react';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -375,6 +377,50 @@ describe('location-management/src/components/LocationUnitList', () => {
       message: lang.ERROR_OCCURED,
       description: undefined,
     });
+    wrapper.unmount();
+  });
+
+  it('responds correctly to no locations', async () => {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
+    fetch.mockResponse(JSON.stringify([]));
+
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+          cacheTime: 0,
+        },
+      },
+    });
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <LocationUnitList opensrpBaseURL={baseURL} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>,
+      { attachTo: div }
+    );
+
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await waitFor(async () => {
+      await flushPromises();
+      // loader, no longer - 🤣
+      expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+
+    wrapper.update();
+
+    // table says no data
+    const tableText = wrapper.find('table').text();
+    expect(tableText).toContain('No Data');
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
     wrapper.unmount();
   });
 });
