@@ -34,3 +34,4 @@ export const URL_UPLOAD_DRAFT_FILE = `${URL_ADMIN}/form-config/drafts/upload`;
 export const URL_MANIFEST_RELEASE_LIST = `${URL_ADMIN}/form-config/releases`;
 export const URL_FHIR_CARE_TEAM = `${URL_ADMIN}/CareTeams`;
 export const URL_DOWNLOAD_CLIENT_DATA = '/card-support/download-client-data';
+export const URL_DOWNLOAD_DISTRICT_REPORT = '/reports/download-district-report';

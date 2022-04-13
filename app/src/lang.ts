@@ -50,6 +50,8 @@ export function lang(t: TFunction) {
     ORG_AFFILIATION: t(`Organization Affiliation`, { ns: namespace }),
     CARE_TEAM: t(`Care Teams Management`, { ns: namespace }),
     QUESTIONNAIRE: t(`Questionnaire`, { ns: namespace }),
+    REPORTS: t(`Reports`, { ns: namespace }),
+    DISTRICT_REPORT: t(`District Report`, { ns: namespace }),
   };
 }
 
