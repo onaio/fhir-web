@@ -11,7 +11,8 @@
     "test": "TZ='UTC' jest",
     "test:watch": "TZ='UTC' jest --watch",
     "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "extractTranslations": "lerna run extractTranslations"
   },
   "husky": {
     "hooks": {

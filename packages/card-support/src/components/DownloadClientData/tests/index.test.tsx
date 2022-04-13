@@ -14,7 +14,7 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
-import * as globalUtils from '../../../helpers/utils';
+import * as globalUtils from '@opensrp/react-utils';
 import * as notifications from '@opensrp/notifications';
 import lang from '../../../lang';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -30,7 +30,7 @@ jest.mock('@opensrp/notifications', () => ({
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
 
-  const RangePicker = ({ children, onChange, ...otherProps }) => {
+  const RangePicker = ({ children, onChange, disabledDate, ...otherProps }) => {
     return (
       <select {...otherProps} onChange={(e) => onChange(e.target.value, e.target.value)}>
         {children}
@@ -56,7 +56,7 @@ jest.mock('antd', () => {
 
   Select.Option = Option;
 
-  const TreeSelect = ({ children, onChange, ...otherProps }) => {
+  const TreeSelect = ({ children, onChange, dropdownStyle, ...otherProps }) => {
     return (
       <select {...otherProps} onChange={(e) => onChange(e.target.value)}>
         {children}
@@ -78,9 +78,14 @@ jest.mock('antd', () => {
     TreeSelect,
   };
 });
-const mockDownload = jest.fn();
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(globalUtils as any).downloadFile = mockDownload;
+
+jest.mock('@opensrp/react-utils', () => {
+  const actual = jest.requireActual('@opensrp/react-utils');
+  return {
+    ...actual,
+    downloadFile: jest.fn(),
+  };
+});
 
 describe('components/DownloadClientData', () => {
   const currentDate = new Date('2020-11-18');
@@ -235,6 +240,8 @@ describe('components/DownloadClientData', () => {
   });
 
   it('downloads csv correctly', async () => {
+    const mockDownload = jest.spyOn(globalUtils, 'downloadFile');
+
     fetch.mockOnce(JSON.stringify(fixtures.sampleTeamAssignment));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));

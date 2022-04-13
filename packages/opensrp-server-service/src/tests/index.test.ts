@@ -3,8 +3,7 @@ import { getDefaultHeaders, OpenSRPService, OPENSRP_API_BASE_URL } from '..';
 import { createPlan, plansListResponse } from './fixtures/plans';
 import { sampleErrorObj } from './fixtures/session';
 import { throwNetworkError, throwHTTPError, HTTPError } from '../errors';
-/* eslint-disable-next-line @typescript-eslint/no-var-requires */
-const fetch = require('jest-fetch-mock');
+import fetch from 'jest-fetch-mock';
 const getAccessToken = (): Promise<string> =>
   new Promise((resolve, _) => {
     return resolve('hunter2');
@@ -415,6 +414,37 @@ describe('services/OpenSRP', () => {
             authorization: 'Bearer hunter2',
           },
           method: 'PUT',
+        },
+      ],
+    ]);
+  });
+
+  it('OpenSRPService download method works', async () => {
+    fetch.mockResponseOnce('test blob data', {
+      status: 200,
+      headers: { 'content-disposition': 'attachment; filename=test.pdf' },
+    });
+    const serve = new OpenSRPService(getAccessToken, OPENSRP_API_BASE_URL, 'download-file/001');
+
+    const response = await serve.download();
+
+    const contentDisposition = response.headers.get('content-disposition');
+    expect(contentDisposition).toEqual('attachment; filename=test.pdf');
+
+    const blob = await response.blob();
+    // checking constructor name is the only reliable way to verify the object's constructing class is "blob-like"
+    expect(blob.constructor.name === 'Blob').toBeTruthy();
+
+    expect(fetch.mock.calls).toMatchObject([
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/download-file/001',
+        {
+          headers: {
+            accept: 'application/json',
+            authorization: 'Bearer hunter2',
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          method: 'GET',
         },
       ],
     ]);

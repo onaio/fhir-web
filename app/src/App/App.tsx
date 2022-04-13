@@ -48,6 +48,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  URL_DOWNLOAD_DISTRICT_REPORT,
   URL_TEAM_ASSIGNMENT,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -111,7 +112,12 @@ import { LocationSettingsView } from '@opensrp/location-settings';
 import ConnectedHomeComponent from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
-import { HealthCareList, HealthCareAddEdit, LIST_HEALTHCARE_URL, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '@opensrp/fhir-healthcare-service';
+import {
+  HealthCareList,
+  HealthCareAddEdit,
+  LIST_HEALTHCARE_URL,
+  ADD_EDIT_HEALTHCARE_SERVICE_URL,
+} from '@opensrp/fhir-healthcare-service';
 import {
   OrganizationList as FhirTeamsList,
   AddEditOrganization as FhirTeamsAddEdit,
@@ -184,6 +190,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import { DistrictReport } from '@opensrp/reports';
 import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 import '@opensrp/plans/dist/index.css';
@@ -817,28 +824,36 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              activeRoles={
+                activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
+              }
               path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
               component={HealthCareAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              activeRoles={
+                activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
+              }
               path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
               component={HealthCareAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              activeRoles={
+                activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
+              }
               path={`${LIST_HEALTHCARE_URL}/:id`}
               component={HealthCareList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
+              activeRoles={
+                activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
+              }
               path={LIST_HEALTHCARE_URL}
               component={HealthCareList}
             />
@@ -855,6 +870,14 @@ const App: React.FC = () => {
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={LIST_GROUP_URL}
               component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.DISTRICT_REPORT && activeRoles.DISTRICT_REPORT.split(',')}
+              exact
+              path={URL_DOWNLOAD_DISTRICT_REPORT}
+              component={DistrictReport}
             />
             <Route
               exact
