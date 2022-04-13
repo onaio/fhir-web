@@ -92,7 +92,6 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         queryKey: [LOCATION_HIERARCHY, location.id],
         queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
         onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-        // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
         select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
       };
     })
