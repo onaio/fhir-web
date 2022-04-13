@@ -56,8 +56,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   };
 
   const status = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
+    { label: t('Active'), value: 'active' },
+    { label: t('Inactive'), value: 'inactive' },
   ];
 
   interface Option {
@@ -96,7 +96,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               .finally(() => setIsSubmitting(false));
           }}
         >
-          <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={'UUID'}>
+          <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={t('UUID')}>
             <Input />
           </Form.Item>
           <Form.Item

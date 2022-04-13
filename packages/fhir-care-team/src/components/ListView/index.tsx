@@ -167,7 +167,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <span className="d-flex align-items-center">
           <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              {t('Edit')}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -185,7 +185,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
                     }}
                   >
                     <Button danger type="link" style={{ color: '#' }}>
-                      Delete
+                      {t('Delete')}
                     </Button>
                   </Popconfirm>
                 </Menu.Item>
