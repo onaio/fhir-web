@@ -1,14 +1,14 @@
 {
   "Actions": "",
   "An error occurred": "",
-  "Assign/Unassign Teams": "",
+  "Assign/Unassign Teams | {{locationName}}": "",
   "Assigned Teams": "",
   "Cancel": "",
   "Edit": "",
   "Enter a Team name": "",
   "Name": "",
   "Save": "",
+  "Successfully Assigned Teams": "",
   "Team Assignment": "",
-  "team-assignment": "",
   "Teams": ""
 }

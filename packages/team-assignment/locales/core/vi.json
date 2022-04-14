@@ -1,13 +1,14 @@
 {
   "Actions": "Lệnh",
   "An error occurred": "Đã xảy ra lỗi",
-  "Assign/Unassign Teams": "Gán nhóm/bỏ gán nhóm",
+  "Assign/Unassign Teams | {{locationName}}": "",
   "Assigned Teams": "Nhóm người dùng tương ứng",
   "Cancel": "Hủy",
   "Edit": "Chỉnh sửa",
   "Enter a Team name": "Điền tên Nhóm",
   "Name": "Khu vực",
   "Save": "Lưu",
+  "Successfully Assigned Teams": "",
   "Team Assignment": "Điều phối Nhóm",
   "Teams": "Nhóm"
 }
