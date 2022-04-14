@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -28,7 +28,6 @@ import {
   SEARCH_QUERY_PARAM,
   URL_USER_GROUP_CREATE,
   URL_USER_GROUP_EDIT,
-  URL_USER_GROUPS,
 } from '../../constants';
 import {
   fetchKeycloakUserGroups,
@@ -82,7 +81,6 @@ export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
  */
 export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
   const { keycloakBaseURL } = props;
-  const history = useHistory();
   const dispatch = useDispatch();
   const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
@@ -138,16 +136,6 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     },
   ];
 
-  React.useEffect(() => {
-    if (groupId) {
-      // add record id to url
-      history.replace(`${URL_USER_GROUPS}/${groupId}`);
-    } else {
-      // remove record id from url
-      history.replace(URL_USER_GROUPS);
-    }
-  }, [groupId, history]);
-
   if (isUserGroupsLoading) {
     return <Spin data-testid="group-list-loader" size="large" />;
   }
@@ -155,7 +143,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   if (isUserGroupsError) return <Resource404 />;
 
   return (
-    <div className="content-section user-group">
+    <div className="layout-content">
       <Helmet>
         <title>{lang.USER_GROUPS_PAGE_HEADER}</title>
       </Helmet>
@@ -195,7 +183,6 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                           key={record.id}
                           className="viewdetails"
                           onClick={() => {
-                            // open modal to view details and set group id
                             setGroupId(record.id);
                           }}
                         >
@@ -215,18 +202,17 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
           />
         </Col>
         {groupId ? (
-          <ViewDetails
-            isUserGroupMembersLoading={isUserGroupMembersLoading}
-            isUserGroupMembersError={isUserGroupMembersError}
-            userGroupMembers={userGroupMembers}
-            isGroupDetailsLoading={isGroupDetailsLoading}
-            isGroupDetailsError={isGroupDetailsError}
-            GroupDetails={GroupDetails}
-            // close modal
-            onClose={() => {
-              setGroupId(null);
-            }}
-          />
+          <Col className="pl-3" span={5}>
+            <ViewDetails
+              loading={isGroupDetailsLoading || isUserGroupMembersLoading}
+              error={isGroupDetailsError || isUserGroupMembersError}
+              GroupDetails={GroupDetails}
+              userGroupMembers={userGroupMembers}
+              onClose={() => {
+                setGroupId(null);
+              }}
+            />
+          </Col>
         ) : null}
       </Row>
     </div>
