@@ -12,7 +12,6 @@ import {
   OPENSRP_FORM_METADATA_ENDPOINT,
   OPENSRP_MANIFEST_ENDPOINT,
 } from '../constants';
-import lang, { Lang } from '../lang';
 import {
   fetchManifestFiles,
   ManifestFilesTypes,
@@ -141,11 +140,9 @@ export const submitUploadForm = async (
  * @param {string} opensrpBaseURL Opensrp API base URL
  * @param {Function} removeFiles redux action to remove draft files
  * @param {Function} setIfDoneHere set ifDoneHere form status
- * @param {Function} alertError - receive error description
  * @param {string} endpoint - Opensrp endpoint
  * @param {Dispatch} dispatch - dispatch function from redux store
  * @param {Function} customFetchOptions custom opensrp API fetch options
- * @param {Lang} langObj - the translation's string lookup
  */
 export const makeRelease = (
   data: ManifestFilesTypes[],
@@ -153,11 +150,9 @@ export const makeRelease = (
   opensrpBaseURL: string,
   removeFiles: typeof removeManifestDraftFiles,
   setIfDoneHere: (ifDoneHere: boolean) => void,
-  alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
   dispatch?: Dispatch,
   customFetchOptions?: typeof getFetchOptions,
-  langObj: Lang = lang
 ) => {
   const identifiers = data.map((form) => form.identifier);
   const json = {
@@ -182,9 +177,6 @@ export const makeRelease = (
 
       setIfDoneHere(true);
     })
-    .catch((_: Error) => {
-      alertError(langObj.ERROR_OCCURRED);
-    });
 };
 
 /**
@@ -209,10 +201,8 @@ export const fetchDrafts = (
   endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
   dispatch?: Dispatch,
   customFetchOptions?: typeof getFetchOptions,
-  langObj: Lang = lang
 ) => {
   /** get manifest Draftfiles */
-  setLoading(true);
   /* eslint-disable-next-line @typescript-eslint/camelcase */
   const params = { is_draft: true };
   const clientService = new OpenSRPService(
@@ -221,7 +211,7 @@ export const fetchDrafts = (
     endpoint,
     customFetchOptions
   );
-  clientService
+  return clientService
     .list(params)
     .then((res: ManifestFilesTypes[]) => {
       if (dispatch) {
@@ -230,10 +220,6 @@ export const fetchDrafts = (
         fetchFiles(res);
       }
     })
-    .catch((_: Error) => {
-      alertError(langObj.ERROR_OCCURRED);
-    })
-    .finally(() => setLoading(false));
 };
 
 /**
@@ -253,22 +239,17 @@ export const fetchReleaseFiles = (
   accessToken: GetAccessTokenType | string,
   opensrpBaseURL: string,
   fetchFiles: typeof fetchManifestReleases,
-  setLoading: (loading: boolean) => void,
-  alertError: (err: string) => void,
   endpoint = OPENSRP_MANIFEST_ENDPOINT,
   dispatch?: Dispatch,
   customFetchOptions?: typeof getFetchOptions,
-  langObj: Lang = lang
 ) => {
-  /** get manifest releases */
-  setLoading(true);
   const clientService = new OpenSRPService(
     accessToken,
     opensrpBaseURL,
     endpoint,
     customFetchOptions
   );
-  clientService
+  return clientService
     .list()
     .then((res: ManifestReleasesTypes[]) => {
       if (dispatch) {
@@ -277,10 +258,6 @@ export const fetchReleaseFiles = (
         fetchFiles(res);
       }
     })
-    .catch((_: Error) => {
-      alertError(langObj.ERROR_OCCURRED);
-    })
-    .finally(() => setLoading(false));
 };
 
 /**
@@ -303,16 +280,12 @@ export const fetchManifests = (
   opensrpBaseURL: string,
   fetchFiles: typeof fetchManifestFiles,
   removeFiles: typeof removeManifestFiles,
-  setLoading: (loading: boolean) => void,
-  alertError: (err: string) => void,
   formVersion?: string | null,
   endpoint = OPENSRP_FORM_METADATA_ENDPOINT,
   dispatch?: Dispatch,
   customFetchOptions?: typeof getFetchOptions,
-  langObj: Lang = lang
 ) => {
   /** get manifest files */
-  setLoading(true);
   let params = null;
   // if form version is available -  means request is to get manifest files else get json validator files
   /* eslint-disable-next-line @typescript-eslint/camelcase */
@@ -330,7 +303,7 @@ export const fetchManifests = (
     endpoint,
     customFetchOptions
   );
-  clientService
+  return clientService
     .list(params)
     .then((res: ManifestFilesTypes[]) => {
       if (dispatch) {
@@ -339,8 +312,4 @@ export const fetchManifests = (
         fetchFiles(res);
       }
     })
-    .catch((_: Error) => {
-      alertError(langObj.ERROR_OCCURRED);
-    })
-    .finally(() => setLoading(false));
 };
