@@ -1,78 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View User Group Details works correctly: nominal display 1`] = `"NameProviderGroup UUID261c67fe-918b-4369-a35f-095b5e284fcbRolesPLANS_FOR_USERALL_EVENTSOPENMRSMembersdemoonadev"`;
+exports[`View User Group Details works correctly: nominal display 1`] = `"NameGroup NameGroup UUID123-some-group-uuid-456RolesROLE_ONEROLE_TWOROLE_THREEMembersname-1name-2name-3name-4"`;
 
 exports[`View User Group Details works correctly: space element 1`] = `
 Object {
   "children": Array [
-    <Text
-      className="display-block"
-      strong={true}
+    <div
+      className="mb-2 medium mt-2"
     >
-      Name
-    </Text>,
-    <Text
-      className="display-block"
-      type="secondary"
-    >
-      Provider
-    </Text>,
-    <Text
-      className="display-block"
-      strong={true}
-    >
-      Group UUID
-    </Text>,
-    <Text
-      className="display-block"
-      type="secondary"
-    >
-      261c67fe-918b-4369-a35f-095b5e284fcb
-    </Text>,
-    <Text
-      className="display-block"
-      strong={true}
-    >
-      Roles
-    </Text>,
-    Array [
-      <Text
-        className="display-block"
-        type="secondary"
+      <p
+        className="mb-0 font-weight-bold"
       >
-        PLANS_FOR_USER
-      </Text>,
-      <Text
-        className="display-block"
-        type="secondary"
+        Name
+      </p>
+      <p
+        className="mb-0"
+        id="name"
       >
-        ALL_EVENTS
-      </Text>,
-      <Text
-        className="display-block"
-        type="secondary"
-      >
-        OPENMRS
-      </Text>,
-    ],
-    <Text
-      className="display-block"
-      strong={true}
+        Group Name
+      </p>
+    </div>,
+    <div
+      className="mb-2 medium mt-2"
     >
-      Members
-    </Text>,
-    Array [
-      <Link
-        to="/admin/users/edit/821f587d-734f-4263-8d50-ec37f2e84ef4"
+      <p
+        className="mb-0 font-weight-bold"
       >
-        demo
-      </Link>,
-      <Link
-        to="/admin/users/edit/687a196d-b43e-4f0a-9784-e85334178155"
+        Group UUID
+      </p>
+      <p
+        className="mb-0"
+        id="uuid"
       >
-        onadev
-      </Link>,
-    ],
+        123-some-group-uuid-456
+      </p>
+    </div>,
+    <div
+      className="mb-2 medium mt-2"
+    >
+      <p
+        className="mb-0 font-weight-bold"
+      >
+        Roles
+      </p>
+      <p
+        className="mb-2"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "ROLE_<wbr/>ONE",
+          }
+        }
+        id="realRole"
+      />
+      <p
+        className="mb-2"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "ROLE_<wbr/>TWO",
+          }
+        }
+        id="realRole"
+      />
+      <p
+        className="mb-2"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "ROLE_<wbr/>THREE",
+          }
+        }
+        id="realRole"
+      />
+    </div>,
+    <div
+      className="mb-2 medium mt-2"
+    >
+      <p
+        className="mb-0 font-weight-bold"
+      >
+        Members
+      </p>
+      <p
+        className="mb-0"
+        id="groupMember"
+      >
+        <Link
+          id="realRole"
+          to="/admin/users/edit/id-1"
+        >
+          name-1
+        </Link>
+      </p>
+      <p
+        className="mb-0"
+        id="groupMember"
+      >
+        <Link
+          id="realRole"
+          to="/admin/users/edit/id-2"
+        >
+          name-2
+        </Link>
+      </p>
+      <p
+        className="mb-0"
+        id="groupMember"
+      >
+        <Link
+          id="realRole"
+          to="/admin/users/edit/id-3"
+        >
+          name-3
+        </Link>
+      </p>
+      <p
+        className="mb-0"
+        id="groupMember"
+      >
+        <Link
+          id="realRole"
+          to="/admin/users/edit/id-4"
+        >
+          name-4
+        </Link>
+      </p>
+    </div>,
   ],
   "direction": "vertical",
 }

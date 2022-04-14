@@ -44,13 +44,13 @@ const ViewDetails = (props: ViewDetailsProps) => {
         <Space direction="vertical">
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{lang.NAME}</p>
-            <p className="mb-0" id="username">
+            <p className="mb-0" id="name">
               {GroupDetails.name}
             </p>
           </div>
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{lang.GROUP_UUID}</p>
-            <p className="mb-0" id="username">
+            <p className="mb-0" id="uuid">
               {GroupDetails.id}
             </p>
           </div>
@@ -70,21 +70,21 @@ const ViewDetails = (props: ViewDetailsProps) => {
                 );
               })
             ) : (
-              <p id="noAssignedTeams">{lang.NO_ASSIGNED_ROLES}</p>
+              <p id="noRealRole">{lang.NO_ASSIGNED_ROLES}</p>
             )}
           </div>
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{lang.MEMBERS}</p>
             {userGroupMembers.length ? (
               userGroupMembers.map((userGroup) => (
-                <p key={userGroup.id} className="mb-0" id="realRole">
+                <p key={userGroup.id} className="mb-0" id="groupMember">
                   <Link key={userGroup.id} to={`${URL_USER_EDIT}/${userGroup.id}`} id="realRole">
                     {userGroup.username}
                   </Link>
                 </p>
               ))
             ) : (
-              <p id="noAssignedTeams">{lang.NO_ASSIGNED_MEMBERS}</p>
+              <p id="noGroupMember">{lang.NO_ASSIGNED_MEMBERS}</p>
             )}
           </div>
         </Space>
