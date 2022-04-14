@@ -2,6 +2,7 @@
   "Actions": "Actions",
   "Active": "Actif",
   "An error occurred": "Une erreur est survenue",
+  "Assigned Locations": "",
   "Assigning Practitioners": "Assigner des Moniteurs",
   "Cancel": "Annuler",
   "Create": "Créer",
@@ -25,5 +26,6 @@
   "Team Name": "Nom de l'équipe",
   "Teams": "Equipes",
   "This is a required field": "Ce champ est requis",
+  "This team is not assigned to any Location": "",
   "View details": "Voir détails"
 }

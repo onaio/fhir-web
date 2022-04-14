@@ -2,6 +2,7 @@
   "Actions": "Lệnh",
   "Active": "Đang hoạt động",
   "An error occurred": "Đã xảy ra lỗi",
+  "Assigned Locations": "",
   "Assigning Practitioners": "Thêm người dùng",
   "Cancel": "Hủy",
   "Create": "Tạo mới",
@@ -25,5 +26,6 @@
   "Team Name": "Tên nhóm",
   "Teams": "Danh sách các nhóm",
   "This is a required field": "Đây là trường bắt buộc",
+  "This team is not assigned to any Location": "",
   "View details": "xem chi tiết"
 }
