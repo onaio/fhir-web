@@ -7,7 +7,7 @@ import {
 } from '@opensrp/form-config-core';
 import { getFetchOptions } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import lang from '../../../lang';
+import { useTranslation } from '../../../mls';
 
 /** interface for component props */
 export interface TableActionsProps {
@@ -25,6 +25,7 @@ export const onDownloadClick = (
   isJsonValidator: boolean,
   customFetchOptions?: typeof getFetchOptions
 ) => {
+  const {t} = useTranslation();
   downloadManifestFile(
     accessToken,
     opensrpBaseURL,
@@ -33,12 +34,13 @@ export const onDownloadClick = (
     isJsonValidator,
     customFetchOptions
   ).catch((_: Error) => {
-    sendErrorNotification(lang.ERROR_OCCURRED);
+    sendErrorNotification(t('An error occurred'));
   });
 };
 
 const TableActions = (props: TableActionsProps): JSX.Element => {
   const { file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions } = props;
+  const {t} = useTranslation();
   return (
     <>
       <Button
@@ -47,7 +49,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
           onDownloadClick(file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions)
         }
       >
-        {lang.DOWNLOAD}
+        {t('Download')}
       </Button>
     </>
   );

@@ -21,6 +21,7 @@ import { getTableColumns } from './utils';
 import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -66,6 +67,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
     customFetchOptions,
     fetchReleases,
   } = props;
+  const {t} = useTranslation();
 
   useEffect(() => {
     fetchReleaseFiles(
@@ -98,12 +100,12 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.RELEASES}</Title>
+      <Title level={3}>{t('Releases')}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder="Search"
+            placeholder={t("Search")}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -113,7 +115,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            {lang.UPLOAD_NEW_FILE}
+            {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />

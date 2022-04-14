@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { formatDate } from '@opensrp/form-config-core';
-import lang, { Lang } from '../../lang';
+import { TFunction } from 'react-i18next';
 
 /**
  * Return table columns
@@ -12,15 +12,15 @@ import lang, { Lang } from '../../lang';
  */
 export const getTableColumns = (
   isJsonValidator: boolean,
+  t:TFunction,
   sortedInfo?: Dictionary,
-  langObj: Lang = lang
 ): Dictionary[] => {
   const columns: Dictionary[] = [];
   const headerItems: string[] = [
-    langObj.IDENTIFIER,
-    langObj.FILE_NAME,
-    langObj.FILE_VERSION,
-    langObj.CREATED_AT,
+    t('Identifier'),
+    t('File Name'),
+    t('File Version'),
+    t('Created at')
   ];
   const fields: string[] = ['identifier', 'label', 'version', 'createdAt'];
 
@@ -48,7 +48,7 @@ export const getTableColumns = (
 
   if (!isJsonValidator) {
     columns.push({
-      title: langObj.MODULE,
+      title: t('Module'),
       dataIndex: 'module',
       key: 'module',
     });

@@ -1,5 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { formatDate } from '@opensrp/form-config-core';
+import { TFunction } from 'react-i18next';
 
 /**
  * Return table columns
@@ -7,9 +8,9 @@ import { formatDate } from '@opensrp/form-config-core';
  * @param {Dictionary} sortedInfo object containing sort order information
  * @returns {Dictionary[]} table columns
  */
-export const getTableColumns = (sortedInfo?: Dictionary): Dictionary[] => {
+export const getTableColumns = (t: TFunction, sortedInfo?: Dictionary): Dictionary[] => {
   const columns: Dictionary[] = [];
-  const headerItems: string[] = ['Identifier', 'File Name', 'File Version', 'Created At', 'Module'];
+  const headerItems: string[] = [t('Identifier'), t('File Name'), t('File Version'), t('Created At'), 'Module'];
   const fields: string[] = ['identifier', 'label', 'version', 'createdAt', 'module'];
 
   fields.forEach((field: string, index: number) => {

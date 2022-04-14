@@ -10,6 +10,7 @@ import { getFetchOptions } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { MoreOutlined } from '@ant-design/icons';
 import lang from '../../../lang';
+import { useTranslation } from '../../../mls';
 
 /** interface for component props */
 export interface TableActionsProps {
@@ -28,6 +29,7 @@ export const onDownloadClick = (
   isJsonValidator: boolean,
   customFetchOptions?: typeof getFetchOptions
 ) => {
+  const {t} = useTranslation();
   downloadManifestFile(
     accessToken,
     opensrpBaseURL,
@@ -49,6 +51,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
     isJsonValidator,
     customFetchOptions,
   } = props;
+  const {t} = useTranslation();
 
   const menu = (
     <Menu>
@@ -59,7 +62,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
             onDownloadClick(file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions)
           }
         >
-          {lang.DOWNLOAD}
+          {t('Download')}
         </Button>
       </Menu.Item>
     </Menu>
@@ -68,7 +71,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
   return (
     <>
       <Link to={`${uploadFileURL}/${file.id}`} key="actions">
-        {lang.EDIT}
+        {t('Edit')}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu}>

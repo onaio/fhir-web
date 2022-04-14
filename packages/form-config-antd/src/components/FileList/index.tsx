@@ -20,9 +20,9 @@ import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
-import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
+import { useTranslation } from 'react-i18next';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -80,7 +80,9 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
-  const title = formVersion ? `${lang.RELEASES}: ${formVersion}` : lang.JSON_VALIDATORS;
+  const {t} = useTranslation();
+
+  const title = formVersion ? t("Releases: {{formVersion}}", {formVersion}) : t('JSON Validators');
 
   useEffect(
     () => {
@@ -144,7 +146,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             <>
               <Button type="primary" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
-                {lang.UPLOAD_NEW_FILE}
+                {t('Upload New File')}
               </Button>
               <Divider type="vertical" />
             </>

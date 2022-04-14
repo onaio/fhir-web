@@ -56,3 +56,7 @@ const resources = {
 loadLanguageResources(i18n, resources);
 
 export default i18n;
+
+export const useTranslation = () => {
+  
+}
