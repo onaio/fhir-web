@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Space, Typography, Spin } from 'antd';
+import { Col, Space, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { Resource404 } from '@opensrp/react-utils';
 import { Button } from 'antd';
@@ -8,16 +8,13 @@ import { UserGroupMembers } from '../UserGroupsList';
 import { Link } from 'react-router-dom';
 import lang from '../../lang';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
-const { Text } = Typography;
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
-  isUserGroupMembersLoading: boolean;
-  isUserGroupMembersError: boolean;
-  userGroupMembers: UserGroupMembers[] | undefined;
-  isGroupDetailsLoading: boolean;
-  isGroupDetailsError: boolean;
+  loading: boolean;
+  error: boolean;
   GroupDetails: KeycloakUserGroup | undefined;
+  userGroupMembers: UserGroupMembers[] | undefined;
   onClose: () => void;
 }
 
@@ -28,55 +25,68 @@ export interface ViewDetailsProps {
  * @param props - detail view component props
  */
 const ViewDetails = (props: ViewDetailsProps) => {
-  const {
-    isUserGroupMembersLoading,
-    isUserGroupMembersError,
-    userGroupMembers,
-    isGroupDetailsLoading,
-    isGroupDetailsError,
-    GroupDetails,
-    onClose,
-  } = props;
+  const { loading, error, GroupDetails, userGroupMembers, onClose } = props;
 
   return (
-    <Col className="view-details-content">
-      <div className="flex-right">
-        <Button icon={<CloseOutlined />} shape="circle" type="text" onClick={() => onClose()} />
-      </div>
-      {isUserGroupMembersLoading || isGroupDetailsLoading ? (
-        <Spin size="large" className="custom-ant-spin" />
-      ) : isUserGroupMembersError || isGroupDetailsError || !GroupDetails || !userGroupMembers ? (
+    <Col className="p-4 bg-white">
+      <Button
+        shape="circle"
+        onClick={() => onClose()}
+        className="float-right close-btn"
+        type="text"
+        icon={<CloseOutlined />}
+      />
+      {loading ? (
+        <Spin size="large" />
+      ) : error || !GroupDetails || !userGroupMembers ? (
         <Resource404 />
       ) : (
         <Space direction="vertical">
-          <Text strong={true} className="display-block">
-            {lang.NAME}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {GroupDetails.name}
-          </Text>
-          <Text strong={true} className="display-block">
-            {lang.GROUP_UUID}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {GroupDetails.id}
-          </Text>
-          <Text strong={true} className="display-block">
-            {lang.ROLES}
-          </Text>
-          {GroupDetails.realmRoles?.map((role: string) => (
-            <Text key={role} type="secondary" className="display-block">
-              {role}
-            </Text>
-          ))}
-          <Text strong={true} className="display-block">
-            {lang.MEMBERS}
-          </Text>
-          {userGroupMembers.map((object: UserGroupMembers) => (
-            <Link key={object.id} to={`${URL_USER_EDIT}/${object.id}`}>
-              {object.username}
-            </Link>
-          ))}
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.NAME}</p>
+            <p className="mb-0" id="username">
+              {GroupDetails.name}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.GROUP_UUID}</p>
+            <p className="mb-0" id="username">
+              {GroupDetails.id}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.ROLES}</p>
+            {GroupDetails.realmRoles?.length ? (
+              GroupDetails.realmRoles.map((role, indx) => {
+                // append word break to wrap underscored strings with css
+                const wordBreakRoleName = role.split('_').join('_<wbr/>');
+                return (
+                  <p
+                    key={`${role}-${indx}`}
+                    className="mb-2"
+                    id="realRole"
+                    dangerouslySetInnerHTML={{ __html: wordBreakRoleName }}
+                  />
+                );
+              })
+            ) : (
+              <p id="noAssignedTeams">{lang.NO_ASSIGNED_ROLES}</p>
+            )}
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.MEMBERS}</p>
+            {userGroupMembers.length ? (
+              userGroupMembers.map((userGroup) => (
+                <p key={userGroup.id} className="mb-0" id="realRole">
+                  <Link key={userGroup.id} to={`${URL_USER_EDIT}/${userGroup.id}`} id="realRole">
+                    {userGroup.username}
+                  </Link>
+                </p>
+              ))
+            ) : (
+              <p id="noAssignedTeams">{lang.NO_ASSIGNED_MEMBERS}</p>
+            )}
+          </div>
         </Space>
       )}
     </Col>

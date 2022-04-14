@@ -94,6 +94,8 @@ function fill() {
   lang.NO_ASSIGNED_TEAMS = i18n.t(`No Assigned Teams`, { ns: namespace });
   lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
   lang.NO_ACTIVE_PRACTITIONER = i18n.t(`No Active Practitioner`, { ns: namespace });
+  lang.NO_ASSIGNED_ROLES = i18n.t(`No Assigned Roles`, { ns: namespace });
+  lang.NO_ASSIGNED_MEMBERS = i18n.t(`No Assigned Members`, { ns: namespace });
 }
 
 // run it initial
