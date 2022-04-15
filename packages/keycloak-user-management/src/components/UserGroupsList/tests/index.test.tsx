@@ -13,6 +13,7 @@ import { act } from 'react-dom/test-utils';
 import * as opensrpStore from '@opensrp/store';
 import { Provider } from 'react-redux';
 import * as notifications from '@opensrp/notifications';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   reducerName as keycloakUsersReducerName,
   reducer as keycloakUsersReducer,
@@ -22,10 +23,13 @@ import { unsortedUserGroups, userGroups } from '../../../ducks/tests/fixtures';
 import { URL_USER_GROUPS } from '../../../constants';
 import lang from '../../../lang';
 
-jest.mock('@opensrp/store', () => ({
-  __esModule: true,
-  ...jest.requireActual('@opensrp/store'),
-}));
+jest.mock('@opensrp/store', () => {
+  const actual = jest.requireActual('@opensrp/store');
+  return {
+    __esModule: true,
+    ...actual,
+  };
+});
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -54,6 +58,9 @@ const locationProps = {
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 describe('components/UserGroupsList', () => {
+  const keycloakBaseURL =
+    'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
+
   beforeEach(() => {
     fetch.resetMocks();
     jest.clearAllMocks();
@@ -76,30 +83,34 @@ describe('components/UserGroupsList', () => {
   });
 
   it('renders users table without crashing', () => {
+    const queryClient = new QueryClient();
+
     shallow(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList
-            {...locationProps}
-            keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
-          />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...locationProps} keycloakBaseURL={keycloakBaseURL} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
   });
   it('works correctly with store', async () => {
     fetch.once(JSON.stringify(userGroups));
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient();
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -116,15 +127,18 @@ describe('components/UserGroupsList', () => {
     fetch.once(JSON.stringify(userGroups));
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient();
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
     // Loader should be displayed
     expect(toJson(wrapper.find('[data-testid="group-list-loader"]'))).toBeTruthy();
@@ -154,15 +168,18 @@ describe('components/UserGroupsList', () => {
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     // Loader should be displayed
@@ -179,15 +196,18 @@ describe('components/UserGroupsList', () => {
     fetch.once(JSON.stringify([]));
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient();
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
     // Loader should be displayed
     expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
@@ -207,15 +227,18 @@ describe('components/UserGroupsList', () => {
     fetch.once(JSON.stringify(unsortedUserGroups));
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient();
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -258,15 +281,18 @@ describe('components/UserGroupsList', () => {
     fetch.once(JSON.stringify(userGroups));
     const props = {
       ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
+      keycloakBaseURL,
     };
+
+    const queryClient = new QueryClient();
     const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserGroupsList {...props} />
-        </Router>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={opensrpStore.store}>
+          <Router history={history}>
+            <UserGroupsList {...props} />
+          </Router>
+        </Provider>
+      </QueryClientProvider>
     );
 
     await act(async () => {
@@ -275,9 +301,13 @@ describe('components/UserGroupsList', () => {
 
     wrapper.update();
 
-    wrapper.find('Dropdown').at(0).simulate('click');
+    await act(async () => {
+      wrapper.find('Dropdown').at(0).simulate('click');
+    });
     wrapper.update();
-    wrapper.find('.viewdetails').at(0).simulate('click');
+    await act(async () => {
+      wrapper.find('.viewdetails').at(0).simulate('click');
+    });
     wrapper.update();
     // Redirect to user group detail view
     expect(history.location.pathname).toEqual(URL_USER_GROUPS);
