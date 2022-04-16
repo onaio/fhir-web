@@ -1,7 +1,7 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as notifications from '@opensrp/notifications';
-import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
+import * as fixtures from './fixtures';
 import { loadGroupDetails, loadGroupMembers } from '../utils';
 import fetch from 'jest-fetch-mock';
 import lang from '../../../lang';
@@ -36,7 +36,7 @@ describe('dataLoading', () => {
 
   it('loadGroupDetails works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.userGroup1));
-    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, lang).catch((e) => {
       throw e;
     });
     await flushPromises();
@@ -55,7 +55,7 @@ describe('dataLoading', () => {
 
   it('loadGroupMembers works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.members));
-    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, lang).catch((e) => {
       throw e;
     });
     await flushPromises();
@@ -75,8 +75,8 @@ describe('dataLoading', () => {
   it('loadGroupMembers handles errors', async () => {
     fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
+    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, lang).catch(() => {
+      jest.fn();
     });
     await flushPromises();
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
@@ -85,8 +85,8 @@ describe('dataLoading', () => {
   it('loadGroupDetails handles errors', async () => {
     fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
-      throw e;
+    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, lang).catch(() => {
+      jest.fn();
     });
     expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
