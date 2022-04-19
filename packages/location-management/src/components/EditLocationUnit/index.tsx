@@ -178,7 +178,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     !locationUnits.data ||
     treeData.length !== locationUnits.data.length
   )
-    return <Spin size="large"></Spin>;
+    return <Spin size="large" className="custom-spinner"></Spin>;
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
