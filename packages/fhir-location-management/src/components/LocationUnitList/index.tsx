@@ -92,7 +92,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   );
 
   if (treeIsLoading) {
-    return <Spin size='large' className="custom-spinner" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (treeError && !treeData) {

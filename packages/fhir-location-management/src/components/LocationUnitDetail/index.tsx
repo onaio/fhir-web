@@ -29,7 +29,7 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
   );
 
   if (isLoading) {
-    return <Spin  size='large' className="custom-spinner" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   if (error && !data) {
