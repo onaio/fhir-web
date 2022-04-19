@@ -42,5 +42,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage
-          path_to_write_report: ./coverage/codecov_report.txt
+          fail_ci_if_error: true
           verbose: true
