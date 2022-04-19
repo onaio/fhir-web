@@ -1,10 +1,8 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import * as notifications from '@opensrp/notifications';
 import * as fixtures from './fixtures';
 import { loadGroupDetails, loadGroupMembers } from '../utils';
 import fetch from 'jest-fetch-mock';
-import lang from '../../../lang';
 import flushPromises from 'flush-promises';
 
 const mockBaseURL = 'https://example.com/rest';
@@ -36,7 +34,7 @@ describe('dataLoading', () => {
 
   it('loadGroupDetails works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.userGroup1));
-    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, lang).catch((e) => {
+    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL).catch((e) => {
       throw e;
     });
     await flushPromises();
@@ -55,7 +53,7 @@ describe('dataLoading', () => {
 
   it('loadGroupMembers works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.members));
-    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, lang).catch((e) => {
+    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL).catch((e) => {
       throw e;
     });
     await flushPromises();
@@ -70,24 +68,5 @@ describe('dataLoading', () => {
         method: 'GET',
       },
     ]);
-  });
-
-  it('loadGroupMembers handles errors', async () => {
-    fetch.mockRejectOnce(new Error('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    loadGroupMembers(fixtures.userGroup1.id, mockBaseURL, lang).catch(() => {
-      jest.fn();
-    });
-    await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
-  });
-
-  it('loadGroupDetails handles errors', async () => {
-    fetch.mockRejectOnce(new Error('API is down'));
-    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    loadGroupDetails(fixtures.userGroup1.id, mockBaseURL, lang).catch(() => {
-      jest.fn();
-    });
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
   });
 });
