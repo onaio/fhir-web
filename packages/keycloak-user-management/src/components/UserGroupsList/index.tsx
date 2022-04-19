@@ -137,7 +137,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   ];
 
   if (isUserGroupsLoading) {
-    return <Spin data-testid="group-list-loader" size="large" />;
+    return <Spin data-testid="group-list-loader" size="large" className="custom-spinner" />;
   }
 
   if (isUserGroupsError) return <Resource404 />;
