@@ -60,15 +60,15 @@ describe('components/CreateEditUserGroup', () => {
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     location: {
       hash: '',
-      pathname: '/users/group/edit',
+      pathname: '/users/groups/edit',
       search: '',
       state: '',
     },
     match: {
       isExact: true,
       params: { userGroupId: fixtures.userGroup.id },
-      path: `/users/group/edit/:userGroupId`,
-      url: `/users/group/edit/${fixtures.userGroup.id}`,
+      path: `/users/groups/edit/:userGroupId`,
+      url: `/users/groups/edit/${fixtures.userGroup.id}`,
     },
   };
 
@@ -151,15 +151,15 @@ describe('components/CreateEditUserGroup', () => {
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
       location: {
         hash: '',
-        pathname: '/users/group/new',
+        pathname: '/users/groups/new',
         search: '',
         state: '',
       },
       match: {
         isExact: true,
         params: { userGroupId: '' },
-        path: `/users/group/new/`,
-        url: `/users/group/new/`,
+        path: `/users/groups/new/`,
+        url: `/users/groups/new/`,
       },
     };
 

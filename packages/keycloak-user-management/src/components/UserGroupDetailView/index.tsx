@@ -1,22 +1,21 @@
 import React from 'react';
-import { Col, Space, Typography, Spin } from 'antd';
+import { Col, Space, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { Resource404 } from '@opensrp/react-utils';
-import { sendErrorNotification } from '@opensrp/notifications';
 import { Button } from 'antd';
-import { URL_USER_EDIT, URL_USER_GROUPS } from '../../constants';
+import { URL_USER_EDIT } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
-import { KeycloakUserGroup } from 'keycloak-user-management/src/ducks/userGroups';
 import { Link } from 'react-router-dom';
-import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
 import lang from '../../lang';
-const { Text } = Typography;
+import { KeycloakUserGroup } from '../../ducks/userGroups';
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
-  groupId: string;
-  keycloakBaseURL: string;
+  loading: boolean;
+  error: boolean;
+  GroupDetails: KeycloakUserGroup | undefined;
+  userGroupMembers: UserGroupMembers[] | undefined;
+  onClose: () => void;
 }
 
 /**
@@ -26,65 +25,68 @@ export interface ViewDetailsProps {
  * @param props - detail view component props
  */
 const ViewDetails = (props: ViewDetailsProps) => {
-  const { groupId, keycloakBaseURL } = props;
-  const history = useHistory();
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [userGroupMembers, setUserGroupMembers] = React.useState<UserGroupMembers[] | null>(null);
-  const [singleUserGroup, setSingleUserGroup] = React.useState<KeycloakUserGroup | null>(null);
-
-  React.useEffect(() => {
-    if (groupId) {
-      setLoading(true);
-      const membersPromise = loadGroupMembers(groupId, keycloakBaseURL, setUserGroupMembers);
-      const userGroupPromise = loadGroupDetails(groupId, keycloakBaseURL, setSingleUserGroup);
-      Promise.all([membersPromise, userGroupPromise])
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
-        })
-        .finally(() => setLoading(false));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groupId]);
+  const { loading, error, GroupDetails, userGroupMembers, onClose } = props;
 
   return (
-    <Col className="view-details-content">
-      <div className="flex-right">
-        <Button
-          icon={<CloseOutlined />}
-          shape="circle"
-          type="text"
-          onClick={() => history.push(URL_USER_GROUPS)}
-        />
-      </div>
+    <Col className="p-4 bg-white">
+      <Button
+        shape="circle"
+        onClick={() => onClose()}
+        className="float-right close-btn"
+        type="text"
+        icon={<CloseOutlined />}
+      />
       {loading ? (
-        <Spin size="large" className="custom-spinner" />
-      ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !loading && groupId && (!singleUserGroup || !userGroupMembers) ? (
+        <Spin size="large" />
+      ) : error || !GroupDetails || !userGroupMembers ? (
         <Resource404 />
       ) : (
         <Space direction="vertical">
-          <Text strong={true} className="display-block">
-            {lang.NAME}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {singleUserGroup?.name}
-          </Text>
-          <Text strong={true} className="display-block">
-            {lang.ROLES}
-          </Text>
-          {singleUserGroup?.realmRoles?.map((role: string) => (
-            <Text key={role} type="secondary" className="display-block">
-              {role}
-            </Text>
-          ))}
-          <Text strong={true} className="display-block">
-            {lang.MEMBERS}
-          </Text>
-          {userGroupMembers?.map((object: UserGroupMembers) => (
-            <Link key={object.id} to={`${URL_USER_EDIT}/${object.id}`}>
-              {object.username}
-            </Link>
-          ))}
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.NAME}</p>
+            <p className="mb-0" id="name">
+              {GroupDetails.name}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.GROUP_UUID}</p>
+            <p className="mb-0" id="uuid">
+              {GroupDetails.id}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.ROLES}</p>
+            {GroupDetails.realmRoles?.length ? (
+              GroupDetails.realmRoles.map((role, indx) => {
+                // append word break to wrap underscored strings with css
+                const wordBreakRoleName = role.split('_').join('_<wbr/>');
+                return (
+                  <p
+                    key={`${role}-${indx}`}
+                    className="mb-2"
+                    id="realRole"
+                    dangerouslySetInnerHTML={{ __html: wordBreakRoleName }}
+                  />
+                );
+              })
+            ) : (
+              <p id="noRealRole">{lang.NO_ASSIGNED_ROLES}</p>
+            )}
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{lang.MEMBERS}</p>
+            {userGroupMembers.length ? (
+              userGroupMembers.map((userGroup) => (
+                <p key={userGroup.id} className="mb-0" id="groupMember">
+                  <Link key={userGroup.id} to={`${URL_USER_EDIT}/${userGroup.id}`} id="realRole">
+                    {userGroup.username}
+                  </Link>
+                </p>
+              ))
+            ) : (
+              <p id="noGroupMember">{lang.NO_ASSIGNED_MEMBERS}</p>
+            )}
+          </div>
         </Space>
       )}
     </Col>
