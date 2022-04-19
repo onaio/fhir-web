@@ -173,7 +173,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Spin size={'large'} />
+              <Spin size="large" />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}

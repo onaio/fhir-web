@@ -57,18 +57,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
     setfilterData(filteredData as LocationUnitGroup[]);
   };
 
-  if (isLoading)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (isLoading) return <Spin className="custom-spinner" size={'large'} />;
 
   return (
     <section className="layout-content">
