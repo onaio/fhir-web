@@ -4,9 +4,9 @@ export const URL_USER_EDIT = URL_ADMIN + '/users/edit';
 export const URL_USER = URL_ADMIN + '/users';
 export const URL_USER_GROUPS = `${URL_ADMIN}/users/groups`;
 export const URL_USER_ROLES = `${URL_ADMIN}/users/roles`;
-export const URL_USER_GROUP_EDIT = `${URL_ADMIN}/users/group/edit`;
+export const URL_USER_GROUP_EDIT = `${URL_ADMIN}/users/groups/edit`;
 export const URL_USER_CREATE = URL_ADMIN + '/users/new';
-export const URL_USER_GROUP_CREATE = `${URL_ADMIN}/users/group/new`;
+export const URL_USER_GROUP_CREATE = `${URL_ADMIN}/users/groups/new`;
 export const URL_USER_CREDENTIALS = URL_ADMIN + '/users/credentials';
 export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
 
@@ -32,5 +32,7 @@ export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
 // practitioner role
 export const DELETE_PRACTITIONER_ROLE = 'practitionerRole/delete/';
 
-// Query patams
+// Query params
 export const SEARCH_QUERY_PARAM = 'searchQuery';
+
+export const UserQueryId = 'User';

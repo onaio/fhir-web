@@ -158,7 +158,7 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(rootLocations)]);
 
-  if (isLoading) return <Spin size="large" />;
+  if (isLoading) return <Spin size="large" className="custom-spinner" />;
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;

@@ -2,7 +2,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import * as fixtures from '../../UserGroupDetailView/tests/fixtures';
+import * as fixtures from '../../UserGroupsList/tests/fixtures';
 import {
   fetchSingleGroup,
   removeAssignedRoles,
@@ -273,7 +273,7 @@ describe('dataLoading', () => {
     expect(notificationSuccessMock.mock.calls).toEqual([['User Group created successfully']]);
     expect(historyPushMock).toHaveBeenCalledTimes(1);
     expect(historyPushMock).toHaveBeenCalledWith(
-      '/admin/users/group/edit/283c5d6e-9b83-4954-9f3b-4c2103e4370c'
+      '/admin/users/groups/edit/283c5d6e-9b83-4954-9f3b-4c2103e4370c'
     );
   });
 

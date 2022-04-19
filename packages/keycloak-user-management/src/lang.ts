@@ -58,6 +58,7 @@ function fill() {
   lang.COMPOSITE = i18n.t(`Composite`, { ns: namespace });
   lang.DESCRIPTION = i18n.t(`Description`, { ns: namespace });
   lang.NAME = i18n.t(`Name`, { ns: namespace });
+  lang.GROUP_UUID = i18n.t(`Group UUID`, { ns: namespace });
   lang.ROLES = i18n.t(`Roles`, { ns: namespace });
   lang.MEMBERS = i18n.t(`Members`, { ns: namespace });
   lang.ADD_USER = i18n.t(`Add User`, { ns: namespace });
@@ -93,6 +94,8 @@ function fill() {
   lang.NO_ASSIGNED_TEAMS = i18n.t(`No Assigned Teams`, { ns: namespace });
   lang.PRACTITIONER = i18n.t(`Practitioner`, { ns: namespace });
   lang.NO_ACTIVE_PRACTITIONER = i18n.t(`No Active Practitioner`, { ns: namespace });
+  lang.NO_ASSIGNED_ROLES = i18n.t(`No Assigned Roles`, { ns: namespace });
+  lang.NO_ASSIGNED_MEMBERS = i18n.t(`No Assigned Members`, { ns: namespace });
 }
 
 // run it initial

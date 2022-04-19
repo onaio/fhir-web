@@ -76,7 +76,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   }, [accessToken, opensrpBaseURL, customFetchOptions, dispatch, fetchReleases]);
 
   if (loading) {
-    return <Spin />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

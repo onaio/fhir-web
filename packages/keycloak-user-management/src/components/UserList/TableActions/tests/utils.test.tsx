@@ -7,6 +7,14 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 
+jest.mock('react-query', () => {
+  return {
+    _esModule: true,
+    ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+    useQueryClient: () => ({ invalidateQueries: jest.fn() }),
+  };
+});
+
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),

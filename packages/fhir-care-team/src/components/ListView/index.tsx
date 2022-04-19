@@ -132,7 +132,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     setPayloadCount
   );
 
-  if (isLoading || isFetching) return <Spin size="large" />;
+  if (isLoading || isFetching) return <Spin size="large" className="custom-spinner" />;
 
   if (error) {
     return <BrokenPage errorMessage={`${error}`} />;

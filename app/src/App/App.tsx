@@ -49,6 +49,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  URL_DOWNLOAD_DISTRICT_REPORT,
   URL_TEAM_ASSIGNMENT,
 } from '../constants';
 import { providers } from '../configs/settings';
@@ -197,6 +198,7 @@ import {
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+import { DistrictReport } from '@opensrp/reports';
 import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 
 import '@opensrp/plans/dist/index.css';
@@ -215,7 +217,7 @@ const { Content } = Layout;
  * @param routeProps - Component route props object
  */
 
-export const LoadingComponent = () => <Spin size="large" />;
+export const LoadingComponent = () => <Spin size="large" className="custom-spinner" />;
 export const SuccessfulLoginComponent = () => {
   if (DEFAULT_HOME_MODE === 'eusm') {
     return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
@@ -903,6 +905,14 @@ const App: React.FC = () => {
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={LIST_GROUP_URL}
               component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.DISTRICT_REPORT && activeRoles.DISTRICT_REPORT.split(',')}
+              exact
+              path={URL_DOWNLOAD_DISTRICT_REPORT}
+              component={DistrictReport}
             />
             <Route
               exact
