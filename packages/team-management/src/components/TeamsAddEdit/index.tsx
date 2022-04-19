@@ -243,7 +243,8 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     }
   }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole]);
 
-  if (!practitioners || (params.id && !initialValue)) return <Spin size={'large'} />;
+  if (!practitioners || (params.id && !initialValue))
+    return <Spin size="large" className="custom-spinner" />;
 
   return (
     <section className="layout-content">

@@ -114,7 +114,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
   }, [initialValues.id, props.location]);
 
   if (isLoading) {
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   const userGroupFormProps: UserGroupFormProps = {

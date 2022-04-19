@@ -61,7 +61,7 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: unknown, record) => (
           <span className="d-flex justify-content-end align-items-center Actions">
-            <Link to={URL_LOCATION_UNIT_GROUP_EDIT + '/' + record.id.toString()}>
+            <Link to={`${URL_LOCATION_UNIT_GROUP_EDIT}/${record.id.toString()}`}>
               <Button type="link" className="m-0 p-1">
                 {lang.EDIT}
               </Button>
