@@ -13,10 +13,10 @@ import { useQuery } from 'react-query';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification } from '@opensrp/notifications';
-
 import lang from '../../lang';
 import { SECURITY_AUTHENTICATE, OPENSRP_URL_LOCATION_HIERARCHY } from '../../constants';
 import { submitForm } from './utils';
+import './index.css';
 
 export interface DistrictReportProps {
   opensrpBaseURL: string;
@@ -126,7 +126,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
               loading={!userLocSettings.isError && (isIdle || isLoading)}
               notFoundContent={
                 !userLocSettings.isError && (isIdle || isLoading) ? (
-                  <Spin size="small" style={{ height: 'auto', marginLeft: '50%' }} />
+                  <Spin size="small" className="inline-spinner" />
                 ) : userLocSettings.isError ? (
                   <Alert message="Error loading locations" type="error" showIcon />
                 ) : null

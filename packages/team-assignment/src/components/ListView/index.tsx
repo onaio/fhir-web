@@ -220,7 +220,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   }
 
   if (loading) {
-    return <Spin size="large" />;
+    return <Spin size="large" className="custom-spinner" />;
   }
 
   /**
