@@ -25,7 +25,7 @@ export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   tree: TreeNode;
-  successUrlGenerator: (payload: ILocation) => string;
+  successURLGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
   hidden: string[];
   disabled: string[];
@@ -35,7 +35,7 @@ export interface LocationFormProps
 
 const defaultProps = {
   initialValues: defaultFormField,
-  successUrlGenerator: () => '#',
+  successURLGenerator: () => '#',
   hidden: [],
   disabled: [],
   onCancel: () => undefined,
@@ -92,7 +92,7 @@ const LocationForm = (props: LocationFormProps) => {
     disabledTreeNodesCallback,
     fhirBaseURL,
     afterSubmit,
-    successUrlGenerator: successURLGenerator,
+    successURLGenerator,
     onCancel,
     tree,
   } = props;
@@ -111,7 +111,11 @@ const LocationForm = (props: LocationFormProps) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldsValue({ ...initialValues });
+    // #850 - initial Values would override any values so far fed into  the form,
+    form.setFieldsValue({
+      ...initialValues,
+      ...form.getFieldsValue(),
+    });
   }, [form, initialValues]);
 
   const status = [
