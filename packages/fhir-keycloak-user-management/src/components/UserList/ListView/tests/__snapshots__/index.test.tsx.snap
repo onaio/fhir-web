@@ -11,7 +11,7 @@ exports[`renders correctly when listing resources: Header title 1`] = `
 
 exports[`renders correctly when listing resources: Search 1 page 1 1`] = `
 <td
-  class="ant-table-cell ant-table-cell-ellipsis"
+  class="ant-table-cell ant-table-column-sort ant-table-cell-ellipsis"
 />
 `;
 
