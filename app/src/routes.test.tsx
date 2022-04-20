@@ -2,9 +2,9 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { filterFalsyRoutes, getRoutes } from './routes';
 import React from 'react';
-import MapMarkerOutlineIcon from '@opensrp/ant-icons/lib/MapMarkerOutline';
+import MapMarkerOutlineIcon from '@2fd/ant-design-icons/lib/MapMarkerOutline';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
-import ArchiveOutlineIcon from '@opensrp/ant-icons/lib/ArchiveOutline';
+import ArchiveOutlineIcon from '@2fd/ant-design-icons/lib/ArchiveOutline';
 
 jest.mock('./configs/env');
 

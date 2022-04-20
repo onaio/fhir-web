@@ -1,28 +1,30 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
-import { CareTeamList, deleteCareTeam, useCareTeamsHook } from '..';
+import { CareTeamList, deleteCareTeam } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
 import flushPromises from 'flush-promises';
 import * as reactQuery from 'react-query';
-import { renderHook } from '@testing-library/react-hooks';
-import { waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 import * as notifications from '@opensrp/notifications';
 import { store } from '@opensrp/store';
 import { careTeams } from './fixtures';
-import { mount, shallow } from 'enzyme';
-import * as fhirCient from 'fhirclient';
-import toJson from 'enzyme-to-json';
+import { mount } from 'enzyme';
+import * as fhirclient from 'fhirclient';
 import { URL_CARE_TEAM } from '../../../constants';
-import { createWrapper, renderWithClient } from './utils';
-import Client from 'fhirclient/lib/Client';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -31,7 +33,8 @@ jest.mock('@opensrp/notifications', () => ({
 
 const history = createBrowserHistory();
 
-const careTeamProps = {
+const props = {
+  fhirBaseURL: 'https://r4.smarthealthit.org/',
   history,
   careTeamPageSize: 5,
   location: {
@@ -48,8 +51,9 @@ const careTeamProps = {
   },
 };
 
-describe('Patients list view', () => {
+describe('Care Teams list view', () => {
   beforeAll(() => {
+    nock.disableNetConnect();
     store.dispatch(
       authenticateUser(
         true,
@@ -62,7 +66,9 @@ describe('Patients list view', () => {
         { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
       )
     );
-    nock('https://r4.smarthealthit.org').get('/CareTeam').reply(200, careTeams);
+  });
+  afterAll(() => {
+    nock.enableNetConnect();
   });
 
   afterEach(() => {
@@ -71,151 +77,8 @@ describe('Patients list view', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders patients table without crashing', async () => {
-    shallow(
-      <Router history={history}>
-        <QueryClientProvider client={queryClient}>
-          <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
-        </QueryClientProvider>
-      </Router>
-    );
-  });
-
-  it('renders correctly', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = new Client({} as any, {
-      serverUrl: 'https://r4.smarthealthit.org/',
-    });
-
-    const result = await client.request({
-      includeResponse: true,
-      url: 'CareTeam',
-    });
-
-    // expect(result.body).toEqual('');
-
-    const fhir = jest.spyOn(fhirCient, 'client');
-    const requestMock = jest.fn();
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: requestMock.mockResolvedValue(result.body),
-        };
-      })
-    );
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=5&_getpagesoffset=0']]);
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-    expect(wrapper.text()).toMatchSnapshot();
-
-    // test sorting
-    // find table (sorted by default order)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`table rows - default order ${index}`);
-    });
-
-    // sort by username
-    // click on sort to change the order (ascending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - ascending ${index}`);
-    });
-
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-    wrapper.update();
-
-    // check new sort order by name (ascending)
-    wrapper.find('tr').forEach((tr, index) => {
-      expect(tr.text()).toMatchSnapshot(`sorted table rows by name - descending ${index}`);
-    });
-
-    // cancel sort
-    // click on sort to change the order (descending)
-    wrapper.find('thead tr th').first().simulate('click');
-
-    // look for pagination
-    expect(wrapper.find('Pagination').at(0).text()).toMatchInlineSnapshot(`"125 / pageGo toPage"`);
-    wrapper.find('.ant-pagination-item-2').simulate('click');
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    expect(wrapper.text()).toMatchSnapshot();
-
-    wrapper.unmount();
-  });
-
-  it('correctly redirects to care team detail view url', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
-        };
-      })
-    );
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
-          </QueryClientProvider>
-        </Router>
-      </Provider>
-    );
-    await act(async () => {
-      await flushPromises();
-    });
-
-    wrapper.update();
-
-    wrapper.find('Dropdown').at(0).simulate('click');
-    wrapper.update();
-    wrapper.find('.viewdetails').at(0).simulate('click');
-    wrapper.update();
-    // Redirect to care team detail view
-    expect(history.location.pathname).toEqual('/admin/CareTeams/308');
-  });
-
-  it('successful query component', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
-        };
-      })
-    );
-    const result = renderWithClient(
-      <Router history={history}>
-        <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
-      </Router>
-    );
-    await waitFor(() => result.getByText(/Care Team One/));
-  });
-
   it('successfully deletes care team', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
+    const fhir = jest.spyOn(fhirclient, 'client');
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
@@ -226,14 +89,18 @@ describe('Patients list view', () => {
       })
     );
 
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
         </Router>
-      </Provider>
+      </Provider>,
+      { attachTo: div }
     );
 
     await act(async () => {
@@ -264,7 +131,7 @@ describe('Patients list view', () => {
 
   it('handles failed care team deletion', async () => {
     const notificationErrorsMock = jest.spyOn(notifications, 'sendErrorNotification');
-    const fhir = jest.spyOn(fhirCient, 'client');
+    const fhir = jest.spyOn(fhirclient, 'client');
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
@@ -290,27 +157,6 @@ describe('hooks', () => {
     jest.resetModules();
   });
 
-  it('successful fetchCareTeams query hook', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValueOnce(careTeams),
-        };
-      })
-    );
-    const { result, waitFor } = renderHook(
-      () => useCareTeamsHook('https://r4.smarthealthit.org/', 20, 0, jest.fn()),
-      {
-        wrapper: createWrapper(),
-      }
-    );
-
-    await waitFor(() => result.current.isFetched);
-
-    expect(result.current.data).toBe(careTeams);
-  });
-
   it('shows broken page if fhir api is down', async () => {
     const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
     reactQueryMock.mockImplementation(
@@ -326,7 +172,7 @@ describe('hooks', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...careTeamProps} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
         </Router>
       </Provider>

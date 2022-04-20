@@ -34,6 +34,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
@@ -61,6 +62,5 @@
     "i18next-parser": "^3.5.0"
   },
   "author": "OpenSRP Engineering",
-  "license": "Apache-2.0",
-  "private": false
+  "license": "Apache-2.0"
 }
