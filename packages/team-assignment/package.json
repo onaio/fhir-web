@@ -38,13 +38,15 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/location-management": "^0.0.15",
     "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/plan-form-core": "^0.0.4",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
     "@opensrp/team-management": "^0.0.9",
-    "antd": "^4.6.3",
     "formik": "^2.1.5",
     "formik-antd": "2.0.1",
+    "moment": "^2.29.2",
     "react-helmet": "^6.1.0",
     "yup": "^0.29.3"
   },
@@ -54,7 +56,9 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
+    "antd": "^4.6.3",
     "i18next": "^19.8.4",
+    "lodash": "^4.17.21",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.1",
@@ -62,6 +66,5 @@
     "redux": "^4.0.1"
   },
   "author": "OpenSRP Engineering",
-  "license": "Apache-2.0",
-  "private": false
+  "license": "Apache-2.0"
 }
