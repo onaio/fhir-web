@@ -2,7 +2,6 @@ import { Dictionary } from '@onaio/utils';
 import get from 'lodash/get';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { parseFhirHumanName } from '@opensrp/react-utils';
-import { useState } from 'react';
 
 /**
  * util to extract patient name
