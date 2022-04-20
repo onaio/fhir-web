@@ -42,7 +42,6 @@ export function lang(t: TFunction) {
     ADMINISTRATION: t(`Administration`, { ns: namespace }),
     MISSIONS: t(`Missions`, { ns: namespace }),
     WELCOME_TO_OPENSRP: t(`Welcome to OpenSRP`, { ns: namespace }),
-    HEALTHCARE: t(`Health Care`, { ns: namespace }),
     GROUP: t(`Group`, { ns: namespace }),
     INVENTORY: t(`Inventory`, { ns: namespace }),
     SERVICE_POINT_INVENTORY: t(`Service point inventory`, { ns: namespace }),
