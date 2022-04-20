@@ -40,6 +40,7 @@
     "@opensrp/product-catalogue": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
+    "@opensrp/reports": "^0.0.0",
     "@opensrp/server-logout": "^0.0.1",
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",

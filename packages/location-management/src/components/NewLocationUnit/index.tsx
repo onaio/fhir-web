@@ -108,7 +108,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
   if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
-    return <Spin size="large"></Spin>;
+    return <Spin size="large" className="custom-spinner"></Spin>;
 
   const locationFormProps: LocationFormProps = {
     initialValues: initialValues,

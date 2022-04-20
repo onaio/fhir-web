@@ -119,18 +119,7 @@ export const Form: React.FC<Props> = (props: Props) => {
     }
   }, [isLoading, props.id, opensrpBaseURL, setEditTitle]);
 
-  if (isLoading)
-    return (
-      <Spin
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '85vh',
-        }}
-        size={'large'}
-      />
-    );
+  if (isLoading) return <Spin className="custom-spinner" size={'large'} />;
   return (
     <Formik
       initialValues={initialValue}

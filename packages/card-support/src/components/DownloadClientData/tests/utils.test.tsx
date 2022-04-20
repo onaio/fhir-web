@@ -1,4 +1,4 @@
-import * as globalUtils from '../../../helpers/utils';
+import * as globalUtils from '@opensrp/react-utils';
 import * as fixtures from './fixtures';
 import {
   createCsv,
@@ -25,8 +25,13 @@ jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-const mockDownload = jest.fn();
-(globalUtils as any).downloadFile = mockDownload;
+jest.mock('@opensrp/react-utils', () => {
+  const actual = jest.requireActual('@opensrp/react-utils');
+  return {
+    ...actual,
+    downloadFile: jest.fn(),
+  };
+});
 
 describe('components/DownloadClientData/utils/createCSV', () => {
   afterEach(() => {
@@ -34,6 +39,8 @@ describe('components/DownloadClientData/utils/createCSV', () => {
   });
 
   it('downloads csv correctly', () => {
+    const mockDownload = jest.spyOn(globalUtils, 'downloadFile');
+
     const fileName = 'client_data';
     createCsv([fixtures.child1CsvEntry, fixtures.child2CsvEntry], fileName);
     expect(mockDownload).toBeCalled();
@@ -147,6 +154,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   const setSubmittingMock = jest.fn();
 
   it('submits the form correctly', async () => {
+    const mockDownload = jest.spyOn(globalUtils, 'downloadFile');
+
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockResponse(JSON.stringify([fixtures.mother, fixtures.child1, fixtures.child2]));
 
@@ -385,6 +394,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('creates csv correctly if location name is not found', async () => {
+    const mockDownload = jest.spyOn(globalUtils, 'downloadFile');
+
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockResponse(
       JSON.stringify([
@@ -446,6 +457,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
   });
 
   it('fetches registration location name using location id if registration_location_name is undefined', async () => {
+    const mockDownload = jest.spyOn(globalUtils, 'downloadFile');
+
     fetch.mockOnce(JSON.stringify(fixtures.locationHierarchy));
     fetch.mockResponse(
       JSON.stringify([

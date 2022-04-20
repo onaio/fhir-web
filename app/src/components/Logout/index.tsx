@@ -34,5 +34,5 @@ export const CustomLogout: React.FC = (): JSX.Element => {
     sendErrorNotification(lang(t).ERROR_OCCURRED);
     history.push('/');
   });
-  return <Spin size="large" />;
+  return <Spin size="large" className="custom-spinner" />;
 };

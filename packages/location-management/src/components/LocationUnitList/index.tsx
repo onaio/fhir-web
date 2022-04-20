@@ -87,18 +87,15 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   );
 
   const treeDataQuery = useQueries(
-    locationUnits.data
-      ? locationUnits.data.map((location) => {
-          return {
-            queryKey: [LOCATION_HIERARCHY, location.id],
-            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
-          };
-        })
-      : []
-  ) as UseQueryResult<ParsedHierarchyNode>[];
+    (locationUnits.data ?? []).map((location) => {
+      return {
+        queryKey: [LOCATION_HIERARCHY, location.id],
+        queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
+        onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+        select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
+      };
+    })
+  ) as UseQueryResult<ParsedHierarchyNode | undefined>[];
 
   const treeData = treeDataQuery
     .map((query) => query.data)
@@ -128,14 +125,13 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     }
   }, [treeDataQuery, currentClickedNode]);
 
+  // show loader only if all hierarchy queries are loading
   if (
-    tableData.length === 0 ||
-    treeData.length === 0 ||
-    !locationUnits.data ||
-    treeData.length !== locationUnits.data.length
-  )
-    return <Spin size={'large'} />;
-
+    locationUnits.isLoading ||
+    (treeDataQuery.length > 0 && treeDataQuery.every((query) => query.isLoading))
+  ) {
+    return <Spin size="large" className="custom-spinner" />;
+  }
   return (
     <section className="layout-content">
       <Helmet>
@@ -177,7 +173,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
         {detail ? (
           <Col className="pl-3" span={5}>
             {detail === 'loading' ? (
-              <Spin size={'large'} />
+              <Spin size="large" />
             ) : (
               <LocationUnitDetail onClose={() => setDetail(null)} {...detail} />
             )}

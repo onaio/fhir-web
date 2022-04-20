@@ -205,10 +205,9 @@ export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000))
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
 
-export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
-  'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
-  ''
-);
+export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv('REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER', '');
+
+export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
 
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
 
@@ -217,3 +216,5 @@ export const OPENSRP_WEB_VERSION = setEnv('REACT_APP_OPENSRP_WEB_VERSION', '');
 export const SENTRY_CONFIGS = JSON.parse(setEnv('REACT_APP_SENTRY_CONFIG_JSON', '{}'));
 
 export const ENABLE_QUEST = setEnv('REACT_APP_ENABLE_QUEST', 'false') === 'true';
+
+export const ENABLE_REPORTS = setEnv('REACT_APP_ENABLE_REPORTS', 'false') === 'true';
