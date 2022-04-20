@@ -231,3 +231,88 @@ export const careTeams = {
     },
   ],
 };
+
+export const careTeam4214 = {
+  resourceType: 'CareTeam',
+  id: '4214',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-11-01T12:46:15.815+00:00',
+    source: '#10e9551bdff81a82',
+  },
+  text: {
+    status: 'generated',
+    div: '<div xmlns="http://www.w3.org/1999/xhtml">Care Team</div>',
+  },
+  contained: [
+    {
+      resourceType: 'Practitioner',
+      id: '4206',
+      name: [
+        {
+          family: 'Careful',
+          given: ['Adam'],
+          prefix: ['Dr'],
+        },
+      ],
+    },
+  ],
+  status: 'active',
+  category: [
+    {
+      coding: [
+        {
+          system: 'http://loinc.org',
+          code: 'LA27976-2',
+          display: 'Encounter-focused care team',
+        },
+      ],
+    },
+  ],
+  name: 'Peter Charlmers Care team',
+  subject: {
+    reference: 'Patient/4208',
+    display: 'Peter James Chalmers',
+  },
+  encounter: {
+    reference: 'Encounter/4210',
+  },
+  period: {
+    end: '2013-01-01',
+  },
+  participant: [
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: 'Patient/4208',
+        display: 'Peter James Chalmers',
+      },
+    },
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: '#pr1',
+        display: 'Dorothy Dietition',
+      },
+      onBehalfOf: {
+        reference: 'Organization/f001',
+      },
+      period: {
+        end: '2013-01-01',
+      },
+    },
+  ],
+  managingOrganization: [
+    {
+      reference: 'Organization/4203',
+    },
+  ],
+};

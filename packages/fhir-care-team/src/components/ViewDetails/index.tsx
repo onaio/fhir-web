@@ -5,11 +5,18 @@ import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { Resource404, BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
+import {
+  Resource404,
+  BrokenPage,
+  FHIRServiceClass,
+  getObjLike,
+  IdentifierUseCodes,
+} from '@opensrp/react-utils';
 import lang from '../../lang';
 import { careTeamResourceType, FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
 import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R3';
 const { Text } = Typography;
 
 /** typings for the view details component */
@@ -52,9 +59,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
   );
 
   const subject = useQuery({
-    queryKey: [`CareTeam/${data && data.subject && data.subject.reference}`],
+    queryKey: [FHIR_GROUPS, data?.subject?.reference],
     queryFn: () =>
-      data && data.subject && data.subject.reference
+      data?.subject?.reference
         ? new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).read(data.subject.reference.split('/')[1])
         : undefined,
     select: (res) => res,
@@ -67,6 +74,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
   if (error) {
     return <BrokenPage errorMessage={`${error}`} />;
   }
+
+  const officialIdentifier = getObjLike(data?.identifier, 'use', IdentifierUseCodes.OFFICIAL)[0] as
+    | Identifier
+    | undefined;
 
   return (
     <Col className="view-details-content">
@@ -95,7 +106,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
             {lang.IDENTIFIER}
           </Text>
           <Text type="secondary" className="display-block">
-            {data?.identifier[0].value}
+            {officialIdentifier?.value}
           </Text>
           <Text strong={true} className="display-block">
             {lang.STATUS}

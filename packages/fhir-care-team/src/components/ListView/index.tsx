@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Table, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps, useHistory, useParams } from 'react-router';
+import { RouteComponentProps, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
   useSimpleTabularView,
   BrokenPage,
   SearchForm,
+  TableLayout,
 } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
@@ -58,19 +59,17 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     fhirBaseURL,
     careTeamResourceType
   );
-  const history = useHistory();
-
   const { data, isFetching, isLoading, error, refetch } = queryValues;
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = data?.records.map((datum: Dictionary, index: number) => {
+  const tableData = (data?.records ?? []).map((datum: Dictionary) => {
     return {
-      key: `${index}`,
-      id: datum.resource.id,
-      name: datum.resource.name,
+      key: datum.id,
+      id: datum.id,
+      name: datum.name,
     };
   });
   type TableData = typeof tableData[0];
@@ -78,9 +77,8 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   const columns = [
     {
       title: lang.NAME,
-      dataIndex: 'name',
+      dataIndex: 'name' as const,
       editable: true,
-      sorter: (a: TableData, b: TableData) => a.name.localeCompare(b.name),
     },
     {
       title: 'Actions',
@@ -98,7 +96,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           <Dropdown
             overlay={
               <Menu className="menu">
-                <Menu.Item>
+                <Menu.Item key="delete">
                   <Popconfirm
                     title={lang.CONFIRM_DELETE}
                     okText={lang.YES}
@@ -113,13 +111,8 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
                     </Button>
                   </Popconfirm>
                 </Menu.Item>
-                <Menu.Item
-                  className="viewdetails"
-                  onClick={() => {
-                    history.push(`${URL_CARE_TEAM}/${record.id}`);
-                  }}
-                >
-                  View Details
+                <Menu.Item key="view-details" className="view-details">
+                  <Link to={`${URL_CARE_TEAM}/${record.id}`}>View Details</Link>
                 </Menu.Item>
               </Menu>
             }
@@ -127,7 +120,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" />
+            <MoreOutlined className="more-options" data-testid="action-dropdown" />
           </Dropdown>
         </span>
       ),
@@ -158,9 +151,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               </Button>
             </Link>
           </div>
-          <Table {...tableProps} />
+          <TableLayout {...tableProps} />
         </Col>
-        resourceId && <ViewDetails careTeamId={resourceId as string} fhirBaseURL={fhirBaseURL} />
+        {resourceId && <ViewDetails careTeamId={resourceId} fhirBaseURL={fhirBaseURL} />}
       </Row>
     </div>
   );
