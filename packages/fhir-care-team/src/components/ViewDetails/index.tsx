@@ -7,7 +7,7 @@ import { useQuery, useQueries } from 'react-query';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Resource404, BrokenPage, FHIRServiceClass } from '@opensrp/react-utils';
 import lang from '../../lang';
-import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
+import { careTeamResourceType, FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { getPatientName } from '../CreateEditCareTeam/utils';
 import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
 const { Text } = Typography;
@@ -29,7 +29,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const history = useHistory();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [`CareTeam/${careTeamId}`],
+    queryKey: [careTeamResourceType, careTeamId],
     queryFn: () =>
       careTeamId ? new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId) : undefined,
     select: (res) => res,
