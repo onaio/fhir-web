@@ -137,6 +137,14 @@ test('renders correctly when listing resources', async () => {
     });
   });
 
+  // sort?
+  const caretUp = document.querySelector('.anticon-caret-up:nth-child(1)');
+  fireEvent.click(caretUp);
+  const tdsText = [...document.querySelectorAll('tr td:nth-child(3)')].map((td) => {
+    return td.textContent;
+  });
+  expect(tdsText).toEqual(['petertest', 'Test', 'User', 'Coda', 'Coda']);
+
   // works with search as well.
   const searchForm = document.querySelector('[data-testid="search-form"]');
   userEvents.paste(searchForm as HTMLElement, 'petertest');
