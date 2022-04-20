@@ -181,7 +181,7 @@ const getColumns = (
     title: 'S.no',
     // eslint-disable-next-line @typescript-eslint/naming-convention
     render: function SerialNumber(_, __, index) {
-      return <span>{index + 1}</span>;
+      return <span>{Number(index) + 1}</span>;
     },
   },
   {
