@@ -5,7 +5,6 @@ import {
   Row,
   Col,
   Table,
-  Spin,
   PageHeader,
   Button,
   Divider,
@@ -14,33 +13,26 @@ import {
   Popconfirm,
 } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { RouteComponentProps, useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
-import { createChangeHandler, getQueryParams, SearchForm, BrokenPage } from '@opensrp/react-utils';
+import { FHIRServiceClass, useSimpleTabularView, BrokenPage, SearchForm } from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
-  SEARCH_QUERY_PARAM,
   FHIR_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
-  ROUTE_PARAM_CARE_TEAM_ID,
   URL_CREATE_CARE_TEAM,
+  careTeamResourceType,
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+
 
 // route params for care team pages
 interface RouteParams {
   careTeamId: string | undefined;
-}
-
-interface TableData {
-  key: number | string;
-  id: string;
-  name: string;
 }
 
 interface Props {
@@ -48,35 +40,8 @@ interface Props {
   careTeamPageSize: number;
 }
 
-export interface PaginationProps {
-  currentPage: number;
-  pageSize: number;
-}
-
-/** default component props */
-const defaultProps = {
-  fhirBaseURL: '',
-  careTeamPageSize: 5,
-};
-
 export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-export const fetchCareTeams = async (
-  fhirBaseURL: string,
-  pageSize: number,
-  pageOffset: number,
-  setPayloadCount: (count: number) => void
-) => {
-  const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
-  const params = {
-    _count: pageSize,
-    _getpagesoffset: pageOffset,
-  };
-  return serve.list(params).then((res) => {
-    setPayloadCount(res.total as number);
-    return res;
-  });
-};
 
 export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
@@ -86,20 +51,6 @@ export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<v
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
 
-export const useCareTeamsHook = (
-  fhirBaseURL: string,
-  pageSize: number,
-  pageOffset: number,
-  setPayloadCount: (count: number) => void
-) => {
-  return useQuery(
-    [FHIR_CARE_TEAM, pageOffset],
-    () => fetchCareTeams(fhirBaseURL, pageSize, pageOffset, setPayloadCount),
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-};
 
 /**
  * Function which shows the list of all roles and their details
@@ -108,35 +59,20 @@ export const useCareTeamsHook = (
  * @returns {Function} returns User Roles list display
  */
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
-  const { fhirBaseURL, careTeamPageSize } = props;
-  const history = useHistory();
-  const careTeamId = props.match.params[ROUTE_PARAM_CARE_TEAM_ID] ?? '';
+  const { fhirBaseURL } = props;
 
-  const [payloadCount, setPayloadCount] = React.useState<number>(0);
-  const [pageProps, setPageProps] = React.useState<PaginationProps>({
-    currentPage: 1,
-    pageSize: careTeamPageSize,
-  });
-  const { currentPage, pageSize } = pageProps;
-  const pageOffset = (currentPage - 1) * pageSize;
-
-  const { data, isLoading, isFetching, error, refetch } = useCareTeamsHook(
+  const { careTeamId: resourceId } = useParams<RouteParams>();
+  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<ICareTeam>(
     fhirBaseURL,
-    pageSize as number,
-    pageOffset,
-    setPayloadCount
+    careTeamResourceType
   );
+  const history = useHistory();
 
-  if (isLoading || isFetching) return <Spin size="large" className="custom-spinner" />;
+  const { data, isFetching, isLoading, error, refetch } = queryValues;
 
-  if (error) {
-    return <BrokenPage errorMessage={`${error}`} />;
+  if (error && !data) {
+    return <BrokenPage errorMessage={(error as Error).message} />;
   }
-
-  const searchFormProps = {
-    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
-    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
-  };
 
   const tableData = data?.entry?.map((datum: Dictionary, index: number) => {
     return {
@@ -145,6 +81,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       name: datum.resource.name,
     };
   });
+  type TableData = typeof tableData[0];
 
   const columns = [
     {
@@ -205,6 +142,13 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     },
   ];
 
+  const tableProps = {
+    datasource: tableData,
+    columns,
+    loading: isFetching || isLoading,
+    pagination: tablePaginationProps,
+  };
+
   return (
     <div className="content-section">
       <Helmet>
@@ -223,30 +167,11 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             </Link>
           </div>
           <Table
-            dataSource={tableData}
-            columns={columns}
-            pagination={{
-              showQuickJumper: true,
-              showSizeChanger: true,
-              defaultPageSize: pageSize,
-              onChange: (page: number, pageSize: number | undefined) => {
-                setPageProps({
-                  currentPage: page,
-                  pageSize: pageSize ?? careTeamPageSize,
-                });
-              },
-              current: currentPage,
-              total: payloadCount,
-              pageSizeOptions: ['5', '10', '20', '50', '100'],
-            }}
+            {...tableProps}
           />
         </Col>
-        <ViewDetails careTeamId={careTeamId} fhirBaseURL={fhirBaseURL} />
+        <ViewDetails careTeamId={resourceId} fhirBaseURL={fhirBaseURL} />
       </Row>
     </div>
   );
 };
-
-CareTeamList.defaultProps = defaultProps;
-
-export default CareTeamList;
