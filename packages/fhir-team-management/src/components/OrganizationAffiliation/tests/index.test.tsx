@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { cleanup, render, screen, waitFor, within } from '@testing-library/react';
-import { fireEvent, prettyDOM, waitForElementToBeRemoved } from '@testing-library/dom';
+import { fireEvent, waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import { locationHierarchyResourceType } from '@opensrp/fhir-location-management';
