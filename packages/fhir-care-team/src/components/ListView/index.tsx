@@ -1,21 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import {
-  Row,
-  Col,
-  Table,
-  PageHeader,
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  Popconfirm,
-} from 'antd';
+import { Row, Col, Table, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useHistory, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { FHIRServiceClass, useSimpleTabularView, BrokenPage, SearchForm } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  useSimpleTabularView,
+  BrokenPage,
+  SearchForm,
+} from '@opensrp/react-utils';
 import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
@@ -29,7 +24,6 @@ import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
-
 // route params for care team pages
 interface RouteParams {
   careTeamId: string | undefined;
@@ -42,7 +36,6 @@ interface Props {
 
 export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-
 export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   return serve
@@ -50,7 +43,6 @@ export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<v
     .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
     .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
 };
-
 
 /**
  * Function which shows the list of all roles and their details
@@ -74,7 +66,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = data?.entry?.map((datum: Dictionary, index: number) => {
+  const tableData = data?.records.map((datum: Dictionary, index: number) => {
     return {
       key: `${index}`,
       id: datum.resource.id,
@@ -166,11 +158,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               </Button>
             </Link>
           </div>
-          <Table
-            {...tableProps}
-          />
+          <Table {...tableProps} />
         </Col>
-        <ViewDetails careTeamId={resourceId} fhirBaseURL={fhirBaseURL} />
+        resourceId && <ViewDetails careTeamId={resourceId as string} fhirBaseURL={fhirBaseURL} />
       </Row>
     </div>
   );
