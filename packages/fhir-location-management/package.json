@@ -34,8 +34,9 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.4",
@@ -43,10 +44,9 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
-    "@onaio/redux-reducer-registry": "^0.0.9",
     "cycle": "^1.0.3",
-    "tree-model": "^1.0.7",
     "fhirclient": "^2.4.0",
+    "tree-model": "^1.0.7",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -55,10 +55,13 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "react-i18next": "^11.8.10",
     "@opensrp/store": "^0.0.10",
     "i18next": "^19.8.4",
-    "react": "^16.13.1",
-    "react-query": "^3.15.1"
+    "react": "^16.18.1",
+    "react-i18next": "^11.8.10",
+    "react-query": "^3.15.1",
+    "react-redux": "^7.2.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.2.1"
   }
 }
