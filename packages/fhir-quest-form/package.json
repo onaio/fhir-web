@@ -41,7 +41,6 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
     "@helsenorge/core-utils": "^21.3.0-prerelease",
     "@helsenorge/designsystem-react": ">=1.0.0-beta113",

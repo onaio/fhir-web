@@ -27,7 +27,6 @@
   },
   "author": "Ona Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [

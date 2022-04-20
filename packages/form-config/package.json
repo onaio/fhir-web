@@ -58,6 +58,7 @@
     "formik": "^2.1.4",
     "lodash": "^4.17.15",
     "react-i18next": "^11.8.10",
+    "react-table": "^7.7.0",
     "react-toastify": "^6.0.5",
     "reactstrap": "^8.0.1",
     "yup": "^0.29.1"
@@ -67,6 +68,5 @@
     "i18next-parser": "^3.5.0"
   },
   "author": "OpenSRP Engineering",
-  "license": "Apache-2.0",
-  "private": false
+  "license": "Apache-2.0"
 }
