@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { cleanup, render, screen, waitFor, within } from '@testing-library/react';
-import { fireEvent, waitForElementToBeRemoved } from '@testing-library/dom';
+import { fireEvent, prettyDOM, waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import { locationHierarchyResourceType } from '@opensrp/fhir-location-management';
@@ -168,6 +168,13 @@ test('Edits organization affiliation correctly', async () => {
     expect(element).toMatchSnapshot('available options');
   });
 
+  // try and filter
+  await userEvent.type(input, 'void');
+  // see what org options are listed as available for selection
+  document.querySelectorAll('.ant-select-item-option').forEach((element) => {
+    expect(element).toMatchSnapshot('available options after filter');
+  });
+
   // remove one of the selection test Team 3
   const testTeam3Span = screen.getByTitle((content, element) => {
     return content.includes('Test Team 3') && element.tagName === 'SPAN';
@@ -186,6 +193,7 @@ test('Edits organization affiliation correctly', async () => {
 
   await waitFor(() => {
     expect(screen.getByText(/Team assignments updated successfully/)).toBeInTheDocument();
+    expect(screen.queryByText(/Assign\/Unassign Teams/i)).not.toBeInTheDocument();
   });
 
   // lets expand on tree search and select a node

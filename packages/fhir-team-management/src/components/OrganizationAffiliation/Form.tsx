@@ -6,6 +6,7 @@ import {
   getOrgOptionsFromAffiliations,
   getOrgSelectOptions,
   OrgSelectOptions,
+  orgsFilterFunction,
   postPutAffiliations,
 } from './utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
@@ -60,6 +61,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
       onError: (err: Error) => sendErrorNotification(err.message),
       onSuccess: () => {
         sendSuccessNotification('Team assignments updated successfully');
+        handleCancel();
         queryClient.invalidateQueries([organizationAffiliationResourceType]).catch(() => {
           sendInfoNotification(
             'Failed to refresh assignments, Please Refresh the page to see the changes'
@@ -122,6 +124,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
         placeholder="Select teams"
         options={orgSelectOptions}
         defaultValue={defaultOrgsValues as unknown as string[]}
+        filterOption={orgsFilterFunction}
         onChange={handleChange}
       ></Select>
     </Modal>
