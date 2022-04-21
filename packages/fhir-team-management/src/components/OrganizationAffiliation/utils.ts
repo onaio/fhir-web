@@ -55,6 +55,16 @@ export const getOrgSelectOptions = (orgs: IOrganization[] = []): OrgSelectOption
   });
 };
 
+/**
+ * filter practitioners select on search
+ *
+ * @param inputValue search term
+ * @param option select option to filter against
+ */
+export const orgsFilterFunction = (inputValue: string, option?: OrgSelectOptions) => {
+  return !!option?.label?.toLowerCase().includes(inputValue.toLowerCase());
+};
+
 export const getOrgOptionsFromAffiliations = (
   affiliatedOrgs: IOrganizationAffiliation[] = []
 ): OrgSelectOptions[] => {
