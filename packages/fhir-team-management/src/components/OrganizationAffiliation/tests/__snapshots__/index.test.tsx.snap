@@ -161,6 +161,20 @@ exports[`Edits organization affiliation correctly: available options 5`] = `
 </div>
 `;
 
+exports[`Edits organization affiliation correctly: available options after filter 1`] = `
+<div
+  aria-selected="false"
+  class="ant-select-item ant-select-item-option ant-select-item-option-active"
+  title="Voidsingers"
+>
+  <div
+    class="ant-select-item-option-content"
+  >
+    Voidsingers
+  </div>
+</div>
+`;
+
 exports[`Edits organization affiliation correctly: default selected item 1`] = `
 <span
   class="ant-select-selection-item-content"
