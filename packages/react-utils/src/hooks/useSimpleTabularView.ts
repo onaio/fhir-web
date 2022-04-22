@@ -103,8 +103,30 @@ export function useSimpleTabularView<T extends Resource>(
   type QueryKeyType = { queryKey: TRQuery };
 
   const queryFn = useCallback(
-    async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) =>
-      loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams),
+    async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) => {
+      const res = await loadResources(
+        fhirBaseUrl,
+        resourceType,
+        { page, pageSize, search },
+        extraParams
+      );
+      if (res.total === undefined) {
+        // patient endpoint does not include total after _searc response like other resource endpoints do
+        const countFilter = {
+          ...extraParams,
+          _summary: 'count',
+        };
+        const { total } = await loadResources(
+          fhirBaseUrl,
+          resourceType,
+          { page, pageSize, search },
+          countFilter
+        );
+        res.total = total;
+        return res;
+      }
+      return res;
+    },
     [fhirBaseUrl, resourceType]
   );
 

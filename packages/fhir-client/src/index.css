@@ -109,3 +109,7 @@
   pointer-events: none;
   color: grey;
 }
+
+#patient-details .ant-badge {
+  float: right;
+}
