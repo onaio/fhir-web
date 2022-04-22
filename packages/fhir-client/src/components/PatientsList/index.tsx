@@ -1,23 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, PageHeader, Tag } from 'antd';
-import { Link } from 'react-router-dom';
-import { TableLayout } from '@opensrp/react-utils';
+import { Row, Col, PageHeader } from 'antd';
+import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
-import { PlusOutlined } from '@ant-design/icons';
 import { useSimpleTabularView } from '@opensrp/react-utils';
-import { IPatient, Patient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
-import { getPatientName } from './utils';
-
-interface TableData {
-  key?: string;
-  id?: string;
-  name?: string;
-  dob?: string;
-  gender?: Patient.GenderEnum;
-  deceased?: boolean;
-}
+import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
+import { patientResourceType } from '../../constants';
+import { parsePatient, columns } from '../PatientDetails/ResourceSchema/Patient';
 
 interface PatientListProps {
   fhirBaseURL: string;
@@ -42,63 +31,19 @@ export const PatientsList = (props: PatientListProps) => {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const tableData: TableData[] = (data?.records ?? []).map((patient: IPatient) => {
-    const { id, birthDate, gender, deceasedBoolean } = patient;
+  const tableData = (data?.records ?? []).map((patient: IPatient) => {
+    const patientValues = parsePatient(patient);
     return {
-      key: id as string,
-      id: id,
-      name: getPatientName(patient) ?? id,
-      dob: birthDate,
-      gender: gender,
-      deceased: deceasedBoolean,
+      ...patientValues,
+      key: patientValues.id,
     };
   });
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name' as const,
-      key: 'name' as const,
-      render: (name: string, record: TableData) => {
-        return (
-          <>
-            <span>
-              {name} {record.deceased ? <Tag color="red">Deceased</Tag> : null}
-            </span>
-          </>
-        );
-      },
-    },
-    {
-      title: 'Date Of Birth',
-      dataIndex: 'dob' as const,
-      key: 'dob' as const,
-    },
-    {
-      title: 'Gender',
-      dataIndex: 'gender' as const,
-      key: 'gender' as const,
-    },
-    {
-      title: 'Actions',
-      width: '20%',
-      // eslint-disable-next-line react/display-name
-      render: (record: TableData) => (
-        <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              View
-            </Button>
-          </Link>
-        </span>
-      ),
-    },
-  ];
+  type TableData = typeof tableData[0];
 
   const tableProps = {
     datasource: tableData,
-    columns,
+    columns: columns as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
   };
@@ -113,12 +58,6 @@ export const PatientsList = (props: PatientListProps) => {
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to="#">
-              <Button type="primary">
-                <PlusOutlined />
-                Add patient
-              </Button>
-            </Link>
           </div>
           <TableLayout {...tableProps} />
         </Col>

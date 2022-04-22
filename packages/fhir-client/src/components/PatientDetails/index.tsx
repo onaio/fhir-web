@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Table, Card, Avatar, Tag, Spin, Layout } from 'antd';
+import { Col, Row, Menu, Badge, Card, Avatar, Tag, Spin, Layout, Alert } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps, useParams } from 'react-router-dom';
@@ -8,14 +8,14 @@ import FHIR from 'fhirclient';
 import get from 'lodash/get';
 import { BrokenPage, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { fhirclient } from 'fhirclient/lib/types';
-import { getPatientName, getPath, buildObservationValueString } from '../PatientsList/utils';
-import { resourcesSchema } from '../../helpers/resourcesSchema';
-import { Dictionary } from '@onaio/utils';
+import { getPatientName } from '../PatientsList/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { DocumentReferenceDetails } from '../DocumentReference';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { patientResourceType } from '../../constants';
 import { useQuery } from 'react-query';
+import { resourcesSchema } from './ResourceSchema';
+import { PatientDetailsTable } from '../..//helpers/utils';
 
 const { Header, Sider, Content } = Layout;
 
@@ -93,103 +93,15 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     }
   }
 
-  const dataSource = resourceTypeMap[resourceType]?.data.map((d: Dictionary) => {
-    const key = d.id;
-    const id = d.id;
-    const city = get(d, 'address.city');
-    const country = get(d, 'address.country');
-    const state = get(d, 'address.state');
-    const name =
-      getPatientName(d as IPatient) ||
-      get(d, 'code.coding.0.display') ||
-      get(d, 'code.text') ||
-      get(d, 'modifierExtension.0.valueReference.display') ||
-      get(d, 'medicationCodeableConcept.coding.0.display') ||
-      get(d, 'class.0.name') ||
-      d.name;
-    const date =
-      get(d, 'effectiveDateTime') ||
-      get(d, 'performedDateTime') ||
-      get(d, 'occurrenceDateTime') ||
-      get(d, 'performedPeriod.start') ||
-      get(d, 'meta.lastUpdated') ||
-      d.date;
-    const reasonClass = get(d, 'class.display');
-    const active = `${d.active}`;
-    const value = buildObservationValueString(d);
-    const gender = d.gender;
-    const dob = d.birthDate;
-    const category = get(d, 'category.0.coding.0.display');
-    const identifier = `ID: ${d.id}`;
-    const type =
-      get(d, 'type.0.text') ||
-      get(d, 'vaccineCode.text') ||
-      get(d, 'vaccineCode.coding.0.display') ||
-      get(d, 'vaccineCode.coding.0.code') ||
-      get(d, 'type.0.coding.0.display');
-    const status = d.status || get(d, 'achievementStatus.coding.0.code') || 'N/A';
-    const reason =
-      getPath(d, 'reason.0.coding.0.display') ||
-      get(d, 'detail.code.coding.0.display') ||
-      get(d, 'reasonCode.0.coding.0.display') ||
-      'N/A';
-    const resorceClass = 'N/A';
-    const condition = get(d, 'code.text');
-    const onsetDate = get(d, 'onsetDateTime');
-    const vstatus = get(d, 'verificationStatus.coding.0.code') || 'N/A';
-    const cstatus = get(d, 'clinicalStatus.coding.0.code') || 'N/A';
-    const time = getPath(d, 'period.start');
-    const details =
-      getPath(d, 'description.text') ||
-      getPath(d, 'code.text') ||
-      getPath(d, 'code.coding.0.display') ||
-      getPath(d, 'medicationCodeableConcept.coding.0.display') ||
-      getPath(d, 'medicationCodeableConcept.coding.0.code') ||
-      getPath(d, 'code.coding.0.code') ||
-      getPath(d, 'result.0.display') ||
-      d.description;
-    // TODO: one immunization Recommendation resource can have more than a single recommendation
-    const dateRecommendationCreated = get(d, 'date');
-    const nextDoseDate = get(d, 'recommendation.0.dateCriterion.0.value');
-    const dosesNum = get(d, 'recommendation.0.doseNumberPositiveInt');
-
-    return {
-      dosesNum,
-      nextDoseDate,
-      dateRecommendationCreated,
-      key,
-      id,
-      name,
-      city,
-      country,
-      state,
-      date,
-      active,
-      value,
-      gender,
-      dob,
-      category,
-      identifier,
-      type,
-      status,
-      reason,
-      resorceClass,
-      reasonClass,
-      condition,
-      onsetDate,
-      vstatus,
-      cstatus,
-      time,
-      details,
-    };
-  });
+  const resources = resourceTypeMap[resourceType]?.data;
+  const { columns, resourceParser } = resourcesSchema[resourceType] ?? {};
 
   const patientName = getPatientName(resourceTypeMap['Patient'].data[0] as IPatient);
   const currentPatient = resourceTypeMap['Patient'].data[0];
   const { gender, birthDate } = currentPatient;
   const avatarLink = `https://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
   return (
-    <Row>
+    <Row id="patient-details">
       <Col span={24}>
         <section className="layout-content">
           <Helmet>
@@ -285,28 +197,31 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                     </span>
                   </>
                 }
-                bodyStyle={{ padding: '0 15px' }}
                 bordered={false}
               >
-                {resourceType === 'DocumentReference' ? (
-                  <DocumentReferenceDetails
-                    fhirBaseApiUrl={fhirBaseURL}
-                    documentResources={
-                      resourceTypeMap[resourceType].data as IfhirR4.IDocumentReference[]
+                {(() => {
+                  if (resourceType === 'DocumentReference') {
+                    return (
+                      <DocumentReferenceDetails
+                        fhirBaseApiUrl={fhirBaseURL}
+                        documentResources={
+                          resourceTypeMap[resourceType].data as IfhirR4.IDocumentReference[]
+                        }
+                      />
+                    );
+                  } else {
+                    if (!columns || !resourceParser) {
+                      return <Alert message="Work in progress" type="info" />;
                     }
-                  />
-                ) : (
-                  <Table
-                    dataSource={dataSource}
-                    columns={resourcesSchema[resourceType]?.columns ?? []}
-                    pagination={{
-                      showQuickJumper: true,
-                      showSizeChanger: true,
-                      defaultPageSize: 5,
-                      pageSizeOptions: ['5', '10', '20', '50', '100'],
-                    }}
-                  />
-                )}
+                    return (
+                      <PatientDetailsTable
+                        columns={columns}
+                        resources={resources}
+                        parseResource={resourceParser}
+                      />
+                    );
+                  }
+                })()}
               </Card>
             </Col>
           </Row>

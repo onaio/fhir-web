@@ -32,11 +32,23 @@ exports[`renders correctly when listing organizations: table row 1 page 1 3`] = 
 <td
   class="ant-table-cell"
 >
-  male
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
 </td>
 `;
 
 exports[`renders correctly when listing organizations: table row 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -82,11 +94,23 @@ exports[`renders correctly when listing organizations: table row 2 page 1 3`] = 
 <td
   class="ant-table-cell"
 >
-  male
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
 </td>
 `;
 
 exports[`renders correctly when listing organizations: table row 2 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -132,11 +156,23 @@ exports[`renders correctly when listing organizations: table row 3 page 1 3`] = 
 <td
   class="ant-table-cell"
 >
-  male
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
 </td>
 `;
 
 exports[`renders correctly when listing organizations: table row 3 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -187,11 +223,23 @@ exports[`renders correctly when listing organizations: table row 4 page 1 3`] = 
 <td
   class="ant-table-cell"
 >
-  male
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
 </td>
 `;
 
 exports[`renders correctly when listing organizations: table row 4 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
