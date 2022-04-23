@@ -85,6 +85,9 @@ export const DEFAULT_PLAN_ID = setEnv(
   '27362060-0309-411a-910c-64f55ede3758'
 );
 
+/** Activate patients menu */
+export const ENABLE_PATIENTS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_PATIENTS', 'false') === 'true';
+
 export const BACKEND_ACTIVE = setEnv('REACT_APP_BACKEND_ACTIVE', 'false') === 'true';
 
 export const OPENSRP_LOGOUT_URL = setEnv(
@@ -184,13 +187,17 @@ export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
-export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
-  setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
+export const ENABLE_USER_MANAGEMENT = setEnv('REACT_APP_ENABLE_USER_MANAGEMENT', 'false') === 'true';
+
+export const ENABLE_FHIR_USER_MANAGEMENT = setEnv('REACT_APP_ENABLE_FHIR_USER_MANAGEMENT', 'false') === 'true';
 
 export const FHIR_API_BASE_URL = setEnv(
   'REACT_APP_FHIR_API_BASE_URL',
-  'https://fhir.labs.smartregister.org/fhir'
+  'https://fhir-auth.labs.smartregister.org/fhir'
 );
+
+export const ENABLE_TEAMS_ASSIGNMENT_MODULE =
+  setEnv('REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE', 'false') === 'true';
 
 export const KEYCLOAK_USERS_PAGE_SIZE = Number(setEnv('REACT_APP_KEYCLOAK_USERS_PAGE_SIZE', 20));
 
@@ -205,9 +212,17 @@ export const PAGINATION_SIZE = Number(setEnv('REACT_APP_PAGINATION_SIZE', 1000))
 
 export const DEFAULTS_TABLE_PAGE_SIZE = Number(setEnv('REACT_APP_DEFAULTS_TABLE_PAGE_SIZE', 5));
 
-export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv('REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER', '');
+export const FHIR_PATIENT_SORT_FIELDS = setEnv(
+  'REACT_APP_FHIR_PATIENT_SORT_FIELDS',
+  '-_lastUpdated'
+).split(',');
 
-export const FHIR_RESOURCES_PAGE_SIZE = Number(setEnv('REACT_APP_FHIR_RESOURCES_PAGE_SIZE', 500));
+export const FHIR_PATIENT_BUNDLE_SIZE = Number(setEnv('REACT_APP_FHIR_PATIENT_BUNDLE_SIZE', 5000));
+
+export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
+  'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
+  ''
+);
 
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
 

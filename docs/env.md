@@ -195,6 +195,24 @@ Below is a list of currently supported environment variables:
   - **not required**_(`string`)_
   - _accepted values_: _default | eusm | tunisia_
 
+- **REACT_APP_FHIR_API_BASE_URL**
+
+  - FHIR server base URL
+  - **Required**
+  - default: `https://fhir.labs.smartregister.org/fhir`
+
+- **REACT_APP_ENABLE_USER_MANAGEMENT**
+
+  - Enables user management module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
+- **REACT_APP_ENABLE_FHIR_USER_MANAGEMENT**
+
+  - Enable fhir in the  user management module
+  - **Optional**(`boolean`)
+  - default: `"false"`
+
 - **REACT_APP_OPENSRP_OAUTH_SCOPES**
 
   - Sets the oauth app permission scopes.
@@ -251,6 +269,18 @@ Below is a list of currently supported environment variables:
   - Default number of rows per table page
   - default: 5
   - `Enum: 5, 10, 20 , 50, 100`
+
+- **REACT_APP_FHIR_PATIENT_SORT_FIELDS**
+
+  - A comma separated list of sort fields for the FHIR patient resource
+  - **Optional**(`strng`)
+  - default: `"-_lastUpdated,status"`
+
+- **REACT_APP_FHIR_PATIENT_BUNDLE_SIZE**
+
+  - Default FHIR patient resource bundle size
+  - **Optional**(`strng`)
+  - default: 5000
 
 - **REACT_APP_ENABLE_FHIR_TEAMS**
 

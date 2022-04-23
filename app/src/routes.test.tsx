@@ -113,6 +113,7 @@ describe('routes', () => {
     envModule.ENABLE_PLANS = true;
     envModule.ENABLE_SERVER_SETTINGS = true;
     envModule.ENABLE_CARD_SUPPORT = true;
+    envModule.ENABLE_USER_MANAGEMENT=true;
     envModule.ENABLE_QUEST = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',

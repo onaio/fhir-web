@@ -22,11 +22,13 @@ import {
   ENABLE_CARD_SUPPORT,
   ENABLE_FHIR_GROUP,
   OPENSRP_ROLES,
+  ENABLE_PATIENTS_MODULE,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_SERVER_SETTINGS,
   ENABLE_QUEST,
   ENABLE_REPORTS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
+  ENABLE_USER_MANAGEMENT,
 } from './configs/env';
 import {
   URL_USER,
@@ -49,6 +51,7 @@ import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
 import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
+import { LIST_PATIENTS_URL } from '@opensrp/fhir-client'
 
 /** Interface for menu items */
 export interface Route {
@@ -137,7 +140,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: langObj.USER_MANAGEMENT,
           key: 'user-management',
-          enabled: roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
+          enabled: ENABLE_USER_MANAGEMENT && roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
             { title: langObj.USERS, key: 'users', url: URL_USER },
             { title: langObj.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
@@ -279,6 +282,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
       ],
+    },
+    {
+      otherProps: { icon: <IdcardOutlined /> },
+      title: langObj.PATIENTS,
+      key: 'fhir-patients',
+      enabled: ENABLE_PATIENTS_MODULE,
+      url: LIST_PATIENTS_URL,
     },
   ];
 

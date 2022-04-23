@@ -45,6 +45,7 @@
   "devDependencies": {
     "@smile-cdr/fhirts": "1.2.5",
     "@types/antd": "^1.0.0",
+    "@opensrp/store": "^0.0.10",
     "@types/uuid": "8.3.1"
   },
   "peerDependencies": {
