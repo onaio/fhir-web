@@ -8,7 +8,6 @@ import {
 } from '../constants';
 import { interventionType, status, activities, PlanStatus } from '@opensrp/plan-form-core';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
-
 import {
   ACTION_UUID_NAMESPACE,
   DATE_FORMAT,
@@ -29,6 +28,8 @@ import {
   USER_FORM_HIDDEN_FIELDS,
   USER_FORM_RENDER_FIELDS,
   PAGINATION_SIZE,
+  FHIR_PATIENT_SORT_FIELDS,
+  FHIR_PATIENT_BUNDLE_SIZE,
   FHIR_ROOT_LOCATION_IDENTIFIER,
 } from '../configs/env';
 
@@ -170,4 +171,15 @@ export const createEditUserProps = {
   // that is closer to the code.
   userFormHiddenFields: USER_FORM_HIDDEN_FIELDS,
   userFormRenderFields: USER_FORM_RENDER_FIELDS,
+  baseUrl: OPENSRP_API_BASE_URL,
+};
+
+export const  fhirCreateEditUserProps = {
+  ...createEditUserProps,
+  baseUrl: FHIR_API_BASE_URL,
+}
+
+export const patientProps = {
+  sortFields: FHIR_PATIENT_SORT_FIELDS,
+  patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
 };

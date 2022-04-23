@@ -2912,7 +2912,7 @@
   resolved "https://registry.yarnpkg.com/@onaio/session-reducer/-/session-reducer-0.0.13.tgz#96c5749b4c84b47a662ce753a5bec414b565f0df"
   integrity sha512-A5FdwFyV1Y4NQiyo/aA3g1nlNFsu7rXzR7jGT6J0Nj6ag9xuh6XOG3fyLgBLRbNTB1+Y1g3iFYX8MN89sJrAeQ==
 
-"@onaio/utils@^0.0.1":
+"@onaio/utils@0.0.1", "@onaio/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@onaio/utils/-/utils-0.0.1.tgz#c4b6b0afb3b7ad6e2b6135a160d3d79e53e286af"
   integrity sha512-JybtApO1LqxidE+avNdu6Qq+EOvywn92/h++HIMvA5DIKMZ6e1OGdG2ZMbFkylmx8JpvVcFypSIomPzKUYvL7w==
@@ -9020,6 +9020,16 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
+fhirclient@2.3.11:
+  version "2.3.11"
+  resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.3.11.tgz#daff5f605007d163a74cd7cd65130f0a60cef534"
+  integrity sha512-pBEcAJlMLeqrnDEYPDTV+BGooYIzwj0vsIjR7ppFF2qSHXEijgQ6IgyKkUB3EnnR4/UP91pCicjrnM/qFGV/2Q==
+  dependencies:
+    abortcontroller-polyfill "^1.5.0"
+    core-js "^3.6.5"
+    cross-fetch "^3.0.5"
+    debug "^4.1.1"
+
 fhirclient@^2.3.11, fhirclient@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/fhirclient/-/fhirclient-2.4.0.tgz#1cdd92a2d6616020fc2edc6015286715bf28be08"
@@ -13289,6 +13299,11 @@ moment@>=1.6.0, moment@^2.24.0, moment@^2.25.3, moment@^2.29.2:
   version "2.29.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.2.tgz#00910c60b20843bcba52d37d58c628b47b1f20e4"
   integrity sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==
+
+moment@^2.29.1:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 moo@^0.5.0:
   version "0.5.1"

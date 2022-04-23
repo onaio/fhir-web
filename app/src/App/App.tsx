@@ -20,6 +20,7 @@ import {
   DISABLE_LOGIN_PROTECTION,
   OPENSRP_ROLES,
   DEFAULT_HOME_MODE,
+  ENABLE_FHIR_USER_MANAGEMENT,
   ENABLE_FHIR_LOCATIONS,
   ENABLE_FHIR_TEAMS,
 } from '../configs/env';
@@ -63,6 +64,7 @@ import {
   CATALOGUE_EDIT_VIEW_URL,
   ConnectedEditProductView,
 } from '@opensrp/product-catalogue';
+import { PatientsList, PatientDetails, LIST_PATIENTS_URL } from '@opensrp/fhir-client';
 import {
   ConnectedPlansList,
   ACTIVE_PLANS_LIST_VIEW_URL,
@@ -99,6 +101,10 @@ import {
   URL_EDIT_CARE_TEAM,
   URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
+import {
+  CreateEditUser as FHIRConnectedCreateEditUser,
+  UserList as FhirUserList,
+} from '@opensrp/fhir-user-management';
 import { DownloadClientData } from '@opensrp/card-support';
 import {
   UploadForm,
@@ -161,6 +167,8 @@ import {
   usersListProps,
   createEditUserProps,
   teamManagementProps,
+  patientProps,
+  fhirCreateEditUserProps,
 } from './utils';
 import './App.css';
 import {
@@ -289,9 +297,18 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
+              path={`${URL_USER}/:id`}
+              {...usersListProps}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              exact
               path={URL_USER}
               {...usersListProps}
-              component={ConnectedUserList}
+              component={ENABLE_FHIR_USER_MANAGEMENT ?  FhirUserList : ConnectedUserList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -300,6 +317,24 @@ const App: React.FC = () => {
               exact
               path={URL_USER_GROUPS}
               component={UserGroupsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              exact
+              path={LIST_PATIENTS_URL}
+              {...patientProps}
+              component={PatientsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${LIST_PATIENTS_URL}/:${'id'}`}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              {...patientProps}
+              component={PatientDetails}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -570,8 +605,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
-              {...createEditUserProps}
-              component={ConnectedCreateEditUser}
+              {...(ENABLE_FHIR_USER_MANAGEMENT ? fhirCreateEditUserProps : createEditUserProps)}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -595,8 +630,8 @@ const App: React.FC = () => {
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER_CREATE}
-              {...createEditUserProps}
-              component={ConnectedCreateEditUser}
+              {...(ENABLE_FHIR_USER_MANAGEMENT ? fhirCreateEditUserProps : createEditUserProps)}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}

@@ -5,3 +5,5 @@ export * from './components/CreateEditUserGroup';
 export * from './components/CreateEditUser';
 export * from './components/Credentials';
 export * from './constants';
+export * from './components/forms/UserForm/types';
+export * from './ducks/user';

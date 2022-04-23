@@ -1,0 +1,193 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Patients list view renders correctly: Doc reference values 1`] = `
+<div
+  class="fhir-ui__Value"
+>
+  <label
+    class="fhir-ui__Value-label"
+  >
+    Created at
+  </label>
+  <div>
+    <span>
+      2021-08-04
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 1`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    UUID
+    : 
+  </span>
+  <span>
+    512a3be0-5653-496b-bf4a-20c6a0e71d88
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 2`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    ID
+    : 
+  </span>
+  <span>
+    cd3ac6b4-fa04-416e-9f8b-69584fd5d1c2
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 3`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    Gender
+    : 
+  </span>
+  <span>
+    male
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 4`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    Birth Date
+    : 
+  </span>
+  <span>
+    1970-09-28
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 5`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    Phone
+    : 
+  </span>
+  <span>
+    555-136-8815
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 6`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    MRN
+    : 
+  </span>
+  <span>
+    Unknown
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 7`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    Address
+    : 
+  </span>
+  <span>
+    836 Doyle Port
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: Patient key value details 8`] = `
+<div
+  class="patient-detail__key-value"
+>
+  <span>
+    Country
+    : 
+  </span>
+  <span>
+    US
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: reference collapse item 1`] = `
+<div
+  aria-expanded="false"
+  class="ant-collapse-header"
+  role="tab"
+  tabindex="0"
+>
+  <div>
+    <span
+      aria-label="right"
+      class="anticon anticon-right ant-collapse-arrow"
+      role="img"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="right"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z"
+        />
+      </svg>
+    </span>
+  </div>
+  1015
+    
+  <span
+    class="ant-tag"
+  >
+    <span
+      title="status"
+    />
+    current
+  </span>
+</div>
+`;
+
+exports[`Patients list view renders correctly: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  7/8/2021
+</td>
+`;
+
+exports[`Patients list view renders correctly: table row 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  2021-02-02
+</td>
+`;
+
+exports[`Patients list view renders correctly: table row 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;

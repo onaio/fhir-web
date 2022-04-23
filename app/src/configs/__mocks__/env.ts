@@ -55,3 +55,5 @@ export const DOMAIN_NAME = 'http://localhost:3000';
 export const OPENSRP_WEB_VERSION = '';
 
 export const ENABLE_QUEST = true;
+
+export const ENABLE_USER_MANAGEMENT = true;

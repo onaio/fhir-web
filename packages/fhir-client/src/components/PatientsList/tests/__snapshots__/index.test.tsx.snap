@@ -1,0 +1,263 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when listing organizations: Header title 1`] = `
+<span
+  class="ant-page-header-heading-title"
+  title="Patients"
+>
+  Patients
+</span>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  <span>
+    Apple Park
+     
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  1988-08-04
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 1 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex justify-content-start align-items-center"
+  >
+    <a
+      href="/fhir/Patient/52"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          View
+        </span>
+      </button>
+    </a>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  <span>
+    Jane Doe
+     
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  1988-08-04
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 2 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex justify-content-start align-items-center"
+  >
+    <a
+      href="/fhir/Patient/2"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          View
+        </span>
+      </button>
+    </a>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  <span>
+    John Doe
+     
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  1988-08-04
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 3 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex justify-content-start align-items-center"
+  >
+    <a
+      href="/fhir/Patient/1"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          View
+        </span>
+      </button>
+    </a>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  <span>
+    Albert Einstein
+     
+    <span
+      class="ant-tag ant-tag-red"
+    >
+      Deceased
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  1988-08-04
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="ant-typography"
+  >
+    Inactive
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  male
+</td>
+`;
+
+exports[`renders correctly when listing organizations: table row 4 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex justify-content-start align-items-center"
+  >
+    <a
+      href="/fhir/Patient/3"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          View
+        </span>
+      </button>
+    </a>
+  </span>
+</td>
+`;

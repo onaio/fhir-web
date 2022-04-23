@@ -41,7 +41,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         );
       } else if (route.url) {
         return (
-          <Menu.Item key={route.key}>
+          <Menu.Item key={route.key} icon={route.otherProps?.icon}>
             <Link className="admin-link" to={route.url}>
               {route.title}
             </Link>
