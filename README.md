@@ -14,6 +14,9 @@ This repository is divided into 2 [workTrees](https://yarnpkg.com/features/works
 # create a .env file in the repo/app folder, you can copy the .env.sample and then override its values
 # cp app/.env.sample app/.env
 
+# Install dependencies
+yarn install
+
 # Build the packages, this involves generating their type definitions and transpiling using babel to cjs
 yarn lerna:prepublish
 
