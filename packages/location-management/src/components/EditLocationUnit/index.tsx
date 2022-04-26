@@ -91,7 +91,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     };
     return locationsSelector(state, filters);
   })[0] as LocationUnit | undefined;
-  const [loading, setLoading] = useState<boolean>(true);
+  const [thisLocIsLoading, setLoading] = useState<boolean>(true);
 
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
@@ -161,7 +161,6 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
@@ -172,13 +171,14 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     .map((query) => query.data)
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
+  // show loader only if all hierarchy queries are loading
   if (
-    loading ||
-    treeData.length === 0 ||
-    !locationUnits.data ||
-    treeData.length !== locationUnits.data.length
-  )
-    return <Spin size="large" className="custom-spinner"></Spin>;
+    locationUnits.isLoading ||
+    thisLocIsLoading ||
+    (treeDataQuery.length > 0 && treeDataQuery.every((query) => query.isLoading))
+  ) {
+    return <Spin size="large" className="custom-spinner" />;
+  }
 
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;

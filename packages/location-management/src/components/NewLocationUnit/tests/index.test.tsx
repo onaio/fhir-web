@@ -13,6 +13,7 @@ import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { baseLocationUnits, rawHierarchy } from '../../LocationUnitList/tests/fixtures';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -82,8 +83,6 @@ describe('NewLocationUnit', () => {
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[2]));
-
-    // fetch.mockResponse(JSON.stringify([]));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -198,6 +197,47 @@ describe('NewLocationUnit', () => {
     expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
+  });
+
+  it('spinner stops with promise loading status', async () => {
+    const queryClient = new QueryClient();
+    fetch.mockResponse(JSON.stringify([]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <NewLocationUnit {...locationProps} />
+          </QueryClientProvider>{' '}
+        </Router>
+      </Provider>
+    );
+
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    expect(fetch.mock.calls.map((x) => x[0])).toMatchObject([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
+      // calls done from the rendered form
+      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=service_point_types',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/location-tag',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/?serverVersion=0&identifier=location_settings',
+    ]);
+
+    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
+
+    const helmet = Helmet.peek();
+    expect(helmet.title).toEqual('Add Location Unit');
+
+    // rendered page including title
+    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
+
+    wrapper.unmount();
   });
 
   it('cancel url is used if passed', async () => {

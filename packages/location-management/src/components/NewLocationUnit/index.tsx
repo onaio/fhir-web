@@ -107,8 +107,13 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     .map((query) => query.data)
     .filter((e) => e !== undefined) as ParsedHierarchyNode[];
 
-  if (treeData.length === 0 || !locationUnits.data || treeData.length !== locationUnits.data.length)
-    return <Spin size="large" className="custom-spinner"></Spin>;
+  // show loader only if all hierarchy queries are loading
+  if (
+    locationUnits.isLoading ||
+    (treeDataQuery.length > 0 && treeDataQuery.every((query) => query.isLoading))
+  ) {
+    return <Spin size="large" className="custom-spinner" />;
+  }
 
   const locationFormProps: LocationFormProps = {
     initialValues: initialValues,
