@@ -37,7 +37,7 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
-    "i18next": "^19.8.4",
+    "i18next": "^21.6.14",
     "react": "^16.18.1"
   },
   "dependencies": {

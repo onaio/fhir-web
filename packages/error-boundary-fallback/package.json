@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "antd": "^4.6.3",
-    "i18next": "^19.8.4",
+    "i18next": "^21.6.14",
     "react": "^16.13.1"
   },
   "dependencies": {
