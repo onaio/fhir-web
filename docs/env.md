@@ -322,3 +322,13 @@ Below is a list of currently supported environment variables:
   - Enable the fhir Quest views
   - **Optional**(_'true'|'false'_)
   - default: 'false'
+
+- **REACT_APP_ENABLE_REPORTS**
+  - enables the reports module
+  - **Optional**('true'|'false')
+  - default: 'false'
+
+- **REACT_APP_ENABLE_FHIR_GROUP**
+  - enables the fhir groups module
+  - **Optional**('true'|'false')
+  - default: 'false'
