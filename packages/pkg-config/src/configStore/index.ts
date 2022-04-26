@@ -3,8 +3,11 @@ import { createGlobalState } from 'react-hooks-global-state';
 import { USER_PREFERENCE_KEY } from '../constants';
 import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
-export type LanguageCode = 'en' | 'sw' | 'fr' | 'ar' | 'th';
-export type ProjectLanguageCode = 'eusm' | 'core';
+export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
+export const supportedProjectCode = ['eusm', 'core'] as const;
+
+export type LanguageCode = typeof supportedLanguageCodes[number];
+export type ProjectCode = typeof supportedProjectCode[number];
 export type GlobalState = ConfigState & UserPreference;
 
 export type PaginationState = Pick<PaginationProps, 'current' | 'pageSize'>;
@@ -16,7 +19,7 @@ export interface TableState {
 /** interface for configs for this package */
 export interface ConfigState {
   languageCode?: LanguageCode;
-  projectLanguageCode?: ProjectLanguageCode;
+  projectCode?: ProjectCode;
   appLoginURL?: string;
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
@@ -29,9 +32,8 @@ export interface UserPreference {
   tablespref?: Record<string, TableState>;
 }
 
-const DefaultConfigs: GlobalState = {
+const defaultConfigs: GlobalState = {
   languageCode: 'en',
-  projectLanguageCode: 'core',
   appLoginURL: undefined,
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
@@ -39,6 +41,7 @@ const DefaultConfigs: GlobalState = {
   i18n: undefined,
   tablespref: undefined,
   defaultTablesPageSize: 5,
+  projectCode: 'core',
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
@@ -46,7 +49,7 @@ let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
   : {};
 
 const { useGlobalState, getGlobalState, setGlobalState, ...unexposedGettersSetters } =
-  createGlobalState<GlobalState>({ ...DefaultConfigs, ...localstorage });
+  createGlobalState<GlobalState>({ ...defaultConfigs, ...localstorage });
 
 /**
  * hook to get and update values in the config store
@@ -113,7 +116,7 @@ const getAllConfigs = otherGettersSetters.getState;
  *
  * const configs = {
  *  languageCode: 'en',
- *  projectLanguageCode: 'core',
+ *  projectCode: 'core',
  * }
  *
  * const allConfigs = setAllConfigs(configs);

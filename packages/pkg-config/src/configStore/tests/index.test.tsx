@@ -17,7 +17,7 @@ describe('pkg-configs/configStore', () => {
       languageCode: 'en',
       opensrpBaseURL: undefined,
       fhirBaseURL: undefined,
-      projectLanguageCode: 'core',
+      projectCode: 'core',
       defaultTablesPageSize: 5,
     });
   });
@@ -35,7 +35,7 @@ describe('pkg-configs/configStore', () => {
     // action creators dispatch
     const sampleConfig: ConfigState = {
       languageCode: 'sw',
-      projectLanguageCode: 'eusm',
+      projectCode: undefined,
     };
     setAllConfigs(sampleConfig);
     expect(getAllConfigs()).toEqual(sampleConfig);
