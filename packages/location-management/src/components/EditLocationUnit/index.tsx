@@ -91,7 +91,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     };
     return locationsSelector(state, filters);
   })[0] as LocationUnit | undefined;
-  const [thisLocIsLoading, setLoading] = useState<boolean>(true);
+  const [thisLocIsLoading, setThisLocIsLoading] = useState<boolean>(true);
 
   React.useEffect(() => {
     // get location; we are making 2 calls to know if location is a jurisdiction or a structure
@@ -140,7 +140,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     Promise.all([firstPromise, secondPromise])
       .catch((err) => handleBrokenPage(err))
       .finally(() => {
-        setLoading(false);
+        setThisLocIsLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locId]);
