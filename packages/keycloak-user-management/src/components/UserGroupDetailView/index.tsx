@@ -37,7 +37,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         icon={<CloseOutlined />}
       />
       {loading ? (
-        <Spin size="large" />
+        <Spin size="large" className="inline-spinner" />
       ) : error || !GroupDetails || !userGroupMembers ? (
         <Resource404 />
       ) : (
