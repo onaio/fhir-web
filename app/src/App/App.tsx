@@ -297,24 +297,6 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
-              path={`${URL_USER}/:id`}
-              {...usersListProps}
-              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              exact
-              path={URL_USER}
-              {...usersListProps}
-              component={ENABLE_FHIR_USER_MANAGEMENT ?  FhirUserList : ConnectedUserList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              exact
               path={URL_USER_GROUPS}
               component={UserGroupsList}
             />
@@ -351,6 +333,24 @@ const App: React.FC = () => {
               path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               component={UserGroupsList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              exact
+              path={`${URL_USER}/:id`}
+              {...usersListProps}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              exact
+              path={URL_USER}
+              {...usersListProps}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -606,7 +606,9 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
               {...(ENABLE_FHIR_USER_MANAGEMENT ? fhirCreateEditUserProps : createEditUserProps)}
-              component={ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
+              component={
+                ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser
+              }
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
@@ -631,7 +633,9 @@ const App: React.FC = () => {
               exact
               path={URL_USER_CREATE}
               {...(ENABLE_FHIR_USER_MANAGEMENT ? fhirCreateEditUserProps : createEditUserProps)}
-              component={ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser}
+              component={
+                ENABLE_FHIR_USER_MANAGEMENT ? FHIRConnectedCreateEditUser : ConnectedCreateEditUser
+              }
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
