@@ -8,12 +8,10 @@ import './Header.css';
 import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
-import lang from '../../../lang';
 import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
-import i18n from '../../../mls';
+import {useTranslation} from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
-import { useTranslation } from 'react-i18next';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -42,22 +40,26 @@ const languageOptions: LanguageOptions = {
  *
  * @param languageCode - contains the languageOption.key of the selected language option
  */
-const languageChangeHandler = (languageCode: string | number) => {
-  const projectLanguageCode = getConfig('projectLanguageCode');
-  const newLanguage = `${languageCode}_${projectLanguageCode}`;
-  setConfig('languageCode', languageCode as LanguageCode);
-  i18n.changeLanguage(newLanguage);
+const languageChangeHandlerFactory = (i18n: any) => (languageCode: string | number) => {
+  const projectCode = getConfig('projectCode');
+  if(languageCode){
+    const newLanguage = projectCode ? `${languageCode}_${projectCode}` : languageCode as string;
+    setConfig('languageCode', languageCode as LanguageCode);
+    i18n.changeLanguage(newLanguage);
+  }
 };
 
 /** The Header component */
 export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   /** default enum of all possible language options */
 
+  const languageChangeHandler = languageChangeHandlerFactory(i18n);
   const languageSwitcherProps = {
+    value: i18n.language,
     onLanguageChange: languageChangeHandler,
     allLanguageOptions: languageOptions,
     supportedLanguages: SUPPORTED_LANGUAGES as LanguageCode[],
@@ -69,10 +71,10 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           overlay={
             <Menu>
               <Menu.Item key={URL_LOGOUT}>
-                <Link to={URL_LOGOUT}>{lang(t).LOGOUT}</Link>
+                <Link to={URL_LOGOUT}>{t('Logout')}</Link>
               </Menu.Item>
               <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
-                <Link to={`${URL_USER_EDIT}/${user_id}`}>{lang(t).MANAGE_ACCOUNT}</Link>
+                <Link to={`${URL_USER_EDIT}/${user_id}`}>{t('Manage account')}</Link>
               </Menu.Item>
             </Menu>
           }
@@ -93,7 +95,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         </Dropdown>
       ) : (
         <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>{lang(t).LOGIN}</Link>
+          <Link to={URL_REACT_LOGIN}>{t('Login')}</Link>
         </Button>
       )}
       {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}

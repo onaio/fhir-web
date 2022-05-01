@@ -98,7 +98,7 @@
     "eslint-plugin-sonarjs": "^0.12.0",
     "flush-promises": "^1.0.2",
     "husky": "^7.0.4",
-    "i18next": "^21.6.6",
+    "i18next": "^21.6.14",
     "jest": "27.5.1",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "jest-fetch-mock": "^3.0.3",

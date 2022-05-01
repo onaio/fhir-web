@@ -47,8 +47,8 @@ import {
   URL_ADMIN,
   URL_DOWNLOAD_DISTRICT_REPORT,
 } from './constants';
-import lang, { TFunction } from './lang';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
+import { TFunction } from 'react-i18next';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
 import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 import { LIST_PATIENTS_URL } from '@opensrp/fhir-client'
@@ -72,28 +72,27 @@ export interface Route {
  */
 export function getRoutes(roles: string[], t: TFunction): Route[] {
   const activeRoles = OPENSRP_ROLES;
-  const langObj = lang(t);
 
   const routes: Route[] = [
     {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
-      title: langObj.MISSIONS,
-      key: 'missions',
+      title: t('Plans'),
+      key: 'plans',
       enabled:
         ENABLE_PLANS &&
         roles &&
         activeRoles.PLANS &&
         isAuthorized(roles, activeRoles.PLANS.split(',')),
       children: [
-        { title: langObj.ACTIVE, url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
-        { title: langObj.DRAFT, url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
-        { title: langObj.COMPLETE, url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
-        { title: langObj.RETIRED, url: RETIRED_PLANS_LIST_VIEW_URL, key: 'missions-retired' },
+        { title: t('Active'), url: ACTIVE_PLANS_LIST_VIEW_URL, key: 'missions-active' },
+        { title: t('Draft'), url: DRAFT_PLANS_LIST_VIEW_URL, key: 'missions-draft' },
+        { title: t('Complete'), url: COMPLETE_PLANS_LIST_VIEW_URL, key: 'missions-complete' },
+        { title: t('Retired'), url: RETIRED_PLANS_LIST_VIEW_URL, key: 'missions-retired' },
       ],
     },
     {
       otherProps: { icon: <IdcardOutlined /> },
-      title: 'Card Support',
+      title: t('Card Support'),
       key: 'card-support',
       enabled:
         ENABLE_CARD_SUPPORT &&
@@ -102,7 +101,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         isAuthorized(roles, activeRoles.CARD_SUPPORT.split(',')),
       children: [
         {
-          title: 'Download Client Data',
+          title: t('Download Client Data'),
           url: URL_DOWNLOAD_CLIENT_DATA,
           key: 'download-client-data',
         },
@@ -110,7 +109,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     },
     {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
-      title: langObj.INVENTORY,
+      title: t('Inventory'),
       key: 'inventory',
       enabled:
         ENABLE_INVENTORY &&
@@ -119,12 +118,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         isAuthorized(roles, activeRoles.INVENTORY.split(',')),
       children: [
         {
-          title: langObj.SERVICE_POINT_INVENTORY,
+          title: t('Service point inventory'),
           url: INVENTORY_SERVICE_POINT_LIST_VIEW,
           key: 'inventory-list',
         },
         {
-          title: langObj.ADD_INVENTORY_VIA_CSV,
+          title: t('Add inventory via CSV'),
           url: INVENTORY_BULK_UPLOAD_URL,
           key: 'inventory-upload',
         },
@@ -132,23 +131,23 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     },
     {
       otherProps: { icon: <DashboardOutlined /> },
-      title: langObj.ADMINISTRATION,
-      key: 'administration',
+      title: t('Administration'),
+      key: 'admin',
       enabled: true,
       url: URL_ADMIN,
       children: [
         {
-          title: langObj.USER_MANAGEMENT,
+          title: t('User Management'),
           key: 'user-management',
           enabled: ENABLE_USER_MANAGEMENT && roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
-            { title: langObj.USERS, key: 'users', url: URL_USER },
-            { title: langObj.USER_GROUPS, key: 'user-groups', url: URL_USER_GROUPS },
-            { title: langObj.USER_ROLES, key: 'user-roles', url: URL_USER_ROLES },
+            { title: t('Users'), key: 'users', url: URL_USER },
+            { title: t('User Groups'), key: 'user-groups', url: URL_USER_GROUPS },
+            { title: t('User Roles'), key: 'user-roles', url: URL_USER_ROLES },
           ],
         },
         {
-          title: langObj.LOCATION_MANAGEMENT,
+          title: t('Location Management'),
           key: 'location-management',
           enabled:
             ENABLE_LOCATIONS &&
@@ -156,16 +155,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: langObj.LOCATION_UNITS, url: URL_LOCATION_UNIT, key: 'location-unit' },
+            { title: t('Location Units'), url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
-              title: langObj.LOCATION_UNIT_GROUP,
+              title: t('Location Unit Group'),
               url: URL_LOCATION_UNIT_GROUP,
               key: 'location-group',
             },
           ],
         },
         {
-          title: langObj.PRODUCT_CATALOGUE,
+          title: t('Product Catalogue'),
           key: 'product-catalogue',
           enabled:
             ENABLE_PRODUCT_CATALOGUE &&
@@ -175,7 +174,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           url: CATALOGUE_LIST_VIEW_URL,
         },
         {
-          title: langObj.CARE_TEAM,
+          title: t('Care Teams Management'),
           key: 'fhir-care-team',
           enabled:
             ENABLE_FHIR_CARE_TEAM &&
@@ -185,7 +184,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           url: URL_FHIR_CARE_TEAM,
         },
         {
-          title: langObj.TEAM_MANAGEMENT,
+          title: t('Team Management'),
           key: 'team-management',
           enabled:
             ENABLE_TEAMS &&
@@ -193,9 +192,9 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
           children: [
-            { title: langObj.TEAMS, url: URL_TEAMS, key: 'TEAMS' },
+            { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS' },
             {
-              title: langObj.TEAM_ASSIGNMENT,
+              title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
@@ -203,14 +202,14 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: langObj.GROUP,
+          title: t('Group management'),
           key: 'fhir-group',
           url: LIST_GROUP_URL,
           enabled: ENABLE_FHIR_GROUP && roles &&
             activeRoles.GROUP &&
             isAuthorized(roles, activeRoles.GROUP.split(',')),
         }, {
-          title: langObj.QUESTIONNAIRE,
+          title: t('Questionnaire'),
           key: 'fhir-quest',
           enabled:
             ENABLE_QUEST &&
@@ -220,7 +219,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           url: QUEST_VIEW_URL,
         },
         {
-          title: langObj.HEALTHCARE_SERVICES_MANAGEMENT,
+          title: t('Healthcare Services'),
           key: 'healthcare',
           url: LIST_HEALTHCARE_URL,
           enabled:
@@ -230,7 +229,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.HEALTHCARE_SERVICE.split(',')),
         },
         {
-          title: langObj.FORM_CONFIGURATION,
+          title: t('Form Configuration'),
           key: 'form-config',
           enabled:
             ENABLE_FORM_CONFIGURATION &&
@@ -239,20 +238,20 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.FORM_CONFIGURATION.split(',')),
           children: [
             {
-              title: langObj.MANIFEST_RELEASES,
+              title: t('Manifest Releases'),
               key: 'form-config-releases',
               url: URL_MANIFEST_RELEASE_LIST,
             },
-            { title: langObj.DRAFT_FILES, key: 'form-config-draft', url: URL_DRAFT_FILE_LIST },
+            { title: t('Draft Files'), key: 'form-config-draft', url: URL_DRAFT_FILE_LIST },
             {
-              title: langObj.JSON_VALIDATORS,
+              title: t('JSON Validators'),
               key: 'form-config-validators',
               url: URL_JSON_VALIDATOR_LIST,
             },
           ],
         },
         {
-          title: langObj.SERVER_SETTINGS,
+          title: t('Server Settings'),
           key: 'server-settings',
           enabled:
             ENABLE_SERVER_SETTINGS &&
@@ -262,7 +261,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           url: URL_SERVER_SETTINGS,
         },
         {
-          title: langObj.REPORTS,
+          title: t('Reports'),
           key: 'reports',
           enabled:
             ENABLE_REPORTS &&
@@ -271,7 +270,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.MANAGE_REPORTS.split(',')),
           children: [
             {
-              title: langObj.DISTRICT_REPORT,
+              title: t('District report'),
               key: 'district-report',
               enabled:
                 roles &&
@@ -285,7 +284,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     },
     {
       otherProps: { icon: <IdcardOutlined /> },
-      title: langObj.PATIENTS,
+      title: t('Patients'),
       key: 'fhir-patients',
       enabled: ENABLE_PATIENTS_MODULE,
       url: LIST_PATIENTS_URL,

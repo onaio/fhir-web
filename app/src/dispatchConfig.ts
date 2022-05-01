@@ -15,7 +15,8 @@ import {
   DEFAULTS_TABLE_PAGE_SIZE,
 } from './configs/env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
-import i18n from './mls';
+import {opensrpI18nInstance} from '@opensrp/i18n';
+
 
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 
@@ -29,7 +30,7 @@ const configObject: ConfigState = {
   keycloakBaseURL: KEYCLOAK_API_BASE_URL,
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   fhirBaseURL: FHIR_API_BASE_URL,
-  i18n,
+  i18n: opensrpI18nInstance, // TODO - Remove this config
   defaultTablesPageSize: DEFAULTS_TABLE_PAGE_SIZE,
 };
 
