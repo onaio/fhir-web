@@ -12,6 +12,7 @@ import { baseLocationUnits, location1, rawHierarchy } from '../../LocationForm/t
 import { act } from 'react-dom/test-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
+import toJson from 'enzyme-to-json';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -137,6 +138,40 @@ describe('EditLocationUnit', () => {
     // check isJurisdiction status passed to form
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect((wrapper.find('LocationForm').props() as any).initialValues.isJurisdiction).toBeTruthy();
+  });
+
+  it('stops showing loader after promise resolution', async () => {
+    const queryClient = new QueryClient();
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponseOnce(JSON.stringify(null));
+    fetch.mockResponse(JSON.stringify([]));
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <EditLocationUnit {...locationProps} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    // loading page
+    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
+
+    // location was not found
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"404Sorry, the resource you requested for, does not existGo backGo home"`
+    );
+
+    wrapper.unmount();
   });
 
   it('renders correctly when location is structure', async () => {
