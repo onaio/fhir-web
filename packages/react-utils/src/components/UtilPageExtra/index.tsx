@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { HOME_URL } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 export interface UtilPageExtraProps {
   homeUrl: string;
@@ -21,6 +21,7 @@ export const extraLinksDefault = {
 
 const ExtraLinks = (props: UtilPageExtraProps) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const { homeUrl } = props;
   return (
     <>
@@ -31,10 +32,10 @@ const ExtraLinks = (props: UtilPageExtraProps) => {
         }}
       >
         <ArrowLeftOutlined />
-        {lang.GO_BACK}
+        {t('Go back')}
       </Button>
       <Link to={homeUrl}>
-        <Button type="primary">{lang.GO_HOME}</Button>
+        <Button type="primary">{t('Go home')}</Button>
       </Link>
     </>
   );
