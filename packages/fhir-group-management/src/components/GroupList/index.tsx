@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import {useTranslation} from '../../mls';
 
 interface GroupListProps {
   fhirBaseURL: string;
@@ -28,6 +29,8 @@ export const GroupList = (props: GroupListProps) => {
   const { fhirBaseURL } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
+  const {t} = useTranslation();
+
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<Group>(
     fhirBaseURL,
     groupResourceType
@@ -48,30 +51,30 @@ export const GroupList = (props: GroupListProps) => {
 
   const columns = [
     {
-      title: 'Name',
+      title: t('Name'),
       dataIndex: 'name' as const,
       key: 'name' as const,
     },
     {
-      title: 'Active',
+      title: t('Active'),
       dataIndex: 'active' as const,
       key: 'active' as const,
       render: (value: boolean) => <div>{value ? 'Yes' : 'No'}</div>,
     },
     {
-      title: 'Last Updated',
+      title: t('Last Updated'),
       dataIndex: 'lastUpdated' as const,
       key: 'lastUpdated' as const,
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Link to={`#`}>
             <Button disabled type="link" className="m-0 p-1">
-              Edit
+              {t('Edit')}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -79,7 +82,7 @@ export const GroupList = (props: GroupListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_GROUP_URL}/${record.id}`}>View Details</Link>
+                  <Link to={`${LIST_GROUP_URL}/${record.id}`}>{t('View Details')}</Link>
                 </Menu.Item>
               </Menu>
             }
@@ -101,12 +104,13 @@ export const GroupList = (props: GroupListProps) => {
     pagination: tablePaginationProps,
   };
 
+  const pageTitle = t('Groups list')
   return (
     <div className="content-section">
       <Helmet>
-        <title>Groups list</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={'Groups list'} className="page-header" />
+      <PageHeader title={pageTitle} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -114,7 +118,7 @@ export const GroupList = (props: GroupListProps) => {
             <Link to="#">
               <Button disabled type="primary">
                 <PlusOutlined />
-                Create Group
+                {t('Create Group')}
               </Button>
             </Link>
           </div>
