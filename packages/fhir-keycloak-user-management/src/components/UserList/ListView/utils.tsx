@@ -6,6 +6,7 @@ import { FHIRServiceClass, getResourcesFromBundle, FhirApiFilter } from '@opensr
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { practitionerResourceType } from '../../../constants';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Delete keycloak user and practitioner
@@ -13,8 +14,14 @@ import { practitionerResourceType } from '../../../constants';
  * @param keycloakBaseURL - remove users action creator
  * @param baseUrl - server base url
  * @param userId - id of user to be deleted
+ * @param t - translator function
  */
-export const deleteUser = async (keycloakBaseURL: string, baseUrl: string, userId: string) => {
+export const deleteUser = async (
+  keycloakBaseURL: string,
+  baseUrl: string,
+  userId: string,
+  t: TFunction
+) => {
   const deleteKeycloakUser = new KeycloakService(
     `${KEYCLOAK_URL_USERS}/${userId}`,
     keycloakBaseURL
@@ -36,8 +43,8 @@ export const deleteUser = async (keycloakBaseURL: string, baseUrl: string, userI
     ...updatedPracts.map((obj) => practitionerServe.update(obj)),
   ])
     .then(() => {
-      sendSuccessNotification('User deleted successfully');
-      sendSuccessNotification('Practitioner deactivated');
+      sendSuccessNotification(t('User deleted successfully'));
+      sendSuccessNotification(t('Practitioner deactivated'));
     })
     .catch((error) => sendErrorNotification(error.message));
 };
