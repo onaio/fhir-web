@@ -9,6 +9,7 @@ import {
 } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseCareplan = (obj: ICarePlan) => {
   return {
@@ -22,26 +23,26 @@ export const parseCareplan = (obj: ICarePlan) => {
 
 export type CarePlanTableData = ReturnType<typeof parseCareplan>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Title',
+    title: t('Title'),
     dataIndex: 'title' as const,
     sorter: rawStringSorterFn,
   },
   {
-    title: 'Category',
+    title: t('Category'),
     dataIndex: 'categories' as const,
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Period',
+    title: t('Period'),
     dataIndex: 'period' as const,
     render: (value: Period) => <FhirPeriod {...value} />,
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status' as const,
   },
 ];

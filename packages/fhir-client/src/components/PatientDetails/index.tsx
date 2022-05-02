@@ -16,6 +16,7 @@ import { patientResourceType } from '../../constants';
 import { useQuery } from 'react-query';
 import { resourcesSchema } from './ResourceSchema';
 import { PatientDetailsTable } from '../..//helpers/utils';
+import { useTranslation } from '../../mls';
 
 const { Header, Sider, Content } = Layout;
 
@@ -53,6 +54,7 @@ export const defaultEditPatientProps: PatientDetailProps = {
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL, patientBundleSize } = props;
   const { id: patientId } = useParams<RouteParams>();
+  const { t } = useTranslation();
 
   const [resourceType, setResourceType] = React.useState<string>(patientResourceType);
   const { error, data, isLoading } = useQuery([patientResourceType, patientId], async () => {
@@ -70,7 +72,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   }
 
   if (error) {
-    return <BrokenPage errorMessage="An error occurred" />;
+    return <BrokenPage errorMessage={t('An error occurred')} />;
   }
 
   const resourceTypeMap: ResourceTypeMap = {};
@@ -94,7 +96,8 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   }
 
   const resources = resourceTypeMap[resourceType]?.data;
-  const { columns, resourceParser } = resourcesSchema[resourceType] ?? {};
+  const { columns: columnsFactory, resourceParser } = resourcesSchema[resourceType] ?? {};
+  const columns = columnsFactory?.(t);
 
   const patientName = getPatientName(resourceTypeMap['Patient'].data[0] as IPatient);
   const currentPatient = resourceTypeMap['Patient'].data[0];
@@ -105,7 +108,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       <Col span={24}>
         <section className="layout-content">
           <Helmet>
-            <title>{'Patient Details'}</title>
+            <title>{t('Patient Details')}</title>
           </Helmet>
           <div className="plan-avatar-detail-section">
             <Layout className="patient-details-banner">
@@ -117,7 +120,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                   <h4>
                     {patientName}{' '}
                     {currentPatient.deceasedBoolean || currentPatient.deceasedDateTime ? (
-                      <Tag color="red">Deceased</Tag>
+                      <Tag color="red">{t('Deceased')}</Tag>
                     ) : null}
                   </h4>
                 </Header>
@@ -125,18 +128,18 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                   {(() => {
                     const columnarData = [
                       {
-                        UUID: get(currentPatient, 'identifier.0.value'),
-                        ID: patientId,
-                        Gender: gender,
+                        [t('UUID')]: get(currentPatient, 'identifier.0.value'),
+                        [t('ID')]: patientId,
+                        [t('Gender')]: gender,
                       },
                       {
-                        'Birth Date': birthDate,
-                        Phone: get(currentPatient, 'telecom.0.value'),
-                        MRN: 'Unknown',
+                        [t('Birth Date')]: birthDate,
+                        [t('Phone')]: get(currentPatient, 'telecom.0.value'),
+                        [t('MRN')]: 'Unknown',
                       },
                       {
-                        Address: get(currentPatient, 'address.0.line.0') || 'N/A',
-                        Country: get(currentPatient, 'address.0.country'),
+                        [t('Address')]: get(currentPatient, 'address.0.line.0') || 'N/A',
+                        [t('Country')]: get(currentPatient, 'address.0.country'),
                       },
                     ];
                     return (
@@ -211,7 +214,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                     );
                   } else {
                     if (!columns || !resourceParser) {
-                      return <Alert message="Work in progress" type="info" />;
+                      return <Alert message={t('Work in progress')} type="info" />;
                     }
                     return (
                       <PatientDetailsTable

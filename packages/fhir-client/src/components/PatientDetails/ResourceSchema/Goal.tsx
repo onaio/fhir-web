@@ -3,6 +3,7 @@ import { IGoal } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGoal';
 import { get } from 'lodash';
 import { FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseGoal = (obj: IGoal) => {
   return {
@@ -17,29 +18,29 @@ export const parseGoal = (obj: IGoal) => {
 
 export type GoalTableData = ReturnType<typeof parseGoal>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Category',
+    title: t('Category'),
     dataIndex: 'category',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Description',
+    title: t('Description'),
     dataIndex: 'description',
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status',
   },
   {
-    title: 'Achievement status',
+    title: t('Achievement status'),
     dataIndex: 'achievementStatus',
   },
-  { title: 'Priority', dataIndex: 'priority' },
+  { title: t('Priority'), dataIndex: 'priority' },
 ];

@@ -9,6 +9,7 @@ import {
   rawStringSorterFn,
 } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseImmunization = (obj: IImmunization) => {
   return {
@@ -22,28 +23,28 @@ export const parseImmunization = (obj: IImmunization) => {
 
 export type ImmunizationTableData = ReturnType<typeof parseImmunization>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status',
     sorter: rawStringSorterFn,
   },
   {
-    title: 'Administration Date',
+    title: t('Administration Date'),
     dataIndex: 'occurenceDateTime',
     sorter: dateStringSorterFn,
     render: (value: string) => intlFormatDateStrings(value),
   },
   {
-    title: 'Vaccine Admnistered',
+    title: t('Vaccine Admnistered'),
     dataIndex: 'vaccineCode',
   },
   {
-    title: 'Reason',
+    title: t('Reason'),
     dataIndex: 'reasonCode',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
