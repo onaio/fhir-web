@@ -15,6 +15,7 @@ import {
 } from '@opensrp/react-utils';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
 import { getHealthCareFormFields } from './utils';
+import { useTranslation } from '../../mls';
 
 export interface HealthCareAddEditProps {
   fhirBaseURL: string;
@@ -28,6 +29,7 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
+  const {t} = useTranslation();
 
   const healthCareService = useQuery(
     [healthCareServiceResourceType, resourceId],
@@ -45,7 +47,7 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
     () => loadAllResources(fhirBaseUrl, organizationResourceType),
     {
       select: (res) => getResourcesFromBundle(res) as IHealthcareService[],
-      onError: () => sendErrorNotification('Unable to fetch organizations'),
+      onError: () => sendErrorNotification(t('Unable to fetch organizations')),
     }
   );
 
@@ -59,9 +61,8 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
 
   const initialValues = getHealthCareFormFields(healthCareService.data);
 
-  const pageTitle = healthCareService.data
-    ? `Edit team | ${healthCareService.data.name ?? ''}`
-    : 'Create team';
+  const pageTitle = healthCareService.data ? t('Edit team | {{name}}', {name: healthCareService.data.name ?? ''})
+    : t('Create team');
 
   return (
     <section className="layout-content">

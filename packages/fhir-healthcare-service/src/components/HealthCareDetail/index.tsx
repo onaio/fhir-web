@@ -11,9 +11,11 @@ import {
   FHIRServiceClass,
   SingleKeyNestedValue,
 } from '@opensrp/react-utils';
+import { useTranslation } from '../../mls';
 
 export const parseHealthCare = (obj: IHealthcareService) => {
   const { comment, meta, name, active, id, providedBy } = obj;
+
   return {
     id,
     name,
@@ -41,6 +43,7 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
  */
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseURL } = props;
+  const { t } = useTranslation();
 
   const {
     data: organization,
@@ -63,12 +66,12 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   const org = organization as IHealthcareService;
   const { id, name, comment, active, providedBy, lastUpdated } = parseHealthCare(org);
   const keyValues = {
-    Id: id,
-    Name: name,
-    Status: active ? 'Active' : 'Inactive',
-    'Last Updated': lastUpdated,
-    'Provided By': get(providedBy, 'reference.display'),
-    Comment: comment,
+    [t('Id')]: id,
+    [t('Name')]: name,
+    [t('Status')]: active ? t('Active') : t('Inactive'),
+    [t('Last Updated')]: lastUpdated,
+    [t('Provided By')]: get(providedBy, 'reference.display'),
+    [t('Comment')]: comment,
   };
 
   return (
