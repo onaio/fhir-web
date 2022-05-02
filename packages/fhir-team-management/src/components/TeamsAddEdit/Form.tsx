@@ -19,7 +19,7 @@ import { useQueryClient } from 'react-query';
 import { SelectProps } from 'antd/lib/select';
 import { FHIRServiceClass, Require } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
