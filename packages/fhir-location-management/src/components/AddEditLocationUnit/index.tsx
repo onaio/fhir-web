@@ -4,9 +4,9 @@ import { LocationFormProps, LocationForm } from '../LocationForm';
 import { getLocationFormFields } from '../LocationForm/utils';
 import { Row, Col, Spin } from 'antd';
 import { Helmet } from 'react-helmet';
-import lang from '../../lang';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
+import { useTranslation } from '../../mls';
 
 export type LocationRouteProps = { id?: string };
 
@@ -41,6 +41,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const location = useLocation();
   const params = useParams<LocationRouteProps>();
   const sParams = new URLSearchParams(location.search);
+  const { t } = useTranslation();
 
   const cancelHandler = () => {
     const cancelURL = cancelUrlGenerator();
@@ -69,12 +70,14 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
 
   if (error && !data && locError && !locData) {
     return (
-      <BrokenPage errorMessage="Unable to load the location or location hierarchy"></BrokenPage>
+      <BrokenPage
+        errorMessage={t('Unable to load the location or location hierarchy')}
+      ></BrokenPage>
     );
   }
 
   if (!data || ifNotIdle(!locData)) {
-    return <Resource404 errorMessage="Unable to load the location or location hierarchy" />;
+    return <Resource404 errorMessage={t('Unable to load the location or location hierarchy')} />;
   }
 
   const parentId = sParams.get('parentId') ?? undefined;
@@ -91,7 +94,10 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     disabledTreeNodesCallback: disabledTreeNodesCallback,
   };
 
-  const pageTitle = locData ? `${lang.EDIT} > ${initialValues.name}` : lang.ADD_LOCATION_UNIT;
+  const pageTitle = locData
+    ? t('Edit > {{name}}', { name: initialValues.name })
+    : t('Add Location Unit');
+
   return (
     <Row className="layout-content">
       <Helmet>
