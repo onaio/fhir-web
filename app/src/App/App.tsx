@@ -32,7 +32,8 @@ import {
   URL_LOGOUT,
   URL_LOCATION_UNIT,
   URL_HOME,
-  URL_TEAMS_ADD_EDIT,
+  URL_TEAMS_EDIT,
+  URL_TEAMS_ADD,
   URL_TEAMS,
   URL_DOWNLOAD_CLIENT_DATA,
   URL_LOCATION_UNIT_ADD,
@@ -668,16 +669,16 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={URL_TEAMS_ADD_EDIT}
-              component={ENABLE_FHIR_TEAMS ? FhirTeamsAddEdit : TeamsAddEdit}
+              path={URL_TEAMS_ADD}
               {...teamManagementProps}
+              component={ENABLE_FHIR_TEAMS ? FhirTeamsAddEdit : TeamsAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
-              path={`${URL_TEAMS_ADD_EDIT}/:id`}
+              path={`${URL_TEAMS_EDIT}/:id`}
               {...teamManagementProps}
               component={ENABLE_FHIR_TEAMS ? FhirTeamsAddEdit : TeamsAddEdit}
             />
