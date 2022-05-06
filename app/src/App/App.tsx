@@ -340,15 +340,6 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
-              path={`${URL_USER}/:id`}
-              {...usersListProps}
-              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              exact
               path={URL_USER}
               {...usersListProps}
               component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
@@ -645,6 +636,15 @@ const App: React.FC = () => {
               exact
               path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
               component={ConnectedUserCredentials}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              exact
+              path={`${URL_USER}/:id`}
+              {...usersListProps}
+              component={ENABLE_FHIR_USER_MANAGEMENT ? FhirUserList : ConnectedUserList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
