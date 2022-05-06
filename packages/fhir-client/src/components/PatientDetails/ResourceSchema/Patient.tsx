@@ -1,6 +1,6 @@
 import React from 'react';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { dateStringSorterFn, rawStringSorterFn } from '../../../helpers/utils';
+import { sorterFn } from '../../../helpers/utils';
 import { getPatientName } from '../../PatientsList/utils';
 import { LIST_PATIENTS_URL } from '../../../constants';
 import { Tag, Button, Typography } from 'antd';
@@ -23,12 +23,15 @@ export const parsePatient = (patient: IPatient) => {
 
 export type PatientTableData = ReturnType<typeof parsePatient>;
 
+const nameSorterFn = sorterFn('name');
+const dobSorterFn = sorterFn('dob', true);
+
 export const columns = [
   {
     title: 'Name',
     dataIndex: 'name' as const,
     key: 'name' as const,
-    sorter: rawStringSorterFn,
+    sorter: nameSorterFn,
     render: (name: string, record: PatientTableData) => {
       return (
         <>
@@ -43,7 +46,7 @@ export const columns = [
     title: 'Date Of Birth',
     dataIndex: 'dob' as const,
     key: 'dob' as const,
-    sorter: dateStringSorterFn,
+    sorter: dobSorterFn,
   },
   {
     title: 'Active',

@@ -2,12 +2,7 @@ import React from 'react';
 import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
 import { get } from 'lodash';
 import { intlFormatDateStrings } from '@opensrp/react-utils';
-import {
-  dateStringSorterFn,
-  FhirCodesTooltips,
-  getCodeableConcepts,
-  rawStringSorterFn,
-} from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export const parseImmunization = (obj: IImmunization) => {
@@ -20,6 +15,8 @@ export const parseImmunization = (obj: IImmunization) => {
   };
 };
 
+const occuredDateTimeSortFn = sorterFn('occurenceDateTime', true);
+
 export type ImmunizationTableData = ReturnType<typeof parseImmunization>;
 
 export const columns = [
@@ -30,12 +27,12 @@ export const columns = [
   {
     title: 'Status',
     dataIndex: 'status',
-    sorter: rawStringSorterFn,
+    sorter: sorterFn,
   },
   {
     title: 'Administration Date',
     dataIndex: 'occurenceDateTime',
-    sorter: dateStringSorterFn,
+    sorter: occuredDateTimeSortFn,
     render: (value: string) => intlFormatDateStrings(value),
   },
   {

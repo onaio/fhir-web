@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { fireEvent, prettyDOM, waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, render, screen } from '@testing-library/react';
 import { patients } from './fixtures';
 import userEvents from '@testing-library/user-event';
@@ -125,6 +125,13 @@ test('renders correctly when listing organizations', async () => {
       expect(td).toMatchSnapshot(`table row ${idx} page 1`);
     });
   });
+
+  // test search
+  console.log(prettyDOM(document.querySelector('table')))
+  const nameCaretUp = document.querySelector('.anticon-caret-up:first-child');
+
+  fireEvent.click(nameCaretUp);
+
 
   // works with search as well.
   const searchForm = document.querySelector('[data-testid="search-form"]');
