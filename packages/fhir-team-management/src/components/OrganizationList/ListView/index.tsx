@@ -10,7 +10,8 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import {
-  ADD_EDIT_ORGANIZATION_URL,
+  URL_ADD_ORGANIZATION,
+  URL_EDIT_ORGANIZATION,
   ORGANIZATION_LIST_URL,
   organizationResourceType,
 } from '../../../constants';
@@ -70,7 +71,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_ORGANIZATION_URL}/${record.id}`}>
+          <Link to={`${URL_EDIT_ORGANIZATION}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
               Edit
             </Button>
@@ -112,7 +113,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Link to={ADD_EDIT_ORGANIZATION_URL}>
+            <Link to={URL_ADD_ORGANIZATION}>
               <Button type="primary">
                 <PlusOutlined />
                 Add Organization
