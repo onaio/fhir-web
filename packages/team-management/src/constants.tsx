@@ -1,6 +1,6 @@
 // url
 export const URL_ADD_TEAM = 'teams/add';
-export const URL_EDIT_TEAM = 'teams/edit/';
+export const URL_EDIT_TEAM = 'teams/edit';
 
 //
 // Practitioner
