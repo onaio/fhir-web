@@ -249,7 +249,7 @@ export const sanitizeAssignments = (rawAssignments: RawAssignment[]) => {
     if (isNaN(futureDate.getTime())) {
       return false;
     }
-    // check if date is in the future of now
+    // assigment date should not be in the past
     if (new Date() > futureDate) {
       return false;
     }
