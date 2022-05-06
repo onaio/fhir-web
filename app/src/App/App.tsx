@@ -330,14 +330,6 @@ const App: React.FC = () => {
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              exact
-              path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
-              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-              component={UserGroupsList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
               exact
               path={URL_USER}
@@ -910,6 +902,14 @@ const App: React.FC = () => {
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={LIST_GROUP_URL}
               component={GroupList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              exact
+              path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+              activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+              component={UserGroupsList}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
