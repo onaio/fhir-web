@@ -31,7 +31,7 @@ exports[`renders correctly when listing organizations: Search 1 page 1 3`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/205"
+      href="/admin/teams/edit/205"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -93,7 +93,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/205"
+      href="/admin/teams/edit/205"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -155,7 +155,7 @@ exports[`renders correctly when listing organizations: table row 1 page 2 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/363"
+      href="/admin/teams/edit/363"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -217,7 +217,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/361"
+      href="/admin/teams/edit/361"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -279,7 +279,7 @@ exports[`renders correctly when listing organizations: table row 2 page 2 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/364"
+      href="/admin/teams/edit/364"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -341,7 +341,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/362"
+      href="/admin/teams/edit/362"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -403,7 +403,7 @@ exports[`renders correctly when listing organizations: table row 3 page 2 3`] = 
     class="d-flex align-items-center"
   >
     <a
-      href="/admin/teams/add-edit/365"
+      href="/admin/teams/edit/365"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
