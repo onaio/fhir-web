@@ -82,11 +82,12 @@ export const populateTeamDetails = (
   ])
     .then(([practitioners, rawAssignments]) => {
       setPractitionersList(practitioners);
+      const sanitizedAssginments = sanitizeAssignments(rawAssignments);
 
       // get array jurisdictions from array of raw assignments
       Promise.all(
         // unwrap promises from their wrapped functions
-        jurisdictionPromises(rawAssignments, opensrpBaseURL).map((promise) => promise())
+        jurisdictionPromises(sanitizedAssginments, opensrpBaseURL).map((promise) => promise())
       )
         .then((locations) => {
           setAssignedLocations(locations);
@@ -233,3 +234,26 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
 TeamsView.defaultProps = defaultProps;
 
 export default TeamsView;
+
+/**
+ * Removes invalid assignment resources
+ *
+ * @param rawAssignments - array of assingments to be checked.
+ */
+export const sanitizeAssignments = (rawAssignments: RawAssignment[]) => {
+  return rawAssignments.filter((assignment) => {
+    const { toDate, jurisdictionId, organizationId } = assignment;
+    // assignment to date should be > than now
+    const futureDate = new Date(toDate); // if toDate can be null or a timestamp
+    // check if date is valid
+    if (isNaN(futureDate.getTime())) {
+      return false;
+    }
+    // assigment date should not be in the past
+    if (new Date() > futureDate) {
+      return false;
+    }
+    // assignment needs a valid orgId and jurisdictionId value
+    return !!jurisdictionId && !!organizationId;
+  });
+};
