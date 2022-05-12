@@ -51,7 +51,7 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^4.8.2",
-    "i18next": "^19.8.4",
+    "i18next": "^21.6.14",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.1",
