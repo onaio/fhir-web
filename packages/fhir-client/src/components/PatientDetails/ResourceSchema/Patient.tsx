@@ -9,29 +9,34 @@ import { Column } from '@opensrp/react-utils';
 
 const { Text } = Typography;
 
+const id = 'id' as const;
+const name = 'name' as const;
+const dob = 'dob' as const;
+const gender = 'gender' as const;
+const deceased = 'deceased' as const;
+const active = 'active' as const;
+
 export const parsePatient = (patient: IPatient) => {
-  const { id, birthDate, gender, deceasedBoolean, active } = patient;
+  const { birthDate, deceasedBoolean } = patient;
   return {
-    id: id,
-    name: getPatientName(patient) ?? id,
-    dob: birthDate,
-    gender: gender,
-    deceased: deceasedBoolean,
-    active,
+    [id]: patient.id,
+    [name]: getPatientName(patient) ?? id,
+    [dob]: birthDate,
+    [gender]: patient.gender,
+    [deceased]: deceasedBoolean,
+    [active]: patient.active,
   };
 };
 
 export type PatientTableData = ReturnType<typeof parsePatient>;
 
-const nameSorterFn = sorterFn('name');
-const dobSorterFn = sorterFn('dob', true);
+const dobSorterFn = sorterFn(dob, true);
 
 export const columns = [
   {
     title: 'Name',
-    dataIndex: 'name' as const,
-    key: 'name' as const,
-    sorter: nameSorterFn,
+    dataIndex: name,
+    key: name,
     render: (name: string, record: PatientTableData) => {
       return (
         <>
@@ -44,20 +49,20 @@ export const columns = [
   },
   {
     title: 'Date Of Birth',
-    dataIndex: 'dob' as const,
-    key: 'dob' as const,
+    dataIndex: dob,
+    key: dob,
     sorter: dobSorterFn,
   },
   {
     title: 'Active',
-    dataIndex: 'active' as const,
-    key: 'active' as const,
+    dataIndex: active,
+    key: active,
     render: (value: boolean) => <Text>{value === true ? 'Active' : 'Inactive'}</Text>,
   },
   {
     title: 'Gender',
-    dataIndex: 'gender' as const,
-    key: 'gender' as const,
+    dataIndex: gender,
+    key: gender,
   },
   {
     title: 'Actions',
@@ -74,3 +79,26 @@ export const columns = [
     ),
   },
 ] as Column<PatientTableData>;
+
+/**
+ * maps the column field keys to their corresponding Fhir sortable keys for this resource.
+ */
+export const sortMap = {
+  [id]: 'identifier',
+  [name]: 'name',
+  [dob]: 'birthdate',
+};
+
+/**
+ * Columns for this resource(Patients) but where sorting happens on the server side as opposed
+ * to locally on the ui.
+ */
+export const serverSideSortedColumns = () => {
+  return columns.map((column: typeof columns[0]) => {
+    const newColumn = { ...column };
+    if (typeof column.sorter === 'function') {
+      newColumn.sorter = true;
+    }
+    return newColumn;
+  });
+};
