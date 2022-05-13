@@ -17,6 +17,7 @@ import { TreeNode } from '../../helpers/types';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 const { Item: FormItem } = Form;
 
@@ -110,12 +111,8 @@ const LocationForm = (props: LocationFormProps) => {
 
   const [form] = Form.useForm();
 
-  React.useEffect(() => {
-    // #850 - initial Values would override any values so far fed into  the form,
-    form.setFieldsValue({
-      ...initialValues,
-      ...form.getFieldsValue(),
-    });
+  useDeepCompareEffect(() => {
+    form.resetFields();
   }, [form, initialValues]);
 
   const status = [
