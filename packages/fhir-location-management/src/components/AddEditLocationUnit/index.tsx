@@ -14,12 +14,12 @@ export type LocationRouteProps = { id?: string };
 export interface NewEditLocationUnitProps
   extends Pick<
       LocationFormProps,
-      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successUrlGenerator'
+      'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
     >,
     RouteComponentProps<LocationRouteProps> {
   fhirBaseURL: string;
   fhirRootLocationIdentifier: string;
-  cancelUrlGenerator: () => string;
+  cancelURLGenerator: () => string;
 }
 
 /**
@@ -33,8 +33,8 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     disabled,
     fhirBaseURL,
     fhirRootLocationIdentifier,
-    successUrlGenerator,
-    cancelUrlGenerator,
+    successURLGenerator,
+    cancelURLGenerator,
     disabledTreeNodesCallback,
   } = props;
   const history = useHistory();
@@ -43,7 +43,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const sParams = new URLSearchParams(location.search);
 
   const cancelHandler = () => {
-    const cancelURL = cancelUrlGenerator();
+    const cancelURL = cancelURLGenerator();
     history.push(cancelURL);
   };
 
@@ -83,7 +83,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const locationFormProps: LocationFormProps = {
     initialValues,
     tree: data,
-    successUrlGenerator: successUrlGenerator,
+    successURLGenerator,
     hidden: hidden,
     disabled: disabled,
     onCancel: cancelHandler,

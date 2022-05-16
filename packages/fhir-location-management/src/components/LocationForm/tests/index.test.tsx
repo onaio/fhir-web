@@ -200,7 +200,7 @@ describe('LocationForm', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <LocationForm successUrlGenerator={successURLGeneratorMock} {...formProps} />
+        <LocationForm successURLGenerator={successURLGeneratorMock} {...formProps} />
       </AppWrapper>,
       { attachTo: container }
     );
