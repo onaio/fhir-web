@@ -44,7 +44,7 @@ export const questionnaireResourceType = 'Questionnaire' as const;
 
 export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
   const { resourceId, fhirBaseURL, onSubmit, onCancel, isQuestionnaire } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const {
     isLoading: questRespIsLoading,
@@ -123,7 +123,7 @@ export type QuestRFormProps = Pick<BaseQuestRFormProps, 'fhirBaseURL'> &
 export const QuestRForm = (props: QuestRFormProps) => {
   const { resourceId, resourceType } = useParams<RouteParams>();
   const history = useHistory();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const isQuestionnaire = resourceType === 'Questionnaire';
   const { fhirBaseURL } = props;
 
@@ -134,7 +134,9 @@ export const QuestRForm = (props: QuestRFormProps) => {
     );
     const op = isQuestionnaire ? () => service.create(qr) : () => service.update(qr);
     op()
-      .then(() => sendSuccessNotification(t('Questionnaire Response resource submitted successfully')))
+      .then(() =>
+        sendSuccessNotification(t('Questionnaire Response resource submitted successfully'))
+      )
       .catch((e) => sendErrorNotification(e));
   };
   const onCancel = () => history.goBack();
