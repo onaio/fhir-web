@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import {useTranslation} from '../../mls';
+import { useTranslation } from '../../mls';
 
 interface GroupListProps {
   fhirBaseURL: string;
@@ -29,7 +29,7 @@ export const GroupList = (props: GroupListProps) => {
   const { fhirBaseURL } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<Group>(
     fhirBaseURL,
@@ -104,7 +104,7 @@ export const GroupList = (props: GroupListProps) => {
     pagination: tablePaginationProps,
   };
 
-  const pageTitle = t('Groups list')
+  const pageTitle = t('Groups list');
   return (
     <div className="content-section">
       <Helmet>
