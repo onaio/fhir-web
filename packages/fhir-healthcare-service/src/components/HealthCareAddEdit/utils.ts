@@ -22,6 +22,8 @@ export interface HealthCareFormFields {
 
 /**
  * factory for validation rules for OrganizationForm component
+ *
+ * @param t - the translator function
  */
 export const validationRulesFactory = (t: TFunction) => ({
   id: [{ type: 'string' }] as Rule[],

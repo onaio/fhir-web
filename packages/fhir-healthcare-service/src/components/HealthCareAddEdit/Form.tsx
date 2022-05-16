@@ -91,27 +91,27 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem hidden={true} id="id" name={id} label={t("Id")}>
+      <FormItem hidden={true} id="id" name={id} label={t('Id')}>
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem hidden={true} id="identifier" name={identifier} label={t("Identifier")}>
+      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem id="name" name={name} rules={validationRules.name} label={t("Name")}>
+      <FormItem id="name" name={name} rules={validationRules.name} label={t('Name')}>
         <Input disabled={disabled.includes(name)} placeholder={t('Name')} />
       </FormItem>
 
-      <FormItem id="active" rules={validationRules.active} name={active} label={t("Status")}>
+      <FormItem id="active" rules={validationRules.active} name={active} label={t('Status')}>
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem id="comment" rules={validationRules.comment} name={comment} label={t("Comment")}>
+      <FormItem id="comment" rules={validationRules.comment} name={comment} label={t('Comment')}>
         <Input.TextArea
           disabled={disabled.includes(comment)}
           rows={2}
-          placeholder={t("Enter comment")}
+          placeholder={t('Enter comment')}
         />
       </FormItem>
 
@@ -119,12 +119,12 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         id="extraDetails"
         rules={validationRules.extraDetails}
         name={extraDetails}
-        label={t("Extra details")}
+        label={t('Extra details')}
       >
         <Input.TextArea
           disabled={disabled.includes(extraDetails)}
           rows={4}
-          placeholder={t("Enter extra details")}
+          placeholder={t('Enter extra details')}
         />
       </FormItem>
 
@@ -132,11 +132,11 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         id="providedBy"
         name={providedBy}
         rules={validationRules.providedBy}
-        label={t("Provided by")}
+        label={t('Provided by')}
       >
         <Select
           disabled={disabled.includes(providedBy)}
-          placeholder={t("Select organization")}
+          placeholder={t('Select organization')}
           options={orgOptions}
           showSearch={true}
           filterOption={orgFilterFunction as SelectProps<SelectOption[]>['filterOption']}

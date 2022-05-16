@@ -29,7 +29,7 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const healthCareService = useQuery(
     [healthCareServiceResourceType, resourceId],
@@ -61,7 +61,8 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
 
   const initialValues = getHealthCareFormFields(healthCareService.data);
 
-  const pageTitle = healthCareService.data ? t('Edit team | {{name}}', {name: healthCareService.data.name ?? ''})
+  const pageTitle = healthCareService.data
+    ? t('Edit team | {{name}}', { name: healthCareService.data.name ?? '' })
     : t('Create team');
 
   return (
