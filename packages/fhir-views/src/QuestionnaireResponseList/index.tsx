@@ -50,7 +50,7 @@ const ActionsColumnCustomRender: Column<ParsedQuestionnaireResponse>['render'] =
 /**
  * generates columns for questionnaire rendering component
  *
- * @param t
+ * @param t - translator function
  */
 const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
   const columns: Column<ParsedQuestionnaireResponse>[] = [
@@ -84,7 +84,11 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { id: questId } = useParams<RouteProps>();
   const { t } = useTranslation();
 
-  const { isLoading: QuestLoading, data: questData, error: questError } = useQuery(
+  const {
+    isLoading: QuestLoading,
+    data: questData,
+    error: questError,
+  } = useQuery(
     [questionnaireResourceType, questId],
     () => new FHIRServiceClass(fhirBaseURL, questionnaireResourceType).read(questId),
     { refetchOnMount: false, refetchOnWindowFocus: false, refetchOnReconnect: false }

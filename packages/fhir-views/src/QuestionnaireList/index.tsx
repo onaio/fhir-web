@@ -55,7 +55,7 @@ export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
 /**
  * generates columns for questionnaire rendering component
  *
- * @param t
+ * @param t - translator function
  */
 export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
   const columns: Column<ParsedQuestionnaire>[] = [
