@@ -14,6 +14,8 @@ import { Column, TableLayout } from '@opensrp/react-utils';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { SyncOutlined } from '@ant-design/icons';
+import { useTranslation } from '../../../mls';
+import type { TFunction } from '@opensrp/i18n';
 
 export interface ValueSectionProps {
   dataTestId?: string;
@@ -103,7 +105,9 @@ export interface DocPropertyDisplayProps {
 
 export const DocPropertyDisplay = (props: DocPropertyDisplayProps) => {
   const { parsedDoc, fhirBaseUrl } = props;
-  const contentColumns = getColumns(fhirBaseUrl, parsedDoc.title ?? parsedDoc.id ?? '');
+  const { t } = useTranslation();
+
+  const contentColumns = getColumns(fhirBaseUrl, parsedDoc.title ?? parsedDoc.id ?? '', t);
   return (
     <div className="doc-prop-display">
       {parsedDoc.title && (
@@ -113,40 +117,40 @@ export const DocPropertyDisplay = (props: DocPropertyDisplayProps) => {
       )}
       <div>
         {!itemIsEmpty(parsedDoc.documentType.codeList) && (
-          <Value label="Document type">
+          <Value label={t('Document type')}>
             <Coding coding={parsedDoc.documentType.code}></Coding>
           </Value>
         )}
         {!itemIsEmpty(parsedDoc.securityCodes.codeList) && (
-          <Value label="Security label">
+          <Value label={t('Security label')}>
             <Coding coding={parsedDoc.securityCodes.code}></Coding>
           </Value>
         )}
         {parsedDoc.createdAt && (
-          <Value label="Created at">
+          <Value label={t('Created at')}>
             <span>{parsedDoc.createdAt}</span>
           </Value>
         )}
         {!itemIsEmpty(parsedDoc.context) && (
           <>
-            <ValueSection label="Context">
+            <ValueSection label={t('Context')}>
               {!itemIsEmpty(parsedDoc.context.eventCoding) && (
-                <Value label="Event" data-testid="context.event">
+                <Value label={t('Event')} data-testid="context.event">
                   <Coding coding={parsedDoc.context.eventCoding} />
                 </Value>
               )}
               {!itemIsEmpty(parsedDoc.context.facilityTypeCoding) && (
-                <Value label="Facility" data-testid="context.facilityType">
+                <Value label={t('Facility')} data-testid="context.facilityType">
                   <Coding coding={parsedDoc.context.facilityTypeCoding} />
                 </Value>
               )}
               {!itemIsEmpty(parsedDoc.context.practiceSettingCoding) && (
-                <Value label="Practice Setting" data-testid="context.practiceSetting">
+                <Value label={t('Practice Setting')} data-testid="context.practiceSetting">
                   <Coding coding={parsedDoc.context.practiceSettingCoding} />
                 </Value>
               )}
               {(parsedDoc.context.periodStart || parsedDoc.context.periodEnd) && (
-                <Value label="Period" data-testid="context.period">
+                <Value label={t('Period')} data-testid="context.period">
                   {parsedDoc.context.periodStart} - {parsedDoc.context.periodEnd}
                 </Value>
               )}
@@ -172,29 +176,31 @@ export const DocPropertyDisplay = (props: DocPropertyDisplayProps) => {
  *
  * @param fhirBaseUrl - base url for fhir
  * @param docTitle - title of document, usually resource.description
+ * @param t - translator function
  */
 const getColumns = (
   fhirBaseUrl: string,
-  docTitle: string
+  docTitle: string,
+  t: TFunction
 ): Column<ParsedDocReference[0]['content'][0]>[] => [
   {
-    title: 'S.no',
+    title: t('S.no'),
     // eslint-disable-next-line @typescript-eslint/naming-convention
     render: function SerialNumber(_, __, index) {
       return <span>{Number(index) + 1}</span>;
     },
   },
   {
-    title: 'Name',
+    title: t('Name'),
     dataIndex: 'formatDisplay',
   },
   {
-    title: 'Format',
+    title: t('Format'),
     dataIndex: 'formatCode',
   },
   {
     className: 'doc-resource__content-table-action',
-    title: 'Preview/Download',
+    title: t('Preview/Download'),
     render: function ActionRender(fullObj: ParsedDocReference[0]['content'][0]) {
       const { attachment, formatContentType, formatCode } = fullObj;
       if (!formatContentType) {

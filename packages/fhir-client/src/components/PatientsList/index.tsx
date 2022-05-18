@@ -7,6 +7,7 @@ import { useSimpleTabularView } from '@opensrp/react-utils';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { patientResourceType } from '../../constants';
 import { parsePatient, columns } from '../PatientDetails/ResourceSchema/Patient';
+import { useTranslation } from '../../mls';
 
 interface PatientListProps {
   fhirBaseURL: string;
@@ -20,6 +21,7 @@ interface PatientListProps {
  */
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
     fhirBaseURL,
@@ -43,7 +45,7 @@ export const PatientsList = (props: PatientListProps) => {
 
   const tableProps = {
     datasource: tableData,
-    columns: columns as Column<TableData>[],
+    columns: columns(t) as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
   };
@@ -51,9 +53,9 @@ export const PatientsList = (props: PatientListProps) => {
   return (
     <div className="content-section">
       <Helmet>
-        <title>Patients</title>
+        <title>{t('Patients')}</title>
       </Helmet>
-      <PageHeader title="Patients" className="page-header" />
+      <PageHeader title={t('Patients')} className="page-header" />
       <Row className="list-view">
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">

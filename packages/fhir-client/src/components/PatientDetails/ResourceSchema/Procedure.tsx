@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { intlFormatDateStrings } from '@opensrp/react-utils';
 import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseProcedure = (obj: IProcedure) => {
   return {
@@ -16,27 +17,27 @@ export const parseProcedure = (obj: IProcedure) => {
 
 export type ProcedureTableData = ReturnType<typeof parseProcedure>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
 
   {
-    title: 'Performed Date',
+    title: t('Performed Date'),
     dataIndex: 'date',
     sorter: dateStringSorterFn,
     render: (value: string) => intlFormatDateStrings(value),
   },
   {
-    title: 'Procedure',
+    title: t('Procedure'),
     dataIndex: 'procedure',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status',
   },
 ];

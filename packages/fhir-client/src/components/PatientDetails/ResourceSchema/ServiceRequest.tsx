@@ -3,6 +3,7 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { get } from 'lodash';
 import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseServiceRequest = (obj: IPractitioner) => {
   return {
@@ -14,18 +15,18 @@ export const parseServiceRequest = (obj: IPractitioner) => {
 
 export type ParseServiceRequest = ReturnType<typeof parseServiceRequest>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id' as const,
   },
   {
-    title: 'Date authored',
+    title: t('Date authored'),
     dataIndex: 'authoredOn' as const,
     sorter: dateStringSorterFn,
   },
   {
-    title: 'Category',
+    title: t('Category'),
     dataIndex: 'category' as const,
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;

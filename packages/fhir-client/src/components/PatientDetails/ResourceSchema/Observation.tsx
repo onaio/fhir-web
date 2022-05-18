@@ -2,6 +2,7 @@ import { IObservation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IObserva
 import { get } from 'lodash';
 import { buildObservationValueString } from '../../PatientsList/utils';
 import { dateStringSorterFn } from '../../../helpers/utils';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseObservation = (obj: IObservation) => {
   return {
@@ -14,21 +15,21 @@ export const parseObservation = (obj: IObservation) => {
 
 export type ObservationTableData = ReturnType<typeof parseObservation>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id' as const,
   },
   {
-    title: 'Observation value',
+    title: t('Observation value'),
     dataIndex: 'observationValue' as const,
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status' as const,
   },
   {
-    title: 'Observation Issue Date',
+    title: t('Observation Issue Date'),
     dataIndex: 'issued' as const,
     sorter: dateStringSorterFn,
   },

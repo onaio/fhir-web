@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { intlFormatDateStrings } from '@opensrp/react-utils';
 import { FhirCodesTooltips, getCodeableConcepts, rawStringSorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseMedicationRequest = (obj: IMedicationRequest) => {
   return {
@@ -15,20 +16,20 @@ export const parseMedicationRequest = (obj: IMedicationRequest) => {
 
 export type MeidationRequestTableData = ReturnType<typeof parseMedicationRequest>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Details',
+    title: t('Details'),
     dataIndex: 'reasonCodes',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Authored on',
+    title: t('Authored on'),
     dataIndex: 'authoredOn',
     sorter: rawStringSorterFn,
     render: (value: string) => intlFormatDateStrings(value),
