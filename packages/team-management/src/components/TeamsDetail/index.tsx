@@ -3,7 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { Organization } from '../../ducks/organizations';
 import { Practitioner } from '../../ducks/practitioners';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 
 export interface TeamsDetailProps extends Organization {
@@ -14,6 +14,8 @@ export interface TeamsDetailProps extends Organization {
 
 const TeamsDetail = (props: TeamsDetailProps) => {
   const { name, active, identifier, teamMembers, assignedLocations } = props;
+  const { t } = useTranslation();
+
   return (
     <div className="p-4 bg-white">
       <Button
@@ -24,21 +26,21 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">{lang.TEAM_NAME}</p>
+        <p className="mb-0 font-weight-bold">{t('Team Name')}</p>
         <p className="mb-0" id="name">
           {name}
         </p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.STATUS}</p>
+        <p className="mb-0 font-weight-bold">{t('Status')}</p>
         <p className="mb-0" id="status">{`${active}`}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.IDENTIFIER}</p>
+        <p className="mb-0 font-weight-bold">{t('Identifier')}</p>
         <p className="mb-0" id="identifier">{`${identifier}`}</p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.TEAM_MEMBERS}</p>
+        <p className="mb-0 font-weight-bold">{t('Team Members')}</p>
         {teamMembers.length ? (
           teamMembers.map((item) =>
             item.active ? (
@@ -46,11 +48,11 @@ const TeamsDetail = (props: TeamsDetailProps) => {
             ) : null
           )
         ) : (
-          <p className="no-team-members">{lang.NO_TEAM_MEMBERS}</p>
+          <p className="no-team-members">{t('No team members')}</p>
         )}
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.ASSIGNED_LOCATIONS}</p>
+        <p className="mb-0 font-weight-bold">{t('Assigned Locations')}</p>
         {assignedLocations.length ? (
           assignedLocations.map((location) => (
             <p
@@ -60,7 +62,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
             >{`${location.properties.name}`}</p>
           ))
         ) : (
-          <p className="no-assigned-locations">{lang.NO_ASSIGNED_LOCATIONS}</p>
+          <p className="no-assigned-locations">{t('This team is not assigned to any Location')}</p>
         )}
       </div>
     </div>
