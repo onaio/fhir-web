@@ -6,18 +6,16 @@ import React, { useState } from 'react';
 import { Result } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** props for the broken page component */
 export interface BrokenPageProps extends UtilPageExtraProps {
-  title: string;
+  title?: string;
   errorMessage?: string;
 }
 
 export const defaultProps = {
   ...extraLinksDefault,
-  errorMessage: lang.SOMETHING_WENT_WRONG,
-  title: lang.ERROR,
 };
 
 /**
@@ -27,14 +25,18 @@ export const defaultProps = {
  */
 const BrokenPage = (props: BrokenPageProps) => {
   const { errorMessage, title } = props;
+  // HACK to preserve defaultProps back compatibility
+  const { t } = useTranslation();
+  const i18nedErrMessage = errorMessage ?? t('Something went wrong');
+  const i18nedTitle = title ?? t('Error');
   const extraLinksProps = {
     homeUrl: props.homeUrl,
   };
   return (
     <Result
       status="500"
-      title={title}
-      subTitle={errorMessage}
+      title={i18nedTitle}
+      subTitle={i18nedErrMessage}
       extra={<ExtraLinks {...extraLinksProps} />}
     />
   );

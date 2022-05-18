@@ -14,7 +14,6 @@ import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
-import lang, { Lang } from '../lang';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 
@@ -33,7 +32,7 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
     baseURL: string = OPENSRP_API_BASE_URL,
     fetchOptions: typeof getFetchOptions = getFetchOptions
   ) {
-    super(handleSessionOrTokenExpiry, baseURL, endpoint, fetchOptions);
+    super(handleSessionOrTokenExpiry as GetAccessTokenType, baseURL, endpoint, fetchOptions);
   }
 }
 
@@ -66,7 +65,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
    * @param {string} resourceType - FHIR resource type string
    */
   constructor(baseURL: string, resourceType: string) {
-    this.accessTokenOrCallBack = handleSessionOrTokenExpiry;
+    this.accessTokenOrCallBack = handleSessionOrTokenExpiry as GetAccessTokenType;
     this.baseURL = baseURL;
     this.resourceType = resourceType;
   }
@@ -123,21 +122,20 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
 /**
  * gets access token or redirects to login if session is expired
  *
- * @param langObject - look up of translations
  */
-export const handleSessionOrTokenExpiry = (async (langObject: Lang = lang) => {
+export async function handleSessionOrTokenExpiry() {
   if (isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
     } catch (e) {
       history.push(`${configs.appLoginURL}`);
-      throw new Error(`${langObject.SESSION_EXPIRED_TEXT}`);
+      throw new Error('Session Expired');
     }
   } else {
     return getAccessToken(store.getState());
   }
-}) as GetAccessTokenType;
+}
 
 /**
  * Fetch an image that requires authentication and returns an
