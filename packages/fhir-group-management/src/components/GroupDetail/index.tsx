@@ -12,6 +12,7 @@ import {
 } from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { useTranslation } from '../../mls';
 
 /**
  * parse a Group to object we can easily consume in Table layout
@@ -46,6 +47,7 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
  */
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseURL } = props;
+  const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery([groupResourceType, resourceId], () => {
     return new FHIRServiceClass<Group>(fhirBaseURL, groupResourceType).read(resourceId);
@@ -62,12 +64,12 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   const org = data as Group;
   const { name, active, lastUpdated, id, quantity, members } = parseGroup(org);
   const keyValues = {
-    Id: id,
-    Name: name,
-    Active: active ? 'Active' : 'Inactive',
-    'Last updated': lastUpdated,
-    'No. of Members': quantity,
-    Members: members?.map((member) => member.entity.display).join(', '),
+    [t('Id')]: id,
+    [t('Name')]: name,
+    [t('Active')]: active ? 'Active' : 'Inactive',
+    [t('Last updated')]: lastUpdated,
+    [t('No. of Members')]: quantity,
+    [t('Members')]: members?.map((member) => member.entity.display).join(', '),
   };
 
   return (
