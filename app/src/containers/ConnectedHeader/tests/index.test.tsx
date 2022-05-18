@@ -6,7 +6,15 @@ import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
 import { store } from '@opensrp/store';
 
-jest.mock('../../../configs/env');
+jest.mock('@opensrp/pkg-config', () => {
+  const actual = jest.requireActual('@opensrp/pkg-config');
+  return {
+    ...actual,
+    getConfig: () => {
+      return 'en'
+    },
+  };
+});
 
 describe('components/ConnectedHeader', () => {
   it('renders the ConnectedHeader component', () => {
