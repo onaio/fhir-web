@@ -14,6 +14,7 @@ import { flatten } from 'lodash';
 import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import type { TFunction } from '@opensrp/i18n';
 
 export interface OrganizationFormFields {
   id?: string;
@@ -27,16 +28,18 @@ export interface OrganizationFormFields {
 
 /**
  * factory for validation rules for OrganizationForm component
+ *
+ * @param t - translator functioin
  */
-export const validationRulesFactory = () => ({
+export const validationRulesFactory = (t: TFunction) => ({
   id: [{ type: 'string' }] as Rule[],
   identifier: [{ type: 'string' }] as Rule[],
   name: [
-    { type: 'string', message: 'Must be a valid string' },
-    { required: true, message: 'Required' },
+    { type: 'string', message: t('Must be a valid string') },
+    { required: true, message: t('Required') },
   ] as Rule[],
-  alias: [{ type: 'string', message: 'Must be a valid string' }, { required: false }] as Rule[],
-  status: [{ type: 'boolean' }, { required: true, message: 'Required' }] as Rule[],
+  alias: [{ type: 'string', message: t('Must be a valid string') }, { required: false }] as Rule[],
+  status: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
   type: [
     {
       type: 'string',

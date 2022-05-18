@@ -16,6 +16,7 @@ import {
 } from '../../../constants';
 import { parseOrganization, ViewDetailsWrapper } from '../ViewDetails';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
+import { useTranslation } from '../../../mls';
 
 export type TRQuery = [string, number, number];
 
@@ -35,6 +36,7 @@ interface RouteParams {
 export const OrganizationList = (props: OrganizationListProps) => {
   const { fhirBaseURL } = props;
 
+  const { t } = useTranslation();
   const { id: resourceId } = useParams<RouteParams>();
   const { searchFormProps, tablePaginationProps, queryValues } =
     useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
@@ -55,24 +57,24 @@ export const OrganizationList = (props: OrganizationListProps) => {
 
   const columns = [
     {
-      title: 'Team name',
+      title: t('Team name'),
       dataIndex: 'name' as const,
       key: 'name' as const,
     },
     {
-      title: 'Type',
+      title: t('Type'),
       dataIndex: 'type' as const,
       key: 'type' as const,
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Link to={`${ADD_EDIT_ORGANIZATION_URL}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              {t('Edit')}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -80,7 +82,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${ORGANIZATION_LIST_URL}/${record.id}`}>View Details</Link>
+                  <Link to={`${ORGANIZATION_LIST_URL}/${record.id}`}>{t('View Details')}</Link>
                 </Menu.Item>
               </Menu>
             }
@@ -102,12 +104,13 @@ export const OrganizationList = (props: OrganizationListProps) => {
     pagination: tablePaginationProps,
   };
 
+  const pageTitle = t('Organization list');
   return (
     <div className="content-section">
       <Helmet>
-        <title>Organization list</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={'Organization list'} className="page-header" />
+      <PageHeader title={pageTitle} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -115,7 +118,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             <Link to={ADD_EDIT_ORGANIZATION_URL}>
               <Button type="primary">
                 <PlusOutlined />
-                Add Organization
+                {t('Add Organization')}
               </Button>
             </Link>
           </div>

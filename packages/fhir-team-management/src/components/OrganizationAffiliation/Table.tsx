@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button } from 'antd';
-import lang from '../../lang';
 import {
   BrokenPage,
   Column,
@@ -17,6 +16,7 @@ import { organizationAffiliationResourceType, organizationResourceType } from '.
 import { reformatOrganizationByLocation } from './utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { useTranslation } from '../../mls';
 
 export interface TableData {
   id: string;
@@ -62,6 +62,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
   const { baseUrl, locationNodes } = props;
   const [seeModal, setSeeModal] = useState<boolean>(false);
   const [location, setLocation] = useState<ILocation>();
+  const { t } = useTranslation();
 
   const {
     data: affiliationsData,
@@ -88,7 +89,9 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
   );
 
   if ((affiliationsError && !affiliationsData) || (orgsError && !orgsData)) {
-    return <BrokenPage errorMessage="Unable to load teams or teams assignments at the moment" />;
+    return (
+      <BrokenPage errorMessage={t('Unable to load teams or teams assignments at the moment')} />
+    );
   }
 
   const tableDispData = parseTableData(locationNodes);
@@ -96,11 +99,11 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
 
   const columns: Column<TableData>[] = [
     {
-      title: 'Name',
+      title: t('Name'),
       dataIndex: 'name',
     },
     {
-      title: 'Assigned teams',
+      title: t('Assigned teams'),
       render: (_, record) => {
         const { id } = record;
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -113,7 +116,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       },
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_, record) => (
@@ -127,7 +130,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
             setSeeModal(true);
           }}
         >
-          {lang.EDIT}
+          {t('Edit')}
         </Button>
       ),
     },
