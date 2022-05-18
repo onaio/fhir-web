@@ -4,7 +4,7 @@ import { Table as AntTable } from 'antd';
 import { ParsedHierarchyNode, getHierarchyNodeFromArray } from '@opensrp/location-management';
 import { Setting } from '../../ducks/settings';
 import { ColumnsType, ColumnType } from 'antd/lib/table/interface';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 interface Props {
   data: Setting[];
@@ -18,6 +18,7 @@ export interface TableData extends Setting {
 
 export const Table: React.FC<Props> = (props: Props) => {
   const { data: Settings, tree, actioncolumn } = props;
+  const { t } = useTranslation();
 
   const data = Settings.map((setting) => {
     const settingCopy = {
@@ -36,7 +37,7 @@ export const Table: React.FC<Props> = (props: Props) => {
   const columns: ColumnsType<TableData> = useMemo(() => {
     const col: ColumnsType<TableData> = [
       {
-        title: lang.NAME,
+        title: t('Name'),
         dataIndex: 'label',
         key: `label`,
         defaultSortOrder: 'descend',
@@ -44,19 +45,19 @@ export const Table: React.FC<Props> = (props: Props) => {
         sorter: (rec1, rec2) => (rec1.label > rec2.label ? -1 : rec1.label < rec2.label ? 1 : 0),
       },
       {
-        title: lang.DESCRIPTION,
+        title: t('Description'),
         dataIndex: 'description',
         width: '35%',
         key: `description`,
       },
       {
-        title: lang.SETTINGS,
+        title: t('Settings'),
         dataIndex: 'value',
         key: `value`,
         render: (value) => (value === 'true' ? 'Yes' : 'No'),
       },
       {
-        title: lang.INHERITED_FROM,
+        title: t('Inherited from'),
         dataIndex: 'inheritedFrom',
         width: '20%',
         key: `inheritedFrom`,
@@ -65,7 +66,7 @@ export const Table: React.FC<Props> = (props: Props) => {
     ];
     if (actioncolumn) col.push(actioncolumn);
     return col;
-  }, [actioncolumn, tree]);
+  }, [actioncolumn, t, tree]);
 
   return <AntTable dataSource={data} columns={columns} />;
 };

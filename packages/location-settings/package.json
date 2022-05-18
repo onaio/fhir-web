@@ -43,13 +43,12 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
     "i18next-parser": "^3.5.0",
-    "react-helmet": "^6.1.0",
-    "react-i18next": "^11.8.10"
+    "react-helmet": "^6.1.0"
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.9",
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.8.2",
-    "i18next": "^19.8.4",
     "react": "^16.18.1",
     "react-query": "^3.15.1",
     "react-redux": "^7.2.2",
