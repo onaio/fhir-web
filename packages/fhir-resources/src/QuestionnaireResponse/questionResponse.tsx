@@ -17,7 +17,7 @@ const R4Parse = (resource: IQuestionnaireResponse) => {
   const questionnaireURl = resource.questionnaire;
   const splitPath = questionnaireURl?.split('/') ?? [];
   const historyPathIndex = splitPath.findIndex((value) => value === '_history');
-  let questionnaireVersion = 'Current';
+  let questionnaireVersion;
   if (historyPathIndex > 0) {
     questionnaireVersion = splitPath[historyPathIndex + 1];
   }

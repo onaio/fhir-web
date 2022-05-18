@@ -32,6 +32,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.6.3",
     "react": "^16.18.1"
   },
