@@ -2,11 +2,11 @@ import { Button, Alert, Spin, Col } from 'antd';
 import React, { MouseEventHandler } from 'react';
 import { get } from 'lodash';
 import { CloseOutlined } from '@ant-design/icons';
-import lang from '../../lang';
 import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { locationResourceType } from '../../constants';
+import { useTranslation } from '../../mls';
 
 export interface LUDProps {
   onClose: MouseEventHandler<HTMLElement>;
@@ -16,6 +16,7 @@ export interface LUDProps {
 
 export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
   const { onClose, fhirBaseUrl, detailId } = props;
+  const { t } = useTranslation();
 
   // fetch location details for the the selected location
   const serve = new FHIRServiceClass<ILocation>(fhirBaseUrl, locationResourceType);
@@ -37,16 +38,18 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
   }
 
   if (!data) {
-    return <Alert data-testid="info-alert" message="Location resource not found" type="info" />;
+    return (
+      <Alert data-testid="info-alert" message={t('Location resource not found')} type="info" />
+    );
   }
 
   const { name, status, description } = data;
   const detailsMap = {
-    [lang.NAME]: name,
-    [lang.STATUS]: status,
-    [lang.DESCRIPTION]: description,
-    [lang.PHYSICAL_TYPE]: get(data, 'physicalType.coding.0.display'),
-    [lang.ALIAS]: get(data, 'alias.0'),
+    [t('Name')]: name,
+    [t('Status')]: status,
+    [t('Description')]: description,
+    [t('Physical type')]: get(data, 'physicalType.coding.0.display'),
+    [t('alias')]: get(data, 'alias.0'),
   };
 
   return (

@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
-import lang from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { convertApiResToTree } from '../../helpers/utils';
@@ -23,6 +22,7 @@ import {
   setSelectedNode,
   getSelectedNode,
 } from '../../ducks/location-tree-state';
+import { useTranslation } from '../../mls';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -66,6 +66,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
@@ -119,9 +120,9 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.LOCATION_UNIT}</title>
+        <title>{t('Location Unit')}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
+      <h1 className="mb-3 fs-5">{t('Location Unit Management')}</h1>
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
@@ -136,7 +137,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
         <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <h6 className="mt-4">
-              {selectedNode ? selectedNode.model.node.name : lang.LOCATION_UNIT}
+              {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
             </h6>
             <div>
               <Link
@@ -151,7 +152,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               >
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.ADD_LOCATION_UNIT}
+                  {t('Add Location Unit')}
                 </Button>
               </Link>
             </div>

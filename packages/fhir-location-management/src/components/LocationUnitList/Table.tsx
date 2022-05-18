@@ -3,8 +3,8 @@ import { Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
-import lang from '../../lang';
 import { Column, TableLayout } from '@opensrp/react-utils';
+import { useTranslation } from '../../mls';
 
 export interface TableData {
   id: string;
@@ -23,21 +23,22 @@ export interface Props {
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
+  const { t } = useTranslation();
   const columns: Column<TableData>[] = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name',
     },
     {
-      title: 'Parent',
+      title: t('Parent'),
       dataIndex: 'partOf',
     },
     {
-      title: lang.PHYSICAL_TYPE,
+      title: t('Physical Type'),
       dataIndex: 'physicalType',
     },
     {
-      title: lang.STATUS,
+      title: t('Status'),
       dataIndex: 'status',
     },
   ];
@@ -49,14 +50,14 @@ const Table: React.FC<Props> = (props: Props) => {
       datasource={props.data}
       columns={columns}
       actions={{
-        title: lang.ACTIONS,
+        title: t('Actions'),
         width: '10%',
         // eslint-disable-next-line react/display-name
         render: (_: boolean, record) => (
           <span className="d-flex justify-content-end align-items-center Actions">
             <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>
               <Button type="link" className="m-0 p-1">
-                Edit
+                {t('Edit')}
               </Button>
             </Link>
             <Divider type="vertical" />
@@ -69,7 +70,7 @@ const Table: React.FC<Props> = (props: Props) => {
                       onViewDetails?.(record);
                     }}
                   >
-                    {lang.VIEW_DETAILS}
+                    {t('View details')}
                   </Menu.Item>
                 </Menu>
               }

@@ -3,12 +3,12 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../helpers/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import lang, { Lang } from '../../lang';
 import { get } from 'lodash';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
+import type { TFunction } from '@opensrp/i18n';
 
 export type ExtraFields = Dictionary;
 
@@ -133,28 +133,25 @@ export const generateLocationUnit = (
 /**
  * factory for validation rules for LocationForm component
  *
- * @param langObj - language translation string obj lookup
+ * @param t - language translator
  */
-export const validationRulesFactory = (langObj: Lang = lang) => ({
+export const validationRulesFactory = (t: TFunction) => ({
   id: [{ type: 'string' }] as Rule[],
   parentId: [
-    { type: 'string', message: langObj.ERROR_PARENTID_STRING },
+    { type: 'string', message: t(`Parent ID can only contain letters, numbers and spaces`) },
     {
       required: false,
     },
   ] as Rule[],
   name: [
-    { type: 'string', message: langObj.ERROR_NAME_STRING },
-    { required: true, message: langObj.ERROR_NAME_REQUIRED },
+    { type: 'string', message: t(`Name can only contain letters, numbers and spaces`) },
+    { required: true, message: t(`Name is required`) },
   ] as Rule[],
   alias: [
-    { type: 'string', message: langObj.ERROR_ALIAS_STRING },
-    { required: true, message: langObj.ERROR_ALIAS_REQUIRED },
+    { type: 'string', message: t(`Name can only contain letters, numbers and spaces`) },
+    { required: true, message: t(`Alias is required`) },
   ] as Rule[],
-  status: [
-    { type: 'string' },
-    { required: true, message: langObj.ERROR_STATUS_REQUIRED },
-  ] as Rule[],
+  status: [{ type: 'string' }, { required: true, message: t(`Status is required`) }] as Rule[],
   isJurisdiction: [
     {
       type: 'boolean',
