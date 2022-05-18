@@ -2,7 +2,7 @@ import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import React from 'react';
 import { Card, Button, Typography, Tooltip } from 'antd';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { CommonProps, postPutPlan } from '@opensrp/plan-form';
 import { defaultCommonProps } from '../../helpers/common';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
@@ -32,6 +32,7 @@ const defaultProps = {
  */
 const ActivateMissionCard = (props: ActivateMissionProps) => {
   const { plan, serviceClass, baseURL, submitCallback } = props;
+  const { t } = useTranslation();
   const planIsDraft = plan?.status === PlanStatus.DRAFT;
 
   if (!plan || !planIsDraft) {
@@ -48,17 +49,17 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
     };
     postPutPlan(planPayload, baseURL, true, serviceClass)
       .then(() => {
-        sendSuccessNotification(lang.SUCCESSFULLY_ACTIVATED_MISSION);
+        sendSuccessNotification(t('Successfully activated mission'));
         submitCallback(planPayload);
       })
       .catch(() => {
-        sendErrorNotification(lang.FAILED_TO_ACTIVATE_MISSION);
+        sendErrorNotification(t('Activating mission failed'));
       });
   };
 
   const ActivateButton = (
     <Button onClick={clickHandler} type="primary" disabled={isActivateButtonDisabled}>
-      {lang.ACTIVATE_MISSION}
+      {t('Activate mission')}
     </Button>
   );
 
@@ -66,12 +67,14 @@ const ActivateMissionCard = (props: ActivateMissionProps) => {
     <Card
       className="activate-plan"
       bordered={false}
-      title={<Title level={5}>{lang.ACTIVATE_MISSION}</Title>}
+      title={<Title level={5}>{t('Activate mission')}</Title>}
     >
       {planHasJurisdictions ? (
         ActivateButton
       ) : (
-        <Tooltip title={lang.CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS}>{ActivateButton}</Tooltip>
+        <Tooltip title={t('Assign jurisdictions to the Plan, to enable activating it')}>
+          {ActivateButton}
+        </Tooltip>
       )}
     </Card>
   );

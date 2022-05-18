@@ -21,7 +21,7 @@ import {
   planActivities,
 } from '@opensrp/plan-form-core';
 import { useHistory } from 'react-router';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 type CreatePlanViewProps = CommonProps & PropsForPlanForm;
 
@@ -38,7 +38,8 @@ const defaultProps = {
 
 const CreatePlanView = (props: CreatePlanViewProps) => {
   const { envConfigs, baseURL, hiddenFields } = props;
-  const pageTitle = lang.CREATE_PLAN;
+  const { t } = useTranslation();
+  const pageTitle = t('Create new mission');
   const history = useHistory();
 
   const configs = {

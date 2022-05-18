@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Alert, Select } from 'antd';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** describes how options should be formatted when passed to EditAssignment modals */
 export interface SelectOption {
@@ -25,9 +25,9 @@ export interface EditAssignmentsModalProps {
 const defaultProps = {
   existingOptions: [],
   options: [],
-  invokeText: lang.EDIT_TEAMS,
-  modalTitle: lang.EDIT_TEAMS,
-  placeHolder: lang.SELECT,
+  invokeText: 'Edit teams',
+  modalTitle: 'Edit teams',
+  placeHolder: 'Select',
   disabled: false,
 };
 
@@ -43,18 +43,19 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
     cancelHandler,
     existingOptions,
     options,
-    invokeText,
-    modalTitle,
-    placeHolder,
+    invokeText: invokeTextRaw,
+    modalTitle: modalTitleRaw,
+    placeHolder: placeholderRaw,
     disabled,
   } = props;
+  const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
-  const [selectedOptions, setSelectedOptions] = useState<SelectOption | SelectOption[]>(
-    existingOptions
-  );
-
+  const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(existingOptions);
+  const invokeText = invokeTextRaw ? invokeTextRaw : t('Edit teams');
+  const modalTitle = modalTitleRaw ? modalTitleRaw : t('Edit teams');
+  const placeholder = placeholderRaw ? placeholderRaw : t('Select');
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -95,8 +96,8 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        cancelText={lang.CANCEL}
-        okText={lang.SAVE}
+        cancelText={t('Cancel')}
+        okText={t('Save')}
       >
         {broken ? (
           <Alert style={{ marginBottom: '8px' }} message={errorMessage} type="error" />
@@ -104,7 +105,7 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
         <Select
           mode="multiple"
           style={{ width: '100%' }}
-          placeholder={placeHolder}
+          placeholder={placeholder}
           defaultValue={defaultValue}
           onChange={handleChange}
           options={options}
