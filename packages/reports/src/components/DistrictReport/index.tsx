@@ -13,9 +13,9 @@ import { useQuery } from 'react-query';
 import { OpenSRPService } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import { sendErrorNotification } from '@opensrp/notifications';
-import lang from '../../lang';
 import { SECURITY_AUTHENTICATE, OPENSRP_URL_LOCATION_HIERARCHY } from '../../constants';
 import { submitForm } from './utils';
+import { useTranslation } from '../../mls';
 import './index.css';
 
 export interface DistrictReportProps {
@@ -32,6 +32,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
   const fetchAllHierarchiesActionCreator = locationHierachyDucks.fetchAllHierarchies;
   const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { Title } = Typography;
   const layout = {
@@ -66,7 +67,12 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
     SECURITY_AUTHENTICATE,
     () => new OpenSRPService(accessToken, BASE_URL, SECURITY_AUTHENTICATE).list(),
     {
-      onError: () => sendErrorNotification(lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED),
+      onError: () =>
+        sendErrorNotification(
+          t(
+            `Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.`
+          )
+        ),
       select: (res: { team: { team: { location: DefaultLocation } } }) => res.team.team.location,
     }
   );
@@ -82,7 +88,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('an error occurred')),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
@@ -106,18 +112,18 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.DOWNLOAD_DISTRICT_REPORT}</Title>
+      <Title level={3}>{t('Download District Report')}</Title>
       <Card>
         <Form
           {...layout}
           onFinish={() => {
             setSubmitting(true);
             submitForm(locationId, reportDate, accessToken, opensrpBaseURL)
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURRED))
+              .catch(() => sendErrorNotification(t('An error occurred')))
               .finally(() => setSubmitting(false));
           }}
         >
-          <Form.Item name="location" label={lang.LOCATION}>
+          <Form.Item name="location" label={t('Location')}>
             <TreeSelect
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -137,8 +143,8 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
           </Form.Item>
           <Form.Item
             name="reportDate"
-            label={lang.REPORT_DATE}
-            rules={[{ required: true, message: lang.DATE_REQUIRED }]}
+            label={t('Report Date')}
+            rules={[{ required: true, message: t('Date Required') }]}
           >
             <DatePicker
               disabledDate={(current) => current > moment().endOf('month')}
@@ -147,10 +153,10 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
-            <Tooltip placement="bottom" title={!reportDate ? lang.DATE_REQUIRED : null}>
+            <Tooltip placement="bottom" title={!reportDate ? t('Date Required') : null}>
               <Button type="primary" htmlType="submit" disabled={!reportDate || !locationId}>
                 <DownloadOutlined />
-                {isSubmitting ? `${lang.DOWNLOADING}....` : lang.DOWNLOAD_REPORT}
+                {isSubmitting ? t(`Downloading....`) : t('Download Report')}
               </Button>
             </Tooltip>
           </Form.Item>
