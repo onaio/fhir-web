@@ -21,6 +21,7 @@ import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
 import { ViewDetailsWrapper } from '../ViewDetails';
 import { useQueryClient } from 'react-query';
+import { useTranslation } from '@opensrp/i18n';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -43,6 +44,7 @@ export const UserList = (props: OrganizationListProps) => {
   const match = useRouteMatch();
   const extraData = useSelector(getExtraData);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { id: resourceId } = useParams<RouteParams>();
   const { isLoading, data, error, isFetching } = useQuery([KEYCLOAK_URL_USERS], () =>
@@ -74,7 +76,7 @@ export const UserList = (props: OrganizationListProps) => {
       };
     });
 
-  const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, queryClient);
+  const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, queryClient, t);
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
@@ -100,7 +102,7 @@ export const UserList = (props: OrganizationListProps) => {
     loading: isFetching || isLoading,
   };
 
-  const title = 'User Management';
+  const title = t('User Management');
 
   return (
     <div className="content-section">
@@ -115,7 +117,7 @@ export const UserList = (props: OrganizationListProps) => {
             <Link to={URL_USER_CREATE}>
               <Button type="primary">
                 <PlusOutlined />
-                Add User
+                {t('Add User')}
               </Button>
             </Link>
           </div>

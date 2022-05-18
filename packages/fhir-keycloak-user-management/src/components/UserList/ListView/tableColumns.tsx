@@ -14,6 +14,7 @@ import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { QueryClient } from 'react-query';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Get table columns for user list
@@ -22,16 +23,18 @@ import { QueryClient } from 'react-query';
  * @param baseUrl - server base url
  * @param extraData - session data about logged in user
  * @param queryClient - react query client
+ * @param t - translator function
  */
 export const getTableColumns = (
   keycloakBaseUrl: string,
   baseUrl: string,
   extraData: Dictionary,
-  queryClient: QueryClient
+  queryClient: QueryClient,
+  t: TFunction
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
-  const headerItems: string[] = ['Username', 'First name', 'Last name', 'Email'];
+  const headerItems: string[] = [t('Username'), t('First name'), t('Last name'), t('Email')];
   const dataElements: Column<KeycloakUser>[] = [];
   const fields: string[] = ['email', 'firstName', 'lastName', 'username'];
 
@@ -50,13 +53,13 @@ export const getTableColumns = (
   });
 
   dataElements.push({
-    title: 'Actions',
+    title: t('Actions'),
     // eslint-disable-next-line react/display-name
     render: (_, record) => {
       return (
         <>
           <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-            Edit
+            {t('Edit')}
           </Link>
           <Divider type="vertical" />
           <Dropdown
@@ -67,21 +70,23 @@ export const getTableColumns = (
               <Menu>
                 <Menu.Item key="view-details" className="view-details">
                   <Button type="link">
-                    <Link to={`${URL_USER}/${record.id}`}>View Details</Link>
+                    <Link to={`${URL_USER}/${record.id}`}>{t('View Details')}</Link>
                   </Button>
                 </Menu.Item>
                 <Menu.Item key="delete-user">
                   <Popconfirm
-                    title="Are you sure you want to delete this user?"
-                    okText="Yes"
-                    cancelText="No"
+                    title={t('Are you sure you want to delete this user?')}
+                    okText={t('Yes')}
+                    cancelText={t('No')}
                     onConfirm={() => {
-                      return deleteUser(keycloakBaseUrl, baseUrl, record.id).then(() => {
+                      return deleteUser(keycloakBaseUrl, baseUrl, record.id, t).then(() => {
                         return queryClient
                           .invalidateQueries([KEYCLOAK_URL_USERS])
                           .catch(() =>
                             sendErrorNotification(
-                              'Failed to update data, please refresh the page to see the most recent changes'
+                              t(
+                                'Failed to update data, please refresh the page to see the most recent changes'
+                              )
                             )
                           );
                       });
@@ -90,14 +95,14 @@ export const getTableColumns = (
                     {user_id &&
                       (record.id === user_id ? null : (
                         <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
-                          Delete
+                          {t('Delete')}
                         </Button>
                       ))}
                   </Popconfirm>
                 </Menu.Item>
                 <Menu.Item key="credentials">
                   <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-                    <Button type="link">Credentials</Button>
+                    <Button type="link">{t('Credentials')}</Button>
                   </Link>
                 </Menu.Item>
               </Menu>

@@ -1,6 +1,7 @@
 import { KeycloakUser, Practitioner, UserAttributes, UserGroup } from '../../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { TFunction } from 'i18next';
 
 export interface FormFields
   extends Pick<KeycloakUser, 'id' | 'username' | 'firstName' | 'lastName' | 'email' | 'enabled'> {
@@ -12,7 +13,11 @@ export interface FormFields
 }
 
 export type FormFieldsKey = keyof FormFields | keyof UserAttributes;
-export type PractitionerUpdaterFun = (values: FormFields, userId: string) => Promise<void>;
+export type PractitionerUpdaterFun = (
+  values: FormFields,
+  userId: string,
+  t?: TFunction
+) => Promise<void>;
 export type PractitionerUpdaterFactory = (baseUrl: string) => PractitionerUpdaterFun;
 
 /** props for editing a user view */
