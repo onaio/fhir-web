@@ -15,8 +15,8 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { submitForm, handleCardOrderDateChange } from './utils';
 import { OPENSRP_URL_LOCATION_HIERARCHY, SECURITY_AUTHENTICATE } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import lang from '../../lang';
 import { useQuery } from 'react-query';
+import { useTranslation } from '../../mls';
 
 reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
 
@@ -70,6 +70,8 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   const { Option } = Select;
   const { RangePicker } = DatePicker;
   const { Title } = Typography;
+  const { t } = useTranslation();
+
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -107,7 +109,12 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     SECURITY_AUTHENTICATE,
     () => new opensrpServiceClass(accessToken, BASE_URL, SECURITY_AUTHENTICATE).list(),
     {
-      onError: () => sendErrorNotification(lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED),
+      onError: () =>
+        sendErrorNotification(
+          t(
+            'Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.'
+          )
+        ),
       select: (res: { team: { team: { location: DefaultLocation } } }) => res.team.team.location,
     }
   );
@@ -125,7 +132,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
@@ -149,7 +156,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.DOWNLOAD_CLIENT_DATA}</Title>
+      <Title level={3}>{t('Download Client Data')}</Title>
       <Card>
         <Form
           {...layout}
@@ -167,31 +174,34 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               opensrpBaseURL,
               opensrpServiceClass,
               locationHierarchies,
-              setSubmitting
-            ).catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+              setSubmitting,
+              t
+            ).catch(() => sendErrorNotification(t('An error occurred')));
           }}
         >
-          <Form.Item name="clientLocation" label={lang.CLIENT_LOCATION}>
+          <Form.Item name="clientLocation" label={t('Client Location')}>
             <TreeSelect
               style={{ width: '100%' }}
               dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
               placeholder="Please select"
             >
-              <TreeSelect.TreeNode value="" title={lang.ALL_LOCATIONS}></TreeSelect.TreeNode>
+              <TreeSelect.TreeNode value="" title={t('All Locations')}></TreeSelect.TreeNode>
               {parseHierarchyNode(locationHierarchies)}
             </TreeSelect>
           </Form.Item>
-          <Form.Item name="cardStatus" label={lang.CARD_STATUS}>
+          <Form.Item name="cardStatus" label={t('Card Status')}>
             <Select>
-              <Option value="">{lang.BOTH_NEEDS_CARD_CARD_NOT_NEEDED}</Option>
-              <Option value={CardStatus.NEEDS_CARD}>{lang.NEEDS_CARD}</Option>
-              <Option value={CardStatus.DOES_NOT_NEED_CARD}>{lang.CARD_NOT_NEEDED}</Option>
+              <Option value="">{t('Both "Needs card" and "Card not needed')}</Option>
+              <Option value={CardStatus.NEEDS_CARD}>{t('Needs Card')}</Option>
+              <Option value={CardStatus.DOES_NOT_NEED_CARD}>{t('Card not needed')}</Option>
             </Select>
           </Form.Item>
           <Form.Item
             name="cardOrderDate"
-            label={lang.CARD_ORDER_DATE}
-            rules={[{ type: 'array', required: true, message: lang.CARD_ORDER_DATE_REQUIRED }]}
+            label={t('Card Order Date')}
+            rules={[
+              { type: 'array', required: true, message: t('Please enter start date and end date') },
+            ]}
           >
             <RangePicker
               disabledDate={disabledDate}
@@ -204,7 +214,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
           <Form.Item {...tailLayout}>
             <Tooltip
               placement="bottom"
-              title={!cardOrderDate[0] || !cardOrderDate[1] ? lang.SELECT_CARD_ORDER_DATE : ''}
+              title={!cardOrderDate[0] || !cardOrderDate[1] ? t('Select Card Order Date') : ''}
             >
               <Button
                 type="primary"
@@ -212,7 +222,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                 disabled={!cardOrderDate[0] || !cardOrderDate[1]}
               >
                 <DownloadOutlined />
-                {isSubmitting ? `${lang.DOWNLOADING}....` : lang.DOWNLOAD_CSV}
+                {isSubmitting ? t('Downloading...') : t('Download CSV')}
               </Button>
             </Tooltip>
           </Form.Item>
