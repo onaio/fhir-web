@@ -10,7 +10,8 @@ import * as Yup from 'yup';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from 'react-i18next';
 import { HTTPError } from '@opensrp/server-service';
 import { fetchProtectedImage } from '@opensrp/react-utils';
 
@@ -54,18 +55,18 @@ const defaultProps = {
 /**
  * yup validation schema for productForm fields
  *
- * @param langObj - the language objects
+ * @param t - the language translator function
  */
-const ProductFormValidationSchemaFactory = (langObj: Lang = lang) =>
+const ProductFormValidationSchemaFactory = (t: TFunction) =>
   Yup.object().shape({
     uniqueId: Yup.number(),
-    productName: Yup.string().required(langObj.REQUIRED),
-    materialNumber: Yup.string().required(langObj.REQUIRED),
-    isAttractiveItem: Yup.boolean().required(langObj.REQUIRED),
+    productName: Yup.string().required(t('Required')),
+    materialNumber: Yup.string().required(t('Required')),
+    isAttractiveItem: Yup.boolean().required(t('Required')),
     condition: Yup.string(),
     appropriateUsage: Yup.string(),
-    accountabilityPeriod: Yup.number().required(langObj.REQUIRED),
-    availability: Yup.string().required(langObj.REQUIRED),
+    accountabilityPeriod: Yup.number().required(t('Required')),
+    availability: Yup.string().required(t('Required')),
     photoURL: Yup.mixed(),
   });
 
@@ -118,20 +119,21 @@ const ProductForm = (props: ProductFormProps) => {
   const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>('');
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const history = useHistory();
+  const { t } = useTranslation();
 
-  const ProductFormValidationSchema = ProductFormValidationSchemaFactory(lang);
+  const ProductFormValidationSchema = ProductFormValidationSchemaFactory(t);
 
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
-    { label: lang.YES, value: true },
-    { label: lang.NO, value: false },
+    { label: t('yes'), value: true },
+    { label: t('no'), value: false },
   ];
 
   /** component used by antd Upload, to upload the product photo */
   const uploadButton = (
     <div className="upload-button">
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>{lang.UPLOAD}</div>
+      <div style={{ marginTop: 8 }}>{t('Upload')}</div>
     </div>
   );
 
@@ -185,7 +187,7 @@ const ProductForm = (props: ProductFormProps) => {
             setImageUrl(url);
           }
         })
-        .catch((_: HTTPError) => sendErrorNotification(lang.ERROR_IMAGE_LOAD));
+        .catch((_: HTTPError) => sendErrorNotification(t('Image could not be loaded')));
     }
     return () => {
       if (objectURL) {
@@ -193,7 +195,7 @@ const ProductForm = (props: ProductFormProps) => {
         URL.revokeObjectURL(objectURL);
       }
     };
-  }, [isEditMode, baseURL, initialValues.photoURL]);
+  }, [isEditMode, baseURL, initialValues.photoURL, t]);
 
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere) {
@@ -210,7 +212,7 @@ const ProductForm = (props: ProductFormProps) => {
           if (isEditMode) {
             putProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification(lang.SUCCESSFULLY_UPDATED);
+                sendSuccessNotification(t('Successfully Updated'));
                 // the reason this is not in a finally block, it should be called before setAreWeDoneHere
                 // to avoid updating an unmounted component.
                 actions.setSubmitting(false);
@@ -223,7 +225,7 @@ const ProductForm = (props: ProductFormProps) => {
           } else {
             postProduct(baseURL, payload)
               .then(() => {
-                sendSuccessNotification(lang.SUCCESSFULLY_ADDED);
+                sendSuccessNotification(t('Successfully Added'));
                 actions.setSubmitting(false);
                 setAreWeDoneHere(true);
               })
@@ -241,10 +243,13 @@ const ProductForm = (props: ProductFormProps) => {
                 <Form.Item
                   id="productName"
                   name="productName"
-                  label={lang.PRODUCT_NAME}
+                  label={t('Product name')}
                   required={true}
                 >
-                  <Input name="productName" placeholder={lang.ENTER_PRODUCTS_NAME} />
+                  <Input
+                    name="productName"
+                    placeholder={t("Enter the product's name e.g Midwifery Kit")}
+                  />
                 </Form.Item>
 
                 <Form.Item id="uniqueId" name="uniqueId" hidden={true} required={true}>
@@ -254,16 +259,19 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="materialNumber"
                   name="materialNumber"
-                  label={lang.MATERIAL_NUMBER}
+                  label={t('Material number')}
                   required={true}
                 >
-                  <Input name="materialNumber" placeholder={lang.MATERIAL_NUMBER_PLACEHOLDER} />
+                  <Input
+                    name="materialNumber"
+                    placeholder={t("Enter the product's material number")}
+                  />
                 </FormItem>
 
                 <FormItem
                   id="isAttractiveItem"
                   name="isAttractiveItem"
-                  label={lang.ATTRACTIVE_ITEM_LABEL}
+                  label={t('Attractive item?')}
                   required={true}
                 >
                   <Radio.Group name="isAttractiveItem" options={attractiveOptions} />
@@ -272,43 +280,55 @@ const ProductForm = (props: ProductFormProps) => {
                 <FormItem
                   id="availability"
                   name="availability"
-                  label={lang.AVAILABILITY_LABEL}
+                  label={t('Is it there?')}
                   required={true}
                 >
                   <Input.TextArea
                     rows={4}
                     name="availability"
-                    placeholder={lang.AVAILABILITY_PLACEHOLDER}
+                    placeholder={t(
+                      'Describe where a supply monitor can locate this product at the service point.'
+                    )}
                   />
                 </FormItem>
-                <FormItem id="condition" name="condition" label={lang.CONDITION_LABEL}>
+                <FormItem
+                  id="condition"
+                  name="condition"
+                  label={t('Is it in good condition? (optional)')}
+                >
                   <Input.TextArea
                     rows={4}
                     name="condition"
-                    placeholder={lang.CONDITION_PLACEHOLDER}
+                    placeholder={t(
+                      'Describe how a supply monitor would assess whether the product is in good condition'
+                    )}
                   />
                 </FormItem>
                 <FormItem
                   id="appropriateUsage"
                   name="appropriateUsage"
-                  label={lang.USED_APPROPRIATELY}
+                  label={t('Is it being used appropriately? (optional)')}
                 >
                   <Input.TextArea
                     rows={4}
                     name="appropriateUsage"
-                    placeholder={lang.DESCRIBE_THE_PRODUCTS_USE}
+                    placeholder={t("Describe the product's intended use at the service point")}
                   />
                 </FormItem>
                 <FormItem
                   id="accountabilityPeriod"
                   name="accountabilityPeriod"
-                  label={lang.ACCOUNTABILITY_PERIOD}
+                  label={t('Accountability period (in months)')}
                   required={true}
                 >
                   <InputNumber name="accountabilityPeriod" min={0} />
                 </FormItem>
 
-                <FormItem id="photoURL" name="photoURL" label={lang.PHOTO_OF_THE_PRODUCT}>
+                <FormItem
+                  id="photoURL"
+                  name="photoURL"
+                  label={t('Photo of the product (optional)')}
+                >
                   <Upload
                     customRequest={async () => {
                       return;
@@ -330,7 +350,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem {...tailLayout} name="submitCancel">
                   <Space>
-                    <SubmitButton id="submit">{lang.SUBMIT}</SubmitButton>
+                    <SubmitButton id="submit">{t('Submit')}</SubmitButton>
 
                     <Button
                       id="cancel"
@@ -338,7 +358,7 @@ const ProductForm = (props: ProductFormProps) => {
                         history.push(CATALOGUE_LIST_VIEW_URL);
                       }}
                     >
-                      {lang.CANCEL}
+                      {t('Cancel')}
                     </Button>
                   </Space>
                 </FormItem>
