@@ -1,6 +1,6 @@
 import { mount, MountRendererProps } from 'enzyme';
 import React from 'react';
-import {OpensrpWebI18nProvider} from '@opensrp/i18n';
+import { OpensrpWebI18nProvider } from '@opensrp/i18n';
 
 export const mountWithTranslations: typeof mount = (
   component: React.ReactNode,

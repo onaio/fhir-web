@@ -200,7 +200,7 @@ import {
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 import { DistrictReport } from '@opensrp/reports';
 import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
-import {useTranslation} from '../mls';
+import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';

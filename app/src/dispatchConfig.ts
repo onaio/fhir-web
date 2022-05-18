@@ -15,8 +15,7 @@ import {
   DEFAULTS_TABLE_PAGE_SIZE,
 } from './configs/env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
-import {opensrpI18nInstance} from '@opensrp/i18n';
-
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 

@@ -10,7 +10,7 @@ import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
 import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
-import {useTranslation} from '../../../mls';
+import { useTranslation } from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
 
 /** interface for HeaderProps */
@@ -42,8 +42,8 @@ const languageOptions: LanguageOptions = {
  */
 const languageChangeHandlerFactory = (i18n: any) => (languageCode: string | number) => {
   const projectCode = getConfig('projectCode');
-  if(languageCode){
-    const newLanguage = projectCode ? `${languageCode}_${projectCode}` : languageCode as string;
+  if (languageCode) {
+    const newLanguage = projectCode ? `${languageCode}_${projectCode}` : (languageCode as string);
     setConfig('languageCode', languageCode as LanguageCode);
     i18n.changeLanguage(newLanguage);
   }
