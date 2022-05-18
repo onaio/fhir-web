@@ -19,6 +19,8 @@ import type { IQuestionnaireResponse } from '@smile-cdr/fhirts/dist/FHIR-R4/inte
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
+import { useTranslation } from '../mls';
+import type { TFunction } from '@opensrp/i18n';
 
 /** props for the PlansList view */
 export interface QuestionnaireListProps {
@@ -35,10 +37,11 @@ export interface RouteProps {
 const ActionsColumnCustomRender: Column<ParsedQuestionnaireResponse>['render'] = (
   record: ParsedQuestionnaireResponse
 ) => {
+  const { t } = useTranslation();
   return (
     <>
       <Link to={`${QUEST_FORM_VIEW_URL}/${record.id}/${questionnaireResponseResourceType}`}>
-        Edit
+        {t('Edit')}
       </Link>
     </>
   );
@@ -47,25 +50,26 @@ const ActionsColumnCustomRender: Column<ParsedQuestionnaireResponse>['render'] =
 /**
  * generates columns for questionnaire rendering component
  *
+ * @param t - translator function
  */
-const getColumns = (): Column<ParsedQuestionnaireResponse>[] => {
+const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
   const columns: Column<ParsedQuestionnaireResponse>[] = [
     {
-      title: 'Submission Id',
+      title: t('Submission Id'),
       width: '30%',
       dataIndex: 'id' as const,
     },
     {
-      title: 'Date authored',
+      title: t('Date authored'),
       dataIndex: 'authoredDateTime' as const,
       render: (value) => intlFormatDateStrings(value),
     },
     {
-      title: 'QuestionnaireVersion',
+      title: t('QuestionnaireVersion'),
       dataIndex: 'questionnaireVersion' as const,
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       render: ActionsColumnCustomRender,
       width: '20%',
     },
@@ -78,6 +82,7 @@ const getColumns = (): Column<ParsedQuestionnaireResponse>[] => {
 const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
   const { id: questId } = useParams<RouteProps>();
+  const { t } = useTranslation();
 
   const {
     isLoading: QuestLoading,
@@ -102,14 +107,14 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   }
 
   if (questError && !questData) {
-    return <BrokenPage errorMessage={'Problem loading questionnaire'} />;
+    return <BrokenPage errorMessage={t('Problem loading questionnaire')} />;
   }
 
   if (!questData) {
     return <Resource404 />;
   }
 
-  const columns = getColumns();
+  const columns = getColumns(t);
   const dataSource = ((data?.records ?? []) as IQuestionnaireResponse[]).map(
     parseQuestionnaireResponse
   );
@@ -131,7 +136,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
             >
               <Button type="primary">
                 <PlusOutlined />
-                Fill form
+                {t('Fill form')}
               </Button>
             </Link>
           </div>
