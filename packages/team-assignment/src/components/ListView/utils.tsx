@@ -3,7 +3,8 @@ import { get, keyBy } from 'lodash';
 import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from 'react-i18next';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';
@@ -14,6 +15,7 @@ import { Column } from '@opensrp/react-utils';
  * @param record - table row record
  */
 export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
+  const { t } = useTranslation();
   return (
     <>
       <Button
@@ -29,7 +31,7 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
           });
         }}
       >
-        {lang.EDIT}
+        {t('Edit')}
       </Button>
     </>
   );
@@ -38,12 +40,12 @@ export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) =
 /**
  * team assignment table columns factory
  *
- * @param langObj -  the translation string lookup
+ * @param t -  the translator function lookup
  */
-export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
+export const columnsFactory = (t: TFunction): Column<TableData>[] => {
   const columns: Column<TableData>[] = [
     {
-      title: langObj.NAME,
+      title: t('Name'),
       dataIndex: 'locationName',
       key: `${TableColumnsNamespace}-locationName` as keyof TableData,
       defaultSortOrder: 'descend',
@@ -58,7 +60,7 @@ export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
       },
     },
     {
-      title: langObj.ASSIGN_TEAMS,
+      title: t('Assigned Teams'),
       dataIndex: 'assignedTeams',
       key: `${TableColumnsNamespace}-assignedTeams` as keyof TableData,
     },
