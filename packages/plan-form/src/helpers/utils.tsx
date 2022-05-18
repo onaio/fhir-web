@@ -16,9 +16,9 @@ import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';
-import lang, { Lang } from '../lang';
+import type { TFunction } from 'react-i18next';
 
-export const validationRulesFactory = (langObj: Lang = lang) => ({
+export const validationRulesFactory = (t: TFunction) => ({
   activities: {
     actionCode: [{ type: 'enum', enum: PlanActionCodes.map((e) => e) }] as Rule[],
     actionDefinitionUri: [{ type: 'string' }] as Rule[],
@@ -57,7 +57,7 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
     () => ({
       validator(_, value) {
         if (value.includes('/')) {
-          return Promise.reject(langObj.PLAN_NAME_CANNOT_CONTAIN_SLASHES);
+          return Promise.reject(t("Plan name cannot contain '/'"));
         }
         return Promise.resolve();
       },
