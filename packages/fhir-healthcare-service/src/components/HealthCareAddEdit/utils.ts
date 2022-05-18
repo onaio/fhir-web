@@ -7,6 +7,7 @@ import { get, keyBy } from 'lodash';
 import { healthCareServiceResourceType } from '../../constants';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { organizationResourceType } from '@opensrp/fhir-team-management';
+import type { TFunction } from '@opensrp/i18n';
 
 export interface HealthCareFormFields {
   id?: string;
@@ -21,15 +22,17 @@ export interface HealthCareFormFields {
 
 /**
  * factory for validation rules for OrganizationForm component
+ *
+ * @param t - the translator function
  */
-export const validationRulesFactory = () => ({
+export const validationRulesFactory = (t: TFunction) => ({
   id: [{ type: 'string' }] as Rule[],
   identifier: [{ type: 'string' }] as Rule[],
   name: [
-    { type: 'string', message: 'Must be a valid string' },
-    { required: true, message: 'Required' },
+    { type: 'string', message: t('Must be a valid string') },
+    { required: true, message: t('Required') },
   ] as Rule[],
-  active: [{ type: 'boolean' }, { required: true, message: 'Required' }] as Rule[],
+  active: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
   comment: [
     {
       type: 'string',
