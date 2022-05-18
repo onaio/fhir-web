@@ -51,6 +51,7 @@
     "antd": "^4.6.3",
     "lodash": "^4.17.21",
     "react": "^16.18.1",
+    "react-i18next": "^11.14.2",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",
     "@opensrp/i18n": "0.0.1",

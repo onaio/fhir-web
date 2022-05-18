@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
-import lang from '../../lang';
 import { submitForm } from './utils';
 import { URL_CARE_TEAM } from '../../constants';
+import { useTranslation } from '../../mls';
 
 export interface Fields {
   id: string;
@@ -36,6 +36,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   const { fhirBaseURL, initialValues } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const layout = {
     labelCol: {
@@ -56,8 +57,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   };
 
   const status = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
+    { label: t('Active'), value: 'active' },
+    { label: t('Inactive'), value: 'inactive' },
   ];
 
   interface Option {
@@ -72,9 +73,9 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
-        {props.initialValues.id
-          ? `${lang.EDIT_CARE_TEAM} | ${initialValues.name}`
-          : lang.CREATE_CARE_TEAM}
+        {props.initialValues?.id
+          ? `${t('Edit Care Team')} | ${initialValues.name}`
+          : t('Create Care Team')}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <Form
@@ -88,25 +89,26 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               fhirBaseURL,
               props.groups,
               props.practitioners,
-              props.initialValues.id,
-              props.initialValues.uuid
+              t,
+              props.initialValues?.id,
+              props.initialValues?.uuid
             )
-              .catch(() => sendErrorNotification(lang.ERROR_OCCURED))
+              .catch(() => sendErrorNotification(t('An error occurred')))
               .finally(() => setIsSubmitting(false));
           }}
         >
-          <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={'UUID'}>
+          <Form.Item id={'uuid'} hidden={true} name={'uuid'} label={t('UUID')}>
             <Input />
           </Form.Item>
           <Form.Item
             name="name"
             id="name"
-            label={lang.NAME}
-            rules={[{ required: true, message: lang.NAME_REQUIRED }]}
+            label={t('Name')}
+            rules={[{ required: true, message: t('Name is Required') }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item id="status" name="status" label={lang.STATUS}>
+          <Form.Item id="status" name="status" label={t('Status')}>
             <Radio.Group name="status">
               {status.map((e) => (
                 <Radio name="status" key={e.label} value={e.value}>
@@ -119,11 +121,11 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             data-testid="practitionersId"
             name="practitionersId"
             id="practitionersId"
-            label={lang.PARTICIPANTS}
-            tooltip={lang.TIP_REQUIRED_FIELD}
+            label={t('Participant')}
+            tooltip={t('This is a required field')}
           >
             <Select
-              placeholder={lang.PARTICIPANTS}
+              placeholder={t('Participant')}
               allowClear
               mode="multiple"
               showSearch
@@ -140,10 +142,10 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           <Form.Item
             name="groupsId"
             id="groupsId"
-            label={lang.SUBJECT}
-            tooltip={lang.TIP_REQUIRED_FIELD}
+            label={t('Subject')}
+            tooltip={t('This is a required field')}
           >
-            <Select placeholder={lang.SUBJECT}>
+            <Select placeholder={t('Subject')}>
               {props.groups.map((group: Fields) => (
                 <Select.Option key={group.id} value={group.id}>
                   {group.name}
@@ -153,10 +155,10 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-group">
-              {isSubmitting ? lang.SAVING : lang.SAVE}
+              {isSubmitting ? t('Saving') : t('Save')}
             </Button>
             <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
-              {lang.CANCEL}
+              {t('Cancel')}
             </Button>
           </Form.Item>
         </Form>

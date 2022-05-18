@@ -6,7 +6,6 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps, useParams } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
 import { BrokenPage, FHIRServiceClass, loadAllResources } from '@opensrp/react-utils';
-import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
   FHIR_GROUPS,
@@ -19,6 +18,7 @@ import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
 import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
 import { get } from 'lodash';
+import { useTranslation } from '../../mls';
 
 // Interface for route params
 interface RouteParams {
@@ -50,11 +50,13 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
   const { fhirBaseURL } = props;
   const params = useParams<RouteParams>();
   const careTeamId = params[ROUTE_PARAM_CARE_TEAM_ID];
+  const { t } = useTranslation();
 
   const singleCareTeam = useQuery(
     [FHIR_CARE_TEAM, careTeamId],
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId as string),
     {
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
       enabled: !!careTeamId,
     }
@@ -64,7 +66,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     FHIR_GROUPS,
     async () => loadAllResources(fhirBaseURL, groupResourceType),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
     }
   );
@@ -73,7 +75,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     FHIR_PRACTITIONERS,
     async () => loadAllResources(fhirBaseURL, practitionerResourceType),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURED),
+      onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
     }
   );

@@ -43,9 +43,6 @@
     "@smile-cdr/fhirts": "^1.2.5",
     "antd": "^4.19.5",
     "fhirclient": "^2.4.0",
-    "lodash": "^4.17.21",
-    "react-helmet": "^6.1.0",
-    "react-i18next": "^11.8.10",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -54,12 +51,12 @@
     "nock": "^13.0.6"
   },
   "peerDependencies": {
-    "i18next": "^21.6.14",
     "@opensrp/store": "^0.0.10",
     "react": "^16.13.1",
     "react-query": "^3.15.1",
     "react-redux": "^7.1.22",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.2.1"
+    "react-router-dom": "^5.2.1",
+    "@opensrp/i18n": "^0.0.1"
   }
 }
