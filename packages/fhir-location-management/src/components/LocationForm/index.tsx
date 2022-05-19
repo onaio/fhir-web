@@ -147,7 +147,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           const successMessage = isEditMode
             ? t(`Location was successfully updated`)
-            : t('`Location was successfully created`');
+            : t('Location was successfully created');
 
           postPutLocationUnit(payload, fhirBaseURL, isEditMode)
             .then(() => {
@@ -175,14 +175,14 @@ const LocationForm = (props: LocationFormProps) => {
         <FormItem
           id="parentId"
           hidden={isHidden('parentId')}
-          label={t(`Part Of`)}
+          label={t('Part Of')}
           name="parentId"
           rules={validationRules.parentId}
         >
           <CustomTreeSelect
             disabled={disabled.includes('parentId')}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder={t('`Select the parent location`')}
+            placeholder={t('Select the parent location')}
             disabledTreeNodesCallback={disabledTreeNodesCallback}
             fullDataCallback={setParentNode}
             tree={tree}
@@ -199,7 +199,7 @@ const LocationForm = (props: LocationFormProps) => {
         >
           <Input
             disabled={disabled.includes('name')}
-            placeholder={t('`Enter a location name`')}
+            placeholder={t('Enter a location name')}
           ></Input>
         </FormItem>
 

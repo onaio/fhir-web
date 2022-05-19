@@ -198,7 +198,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         <span
           class="ant-typography ant-typography-secondary"
         >
-          Physical Type
+          Physical type
         </span>
       </dt>
       <dd
@@ -232,7 +232,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         <span
           class="ant-typography ant-typography-secondary"
         >
-          Alias
+          alias
         </span>
       </dt>
       <dd
