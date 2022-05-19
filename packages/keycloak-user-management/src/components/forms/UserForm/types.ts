@@ -16,7 +16,7 @@ export type FormFieldsKey = keyof FormFields | keyof UserAttributes;
 export type PractitionerUpdaterFun = (
   values: FormFields,
   userId: string,
-  t?: TFunction
+  t: TFunction
 ) => Promise<void>;
 export type PractitionerUpdaterFactory = (baseUrl: string) => PractitionerUpdaterFun;
 

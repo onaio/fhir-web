@@ -2,20 +2,20 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { store } from '@opensrp/store';
 import { KEYCLOAK_URL_USER_ROLES } from '../../constants';
-import lang, { Lang } from '../../lang';
 import { fetchKeycloakUserRoles, KeycloakUserRole } from '../../ducks/userRoles';
+import { TFunction } from 'react-i18next';
 
 /**
  * Fetch all realm roles
  *
- * @param {string} keycloakBaseURL - keycloak API base URL
- * @param {Function} dispatch method to dispatch action to store
- * @param {Lang} langObj - the translation string lookup obj
+ * @param  keycloakBaseURL - keycloak API base URL
+ * @param dispatch method to dispatch action to store
+ * @param  t - translator function
  */
 export const fetchAllRoles = async (
   keycloakBaseURL: string,
   dispatch: typeof store.dispatch,
-  langObj: Lang = lang
+  t: TFunction
 ) => {
   const keycloakService = new KeycloakService(KEYCLOAK_URL_USER_ROLES, keycloakBaseURL);
 
@@ -25,6 +25,6 @@ export const fetchAllRoles = async (
       dispatch(fetchKeycloakUserRoles(response));
     })
     .catch((_: Error) => {
-      sendErrorNotification(langObj.ERROR_OCCURED);
+      sendErrorNotification(t('An error occurred'));
     });
 };

@@ -28,7 +28,7 @@ const getPractitioner = (baseUrl: string, userId: string) => {
 
 const practitionerUpdater =
   (baseUrl: string) =>
-  (values: FormFields, userId: string, t: TFunction = (t) => t) => {
+  (values: FormFields, userId: string, t: TFunction = (str) => str) => {
     const isEditMode = !!values.practitioner;
     const successMessage = isEditMode
       ? t('Practitioner updated successfully')
