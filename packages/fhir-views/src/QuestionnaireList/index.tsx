@@ -22,24 +22,6 @@ interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
 
-/**
- * component rendered in the action column of the table
- *
- * @param record - each data item
- */
-export const ActionsColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
-  record: IQuestionnaire
-) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>
-        {t('View Questionnaire Responses')}
-      </Link>
-    </>
-  );
-};
-
 export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
   record: IQuestionnaire
 ) => {
@@ -83,7 +65,15 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
     },
     {
       title: t('Actions'),
-      render: ActionsColumnCustomRender,
+      render: (record: IQuestionnaire) => {
+        return (
+          <>
+            <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>
+              {t('View Questionnaire Responses')}
+            </Link>
+          </>
+        );
+      },
       width: '20%',
     },
   ];
@@ -98,6 +88,7 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
 const QuestionnaireList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
+  // const t = t => t;
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView(
     fhirBaseURL,

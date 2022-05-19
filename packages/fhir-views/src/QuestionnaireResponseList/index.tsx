@@ -33,20 +33,6 @@ export interface RouteProps {
   [qrListRouteKey]: string;
 }
 
-// eslint-disable-next-line react/display-name
-const ActionsColumnCustomRender: Column<ParsedQuestionnaireResponse>['render'] = (
-  record: ParsedQuestionnaireResponse
-) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      <Link to={`${QUEST_FORM_VIEW_URL}/${record.id}/${questionnaireResponseResourceType}`}>
-        {t('Edit')}
-      </Link>
-    </>
-  );
-};
-
 /**
  * generates columns for questionnaire rendering component
  *
@@ -70,7 +56,15 @@ const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
     },
     {
       title: t('Actions'),
-      render: ActionsColumnCustomRender,
+      render: (record: ParsedQuestionnaireResponse) => {
+        return (
+          <>
+            <Link to={`${QUEST_FORM_VIEW_URL}/${record.id}/${questionnaireResponseResourceType}`}>
+              {t('Edit')}
+            </Link>
+          </>
+        );
+      },
       width: '20%',
     },
   ];
