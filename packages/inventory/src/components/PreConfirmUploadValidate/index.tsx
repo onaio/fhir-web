@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card, Button, Spin } from 'antd';
-import lang from '../../lang';
 import { CardTitle, UploadStatus } from '../../helpers/utils';
-import { format } from 'util';
+import { useTranslation } from 'react-i18next';
 
 /** this component's props' interface */
 interface UploadValidatingCardProps {
@@ -23,15 +22,16 @@ const defaultProps = {
  */
 const UploadValidateCard = (props: UploadValidatingCardProps) => {
   const { onCancel, uploadStatus, filename } = props;
+  const { t } = useTranslation();
 
   const cardTitle = (
     <CardTitle
       IconRender={<Spin size="large" />}
       text={
         ((uploadStatus === UploadStatus.PRE_CONFIRMATION_VALIDATION) as boolean)
-          ? format(lang.VALIDATING_CSV, filename)
+          ? t('Validating {{filename}} ...', { filename })
           : uploadStatus === UploadStatus.PRE_CONFIRMATION_UPLOAD
-          ? format(lang.UPLOADING_CSV, filename)
+          ? t('Uploading {{filename}} ...', { filename })
           : ''
       }
     />
@@ -39,9 +39,9 @@ const UploadValidateCard = (props: UploadValidatingCardProps) => {
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>{lang.DO_NOT_CANCEL}</p>
+      <p>{t('Do not close tab or navigate away.')}</p>
       <Button className="round-button" onClick={() => onCancel?.()}>
-        {lang.CANCEL}
+        {t('Cancel')}
       </Button>
     </Card>
   );
