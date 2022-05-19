@@ -70,7 +70,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
       onError: () =>
         sendErrorNotification(
           t(
-            `Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.`
+            'Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.'
           )
         ),
       select: (res: { team: { team: { location: DefaultLocation } } }) => res.team.team.location,
@@ -88,7 +88,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(t('an error occurred')),
+      onError: () => sendErrorNotification(t('An error occurred')),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
