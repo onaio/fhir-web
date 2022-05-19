@@ -877,11 +877,11 @@ const PlanForm = (props: PlanFormProps) => {
               <Button
                 type="primary"
                 id="planform-submit-button"
-                aria-label={t('SAVE_PLAN')}
+                aria-label={t('Save Plan')}
                 disabled={isSubmitting}
                 htmlType="submit"
               >
-                {t('SAVE_PLAN')}
+                {t('Save Plan')}
               </Button>
 
               <Button id="planform-cancel-button" onClick={() => onCancel()}>
