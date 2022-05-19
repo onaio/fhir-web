@@ -3,7 +3,6 @@ import { get, keyBy } from 'lodash';
 import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
-import { useTranslation } from '../../mls';
 import type { TFunction } from 'react-i18next';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
@@ -12,30 +11,32 @@ import { Column } from '@opensrp/react-utils';
 /**
  * component rendered in the action column of the table
  *
- * @param record - table row record
+ * @param t - translator function
  */
-export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      <Button
-        type="link"
-        style={{ padding: '4px 0px' }}
-        onClick={() => {
-          record.setModalVisibility(true);
-          record.setExistingAssignments(record.existingAssignments);
-          record.setAssignedLocAndTeams({
-            locationName: record.locationName,
-            jurisdictionId: record.id,
-            assignedTeams: record.assignedTeamIds,
-          });
-        }}
-      >
-        {t('Edit')}
-      </Button>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<TableData>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Button
+          type="link"
+          style={{ padding: '4px 0px' }}
+          onClick={() => {
+            record.setModalVisibility(true);
+            record.setExistingAssignments(record.existingAssignments);
+            record.setAssignedLocAndTeams({
+              locationName: record.locationName,
+              jurisdictionId: record.id,
+              assignedTeams: record.assignedTeamIds,
+            });
+          }}
+        >
+          {t('Edit')}
+        </Button>
+      </>
+    );
+  };
 
 /**
  * team assignment table columns factory
