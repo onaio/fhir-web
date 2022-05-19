@@ -30,7 +30,7 @@ export const QItems = (props: GroupProps) => {
               <Text>{text}</Text>
               &nbsp;
               <Tag color="default">{t('linkId: {{linkId}}', { linkId })}</Tag>
-              <Tag color="default">{t('type: {itemType}', { itemType: item.type })}</Tag>
+              <Tag color="default">{t('type: {{itemType}}', { itemType: item.type })}</Tag>
             </li>
             {!isGroup && (
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -74,7 +74,7 @@ const Questions = (props: QuestionProps) => {
               <>
                 &nbsp;
                 <Tag color="default">{t('linkId: {{linkId}}', { linkId: item.linkId })}</Tag>
-                <Tag color="default">{t('type: {itemType}', { itemType: type })}</Tag>
+                <Tag color="default">{t('type: {{itemType}}', { itemType: type })}</Tag>
               </>
             ) : null}
             {item.item ? <QItems qItems={item.item} /> : null}
