@@ -153,7 +153,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
           allowClear
           mode="multiple"
           optionFilterProp="label"
-          placeholder={t('Select members')}
+          placeholder={t('Select user (practitioners only)')}
           options={practitionersSelectOptions}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
