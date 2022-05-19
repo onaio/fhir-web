@@ -123,7 +123,7 @@ export async function loadAssignments(
         // save assignments to store
         actionCreator(receivedAssignments);
       } else {
-        throw new Error(t('Could not load Assignments'));
+        throw new Error(t('Could not load assignments'));
       }
     })
     .catch((e) => {

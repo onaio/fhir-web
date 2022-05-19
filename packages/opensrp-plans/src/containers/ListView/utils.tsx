@@ -4,26 +4,25 @@ import { Link } from 'react-router-dom';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
-import { useTranslation } from '../../mls';
 import { Column } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 
 /**
  * component rendered in the action column of the table
  *
- * @param record record representing the active record
+ * @param t - the translator function
  */
-export const ActionsColumnCustomRender: Column<PlanDefinition>['render'] = (
-  record: PlanDefinition
-) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      {/* Assumes the record status is in the routes */}
-      <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{t('View')}</Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<PlanDefinition>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record: PlanDefinition) => {
+    return (
+      <>
+        {/* Assumes the record status is in the routes */}
+        <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{t('View')}</Link>
+      </>
+    );
+  };
 
 /**
  * generates columns for plan list component
@@ -48,7 +47,7 @@ export const getColumns = (t: TFunction): Column<PlanDefinition>[] => {
       width: '60%',
     },
     {
-      title: t('Date'),
+      title: t('Date created'),
       dataIndex: 'date',
       key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
       sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
@@ -62,7 +61,7 @@ export const getColumns = (t: TFunction): Column<PlanDefinition>[] => {
     {
       title: t('Actions'),
       key: `${TableColumnsNamespace}-actions` as keyof PlanDefinition,
-      render: ActionsColumnCustomRender,
+      render: ActionsColumnCustomRender(t),
       width: '20%',
     },
   ];
