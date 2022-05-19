@@ -13,7 +13,7 @@ import { RouteComponentProps, Redirect } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { ROUTE_PARAM_FORM_ID } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** inteface for route params */
 interface RouteParams {
@@ -66,6 +66,8 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
   const { initialValues, opensrpBaseURL, isJsonValidator, match, onSaveRedirectURL } = props;
   const formId = match.params[ROUTE_PARAM_FORM_ID];
   const formData = useSelector((state) => getManifestFilesById(state, formId));
+  const { t } = useTranslation();
+
   let formInitialValues = initialValues;
   if (formId && formData) {
     formInitialValues = {
@@ -77,6 +79,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
       module: formData.module,
     };
   }
+
   useEffect(() => {
     if (formId) {
       setIsEditMode(true);
@@ -131,7 +134,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.UPLOAD_FORM}</Title>
+      <Title level={3}>{t('Upload Form')}</Title>
       <Card>
         <Form
           {...layout}
@@ -149,39 +152,39 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
               setIfDoneHere,
               sendErrorNotification
             ).catch(() => {
-              sendErrorNotification(lang.ERROR_OCCURRED);
+              sendErrorNotification(t('Error occurred'));
             });
           }}
         >
           <Form.Item
             id="form_name"
             name="form_name"
-            label={lang.FORM_NAME}
-            rules={[{ required: true, message: lang.ERROR_FORM_NAME_REQUIRED }]}
+            label={t('Form Name')}
+            rules={[{ required: true, message: t('Form Name is required') }]}
           >
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="module" name="module" label={lang.MODULE}>
+          <Form.Item id="module" name="module" label={t('Module')}>
             <Input disabled={isEditMode} />
           </Form.Item>
-          <Form.Item id="form_relation" name="form_relation" label={lang.RELATED_TO}>
+          <Form.Item id="form_relation" name="form_relation" label={t('Related to')}>
             <Input disabled={isEditMode} />
           </Form.Item>
           <Form.Item
             id="form"
             name="form"
-            label={lang.FORM}
+            label={t('Form')}
             valuePropName="fileList"
             getValueFromEvent={normFile}
-            rules={[{ required: true, message: lang.ERROR_FORM_REQUIRED }]}
+            rules={[{ required: true, message: t('Form is required') }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>{lang.CLICK_TO_UPLOAD}</Button>
+              <Button icon={<UploadOutlined />}>{t('Click to upload')}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              {isSubmitting ? `${lang.UPLOADING}....` : lang.UPLOAD_FORM}
+              {isSubmitting ? `${t('Uploading')}....` : t('Upload Form')}
             </Button>
           </Form.Item>
         </Form>

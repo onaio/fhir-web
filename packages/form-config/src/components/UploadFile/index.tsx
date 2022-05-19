@@ -16,7 +16,7 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import lang from '../../lang';
+import { t } from 'i18next';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -98,7 +98,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
           displayAlertError,
           endpoint
         ).catch(() => {
-          displayAlertError(lang.ERROR_OCCURRED);
+          displayAlertError(t('An error occurred'));
         });
       }}
     >
@@ -207,14 +207,14 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
 
 /**default props */
 const defaultProps: UploadDefaultProps = {
-  fileNameLabel: lang.FILE_NAME,
-  fileUploadLabel: lang.UPLOAD_FILE,
+  fileNameLabel: 'File Name',
+  fileUploadLabel: 'Upload file',
   formData: null,
   formInitialValues: defaultInitialValues,
-  formNameRequiredLable: lang.ERROR_FORM_NAME_REQUIRED,
-  formRequiredLabel: lang.ERROR_FORM_REQUIRED,
-  moduleLabel: lang.MODULE,
-  relatedToLabel: lang.RELATED_TO,
+  formNameRequiredLable: `Form Name is required`,
+  formRequiredLabel: `Form is required`,
+  moduleLabel: `Module`,
+  relatedToLabel: `Related to`,
   accessToken: '',
 };
 

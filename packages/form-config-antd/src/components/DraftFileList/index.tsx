@@ -21,9 +21,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Redirect } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
-import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
@@ -58,6 +58,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
   const data: ManifestFilesTypes[] = useSelector((state) => getAllManifestDraftFilesArray(state));
   const [filterData, setfilterDataData] = useState<ManifestFilesTypes[] | null>(null);
   const [value, setValue] = useState('');
+  const { t } = useTranslation();
   data.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   const {
     opensrpBaseURL,
@@ -69,15 +70,16 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
   } = props;
 
   useEffect(() => {
+    setLoading(true);
     fetchDrafts(
       accessToken,
       opensrpBaseURL,
       fetchDraftFiles,
-      setLoading,
-      sendErrorNotification,
       OPENSRP_FORM_METADATA_ENDPOINT,
       dispatch
-    );
+    ).catch((err: Error) => {
+      sendErrorNotification(err.message);
+    });
   }, [accessToken, opensrpBaseURL, customFetchOptions, fetchDraftFiles, dispatch]);
 
   if (loading) {
@@ -102,12 +104,12 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.DRAFT_FILES}</Title>
+      <Title level={3}>{t('Draft Files')}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder={lang.SEARCH}
+            placeholder={t('Search')}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -117,7 +119,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            {lang.UPLOAD_NEW_FILE}
+            {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />
@@ -125,7 +127,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
         <TableLayout
           id="FormDraftFileList"
           persistState={true}
-          columns={getTableColumns(sortedInfo)}
+          columns={getTableColumns(t, sortedInfo)}
           actions={{
             // eslint-disable-next-line react/display-name
             render: (_: string, file: ManifestFilesTypes) => {
@@ -156,14 +158,13 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                   opensrpBaseURL,
                   removeDraftFiles,
                   setIfDoneHere,
-                  sendErrorNotification,
                   OPENSRP_MANIFEST_ENDPOINT,
                   dispatch,
                   customFetchOptions
-                )
+                ).catch(() => sendErrorNotification(t('An error occurred')))
               }
             >
-              {lang.MAKE_RELEASE}
+              {t('Make Release')}
             </Button>
           </Space>
         )}
