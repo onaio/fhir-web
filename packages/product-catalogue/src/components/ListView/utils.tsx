@@ -16,18 +16,20 @@ import type { TFunction } from 'react-i18next';
 /**
  * component rendered in the action column of the table
  *
- * @param record - represent row as records
+ * @param t - the translator function
  */
-export const ActionsColumnCustomRender: Column<ProductCatalogue>['render'] = (record) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{t('Edit')}</Link>
-      <Divider type="vertical" />
-      <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{t('View details')}</Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<ProductCatalogue>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{t('Edit')}</Link>
+        <Divider type="vertical" />
+        <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{t('View details')}</Link>
+      </>
+    );
+  };
 
 /**
  * product Catalogue table columns

@@ -7,8 +7,8 @@ import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
-import type {TFunction} from 'react-i18next';
-import {useTranslation} from '../../mls';
+import type { TFunction } from 'react-i18next';
+import { useTranslation } from '../../mls';
 import './index.css';
 
 /**
@@ -21,10 +21,10 @@ import './index.css';
  */
 export const defaultExtractViewDetails = (product: ProductCatalogue, t: TFunction) => {
   const mapping: Dictionary = {};
-  mapping[t("Product Name")] = product.productName;
-  mapping[t("Unique ID")] = product.uniqueId;
-  mapping[t("Material number")] = product.materialNumber;
-  mapping[t("Server version")] = product.serverVersion;
+  mapping[t('Product Name')] = product.productName;
+  mapping[t('Unique ID')] = product.uniqueId;
+  mapping[t('Material number')] = product.materialNumber;
+  mapping[t('Server version')] = product.serverVersion;
   return Object.entries(mapping);
 };
 
@@ -32,7 +32,7 @@ export const defaultExtractViewDetails = (product: ProductCatalogue, t: TFunctio
 export interface ViewDetailsProps {
   object: ProductCatalogue | null;
   objectId: string;
-  extractViewDetails: (object: ProductCatalogue, t:TFunction) => [string, number | string][];
+  extractViewDetails: (object: ProductCatalogue, t: TFunction) => [string, number | string][];
 }
 
 export const defaultProps = {
@@ -49,7 +49,7 @@ export const defaultProps = {
 const ViewDetails = (props: ViewDetailsProps) => {
   const { object, objectId, extractViewDetails } = props;
   const history = useHistory();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   if (objectId === '') {
     return null;

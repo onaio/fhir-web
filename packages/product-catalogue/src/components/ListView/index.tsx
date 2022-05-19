@@ -97,7 +97,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
             actions={{
               title: t('Actions'),
               width: '20%',
-              render: ActionsColumnCustomRender,
+              render: ActionsColumnCustomRender(t),
             }}
           />
         </Col>
