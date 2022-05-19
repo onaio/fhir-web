@@ -89,30 +89,15 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   );
 
   const treeDataQuery = useQueries(
-<<<<<<< HEAD
     (locationUnits.data ?? []).map((location) => {
       return {
         queryKey: [LOCATION_HIERARCHY, location.id],
         queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-        onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+        onError: () => sendErrorNotification(t('An error occurred')),
         select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
       };
     })
   ) as UseQueryResult<ParsedHierarchyNode | undefined>[];
-=======
-    locationUnits.data
-      ? locationUnits.data.map((location) => {
-          return {
-            queryKey: [LOCATION_HIERARCHY, location.id],
-            queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(t('An error occurred')),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res) => generateJurisdictionTree(res as RawOpenSRPHierarchy).model,
-          };
-        })
-      : []
-  ) as UseQueryResult<ParsedHierarchyNode>[];
->>>>>>> 486-location-management
 
   const treeData = treeDataQuery
     .map((query) => query.data)

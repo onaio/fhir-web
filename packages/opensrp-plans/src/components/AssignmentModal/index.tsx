@@ -52,7 +52,9 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
-  const [selectedOptions, setSelectedOptions] = useState<SelectOption[]>(existingOptions);
+  const [selectedOptions, setSelectedOptions] = useState<SelectOption | SelectOption[]>(
+    existingOptions
+  );
   const invokeText = invokeTextRaw ? invokeTextRaw : t('Edit teams');
   const modalTitle = modalTitleRaw ? modalTitleRaw : t('Edit teams');
   const placeholder = placeholderRaw ? placeholderRaw : t('Select');

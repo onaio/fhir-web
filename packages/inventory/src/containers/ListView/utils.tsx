@@ -1,8 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
-=======
-import { Spin, Alert } from 'antd';
->>>>>>> 486-inventory
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
@@ -44,11 +40,7 @@ export const columnsFactory = (t: TFunction) => {
     {
       title: t('Service point'),
       dataIndex: 'serviceName',
-<<<<<<< HEAD
       key: 'serviceName',
-=======
-      key: 'serviceName' as keyof TableData,
->>>>>>> 486-inventory
       defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.serviceName > rec2.serviceName) {
@@ -68,11 +60,7 @@ export const columnsFactory = (t: TFunction) => {
     {
       title: t('Location'),
       dataIndex: 'location',
-<<<<<<< HEAD
       key: 'location',
-=======
-      key: 'location' as keyof TableData,
->>>>>>> 486-inventory
     },
     {
       title: t('Service point ID'),
@@ -84,29 +72,6 @@ export const columnsFactory = (t: TFunction) => {
 };
 
 /**
-<<<<<<< HEAD
-=======
- * util component shown when there is a pending promise
- *
- * @param root0 - object argument containing below args
- * @param root0.message - message to show as title
- * @param root0.description - description of error to show
- */
-export const ServicePointsLoading = () => {
-  const { t } = useTranslation();
-  return (
-    <Spin tip={t('Loading ...')}>
-      <Alert
-        message={t('Fetching locations')}
-        description={t('Please wait, while locations are being fetched')}
-        type="info"
-      />
-    </Spin>
-  );
-};
-
-/**
->>>>>>> 486-inventory
  * function to get the parent path of a location
  *
  * @param loc - the location whose path we want

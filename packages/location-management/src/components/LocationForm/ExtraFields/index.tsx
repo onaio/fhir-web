@@ -8,7 +8,7 @@ import { loadSettings } from '../../../helpers/dataLoaders';
 import React, { useEffect, useState } from 'react';
 import { LocationSetting, validationRulesFactory } from '../utils';
 import { Form, Input } from 'antd';
-import { OPENSRP_API_BASE_URL } from '@openi18nextsrp/server-service';
+import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { useTranslation } from '../../../mls';
 
 const { List, Item: FormItem } = Form;

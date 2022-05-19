@@ -1,8 +1,4 @@
 import { Column } from '@opensrp/react-utils';
-<<<<<<< HEAD
-import lang, { Lang } from '../../lang';
-=======
->>>>>>> 486-inventory
 import { Inventory } from '../../ducks/inventory';
 import { Dictionary } from '@onaio/utils';
 import { TFunction } from 'react-i18next';
@@ -41,11 +37,7 @@ export const getTableColumns = (t: TFunction): Column<Inventory>[] => {
     {
       title: t('PO no.'),
       dataIndex: 'customProperties',
-<<<<<<< HEAD
       key: 'customProperties',
-=======
-      key: 'poNumber' as keyof Inventory,
->>>>>>> 486-inventory
       render: (item: Dictionary) => item['PO Number'],
     },
     {
@@ -66,11 +58,7 @@ export const getTableColumns = (t: TFunction): Column<Inventory>[] => {
     {
       title: t('Unicef section'),
       dataIndex: 'customProperties',
-<<<<<<< HEAD
       key: 'customProperties',
-=======
-      key: 'unicefSection' as keyof Inventory,
->>>>>>> 486-inventory
       render: (item: Dictionary) => item['UNICEF section'],
     },
     {

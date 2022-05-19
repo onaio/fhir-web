@@ -17,10 +17,10 @@ import {
   reducerName as keycloakUserRolesReducerName,
   reducer as keycloakUserRolesReducer,
 } from '../../ducks/userRoles';
-import lang from '../../lang';
 import { SEARCH_QUERY_PARAM } from '../../constants';
 import { makeKeycloakUserRolesSelector } from '../../ducks/userRoles';
 import { fetchAllRoles } from './utils';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);
@@ -58,13 +58,14 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     userRolesSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const {t} = useTranslation();
   const { keycloakBaseURL } = props;
 
   useEffect(() => {
     if (isLoading) {
-      fetchAllRoles(keycloakBaseURL, dispatch)
+      fetchAllRoles(keycloakBaseURL, dispatch, t)
         .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => setIsLoading(false));
     }
@@ -79,27 +80,28 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
 
   const columns: Column<TableData>[] = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name',
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: lang.COMPOSITE,
+      title: t('Composite'),
       dataIndex: 'composite',
       render: (value: boolean) => value.toString(),
     },
     {
-      title: lang.DESCRIPTION,
+      title: t('Description'),
       dataIndex: 'description',
     },
   ];
 
+  const pageTitle = t('User roles')
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.USER_ROLES_PAGE_HEADER}</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={lang.USER_ROLES_PAGE_HEADER} className="page-header" />
+      <PageHeader title={pageTitle} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

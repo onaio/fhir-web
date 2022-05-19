@@ -144,7 +144,8 @@ const AssignmentTable = (props: AssignmentTableProps) => {
     assignmentsActionCreator,
     plan,
     baseURL,
-    disableAssignments
+    disableAssignments,
+    t
   ) as Column<TableData>[];
 
   return (
