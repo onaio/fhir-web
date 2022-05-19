@@ -73,7 +73,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
-        {props.initialValues?.id
+        {props.initialValues.id
           ? `${t('Edit Care Team')} | ${initialValues.name}`
           : t('Create Care Team')}
       </h5>
@@ -90,8 +90,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               props.groups,
               props.practitioners,
               t,
-              props.initialValues?.id,
-              props.initialValues?.uuid
+              props.initialValues.id,
+              props.initialValues.uuid
             )
               .catch(() => sendErrorNotification(t('An error occurred')))
               .finally(() => setIsSubmitting(false));
