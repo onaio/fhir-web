@@ -26,7 +26,7 @@ export interface ViewDetailsProps {
  */
 const ViewDetails = (props: ViewDetailsProps) => {
   const { loading, error, GroupDetails, userGroupMembers, onClose } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <Col className="p-4 bg-white">

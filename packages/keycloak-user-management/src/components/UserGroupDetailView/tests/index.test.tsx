@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history';
 import { URL_USER_GROUPS } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
-import lang from '../../../lang';
+
 import { KeycloakUserGroup } from '../../../ducks/userGroups';
 import { UserGroupMembers } from '../../UserGroupsList';
 import { Resource404 } from '@opensrp/react-utils';
@@ -127,7 +127,7 @@ describe('View User Group Details', () => {
       </Router>
     );
 
-    expect(wrapper.find('#noRealRole').text()).toEqual(lang.NO_ASSIGNED_ROLES);
-    expect(wrapper.find('#noGroupMember').text()).toEqual(lang.NO_ASSIGNED_MEMBERS);
+    expect(wrapper.find('#noRealRole').text()).toEqual("No assigned roles");
+    expect(wrapper.find('#noGroupMember').text()).toEqual("No assigned members");
   });
 });

@@ -58,7 +58,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     userRolesSelector(state, { searchText: searchQuery })
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const { keycloakBaseURL } = props;
 
   useEffect(() => {
@@ -95,7 +95,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     },
   ];
 
-  const pageTitle = t('User roles')
+  const pageTitle = t('User roles');
   return (
     <div className="content-section">
       <Helmet>

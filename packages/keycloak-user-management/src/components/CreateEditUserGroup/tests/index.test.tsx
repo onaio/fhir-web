@@ -27,7 +27,7 @@ import {
   removeKeycloakUserRoles,
 } from '../../../ducks/userRoles';
 import { CreateEditUserGroup } from '..';
-import lang from '../../../lang';
+
 import {
   assignedRoles,
   availableRoles,
@@ -236,7 +236,7 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith("An error occurred");
     wrapper.unmount();
   });
 
