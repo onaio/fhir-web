@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`post confirmation success card works correctly: card title 1`] = `"“processed.csv” inventory items successfully added"`;
+exports[`post confirmation success card works correctly: card title 1`] = `"processed.csv"`;
 
-exports[`post confirmation success card works correctly: full snapshot 1`] = `"“processed.csv” inventory items successfully added5 inventory items added to Service point inventory. Inventory may take a few minutes to appear.Upload another file"`;
+exports[`post confirmation success card works correctly: full snapshot 1`] = `"processed.csv inventory items added to Service point inventory.  Inventory may take a few minutes to appear.Upload another file"`;
