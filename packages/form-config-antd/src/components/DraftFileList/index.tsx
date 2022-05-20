@@ -77,9 +77,11 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
       fetchDraftFiles,
       OPENSRP_FORM_METADATA_ENDPOINT,
       dispatch
-    ).catch((err: Error) => {
-      sendErrorNotification(err.message);
-    });
+    )
+      .catch((err: Error) => {
+        sendErrorNotification(err.message);
+      })
+      .finally(() => setLoading(false));
   }, [accessToken, opensrpBaseURL, customFetchOptions, fetchDraftFiles, dispatch]);
 
   if (loading) {

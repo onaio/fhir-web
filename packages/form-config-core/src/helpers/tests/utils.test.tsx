@@ -13,7 +13,6 @@ import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { FixManifestDraftFiles } from '../../ducks/tests/fixtures';
-import lang from '../../lang';
 
 /** eslint-disable @typescript-eslint/no-floating-promises */
 
@@ -119,6 +118,7 @@ describe('helpers/utils/submitUploadForm', () => {
   const setSubmittingMock = jest.fn();
   const setIfDoneMock = jest.fn();
   const alertErrorMock = jest.fn();
+
   const endpoint = 'clientForm';
 
   it('submits', async () => {
@@ -235,7 +235,7 @@ describe('helpers/utils/makeRelease', () => {
   const opensrpBaseURL = 'https://test-example.com/rest/';
   const removeDraftFilesMock = jest.fn();
   const setIfDoneHereMock = jest.fn();
-  const alertErrorMock = jest.fn();
+
   const dispatchMock = jest.fn();
   const endpoint = 'foo';
 
@@ -246,9 +246,10 @@ describe('helpers/utils/makeRelease', () => {
       opensrpBaseURL,
       removeDraftFilesMock,
       setIfDoneHereMock,
-      alertErrorMock,
       endpoint
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -277,9 +278,10 @@ describe('helpers/utils/makeRelease', () => {
       accessToken,
       opensrpBaseURL,
       removeDraftFilesMock,
-      setIfDoneHereMock,
-      alertErrorMock
-    );
+      setIfDoneHereMock
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -310,9 +312,10 @@ describe('helpers/utils/makeRelease', () => {
       accessToken,
       opensrpBaseURL,
       removeDraftFilesMock,
-      setIfDoneHereMock,
-      alertErrorMock
-    );
+      setIfDoneHereMock
+    ).catch((err) => {
+      expect(err).toEqual(new Error('API taking a break'));
+    });
 
     await act(async () => {
       await flushPromises();
@@ -320,7 +323,6 @@ describe('helpers/utils/makeRelease', () => {
 
     expect(setIfDoneHereMock).not.toHaveBeenCalled();
     expect(removeDraftFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
@@ -330,10 +332,11 @@ describe('helpers/utils/makeRelease', () => {
       opensrpBaseURL,
       removeDraftFilesMock,
       setIfDoneHereMock,
-      alertErrorMock,
       endpoint,
       dispatchMock
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -366,22 +369,15 @@ describe('helpers/utils/fetchDrafts', () => {
   const accessToken = 'hunter2';
   const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchDraftFilesMock = jest.fn();
-  const setLoadingMock = jest.fn();
-  const alertErrorMock = jest.fn();
   const dispatchMock = jest.fn();
   const endpoint = 'foo';
 
   it('fetches drafts', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
 
-    fetchDrafts(
-      accessToken,
-      opensrpBaseURL,
-      fetchDraftFilesMock,
-      setLoadingMock,
-      alertErrorMock,
-      endpoint
-    );
+    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock, endpoint).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -398,15 +394,16 @@ describe('helpers/utils/fetchDrafts', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchDraftFilesMock).toHaveBeenCalledWith(FixManifestDraftFiles);
   });
 
   it('fetches drafts with the default endpoint', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
 
-    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock, setLoadingMock, alertErrorMock);
+    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -423,44 +420,31 @@ describe('helpers/utils/fetchDrafts', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchDraftFilesMock).toHaveBeenCalledWith(FixManifestDraftFiles);
   });
 
   it('handles failure if fetch drafts fails', async () => {
     fetch.mockRejectOnce(new Error('API taking a break'));
 
-    fetchDrafts(
-      accessToken,
-      opensrpBaseURL,
-      fetchDraftFilesMock,
-      setLoadingMock,
-      alertErrorMock,
-      endpoint
-    );
+    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock, endpoint).catch((err) => {
+      expect(err).toEqual(new Error('API taking a break'));
+    });
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchDraftFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
     fetch.once(JSON.stringify(FixManifestDraftFiles));
 
-    fetchDrafts(
-      accessToken,
-      opensrpBaseURL,
-      fetchDraftFilesMock,
-      setLoadingMock,
-      alertErrorMock,
-      endpoint,
-      dispatchMock
+    fetchDrafts(accessToken, opensrpBaseURL, fetchDraftFilesMock, endpoint, dispatchMock).catch(
+      (err) => {
+        throw err;
+      }
     );
 
     await act(async () => {
@@ -478,8 +462,7 @@ describe('helpers/utils/fetchDrafts', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(dispatchMock).toHaveBeenCalledWith(fetchDraftFilesMock());
   });
 });
@@ -493,22 +476,16 @@ describe('helpers/utils/fetchReleaseFiles', () => {
   const accessToken = 'hunter2';
   const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchReleasesMock = jest.fn();
-  const setLoadingMock = jest.fn();
-  const alertErrorMock = jest.fn();
+
   const dispatchMock = jest.fn();
   const endpoint = 'foo';
 
   it('fetches releases', async () => {
     fetch.once(JSON.stringify(fixManifestReleases));
 
-    fetchReleaseFiles(
-      accessToken,
-      opensrpBaseURL,
-      fetchReleasesMock,
-      setLoadingMock,
-      alertErrorMock,
-      endpoint
-    );
+    fetchReleaseFiles(accessToken, opensrpBaseURL, fetchReleasesMock, endpoint).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -525,21 +502,16 @@ describe('helpers/utils/fetchReleaseFiles', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchReleasesMock).toHaveBeenCalledWith(fixManifestReleases);
   });
 
   it('fetches releases with the default endpoint', async () => {
     fetch.once(JSON.stringify(fixManifestReleases));
 
-    fetchReleaseFiles(
-      accessToken,
-      opensrpBaseURL,
-      fetchReleasesMock,
-      setLoadingMock,
-      alertErrorMock
-    );
+    fetchReleaseFiles(accessToken, opensrpBaseURL, fetchReleasesMock).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -556,31 +528,22 @@ describe('helpers/utils/fetchReleaseFiles', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchReleasesMock).toHaveBeenCalledWith(fixManifestReleases);
   });
 
   it('handles failure if fetch releases fails', async () => {
     fetch.mockRejectOnce(new Error('API taking a break'));
 
-    fetchReleaseFiles(
-      accessToken,
-      opensrpBaseURL,
-      fetchReleasesMock,
-      setLoadingMock,
-      alertErrorMock,
-      endpoint
-    );
+    fetchReleaseFiles(accessToken, opensrpBaseURL, fetchReleasesMock, endpoint).catch((err) => {
+      expect(err).toEqual(new Error('API taking a break'));
+    });
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchReleasesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
   });
 
   it('calls dispatch if dispatch is passed', async () => {
@@ -590,11 +553,12 @@ describe('helpers/utils/fetchReleaseFiles', () => {
       accessToken,
       opensrpBaseURL,
       fetchReleasesMock,
-      setLoadingMock,
-      alertErrorMock,
+
       endpoint,
       dispatchMock
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -611,8 +575,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(dispatchMock).toHaveBeenCalledWith(fetchReleasesMock());
   });
 });
@@ -627,8 +590,7 @@ describe('helpers/utils/fetchManifests', () => {
   const opensrpBaseURL = 'https://test-example.com/rest/';
   const fetchFilesMock = jest.fn();
   const removeFilesMock = jest.fn();
-  const setLoadingMock = jest.fn();
-  const alertErrorMock = jest.fn();
+
   const dispatchMock = jest.fn();
   const endpoint = 'foo';
   const formVersion = fixManifestReleases[0].identifier;
@@ -641,11 +603,11 @@ describe('helpers/utils/fetchManifests', () => {
       opensrpBaseURL,
       fetchFilesMock,
       removeFilesMock,
-      setLoadingMock,
-      alertErrorMock,
       formVersion,
       endpoint
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -662,8 +624,7 @@ describe('helpers/utils/fetchManifests', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
     expect(removeFilesMock.mock.calls).toHaveLength(1);
   });
@@ -671,14 +632,10 @@ describe('helpers/utils/fetchManifests', () => {
   it('fetches manifest files with the default endpoint', async () => {
     fetch.once(JSON.stringify(fixManifestFiles));
 
-    fetchManifests(
-      accessToken,
-      opensrpBaseURL,
-      fetchFilesMock,
-      removeFilesMock,
-      setLoadingMock,
-      alertErrorMock,
-      formVersion
+    fetchManifests(accessToken, opensrpBaseURL, fetchFilesMock, removeFilesMock, formVersion).catch(
+      (err) => {
+        throw err;
+      }
     );
 
     await act(async () => {
@@ -696,8 +653,7 @@ describe('helpers/utils/fetchManifests', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
     expect(removeFilesMock.mock.calls).toHaveLength(1);
   });
@@ -705,24 +661,18 @@ describe('helpers/utils/fetchManifests', () => {
   it('handles failure if fetch fails', async () => {
     fetch.mockRejectOnce(new Error('API taking a break'));
 
-    fetchManifests(
-      accessToken,
-      opensrpBaseURL,
-      fetchFilesMock,
-      removeFilesMock,
-      setLoadingMock,
-      alertErrorMock,
-      formVersion
+    fetchManifests(accessToken, opensrpBaseURL, fetchFilesMock, removeFilesMock, formVersion).catch(
+      (err) => {
+        expect(err).toEqual(new Error('API taking a break'));
+      }
     );
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
     expect(fetchFilesMock).not.toHaveBeenCalled();
-    expect(alertErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+
     expect(removeFilesMock.mock.calls).toHaveLength(1);
   });
 
@@ -734,12 +684,12 @@ describe('helpers/utils/fetchManifests', () => {
       opensrpBaseURL,
       fetchFilesMock,
       removeFilesMock,
-      setLoadingMock,
-      alertErrorMock,
       formVersion,
       endpoint,
       dispatchMock
-    );
+    ).catch((err) => {
+      throw err;
+    });
     await act(async () => {
       await flushPromises();
     });
@@ -768,11 +718,11 @@ describe('helpers/utils/fetchManifests', () => {
       opensrpBaseURL,
       fetchFilesMock,
       removeFilesMock,
-      setLoadingMock,
-      alertErrorMock,
       null,
       endpoint
-    );
+    ).catch((err) => {
+      throw err;
+    });
 
     await act(async () => {
       await flushPromises();
@@ -789,8 +739,7 @@ describe('helpers/utils/fetchManifests', () => {
         method: 'GET',
       },
     ]);
-    expect(setLoadingMock.mock.calls[0][0]).toBe(true);
-    expect(setLoadingMock.mock.calls[1][0]).toBe(false);
+
     expect(fetchFilesMock).toHaveBeenCalledWith(fixManifestFiles);
     expect(removeFilesMock.mock.calls).toHaveLength(1);
   });

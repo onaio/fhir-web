@@ -100,7 +100,9 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         OPENSRP_FORM_METADATA_ENDPOINT,
         dispatch,
         customFetchOptions
-      ).catch(() => sendErrorNotification('An error occurred'));
+      )
+        .catch(() => sendErrorNotification('An error occurred'))
+        .finally(() => setLoading(false));
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       opensrpBaseURL,
