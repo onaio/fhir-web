@@ -13,7 +13,7 @@ import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
-import lang from '../../../lang';
+
 import { generateJurisdictionTree, getBaseTreeNode } from '../../../ducks/locationHierarchy/utils';
 import {
   fetchAllHierarchies,
@@ -243,7 +243,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       label: parsedHierarchy[0].label,
     };
 
-    await loadSingleLocation(row, baseURL, called);
+    await loadSingleLocation(row, baseURL, called, t=> t);
 
     expect(called).toBeCalledWith('loading');
 
@@ -265,14 +265,14 @@ describe('location-management/src/components/LocationUnitList', () => {
       label: parsedHierarchy[0].label,
     };
 
-    await loadSingleLocation(row, baseURL, jest.fn());
+    await loadSingleLocation(row, baseURL, jest.fn(), t=> t);
 
     await act(async () => {
       await flushPromises();
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: lang.ERROR_OCCURED,
+      message: "An error occurred",
       description: undefined,
     });
     fetch.resetMocks();
@@ -345,7 +345,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: lang.ERROR_OCCURED,
+      message: "An error occurred",
       description: undefined,
     });
     wrapper.unmount();
@@ -374,7 +374,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: lang.ERROR_OCCURED,
+      message: "An error occurred",
       description: undefined,
     });
     wrapper.unmount();
