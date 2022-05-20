@@ -170,7 +170,7 @@ describe('components/UserRolesList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith("An error occurred");
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('shows table with no data if user roles list from api is empty', async () => {

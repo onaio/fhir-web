@@ -194,7 +194,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith("API is down", { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -254,7 +254,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith("An error occurred", { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

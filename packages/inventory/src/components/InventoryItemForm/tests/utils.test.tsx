@@ -84,7 +84,14 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
   });
 
   it('submits when editing an inventory item', async () => {
-    await submitForm(values, openSRPBaseURL, setSubmittingMock, setIfDoneHereMock, translator, inventoryID);
+    await submitForm(
+      values,
+      openSRPBaseURL,
+      setSubmittingMock,
+      setIfDoneHereMock,
+      translator,
+      inventoryID
+    );
 
     await act(async () => {
       await flushPromises();
@@ -140,7 +147,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith("An error occurred");
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
@@ -151,7 +158,14 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
     fetch.mockResponse('Server error here', { status: 500 });
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    await submitForm(values, openSRPBaseURL, setSubmittingMock, setIfDoneHereMock, translator, inventoryID);
+    await submitForm(
+      values,
+      openSRPBaseURL,
+      setSubmittingMock,
+      setIfDoneHereMock,
+      translator,
+      inventoryID
+    );
 
     await act(async () => {
       await flushPromises();
@@ -173,7 +187,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith("An error occurred");
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);

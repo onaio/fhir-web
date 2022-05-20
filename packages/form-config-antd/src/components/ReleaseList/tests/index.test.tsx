@@ -184,7 +184,7 @@ describe('components/Antd/ReleaseList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith("An error occurred");
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();

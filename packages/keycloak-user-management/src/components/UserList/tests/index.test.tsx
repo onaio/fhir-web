@@ -332,7 +332,7 @@ describe('components/UserList', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsNo Data"`
     );
-    expect(mockNotificationError).toHaveBeenCalledWith("An error occurred");
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('sorting works', async () => {

@@ -127,7 +127,7 @@ describe('View User Group Details', () => {
       </Router>
     );
 
-    expect(wrapper.find('#noRealRole').text()).toEqual("No assigned roles");
-    expect(wrapper.find('#noGroupMember').text()).toEqual("No assigned members");
+    expect(wrapper.find('#noRealRole').text()).toEqual('No assigned roles');
+    expect(wrapper.find('#noGroupMember').text()).toEqual('No assigned members');
   });
 });

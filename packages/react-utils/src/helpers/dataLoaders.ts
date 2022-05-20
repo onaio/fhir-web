@@ -142,7 +142,6 @@ export async function handleSessionOrTokenExpiry() {
  * object URL from URL.createObjectURL
  *
  * @param imageURL the image source url
- * @param t - the translator function
  */
 export const fetchProtectedImage = async (imageURL: string) => {
   const token = await handleSessionOrTokenExpiry();

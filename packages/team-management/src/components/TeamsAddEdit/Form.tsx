@@ -135,8 +135,8 @@ async function SetPractitioners(
  *
  * @param opensrpBaseURL - base url
  * @param payload payload To send
- * @param id of the team if already created
  * @param t - the translator function
+ * @param id of the team if already created
  */
 export async function setTeam(
   opensrpBaseURL: string,

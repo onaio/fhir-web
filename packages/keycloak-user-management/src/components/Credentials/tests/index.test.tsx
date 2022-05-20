@@ -227,7 +227,7 @@ describe('components/Credentials', () => {
       password: 'password122',
     };
 
-    submitForm(values, fixtures.keycloakUser.id, KeycloakService, props.keycloakBaseURL, t=>  t);
+    submitForm(values, fixtures.keycloakUser.id, KeycloakService, props.keycloakBaseURL, (t) => t);
 
     await act(async () => {
       await flushPromises();
@@ -255,7 +255,7 @@ describe('components/Credentials', () => {
   });
 
   it('it handles errors correctly if API response is not 200', async () => {
-    fetch.mockReject(new HTTPError({} as Response, { error_description: "An error occurred" }));
+    fetch.mockReject(new HTTPError({} as Response, { error_description: 'An error occurred' }));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
@@ -278,7 +278,7 @@ describe('components/Credentials', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith("An error occurred");
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
 
     wrapper.unmount();
   });

@@ -7,7 +7,6 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../../mls';
 import { Column } from '@opensrp/react-utils';
 import type { TFunction } from 'react-i18next';
 
