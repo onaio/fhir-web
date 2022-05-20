@@ -24,6 +24,7 @@ jest.mock('fhirclient', () => ({
   }),
 }));
 
+// TODO - do we still need this
 i18n
   .use(initReactI18next)
   .init({
