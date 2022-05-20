@@ -37,7 +37,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
 
   const updateSettings = async (row: Setting, currentLocId: string, valueIsYes: boolean) => {
     const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
-    const serve = new OpenSRPService(`${SETTINGS_ENDPOINT}}/${row.settingMetadataId}`, v2BaseURL);
+    const serve = new OpenSRPService(`${SETTINGS_ENDPOINT}/${row.settingMetadataId}`, v2BaseURL);
     await serve
       .update(payload)
       .catch(() => sendErrorNotification(t('An error occurred')))
