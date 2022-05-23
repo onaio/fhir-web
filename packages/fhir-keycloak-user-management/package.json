@@ -24,8 +24,7 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "config": {
     "folderName": "fhir-keycloak-user-management"
