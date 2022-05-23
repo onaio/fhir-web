@@ -31,7 +31,7 @@ export const getTableColumns = (
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
-  const headerItems: string[] = ['Username', 'First name', 'Last name', 'Email'];
+  const headerItems: string[] = ['Email', 'First name', 'Last name', 'Username'];
   const dataElements: Column<KeycloakUser>[] = [];
   const fields: string[] = ['email', 'firstName', 'lastName', 'username'];
 
