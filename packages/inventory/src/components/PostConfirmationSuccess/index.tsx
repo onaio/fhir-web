@@ -4,8 +4,8 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CardTitle } from '../../helpers/utils';
-import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next';
+import { useTranslation } from '../../mls';
+import { Trans } from '@opensrp/i18n';
 
 export interface PostConfirmationSuccessProps {
   rowsProcessed: number | string;
@@ -29,7 +29,7 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
   const cardTitle = (
     <CardTitle
       IconRender={<CheckCircleOutlined className="card-title__icon" />}
-      text={t('“{{filename}}” inventory items successfully added', filename)}
+      text={t('“{{filename}}” inventory items successfully added', { filename })}
     />
   );
 
@@ -37,7 +37,7 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
     <Card title={cardTitle} className="full-page-card">
       <Trans t={t} i18nKey="postConfirmationSuccess.inventoryAddedTo">
         <p>
-          {rowsProcessed} inventory items added to&nbsp;
+          {{ rowsProcessed }} inventory items added to&nbsp;
           <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>Service point inventory</Link>.&nbsp;
           Inventory may take a few minutes to appear.
         </p>

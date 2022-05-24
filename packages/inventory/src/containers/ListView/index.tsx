@@ -171,7 +171,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             columns={columns}
             actions={{
               title: t('Actions'),
-              render: ActionsColumnCustomRender,
+              render: ActionsColumnCustomRender(t),
               width: '20%',
             }}
           />

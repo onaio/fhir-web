@@ -3,8 +3,7 @@ import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
 import { Column } from '@opensrp/react-utils';
-import { useTranslation } from '../../mls';
-import { TFunction } from 'react-i18next';
+import { TFunction } from '@opensrp/i18n';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -17,18 +16,20 @@ export interface TableData {
 /**
  * component rendered in the action column of the table
  *
- * @param record - record to show in row
+ * @param t -  the translator function
  */
-export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
-  const { t } = useTranslation();
-  return (
-    <>
-      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
-        {t('View')}
-      </Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<TableData>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
+          {t('View')}
+        </Link>
+      </>
+    );
+  };
 
 /**
  * service point list table columns factory

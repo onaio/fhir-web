@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Button, Spin } from 'antd';
 import { CardTitle, UploadStatus } from '../../helpers/utils';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../mls';
 
 /** this component's props' interface */
 interface UploadValidatingCardProps {
@@ -29,9 +29,9 @@ const UploadValidateCard = (props: UploadValidatingCardProps) => {
       IconRender={<Spin size="large" />}
       text={
         ((uploadStatus === UploadStatus.PRE_CONFIRMATION_VALIDATION) as boolean)
-          ? t('Validating {{filename}} ...', { filename })
+          ? t('Validating "{{filename}}" ...', { filename })
           : uploadStatus === UploadStatus.PRE_CONFIRMATION_UPLOAD
-          ? t('Uploading {{filename}} ...', { filename })
+          ? t('Uploading "{{filename}}" ...', { filename })
           : ''
       }
     />

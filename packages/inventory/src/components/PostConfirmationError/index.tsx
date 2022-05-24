@@ -11,7 +11,7 @@ import { BadRequestError } from '../../helpers/dataLoaders';
 import { CardTitle } from '../../helpers/utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
-import { Trans } from 'react-i18next';
+import { Trans } from '@opensrp/i18n';
 
 type TableData = BadRequestError['errors'][0];
 

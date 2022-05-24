@@ -42,7 +42,7 @@
   "PO no.": "PO no.",
   "PO number": "PO number",
   "PO number is required": "PO number is required",
-  "postConfirmationSuccess.inventoryAddedTo": "<0>{rowsProcessed} inventory items added to&nbsp;<2>Service point inventory</2>.&nbsp; Inventory may take a few minutes to appear.</0>",
+  "postConfirmationSuccess.inventoryAddedTo": "<0>{{rowsProcessed}} inventory items added to&nbsp;<2>Service point inventory</2>.&nbsp; Inventory may take a few minutes to appear.</0>",
   "PostConfirmError.inventoryItemsNotAdded": "Inventory items not listed below were successfully added to the<1>Service point inventory</1>.<3>&nbsp;Caution: do not re-upload the successful items or duplicates will be created.</3>",
   "preConfirmationError.retryCsvUpload": "<0>please fix the errors listed below, then&nbsp;<1>retry csv upload</1></0>",
   "Proceed with adding inventory": "Proceed with adding inventory",
