@@ -14,7 +14,7 @@
 }
 
 .custom-spinner {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   min-height: 85vh;
