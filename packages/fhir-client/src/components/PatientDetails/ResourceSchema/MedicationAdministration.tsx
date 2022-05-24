@@ -1,6 +1,5 @@
 import { IMedicationAdministration } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IMedicationAdministration';
 import { get } from 'lodash';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
 import { rawStringSorterFn } from '../../../helpers/utils';
 import type { TFunction } from '@opensrp/i18n';
 
@@ -27,6 +26,6 @@ export const columns = (t: TFunction) => [
   {
     title: t('Occurence Date'),
     dataIndex: 'occurenceDateTime',
-    render: (value: string) => intlFormatDateStrings(value),
+    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
 ];

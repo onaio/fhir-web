@@ -1,7 +1,6 @@
 import React from 'react';
 import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
 import { get } from 'lodash';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
 import {
   dateStringSorterFn,
   FhirCodesTooltips,
@@ -37,7 +36,7 @@ export const columns = (t: TFunction) => [
     title: t('Administration Date'),
     dataIndex: 'occurenceDateTime',
     sorter: dateStringSorterFn,
-    render: (value: string) => intlFormatDateStrings(value),
+    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
   {
     title: t('Vaccine Admnistered'),

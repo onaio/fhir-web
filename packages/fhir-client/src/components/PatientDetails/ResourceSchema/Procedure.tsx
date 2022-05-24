@@ -1,7 +1,6 @@
 import React from 'react';
 import { IProcedure } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IProcedure';
 import { get } from 'lodash';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
 import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
@@ -27,7 +26,7 @@ export const columns = (t: TFunction) => [
     title: t('Performed Date'),
     dataIndex: 'date',
     sorter: dateStringSorterFn,
-    render: (value: string) => intlFormatDateStrings(value),
+    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
   {
     title: t('Procedure'),
