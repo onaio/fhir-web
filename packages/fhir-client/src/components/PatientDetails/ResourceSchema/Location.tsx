@@ -1,6 +1,6 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { get } from 'lodash';
-import { getCodeableConcepts, rawStringSorterFn } from '../../../helpers/utils';
+import { getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 
 export const parseLocation = (obj: ILocation) => {
   return {
@@ -16,12 +16,14 @@ export const parseLocation = (obj: ILocation) => {
 
 export type LocationTableData = ReturnType<typeof parseLocation>;
 
+export const nameSorterFn = sorterFn('name');
+
 export const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
     editable: true,
-    sorter: rawStringSorterFn,
+    sorter: nameSorterFn,
   },
   {
     title: 'City',

@@ -129,6 +129,33 @@ describe('Patients list view', () => {
       });
     });
 
+    // see sort direction in Observations.
+    const observationMenuItem = document.querySelector('li#Observation');
+    fireEvent.click(observationMenuItem);
+
+    // generally see the table view
+    document.querySelectorAll('table tr').forEach((tr) => {
+      const tdsText = Array.from(tr.querySelectorAll('td'))
+        .map((td) => td.textContent)
+        .join(' | ');
+      expect(tdsText).toMatchSnapshot('Observation table row');
+    });
+
+    // unsorted state. Observation Issue Date
+    const unsorted = Array.from(document.querySelectorAll('table tr td:nth-child(4)')).map(
+      (td) => td.textContent
+    );
+    expect(unsorted).toEqual(['4/16/2018', '4/11/2016', '3/29/2010', '4/7/2014', '4/2/2012']);
+
+    const sortCaret = document.querySelector('.anticon-caret-up');
+    fireEvent.click(sortCaret);
+
+    const sorted = Array.from(document.querySelectorAll('table tr td:last-of-type')).map(
+      (td) => td.textContent
+    );
+    // there are 192 observations, table only shows the first 5.
+    expect(sorted).toEqual(['3/29/2010', '3/29/2010', '3/29/2010', '3/29/2010', '3/29/2010']);
+
     expect(nock.isDone()).toBeTruthy();
   });
 
