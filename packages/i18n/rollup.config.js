@@ -25,8 +25,9 @@ function readLocaleFiles() {
         const lngFromLocaleFile = path.parse(localeFilePath).name;
         const fileContent = fs.readFileSync(localeFilePath);
         const jsonFilecontent = JSON.parse(fileContent);
-        resources[`${lngFromLocaleFile}_${projectCode}`] = {
-          ...resources[`${lngFromLocaleFile}_${projectCode}`],
+        const thisLanguageCode = `${lngFromLocaleFile}-${projectCode.toUpperCase()}`;
+        resources[thisLanguageCode] = {
+          ...resources[thisLanguageCode],
           [namespace]: jsonFilecontent,
         };
       }

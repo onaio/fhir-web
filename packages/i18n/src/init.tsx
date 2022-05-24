@@ -22,8 +22,8 @@ const newInstance = i18next.createInstance();
 
 const languageCode = getConfig('languageCode');
 const projectCode = getConfig('projectCode');
-const fallbackLng = `en_core`;
-const configuredLng = `${languageCode}_${projectCode}`;
+const fallbackLng = `en-core`;
+const configuredLng = `${languageCode}-${projectCode}`;
 
 newInstance
   .use(initReactI18next)
