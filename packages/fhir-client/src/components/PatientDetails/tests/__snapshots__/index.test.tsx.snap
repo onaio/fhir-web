@@ -17,6 +17,18 @@ exports[`Patients list view renders correctly: Doc reference values 1`] = `
 </div>
 `;
 
+exports[`Patients list view renders correctly: Observation table row 1`] = `""`;
+
+exports[`Patients list view renders correctly: Observation table row 2`] = `"e9a84d1d-9316-4a5f-830f-868807969723 | 95.25851987455393 kg | final | 4/16/2018"`;
+
+exports[`Patients list view renders correctly: Observation table row 3`] = `"47536fc4-90e6-43ca-9549-8e2e7b12dd7d | 101.76013218462178 kg | final | 4/11/2016"`;
+
+exports[`Patients list view renders correctly: Observation table row 4`] = `"a7a3dff7-a034-4add-a78a-a9ea685bcbf7 | 98.56912483160168 kg | final | 3/29/2010"`;
+
+exports[`Patients list view renders correctly: Observation table row 5`] = `"7ccd9eaf-c475-4ec0-98cf-6598cd1743e6 | 101.76013218462178 kg | final | 4/7/2014"`;
+
+exports[`Patients list view renders correctly: Observation table row 6`] = `"117b9082-f85f-4248-be78-1bd90645e358 | 101.76013218462178 kg | final | 4/2/2012"`;
+
 exports[`Patients list view renders correctly: Patient key value details 1`] = `
 <div
   class="patient-detail__key-value"

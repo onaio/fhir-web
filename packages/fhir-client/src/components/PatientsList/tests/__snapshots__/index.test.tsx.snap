@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly when listing organizations: Header title 1`] = `
+exports[`renders correctly in list view: Header title 1`] = `
 <span
   class="ant-page-header-heading-title"
   title="Patients"
@@ -9,7 +9,7 @@ exports[`renders correctly when listing organizations: Header title 1`] = `
 </span>
 `;
 
-exports[`renders correctly when listing organizations: table row 1 page 1 1`] = `
+exports[`renders correctly in list view: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -20,7 +20,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 1`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 1 page 1 2`] = `
+exports[`renders correctly in list view: table row 1 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -28,7 +28,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 2`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 1 page 1 3`] = `
+exports[`renders correctly in list view: table row 1 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -40,7 +40,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 3`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 1 page 1 4`] = `
+exports[`renders correctly in list view: table row 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -48,7 +48,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 4`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 1 page 1 5`] = `
+exports[`renders correctly in list view: table row 1 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -71,7 +71,7 @@ exports[`renders correctly when listing organizations: table row 1 page 1 5`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 2 page 1 1`] = `
+exports[`renders correctly in list view: table row 2 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -82,7 +82,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 1`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 2 page 1 2`] = `
+exports[`renders correctly in list view: table row 2 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -90,7 +90,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 2`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 2 page 1 3`] = `
+exports[`renders correctly in list view: table row 2 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -102,7 +102,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 3`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 2 page 1 4`] = `
+exports[`renders correctly in list view: table row 2 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -110,7 +110,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 4`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 2 page 1 5`] = `
+exports[`renders correctly in list view: table row 2 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -133,7 +133,7 @@ exports[`renders correctly when listing organizations: table row 2 page 1 5`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 3 page 1 1`] = `
+exports[`renders correctly in list view: table row 3 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -144,7 +144,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 1`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 3 page 1 2`] = `
+exports[`renders correctly in list view: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -152,7 +152,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 2`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 3 page 1 3`] = `
+exports[`renders correctly in list view: table row 3 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -164,7 +164,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 3`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 3 page 1 4`] = `
+exports[`renders correctly in list view: table row 3 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -172,7 +172,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 4`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 3 page 1 5`] = `
+exports[`renders correctly in list view: table row 3 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
@@ -195,7 +195,7 @@ exports[`renders correctly when listing organizations: table row 3 page 1 5`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 4 page 1 1`] = `
+exports[`renders correctly in list view: table row 4 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -211,7 +211,7 @@ exports[`renders correctly when listing organizations: table row 4 page 1 1`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 4 page 1 2`] = `
+exports[`renders correctly in list view: table row 4 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -219,7 +219,7 @@ exports[`renders correctly when listing organizations: table row 4 page 1 2`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 4 page 1 3`] = `
+exports[`renders correctly in list view: table row 4 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -231,7 +231,7 @@ exports[`renders correctly when listing organizations: table row 4 page 1 3`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 4 page 1 4`] = `
+exports[`renders correctly in list view: table row 4 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -239,7 +239,7 @@ exports[`renders correctly when listing organizations: table row 4 page 1 4`] = 
 </td>
 `;
 
-exports[`renders correctly when listing organizations: table row 4 page 1 5`] = `
+exports[`renders correctly in list view: table row 4 page 1 5`] = `
 <td
   class="ant-table-cell"
 >

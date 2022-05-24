@@ -1,6 +1,6 @@
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { get } from 'lodash';
-import { rawStringSorterFn } from '../../../helpers/utils';
+import { sorterFn } from '../../../helpers/utils';
 import { parseFhirHumanName } from '@opensrp/react-utils';
 
 export const parsePractitioner = (obj: IPractitioner) => {
@@ -13,11 +13,13 @@ export const parsePractitioner = (obj: IPractitioner) => {
 
 export type CarePlanTableData = ReturnType<typeof parsePractitioner>;
 
+const nameSorterFn = sorterFn('name');
+
 export const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
-    sorter: rawStringSorterFn,
+    sorter: nameSorterFn,
   },
   {
     title: 'Gender',
