@@ -94,8 +94,6 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         opensrpBaseURL,
         fetchFiles,
         removeFiles,
-        // setLoading,
-        // sendErrorNotification,
         formVersion,
         OPENSRP_FORM_METADATA_ENDPOINT,
         dispatch,

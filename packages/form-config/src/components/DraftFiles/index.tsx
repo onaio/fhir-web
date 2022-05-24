@@ -230,7 +230,6 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
               baseURL,
               clearDraftFiles,
               setIfDoneHere,
-              // displayAlertError,
               manifestEndPoint,
               undefined,
               getPayload

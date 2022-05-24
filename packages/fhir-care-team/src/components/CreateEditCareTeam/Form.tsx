@@ -74,7 +74,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
       {/** If email is provided render edit group otherwise add group */}
       <h5 className="mb-3 header-title">
         {props.initialValues.id
-          ? `${t('Edit Care Team')} | ${initialValues.name}`
+          ? t('Edit Care Team | {{name}}', { name: initialValues.name })
           : t('Create Care Team')}
       </h5>
       <Col className="bg-white p-3" span={24}>

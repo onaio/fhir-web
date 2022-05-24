@@ -12,8 +12,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
   },
   "license": "Apache-2.0",
   "publishConfig": {
