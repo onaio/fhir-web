@@ -5,11 +5,7 @@ import { Group } from '../../types';
 import { useHistory } from 'react-router';
 import { groupResourceType, LIST_GROUP_URL } from '../../constants';
 import { useQuery } from 'react-query';
-import {
-  FHIRServiceClass,
-  SingleKeyNestedValue,
-  intlFormatDateStrings,
-} from '@opensrp/react-utils';
+import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../mls';
@@ -24,7 +20,7 @@ export const parseGroup = (obj: IGroup) => {
     name: obj.name,
     active: obj.active,
     id: obj.id,
-    lastUpdated: intlFormatDateStrings(get(obj, 'meta.lastUpdated')),
+    lastUpdated: get(obj, 'meta.lastUpdated'),
     members: obj.member,
     quantity: obj.quantity,
   };
@@ -67,7 +63,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     [t('Id')]: id,
     [t('Name')]: name,
     [t('Active')]: active ? 'Active' : 'Inactive',
-    [t('Last updated')]: lastUpdated,
+    [t('Last updated')]: t('{{val, datetime}}', { val: new Date(lastUpdated) }),
     [t('No. of Members')]: quantity,
     [t('Members')]: members?.map((member) => member.entity.display).join(', '),
   };
