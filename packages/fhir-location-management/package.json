@@ -45,6 +45,7 @@
     "cycle": "^1.0.3",
     "fhirclient": "^2.4.0",
     "tree-model": "^1.0.7",
+    "use-deep-compare-effect": "^1.8.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {

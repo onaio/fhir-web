@@ -23,10 +23,8 @@ const defaultRoles = {
   QUEST: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
-export const OPENSRP_ROLES =
-  (process.env.REACT_APP_OPENSRP_ROLES &&
-    JSON.parse(process.env.REACT_APP_OPENSRP_ROLES as string)) ||
-  defaultRoles;
+const rawOpenSrpRoles = setEnv('REACT_APP_OPENSRP_ROLES', JSON.stringify(defaultRoles))
+export const OPENSRP_ROLES = JSON.parse(rawOpenSrpRoles)
 
 export const WEBSITE_NAME = setEnv('REACT_APP_WEBSITE_NAME', 'OpenSRP Web');
 

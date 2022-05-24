@@ -109,14 +109,17 @@ export const ViewDetails = (props: ViewDetailsProps) => {
       ) : practitioner ? (
         renderObjectAsKeyvalue(practitionerKeyValues)
       ) : (
-        <Alert description={t('User does not have a linked practitioner')} type="info"></Alert>
+        <Alert description={t('User does not have a linked practitioner')} type="warning"></Alert>
       )}
       {careTeamsIsLoading ? (
         <Alert description={t('Fetching linked care teams')} type="info"></Alert>
       ) : careTeams && careTeams.length > 0 ? (
         renderObjectAsKeyvalue(careTeamKeyValues)
       ) : (
-        <Alert description={t('Practitioner is not assigned to a care team')} type="info"></Alert>
+        <Alert
+          description={t('Practitioner is not assigned to a care team')}
+          type="warning"
+        ></Alert>
       )}
     </Space>
   );

@@ -11,6 +11,7 @@ import {
   screen,
   within,
   fireEvent,
+  waitFor,
 } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -113,7 +114,8 @@ describe('location-management/src/components/LocationUnitList', () => {
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: props.fhirRootLocationIdentifier })
-      .reply(200, fhirHierarchy);
+      .reply(200, fhirHierarchy)
+      .persist();
 
     nock(props.fhirBaseURL).get('/Location/303').reply(200, onaOfficeSubLocation);
 
@@ -183,5 +185,15 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table change- node deselect
     expect(document.querySelectorAll('table tbody tr')).toHaveLength(1);
+
+    // invalidate queries to initiate a refetch of locationhierarchy
+    queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
+      throw err;
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Refreshing data/i)).toBeInTheDocument();
+    });
+    await waitForElementToBeRemoved(screen.getByText(/Refreshing data/i));
   });
 });

@@ -17,6 +17,7 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from '../../mls';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 const { Item: FormItem } = Form;
 
@@ -25,7 +26,7 @@ export interface LocationFormProps
   extends Pick<CustomTreeSelectProps, 'disabledTreeNodesCallback'> {
   initialValues: LocationFormFields;
   tree: TreeNode;
-  successUrlGenerator: (payload: ILocation) => string;
+  successURLGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
   hidden: string[];
   disabled: string[];
@@ -35,7 +36,7 @@ export interface LocationFormProps
 
 const defaultProps = {
   initialValues: defaultFormField,
-  successUrlGenerator: () => '#',
+  successURLGenerator: () => '#',
   hidden: [],
   disabled: [],
   onCancel: () => undefined,
@@ -92,7 +93,7 @@ const LocationForm = (props: LocationFormProps) => {
     disabledTreeNodesCallback,
     fhirBaseURL,
     afterSubmit,
-    successUrlGenerator: successURLGenerator,
+    successURLGenerator,
     onCancel,
     tree,
   } = props;
@@ -111,8 +112,8 @@ const LocationForm = (props: LocationFormProps) => {
 
   const [form] = Form.useForm();
 
-  React.useEffect(() => {
-    form.setFieldsValue({ ...initialValues });
+  useDeepCompareEffect(() => {
+    form.resetFields();
   }, [form, initialValues]);
 
   const status = [

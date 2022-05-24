@@ -11,7 +11,8 @@ export const practitionerResourceType = 'Practitioner';
 
 // TODO -  temporal coupling of routes in packages and those used in app
 export const URL_ADMIN = '/admin';
-export const ADD_EDIT_ORGANIZATION_URL = `${URL_ADMIN}/teams/add-edit`;
+export const URL_ADD_ORGANIZATION = `${URL_ADMIN}/teams/add`;
+export const URL_EDIT_ORGANIZATION = `${URL_ADMIN}/teams/edit`;
 export const ORGANIZATION_LIST_URL = `${URL_ADMIN}/teams`;
 
 // form fields constants

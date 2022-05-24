@@ -149,7 +149,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm {...searchFormProps} />
+            <SearchForm {...searchFormProps} disabled />
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
                 <PlusOutlined />

@@ -73,9 +73,9 @@ const Table: React.FC<Props> = (props: Props) => {
             title: t('Actions'),
             width: '10%',
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            render: (_: unknown, record: Organization) => (
+            render: (_: unknown, record: Organization, index) => (
               <span className="d-flex justify-content-end align-items-center">
-                <Link to={URL_EDIT_TEAM + record.identifier.toString()}>
+                <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
                   <Button type="link" className="m-0 p-1">
                     {t('Edit')}
                   </Button>
@@ -86,6 +86,7 @@ const Table: React.FC<Props> = (props: Props) => {
                     <Menu className="menu">
                       <Menu.Item
                         className="viewdetails"
+                        key={index}
                         onClick={() => {
                           if (onViewDetails) {
                             onViewDetails(

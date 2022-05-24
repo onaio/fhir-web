@@ -5,12 +5,19 @@ import { history } from '@onaio/connected-reducer-registry';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 import React from 'react';
-import TeamsView, { populateTeamDetails } from '..';
+import TeamsView, { populateTeamDetails, RawAssignment, sanitizeAssignments } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
-import { org1, org1Assignment, org2, org3, teamMember } from '../../../ducks/tests/fixtures';
+import {
+  org1,
+  assignments,
+  org2,
+  org3,
+  teamMember,
+  practitioners,
+} from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -243,8 +250,8 @@ describe('components/TeamsView', () => {
     dropdown.simulate('click');
     wrapper.update();
 
-    fetch.mockResponseOnce(JSON.stringify(org1Assignment));
-    fetch.mockResponseOnce(JSON.stringify([]));
+    fetch.mockResponseOnce(JSON.stringify(practitioners));
+    fetch.mockResponseOnce(JSON.stringify([assignments]));
 
     wrapper.find('.viewdetails').at(0).simulate('click');
     wrapper.update();
@@ -258,8 +265,15 @@ describe('components/TeamsView', () => {
 
     // find the user details
     expect(wrapper.find('TeamsDetail').text()).toMatchInlineSnapshot(
-      `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team Membersjulian kipembeAssigned LocationsThis team is not assigned to any Location"`
+      `"Team NameThe LuangStatustrueIdentifierfcc19470-d599-11e9-bb65-2a2ae2dbcce4Team MembersTest11 ElevenGareth GrahamDemo dev UserAssigned LocationsThis team is not assigned to any Location"`
     );
+    expect(fetch.mock.calls.map((x) => x[0])).toEqual([
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization?pageNumber=1&pageSize=5',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization/count',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization/practitioner/fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
+      'https://opensrp-stage.smartregister.org/opensrp/rest/organization/assignedLocationsAndPlans/fcc19470-d599-11e9-bb65-2a2ae2dbcce4',
+    ]);
+
     wrapper.unmount();
   });
 
@@ -301,5 +315,54 @@ describe('components/TeamsView', () => {
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('Demo Team');
 
     wrapper.unmount();
+  });
+});
+
+describe('Teams view utils', () => {
+  it('sanitize assignments works correctly', () => {
+    const invalidToDate = {
+      organizationId: 'InvalidToDate',
+      jurisdictionId: 'null',
+      planId: '335ef7a3-7f35-58aa-8263-4419464946d8',
+      fromDate: 1600128000000,
+      toDate: 'null',
+    };
+    const expiredToDate = {
+      organizationId: 'expiredToDate',
+      jurisdictionId: 'null',
+      planId: '335ef7a3-7f35-58aa-8263-4419464946d8',
+      fromDate: 1600128000000,
+      toDate: 160012800000,
+    };
+    const noJurisdiction = {
+      organizationId: 'noJurisdiction',
+      jurisdictionId: null,
+      planId: '335ef7a3-7f35-58aa-8263-4419464946d8',
+      fromDate: 1600128000000,
+      toDate: 1600128000000,
+    };
+    const noOrganization = {
+      organizationId: null,
+      jurisdictionId: 'noOrganization',
+      planId: '335ef7a3-7f35-58aa-8263-4419464946d8',
+      fromDate: 1600128000000,
+      toDate: 1600128000000,
+    };
+    const validAssignment = {
+      organizationId: 'validAsignment',
+      jurisdictionId: 'null',
+      planId: '335ef7a3-7f35-58aa-8263-4419464946d8',
+      fromDate: 1600128000000,
+      toDate: 1600128000000,
+    };
+    const inputs = [
+      invalidToDate,
+      expiredToDate,
+      noJurisdiction,
+      noOrganization,
+      validAssignment,
+    ] as RawAssignment[];
+    const outputs = [validAssignment];
+    expect(sanitizeAssignments(inputs)).toEqual(outputs);
   });
 });

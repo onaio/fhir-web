@@ -69,7 +69,7 @@ export const getLocationFormFields = (
   return {
     ...location,
     isJurisdiction: true, // TODO
-    parentId: parentId ?? location?.partOf?.reference?.split('/')[1],
+    parentId: parentId ?? location?.partOf?.reference,
   } as LocationFormFields;
 };
 

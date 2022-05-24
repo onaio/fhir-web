@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, Alert } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -78,6 +78,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
+    isFetching: treeIsFetching,
   } = useQuery<IBundle, Error, TreeNode | undefined>(
     [locationHierarchyResourceType, hierarchyParams],
     async () => {
@@ -89,6 +90,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
       select: (res) => {
         return convertApiResToTree(res);
       },
+      staleTime: Infinity, // prevent refetches on things like window refocus
     }
   );
 
@@ -116,64 +118,78 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     tableNodes = [selectedNode, ...sortedNodes];
   }
   const tableDispData = parseTableData(tableNodes);
+  const pageTitle = t('Location Unit Management');
 
   return (
-    <section className="layout-content">
-      <Helmet>
-        <title>{t('Location Unit')}</title>
-      </Helmet>
-      <h1 className="mb-3 fs-5">{t('Location Unit Management')}</h1>
-      <Row>
-        <Col className="bg-white p-3" span={6}>
-          <Tree
-            data-testid="hierarchy-display"
-            data={treeData.children}
-            selectedNode={selectedNode}
-            onSelect={(node) => {
-              dispatch(setSelectedNode(node));
-            }}
-          />
-        </Col>
-        <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
-          <div className="mb-3 d-flex justify-content-between p-3">
-            <h6 className="mt-4">
-              {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
-            </h6>
-            <div>
-              <Link
-                to={() => {
-                  if (selectedNode) {
-                    const queryParams = { parentId: selectedNode.model.nodeId };
-                    const searchString = new URLSearchParams(queryParams).toString();
-                    return `${URL_LOCATION_UNIT_ADD}?${searchString}`;
-                  }
-                  return URL_LOCATION_UNIT_ADD;
-                }}
-              >
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Add Location Unit')}
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <div className="bg-white p-3">
-            <Table
-              data={tableDispData}
-              onViewDetails={async (row) => {
-                setDetailId(row.id);
+    <>
+      {treeIsFetching && (
+        <Alert
+          type="info"
+          message={t('Refreshing data')}
+          description={t(
+            'Request to update the location hierarchy is taking a bit long to respond.'
+          )}
+          banner
+          showIcon
+        />
+      )}
+      <section className="layout-content">
+        <Helmet>
+          <title>{pageTitle}</title>
+        </Helmet>
+        <h1 className="mb-3 fs-5">{pageTitle}</h1>
+        <Row>
+          <Col className="bg-white p-3" span={6}>
+            <Tree
+              data-testid="hierarchy-display"
+              data={treeData.children}
+              selectedNode={selectedNode}
+              onSelect={(node) => {
+                dispatch(setSelectedNode(node));
               }}
             />
-          </div>
-        </Col>
-        {detailId ? (
-          <LocationUnitDetail
-            fhirBaseUrl={fhirBaseURL}
-            onClose={() => setDetailId('')}
-            detailId={detailId}
-          />
-        ) : null}
-      </Row>
-    </section>
+          </Col>
+          <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
+            <div className="mb-3 d-flex justify-content-between p-3">
+              <h6 className="mt-4">
+                {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
+              </h6>
+              <div>
+                <Link
+                  to={() => {
+                    if (selectedNode) {
+                      const queryParams = { parentId: selectedNode.model.nodeId };
+                      const searchString = new URLSearchParams(queryParams).toString();
+                      return `${URL_LOCATION_UNIT_ADD}?${searchString}`;
+                    }
+                    return URL_LOCATION_UNIT_ADD;
+                  }}
+                >
+                  <Button type="primary">
+                    <PlusOutlined />
+                    {t('Add Location Unit')}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <div className="bg-white p-3">
+              <Table
+                data={tableDispData}
+                onViewDetails={async (row) => {
+                  setDetailId(row.id);
+                }}
+              />
+            </div>
+          </Col>
+          {detailId ? (
+            <LocationUnitDetail
+              fhirBaseUrl={fhirBaseURL}
+              onClose={() => setDetailId('')}
+              detailId={detailId}
+            />
+          ) : null}
+        </Row>
+      </section>
+    </>
   );
 };

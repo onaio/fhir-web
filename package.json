@@ -12,29 +12,21 @@
     "test:watch": "TZ='UTC' jest --watch",
     "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
     "postinstall": "patch-package",
-    "extractTranslations": "lerna run extractTranslations"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "extractTranslations": "lerna run extractTranslations",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "!(*d).ts": [
-      "eslint --fix --max-warnings 0",
-      "git add"
+      "eslint --fix --max-warnings 0"
     ],
     "*.tsx": [
-      "eslint --fix --max-warnings 0",
-      "git add"
+      "eslint --fix --max-warnings 0"
     ],
     "!(**/*dist/**/*)(*eslint).{js,jsx}": [
-      "eslint --fix --max-warnings 0",
-      "git add"
+      "eslint --fix --max-warnings 0"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{snap, test.tsx}": [
       "eslint"
@@ -98,7 +90,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-sonarjs": "^0.12.0",
     "flush-promises": "^1.0.2",
-    "husky": "^7.0.4",
+    "husky": "^8.0.0",
     "jest": "27.5.1",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "jest-fetch-mock": "^3.0.3",
