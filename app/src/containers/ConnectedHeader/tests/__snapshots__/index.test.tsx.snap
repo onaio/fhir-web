@@ -29,6 +29,6 @@ exports[`components/ConnectedHeader renders the ConnectedHeader component: child
       "fr",
     ]
   }
-  value="en_en"
+  value="en-en"
 />
 `;

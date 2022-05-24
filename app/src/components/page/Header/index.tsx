@@ -43,7 +43,7 @@ const languageOptions: LanguageOptions = {
 const languageChangeHandlerFactory = (i18n: any) => (languageCode: string | number) => {
   const projectCode = getConfig('projectCode');
   if (languageCode) {
-    const newLanguage = projectCode ? `${languageCode}_${projectCode}` : (languageCode as string);
+    const newLanguage = projectCode ? `${languageCode}-${projectCode}` : (languageCode as string);
     setConfig('languageCode', languageCode as LanguageCode);
     i18n.changeLanguage(newLanguage);
   }
