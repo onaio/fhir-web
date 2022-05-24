@@ -1,7 +1,7 @@
 import { Column } from '@opensrp/react-utils';
 import { Inventory } from '../../ducks/inventory';
 import { Dictionary } from '@onaio/utils';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Get table columns

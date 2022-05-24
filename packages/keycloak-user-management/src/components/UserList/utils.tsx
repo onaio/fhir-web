@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 import { KeycloakUser } from '../../ducks/user';
 
 /**

@@ -29,7 +29,7 @@ import {
 } from '@opensrp/team-management';
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { Dictionary } from '@onaio/utils';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 const sessionSelector = makeAPIStateSelector();
 

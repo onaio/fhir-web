@@ -16,7 +16,7 @@ import moment, { Moment } from 'moment';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 export const validationRulesFactory = (t: TFunction) => ({
   activities: {

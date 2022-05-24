@@ -9,7 +9,7 @@ import {
   DELETE_PRACTITIONER_ROLE,
 } from '../../../constants';
 import { Practitioner } from '@opensrp/team-management';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Delete keycloak user and practitioner

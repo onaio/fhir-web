@@ -1,6 +1,6 @@
 import { Dictionary } from '@onaio/utils';
 import { formatDate } from '@opensrp/form-config-core';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Return table columns

@@ -5,7 +5,7 @@ import { HTTPError } from '@opensrp/server-service';
 import { InventoryPost } from '../../ducks/inventory';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_STOCK_RESOURCE } from '../../constants';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Submit form

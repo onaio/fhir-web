@@ -14,7 +14,7 @@ import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { LOCATION_UNIT_TYPE } from '../../constants';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 export enum FormInstances {
   CORE = 'core',

@@ -3,7 +3,7 @@ import { get, keyBy } from 'lodash';
 import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';

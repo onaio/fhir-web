@@ -6,7 +6,7 @@ import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Fields, FormFields } from './Form';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 export const submitForm = async (
   values: FormFields,

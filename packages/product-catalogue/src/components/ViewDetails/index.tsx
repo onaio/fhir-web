@@ -7,7 +7,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 import { useTranslation } from '../../mls';
 import './index.css';
 

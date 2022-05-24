@@ -48,10 +48,10 @@ import {
   URL_DOWNLOAD_DISTRICT_REPORT,
 } from './constants';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
 import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
-import { LIST_PATIENTS_URL } from '@opensrp/fhir-client'
+import { LIST_PATIENTS_URL } from '@opensrp/fhir-client';
 
 /** Interface for menu items */
 export interface Route {
@@ -139,7 +139,11 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('User Management'),
           key: 'user-management',
-          enabled: ENABLE_USER_MANAGEMENT && roles && activeRoles.USERS && isAuthorized(roles, activeRoles.USERS.split(',')),
+          enabled:
+            ENABLE_USER_MANAGEMENT &&
+            roles &&
+            activeRoles.USERS &&
+            isAuthorized(roles, activeRoles.USERS.split(',')),
           children: [
             { title: t('Users'), key: 'users', url: URL_USER },
             { title: t('User Groups'), key: 'user-groups', url: URL_USER_GROUPS },
@@ -205,10 +209,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Group management'),
           key: 'fhir-group',
           url: LIST_GROUP_URL,
-          enabled: ENABLE_FHIR_GROUP && roles &&
+          enabled:
+            ENABLE_FHIR_GROUP &&
+            roles &&
             activeRoles.GROUP &&
             isAuthorized(roles, activeRoles.GROUP.split(',')),
-        }, {
+        },
+        {
           title: t('Questionnaire'),
           key: 'fhir-quest',
           enabled:

@@ -8,7 +8,7 @@ import {
 } from '../../constants';
 import { Link } from 'react-router-dom';
 import { Column } from '@opensrp/react-utils';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /** component rendered in the action column of the table */
 

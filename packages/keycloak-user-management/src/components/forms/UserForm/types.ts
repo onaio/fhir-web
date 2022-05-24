@@ -1,7 +1,7 @@
 import { KeycloakUser, Practitioner, UserAttributes, UserGroup } from '../../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
-import { TFunction } from 'i18next';
+import { TFunction } from '@opensrp/i18n';
 
 export interface FormFields
   extends Pick<KeycloakUser, 'id' | 'username' | 'firstName' | 'lastName' | 'email' | 'enabled'> {

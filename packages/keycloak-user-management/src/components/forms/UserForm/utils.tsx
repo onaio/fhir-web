@@ -16,7 +16,7 @@ import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
-import { TFunction } from '@opensrp/i18n';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Utility function to get new user UUID from POST response location header

@@ -13,7 +13,7 @@ import {
   LocationUnitGroupPayloadPOST,
   LocationUnitGroupPayloadPUT,
 } from '../../ducks/location-unit-groups';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };

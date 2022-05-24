@@ -31,7 +31,7 @@ import {
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '../../ducks/locationHierarchy/types';
 import { generateJurisdictionTree, getBaseTreeNode } from '../../ducks/locationHierarchy/utils';
 import './LocationUnitList.css';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);

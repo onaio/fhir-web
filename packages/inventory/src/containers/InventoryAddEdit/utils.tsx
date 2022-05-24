@@ -5,7 +5,7 @@ import { Dictionary } from '@onaio/utils';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_SETTINGS } from '../../constants';
 import { Setting } from '../../components/InventoryItemForm';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Fetch settings

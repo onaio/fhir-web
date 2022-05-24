@@ -10,7 +10,7 @@ import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendSuccessNotification } from '@opensrp/notifications';
 import { useTranslation } from '../../../mls';
-import { TFunction } from '@opensrp/i18n';
+import type { TFunction } from '@opensrp/i18n';
 /**
  * antd notification popup.
  *

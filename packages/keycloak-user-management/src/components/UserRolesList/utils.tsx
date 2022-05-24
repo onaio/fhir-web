@@ -3,7 +3,7 @@ import { KeycloakService } from '@opensrp/keycloak-service';
 import { store } from '@opensrp/store';
 import { KEYCLOAK_URL_USER_ROLES } from '../../constants';
 import { fetchKeycloakUserRoles, KeycloakUserRole } from '../../ducks/userRoles';
-import { TFunction } from '@opensrp/i18n';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Fetch all realm roles

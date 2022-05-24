@@ -12,7 +12,7 @@ import {
   reducer as keycloakUserRolesReducer,
   KeycloakUserRole,
 } from '../../ducks/userRoles';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);

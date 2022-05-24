@@ -11,7 +11,7 @@ import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
 import { Redirect, useHistory } from 'react-router';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { useTranslation } from '../../mls';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 import { HTTPError } from '@opensrp/server-service';
 import { fetchProtectedImage } from '@opensrp/react-utils';
 

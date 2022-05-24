@@ -23,7 +23,7 @@ import {
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 

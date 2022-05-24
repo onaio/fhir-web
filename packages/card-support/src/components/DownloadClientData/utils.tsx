@@ -12,7 +12,7 @@ import { downloadFile } from '@opensrp/react-utils';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /** interface for user assignment response */
 export interface UserAssignment {

@@ -11,7 +11,7 @@ import {
 } from '../../constants';
 import { KeycloakUserRole } from '../../ducks/userRoles';
 import { fetchKeycloakUserGroups, KeycloakUserGroup } from '../../ducks/userGroups';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Fetch available, assigned or effective roles

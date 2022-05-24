@@ -4,7 +4,6 @@ import React from 'react';
 import { FormOutlined } from '@ant-design/icons';
 import { KeyValueGrid, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
-import { Date as FhirDateDataType } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/date';
 import { useTranslation } from '../mls';
 
 export interface QuestionnaireDetailsProps {
@@ -14,7 +13,7 @@ export interface QuestionnaireDetailsProps {
   effectivePeriod?: Period;
   lastReviewDate?: string;
   title?: string;
-  date?: FhirDateDataType;
+  date?: string;
   description?: string;
 }
 

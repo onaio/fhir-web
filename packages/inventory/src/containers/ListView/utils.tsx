@@ -3,7 +3,7 @@ import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
 import { Column } from '@opensrp/react-utils';
-import { TFunction } from '@opensrp/i18n';
+import type { TFunction } from '@opensrp/i18n';
 
 /** Describes how the data will passed to the table */
 export interface TableData {

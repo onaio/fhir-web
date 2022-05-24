@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import { useTranslation } from '../../mls';
-import type { TFunction } from 'react-i18next';
+import type { TFunction } from '@opensrp/i18n';
 
 export interface Props {
   data: LocationUnitGroup[];

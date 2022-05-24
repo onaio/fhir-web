@@ -74,7 +74,7 @@ export const Questionnaire = (props: QuestionnaireProps) => {
     title,
     publisher,
     description,
-    date,
+    date: date as string | undefined,
     version,
     subjectType,
     lastReviewDate,
