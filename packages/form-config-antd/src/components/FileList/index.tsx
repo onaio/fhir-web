@@ -22,7 +22,7 @@ import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/ico
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);

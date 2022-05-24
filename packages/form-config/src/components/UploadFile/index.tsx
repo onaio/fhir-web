@@ -16,7 +16,7 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { t } from 'i18next';
+import { useTranslation } from '../../mls';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -63,6 +63,7 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
 
   const [ifDoneHere, setIfDoneHere] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const { t } = useTranslation();
 
   const redirectUrl = isJsonValidator ? validatorsUrl : draftFilesUrl;
 
