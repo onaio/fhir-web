@@ -24,7 +24,6 @@ export interface ConfigState {
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
-  i18n?: unknown;
   defaultTablesPageSize?: number; // static value of the default number of rows per page
 }
 
@@ -38,7 +37,6 @@ const defaultConfigs: GlobalState = {
   keycloakBaseURL: undefined,
   opensrpBaseURL: undefined,
   fhirBaseURL: undefined,
-  i18n: undefined,
   tablespref: undefined,
   defaultTablesPageSize: 5,
   projectCode: 'core',
