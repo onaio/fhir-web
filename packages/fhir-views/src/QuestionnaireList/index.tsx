@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BrokenPage, SearchForm, TableLayout, intlFormatDateStrings } from '@opensrp/react-utils';
+import { BrokenPage, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   questionnaireResourceType,
   QUEST_FORM_VIEW_URL,
@@ -61,7 +61,7 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
     {
       title: t('date'),
       dataIndex: 'date' as const,
-      render: (value) => intlFormatDateStrings(value),
+      render: (value) => t('{{val, datetime}}', { val: new Date(value) }),
     },
     {
       title: t('Actions'),

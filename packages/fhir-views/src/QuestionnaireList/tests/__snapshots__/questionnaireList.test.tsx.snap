@@ -38,7 +38,7 @@ exports[`pagination events work correctly: Search 1 page 1 5`] = `
 <td
   class="ant-table-cell"
 >
-  
+  Invalid Date
 </td>
 `;
 

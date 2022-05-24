@@ -9,7 +9,7 @@ import {
 } from '../constants';
 import { useQuery } from 'react-query';
 import { Button, Col, Row, Spin } from 'antd';
-import { Column, intlFormatDateStrings } from '@opensrp/react-utils';
+import { Column } from '@opensrp/react-utils';
 import {
   parseQuestionnaireResponse,
   Questionnaire,
@@ -48,7 +48,7 @@ const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
     {
       title: t('Date authored'),
       dataIndex: 'authoredDateTime' as const,
-      render: (value) => intlFormatDateStrings(value),
+      render: (value) => t('{{val, datetime}}', { val: new Date(value) }),
     },
     {
       title: t('QuestionnaireVersion'),
