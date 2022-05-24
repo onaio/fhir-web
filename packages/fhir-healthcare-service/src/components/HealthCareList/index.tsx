@@ -65,6 +65,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       title: t('Last Updated'),
       dataIndex: 'lastUpdated' as const,
       key: 'lastUpdated' as const,
+      render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
     },
     {
       title: t('Actions'),

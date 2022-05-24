@@ -80,7 +80,7 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -97,7 +97,7 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -295,7 +295,7 @@ exports[`no items edge case: questionnaire meta 5`] = `
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -312,7 +312,7 @@ exports[`no items edge case: questionnaire meta 6`] = `
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;

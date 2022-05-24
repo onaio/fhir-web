@@ -4,6 +4,7 @@ import React from 'react';
 import { FormOutlined } from '@ant-design/icons';
 import { KeyValueGrid, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
+import { Date as FhirDateDataType } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/date';
 import { useTranslation } from '../mls';
 
 export interface QuestionnaireDetailsProps {
@@ -13,7 +14,7 @@ export interface QuestionnaireDetailsProps {
   effectivePeriod?: Period;
   lastReviewDate?: string;
   title?: string;
-  date?: string;
+  date?: FhirDateDataType;
   description?: string;
 }
 
@@ -31,7 +32,7 @@ export const QuestionnaireDetails = (props: QuestionnaireDetailsProps) => {
   const { t } = useTranslation();
   const keyValuePairs: Record<string, unknown> = {};
   if (date) {
-    keyValuePairs[t('Last Changed:')] = date;
+    keyValuePairs[t('Last Changed:')] = t('{{val, datetime}}', { val: new Date(date) });
   }
   if (version) {
     keyValuePairs[t('Version:')] = version;
@@ -43,13 +44,19 @@ export const QuestionnaireDetails = (props: QuestionnaireDetailsProps) => {
     keyValuePairs[t('Publisher:')] = publisher;
   }
   if (effectivePeriod?.start) {
-    keyValuePairs[t('Effective period start:')] = effectivePeriod.start;
+    keyValuePairs[t('Effective period start:')] = t('{{val, datetime}}', {
+      val: new Date(effectivePeriod.start),
+    });
   }
   if (effectivePeriod?.end) {
-    keyValuePairs[t('Effective period end:')] = effectivePeriod.end;
+    keyValuePairs[t('Effective period end:')] = t('{{val, datetime}}', {
+      val: new Date(effectivePeriod.end),
+    });
   }
   if (lastReviewDate) {
-    keyValuePairs[t('Last reviewed date:')] = lastReviewDate;
+    keyValuePairs[t('Last reviewed date:')] = t('{{val, datetime}}', {
+      val: new Date(lastReviewDate),
+    });
   }
 
   return (
