@@ -1,7 +1,7 @@
 import React from 'react';
 import { IProcedure } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IProcedure';
 import { get } from 'lodash';
-import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
 
@@ -16,6 +16,8 @@ export const parseProcedure = (obj: IProcedure) => {
 
 export type ProcedureTableData = ReturnType<typeof parseProcedure>;
 
+const dateSorterFn = sorterFn('date', true);
+
 export const columns = (t: TFunction) => [
   {
     title: t('Id'),
@@ -25,7 +27,7 @@ export const columns = (t: TFunction) => [
   {
     title: t('Performed Date'),
     dataIndex: 'date',
-    sorter: dateStringSorterFn,
+    sorter: dateSorterFn,
     render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
   {

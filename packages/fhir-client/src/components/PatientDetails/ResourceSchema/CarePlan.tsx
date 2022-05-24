@@ -5,7 +5,7 @@ import {
   FhirCodesTooltips,
   FhirPeriod,
   getCodeableConcepts,
-  rawStringSorterFn,
+  sorterFn,
 } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
@@ -27,7 +27,7 @@ export const columns = (t: TFunction) => [
   {
     title: t('Title'),
     dataIndex: 'title' as const,
-    sorter: rawStringSorterFn,
+    sorter: sorterFn('title'),
   },
   {
     title: t('Category'),

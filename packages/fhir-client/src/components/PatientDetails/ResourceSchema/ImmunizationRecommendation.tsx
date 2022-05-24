@@ -1,6 +1,6 @@
 import { IImmunizationRecommendation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunizationRecommendation';
 import { get } from 'lodash';
-import { dateStringSorterFn } from '../../../helpers/utils';
+import { sorterFn } from '../../../helpers/utils';
 import type { TFunction } from '@opensrp/i18n';
 
 export const parseImmunizationRecommendation = (obj: IImmunizationRecommendation) => {
@@ -13,12 +13,14 @@ export const parseImmunizationRecommendation = (obj: IImmunizationRecommendation
 
 export type ImmunizationRecTableData = ReturnType<typeof parseImmunizationRecommendation>;
 
+const dateCreatedSorter = sorterFn('created', true);
+
 export const columns = (t: TFunction) => [
   {
     title: t('Date Created'),
     dataIndex: 'created' as const,
     render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
-    sorter: dateStringSorterFn,
+    sorter: dateCreatedSorter,
   },
   {
     title: t('Next Dose Date'),

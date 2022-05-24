@@ -1,7 +1,7 @@
 import { IDiagnosticReport } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IDiagnosticReport';
 import { get } from 'lodash';
-import { dateStringSorterFn } from '../../../helpers/utils';
 import type { TFunction } from '@opensrp/i18n';
+import { sorterFn } from '../../../helpers/utils';
 
 export const parseDiagnosticReport = (obj: IDiagnosticReport) => {
   return {
@@ -12,6 +12,8 @@ export const parseDiagnosticReport = (obj: IDiagnosticReport) => {
 };
 
 export type DiagnosticReportTableData = ReturnType<typeof parseDiagnosticReport>;
+
+const issuedSorter = sorterFn('issued', true);
 
 export const columns = (t: TFunction) => [
   {
@@ -25,6 +27,6 @@ export const columns = (t: TFunction) => [
   {
     title: t('Date issued'),
     dataIndex: 'issued',
-    sorter: dateStringSorterFn,
+    sorter: issuedSorter,
   },
 ];

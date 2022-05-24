@@ -1,7 +1,7 @@
 import React from 'react';
 import { IMedicationRequest } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IMedicationRequest';
 import { get } from 'lodash';
-import { FhirCodesTooltips, getCodeableConcepts, rawStringSorterFn } from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
 
@@ -14,6 +14,8 @@ export const parseMedicationRequest = (obj: IMedicationRequest) => {
 };
 
 export type MeidationRequestTableData = ReturnType<typeof parseMedicationRequest>;
+
+const authoredSorterFn = sorterFn('authoredOn', true);
 
 export const columns = (t: TFunction) => [
   {
@@ -30,7 +32,7 @@ export const columns = (t: TFunction) => [
   {
     title: t('Authored on'),
     dataIndex: 'authoredOn',
-    sorter: rawStringSorterFn,
+    sorter: authoredSorterFn,
     render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
 ];

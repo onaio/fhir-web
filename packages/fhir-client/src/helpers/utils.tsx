@@ -5,24 +5,29 @@ import { Column, TableLayout } from '@opensrp/react-utils';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 import React from 'react';
 import { useTranslation } from '../mls';
+import { get } from 'lodash';
 
 const { Text } = Typography;
 
 /**
  * Abstracts sort functionality for dates as strings
  *
- * @param d1 - the first date string
- * @param d2 - the second date string
+ * @param accessor - the key name
+ * @param isDate - if the string represents a date
  */
-export const dateStringSorterFn = (d1: string, d2: string) => Date.parse(d1) - Date.parse(d2);
-
-/**
- * Abstracts sort functionality for dates as strings
- *
- * @param a - first string
- * @param b - second string
- */
-export const rawStringSorterFn = (a: string, b: string) => a.localeCompare(b);
+export const sorterFn =
+  (accessor: string, isDate = false) =>
+  (a: Record<string, unknown>, b: Record<string, unknown>) => {
+    const first = get(a, accessor) as string | undefined;
+    const second = get(b, accessor) as string | undefined;
+    if (first === undefined) return 1;
+    if (second === undefined) return -1;
+    if (isDate) {
+      return Date.parse(first) - Date.parse(second);
+    } else {
+      return first.localeCompare(second);
+    }
+  };
 
 /**
  * Abstracts how to render a Fhir Period data type
