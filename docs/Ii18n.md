@@ -6,6 +6,7 @@ OpenSRP Web supports multi-language using [react.i18next](https://react.i18next.
 2. Contributors - Targets developers with the intent of either adding packages that should support MlS or maintaining packages that already support MLS
 
 ## Usage
+
 Install the i18n and pkg-config packages.
 
 ```sh
@@ -20,37 +21,25 @@ import { setAllConfigs } from '@opensrp/pkg-config';
 
 setAllConfigs({
   languageCode: 'en',
-  projectCode: 'core'
-})
+  projectCode: 'core',
+});
 ```
 
 ```typescript
 // index.js
 import './dispatch-configs';
-import 
+import
 ```
 
 **Configuration**
 
-Opensrp-web packages uses 2 configuration options to fully configure MLS i.e. `languageCode` and `projectCode`.
-
-The default language is english. To set a different language, configure the config option `languageCode` with values of the ISO code of the language you want to use. This can be done during initialization as shown above or during runtime as shown below.
-
-```tsx
-import { setConfig } from `@opensrp/pkg-config`;
-
-setConfig('languageCode', 'fr');
-```
+Opensrp-web packages uses 2 configuration options to fully configure MLS i.e. `languageCode` and `projectCode`. These 2 are the subtags that we use to form a languageTag which is formatted as `<languageCode>-<projectCode>`. They are supplied once during build, via the envs `REACT_APP_LANGUAGE_CODE` and `REACT_APP_PROJECT_CODE`.
 
 **N/B** The language should be internally available in the package of interest. If you are not sure of this check the [Adding a new language section](#adding-a-new-language)
 
-consider where you have a certain string e.g. `Plans` that should translate to `Plans` for a certain use-case implementation but display as `Missions` in another implementation. In other words how can we support different translation values for the same language
+consider where you have a certain string e.g. `Plans` that should translate to `Plans` for a certain clinet instance but display as `Missions` in another instance of the same app. In other words how can we support different translation values for the same language
 
 This is where the `projectCode` comes in, helps further define what set of translations for a certain language should be used
-
-**Why not use namespaces?**
-
-- we are still in the initial stages of MLS, and we will continue to refine the translation workflows in the near future.
 
 ## Contributors/Maintainers
 
@@ -59,7 +48,7 @@ This section targets developers interested in enhancing, supporting or maintaini
 ### MLS architecture
 
 The `@opensrp/i18n` package includes the translation resources as static strings, it also exposes an [i18n](github.com/i18next/) instance that is
-preloaded with the string resources and a context provider that provisions the `i18n` instance to you render tree. The `i18n` package relies on
+preloaded with the string resources and a context provider that provisions the `i18n` instance to your render tree. The `i18n` package relies on
 `@opensrp/pkg-config` to get the initial configured language.
 
 ### Adding translatable strings
@@ -73,13 +62,14 @@ Run the string extraction command.
 TBD
 ```
 
-This should parse the code, get all transleatable strings and updated the respective json locale files in `packages/i18n`.
-From here, you can use your favourite translation tools to get the translations as json files, add them to the right folders in `packages/i18n`, 
+This should parse the code, get all translatable strings and updated the respective json locale files in `packages/i18n`.
+From here, you can use your favourite translation tools to get the translations as json files, add them to the right folders in `packages/i18n`,
 and then shoot us a PR.
 
 ### Adding a Localized package
 
 To add a package with localization support, you only need 2 things.
+
 1. the new package should have a peerDependency on the `@opensrp/i18n` package
 2. Add a `src/mls.ts` file with the below content.
 
@@ -93,14 +83,21 @@ export const useTranslation = (ns?: string, options?: UseTranslationOptions) => 
 };
 ```
 
-This hook abstraction helps add the namespace scope to the `@opensrp/i18n.useTranslation` 
+This hook abstraction helps add the namespace scope to the `@opensrp/i18n.useTranslation` , the alternative would require you to pass the namespace to every useTranslation call in a package.
 
 ## Adding a new language
 
-Add it to package-config to propert typing.
+Add it to `@openspr/pkg-config` for proper typing.
 
-Then run the extraction command while specifying the locale option.
+```typescipt
+export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
+export const supportedProjectCode = ['eusm', 'core'] as const;
+```
+
+Then run the extraction command while necessary locale or/and the projectCode options.
 
 ```sh
 TBD
 ```
+
+This should update the locales files in packages/i18n. Create a pr.
