@@ -110,7 +110,7 @@ export const GroupList = (props: GroupListProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm data-testid="search-form" {...searchFormProps} />
+            <SearchForm data-testid="search-form" {...searchFormProps} disabled />
             <Link to="#">
               <Button disabled type="primary">
                 <PlusOutlined />

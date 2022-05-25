@@ -2,7 +2,7 @@ import React from 'react';
 import { IProcedure } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IProcedure';
 import { get } from 'lodash';
 import { intlFormatDateStrings } from '@opensrp/react-utils';
-import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export const parseProcedure = (obj: IProcedure) => {
@@ -16,6 +16,8 @@ export const parseProcedure = (obj: IProcedure) => {
 
 export type ProcedureTableData = ReturnType<typeof parseProcedure>;
 
+const dateSorterFn = sorterFn('date', true);
+
 export const columns = [
   {
     title: 'Id',
@@ -25,7 +27,7 @@ export const columns = [
   {
     title: 'Performed Date',
     dataIndex: 'date',
-    sorter: dateStringSorterFn,
+    sorter: dateSorterFn,
     render: (value: string) => intlFormatDateStrings(value),
   },
   {

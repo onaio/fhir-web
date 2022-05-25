@@ -1,7 +1,7 @@
 import React from 'react';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { get } from 'lodash';
-import { dateStringSorterFn, FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export const parseServiceRequest = (obj: IPractitioner) => {
@@ -14,6 +14,8 @@ export const parseServiceRequest = (obj: IPractitioner) => {
 
 export type ParseServiceRequest = ReturnType<typeof parseServiceRequest>;
 
+const authoredSorterFn = sorterFn('authoredOn', true);
+
 export const columns = [
   {
     title: 'Id',
@@ -22,7 +24,7 @@ export const columns = [
   {
     title: 'Date authored',
     dataIndex: 'authoredOn' as const,
-    sorter: dateStringSorterFn,
+    sorter: authoredSorterFn,
   },
   {
     title: 'Category',

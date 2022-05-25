@@ -1,7 +1,7 @@
 import React from 'react';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { get } from 'lodash';
-import { FhirCodesTooltips, getCodeableConcepts, rawStringSorterFn } from '../../../helpers/utils';
+import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export const parseOrganization = (obj: IOrganization) => {
@@ -14,12 +14,14 @@ export const parseOrganization = (obj: IOrganization) => {
 
 export type CarePlanTableData = ReturnType<typeof parseOrganization>;
 
+const nameSorterFn = sorterFn('name');
+
 export const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
     editable: true,
-    sorter: rawStringSorterFn,
+    sorter: nameSorterFn,
   },
   {
     title: 'Type',

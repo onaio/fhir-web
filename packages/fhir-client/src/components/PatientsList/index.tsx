@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader } from 'antd';
 import { Column, TableLayout } from '@opensrp/react-utils';
@@ -6,7 +6,13 @@ import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { patientResourceType } from '../../constants';
-import { parsePatient, columns } from '../PatientDetails/ResourceSchema/Patient';
+import {
+  parsePatient,
+  serverSideSortedColumns,
+  sortMap,
+} from '../PatientDetails/ResourceSchema/Patient';
+import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/lib/table/interface';
+import { get } from 'lodash';
 
 interface PatientListProps {
   fhirBaseURL: string;
@@ -21,9 +27,11 @@ interface PatientListProps {
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
 
+  const [fhirSortFilters, setFhirSortFilters] = useState<Record<'_sort', string>>();
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
     fhirBaseURL,
-    patientResourceType
+    patientResourceType,
+    fhirSortFilters
   );
   const { data, isFetching, isLoading, error } = queryValues;
 
@@ -43,9 +51,33 @@ export const PatientsList = (props: PatientListProps) => {
 
   const tableProps = {
     datasource: tableData,
-    columns: columns as Column<TableData>[],
+    columns: serverSideSortedColumns() as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
+    onChange: (
+      _: TablePaginationConfig,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      __: Record<string, FilterValue | null>,
+      sorter: SorterResult<TableData> | SorterResult<TableData>[]
+    ) => {
+      const sorters = Array.isArray(sorter) ? sorter : [sorter];
+      const sortQueryString = sorters.reduce((acc: string, value: SorterResult<TableData>) => {
+        const { field, order } = value;
+        const sortableKey = get(sortMap, field as string);
+        if (!sortableKey) {
+          return acc;
+        }
+        if (order && order === 'ascend') {
+          return `${acc}${sortableKey}`;
+        } else if (order) {
+          return `${acc}-${sortableKey}`;
+        }
+        return acc;
+      }, '');
+      if (sortQueryString) {
+        setFhirSortFilters({ _sort: sortQueryString });
+      }
+    },
   };
 
   return (

@@ -1,7 +1,7 @@
 import { IImmunizationRecommendation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunizationRecommendation';
 import { get } from 'lodash';
 import { intlFormatDateStrings } from '@opensrp/react-utils';
-import { dateStringSorterFn } from '../../../helpers/utils';
+import { sorterFn } from '../../../helpers/utils';
 
 export const parseImmunizationRecommendation = (obj: IImmunizationRecommendation) => {
   return {
@@ -13,12 +13,14 @@ export const parseImmunizationRecommendation = (obj: IImmunizationRecommendation
 
 export type ImmunizationRecTableData = ReturnType<typeof parseImmunizationRecommendation>;
 
+const dateCreatedSorter = sorterFn('created', true);
+
 export const columns = [
   {
     title: 'Date Created',
     dataIndex: 'created' as const,
     render: (value: string) => intlFormatDateStrings(value),
-    sorter: dateStringSorterFn,
+    sorter: dateCreatedSorter,
   },
   {
     title: 'Next Dose Date',

@@ -1,6 +1,6 @@
 # OpenSRP Web
 
-[![Coverage Status](https://coveralls.io/repos/github/OpenSRP/web/badge.svg?branch=master)](https://coveralls.io/github/OpenSRP/web?branch=master)
+[![codecov](https://codecov.io/gh/opensrp/web/branch/master/graph/badge.svg?token=EG3TX9MAM4)](https://codecov.io/gh/opensrp/web)
 
 The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](https://github.com/OpenSRP/opensrp-server-core) API, providing access to
 the data collected on the server, configuration options as well as any
