@@ -44,7 +44,6 @@
     "@jridgewell/gen-mapping": "^0.3.1",
     "@onaio/connected-private-route": "^0.1.0",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@opensrp/server-logout": "^0.0.1",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -118,7 +117,8 @@
   },
   "workspaces": [
     "app",
-    "packages/*"
+    "packages/*",
+    "scripts/i18n"
   ],
   "packageManager": "yarn@1.18.0"
 }
