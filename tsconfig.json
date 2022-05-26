@@ -23,7 +23,6 @@
   },
   "include": [
     "packages/",
-    "scripts/",
     "app/src",
     "jest.config.js",
     "babel.config.js",
