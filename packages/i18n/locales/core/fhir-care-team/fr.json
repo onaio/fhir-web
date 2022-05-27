@@ -1,4 +1,5 @@
 {
+  "Actions": "",
   "Active": "",
   "An error occurred": "",
   "Are you sure you want to delete this Care Team?": "",
@@ -6,7 +7,7 @@
   "Create Care Team": "",
   "Delete": "",
   "Edit": "",
-  "Edit Care Team": "",
+  "Edit Care Team | {{name}}": "",
   "FHIR Care Team": "",
   "Identifier": "",
   "Inactive": "",
