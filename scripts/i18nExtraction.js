@@ -99,7 +99,7 @@ const extractionRunner = (argvConfigs, packageSemiPaths) => {
     const inputFilesGlob = `${path.resolve(
       REPO_ROOT_PATH,
       packageSemiPath
-    )}/!(node_modules|dist|build)/**/*.{js,tsx,ts,tsx}`;
+    )}/!(node_modules|dist|build)/**/!(*.test).@(tsx|ts|js|jsx)`;
     const outputPath = path.resolve(
       REPO_ROOT_PATH,
       `packages/i18n/locales/${projectCode}/${packageName}/$LOCALE.json`
