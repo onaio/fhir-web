@@ -28,7 +28,7 @@ import {
 } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
-import lang from '../../../lang';
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 jest.mock('@opensrp/store', () => ({
@@ -332,7 +332,7 @@ describe('components/UserList', () => {
     expect(wrapper.text()).toMatchInlineSnapshot(
       `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsNo Data"`
     );
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('sorting works', async () => {

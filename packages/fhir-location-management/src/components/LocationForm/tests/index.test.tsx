@@ -175,7 +175,7 @@ describe('LocationForm', () => {
 
     // has default value
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Physical TypeBuildingJurisdiction"`
+      `"Physical typeBuildingJurisdiction"`
     );
 
     expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);

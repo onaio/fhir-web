@@ -15,7 +15,7 @@ import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
-import lang from '../../../lang';
+
 import * as functions from '../utils';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -165,7 +165,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -200,7 +201,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -213,7 +215,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 
   it('handles error if submit form fails', async () => {
@@ -229,7 +231,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {
       mockRejectFn();
     });
@@ -253,7 +256,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -266,7 +270,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 
   it('calls API correctly if card status is empty', async () => {
@@ -282,7 +286,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -310,7 +315,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -334,7 +340,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -358,7 +365,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -382,7 +390,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -430,7 +439,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {
@@ -490,7 +500,8 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
-      setSubmittingMock
+      setSubmittingMock,
+      (t) => t
     ).catch(() => {});
 
     await act(async () => {

@@ -11,12 +11,13 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
-import lang from '../../../lang';
+
 import { PlanStatus } from '@opensrp/plan-form-core';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
-const columns = getColumns(lang);
+const defaultT = (t: string) => t;
+const columns = getColumns(defaultT);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -280,7 +281,7 @@ describe('List view Page', () => {
     });
 
     // click on sort twice to change the order if its date col
-    expect(wrapper.find('thead tr th').at(1).text()).toEqual(lang.DATE);
+    expect(wrapper.find('thead tr th').at(1).text()).toEqual('Date created');
 
     wrapper.find('thead tr th').at(1).simulate('click');
     wrapper.update();
@@ -342,9 +343,9 @@ describe('List view Page', () => {
 
   // test pageTitleBuilder
 
-  expect(pageTitleBuilder(PlanStatus.ACTIVE)).toEqual('Active Missions');
-  expect(pageTitleBuilder(PlanStatus.DRAFT)).toEqual('Draft Missions');
-  expect(pageTitleBuilder(PlanStatus.COMPLETE)).toEqual('Complete Missions');
-  expect(pageTitleBuilder(PlanStatus.RETIRED)).toEqual('Retired Missions');
-  expect(pageTitleBuilder()).toEqual('');
+  expect(pageTitleBuilder(defaultT, PlanStatus.ACTIVE)).toEqual('Active Missions');
+  expect(pageTitleBuilder(defaultT, PlanStatus.DRAFT)).toEqual('Draft Missions');
+  expect(pageTitleBuilder(defaultT, PlanStatus.COMPLETE)).toEqual('Complete Missions');
+  expect(pageTitleBuilder(defaultT, PlanStatus.RETIRED)).toEqual('Retired Missions');
+  expect(pageTitleBuilder(defaultT)).toEqual('');
 });

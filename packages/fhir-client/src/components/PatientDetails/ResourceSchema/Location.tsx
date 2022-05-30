@@ -1,5 +1,6 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { get } from 'lodash';
+import type { TFunction } from '@opensrp/i18n';
 import { getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 
 export const parseLocation = (obj: ILocation) => {
@@ -18,23 +19,23 @@ export type LocationTableData = ReturnType<typeof parseLocation>;
 
 export const nameSorterFn = sorterFn('name');
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Name',
+    title: t('Name'),
     dataIndex: 'name',
     editable: true,
     sorter: nameSorterFn,
   },
   {
-    title: 'City',
+    title: t('City'),
     dataIndex: 'city',
   },
   {
-    title: 'State',
+    title: t('State'),
     dataIndex: 'state',
   },
   {
-    title: 'Country',
+    title: t('Country'),
     dataIndex: 'country',
   },
 ];

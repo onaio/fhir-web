@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BrokenPage, SearchForm, TableLayout, intlFormatDateStrings } from '@opensrp/react-utils';
+import { BrokenPage, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   questionnaireResourceType,
   QUEST_FORM_VIEW_URL,
@@ -13,27 +13,14 @@ import { PageHeader, Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { ParsedQuestionnaire, parseQuestionnaire } from '@opensrp/fhir-resources';
+import { useTranslation } from '../mls';
+import type { TFunction } from '@opensrp/i18n';
 import './index.css';
 
 /** props for the PlansList view */
 interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
-
-/**
- * component rendered in the action column of the table
- *
- * @param record - each data item
- */
-export const ActionsColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
-  record: IQuestionnaire
-) => {
-  return (
-    <>
-      <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>View Questionnaire Responses</Link>
-    </>
-  );
-};
 
 export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
   record: IQuestionnaire
@@ -50,34 +37,43 @@ export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
 /**
  * generates columns for questionnaire rendering component
  *
+ * @param t - translator function
  */
-export const getColumns = (): Column<ParsedQuestionnaire>[] => {
+export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
   const columns: Column<ParsedQuestionnaire>[] = [
     {
-      title: 'Name/Id',
+      title: t('Name/Id'),
       render: NamesColumnCustomRender,
       width: '20%',
     },
     {
-      title: 'Status',
+      title: t('Status'),
       dataIndex: 'status' as const,
     },
     {
-      title: 'Publisher',
+      title: t('Publisher'),
       dataIndex: 'publisher' as const,
     },
     {
-      title: 'Version',
+      title: t('Version'),
       dataIndex: 'version' as const,
     },
     {
-      title: 'date',
+      title: t('date'),
       dataIndex: 'date' as const,
-      render: (value) => intlFormatDateStrings(value),
+      render: (value) => t('{{val, datetime}}', { val: new Date(value) }),
     },
     {
-      title: 'Actions',
-      render: ActionsColumnCustomRender,
+      title: t('Actions'),
+      render: (record: IQuestionnaire) => {
+        return (
+          <>
+            <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>
+              {t('View Questionnaire Responses')}
+            </Link>
+          </>
+        );
+      },
       width: '20%',
     },
   ];
@@ -91,6 +87,8 @@ export const getColumns = (): Column<ParsedQuestionnaire>[] => {
  */
 const QuestionnaireList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
+  // const t = t => t;
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView(
     fhirBaseURL,
@@ -98,7 +96,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
   );
   const { data, isFetching, isLoading, error } = queryValues;
 
-  const columns = getColumns();
+  const columns = getColumns(t);
   const dataSource = ((data?.records ?? []) as IQuestionnaire[]).map(parseQuestionnaire);
   const tableProps = {
     datasource: dataSource,
@@ -110,7 +108,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
-  const pageTitle = 'Questionnaire list view';
+  const pageTitle = t('Questionnaire list view');
 
   return (
     <div className="content-section fhir-resource-container">
@@ -126,7 +124,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
             <Link to={'#'}>
               <Button type="primary" disabled={true}>
                 <PlusOutlined />
-                Create questionnaire
+                {t('Create questionnaire')}
               </Button>
             </Link>
           </div>

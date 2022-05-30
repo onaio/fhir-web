@@ -2,7 +2,7 @@ import React from 'react';
 import { Radio, Popconfirm } from 'antd';
 import { PlanStatus, planStatusDisplay, status } from '@opensrp/plan-form-core';
 import { FormInstance } from 'antd/lib/form';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { PlanFormFields } from '../../helpers/types';
 import { PopconfirmProps } from 'antd/lib/popconfirm';
 
@@ -30,12 +30,17 @@ export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
     assignedJurisdictions,
     ...rest
   } = props;
+  const { t } = useTranslation();
 
   const popUpConfirmationMessageLookup = {
-    [PlanStatus.DRAFT]: lang.SETTING_STATUS_TO_DRAFT,
-    [PlanStatus.ACTIVE]: lang.SETTING_STATUS_TO_ACTIVE,
-    [PlanStatus.COMPLETE]: lang.SETTING_STATUS_TO_COMPLETE,
-    [PlanStatus.RETIRED]: lang.SETTING_STATUS_TO_RETIRED,
+    [PlanStatus.DRAFT]: t('Are you sure? status will be set to draft'),
+    [PlanStatus.ACTIVE]: t("Are you sure? you won't be able to change the status back to draft"),
+    [PlanStatus.COMPLETE]: t(
+      "Are you sure? you won't be able to change the status for complete plans"
+    ),
+    [PlanStatus.RETIRED]: t(
+      "Are you sure? you won't be able to change the status for retired plans"
+    ),
   };
 
   return (
@@ -54,16 +59,16 @@ export const PlanStatusRenderer = (props: PlanStatusRendererProps) => {
               setFieldsValue({ [status]: e[1] });
             },
             onCancel: () => void 0,
-            okText: lang.YES,
-            cancelText: lang.NO,
+            okText: t('yes'),
+            cancelText: t('no'),
           };
           let additionalRadioClassName = '';
 
           if (e[1] === PlanStatus.ACTIVE && assignedJurisdictions?.length === 0) {
             // change onConfirm to do nothing, and hide cancelButton, change popup title
             popConfirmProps = {
-              title: lang.CANNOT_ACTIVATE_PLAN_WITH_NO_JURISDICTIONS,
-              okText: lang.OK,
+              title: t('Assign jurisdictions to the Plan, to enable activating it'),
+              okText: t('OK'),
               cancelButtonProps: {
                 style: { display: 'none' },
               },

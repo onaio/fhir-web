@@ -20,15 +20,14 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "bugs": {
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.19.5",
-    "i18next": "^21.6.14",
     "react": "^16.18.1",
     "react-query": "^3.34.19",
     "react-redux": "^7.2.8"

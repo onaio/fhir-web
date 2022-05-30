@@ -9,7 +9,7 @@ import {
 import { getFetchOptions } from '@opensrp/server-service';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { MoreOutlined } from '@ant-design/icons';
-import lang from '../../../lang';
+import { useTranslation } from '../../../mls';
 
 /** interface for component props */
 export interface TableActionsProps {
@@ -28,21 +28,20 @@ export const onDownloadClick = (
   isJsonValidator: boolean,
   customFetchOptions?: typeof getFetchOptions
 ) => {
-  downloadManifestFile(
+  return downloadManifestFile(
     accessToken,
     opensrpBaseURL,
     OPENSRP_FORMS_ENDPOINT,
     file,
     isJsonValidator,
     customFetchOptions
-  ).catch((_: Error) => {
-    sendErrorNotification(lang.ERROR_OCCURRED);
-  });
+  );
 };
 
 const TableActions = (props: TableActionsProps): JSX.Element => {
   const { file, uploadFileURL, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions } =
     props;
+  const { t } = useTranslation();
 
   const menu = (
     <Menu>
@@ -50,10 +49,18 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         <Button
           type="link"
           onClick={() =>
-            onDownloadClick(file, accessToken, opensrpBaseURL, isJsonValidator, customFetchOptions)
+            onDownloadClick(
+              file,
+              accessToken,
+              opensrpBaseURL,
+              isJsonValidator,
+              customFetchOptions
+            ).catch(() => {
+              sendErrorNotification(t('An error occurred'));
+            })
           }
         >
-          {lang.DOWNLOAD}
+          {t('Download')}
         </Button>
       </Menu.Item>
     </Menu>
@@ -62,7 +69,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
   return (
     <>
       <Link to={`${uploadFileURL}/${file.id}`} key="actions">
-        {lang.EDIT}
+        {t('Edit')}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu}>

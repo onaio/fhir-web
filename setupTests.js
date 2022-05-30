@@ -8,11 +8,7 @@ import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/naming-convention */
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import { setLogger } from 'react-query';
-
-const configuredLanguage = `en_core`;
 
 jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => {
@@ -24,35 +20,10 @@ jest.mock('fhirclient', () => ({
   }),
 }));
 
-i18n
-  .use(initReactI18next)
-  .init({
-    lng: configuredLanguage,
-    fallbackLng: configuredLanguage,
-    interpolation: { escapeValue: false },
-    returnEmptyString: false,
-    nsSeparator: '::',
-    resources: {
-      en_core: {
-        translation: {
-          key: 'hello world',
-        },
-      },
-    },
-    keySeparator: false,
-    react: {
-      useSuspense: false,
-    },
-  })
-  .catch((err) => err);
-
-// force i18n to be initialized
-i18n.changeLanguage(configuredLanguage).catch((err) => err);
-
 setAllConfigs({
-  i18n: i18n,
-  projectLanguageCode: 'core',
+  projectCode: 'core',
   TablesState: {},
+  languageCode: 'en',
 });
 
 global.fetch = require('jest-fetch-mock');

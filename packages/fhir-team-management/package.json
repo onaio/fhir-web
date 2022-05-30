@@ -19,8 +19,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
   },
   "jest": {
     "automock": false,
@@ -43,13 +42,12 @@
   },
   "devDependencies": {
     "@smile-cdr/fhirts": "1.2.5",
-    "@types/uuid": "8.3.1",
-    "i18next-parser": "^3.5.0"
+    "@types/uuid": "8.3.1"
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "@opensrp/store": "^0.0.10",
     "antd": "^4.8.2",
-    "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-query": "^3.15.1",

@@ -26,7 +26,7 @@ keys = [
     "/react/app/enable/language/switcher",
     "/react/app/supported/languages",
     "/react/app/enable/inventory",
-    "/react/app/project/language/code",
+    "/react/app/project/code",
     "/react/app/language/code",
     "/react/app/enable/form/configuration",
     "/react/app/enable/product/catalogue",

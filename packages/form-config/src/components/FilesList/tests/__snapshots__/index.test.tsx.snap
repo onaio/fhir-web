@@ -18,11 +18,11 @@ Object {
       "accessor": "identifier",
     },
     Object {
-      "Header": "File Name",
+      "Header": "File name",
       "accessor": "label",
     },
     Object {
-      "Header": "File Version",
+      "Header": "File version",
       "accessor": "version",
       "maxWidth": 100,
     },
@@ -101,11 +101,11 @@ Object {
       "accessor": "identifier",
     },
     Object {
-      "Header": "File Name",
+      "Header": "File name",
       "accessor": "label",
     },
     Object {
-      "Header": "File Version",
+      "Header": "File version",
       "accessor": "version",
       "maxWidth": 100,
     },

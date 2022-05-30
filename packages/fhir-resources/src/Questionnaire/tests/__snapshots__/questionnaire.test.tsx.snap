@@ -80,7 +80,7 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -97,7 +97,7 @@ exports[`Questionnaire profile view renders correctly: questionnaire details key
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -133,14 +133,12 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   <span
     class="ant-tag ant-tag-default"
   >
-    linkId: 
-    /G1
+    linkId: /G1
   </span>
   <span
     class="ant-tag ant-tag-default"
   >
-    type: 
-    group
+    type: group
   </span>
 </li>
 `;
@@ -159,14 +157,12 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   <span
     class="ant-tag ant-tag-default"
   >
-    linkId: 
-    /G1/Q1
+    linkId: /G1/Q1
   </span>
   <span
     class="ant-tag ant-tag-default"
   >
-    type: 
-    string
+    type: string
   </span>
 </li>
 `;
@@ -185,14 +181,12 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   <span
     class="ant-tag ant-tag-default"
   >
-    linkId: 
-    /G1/Q2
+    linkId: /G1/Q2
   </span>
   <span
     class="ant-tag ant-tag-default"
   >
-    type: 
-    string
+    type: string
   </span>
 </li>
 `;
@@ -211,14 +205,12 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   <span
     class="ant-tag ant-tag-default"
   >
-    linkId: 
-    /G1/Q3
+    linkId: /G1/Q3
   </span>
   <span
     class="ant-tag ant-tag-default"
   >
-    type: 
-    date
+    type: date
   </span>
 </li>
 `;
@@ -303,7 +295,7 @@ exports[`no items edge case: questionnaire meta 5`] = `
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -320,7 +312,7 @@ exports[`no items edge case: questionnaire meta 6`] = `
   <dd
     class="keyValueGrid-pair__value"
   >
-    2020-04-11T22:01:37.262Z
+    4/11/2020
   </dd>
 </div>
 `;
@@ -393,14 +385,12 @@ exports[`view details show when available: questionnaire items preview 1`] = `
     <span
       class="ant-tag ant-tag-default"
     >
-      linkId: 
-      /G1/Q4
+      linkId: /G1/Q4
     </span>
     <span
       class="ant-tag ant-tag-default"
     >
-      type: 
-      choice
+      type: choice
     </span>
   </li>
   <li>

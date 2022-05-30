@@ -38,7 +38,8 @@ import {
   PLANS_ENDPOINT,
   POST_ASSIGNMENTS_ENDPOINT,
 } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from '@opensrp/i18n';
 import { processRawAssignments } from '../../ducks/assignments/utils';
 
 const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
@@ -82,11 +83,13 @@ interface TeamAssignmentViewProps extends RouteComponentProps<RouteParams> {
  * @param opensrpBaseURL - OpenSRP API base URL
  * @param pageNumber - paginated page number
  * @param pageSize - number of orgs in each page
+ * @param t - translator function
  */
 async function fetchOrgs(
   opensrpBaseURL: string,
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  t: TFunction
 ): Promise<Organization[]> {
   // pagination params
   const paginationParams = {
@@ -99,7 +102,7 @@ async function fetchOrgs(
     const getOrgs = await organizationsService.list(paginationParams);
     return getOrgs;
   } catch (_) {
-    sendErrorNotification(lang.ERROR_OCCURRED);
+    sendErrorNotification(t('An error occurred'));
     return [];
   }
 }
@@ -109,11 +112,13 @@ async function fetchOrgs(
  *
  * @param opensrpBaseURL - OpenSRP API base URL
  * @param pageSize - number of orgs in each page
+ * @param t - translator function
  * @returns {Promise<Organization[]>} - an array of all orgs in a paginated endpoint
  */
 async function fetchOrgsRecursively(
   opensrpBaseURL: string,
-  pageSize: number
+  pageSize: number,
+  t: TFunction
 ): Promise<Organization[]> {
   const serve = new OpenSRPService(ORGANIZATION_COUNT_ENDPOINT, opensrpBaseURL);
   const teamsCount: number = await serve.list();
@@ -124,7 +129,7 @@ async function fetchOrgsRecursively(
   // compose a promise array to resolve in parallel
   const promises: (() => Promise<Organization[]>)[] = [];
   for (let pageNumber = 1; pageNumber <= maxPageNo; pageNumber++) {
-    promises.push(() => fetchOrgs(opensrpBaseURL, pageNumber, pageSize));
+    promises.push(() => fetchOrgs(opensrpBaseURL, pageNumber, pageSize, t));
   }
 
   // fetch orgs recursively according to page numbers
@@ -157,7 +162,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   );
   const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
-  const columns = columnsFactory(lang);
+  const { t } = useTranslation();
+  const columns = columnsFactory(t);
 
   React.useEffect(() => {
     if (loading) {
@@ -185,7 +191,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         });
 
       // fetch all organizations (pagination enabled)
-      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000).then(
+      const organizationsPromise = fetchOrgsRecursively(opensrpBaseURL, 1000, t).then(
         (orgs: Organization[]) => {
           dispatch(fetchOrganizationsAction(orgs));
         }
@@ -193,7 +199,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
           setApiError(true);
         })
         .finally(() => {
@@ -277,28 +283,30 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.TEAM_ASSIGNMENT_PAGE_TITLE}</title>
+        <title>{t('Team Assignment')}</title>
       </Helmet>
-      <PageHeader title={lang.TEAM_ASSIGNMENT_PAGE_TITLE} className="page-header"></PageHeader>
+      <PageHeader title={t('Team Assignment')} className="page-header"></PageHeader>
       <Modal
         destroyOnClose={true}
-        title={`Assign/Unassign Teams | ${assignedLocAndTeams?.locationName}`}
+        title={t('Assign/Unassign Teams | {{locationName}}', {
+          locationName: assignedLocAndTeams?.locationName,
+        })}
         visible={visible}
         onCancel={handleCancel}
-        okText={lang.SAVE}
-        cancelText={lang.CANCEL}
+        okText={t('Save')}
+        cancelText={t('Cancel')}
         footer={[
           <Button type="primary" form="teamAssignment" key="submit" htmlType="submit">
-            {lang.SAVE}
+            {t('Save')}
           </Button>,
           <Button
-            id={lang.CANCEL}
+            id={t('Cancel')}
             key="cancel"
             onClick={() => {
               handleCancel();
             }}
           >
-            {lang.CANCEL}
+            {t('Cancel')}
           </Button>,
         ]}
         okType="default"
@@ -319,7 +327,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
               serve
                 .create(payload)
                 .then(() => {
-                  sendSuccessNotification(lang.SUCCESSFULLY_ASSIGNED_TEAMS);
+                  sendSuccessNotification(t('Successfully Assigned Teams'));
                   setVisible(false);
                   setLoading(true);
                 })
@@ -329,12 +337,12 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             }}
             initialValues={{ assignTeams: assignedLocAndTeams?.assignedTeams }}
           >
-            <Form.Item label={lang.TEAMS} name="assignTeams">
+            <Form.Item label={t('Teams')} name="assignTeams">
               <Select
                 mode="multiple"
                 allowClear
                 showSearch
-                placeholder={lang.ENTER_TEAM_NAME}
+                placeholder={t('Enter a Team name')}
                 optionFilterProp="children"
                 filterOption={filterFunction}
               >
@@ -367,9 +375,9 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
             datasource={tableData}
             columns={columns}
             actions={{
-              title: lang.ACTIONS,
+              title: t('Actions'),
               width: '20%',
-              render: ActionsColumnCustomRender,
+              render: ActionsColumnCustomRender(t),
             }}
           />
         </Col>

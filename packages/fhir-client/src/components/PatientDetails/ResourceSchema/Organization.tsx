@@ -3,6 +3,7 @@ import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrgani
 import { get } from 'lodash';
 import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseOrganization = (obj: IOrganization) => {
   return {
@@ -16,22 +17,22 @@ export type CarePlanTableData = ReturnType<typeof parseOrganization>;
 
 const nameSorterFn = sorterFn('name');
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Name',
+    title: t('Name'),
     dataIndex: 'name',
     editable: true,
     sorter: nameSorterFn,
   },
   {
-    title: 'Type',
+    title: t('Type'),
     dataIndex: 'type',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'active',
     render: (value: boolean) => (value === true ? 'Active' : 'Inactive'),
   },

@@ -15,7 +15,6 @@ import * as formConfigCore from '@opensrp/form-config-core';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
-import lang from '../../../lang';
 
 const { draftReducer, draftReducerName, getAllManifestDraftFilesArray, removeManifestDraftFiles } =
   formConfigCore;
@@ -195,7 +194,7 @@ describe('components/DraftFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('API is down', { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();
@@ -255,7 +254,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

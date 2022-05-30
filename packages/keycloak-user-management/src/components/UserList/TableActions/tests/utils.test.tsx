@@ -2,7 +2,7 @@ import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { deleteUser } from '../utils';
-import lang from '../../../../lang';
+
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
@@ -60,7 +60,7 @@ describe('components/UserList/utils/deleteUser', () => {
     const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
     fetch.mockResponseOnce(JSON.stringify(practitioner));
 
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, (t) => t).catch(
       () => 'obligatory catch'
     );
 
@@ -106,7 +106,7 @@ describe('components/UserList/utils/deleteUser', () => {
   it('handles API error when calling the deletion endpoint', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockRejectOnce(new Error('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, (t) => t).catch(
       () => 'obligatory catch'
     );
 
@@ -114,13 +114,13 @@ describe('components/UserList/utils/deleteUser', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 
   it('handles API error when calling the fetch endpoints', async () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.once(JSON.stringify([])).mockRejectOnce(new Error('API is down'));
-    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId).catch(
+    deleteUser(removeUsersMock, keycloakBaseURL, opensrpBaseURL, userId, (t) => t).catch(
       () => 'obligatory catch'
     );
 
@@ -143,6 +143,6 @@ describe('components/UserList/utils/deleteUser', () => {
     ]);
 
     expect(removeUsersMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });

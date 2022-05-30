@@ -11,7 +11,8 @@ import {
 } from '@opensrp/notifications';
 import { OrganizationPOST } from '../../ducks/organizations';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from '@opensrp/i18n';
 
 const layout = { labelCol: { span: 8 }, wrapperCol: { span: 11 } };
 const offsetLayout = { wrapperCol: { offset: 8, span: 11 } };
@@ -34,13 +35,13 @@ interface Props {
 /**
  * Handle form submission
  *
- * @param {string} opensrpBaseURL - base url
- * @param {Function} setIsSubmitting function to set IsSubmitting loading process
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
- * @param {object} initialValue initialValue of form fields
- * @param {object} values value of form fields
- * @param {string} id id of the team
- * @param {Lang} langObj - the translation string lookup
+ * @param opensrpBaseURL - base url
+ * @param setIsSubmitting function to set IsSubmitting loading process
+ * @param practitioner list of practitioner to filter the selected one from
+ * @param initialValue initialValue of form fields
+ * @param values value of form fields
+ * @param t - the translation string lookup
+ * @param id id of the team
  */
 export function onSubmit(
   opensrpBaseURL: string,
@@ -48,8 +49,8 @@ export function onSubmit(
   practitioner: Practitioner[],
   initialValue: FormField,
   values: FormField,
-  id?: string,
-  langObj: Lang = lang
+  t: TFunction,
+  id?: string
 ) {
   setIsSubmitting(true);
   const Teamid = id ?? v4();
@@ -69,28 +70,28 @@ export function onSubmit(
     },
   };
 
-  setTeam(opensrpBaseURL, payload, id)
+  setTeam(opensrpBaseURL, payload, t, id)
     .then(async () => {
       // Filter and seperate the practitioners uuid
       const toAdd = values.practitioners.filter((val) => !initialValue.practitioners.includes(val));
       const toRem = initialValue.practitioners.filter((val) => !values.practitioners.includes(val));
 
-      await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid);
+      await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid, t);
       history.goBack();
     })
-    .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED))
+    .catch(() => sendErrorNotification(t('An error occurred')))
     .finally(() => setIsSubmitting(false));
 }
 
 /**
  * handle Practitioners
  *
- * @param {string} opensrpBaseURL - base url
- * @param {Practitioner} practitioner list of practitioner to filter the selected one from
- * @param {Array<string>} toAdd list of practitioner uuid to add
- * @param {Array<string>} toRemove list of practitioner uuid to remove
- * @param {string} id id of the team
- * @param {Lang} langObj - the translation string lookup
+ * @param opensrpBaseURL - base url
+ * @param practitioner list of practitioner to filter the selected one from
+ * @param toAdd list of practitioner uuid to add
+ * @param toRemove list of practitioner uuid to remove
+ * @param id id of the team
+ * @param t - the translation string lookup
  */
 async function SetPractitioners(
   opensrpBaseURL: string,
@@ -98,16 +99,16 @@ async function SetPractitioners(
   toAdd: string[],
   toRemove: string[],
   id: string,
-  langObj: Lang = lang
+  t: TFunction
 ) {
-  sendInfoNotification(langObj.MSG_ASSIGN_PRACTITIONERS);
+  sendInfoNotification(t('Assigning Practitioners'));
 
   // Api Call to delete practitioners
   toRemove.forEach((prac) => {
     const serve = new OpenSRPService(PRACTITIONER_DEL, opensrpBaseURL);
     serve
       .delete({ practitioner: `${prac}`, organization: id })
-      .catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
+      .catch(() => sendErrorNotification(t('An error occurred')));
   });
 
   // Api Call to add practitioners
@@ -123,34 +124,34 @@ async function SetPractitioners(
   });
   if (toAdd.length) {
     const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
-    await serve.create(payload).catch(() => sendErrorNotification(langObj.ERROR_OCCURRED));
+    await serve.create(payload).catch(() => sendErrorNotification(t('An error occurred')));
   }
 
-  sendSuccessNotification(langObj.MSG_ASSIGN_PRACTITONERS_SUCCESS);
+  sendSuccessNotification(t('Successfully Assigned Practitioners'));
 }
 
 /**
  * Function to make teams API call
  *
- * @param {string} opensrpBaseURL - base url
- * @param {OrganizationPOST} payload payload To send
- * @param {string} id of the team if already created
- * @param {Lang} langObj - the translation string lookup
+ * @param opensrpBaseURL - base url
+ * @param payload payload To send
+ * @param t - the translator function
+ * @param id of the team if already created
  */
 export async function setTeam(
   opensrpBaseURL: string,
   payload: OrganizationPOST,
-  id?: string,
-  langObj: Lang = lang
+  t: TFunction,
+  id?: string
 ) {
   if (id) {
     const serve = new OpenSRPService(TEAMS_PUT + id, opensrpBaseURL);
     await serve.update(payload);
-    sendSuccessNotification(langObj.MSG_TEAMS_UPDATE_SUCCESS);
+    sendSuccessNotification(t('Successfully Updated Teams'));
   } else {
     const serve = new OpenSRPService(TEAMS_POST, opensrpBaseURL);
     await serve.create(payload);
-    sendSuccessNotification(langObj.MSG_TEAMS_ADD_SUCCESS);
+    sendSuccessNotification(t('Successfully Added Teams'));
   }
 }
 
@@ -162,6 +163,7 @@ export const Form: React.FC<Props> = ({
   disableTeamMemberReassignment,
 }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { t } = useTranslation();
   const initialValue = initialValueProp ?? {
     active: true,
     name: '',
@@ -202,30 +204,30 @@ export const Form: React.FC<Props> = ({
       requiredMark={false}
       {...layout}
       onFinish={(values) =>
-        onSubmit(opensrpBaseURL, setIsSubmitting, practitioners, initialValue, values, id)
+        onSubmit(opensrpBaseURL, setIsSubmitting, practitioners, initialValue, values, t, id)
       }
       initialValues={initialValue}
     >
-      <AntdForm.Item name="name" label={lang.TEAM_NAME}>
-        <Input placeholder={lang.ENTER_TEAM_NAME} />
+      <AntdForm.Item name="name" label={t('Team Name')}>
+        <Input placeholder={t('Enter a team name')} />
       </AntdForm.Item>
 
-      <AntdForm.Item name="active" label={lang.STATUS}>
+      <AntdForm.Item name="active" label={t('Status')}>
         <Radio.Group>
-          <Radio value={true}>{lang.ACTIVE}</Radio>
-          <Radio value={false}>{lang.INACTIVE}</Radio>
+          <Radio value={true}>{t('Active')}</Radio>
+          <Radio value={false}>{t('Inactive')}</Radio>
         </Radio.Group>
       </AntdForm.Item>
 
       <AntdForm.Item
         name="practitioners"
-        label={lang.TEAM_MEMBERS}
-        tooltip={lang.TIP_REQUIRED_FIELD}
+        label={t('Team Members')}
+        tooltip={t('This is a required field')}
       >
         <Select
           allowClear
           mode="multiple"
-          placeholder={lang.SELECT_PRACTITIONER}
+          placeholder={t('Select users (practitioners only)')}
           showSearch
           optionFilterProp="children"
           filterOption={filterFunction}
@@ -240,10 +242,10 @@ export const Form: React.FC<Props> = ({
 
       <AntdForm.Item {...offsetLayout}>
         <Button id="submit" loading={isSubmitting} type="primary" htmlType="submit">
-          {isSubmitting ? lang.SAVING : lang.SAVE}
+          {isSubmitting ? t('Saving') : t('Save')}
         </Button>
         <Button id="cancel" onClick={() => history.goBack()} type="dashed">
-          {lang.CANCEL}
+          {t('Cancel')}
         </Button>
       </AntdForm.Item>
     </AntdForm>

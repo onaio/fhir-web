@@ -13,7 +13,6 @@ import fetch from 'jest-fetch-mock';
 import { notification } from 'antd';
 
 import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
-import lang from '../../../lang';
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   const props = {
@@ -176,7 +175,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: lang.ERROR_OCCURRED,
+      message: 'An error occurred',
     });
   });
 

@@ -9,10 +9,10 @@ import { OpenSRPService } from '../../helpers/dataLoaders';
 import { ActionColumn } from '../TableActionColumn';
 import { PlanDefinition } from '@opensrp/plan-form-core/dist/types';
 import { fetchPlanDefinitions } from '../../ducks/planDefinitions';
-import lang from '../../lang';
 import { ColumnType } from 'antd/lib/table/interface';
 import React from 'react';
 import { ColumnsType } from 'rc-table/lib/interface';
+import type { TFunction } from '@opensrp/i18n';
 
 /** describes antd's table data accessors */
 export interface TableData {
@@ -165,17 +165,17 @@ export const getDataSource = (
 /**
  * non dynamic columns for assignment table component
  *
- * @param langObj - the translation lookup object
+ * @param t - the translator function
  */
-export const staticColumns = (langObj: Dictionary<string> = lang): ColumnsType<TableData> => [
+export const staticColumns = (t: TFunction): ColumnsType<TableData> => [
   {
-    title: langObj.ASSIGNED_AREAS,
+    title: t('Assigned areas'),
     dataIndex: 'jurisdictions',
     key: `${TableColumnsNamespace}-assigned-areas`,
     width: '40%',
   },
   {
-    title: langObj.ASSIGNED_TEAMS,
+    title: t('Assigned teams'),
     dataIndex: 'organizations',
     key: `${TableColumnsNamespace}-assigned-teams`,
     width: '40%',
@@ -194,7 +194,7 @@ export const staticColumns = (langObj: Dictionary<string> = lang): ColumnsType<T
  * @param  plan - the plan
  * @param  baseURL - the base url
  * @param  disableAssignments - whether to enable assignments
- * @param langObj - the translation lookup object
+ * @param t - the translator function
  */
 export const getPlanAssignmentColumns = (
   assignments: Assignment[],
@@ -206,7 +206,7 @@ export const getPlanAssignmentColumns = (
   plan: PlanDefinition,
   baseURL: string,
   disableAssignments: boolean,
-  langObj: Dictionary<string> = lang
+  t: TFunction
 ) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const ActionsColumnCustomRender: ColumnType<TableData>['render'] = (_, __, index: number) => {
@@ -240,12 +240,12 @@ export const getPlanAssignmentColumns = (
 
   const dynamicColumn = [
     {
-      title: langObj.ACTIONS,
+      title: t('Actions'),
       key: `${TableColumnsNamespace}-actions`,
       render: ActionsColumnCustomRender,
       width: '20%',
     },
   ];
-  const columns = [...staticColumns(langObj), ...dynamicColumn];
+  const columns = [...staticColumns(t), ...dynamicColumn];
   return columns;
 };

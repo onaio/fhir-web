@@ -6,7 +6,7 @@ import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
-import lang from '../lang';
+import { useTranslation } from '../mls';
 
 const configs = getAllConfigs();
 
@@ -37,6 +37,7 @@ export const PrivateComponent = (props: ComponentProps) => {
     opensrpBaseURL: configs.opensrpBaseURL,
     fhirBaseURL: configs.fhirBaseURL,
   };
+  const { t } = useTranslation();
   // get current pathname - to be passed as unique key to ConnectedPrivateRoute
   const { pathname } = useLocation();
   const extraData = useSelector((state) => getExtraData(state));
@@ -47,7 +48,12 @@ export const PrivateComponent = (props: ComponentProps) => {
     if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
       return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
     } else {
-      return <UnauthorizedPage title={lang.FORBIDDEN_PAGE_STATUS} />;
+      return (
+        <UnauthorizedPage
+          title={t('403')}
+          errorMessage={t('Sorry, you are not authorized to access this page')}
+        />
+      );
     }
   }
   return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;

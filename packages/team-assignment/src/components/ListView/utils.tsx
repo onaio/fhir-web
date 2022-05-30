@@ -3,7 +3,7 @@ import { get, keyBy } from 'lodash';
 import { Button } from 'antd';
 import moment from 'moment';
 import { Assignment } from '../../ducks/assignments';
-import lang, { Lang } from '../../lang';
+import type { TFunction } from '@opensrp/i18n';
 import { TableData } from '.';
 import { TableColumnsNamespace } from '../../constants';
 import { Column } from '@opensrp/react-utils';
@@ -11,39 +11,42 @@ import { Column } from '@opensrp/react-utils';
 /**
  * component rendered in the action column of the table
  *
- * @param record - table row record
+ * @param t - translator function
  */
-export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
-  return (
-    <>
-      <Button
-        type="link"
-        style={{ padding: '4px 0px' }}
-        onClick={() => {
-          record.setModalVisibility(true);
-          record.setExistingAssignments(record.existingAssignments);
-          record.setAssignedLocAndTeams({
-            locationName: record.locationName,
-            jurisdictionId: record.id,
-            assignedTeams: record.assignedTeamIds,
-          });
-        }}
-      >
-        {lang.EDIT}
-      </Button>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<TableData>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Button
+          type="link"
+          style={{ padding: '4px 0px' }}
+          onClick={() => {
+            record.setModalVisibility(true);
+            record.setExistingAssignments(record.existingAssignments);
+            record.setAssignedLocAndTeams({
+              locationName: record.locationName,
+              jurisdictionId: record.id,
+              assignedTeams: record.assignedTeamIds,
+            });
+          }}
+        >
+          {t('Edit')}
+        </Button>
+      </>
+    );
+  };
 
 /**
  * team assignment table columns factory
  *
- * @param langObj -  the translation string lookup
+ * @param t -  the translator function lookup
  */
-export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
+export const columnsFactory = (t: TFunction): Column<TableData>[] => {
   const columns: Column<TableData>[] = [
     {
-      title: langObj.NAME,
+      title: t('Name'),
       dataIndex: 'locationName',
       key: `${TableColumnsNamespace}-locationName` as keyof TableData,
       defaultSortOrder: 'descend',
@@ -58,7 +61,7 @@ export const columnsFactory = (langObj: Lang = lang): Column<TableData>[] => {
       },
     },
     {
-      title: langObj.ASSIGN_TEAMS,
+      title: t('Assigned Teams'),
       dataIndex: 'assignedTeams',
       key: `${TableColumnsNamespace}-assignedTeams` as keyof TableData,
     },

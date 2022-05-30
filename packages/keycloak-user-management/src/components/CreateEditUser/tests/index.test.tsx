@@ -21,7 +21,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
-import lang from '../../../lang';
+
 import {
   keycloakUser,
   practitioner1,
@@ -389,7 +389,7 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
 

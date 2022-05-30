@@ -9,12 +9,14 @@ import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendSuccessNotification } from '@opensrp/notifications';
+import { useTranslation } from '../../../mls';
+import type { TFunction } from '@opensrp/i18n';
 /**
  * antd notification popup.
  *
  * @param {user} user details object
  */
-export const openNotification = (user: User): void => {
+export const openNotification = (user: User, t: TFunction): void => {
   sendSuccessNotification(`Welcome back, ${user.username}`);
 };
 
@@ -44,6 +46,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
   props: RouteComponentProps
 ) => {
   let pathToRedirectTo = URL_HOME;
+  const { t } = useTranslation();
 
   if (nextIsValid(props)) {
     const searchString = trimStart(props.location.search, '?');
@@ -55,7 +58,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
     }
     if (nextPath === '/') {
       const user = getUser(store.getState());
-      openNotification(user);
+      openNotification(user, t);
     }
   }
   return <Redirect to={pathToRedirectTo} />;

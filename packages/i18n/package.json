@@ -1,0 +1,49 @@
+{
+  "name": "@opensrp/i18n",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "i18n"
+  },
+  "scripts": {
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn rollup -c && yarn run tsc && yarn run copy"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "peerDependencies": {
+    "react": "^16.18.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "private": false,
+  "dependencies": {
+    "@opensrp/pkg-config": "^0.0.9",
+    "i18next": "^21.6.16",
+    "react-i18next": "^11.16.6"
+  },
+  "devDependencies": {
+    "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "rollup": "^2.70.2"
+  }
+}

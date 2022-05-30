@@ -79,7 +79,7 @@ describe('components/forms/CreateTeamForm', () => {
     });
     wrapper.update();
 
-    expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual([`'name' is required`]);
+    expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual([`Name is Required`]);
 
     wrapper.unmount();
   });

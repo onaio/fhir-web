@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View User Group Details works correctly: nominal display 1`] = `"NameGroup NameGroup UUID123-some-group-uuid-456RolesROLE_ONEROLE_TWOROLE_THREEMembersname-1name-2name-3name-4"`;
+exports[`View User Group Details works correctly: nominal display 1`] = `"NameGroup NameGroup uuid123-some-group-uuid-456RolesROLE_ONEROLE_TWOROLE_THREEMembersname-1name-2name-3name-4"`;
 
 exports[`View User Group Details works correctly: space element 1`] = `
 Object {
@@ -26,7 +26,7 @@ Object {
       <p
         className="mb-0 font-weight-bold"
       >
-        Group UUID
+        Group uuid
       </p>
       <p
         className="mb-0"

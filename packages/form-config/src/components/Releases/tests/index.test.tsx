@@ -18,7 +18,6 @@ import toJson from 'enzyme-to-json';
 import fetch from 'jest-fetch-mock';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
-import lang from '../../../lang';
 
 /** register the reducers */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -128,7 +127,7 @@ describe('components/Releases', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

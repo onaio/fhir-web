@@ -15,7 +15,6 @@ import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 import { OpenSRPService } from '@opensrp/server-service';
-import lang from '../../../lang';
 
 /** register the reducers */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -385,7 +384,7 @@ describe('components/UploadForm', () => {
     wrapper.update();
 
     expect(fetch).not.toHaveBeenCalled();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(mockNotificationError).toHaveBeenCalledWith('Error occurred');
     wrapper.unmount();
   });
 });

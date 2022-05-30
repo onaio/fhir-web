@@ -13,7 +13,6 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { opensrpBaseURL, id, intialValue, practitioners } from './fixtures';
 import Form, { onSubmit } from '../Form';
 import { Organization, OrganizationPOST } from '../../../ducks/organizations';
-import lang from '../../../lang';
 
 const mockV4 = 'b0c20f20-c1c0-4ea3-b855-4fcb23f6ae2a';
 
@@ -200,17 +199,24 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: lang.ERROR_OCCURRED,
+      message: 'An error occurred',
     });
   });
 
   it('Create Team', async () => {
-    onSubmit(opensrpBaseURL, jest.fn, practitioners, intialValue, {
-      active: true,
-      name: 'New team name',
-      practitioners: [],
-      practitionersList: [],
-    });
+    onSubmit(
+      opensrpBaseURL,
+      jest.fn,
+      practitioners,
+      intialValue,
+      {
+        active: true,
+        name: 'New team name',
+        practitioners: [],
+        practitionersList: [],
+      },
+      (t) => t
+    );
 
     await act(async () => {
       await flushPromises();
@@ -293,6 +299,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         practitioners: ['2', '3', '4'],
         practitionersList: members,
       },
+      (t) => t,
       id
     );
 
@@ -382,6 +389,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
         practitioners: ['2', '3', '4'],
         practitionersList: members,
       },
+      (t) => t,
       id
     );
 

@@ -31,7 +31,7 @@ import {
   ORGANIZATION_BY_PRACTITIONER,
   UserQueryId,
 } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { RouteComponentProps, useHistory } from 'react-router';
@@ -80,6 +80,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
   } = props;
 
   const history = useHistory();
+  const { t } = useTranslation();
 
   const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
   const [sortedInfo, setSortedInfo] = useState<Dictionary>();
@@ -116,7 +117,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const practitioner: Practitioner | undefined = await serve.read(userId);
       return practitioner;
     } catch (error) {
-      sendErrorNotification(lang.ERROR_OCCURED);
+      sendErrorNotification(t('An error occurred'));
       return undefined;
     }
   };
@@ -128,7 +129,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const organizations: Organization[] = await serve.read(practitionerId);
       return organizations;
     } catch (error) {
-      sendErrorNotification(lang.ERROR_OCCURED);
+      sendErrorNotification(t('An error occurred'));
       return [];
     }
   };
@@ -155,7 +156,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               });
             })
             .catch(() => {
-              sendErrorNotification(lang.ERROR_OCCURED);
+              sendErrorNotification(t('An error occurred'));
             });
         } else {
           setUserDetails({
@@ -166,7 +167,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
         }
       })
       .catch(() => {
-        sendErrorNotification(lang.ERROR_OCCURED);
+        sendErrorNotification(t('An error occurred'));
       });
   };
 
@@ -178,7 +179,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   return (
     <section className="layout-content">
-      <h5 className="mb-3">{lang.USER_MANAGEMENT_PAGE_HEADER}</h5>
+      <h5 className="mb-3">{t('User Management')}</h5>
       <Row className="list-view">
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
@@ -194,14 +195,14 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 onClick={() => history.push(URL_USER_CREATE)}
               >
                 <PlusOutlined />
-                {lang.ADD_USER}
+                {t('Add User')}
               </Button>
             </Space>
           </div>
           <Space>
             <PaginateData<KeycloakUser>
               queryFn={FetchData}
-              onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
+              onError={() => sendErrorNotification(t('An error occurred'))}
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
               queryid={UserQueryId}
@@ -220,7 +221,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               {(tableProps) => (
                 <TableLayout
                   {...tableProps}
-                  columns={getTableColumns(sortedInfo)}
+                  columns={getTableColumns(t, sortedInfo)}
                   dataKeyAccessor="id"
                   // eslint-disable-next-line @typescript-eslint/naming-convention
                   onChange={(_, __, sorter) => setSortedInfo(sorter)}

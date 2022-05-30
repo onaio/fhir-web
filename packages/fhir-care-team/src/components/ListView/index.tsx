@@ -12,7 +12,6 @@ import {
   SearchForm,
   TableLayout,
 } from '@opensrp/react-utils';
-import lang from '../../lang';
 import {
   FHIR_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
@@ -24,6 +23,8 @@ import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+import { useTranslation } from '../../mls';
+import type { TFunction } from '@opensrp/i18n';
 
 // route params for care team pages
 interface RouteParams {
@@ -37,12 +38,16 @@ interface Props {
 
 export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
 
-export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<void> => {
+export const deleteCareTeam = async (
+  fhirBaseURL: string,
+  id: string,
+  t: TFunction
+): Promise<void> => {
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
   return serve
     .delete(id)
-    .then(() => sendSuccessNotification(lang.CARE_TEAM_DELETE_SUCCESS))
-    .catch(() => sendErrorNotification(lang.ERROR_OCCURRED));
+    .then(() => sendSuccessNotification(t('Successfully Deleted Care Team')))
+    .catch(() => sendErrorNotification(t('An error occurred')));
 };
 
 /**
@@ -53,6 +58,7 @@ export const deleteCareTeam = async (fhirBaseURL: string, id: string): Promise<v
  */
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
 
   const { careTeamId: resourceId } = useParams<RouteParams>();
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<ICareTeam>(
@@ -76,12 +82,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
 
   const columns = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name' as const,
       editable: true,
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       width: '10%',
 
       // eslint-disable-next-line react/display-name
@@ -89,7 +95,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <span className="d-flex align-items-center">
           <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              {t('Edit')}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -98,16 +104,16 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
               <Menu className="menu">
                 <Menu.Item key="delete">
                   <Popconfirm
-                    title={lang.CONFIRM_DELETE}
-                    okText={lang.YES}
-                    cancelText={lang.NO}
+                    title={t('Are you sure you want to delete this Care Team?')}
+                    okText={t('Yes')}
+                    cancelText={t('No')}
                     onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id);
+                      await deleteCareTeam(fhirBaseURL, record.id, t);
                       await refetch();
                     }}
                   >
                     <Button danger type="link" style={{ color: '#' }}>
-                      Delete
+                      {t('Delete')}
                     </Button>
                   </Popconfirm>
                 </Menu.Item>
@@ -137,9 +143,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   return (
     <div className="content-section">
       <Helmet>
-        <title>{lang.CARE_TEAM_PAGE_HEADER}</title>
+        <title>{t('FHIR Care Team')}</title>
       </Helmet>
-      <PageHeader title={lang.CARE_TEAM_PAGE_HEADER} className="page-header" />
+      <PageHeader title={t('FHIR Care Team')} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -147,7 +153,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
                 <PlusOutlined />
-                {lang.CREATE_CARE_TEAM}
+                {t('Create Care Team')}
               </Button>
             </Link>
           </div>

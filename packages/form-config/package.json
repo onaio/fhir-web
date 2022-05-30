@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,8 +20,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore **/*.test.ts,**/*.test.tsx,**/tests,**/__tests__"
   },
   "jest": {
     "automock": false,
@@ -35,7 +33,6 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
-    "i18next": "^19.8.4",
     "react": "^16.8.6",
     "react-redux": "^7.1.0",
     "react-router": "^5.2.1",
@@ -64,8 +61,7 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
-    "@types/react-table": "^7.0.25",
-    "i18next-parser": "^3.5.0"
+    "@types/react-table": "^7.0.25"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0"

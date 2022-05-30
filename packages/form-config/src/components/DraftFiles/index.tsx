@@ -22,7 +22,6 @@ import { Redirect } from 'react-router';
 import { Cell } from 'react-table';
 import { Link } from 'react-router-dom';
 import { GetAccessTokenType } from '@opensrp/server-service';
-import lang from '../../lang';
 import type { Dictionary } from '@onaio/utils';
 
 /** Register reducer */
@@ -100,16 +99,10 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
   };
 
   useEffect(() => {
-    fetchDrafts(
-      accessToken,
-      baseURL,
-      fetchDraftFiles,
-      setLoading,
-      displayAlertError,
-      endpoint,
-      undefined,
-      getPayload
-    );
+    setLoading(true);
+    fetchDrafts(accessToken, baseURL, fetchDraftFiles, endpoint, undefined, getPayload)
+      .catch((err) => displayAlertError(err.message))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchDraftFiles, accessToken]);
 
@@ -237,11 +230,10 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
               baseURL,
               clearDraftFiles,
               setIfDoneHere,
-              displayAlertError,
               manifestEndPoint,
               undefined,
               getPayload
-            )
+            ).catch(() => displayAlertError('An error occurred'))
           }
         >
           {makeReleaseLabel}
@@ -254,21 +246,21 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
 /** declear default props */
 const defaultProps: DraftsDefaultProps = {
   clearDraftFiles: removeManifestDraftFiles,
-  createdAt: lang.CREATED_AT,
+  createdAt: 'Created at',
   data: [],
   debounceTime: 1000,
-  downloadLabel: lang.DOWNLOAD,
+  downloadLabel: `Download`,
   drillDownProps: {
     paginate: false,
   },
   fetchDraftFiles: fetchManifestDraftFiles,
-  fileNameLabel: lang.FILE_NAME,
-  fileVersionLabel: lang.FILE_VERSION,
-  identifierLabel: lang.IDENTIFIER,
-  makeReleaseLabel: lang.MAKE_RELEASE,
-  moduleLabel: lang.MODULE,
-  placeholder: lang.FIND_DRAFT_FILES,
-  uploadFileLabel: lang.UPLOAD_NEW_FILE,
+  fileNameLabel: `File Name`,
+  fileVersionLabel: `File Version`,
+  identifierLabel: `Identifier`,
+  makeReleaseLabel: `Make Release`,
+  moduleLabel: 'Module',
+  placeholder: `Find Draft Files`,
+  uploadFileLabel: `Upload New File`,
   accessToken: '',
 };
 

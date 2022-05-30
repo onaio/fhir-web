@@ -14,6 +14,7 @@ import {
   TreeNode,
   locationTreeStateDucks,
 } from '@opensrp/fhir-location-management';
+import { useTranslation } from '../../mls';
 
 const { reducerName, reducer, setSelectedNode, getSelectedNode } = locationTreeStateDucks;
 
@@ -28,6 +29,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
   const { fhirBaseURL, fhirRootLocationIdentifier } = props;
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
@@ -77,7 +79,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     tableNodes = [selectedNode, ...sortedNodes];
   }
 
-  const pageTitle = 'Team Assignment';
+  const pageTitle = t('Team Assignment');
   return (
     <section className="layout-content">
       <Helmet>

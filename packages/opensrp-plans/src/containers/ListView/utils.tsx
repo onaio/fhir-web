@@ -4,34 +4,35 @@ import { Link } from 'react-router-dom';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import { Dictionary } from '@onaio/utils';
-import lang from '../../lang';
 import { Column } from '@opensrp/react-utils';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * component rendered in the action column of the table
  *
- * @param record record representing the active record
+ * @param t - the translator function
  */
-export const ActionsColumnCustomRender: Column<PlanDefinition>['render'] = (
-  record: PlanDefinition
-) => {
-  return (
-    <>
-      {/* Assumes the record status is in the routes */}
-      <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{lang.VIEW}</Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<PlanDefinition>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record: PlanDefinition) => {
+    return (
+      <>
+        {/* Assumes the record status is in the routes */}
+        <Link to={`${URL_MISSIONS}/${record.status}/${record.identifier}`}>{t('View')}</Link>
+      </>
+    );
+  };
 
 /**
  * generates columns for plan list component
  *
- * @param langObj - the language object
+ * @param t - the translator function
  */
-export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefinition>[] => {
+export const getColumns = (t: TFunction): Column<PlanDefinition>[] => {
   const columns: Column<PlanDefinition>[] = [
     {
-      title: langObj.NAME,
+      title: t('Name'),
       dataIndex: 'title',
       key: `${TableColumnsNamespace}-title` as keyof PlanDefinition,
       defaultSortOrder: 'descend',
@@ -46,21 +47,21 @@ export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefin
       width: '60%',
     },
     {
-      title: lang.DATE,
+      title: t('Date created'),
       dataIndex: 'date',
       key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
       sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
     },
     {
-      title: lang.END_DATE,
+      title: t('End Date'),
       dataIndex: 'effectivePeriod',
       key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
       render: (item: Dictionary) => item.end,
     },
     {
-      title: langObj.ACTIONS,
+      title: t('Actions'),
       key: `${TableColumnsNamespace}-actions` as keyof PlanDefinition,
-      render: ActionsColumnCustomRender,
+      render: ActionsColumnCustomRender(t),
       width: '20%',
     },
   ];
@@ -70,23 +71,19 @@ export const getColumns = (langObj: Dictionary<string> = lang): Column<PlanDefin
 /**
  * Util method that determines pageTitle
  *
+ * @param t - dictionary representing lang object
  * @param status - plan status
  * @param appendMissions - whether to add mission title
- * @param langObj - dictionary representing lang object
  */
-export const pageTitleBuilder = (
-  status?: PlanStatus,
-  appendMissions = true,
-  langObj: Dictionary<string> = lang
-) => {
+export const pageTitleBuilder = (t: TFunction, status?: PlanStatus, appendMissions = true) => {
   const stringByStatus = {
-    [PlanStatus.DRAFT]: langObj.DRAFT,
-    [PlanStatus.RETIRED]: langObj.RETIRED,
-    [PlanStatus.ACTIVE]: langObj.ACTIVE,
-    [PlanStatus.COMPLETE]: langObj.COMPLETE,
+    [PlanStatus.DRAFT]: t('Draft'),
+    [PlanStatus.RETIRED]: t('Retired'),
+    [PlanStatus.ACTIVE]: t('Active'),
+    [PlanStatus.COMPLETE]: t('Complete'),
   };
   if (status) {
-    return `${stringByStatus[status]}${appendMissions ? ` ${langObj.MISSIONS}` : ''}`;
+    return `${stringByStatus[status]}${appendMissions ? ` ${t('Missions')}` : ''}`;
   }
   return '';
 };

@@ -4,9 +4,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import { AntTreeData } from '../LocationUnitList';
 import './tree.css';
 import { TreeNode } from '../../helpers/types';
-import lang from '../../lang';
 import { Key } from 'rc-tree/lib/interface';
 import { slice } from 'lodash';
+import { useTranslation } from '../../mls';
 
 interface TreeProp {
   data: TreeNode[];
@@ -33,6 +33,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchExpandedKeys, setSearchExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const updateExpandedKeys = (keys: Key[]) => setExpandedKeys([...expandedKeys, ...keys]);
@@ -128,7 +129,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
     <div>
       <Input
         className="mb-3"
-        placeholder={lang.SEARCH}
+        placeholder={t('Search')}
         size="large"
         prefix={<SearchOutlined />}
         onChange={onChange}

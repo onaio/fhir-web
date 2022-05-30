@@ -15,7 +15,6 @@ import { fixManifestFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
-import lang from '../../../lang';
 
 jest.mock('@opensrp/form-config-core', () => ({
   __esModule: true,
@@ -87,7 +86,7 @@ describe('components/manifestFiles', () => {
 
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot('isJsonValidator true');
     expect(wrapper.find('SearchBar')).toHaveLength(1);
-    expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload New File');
+    expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload new file');
     wrapper.unmount();
   });
 
@@ -244,7 +243,7 @@ describe('components/manifestFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

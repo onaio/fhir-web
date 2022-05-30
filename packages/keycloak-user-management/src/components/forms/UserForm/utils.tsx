@@ -11,12 +11,12 @@ import {
   PRACTITIONER,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
-import lang, { Lang } from '../../../lang';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
 import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -34,30 +34,30 @@ const getUserId = (response: Response): string => {
  * @param baseURL - opensrp API base URL
  * @param payload - the practitioner payload
  * @param isEditMode - whether we are creating or editing user.
- * @param langObj - the language translations object
+ * @param t - translator function
  */
 export const createOrEditPractitioners = async (
   baseURL: string,
   payload: Practitioner,
   isEditMode = false,
-  langObj: Lang = lang
+  t: TFunction
 ) => {
   const practitionersService = new OpenSRPService(PRACTITIONER, baseURL);
 
   // initialize values for creating a practitioner
   let requestType: 'update' | 'create' = 'create';
 
-  let successMessage: string = langObj.PRACTITIONER_CREATED_SUCCESSFULLY;
+  let successMessage: string = t('Practitioner created successfully');
 
   // if practitioner exists re-initialize as update practitioner
   if (isEditMode) {
     requestType = 'update';
-    successMessage = langObj.PRACTITIONER_UPDATED_SUCCESSFULLY;
+    successMessage = t('Practitioner updated successfully');
   }
 
   // update or create new practitioner
   await practitionersService[requestType](payload)
-    .catch((_: Error) => sendErrorNotification(langObj.ERROR_OCCURED))
+    .catch((_: Error) => sendErrorNotification(t('An error occurred')))
     .then(() => sendSuccessNotification(successMessage));
 
   if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.userId}`);
@@ -70,14 +70,14 @@ export const createOrEditPractitioners = async (
  * @param keycloakUserPayload - the keycloak user payload
  * @param isEditMode - whether editing or creating the keycloak user
  * @param updateGroupsAndPractitionerCallback - function called when user is successfully posted or updated
- * @param langObj - the translation store object
+ * @param t - translator function
  */
 const createEditKeycloakUser = async (
   keycloakBaseURL: string,
   keycloakUserPayload: KeycloakUser,
   isEditMode: boolean,
   updateGroupsAndPractitionerCallback: (id: string) => Promise<void>,
-  langObj = lang
+  t: TFunction
 ) => {
   if (isEditMode) {
     const serve = new KeycloakService(
@@ -87,9 +87,9 @@ const createEditKeycloakUser = async (
     return serve
       .update(keycloakUserPayload)
       .then(() => {
-        sendSuccessNotification(langObj.MESSAGE_USER_EDITED);
+        sendSuccessNotification(t('User edited successfully'));
         updateGroupsAndPractitionerCallback(keycloakUserPayload.id).catch(() =>
-          sendErrorNotification(langObj.ERROR_OCCURED)
+          sendErrorNotification(t('An error occurred'))
         );
       })
       .catch((error) => {
@@ -101,10 +101,10 @@ const createEditKeycloakUser = async (
     return serve
       .create(keycloakUserPayload)
       .then((res) => {
-        sendSuccessNotification(langObj.MESSAGE_USER_CREATED);
+        sendSuccessNotification(t('User created successfully'));
         const keycloakUserId = getUserId(res);
         updateGroupsAndPractitionerCallback(keycloakUserId).catch(() =>
-          sendErrorNotification(langObj.ERROR_OCCURED)
+          sendErrorNotification(t('An error occurred'))
         );
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ const createEditKeycloakUser = async (
  * @param allUserGroups - Array of Usergroups to get data from when sending payload of user groups
  * @param previousUserGroupIds - An array of previously selected user group ids
  * @param practitionerUpdater - async function that updates practitioner records
- * @param langObj - the translations object lookup
+ * @param t - translator function
  */
 export const submitForm = async (
   values: FormFields,
@@ -129,7 +129,7 @@ export const submitForm = async (
   allUserGroups: UserGroup[],
   previousUserGroupIds: string[] | undefined,
   practitionerUpdater: PractitionerUpdaterFun,
-  langObj: Lang = lang
+  t: TFunction
 ): Promise<void> => {
   const { isEditMode, keycloakUser } = getUserAndGroupsPayload(values);
 
@@ -141,7 +141,7 @@ export const submitForm = async (
   const updateGroupsAndPractitioner = async (keycloakUserId: string) => {
     const promises: Promise<void>[] = [];
 
-    promises.push(practitionerUpdater(values, keycloakUserId));
+    promises.push(practitionerUpdater(values, keycloakUserId, t));
 
     // Assign User Group to user
     if (values.userGroups) {
@@ -174,7 +174,7 @@ export const submitForm = async (
         throw error;
       })
       .then(() => {
-        sendSuccessNotification(langObj.MESSAGE_USER_GROUP_EDITED);
+        sendSuccessNotification(t('User Group edited successfully'));
       });
   };
 
@@ -182,9 +182,10 @@ export const submitForm = async (
     keycloakBaseURL,
     keycloakUser,
     isEditMode,
-    updateGroupsAndPractitioner
+    updateGroupsAndPractitioner,
+    t
   ).catch(() => {
-    sendErrorNotification(langObj.ERROR_OCCURED);
+    sendErrorNotification(t('An error occurred'));
   });
 
   if (isEditMode) {
@@ -285,33 +286,34 @@ export const userGroupOptionsFilter = (inputValue: string, option?: SelectOption
   return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
 };
 
-export const postPutPractitioner = (baseUrl: string) => (values: FormFields, userId: string) => {
-  const { id, username, firstName, lastName, enabled, active } = values;
-  // initialize for new practitioner
-  const practitionerId = v4();
-  let practitioner: Practitioner = {
-    active: true,
-    identifier: practitionerId,
-    name: `${firstName} ${lastName}`,
-    userId,
-    username,
-  };
-
-  // if the base keycloak user is disabled, also disable the tied opensrp practitioner
-  // otherwise follow the practitioner's activation field
-  const practitionerActive = enabled === false ? false : active === undefined ? false : active;
-  const practObj = values.practitioner as Practitioner | undefined;
-  if (practObj?.identifier) {
-    practitioner = {
-      ...practObj,
-      active: practitionerActive,
+export const postPutPractitioner =
+  (baseUrl: string) => (values: FormFields, userId: string, t: TFunction) => {
+    const { id, username, firstName, lastName, enabled, active } = values;
+    // initialize for new practitioner
+    const practitionerId = v4();
+    let practitioner: Practitioner = {
+      active: true,
+      identifier: practitionerId,
       name: `${firstName} ${lastName}`,
-      userId: id,
+      userId,
       username,
     };
-  }
 
-  const practitionerIsEditMode = !!values.practitioner?.identifier;
+    // if the base keycloak user is disabled, also disable the tied opensrp practitioner
+    // otherwise follow the practitioner's activation field
+    const practitionerActive = enabled === false ? false : active === undefined ? false : active;
+    const practObj = values.practitioner as Practitioner | undefined;
+    if (practObj?.identifier) {
+      practitioner = {
+        ...practObj,
+        active: practitionerActive,
+        name: `${firstName} ${lastName}`,
+        userId: id,
+        username,
+      };
+    }
 
-  return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode);
-};
+    const practitionerIsEditMode = !!values.practitioner?.identifier;
+
+    return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode, t);
+  };

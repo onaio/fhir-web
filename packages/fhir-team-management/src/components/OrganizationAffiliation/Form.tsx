@@ -19,6 +19,7 @@ import {
   sendInfoNotification,
   sendSuccessNotification,
 } from '@opensrp/notifications';
+import { useTranslation } from '../../mls';
 
 interface AffiliationModalProps {
   baseUrl: string;
@@ -47,6 +48,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
   const defaultOrgsValues = getOrgOptionsFromAffiliations(currentAffiliations);
   const [values, setValues] = useState<OrgSelectOptions[]>(defaultOrgsValues);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { mutate, isLoading } = useMutation(
     () =>
@@ -60,11 +62,11 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
     {
       onError: (err: Error) => sendErrorNotification(err.message),
       onSuccess: () => {
-        sendSuccessNotification('Team assignments updated successfully');
+        sendSuccessNotification(t('Team assignments updated successfully'));
         handleCancel();
         queryClient.invalidateQueries([organizationAffiliationResourceType]).catch(() => {
           sendInfoNotification(
-            'Failed to refresh assignments, Please Refresh the page to see the changes'
+            t('Failed to refresh assignments, Please Refresh the page to see the changes')
           );
         });
       },
@@ -87,7 +89,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
   return (
     <Modal
       destroyOnClose={true}
-      title={`Assign/Unassign Teams | ${locationName}`}
+      title={t(`Assign/Unassign Teams | {{locationName}}`, { locationName })}
       visible={visible}
       okText="Save"
       onCancel={handleCancel}
@@ -100,7 +102,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
           type="primary"
           key="submit"
         >
-          {isLoading ? 'Saving' : 'save'}
+          {isLoading ? t('Saving') : t('save')}
         </Button>,
         <Button
           data-testid="cancel-affiliations"
@@ -110,7 +112,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
             handleCancel();
           }}
         >
-          {'Cancel'}
+          {t('Cancel')}
         </Button>,
       ]}
       okType="default"
@@ -121,7 +123,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
         mode="multiple"
         allowClear
         showSearch
-        placeholder="Select teams"
+        placeholder={t('Select teams')}
         options={orgSelectOptions}
         defaultValue={defaultOrgsValues as unknown as string[]}
         filterOption={orgsFilterFunction}

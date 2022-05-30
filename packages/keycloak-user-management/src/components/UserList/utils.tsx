@@ -1,25 +1,17 @@
 import { Dictionary } from '@onaio/utils';
-import lang, { Lang } from '../../lang';
 import { Column } from '@opensrp/react-utils';
+import type { TFunction } from '@opensrp/i18n';
 import { KeycloakUser } from '../../ducks/user';
 
 /**
  * Get table columns for user list
  *
- * @param {Dictionary} sortedInfo - applied sort
- * @param {Lang} langObj - translations object lookup
- * @returns {Column<KeycloakUser>[]} - an array of table columns
+ * @param  t - translations object lookup
+ * @param sortedInfo - applied sort
+ * @returns  an array of table columns
  */
-export const getTableColumns = (
-  sortedInfo?: Dictionary,
-  langObj: Lang = lang
-): Column<KeycloakUser>[] => {
-  const headerItems: string[] = [
-    langObj.EMAIL,
-    langObj.FIRST_NAME,
-    langObj.LAST_NAME,
-    langObj.USERNAME,
-  ];
+export const getTableColumns = (t: TFunction, sortedInfo?: Dictionary): Column<KeycloakUser>[] => {
+  const headerItems: string[] = [t('Email'), t('First Name'), t('Last Name'), t('Username')];
   const dataElements: Column<KeycloakUser>[] = [];
   const fields: string[] = ['email', 'firstName', 'lastName', 'username'];
 

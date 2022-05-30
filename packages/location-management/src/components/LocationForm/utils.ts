@@ -10,11 +10,11 @@ import { TreeNode } from '../../ducks/locationHierarchy/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { Geometry, Point } from 'geojson';
-import lang, { Lang } from '../../lang';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { LOCATION_UNIT_TYPE } from '../../constants';
 import { GetSelectedFullData } from './CustomSelect';
 import { uniqBy } from 'lodash';
+import type { TFunction } from '@opensrp/i18n';
 
 export enum FormInstances {
   CORE = 'core',
@@ -209,13 +209,13 @@ export function getServiceTypeOptions(data: ServiceTypeSetting[]) {
 /**
  * factory for validation rules for LocationForm component
  *
- * @param langObj - language translation string obj lookup
+ * @param t - language translation string obj lookup
  */
-export const validationRulesFactory = (langObj: Lang = lang) => ({
+export const validationRulesFactory = (t: TFunction) => ({
   instance: [{ type: 'enum', enum: Object.values(FormInstances), required: true }] as Rule[],
   id: [{ type: 'string' }] as Rule[],
   parentId: [
-    { type: 'string', message: langObj.ERROR_PARENTID_STRING },
+    { type: 'string', message: t('Parent ID can only contain letters, numbers and spaces') },
     ({ getFieldValue }) => {
       const instance = getFieldValue('instance');
       if (instance === FormInstances.EUSM)
@@ -228,13 +228,10 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
     },
   ] as Rule[],
   name: [
-    { type: 'string', message: langObj.ERROR_NAME_STRING },
-    { required: true, message: langObj.ERROR_NAME_REQUIRED },
+    { type: 'string', message: t('Name can only contain letters, numbers and spaces') },
+    { required: true, message: t('Name is required') },
   ] as Rule[],
-  status: [
-    { type: 'string' },
-    { required: true, message: langObj.ERROR_STATUS_REQUIRED },
-  ] as Rule[],
+  status: [{ type: 'string' }, { required: true, message: t('Status is required') }] as Rule[],
   type: [
     { type: 'string' },
     ({ getFieldValue }) => {
@@ -242,16 +239,18 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
       if (instance === FormInstances.CORE)
         return {
           required: true,
-          message: langObj.ERROR_TYPE_STRING,
+          message: t('Type can only contain letters, numbers and spaces'),
         };
       return {
         required: false,
       };
     },
   ] as Rule[],
-  externalId: [{ type: 'string', message: langObj.ERROR_EXTERNAL_ID_STRING }] as Rule[],
-  locationTags: [{ type: 'array', message: langObj.ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
-  geometry: [{ type: 'string', message: langObj.ERROR_LOCATION_TAGS_ARRAY }] as Rule[],
+  externalId: [
+    { type: 'string', message: t('External ID can only contain letters, numbers and spaces') },
+  ] as Rule[],
+  locationTags: [{ type: 'array', message: t('Location Unit must be an array') }] as Rule[],
+  geometry: [{ type: 'string', message: t('Location Unit must be an array') }] as Rule[],
   isJurisdiction: [
     {
       type: 'boolean',
@@ -262,7 +261,7 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
       if (isCreateMode)
         return {
           required: true,
-          message: langObj.ERROR_LOCATION_CATEGORY_REQUIRED,
+          message: t('Location category is required'),
         };
       return {
         required: false,
@@ -275,7 +274,7 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
       if (instance === FormInstances.EUSM)
         return {
           required: true,
-          message: langObj.ERROR_SERVICE_TYPES_REQUIRED,
+          message: t('Service types is required'),
         };
       return {
         required: false,
@@ -288,7 +287,7 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, langObj.LONGITUDE_LATITUDE_TYPE_ERROR);
+        return rejectIfNan(value, t('Only decimal values allowed'));
       },
     }),
   ] as Rule[],
@@ -298,7 +297,7 @@ export const validationRulesFactory = (langObj: Lang = lang) => ({
         if (!value) {
           return Promise.resolve();
         }
-        return rejectIfNan(value, langObj.LONGITUDE_LATITUDE_TYPE_ERROR);
+        return rejectIfNan(value, t('Only decimal values allowed'));
       },
     }),
   ] as Rule[],

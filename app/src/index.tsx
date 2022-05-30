@@ -13,6 +13,7 @@ import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { OpensrpWebI18nProvider } from '@opensrp/i18n';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 
 // tslint:disable-next-line: ordered-imports
@@ -37,7 +38,9 @@ ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <OpensrpWebI18nProvider>
+            <App />
+          </OpensrpWebI18nProvider>
         </QueryClientProvider>
       </ConnectedRouter>
     </Provider>

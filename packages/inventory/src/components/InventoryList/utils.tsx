@@ -1,17 +1,17 @@
 import { Column } from '@opensrp/react-utils';
-import lang, { Lang } from '../../lang';
 import { Inventory } from '../../ducks/inventory';
 import { Dictionary } from '@onaio/utils';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Get table columns
  *
- * @param langObj - the language translations object
+ * @param t - translator function
  */
-export const getTableColumns = (langObj: Lang = lang): Column<Inventory>[] => {
+export const getTableColumns = (t: TFunction): Column<Inventory>[] => {
   return [
     {
-      title: langObj.PRODUCT_NAME_TH,
+      title: t('Product name'),
       dataIndex: 'product',
       key: 'product',
       render: (item: Dictionary) => item.productName,
@@ -30,39 +30,39 @@ export const getTableColumns = (langObj: Lang = lang): Column<Inventory>[] => {
       defaultSortOrder: 'descend',
     },
     {
-      title: langObj.QTY_TH,
+      title: t('Qty'),
       dataIndex: 'value',
       key: 'value',
     },
     {
-      title: langObj.PO_NUMBER_TH,
+      title: t('PO no.'),
       dataIndex: 'customProperties',
       key: 'customProperties',
       render: (item: Dictionary) => item['PO Number'],
     },
     {
-      title: langObj.SERIAL_NUMBER_TH,
+      title: t('Serial no.'),
       dataIndex: 'serialNumber',
       key: 'serialNumber',
     },
     {
-      title: langObj.DELIVERY_DT_TH,
+      title: t('Delivery dt.'),
       dataIndex: 'deliveryDate',
       key: 'deliveryDate',
     },
     {
-      title: langObj.ACCOUNT_END_DT_TH,
+      title: t('Acct. end dt.'),
       dataIndex: 'accountabilityEndDate',
       key: 'accountabilityEndDate',
     },
     {
-      title: langObj.UNICEF_SECTION_TH,
+      title: t('Unicef section'),
       dataIndex: 'customProperties',
       key: 'customProperties',
       render: (item: Dictionary) => item['UNICEF section'],
     },
     {
-      title: langObj.DONOR_TH,
+      title: t('Donor'),
       dataIndex: 'donor',
       key: 'donor',
     },

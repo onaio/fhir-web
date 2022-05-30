@@ -201,7 +201,7 @@ import {
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 import { DistrictReport } from '@opensrp/reports';
 import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
-
+import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
@@ -209,7 +209,6 @@ import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
 
 import { APP_LOGIN_URL } from '../dispatchConfig';
-import { useTranslation } from 'react-i18next';
 
 const { Content } = Layout;
 

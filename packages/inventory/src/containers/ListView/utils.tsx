@@ -1,9 +1,9 @@
 import React from 'react';
 import { INVENTORY_SERVICE_POINT_PROFILE_VIEW } from '../../constants';
 import { Link } from 'react-router-dom';
-import lang, { Lang } from '../../lang';
 import { LocationUnit, TreeNode } from '@opensrp/location-management';
 import { Column } from '@opensrp/react-utils';
+import type { TFunction } from '@opensrp/i18n';
 
 /** Describes how the data will passed to the table */
 export interface TableData {
@@ -16,27 +16,30 @@ export interface TableData {
 /**
  * component rendered in the action column of the table
  *
- * @param record - record to show in row
+ * @param t -  the translator function
  */
-export const ActionsColumnCustomRender: Column<TableData>['render'] = (record) => {
-  return (
-    <>
-      <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
-        {lang.VIEW}
-      </Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<TableData>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Link to={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/${record.servicePointId}`}>
+          {t('View')}
+        </Link>
+      </>
+    );
+  };
 
 /**
  * service point list table columns factory
  *
- * @param langObj - the language translations lookup
+ * @param t - translator function
  */
-export const columnsFactory = (langObj: Lang = lang) => {
+export const columnsFactory = (t: TFunction) => {
   const columns: Column<TableData>[] = [
     {
-      title: langObj.SERVICE_POINT_TH,
+      title: t('Service point'),
       dataIndex: 'serviceName',
       key: 'serviceName',
       defaultSortOrder: 'descend',
@@ -51,17 +54,17 @@ export const columnsFactory = (langObj: Lang = lang) => {
       },
     },
     {
-      title: langObj.TYPE_TH,
+      title: t('type'),
       dataIndex: 'type',
       key: 'type',
     },
     {
-      title: langObj.LOCATION_TH,
+      title: t('Location'),
       dataIndex: 'location',
       key: 'location',
     },
     {
-      title: langObj.SERVICE_POINT_ID_TH,
+      title: t('Service point ID'),
       dataIndex: 'servicePointId',
       key: 'servicePointId',
     },

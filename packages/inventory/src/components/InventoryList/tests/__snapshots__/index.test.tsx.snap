@@ -39,7 +39,7 @@ exports[`Inventory list Page renders when data is present: link to add new inven
         <span
           key=".0"
         >
-          + Add new inventory item
+           + Add new inventory item
         </span>
       </button>
     </Wave>

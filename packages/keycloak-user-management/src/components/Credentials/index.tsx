@@ -13,7 +13,7 @@ import {
   ROUTE_PARAM_USER_ID,
   URL_USER,
 } from '../../constants';
-import lang, { Lang } from '../../lang';
+import { useTranslation } from '../../mls';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -23,6 +23,7 @@ import {
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
+import type { TFunction } from '@opensrp/i18n';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -70,18 +71,18 @@ export const defaultCredentialsProps: Partial<CredentialsPropsTypes> = {
 /**
  * Handle form submission
  *
- * @param {Dictionary} values - submitted values
- * @param {string} userId - user id
- * @param {string} serviceClass - KeycloakService
- * @param {string} keycloakBaseURL - Keycloak API base URL
- * @param {Lang} langObj - the translations look up object
+ * @param values - submitted values
+ * @param userId - user id
+ * @param serviceClass - KeycloakService
+ * @param keycloakBaseURL - Keycloak API base URL
+ * @param t - the translations look up object
  */
 export const submitForm = (
   values: UserCredentialsFormFields,
   userId: string,
   serviceClass: typeof KeycloakService,
   keycloakBaseURL: string,
-  langObj: Lang = lang
+  t: TFunction
 ): void => {
   const serve = new serviceClass(
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
@@ -95,7 +96,7 @@ export const submitForm = (
       value: password,
     })
     .then(() => {
-      sendSuccessNotification(langObj.CREDENTIALS_UPDATED_SUCCESSFULLY);
+      sendSuccessNotification(t('Credentials updated successfully'));
       history.push(URL_USER);
     })
     .catch((e: HTTPError) => {
@@ -106,6 +107,7 @@ export const submitForm = (
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
   const { serviceClass, match, keycloakBaseURL, keycloakUser } = props;
   const userId = match.params[ROUTE_PARAM_USER_ID];
+  const { t } = useTranslation();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -127,23 +129,23 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   return (
     <Row className="layout-content">
       <h5 className="mb-3">
-        {lang.CREDENTIALS} | {keycloakUser ? keycloakUser.username : ''}
+        {t('User Credentials')} | {keycloakUser ? keycloakUser.username : ''}
       </h5>
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
             {...layout}
             onFinish={(values: UserCredentialsFormFields) =>
-              submitForm(values, userId, serviceClass, keycloakBaseURL)
+              submitForm(values, userId, serviceClass, keycloakBaseURL, t)
             }
           >
             <Form.Item
               name="password"
-              label={lang.PASSWORD}
+              label={t('Password')}
               rules={[
                 {
                   required: true,
-                  message: lang.ERROR_PASSWORD_REQUIRED,
+                  message: t('Password is required'),
                 },
               ]}
               hasFeedback
@@ -153,20 +155,20 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 
             <Form.Item
               name="confirm"
-              label={lang.CONFIRM_PASSWORD}
+              label={t('Confirm Password')}
               dependencies={['password']}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: lang.ERROR_CONFIRM_PASSWORD_REQUIRED,
+                  message: t('Confirm Password is required'),
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(lang.ERROR_PASSWORD_MISMATCH);
+                    return Promise.reject(t('The two passwords that you entered do not match!'));
                   },
                 }),
               ]}
@@ -175,10 +177,10 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
             </Form.Item>
             <Form.Item {...tailLayout}>
               <Button type="primary" htmlType="submit" className="reset-password">
-                {lang.RESET_PASSWORD}
+                {t('Set password')}
               </Button>
               <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
-                {lang.CANCEL}
+                {t('Cancel')}
               </Button>
             </Form.Item>
           </Form>

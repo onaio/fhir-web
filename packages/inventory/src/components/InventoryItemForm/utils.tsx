@@ -5,7 +5,7 @@ import { HTTPError } from '@opensrp/server-service';
 import { InventoryPost } from '../../ducks/inventory';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_STOCK_RESOURCE } from '../../constants';
-import lang, { Lang } from '../../lang';
+import type { TFunction } from '@opensrp/i18n';
 
 /**
  * Submit form
@@ -14,16 +14,16 @@ import lang, { Lang } from '../../lang';
  * @param openSRPBaseURL OpenSRP API base URL
  * @param setSubmitting set isSubmitting value in the form's state
  * @param setIfDoneHere set ifDoneHere value in the form's state
+ * @param t the translator function
  * @param inventoryID ID of inventory item during editing
- * @param langObj - the language translation lookup
  */
 export const submitForm = async (
   values: InventoryPost,
   openSRPBaseURL: string,
   setSubmitting: Dispatch<SetStateAction<boolean>>,
   setIfDoneHere: Dispatch<SetStateAction<boolean>>,
-  inventoryID?: string,
-  langObj: Lang = lang
+  t: TFunction,
+  inventoryID?: string
 ) => {
   setSubmitting(true);
   const token = await handleSessionOrTokenExpiry();
@@ -62,7 +62,7 @@ export const submitForm = async (
         setIfDoneHere(true);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(langObj.ERROR_GENERIC);
+        sendErrorNotification(t('An error occurred'));
       })
       .finally(() => {
         setSubmitting(false);
@@ -82,7 +82,7 @@ export const submitForm = async (
         setIfDoneHere(true);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(langObj.ERROR_GENERIC);
+        sendErrorNotification(t('An error occurred'));
       })
       .finally(() => {
         setSubmitting(false);

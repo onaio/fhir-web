@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
-import lang from '../../../lang';
+
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
@@ -24,7 +24,7 @@ const history = createBrowserHistory();
 
 jest.setTimeout(10000);
 
-describe('CreateEditProduct Page', () => {
+describe('Update plan Page', () => {
   beforeEach(() => {
     store.dispatch(removePlanDefinitions());
   });
@@ -72,7 +72,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(lang.EDIT_PLAN);
+    expect(helmet.title).toEqual('Edit mission');
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
@@ -128,7 +128,7 @@ describe('CreateEditProduct Page', () => {
 
     // check if page title is correct
     const helmet = Helmet.peek();
-    expect(helmet.title).toEqual(lang.EDIT_PLAN);
+    expect(helmet.title).toEqual('Edit mission');
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);

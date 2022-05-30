@@ -13,7 +13,7 @@ import {
   OPENSRP_CREATE_PRACTITIONER_ENDPOINT,
   KEYCLOAK_URL_USER_GROUPS,
 } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
@@ -77,6 +77,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
   const [practitioner, setPractitioner] = useState<Practitioner | IPractitioner>();
+  const { t } = useTranslation();
 
   const {
     keycloakUser,
@@ -100,11 +101,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
         .catch((_: Error) => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => setUserGroupsLoading(false));
     }
-  }, [keycloakBaseURL, baseUrl, userGroups.length]);
+  }, [keycloakBaseURL, baseUrl, userGroups.length, t]);
 
   /**
    * Fetch user if userId changes (editing a different user)
@@ -119,11 +120,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           if (response) fetchKeycloakUsersCreator([response]);
         })
         .catch((_: Error) => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => setKeyCloakUserLoading(false));
     }
-  }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator]);
+  }, [userId, keycloakBaseURL, fetchKeycloakUsersCreator, t]);
 
   /**
    * Fetch User group of the user being edited
@@ -141,11 +142,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           setAssignedUserGroups(response);
         })
         .catch((_: Error) => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => setUserGroupLoading(false));
     }
-  }, [userId, keycloakBaseURL]);
+  }, [userId, keycloakBaseURL, t]);
 
   /**
    * Fetch practitioner data of the user being edited
@@ -159,11 +160,11 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           setPractitioner(res);
         })
         .catch((_: Error) => {
-          sendErrorNotification(lang.ERROR_OCCURED);
+          sendErrorNotification(t('An error occurred'));
         })
         .finally(() => setPractitionerLoading(false));
     }
-  }, [userId, baseUrl, getPractitionerFun]);
+  }, [userId, baseUrl, getPractitionerFun, t]);
 
   useEffect(() => {
     setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));

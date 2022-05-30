@@ -4,7 +4,7 @@ import { ActivateMissionCard } from '..';
 import toJson from 'enzyme-to-json';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import lang from '../../../lang';
+
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 import flushPromises from 'flush-promises';
@@ -115,7 +115,7 @@ describe('activate mission', () => {
     // check callback was called
     expect(mockCallback).toHaveBeenCalledWith(expectedMission);
 
-    expect(sendSuccessMock).toHaveBeenCalledWith(lang.SUCCESSFULLY_ACTIVATED_MISSION);
+    expect(sendSuccessMock).toHaveBeenCalledWith('Successfully activated mission');
     sendSuccessMock.mockRestore();
   });
 
@@ -145,7 +145,7 @@ describe('activate mission', () => {
     // check callback was called
     expect(mockCallback).not.toHaveBeenCalled();
 
-    expect(sendErrorMock).toHaveBeenCalledWith(lang.FAILED_TO_ACTIVATE_MISSION);
+    expect(sendErrorMock).toHaveBeenCalledWith('Activating mission failed');
     sendErrorMock.mockRestore();
   });
 });

@@ -10,13 +10,13 @@ import {
   validationRulesFactory,
 } from './utils';
 import { locationHierarchyResourceType } from '../../constants';
-import lang from '../../lang';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
+import { useTranslation } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 const { Item: FormItem } = Form;
@@ -104,8 +104,9 @@ const LocationForm = (props: LocationFormProps) => {
   const [parentNode, setParentNode] = useState<TreeNode>(defaultParentNode);
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [successUrl, setSuccessUrl] = useState<string>();
-  const validationRules = validationRulesFactory(lang);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  const validationRules = validationRulesFactory(t);
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);
 
@@ -116,15 +117,15 @@ const LocationForm = (props: LocationFormProps) => {
   }, [form, initialValues]);
 
   const status = [
-    { label: lang.LOCATION_ACTIVE_STATUS_LABEL, value: LocationUnitStatus.ACTIVE },
-    { label: lang.LOCATION_INACTIVE_STATUS_LABEL, value: LocationUnitStatus.INACTIVE },
-    { label: lang.LOCATION_SUSPENDED_STATUS_LABEL, value: LocationUnitStatus.SUSPENDED },
+    { label: t('Active'), value: LocationUnitStatus.ACTIVE },
+    { label: t('Inactive'), value: LocationUnitStatus.INACTIVE },
+    { label: t('Suspended'), value: LocationUnitStatus.SUSPENDED },
   ];
 
   // value options for isJurisdiction questions
   const locationCategoryOptions = [
-    { label: lang.LOCATION_BUILDING_LABEL, value: false },
-    { label: lang.LOCATION_JURISDICTION_LABEL, value: true },
+    { label: t('Building'), value: false },
+    { label: t('Jurisdiction'), value: true },
   ];
 
   /** if plan is updated or saved redirect to plans page */
@@ -146,8 +147,8 @@ const LocationForm = (props: LocationFormProps) => {
           const payload = generateLocationUnit(values, initialValues, parentNode);
 
           const successMessage = isEditMode
-            ? lang.SUCCESSFULLY_UPDATED_LOCATION
-            : lang.SUCCESSFULLY_CREATED_LOCATION;
+            ? t(`Location was successfully updated`)
+            : t('Location was successfully created');
 
           postPutLocationUnit(payload, fhirBaseURL, isEditMode)
             .then(() => {
@@ -168,21 +169,21 @@ const LocationForm = (props: LocationFormProps) => {
             });
         }}
       >
-        <FormItem name="id" label={lang.ID_LABEL} rules={validationRules.id} hidden id="id">
+        <FormItem name="id" label={t('Id')} rules={validationRules.id} hidden id="id">
           <Input disabled></Input>
         </FormItem>
 
         <FormItem
           id="parentId"
           hidden={isHidden('parentId')}
-          label={lang.PARENT_LABEL}
+          label={t('Part Of')}
           name="parentId"
           rules={validationRules.parentId}
         >
           <CustomTreeSelect
             disabled={disabled.includes('parentId')}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-            placeholder={lang.PARENT_ID_SELECT_PLACEHOLDER}
+            placeholder={t('Select the parent location')}
             disabledTreeNodesCallback={disabledTreeNodesCallback}
             fullDataCallback={setParentNode}
             tree={tree}
@@ -194,24 +195,24 @@ const LocationForm = (props: LocationFormProps) => {
           rules={validationRules.name}
           hidden={isHidden('name')}
           name="name"
-          label={lang.NAME_LABEL}
+          label={t('Name')}
           hasFeedback
         >
           <Input
             disabled={disabled.includes('name')}
-            placeholder={lang.ENTER_LOCATION_NAME_PLACEHOLDER}
+            placeholder={t('Enter a location name')}
           ></Input>
         </FormItem>
 
-        <FormItem id="alias" hidden={isHidden('alias')} name="alias" label={lang.ALIAS} hasFeedback>
-          <Input disabled={disabled.includes('description')} placeholder={lang.ALIAS}></Input>
+        <FormItem id="alias" hidden={isHidden('alias')} name="alias" label={t('Alias')} hasFeedback>
+          <Input disabled={disabled.includes('description')} placeholder={t('Alias')}></Input>
         </FormItem>
 
         <FormItem
           id="status"
           rules={validationRules.status}
           hidden={isHidden('status')}
-          label={lang.STATUS_LABEL}
+          label={t('Status')}
           name="status"
         >
           <Radio.Group name="active">
@@ -225,7 +226,7 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem
           hidden={isHidden('isJurisdiction')}
-          label={lang.PHYSICAL_TYPE}
+          label={t('Physical type')}
           name="isJurisdiction"
           id="isJurisdiction"
           rules={validationRules.isJurisdiction}
@@ -241,13 +242,13 @@ const LocationForm = (props: LocationFormProps) => {
           rules={validationRules.description}
           hidden={isHidden('description')}
           name="description"
-          label={lang.DESCRIPTION}
+          label={t('Description')}
           hasFeedback
         >
           <Input.TextArea
             rows={4}
             disabled={disabled.includes('description')}
-            placeholder={lang.DESCRIPTION}
+            placeholder={t('Description')}
           />
         </FormItem>
 
@@ -259,10 +260,10 @@ const LocationForm = (props: LocationFormProps) => {
               disabled={isSubmitting}
               htmlType="submit"
             >
-              {isSubmitting ? lang.SAVING : lang.SAVE}
+              {isSubmitting ? t('Saving') : t('Save')}
             </Button>
             <Button id="location-form-cancel-button" onClick={onCancel}>
-              {lang.CANCEL}
+              {t('Cancel')}
             </Button>
           </Space>
         </FormItem>
