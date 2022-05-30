@@ -59,7 +59,14 @@ Check that the strings are wrapped by a the `i18next` translator function `t`.
 Run the string extraction command.
 
 ```sh
-TBD
+./scripts/i18nExtraction.js extract <package-folder-names...> -l <locales...>
+```
+
+e.g
+
+```sh
+# in the repo root directory
+./scripts/i18nExtraction.js extract app react-utils -l en sw
 ```
 
 This should parse the code, get all translatable strings and updated the respective json locale files in `packages/i18n`.
@@ -97,7 +104,8 @@ export const supportedProjectCode = ['eusm', 'core'] as const;
 Then run the extraction command while necessary locale or/and the projectCode options.
 
 ```sh
-TBD
+# in the repo root directory
+./scripts/i18nExtraction.js extract  -l <new-locale> -p <projectCode>
 ```
 
 This should update the locales files in packages/i18n. Create a pr.

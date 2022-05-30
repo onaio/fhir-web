@@ -44,7 +44,6 @@
     "@jridgewell/gen-mapping": "^0.3.1",
     "@onaio/connected-private-route": "^0.1.0",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@opensrp/server-logout": "^0.0.1",
     "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -114,7 +113,14 @@
     "redux-testkit": "^1.0.6",
     "redux-thunk": "^2.4.1",
     "tsd": "^0.19.1",
-    "typescript": "~4.5.4"
+    "typescript": "~4.5.4",
+    "glob": "^8.0.1",
+    "yargs": "^17.4.1",
+    "@types/vinyl-fs": "^2.4.12",
+    "@types/yargs": "^17.0.10",
+    "i18next-parser": "^5.4.0",
+    "vinyl": "^2.2.1",
+    "vinyl-fs": "^3.0.3"
   },
   "workspaces": [
     "app",
