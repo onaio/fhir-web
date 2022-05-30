@@ -5,7 +5,13 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Route, Router, Switch } from 'react-router';
 import * as fixtures from './fixtures';
 import { CreateEditCareTeam } from '..';
-import { cleanup, fireEvent, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
@@ -16,9 +22,20 @@ import {
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../../constants';
 import { screen, render } from '@testing-library/react';
+import userEvents from '@testing-library/user-event';
+import { careTeam1, careTeam4201Edited, groups } from './fixtures';
+import flushPromises from 'flush-promises';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
+
+jest.mock('uuid', () => {
+  const actualUUID = jest.requireActual('uuid');
+  const mockV4Function = jest.fn().mockImplementation(() => mockId);
+  return { __esModule: true, ...actualUUID, v4: mockV4Function };
 });
 
 const queryClient = new QueryClient({
@@ -86,14 +103,14 @@ test('renders correctly for create care team', async () => {
     .reply(200, { total: 1000 })
     .get(`/${groupResourceType}/_search`)
     .query({ _count: 1000 })
-    .reply(200, fixtures.groups);
+    .reply(200, groups);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count' })
+    .query({ _summary: 'count', active: true })
     .reply(200, { total: 1000 })
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _count: 1000, active: true })
     .reply(200, fixtures.practitioners);
 
   render(
@@ -143,12 +160,10 @@ test('renders correctly for create care team', async () => {
 
 test('renders correctly for edit care team', async () => {
   const history = createMemoryHistory();
-  const careTeamId = fixtures.careTeam1.id;
+  const careTeamId = careTeam1.id;
   history.push(`/add/${careTeamId}`);
 
-  nock(props.fhirBaseURL)
-    .get(`/${careTeamResourceType}/${careTeamId}`)
-    .reply(200, fixtures.careTeam1);
+  nock(props.fhirBaseURL).get(`/${careTeamResourceType}/${careTeamId}`).reply(200, careTeam1);
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
@@ -156,14 +171,14 @@ test('renders correctly for edit care team', async () => {
     .reply(200, { total: 1000 })
     .get(`/${groupResourceType}/_search`)
     .query({ _count: 1000 })
-    .reply(200, fixtures.groups);
+    .reply(200, groups);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count' })
+    .query({ _summary: 'count', active: true })
     .reply(200, { total: 1000 })
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _count: 1000, active: true })
     .reply(200, fixtures.practitioners);
 
   render(
@@ -183,9 +198,64 @@ test('renders correctly for edit care team', async () => {
   expect(screen.getByLabelText(/uuid/i)).toMatchSnapshot('uuid field');
 });
 
+test('#1016 - does not create malformed request body', async () => {
+  const history = createMemoryHistory();
+  const careTeamId = fixtures.careTeam4201.id;
+  history.push(`/add/${careTeamId}`);
+
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/${careTeamId}`)
+    .reply(200, fixtures.careTeam4201);
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${groupResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, groups);
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _summary: 'count', active: true })
+    .reply(200, { total: 1000 })
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _count: 1000, active: true })
+    .reply(200, fixtures.practitioners);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
+  });
+
+  nock(props.fhirBaseURL)
+    .put(`/${careTeamResourceType}/${fixtures.careTeam4201.id}`, careTeam4201Edited)
+    .reply(200, careTeam4201Edited);
+
+  // change the name
+  const nameInput = document.querySelector('input#name');
+  expect(nameInput?.value).toEqual('Peter Charlmers Care team');
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvents.type(nameInput!, 'Who is Peter Charlmers');
+
+  // submit
+  await act(async () => {
+    userEvents.click(screen.getByText(/Save/));
+    await flushPromises();
+  });
+});
+
 test('data loading problem', async () => {
   const history = createMemoryHistory();
-  const careTeamId = fixtures.careTeam1.id;
+  const careTeamId = careTeam1.id;
   history.push(`/add/${careTeamId}`);
 
   nock(props.fhirBaseURL)
