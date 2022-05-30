@@ -11,6 +11,7 @@ import { Link, useParams } from 'react-router-dom';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
 import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import { parseHealthCare, ViewDetailsWrapper } from '../HealthCareDetail';
+import { useTranslation } from '../../mls';
 
 interface HealthCareListProps {
   fhirBaseURL: string;
@@ -29,6 +30,7 @@ interface RouteParams {
 export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareListProps) => {
   const { fhirBaseURL } = props;
   const { id: resourceId } = useParams<RouteParams>();
+  const { t } = useTranslation();
 
   const { searchFormProps, tablePaginationProps, queryValues } =
     useSimpleTabularView<IHealthcareService>(fhirBaseURL, healthCareServiceResourceType);
@@ -49,30 +51,31 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
 
   const columns = [
     {
-      title: 'Name',
+      title: t('Name'),
       dataIndex: 'name' as const,
       key: 'name' as const,
     },
     {
-      title: 'Active',
+      title: t('Status'),
       dataIndex: 'active' as const,
       key: 'active' as const,
-      render: (value: boolean) => <div>{value ? 'Yes' : 'No'}</div>,
+      render: (value: boolean) => <div>{value ? t('Active') : t('Inactive')}</div>,
     },
     {
-      title: 'Last Updated',
+      title: t('Last Updated'),
       dataIndex: 'lastUpdated' as const,
       key: 'lastUpdated' as const,
+      render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
     },
     {
-      title: 'Actions',
+      title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
             <Button type="link" className="m-0 p-1">
-              Edit
+              {t('Edit')}
             </Button>
           </Link>
           <Divider type="vertical" />
@@ -80,7 +83,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_HEALTHCARE_URL}/${record.id}`}>View Details</Link>
+                  <Link to={`${LIST_HEALTHCARE_URL}/${record.id}`}>{t('View Details')}</Link>
                 </Menu.Item>
               </Menu>
             }
@@ -102,12 +105,14 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
     pagination: tablePaginationProps,
   };
 
+  const pageTitle = t('HealthCare service list');
+
   return (
     <div className="content-section">
       <Helmet>
-        <title>HealthCare service list</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={'HealthCare service list'} className="page-header" />
+      <PageHeader title={pageTitle} className="page-header" />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -115,7 +120,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
               <Button type="primary">
                 <PlusOutlined />
-                Create Care Service
+                {t('Create Care Service')}
               </Button>
             </Link>
           </div>

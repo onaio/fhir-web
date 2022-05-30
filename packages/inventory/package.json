@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,8 +20,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -35,14 +33,15 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.8.2",
-    "i18next": "^19.8.4",
-    "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-query": "^3.15.1",
+    "react-i18next": "^11.14.2",
+    "react": "^16.18.1",
     "react-redux": "^7.2.1",
-    "react-router": "^5.2.1",
-    "react-router-dom": "^5.2.1"
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
@@ -56,12 +55,10 @@
     "@opensrp/react-utils": "^0.0.12",
     "axios": "^0.21.1",
     "date-fns": "2.11.1",
-    "react-helmet": "^6.1.0",
-    "react-i18next": "^11.8.10"
+    "react-helmet": "^6.1.0"
   },
   "devDependencies": {
     "@onaio/session-reducer": "^0.0.12",
-    "i18next-parser": "^3.5.0",
     "nock": "^13.0.6"
   }
 }

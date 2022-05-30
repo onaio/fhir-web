@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseMedication = (obj: IMedication) => {
   return {
@@ -16,20 +17,20 @@ export const parseMedication = (obj: IMedication) => {
 
 export type MedicationTableData = ReturnType<typeof parseMedication>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Medication',
+    title: t('Medication'),
     dataIndex: 'details',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;
     },
   },
   {
-    title: 'Manufacturer',
+    title: t('Manufacturer'),
     dataIndex: 'manufacturer',
     value: (value: Reference | undefined) => value?.display ?? value?.reference,
   },

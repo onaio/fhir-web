@@ -38,7 +38,7 @@ import {
   fetchPlanDefinitions,
   makePlanDefinitionsArraySelector,
 } from '../../ducks/planDefinitions';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../../mls';
 
 reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 reducerRegistry.register(orgReducerName, organizationsReducer);
@@ -95,7 +95,7 @@ const AssignmentTable = (props: AssignmentTableProps) => {
   const { handleBrokenPage, broken, errorMessage } = useHandleBrokenPage();
   const [loading, setLoading] = useState<boolean>(true);
   const planId = plan.identifier;
-  useTranslation();
+  const { t } = useTranslation();
 
   // todo component should re-render make the calls to get
   useEffect(() => {
@@ -103,7 +103,8 @@ const AssignmentTable = (props: AssignmentTableProps) => {
       baseURL,
       planId,
       serviceClass,
-      assignmentsActionCreator
+      assignmentsActionCreator,
+      t
     );
     const organizationsPromise = loadOrganizations(
       baseURL,
@@ -143,7 +144,8 @@ const AssignmentTable = (props: AssignmentTableProps) => {
     assignmentsActionCreator,
     plan,
     baseURL,
-    disableAssignments
+    disableAssignments,
+    t
   ) as Column<TableData>[];
 
   return (

@@ -170,7 +170,7 @@ export const ENABLE_FORM_CONFIGURATION =
 
 export const LANGUAGE_CODE = setEnv('REACT_APP_LANGUAGE_CODE', 'en');
 
-export const PROJECT_LANGUAGE_CODE = setEnv('REACT_APP_PROJECT_LANGUAGE_CODE', 'eusm');
+export const PROJECT_CODE = setEnv('REACT_APP_PROJECT_CODE', 'eusm');
 
 export const ENABLE_INVENTORY = setEnv('REACT_APP_ENABLE_INVENTORY', 'false') === 'true';
 

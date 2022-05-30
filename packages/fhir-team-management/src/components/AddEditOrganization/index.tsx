@@ -10,7 +10,6 @@ import {
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import lang from '../../lang';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
@@ -21,6 +20,7 @@ import {
 import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { getOrgFormFields } from './utils';
+import { useTranslation } from '../../mls';
 
 export interface AddEditOrganizationProps {
   fhirBaseURL: string;
@@ -34,6 +34,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
   const { id: orgId } = useParams<RouteParams>();
+  const { t } = useTranslation();
 
   const organization = useQuery(
     [organizationResourceType, orgId],
@@ -51,7 +52,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     () => loadAllResources(fhirBaseUrl, practitionerResourceType),
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An Error occurred')),
     }
   );
 
@@ -63,7 +64,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
         organization: orgId as string,
       }),
     {
-      onError: () => sendErrorNotification(lang.ERROR_OCCURRED),
+      onError: () => sendErrorNotification(t('An Error occurred')),
       select: (res) => {
         return getResourcesFromBundle(res) as IPractitionerRole[];
       },
@@ -85,8 +86,8 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const initialValues = getOrgFormFields(organization.data, assignedPractitioners.data);
 
   const pageTitle = organization.data
-    ? `Edit team | ${organization.data.name ?? ''}`
-    : 'Create team';
+    ? t('Edit team | {{teamName}}', { teamName: organization.data.name ?? '' })
+    : t('Create team');
 
   return (
     <section className="layout-content">

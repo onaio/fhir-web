@@ -2,32 +2,35 @@ import React, { useState } from 'react';
 import { Result } from 'antd';
 import { sendWarningNotification } from '@opensrp/notifications';
 import { ExtraLinks, UtilPageExtraProps, extraLinksDefault } from '../UtilPageExtra';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** props for the unauthorized page component */
 export interface UnauthorizedPageProps extends UtilPageExtraProps {
-  title: string;
+  title?: string;
   errorMessage?: string;
 }
 
 const defaultProps = {
   ...extraLinksDefault,
-  errorMessage: lang.YOU_ARE_UNAUTHORIZED,
-  title: lang.ERROR,
 };
 
 /** the component that renders a 500 view */
 
 const UnauthorizedPage = (props: UnauthorizedPageProps) => {
   const { errorMessage, title } = props;
+
+  // HACK to preserve defaultProps back compatibility
+  const { t } = useTranslation();
+  const i18nedErrMessage = errorMessage ?? t('Sorry, you are not authorized to access this page');
+  const i18nedTitle = title ?? t('Error');
   const extraLinksProps = {
     homeUrl: props.homeUrl,
   };
   return (
     <Result
       status="403"
-      title={title}
-      subTitle={errorMessage}
+      title={i18nedTitle}
+      subTitle={i18nedErrMessage}
       extra={<ExtraLinks {...extraLinksProps} />}
     />
   );

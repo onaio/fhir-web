@@ -2,6 +2,7 @@
 import React from 'react';
 import type { QuestionnaireItem } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/questionnaireItem';
 import { Typography, Tag } from 'antd';
+import { useTranslation } from '../mls';
 
 const { Text } = Typography;
 
@@ -11,6 +12,7 @@ interface GroupProps {
 
 export const QItems = (props: GroupProps) => {
   const { qItems } = props;
+  const { t } = useTranslation();
   if (!Array.isArray(qItems) || qItems.length === 0) {
     return null;
   }
@@ -27,8 +29,8 @@ export const QItems = (props: GroupProps) => {
             <li className="questionnaireItemsList-title" data-testid={`linkId-${item.linkId}`}>
               <Text>{text}</Text>
               &nbsp;
-              <Tag color="default">linkId: {linkId}</Tag>
-              <Tag color="default">type: {item.type}</Tag>
+              <Tag color="default">{t('linkId: {{linkId}}', { linkId })}</Tag>
+              <Tag color="default">{t('type: {{itemType}}', { itemType: item.type })}</Tag>
             </li>
             {!isGroup && (
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -53,6 +55,7 @@ interface QuestionProps {
 
 const Questions = (props: QuestionProps) => {
   const { questions } = props;
+  const { t } = useTranslation();
   if (!Array.isArray(questions) || questions.length === 0) {
     return null;
   }
@@ -70,8 +73,8 @@ const Questions = (props: QuestionProps) => {
             {hasLinkId ? (
               <>
                 &nbsp;
-                <Tag color="default">linkId: {item.linkId}</Tag>
-                <Tag color="default">type: {type}</Tag>
+                <Tag color="default">{t('linkId: {{linkId}}', { linkId: item.linkId })}</Tag>
+                <Tag color="default">{t('type: {{itemType}}', { itemType: type })}</Tag>
               </>
             ) : null}
             {item.item ? <QItems qItems={item.item} /> : null}

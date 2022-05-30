@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List view Page renders correctly with detailView: View details 1`] = `"Product nameScaleUnique ID1Material numberMT-123Server version123456"`;
+exports[`List view Page renders correctly with detailView: View details 1`] = `"Product NameScaleUnique ID1Material numberMT-123Server version123456"`;
 
 exports[`List view Page renders correctly with detailView: table rows 0 1`] = `"Product NameIDActions"`;
 

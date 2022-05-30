@@ -21,7 +21,7 @@ import { Row, Col } from 'reactstrap';
 import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -92,6 +92,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestFilesTypes[]>(data);
+  const { t } = useTranslation();
 
   const displayAlertError = (err: string): void => {
     if (customAlert) {
@@ -101,18 +102,19 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
   useEffect(
     () => {
+      setLoading(true);
       fetchManifests(
         accessToken,
         baseURL,
         fetchFiles,
         removeFiles,
-        setLoading,
-        displayAlertError,
         formVersion,
         endpoint,
         undefined,
         getPayload
-      );
+      )
+        .catch(() => displayAlertError(t('An error occurred')))
+        .finally(() => setLoading(false));
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload, accessToken]
   );
@@ -257,23 +259,23 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 
 /** declear default props */
 const defaultProps: FilesListDefaultProps = {
-  createdAt: lang.CREATED_AT,
+  createdAt: 'Created at',
   data: [],
   debounceTime: 1000,
-  downloadLabel: lang.DOWNLOAD,
+  downloadLabel: 'Download',
   drillDownProps: {
     paginate: false,
   },
-  editLabel: lang.EDIT,
+  editLabel: 'Edit',
   fetchFiles: fetchManifestFiles,
-  fileNameLabel: lang.FILE_NAME,
-  fileVersionLabel: lang.FILE_VERSION,
-  identifierLabel: lang.IDENTIFIER,
-  moduleLabel: lang.MODULE,
-  placeholder: lang.FIND_FILES,
+  fileNameLabel: 'File name',
+  fileVersionLabel: 'File version',
+  identifierLabel: 'Identifier',
+  moduleLabel: 'Module',
+  placeholder: 'Find files',
   removeFiles: removeManifestFiles,
-  uploadEditLabel: lang.UPLOAD_EDIT,
-  uploadFileLabel: lang.UPLOAD_NEW_FILE,
+  uploadEditLabel: 'Upload edit',
+  uploadFileLabel: 'Upload new file',
   accessToken: '',
 };
 

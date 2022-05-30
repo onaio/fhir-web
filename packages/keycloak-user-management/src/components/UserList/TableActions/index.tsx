@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom';
 import { KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT, UserQueryId } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
-import lang from '../../../lang';
 import { useQueryClient } from 'react-query';
 import { sendErrorNotification } from '@opensrp/notifications';
+import { useTranslation } from '../../../mls';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
@@ -35,33 +35,40 @@ const TableActions = (props: Props): JSX.Element => {
     extraData,
     setDetailsCallback,
   } = props;
+  const { t } = useTranslation();
   const { user_id } = extraData;
   const query = useQueryClient();
   const menu = (
     <Menu>
       <Menu.Item>
         <Popconfirm
-          title="Are you sure you want to delete this user?"
-          okText="Yes"
-          cancelText="No"
+          title={t('Are you sure you want to delete this user?')}
+          okText={t('Yes')}
+          cancelText={t('No')}
           onConfirm={() =>
-            deleteUser(removeKeycloakUsersCreator, keycloakBaseURL, opensrpBaseURL, record.id).then(
-              () => {
-                return query
-                  .invalidateQueries(UserQueryId)
-                  .catch(() =>
-                    sendErrorNotification(
+            deleteUser(
+              removeKeycloakUsersCreator,
+              keycloakBaseURL,
+              opensrpBaseURL,
+              record.id,
+              t
+            ).then(() => {
+              return query
+                .invalidateQueries(UserQueryId)
+                .catch(() =>
+                  sendErrorNotification(
+                    t(
                       'Failed to update data, please refresh the page to see the most recent changes'
                     )
-                  );
-              }
-            )
+                  )
+                );
+            })
           }
         >
           {user_id &&
             (record.id === user_id ? null : (
               <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
-                Delete
+                {t('Delete')}
               </Button>
             ))}
         </Popconfirm>
@@ -69,7 +76,7 @@ const TableActions = (props: Props): JSX.Element => {
       <Menu.Item>
         {
           <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-            <Button type="link">Credentials</Button>
+            <Button type="link">{t('Credentials')}</Button>
           </Link>
         }
       </Menu.Item>
@@ -80,14 +87,14 @@ const TableActions = (props: Props): JSX.Element => {
         }}
         onClick={() => setDetailsCallback(record)}
       >
-        {lang.VIEW_DETAILS}
+        {t('View Details')}
       </Menu.Item>
     </Menu>
   );
   return (
     <>
       <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-        {lang.EDIT}
+        {t('Edit')}
       </Link>
       <Divider type="vertical" />
       <Dropdown overlay={menu} placement="bottomRight" arrow trigger={['click']}>

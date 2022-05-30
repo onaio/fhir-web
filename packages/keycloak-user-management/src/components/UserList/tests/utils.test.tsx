@@ -1,5 +1,7 @@
 import { getTableColumns } from '../utils';
 
+const translator = (t) => t;
+
 describe('components/UserList/utils/getTableColumns', () => {
   const sortedInfo = {
     column: { title: 'First Name', dataIndex: 'firstName', key: 'firstName', ellipsis: true },
@@ -8,17 +10,12 @@ describe('components/UserList/utils/getTableColumns', () => {
     columnKey: 'firstName',
   };
 
-  const langObj = {
-    EMAIL: 'Email',
-    FIRST_NAME: 'First Name',
-    LAST_NAME: 'Last Name',
-    USERNAME: 'Username',
-  };
-
   it('builds table columns correctly', () => {
-    expect(getTableColumns(undefined, langObj)).toMatchSnapshot('table columns');
+    expect(getTableColumns(translator, undefined)).toMatchSnapshot('table columns');
   });
   it('builds table columns correctly with sorted info', () => {
-    expect(getTableColumns(sortedInfo, langObj)).toMatchSnapshot('table columns with sorted info');
+    expect(getTableColumns(translator, sortedInfo)).toMatchSnapshot(
+      'table columns with sorted info'
+    );
   });
 });

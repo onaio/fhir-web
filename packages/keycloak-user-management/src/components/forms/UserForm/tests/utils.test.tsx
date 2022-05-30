@@ -22,6 +22,7 @@ jest.mock('@opensrp/notifications', () => {
 
 const mockV4 = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 const keycloakUserId = 'generatedKeycloakId';
+const translator = (t) => t;
 
 jest.mock('uuid', () => {
   const actualUUID = jest.requireActual('uuid');
@@ -69,7 +70,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {
@@ -174,7 +176,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(mockErrorCallback);
 
     await act(async () => {
@@ -197,7 +200,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {
@@ -218,7 +222,8 @@ describe('forms/utils/submitForm', () => {
 
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {
@@ -317,7 +322,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       ['4dd15e66-7132-429b-8939-d1e601611464', 'cab07278-c77b-4bc7-b154-bcbf01b7d35b'],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {
@@ -347,7 +353,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn);
 
     await act(async () => {
@@ -367,7 +374,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       userGroup,
       [],
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn);
 
     await act(async () => {
@@ -385,7 +393,7 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id, translator).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -422,7 +430,7 @@ describe('forms/utils/submitForm', () => {
       practitioner: practitioner1,
     };
 
-    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id, translator).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -464,7 +472,7 @@ describe('forms/utils/submitForm', () => {
       practitioner: practitioner1,
     };
 
-    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id, translator).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -503,7 +511,7 @@ describe('forms/utils/submitForm', () => {
       id: keycloakUser.id,
     };
 
-    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id).catch(jest.fn);
+    postPutPractitioner(OPENSRP_API_BASE_URL)(valuesCopy, valuesCopy.id, translator).catch(jest.fn);
 
     await act(async () => {
       await flushPromises();
@@ -523,7 +531,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       [],
       undefined,
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {
@@ -576,7 +585,8 @@ describe('forms/utils/submitForm', () => {
       keycloakBaseURL,
       [],
       undefined,
-      postPutPractitioner(OPENSRP_API_BASE_URL)
+      postPutPractitioner(OPENSRP_API_BASE_URL),
+      translator
     ).catch(jest.fn());
 
     await act(async () => {

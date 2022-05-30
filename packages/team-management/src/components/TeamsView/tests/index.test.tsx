@@ -20,7 +20,6 @@ import {
 } from '../../../ducks/tests/fixtures';
 import { notification } from 'antd';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import lang from '../../../lang';
 
 describe('components/TeamsView', () => {
   const teamViewProps = {
@@ -113,7 +112,8 @@ describe('components/TeamsView', () => {
       '',
       jest.fn(),
       jest.fn(),
-      jest.fn()
+      jest.fn(),
+      (t) => t
     );
     const wrapper = mount(
       <Provider store={store}>
@@ -145,7 +145,8 @@ describe('components/TeamsView', () => {
       '',
       jest.fn(),
       jest.fn(),
-      jest.fn()
+      jest.fn(),
+      (t) => t
     );
     const wrapper = mount(
       <Provider store={store}>
@@ -163,7 +164,7 @@ describe('components/TeamsView', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith({
       description: undefined,
-      message: lang.ERROR_OCCURRED,
+      message: 'An error occurred',
     });
     wrapper.unmount();
   });

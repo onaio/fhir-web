@@ -5,7 +5,6 @@ import { QItems } from './itemsPreview';
 import './index.css';
 import { Collapse } from 'antd';
 import parse from 'html-react-parser';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
 
 const { Panel } = Collapse;
 
@@ -42,8 +41,8 @@ const R4Parse = (resource: IQuestionnaire) => {
     subjectType: subjectTypeCodes?.join(','),
     publisher,
     effectivePeriod: effectivePeriod,
-    lastReviewDate: intlFormatDateStrings(lastReviewDate),
-    date: intlFormatDateStrings(date as unknown as string),
+    lastReviewDate: lastReviewDate,
+    date: date,
     description,
   };
 };
@@ -75,7 +74,7 @@ export const Questionnaire = (props: QuestionnaireProps) => {
     title,
     publisher,
     description,
-    date,
+    date: date as string | undefined,
     version,
     subjectType,
     lastReviewDate,

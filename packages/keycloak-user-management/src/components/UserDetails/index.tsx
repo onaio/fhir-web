@@ -1,7 +1,7 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { Organization } from '@opensrp/team-management';
 import { Practitioner, KeycloakUser } from '../../ducks/user';
 import { Spin } from 'antd';
@@ -19,6 +19,7 @@ export type UserDetailType = Omit<UserDetailProps, 'onClose'>;
 
 export const UserDetails = (props: Partial<UserDetailProps>) => {
   const { onClose, keycloakUser, practitioner, assignedTeams } = props;
+  const { t } = useTranslation();
 
   if (!keycloakUser) return <Spin size="large" />;
 
@@ -32,23 +33,23 @@ export const UserDetails = (props: Partial<UserDetailProps>) => {
         icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
-        <p className="mb-0 font-weight-bold">{lang.USERNAME}</p>
+        <p className="mb-0 font-weight-bold">{t('Username')}</p>
         <p className="mb-0" id="username">
           {keycloakUser.username}
         </p>
       </div>
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.KEYCLOAK_UUID}</p>
+        <p className="mb-0 font-weight-bold">{t('Keycloak UUID')}</p>
         <p className="mb-0" id="keycloakId">{`${keycloakUser.id}`}</p>
       </div>
       {practitioner ? (
         <>
           <div className="mb-4 small">
-            <p className="mb-0 font-weight-bold">{lang.PRACTITIONER_UUID}</p>
+            <p className="mb-0 font-weight-bold">{t('Practitioner UUID')}</p>
             <p className="mb-0" id="practitionerId">{`${practitioner.identifier}`}</p>
           </div>
           <div className="mb-4 small">
-            <p className="mb-0 font-weight-bold">{lang.PRACTITIONER_STATUS}</p>
+            <p className="mb-0 font-weight-bold">{t('Practitioner Status')}</p>
             <p className="mb-0" id="practitionerStatus">
               {practitioner.active ? 'active' : 'inactive'}
             </p>
@@ -56,20 +57,20 @@ export const UserDetails = (props: Partial<UserDetailProps>) => {
         </>
       ) : (
         <div className="mb-4 small">
-          <p className="mb-0 font-weight-bold">{lang.PRACTITIONER}</p>
+          <p className="mb-0 font-weight-bold">{t('Practitioner')}</p>
           <p className="mb-0" id="noActivePractitioner">
-            {lang.NO_ACTIVE_PRACTITIONER}
+            {t('No Active Practitioner')}
           </p>
         </div>
       )}
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{lang.ASSIGNED_TEAMS}</p>
+        <p className="mb-0 font-weight-bold">{t('Assigned Teams')}</p>
         {assignedTeams?.length ? (
           assignedTeams.map((team) => (
             <p key={team.identifier} className="mb-0" id="assignedTeam">{`${team.name}`}</p>
           ))
         ) : (
-          <p id="noAssignedTeams">{lang.NO_ASSIGNED_TEAMS}</p>
+          <p id="noAssignedTeams">{t('No Assigned Teams')}</p>
         )}
       </div>
     </div>

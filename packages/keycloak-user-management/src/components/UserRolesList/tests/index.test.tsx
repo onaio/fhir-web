@@ -20,7 +20,7 @@ import {
 } from '../../../ducks/userRoles';
 import { userRoles } from '../../../ducks/tests/fixtures';
 import { URL_USER_ROLES } from '../../../constants';
-import lang from '../../../lang';
+
 import { unorderedUserRoles } from './fixtures';
 
 jest.mock('@opensrp/store', () => ({
@@ -170,7 +170,7 @@ describe('components/UserRolesList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('shows table with no data if user roles list from api is empty', async () => {

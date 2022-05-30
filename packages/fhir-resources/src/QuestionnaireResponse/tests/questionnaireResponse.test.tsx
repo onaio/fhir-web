@@ -9,7 +9,7 @@ test('parse Resource is ok', () => {
     id: '321',
     partOf: undefined,
     questionnaire: 'Questionnaire/123',
-    questionnaireVersion: 'Current',
+    questionnaireVersion: undefined,
     rootItems: [
       {
         answer: [
@@ -37,5 +37,5 @@ test('parse Resource is ok', () => {
   const qVersionTest = { ...openChoiceQuestRes, questionnaire: 'Questionnaire/3440/_history/20' };
   const qUndefVersionTest = { ...openChoiceQuestRes, questionnaire: undefined };
   expect(parseQuestionnaireResponse(qVersionTest).questionnaireVersion).toEqual('20');
-  expect(parseQuestionnaireResponse(qUndefVersionTest).questionnaireVersion).toEqual('Current');
+  expect(parseQuestionnaireResponse(qUndefVersionTest).questionnaireVersion).toEqual(undefined);
 });

@@ -95,9 +95,9 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
   className=""
   htmlFor="location-form_isJurisdiction"
-  title="Physical Type"
+  title="Physical type"
 >
-  Physical Type
+  Physical type
 </label>
 `;
 

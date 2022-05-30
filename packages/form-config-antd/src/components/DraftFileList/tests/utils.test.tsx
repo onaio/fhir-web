@@ -2,9 +2,8 @@ import { getTableColumns } from '../utils';
 
 describe('components/Antd/DraftFileList/utils/getTableColumns', () => {
   it('builds table columns correctly', () => {
-    const accessToken = 'sometoken';
-    const opensrpBaseURL = 'https://opensrp.smartregister.org/rest';
+    const translator = (t) => t;
 
-    expect(getTableColumns(accessToken, opensrpBaseURL, true)).toMatchSnapshot('table columns');
+    expect(getTableColumns(translator)).toMatchSnapshot('table columns');
   });
 });

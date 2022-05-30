@@ -20,7 +20,7 @@ import {
   KeycloakUser,
 } from '../../../ducks/user';
 import { URL_USER } from '../../../constants';
-import lang from '../../../lang';
+
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
@@ -141,7 +141,7 @@ describe('components/Credentials', () => {
         method: 'PUT',
       },
     ]);
-    expect(mockNotificationSuccess).toHaveBeenCalledWith(lang.CREDENTIALS_UPDATED_SUCCESSFULLY);
+    expect(mockNotificationSuccess).toHaveBeenCalledWith('Credentials updated successfully');
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users');
     wrapper.unmount();
   });
@@ -227,7 +227,7 @@ describe('components/Credentials', () => {
       password: 'password122',
     };
 
-    submitForm(values, fixtures.keycloakUser.id, KeycloakService, props.keycloakBaseURL);
+    submitForm(values, fixtures.keycloakUser.id, KeycloakService, props.keycloakBaseURL, (t) => t);
 
     await act(async () => {
       await flushPromises();
@@ -255,7 +255,7 @@ describe('components/Credentials', () => {
   });
 
   it('it handles errors correctly if API response is not 200', async () => {
-    fetch.mockReject(new HTTPError({} as Response, { error_description: lang.ERROR_OCCURED }));
+    fetch.mockReject(new HTTPError({} as Response, { error_description: 'An error occurred' }));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
@@ -278,7 +278,7 @@ describe('components/Credentials', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
 
     wrapper.unmount();
   });

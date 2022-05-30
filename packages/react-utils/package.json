@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,8 +20,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -43,6 +41,7 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.6.3",
     "fhirclient": "^2.4.0",
     "react-query": "^3.15.1"
@@ -50,9 +49,9 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
-    "i18next": "^19.8.4",
     "lodash": "^4.17.21",
     "react": "^16.18.1",
+    "react-i18next": "^11.14.2",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1"

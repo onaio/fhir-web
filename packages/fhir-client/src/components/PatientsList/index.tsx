@@ -6,6 +6,7 @@ import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { patientResourceType } from '../../constants';
+import { useTranslation } from '../../mls';
 import {
   parsePatient,
   serverSideSortedColumns,
@@ -26,6 +27,7 @@ interface PatientListProps {
  */
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
+  const { t } = useTranslation();
 
   const [fhirSortFilters, setFhirSortFilters] = useState<Record<'_sort', string>>();
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
@@ -51,7 +53,7 @@ export const PatientsList = (props: PatientListProps) => {
 
   const tableProps = {
     datasource: tableData,
-    columns: serverSideSortedColumns() as Column<TableData>[],
+    columns: serverSideSortedColumns(t) as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
     onChange: (
@@ -83,9 +85,9 @@ export const PatientsList = (props: PatientListProps) => {
   return (
     <div className="content-section">
       <Helmet>
-        <title>Patients</title>
+        <title>{t('Patients')}</title>
       </Helmet>
-      <PageHeader title="Patients" className="page-header" />
+      <PageHeader title={t('Patients')} className="page-header" />
       <Row className="list-view">
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">

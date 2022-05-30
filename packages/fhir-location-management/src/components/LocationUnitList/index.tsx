@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, Alert } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
-import lang from '../../lang';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
 import { convertApiResToTree } from '../../helpers/utils';
@@ -23,7 +22,7 @@ import {
   setSelectedNode,
   getSelectedNode,
 } from '../../ducks/location-tree-state';
-import { Alert } from 'antd';
+import { useTranslation } from '../../mls';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -67,6 +66,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
@@ -118,23 +118,26 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     tableNodes = [selectedNode, ...sortedNodes];
   }
   const tableDispData = parseTableData(tableNodes);
+  const pageTitle = t('Location Unit Management');
 
   return (
     <>
       {treeIsFetching && (
         <Alert
           type="info"
-          message="Refreshing data"
-          description="Request to update the location hierarchy is taking a bit long to respond."
+          message={t('Refreshing data')}
+          description={t(
+            'Request to update the location hierarchy is taking a bit long to respond.'
+          )}
           banner
           showIcon
         />
       )}
       <section className="layout-content">
         <Helmet>
-          <title>{lang.LOCATION_UNIT}</title>
+          <title>{pageTitle}</title>
         </Helmet>
-        <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_MANAGEMENT}</h1>
+        <h1 className="mb-3 fs-5">{pageTitle}</h1>
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree
@@ -149,7 +152,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
           <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
             <div className="mb-3 d-flex justify-content-between p-3">
               <h6 className="mt-4">
-                {selectedNode ? selectedNode.model.node.name : lang.LOCATION_UNIT}
+                {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
               </h6>
               <div>
                 <Link
@@ -164,7 +167,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
                 >
                   <Button type="primary">
                     <PlusOutlined />
-                    {lang.ADD_LOCATION_UNIT}
+                    {t('Add Location Unit')}
                   </Button>
                 </Link>
               </div>

@@ -46,7 +46,7 @@ Array [
         className="sidebar-icons"
       />
     }
-    title="Missions"
+    title="Plans"
   >
     <MenuItem>
       <Link
@@ -131,7 +131,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location units
+          Location Units
         </Link>
       </MenuItem>
       <MenuItem>
@@ -139,7 +139,7 @@ Array [
           className="admin-link"
           to="/admin/location/group"
         >
-          Location unit group
+          Location Unit Group
         </Link>
       </MenuItem>
     </SubMenu>

@@ -11,7 +11,7 @@ import {
   organizationResourceType,
 } from '../../constants';
 import { useQueryClient, useMutation } from 'react-query';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { SelectProps } from 'antd/lib/select';
 import {
   practitionersFilterFunction,
@@ -64,13 +64,14 @@ const OrganizationForm = (props: OrganizationFormProps) => {
 
   const queryClient = useQueryClient();
   const history = useHistory();
+  const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
 
   const { mutate, isLoading } = useMutation(
     (values: OrganizationFormFields) => {
       const payload = generateOrgPayload(values);
       return postPutOrganization(fhirBaseUrl, payload).then((organization) => {
-        sendSuccessNotification('Organization updated successfully');
+        sendSuccessNotification(t('Organization updated successfully'));
         return updatePractitionerRoles(
           fhirBaseUrl,
           values,
@@ -79,7 +80,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
           practitioners,
           existingPractitionerRoles
         ).then(() => {
-          sendSuccessNotification('Practitioner assignments updated successfully');
+          sendSuccessNotification(t('Practitioner assignments updated successfully'));
         });
       });
     },
@@ -89,7 +90,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       },
       onSuccess: () => {
         queryClient.invalidateQueries([organizationResourceType]).catch(() => {
-          sendInfoNotification('Failed to refresh data, please refresh the page');
+          sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         });
         goTo(successUrl);
       },
@@ -103,12 +104,12 @@ const OrganizationForm = (props: OrganizationFormProps) => {
   }
 
   const statusOptions = [
-    { label: 'Inactive', value: false },
-    { label: 'active', value: true },
+    { label: t('Inactive'), value: false },
+    { label: t('active'), value: true },
   ];
 
   const practitionersSelectOptions = getPractitionerOptions(practitioners);
-  const validationRules = validationRulesFactory();
+  const validationRules = validationRulesFactory(t);
 
   return (
     <Form
@@ -118,20 +119,20 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem name={id} label="Id" id="id" hidden={true}>
+      <FormItem name={id} label={t('Id')} id="id" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem name={identifier} label="Identifier" id="identifier" hidden={true}>
+      <FormItem name={identifier} label={t('Identifier')} id="identifier" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem name={name} rules={validationRules.name} id="name" label="Name">
-        <Input placeholder="Enter team name" />
+      <FormItem name={name} rules={validationRules.name} id="name" label={t('Name')}>
+        <Input placeholder={t('Enter team name')} />
       </FormItem>
 
-      <FormItem name={alias} rules={validationRules.alias} id="alias" label="Alias">
-        <Input placeholder="Enter team alias" />
+      <FormItem name={alias} rules={validationRules.alias} id="alias" label={t('Alias')}>
+        <Input placeholder={t('Enter team alias')} />
       </FormItem>
 
       <FormItem id="status" name={active} label="Status" rules={validationRules.status}>
@@ -142,12 +143,17 @@ const OrganizationForm = (props: OrganizationFormProps) => {
         <Select disabled={disabled.includes(type)} options={getOrgTypeSelectOptions()}></Select>
       </FormItem>
 
-      <FormItem id="members" name={members} label="Practitioners" rules={validationRules.members}>
+      <FormItem
+        id="members"
+        name={members}
+        label={t('Practitioners')}
+        rules={validationRules.members}
+      >
         <Select
           allowClear
           mode="multiple"
           optionFilterProp="label"
-          placeholder={lang.SELECT_PRACTITIONER}
+          placeholder={t('Select user (practitioners only)')}
           options={practitionersSelectOptions}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
@@ -156,7 +162,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       <FormItem {...tailLayout}>
         <Space>
           <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
-            {isLoading ? 'Saving' : 'save'}
+            {isLoading ? t('Saving') : t('save')}
           </Button>
           <Button
             id="cancel-button"
@@ -164,7 +170,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
               goTo(cancelUrl);
             }}
           >
-            {lang.CANCEL}
+            {t('Cancel')}
           </Button>
         </Space>
       </FormItem>

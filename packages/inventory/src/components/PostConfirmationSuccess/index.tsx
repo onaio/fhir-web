@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Space, Button } from 'antd';
-import lang from '../../lang';
 import { CheckCircleOutlined } from '@ant-design/icons';
-import { format } from 'util';
 import { Link } from 'react-router-dom';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CardTitle } from '../../helpers/utils';
+import { useTranslation } from '../../mls';
+import { Trans } from '@opensrp/i18n';
 
 export interface PostConfirmationSuccessProps {
   rowsProcessed: number | string;
@@ -24,24 +24,27 @@ const defaultProps = {
  */
 const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
   const { rowsProcessed, filename } = props;
+  const { t } = useTranslation();
 
   const cardTitle = (
     <CardTitle
       IconRender={<CheckCircleOutlined className="card-title__icon" />}
-      text={format(lang.INVENTORY_ITEMS_SUCCESSFULLY_ADDED, filename)}
+      text={t('“{{filename}}” inventory items successfully added', { filename })}
     />
   );
 
   return (
     <Card title={cardTitle} className="full-page-card">
-      <p>
-        {rowsProcessed} {lang.INVENTORY_ITEMS_ADDED_TO}{' '}
-        <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>{lang.SERVICE_POINT_INVENTORY}</Link>.{' '}
-        {lang.INVENTORY_MAY_TAKE_A_FEW_MINUTES_TO_APPEAR}
-      </p>
+      <Trans t={t} i18nKey="postConfirmationSuccess.inventoryAddedTo">
+        <p>
+          {{ rowsProcessed }} inventory items added to&nbsp;
+          <Link to={INVENTORY_SERVICE_POINT_LIST_VIEW}>Service point inventory</Link>.&nbsp;
+          Inventory may take a few minutes to appear.
+        </p>
+      </Trans>
       <Space>
         <Link to={INVENTORY_BULK_UPLOAD_URL}>
-          <Button className="round-button">{lang.UPLOAD_ANOTHER_FILE}</Button>
+          <Button className="round-button">{t('Upload another file')}</Button>
         </Link>
       </Space>
     </Card>

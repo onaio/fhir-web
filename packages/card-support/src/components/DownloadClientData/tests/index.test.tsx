@@ -16,7 +16,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import Papaparse from 'papaparse';
 import * as globalUtils from '@opensrp/react-utils';
 import * as notifications from '@opensrp/notifications';
-import lang from '../../../lang';
+
 import { QueryClient, QueryClientProvider } from 'react-query';
 /* eslint-disable react/prop-types */
 
@@ -429,7 +429,7 @@ describe('components/DownloadClientData', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
+      'Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.'
     );
   });
 
@@ -463,6 +463,6 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });

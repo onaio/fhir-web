@@ -139,7 +139,7 @@ describe('Care Teams list view', () => {
         };
       })
     );
-    await deleteCareTeam('https://r4.smarthealthit.org/', '308');
+    await deleteCareTeam('https://r4.smarthealthit.org/', '308', (t) => t);
 
     await act(async () => {
       await flushPromises();

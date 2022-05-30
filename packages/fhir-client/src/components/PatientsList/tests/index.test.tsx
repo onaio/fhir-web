@@ -146,7 +146,7 @@ test('renders correctly in list view', async () => {
   const dateOfbirths = Array.from(document.querySelectorAll('tr td:nth-child(2)')).map(
     (td) => td.textContent
   );
-  expect(dateOfbirths).toEqual(['1988-08-04', '1988-08-04', '1988-08-04', '1988-08-04']);
+  expect(dateOfbirths).toEqual(['8/4/1988', '8/4/1988', '8/4/1988', '8/4/1988']);
 
   // mock requests due to sort
   nock(props.fhirBaseURL)
@@ -180,11 +180,11 @@ test('renders correctly in list view', async () => {
     (td) => td.textContent
   );
   expect(sortedBirthDates).toEqual([
-    '1909-07-10',
-    '1919-05-28',
-    '1921-09-14',
-    '1935-01-03',
-    '1938-09-10',
+    '7/10/1909',
+    '5/28/1919',
+    '9/14/1921',
+    '1/3/1935',
+    '9/10/1938',
   ]);
 
   // sort the other way
@@ -218,11 +218,11 @@ test('renders correctly in list view', async () => {
     (td) => td.textContent
   );
   expect(ascendingBirthDates).toEqual([
-    '2022-05-05',
-    '2022-05-03',
-    '2022-05-01',
-    '2022-04-29',
-    '2022-04-29',
+    '5/5/2022',
+    '5/3/2022',
+    '5/1/2022',
+    '4/29/2022',
+    '4/29/2022',
   ]);
 
   expect(nock.isDone()).toBeTruthy();

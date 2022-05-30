@@ -29,6 +29,7 @@ import {
   validationRulesFactory,
 } from './utils';
 import { SelectProps } from 'antd/lib/select';
+import { useTranslation } from '../../mls';
 
 const { Item: FormItem } = Form;
 
@@ -51,6 +52,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
 
   const queryClient = useQueryClient();
   const history = useHistory();
+  const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
 
   const { mutate, isLoading } = useMutation(
@@ -63,9 +65,9 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         sendErrorNotification(err.message);
       },
       onSuccess: () => {
-        sendSuccessNotification('Health care service updated successfully');
+        sendSuccessNotification(t('Health care service updated successfully'));
         queryClient.invalidateQueries([healthCareServiceResourceType]).catch(() => {
-          sendInfoNotification('Failed to refresh data, please refresh the page');
+          sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         });
         goTo(successUrl);
       },
@@ -73,12 +75,12 @@ const HealthCareForm = (props: HealthCareFormProps) => {
   );
 
   const statusOptions = [
-    { label: 'Inactive', value: false },
-    { label: 'active', value: true },
+    { label: t('Inactive'), value: false },
+    { label: t('active'), value: true },
   ];
 
   const orgOptions = getOrgSelectOptions(organizations);
-  const validationRules = validationRulesFactory();
+  const validationRules = validationRulesFactory(t);
 
   return (
     <Form
@@ -89,27 +91,27 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem hidden={true} id="id" name={id} label="Id">
+      <FormItem hidden={true} id="id" name={id} label={t('Id')}>
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem hidden={true} id="identifier" name={identifier} label="Identifier">
+      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem id="name" name={name} rules={validationRules.name} label="Name">
-        <Input disabled={disabled.includes(name)} placeholder={'Name'} />
+      <FormItem id="name" name={name} rules={validationRules.name} label={t('Name')}>
+        <Input disabled={disabled.includes(name)} placeholder={t('Name')} />
       </FormItem>
 
-      <FormItem id="active" rules={validationRules.active} name={active} label="Status">
+      <FormItem id="active" rules={validationRules.active} name={active} label={t('Status')}>
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem id="comment" rules={validationRules.comment} name={comment} label="Comment">
+      <FormItem id="comment" rules={validationRules.comment} name={comment} label={t('Comment')}>
         <Input.TextArea
           disabled={disabled.includes(comment)}
           rows={2}
-          placeholder="Enter comment"
+          placeholder={t('Enter comment')}
         />
       </FormItem>
 
@@ -117,12 +119,12 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         id="extraDetails"
         rules={validationRules.extraDetails}
         name={extraDetails}
-        label="Extra details"
+        label={t('Extra details')}
       >
         <Input.TextArea
           disabled={disabled.includes(extraDetails)}
           rows={4}
-          placeholder="Enter extra details"
+          placeholder={t('Enter extra details')}
         />
       </FormItem>
 
@@ -130,11 +132,11 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         id="providedBy"
         name={providedBy}
         rules={validationRules.providedBy}
-        label="Provided by"
+        label={t('Provided by')}
       >
         <Select
           disabled={disabled.includes(providedBy)}
-          placeholder="Select organization"
+          placeholder={t('Select organization')}
           options={orgOptions}
           showSearch={true}
           filterOption={orgFilterFunction as SelectProps<SelectOption[]>['filterOption']}
@@ -144,7 +146,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       <FormItem {...tailLayout}>
         <Space>
           <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
-            {isLoading ? 'Saving' : 'save'}
+            {isLoading ? t('Saving') : t('save')}
           </Button>
           <Button
             id="cancel-button"
@@ -152,7 +154,7 @@ const HealthCareForm = (props: HealthCareFormProps) => {
               goTo(cancelUrl);
             }}
           >
-            Cancel
+            {t('Cancel')}
           </Button>
         </Space>
       </FormItem>

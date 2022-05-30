@@ -1,9 +1,10 @@
 import { Typography, Tooltip } from 'antd';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
-import { Column, intlFormatDateStrings, TableLayout } from '@opensrp/react-utils';
+import { Column, TableLayout } from '@opensrp/react-utils';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 import React from 'react';
+import { useTranslation } from '../mls';
 import { get } from 'lodash';
 
 const { Text } = Typography;
@@ -35,10 +36,11 @@ export const sorterFn =
  */
 export const FhirPeriod = (props: Period) => {
   const { start, end } = props;
+  const { t } = useTranslation();
   return (
     <>
-      <Text>{intlFormatDateStrings(start as string | undefined)}</Text>-
-      <Text>{intlFormatDateStrings(end as string | undefined)}</Text>
+      <Text>{t('{{val, datetime}}', { val: new Date(start ?? '') })}</Text>-
+      <Text>{t('{{val, datetime}}', { val: new Date(end ?? '') })}</Text>
     </>
   );
 };

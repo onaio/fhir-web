@@ -12,7 +12,7 @@ import {
   KEYCLOAK_URL_EFFECTIVE_ROLES,
   ROUTE_PARAM_USER_GROUP_ID,
 } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import {
   reducer as keycloakUserGroupsReducer,
   reducerName as keycloakUserGroupsReducerName,
@@ -63,6 +63,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
   const [availableRoles, setAvailableRoles] = React.useState<KeycloakUserRole[]>([]);
   const [assignedRoles, setAssignedRoles] = React.useState<KeycloakUserRole[]>([]);
   const [effectiveRoles, setEffectiveRoles] = React.useState<KeycloakUserRole[]>([]);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userGroupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID];
   const keycloakUserGroup = useSelector((state) =>
@@ -78,25 +79,28 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
   React.useEffect(() => {
     if (userGroupId) {
       setIsLoading(true);
-      const groupPromise = fetchSingleGroup(userGroupId, keycloakBaseURL, dispatch);
-      const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch);
+      const groupPromise = fetchSingleGroup(userGroupId, keycloakBaseURL, dispatch, t);
+      const allRolesPromise = fetchAllRoles(keycloakBaseURL, dispatch, t);
       const availableRolesPromise = fetchRoleMappings(
         userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_AVAILABLE_ROLES,
-        setAvailableRoles
+        setAvailableRoles,
+        t
       );
       const assignedRolesPromise = fetchRoleMappings(
         userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_ASSIGNED_ROLES,
-        setAssignedRoles
+        setAssignedRoles,
+        t
       );
       const effectiveRolesPromise = fetchRoleMappings(
         userGroupId,
         keycloakBaseURL,
         KEYCLOAK_URL_EFFECTIVE_ROLES,
-        setEffectiveRoles
+        setEffectiveRoles,
+        t
       );
       Promise.all([
         groupPromise,
@@ -105,9 +109,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         assignedRolesPromise,
         effectiveRolesPromise,
       ])
-        .catch(() => {
-          sendErrorNotification(lang.ERROR_OCCURED);
-        })
+        .catch(() => sendErrorNotification(t('An error occurred')))
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

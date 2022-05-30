@@ -12,8 +12,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
   },
   "license": "Apache-2.0",
   "publishConfig": {
@@ -23,22 +22,22 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
-    "i18next": "^19.8.4",
+    "@opensrp/i18n": "^0.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-helmet": "^6.1.0",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "antd": "^4.6.3"
   },
   "dependencies": {
+    "react-helmet": "^6.1.0",
     "@ant-design/icons": "^4.2.2",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "^0.1.1",
@@ -52,7 +51,6 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
     "@opensrp/team-management": "^0.0.9",
-    "antd": "^4.6.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
     "connected-react-router": "^6.8.0",
@@ -60,7 +58,6 @@
     "formik": "^2.1.5",
     "formik-antd": "^2.0.1",
     "lodash": "^4.17.20",
-    "react-i18next": "^11.8.10",
     "react-query": "^3.15.1",
     "reselect": "^4.1.5",
     "seamless-immutable": "^7.1.4",
@@ -68,7 +65,6 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
-    "@types/uuid": "^8.3.0",
-    "i18next-parser": "^3.5.0"
+    "@types/uuid": "^8.3.0"
   }
 }

@@ -15,6 +15,7 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import React from 'react';
+import { useTranslation } from '@opensrp/i18n';
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
@@ -34,6 +35,7 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseUrl' | 'ke
  */
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseUrl, keycloakBaseUrl } = props;
+  const { t } = useTranslation();
 
   const {
     data: user,
@@ -85,8 +87,8 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   };
 
   const practitionerKeyValues = {
-    'Practitioner Id': practitioner?.id,
-    'Practitioner status': practitioner?.active ? 'active' : 'inactive',
+    [t('Practitioner Id')]: practitioner?.id,
+    [t('Practitioner status')]: practitioner?.active ? t('active') : t('inactive'),
   };
 
   const careTeamKeyValues = {
@@ -103,18 +105,21 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     <Space direction="vertical">
       {renderObjectAsKeyvalue(keycloakUserValues)}
       {practitionerIsLoading ? (
-        <Alert description="Fetching linked practitioner" type="info"></Alert>
+        <Alert description={t('Fetching linked practitioner')} type="info"></Alert>
       ) : practitioner ? (
         renderObjectAsKeyvalue(practitionerKeyValues)
       ) : (
-        <Alert description="User does not have a linked practitioner" type="warning"></Alert>
+        <Alert description={t('User does not have a linked practitioner')} type="warning"></Alert>
       )}
       {careTeamsIsLoading ? (
-        <Alert description="Fetching linked care teams" type="info"></Alert>
+        <Alert description={t('Fetching linked care teams')} type="info"></Alert>
       ) : careTeams && careTeams.length > 0 ? (
         renderObjectAsKeyvalue(careTeamKeyValues)
       ) : (
-        <Alert description="Practitioner is not assigned to a care team" type="warning"></Alert>
+        <Alert
+          description={t('Practitioner is not assigned to a care team')}
+          type="warning"
+        ></Alert>
       )}
     </Space>
   );

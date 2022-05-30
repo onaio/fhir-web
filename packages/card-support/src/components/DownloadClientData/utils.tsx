@@ -12,8 +12,7 @@ import { downloadFile } from '@opensrp/react-utils';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import lang, { Lang } from '../../lang';
-/* eslint-disable @typescript-eslint/naming-convention */
+import type { TFunction } from '@opensrp/i18n';
 
 /** interface for user assignment response */
 export interface UserAssignment {
@@ -57,7 +56,7 @@ export const handleCardOrderDateChange = (
  * @param serviceClass - OPENSRP service class
  * @param locations location hierarchy
  * @param setSubmitting - method to set form `isSubmitting` status
- * @param langObj - tthe lang object
+ * @param t - translator function
  */
 export const submitForm = async (
   values: DownloadClientDataFormFields,
@@ -66,7 +65,7 @@ export const submitForm = async (
   serviceClass: typeof OpenSRPService,
   locations: ParsedHierarchyNode[],
   setSubmitting: (isSubmitting: boolean) => void,
-  langObj: Lang = lang
+  t: TFunction
 ): Promise<void> => {
   const { clientLocation, cardStatus, cardOrderDate } = values;
 
@@ -98,7 +97,7 @@ export const submitForm = async (
         flatNestedLocationIdsWithClientLocationId.join(',');
       return stringifiedFlatNestedLocationIdsWithClientLocationId;
     } catch (_) {
-      sendErrorNotification(langObj.ERROR_OCCURRED);
+      sendErrorNotification(t('An error occurred'));
       return '';
     }
   };
@@ -163,12 +162,12 @@ export const submitForm = async (
       if (entries.length) {
         createCsv(entries, buildCSVFileName(location ? location.title : '', startDate, endDate));
       } else {
-        sendErrorNotification(langObj.NO_DATA_FOUND);
+        sendErrorNotification(t('No data found'));
       }
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      sendErrorNotification(langObj.ERROR_OCCURRED);
+      sendErrorNotification(t('An error occurred'));
     });
 };
 

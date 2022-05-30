@@ -21,7 +21,6 @@ import {
 } from '../../../ducks/userGroups';
 import { unsortedUserGroups, userGroups } from '../../../ducks/tests/fixtures';
 import { URL_USER_GROUPS } from '../../../constants';
-import lang from '../../../lang';
 
 jest.mock('@opensrp/store', () => {
   const actual = jest.requireActual('@opensrp/store');
@@ -189,7 +188,7 @@ describe('components/UserGroupsList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('shows table with no data if user groups list from api is empty', async () => {

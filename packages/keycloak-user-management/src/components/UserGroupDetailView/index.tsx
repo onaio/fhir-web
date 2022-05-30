@@ -6,7 +6,7 @@ import { Button } from 'antd';
 import { URL_USER_EDIT } from '../../constants';
 import { UserGroupMembers } from '../UserGroupsList';
 import { Link } from 'react-router-dom';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 
 /** typings for the view details component */
@@ -26,6 +26,7 @@ export interface ViewDetailsProps {
  */
 const ViewDetails = (props: ViewDetailsProps) => {
   const { loading, error, GroupDetails, userGroupMembers, onClose } = props;
+  const { t } = useTranslation();
 
   return (
     <Col className="p-4 bg-white">
@@ -43,19 +44,19 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{lang.NAME}</p>
+            <p className="mb-0 font-weight-bold">{t('Name')}</p>
             <p className="mb-0" id="name">
               {GroupDetails.name}
             </p>
           </div>
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{lang.GROUP_UUID}</p>
+            <p className="mb-0 font-weight-bold">{t('Group uuid')}</p>
             <p className="mb-0" id="uuid">
               {GroupDetails.id}
             </p>
           </div>
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{lang.ROLES}</p>
+            <p className="mb-0 font-weight-bold">{t('Roles')}</p>
             {GroupDetails.realmRoles?.length ? (
               GroupDetails.realmRoles.map((role, indx) => {
                 // append word break to wrap underscored strings with css
@@ -70,11 +71,11 @@ const ViewDetails = (props: ViewDetailsProps) => {
                 );
               })
             ) : (
-              <p id="noRealRole">{lang.NO_ASSIGNED_ROLES}</p>
+              <p id="noRealRole">{t('No assigned roles')}</p>
             )}
           </div>
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{lang.MEMBERS}</p>
+            <p className="mb-0 font-weight-bold">{t('Members')}</p>
             {userGroupMembers.length ? (
               userGroupMembers.map((userGroup) => (
                 <p key={userGroup.id} className="mb-0" id="groupMember">
@@ -84,7 +85,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
                 </p>
               ))
             ) : (
-              <p id="noGroupMember">{lang.NO_ASSIGNED_MEMBERS}</p>
+              <p id="noGroupMember">{t('No assigned members')}</p>
             )}
           </div>
         </Space>

@@ -4,10 +4,10 @@ import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
-import { useTranslation } from 'react-i18next';
 import { Route, getRoutes } from '../../../routes';
 import { getActiveKey } from './utils';
 import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
+import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 
 /** interface for SidebarProps */

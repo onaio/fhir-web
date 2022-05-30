@@ -13,7 +13,6 @@ import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import { OpenSRPService } from '@opensrp/server-service';
-import lang from '../../../lang';
 
 const history = createBrowserHistory();
 
@@ -219,7 +218,7 @@ describe('components/UploadFile', () => {
       await flushPromises();
     });
     expect(fetch).not.toHaveBeenCalled();
-    expect(props.customAlert).toHaveBeenCalledWith(lang.ERROR_OCCURRED, {
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', {
       type: 'error',
     });
     wrapper.unmount();

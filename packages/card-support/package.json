@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/types",
   "files": [
-    "dist",
-    "locales"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,8 +20,7 @@
     "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
     "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
     "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "extractTranslations": "yarn i18next 'src/**/*.{ts,tsx}' -c ../../i18next-parser.config.js"
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx' --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -36,11 +34,11 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
-    "i18next": "^19.8.4",
     "react": "^16.18.1",
     "react-query": "^3.15.1",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.2.1"
+    "react-router-dom": "^5.2.1",
+    "@opensrp/i18n": "^0.0.1"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
@@ -53,12 +51,10 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
-    "papaparse": "^5.3.0",
-    "react-i18next": "^11.8.10"
+    "papaparse": "^5.3.0"
   },
   "devDependencies": {
-    "@types/papaparse": "^5.2.4",
-    "i18next-parser": "^3.5.0"
+    "@types/papaparse": "^5.2.4"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0"

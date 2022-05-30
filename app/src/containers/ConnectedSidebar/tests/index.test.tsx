@@ -179,7 +179,7 @@ describe('components/ConnectedSidebar/utils', () => {
       {
         enabled: true,
         key: 'admin',
-        title: 'Admin',
+        title: 'Administration',
         url: '/admin',
         children: [
           {

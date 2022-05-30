@@ -18,9 +18,9 @@ import { Dictionary } from '@onaio/utils';
 import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
-import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -61,19 +61,23 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   const [value, setValue] = useState('');
   const { opensrpBaseURL, uploadFileURL, viewReleaseURL, customFetchOptions, fetchReleases } =
     props;
+  const { t } = useTranslation();
 
   useEffect(() => {
+    setLoading(true);
     fetchReleaseFiles(
       accessToken,
       opensrpBaseURL,
       fetchReleases,
-      setLoading,
-      sendErrorNotification,
       OPENSRP_MANIFEST_ENDPOINT,
       dispatch,
       customFetchOptions
-    );
-  }, [accessToken, opensrpBaseURL, customFetchOptions, dispatch, fetchReleases]);
+    )
+      .catch(() => sendErrorNotification(t('An error occurred')))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [accessToken, opensrpBaseURL, customFetchOptions, dispatch, fetchReleases, t]);
 
   if (loading) {
     return <Spin size="large" className="custom-spinner" />;
@@ -93,12 +97,12 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   return (
     <div className="layout-content">
-      <Title level={3}>{lang.RELEASES}</Title>
+      <Title level={3}>{t('Releases')}</Title>
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
             id="search"
-            placeholder="Search"
+            placeholder={t('Search')}
             size="large"
             value={value}
             prefix={<SearchOutlined />}
@@ -108,7 +112,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
             <UploadOutlined />
-            {lang.UPLOAD_NEW_FILE}
+            {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
           <SettingOutlined />
@@ -116,7 +120,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
         <TableLayout
           id="FormReleaseList"
           persistState={true}
-          columns={getTableColumns(sortedInfo)}
+          columns={getTableColumns(t, sortedInfo)}
           actions={{
             // eslint-disable-next-line react/display-name
             render: (_: string, file: ManifestReleasesTypes) => {

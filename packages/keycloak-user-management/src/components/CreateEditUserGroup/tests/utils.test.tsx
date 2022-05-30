@@ -11,7 +11,7 @@ import {
   submitForm,
 } from '../utils';
 import fetch from 'jest-fetch-mock';
-import lang from '../../../lang';
+
 import { value } from './fixtures';
 import { userRoles } from '../../../ducks/tests/fixtures';
 import {
@@ -56,7 +56,7 @@ describe('dataLoading', () => {
 
   it('fetchSingleGroup works correctly', async () => {
     fetch.once(JSON.stringify(fixtures.userGroup1));
-    fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn(), (t) => t).catch((e) => {
       throw e;
     });
     await flushPromises();
@@ -76,17 +76,19 @@ describe('dataLoading', () => {
   it('fetchSingleGroup handles errors', async () => {
     fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn()).catch((e) => {
+    fetchSingleGroup(fixtures.userGroup1.id, mockBaseURL, jest.fn(), (t) => t).catch((e) => {
       throw e;
     });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('assignRoles works correctly', async () => {
-    assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch((e) => {
-      throw e;
-    });
+    assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id], (t) => t).catch(
+      (e) => {
+        throw e;
+      }
+    );
     await flushPromises();
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
@@ -107,19 +109,25 @@ describe('dataLoading', () => {
   it('assignRoles handles errors', async () => {
     fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch((e) => {
-      throw e;
-    });
-    await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
-  });
-
-  it('removeAssignedRoles works correctly', async () => {
-    removeAssignedRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch(
+    assignRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id], (t) => t).catch(
       (e) => {
         throw e;
       }
     );
+    await flushPromises();
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+  });
+
+  it('removeAssignedRoles works correctly', async () => {
+    removeAssignedRoles(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      userRoles,
+      [userRoles[0].id],
+      (t) => t
+    ).catch((e) => {
+      throw e;
+    });
     await flushPromises();
     expect(fetch.mock.calls[0]).toEqual([
       'https://example.com/rest/groups/261c67fe-918b-4369-a35f-095b5e284fcb/role-mappings/realm',
@@ -140,13 +148,17 @@ describe('dataLoading', () => {
   it('removeAssignedRoles handles errors', async () => {
     fetch.mockRejectOnce(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
-    removeAssignedRoles(fixtures.userGroup1.id, mockBaseURL, userRoles, [userRoles[0].id]).catch(
-      (e) => {
-        throw e;
-      }
-    );
+    removeAssignedRoles(
+      fixtures.userGroup1.id,
+      mockBaseURL,
+      userRoles,
+      [userRoles[0].id],
+      (t) => t
+    ).catch((e) => {
+      throw e;
+    });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('fetchRoleMappings fetches available roles', async () => {
@@ -155,7 +167,8 @@ describe('dataLoading', () => {
       fixtures.userGroup1.id,
       mockBaseURL,
       KEYCLOAK_URL_AVAILABLE_ROLES,
-      jest.fn()
+      jest.fn(),
+      (t) => t
     ).catch((e) => {
       throw e;
     });
@@ -179,7 +192,8 @@ describe('dataLoading', () => {
       fixtures.userGroup1.id,
       mockBaseURL,
       KEYCLOAK_URL_ASSIGNED_ROLES,
-      jest.fn()
+      jest.fn(),
+      (t) => t
     ).catch((e) => {
       throw e;
     });
@@ -203,7 +217,8 @@ describe('dataLoading', () => {
       fixtures.userGroup1.id,
       mockBaseURL,
       KEYCLOAK_URL_EFFECTIVE_ROLES,
-      jest.fn()
+      jest.fn(),
+      (t) => t
     ).catch((e) => {
       throw e;
     });
@@ -228,12 +243,13 @@ describe('dataLoading', () => {
       fixtures.userGroup1.id,
       mockBaseURL,
       KEYCLOAK_URL_ASSIGNED_ROLES,
-      jest.fn()
+      jest.fn(),
+      (t) => t
     ).catch((e) => {
       throw e;
     });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith(lang.ERROR_OCCURED);
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('submits group creation correctly', async () => {
@@ -248,7 +264,7 @@ describe('dataLoading', () => {
       },
     });
 
-    submitForm(value, keycloakBaseURL, mockSubmitCallback).catch(jest.fn());
+    submitForm(value, keycloakBaseURL, mockSubmitCallback, (t) => t).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -289,7 +305,9 @@ describe('dataLoading', () => {
       },
     });
 
-    submitForm({ ...value, id: id }, keycloakBaseURL, mockSubmitCallback).catch(jest.fn());
+    submitForm({ ...value, id: id }, keycloakBaseURL, mockSubmitCallback, (t) => t).catch(
+      jest.fn()
+    );
 
     await act(async () => {
       await flushPromises();
@@ -320,7 +338,7 @@ describe('dataLoading', () => {
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     const historyPushMock = jest.spyOn(history, 'push');
 
-    submitForm(value, keycloakBaseURL, jest.fn()).catch(jest.fn());
+    submitForm(value, keycloakBaseURL, jest.fn(), (t) => t).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();
@@ -334,7 +352,7 @@ describe('dataLoading', () => {
     fetch.mockReject(new Error('API is down'));
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    submitForm({ ...value, id }, keycloakBaseURL, jest.fn()).catch(jest.fn());
+    submitForm({ ...value, id }, keycloakBaseURL, jest.fn(), (t) => t).catch(jest.fn());
 
     await act(async () => {
       await flushPromises();

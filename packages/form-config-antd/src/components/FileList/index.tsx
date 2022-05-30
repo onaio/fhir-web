@@ -20,9 +20,9 @@ import { getTableColumns } from './utils';
 import { useHistory, RouteComponentProps } from 'react-router';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import { ROUTE_PARAM_FORM_VERSION } from '../../constants';
-import lang from '../../lang';
 import { TableLayout } from '@opensrp/react-utils';
 import { TableActions } from './TableActions';
+import { useTranslation } from '../../mls';
 
 /** Register reducer */
 reducerRegistry.register(filesReducerName, filesReducer);
@@ -80,22 +80,27 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   const formVersion = match.params[ROUTE_PARAM_FORM_VERSION];
   const dispatch = useDispatch();
   const history = useHistory();
-  const title = formVersion ? `${lang.RELEASES}: ${formVersion}` : lang.JSON_VALIDATORS;
+  const { t } = useTranslation();
+
+  const title = formVersion
+    ? t('Releases: {{formVersion}}', { formVersion })
+    : t('JSON Validators');
 
   useEffect(
     () => {
+      setLoading(true);
       fetchManifests(
         accessToken,
         opensrpBaseURL,
         fetchFiles,
         removeFiles,
-        setLoading,
-        sendErrorNotification,
         formVersion,
         OPENSRP_FORM_METADATA_ENDPOINT,
         dispatch,
         customFetchOptions
-      );
+      )
+        .catch(() => sendErrorNotification('An error occurred'))
+        .finally(() => setLoading(false));
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       opensrpBaseURL,
@@ -144,7 +149,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             <>
               <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
                 <UploadOutlined />
-                {lang.UPLOAD_NEW_FILE}
+                {t('Upload New File')}
               </Button>
               <Divider type="vertical" />
             </>
@@ -154,7 +159,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         <TableLayout
           id="FormFileList"
           persistState={true}
-          columns={getTableColumns(isJsonValidator, sortedInfo)}
+          columns={getTableColumns(isJsonValidator, t, sortedInfo)}
           actions={{
             // eslint-disable-next-line react/display-name
             render: (_: string, file: ManifestFilesTypes) => {

@@ -153,7 +153,7 @@ Below is a list of currently supported environment variables:
   - **optional**_(`string`)_
   - default: `en`
 
-- **REACT_APP_PROJECT_LANGUAGE_CODE**
+- **REACT_APP_PROJECT_CODE**
 
   - project code to help decide where to pick the language resource files from
   - **optional**_(`string`)_

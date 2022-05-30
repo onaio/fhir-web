@@ -7,35 +7,38 @@ import {
   TableColumnsNamespace,
 } from '../../constants';
 import { Link } from 'react-router-dom';
-import lang, { Lang } from '../../lang';
 import { Column } from '@opensrp/react-utils';
+import type { TFunction } from '@opensrp/i18n';
 
 /** component rendered in the action column of the table */
 
 /**
  * component rendered in the action column of the table
  *
- * @param record - represent row as records
+ * @param t - the translator function
  */
-export const ActionsColumnCustomRender: Column<ProductCatalogue>['render'] = (record) => {
-  return (
-    <>
-      <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{lang.EDIT}</Link>
-      <Divider type="vertical" />
-      <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{lang.VIEW_DETAILS}</Link>
-    </>
-  );
-};
+export const ActionsColumnCustomRender =
+  (t: TFunction): Column<ProductCatalogue>['render'] =>
+  // eslint-disable-next-line react/display-name
+  (record) => {
+    return (
+      <>
+        <Link to={`${CATALOGUE_EDIT_VIEW_URL}/${record.uniqueId}`}>{t('Edit')}</Link>
+        <Divider type="vertical" />
+        <Link to={`${CATALOGUE_LIST_VIEW_URL}/${record.uniqueId}`}>{t('View details')}</Link>
+      </>
+    );
+  };
 
 /**
  * product Catalogue table columns
  *
- * @param langObj - the lang translation object
+ * @param t - the translator function
  */
-export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[] => {
+export const columnsFactory = (t: TFunction): Column<ProductCatalogue>[] => {
   const columns: Column<ProductCatalogue>[] = [
     {
-      title: langObj.PRODUCT_NAME_TH,
+      title: t('Product Name'),
       dataIndex: 'productName',
       key: `${TableColumnsNamespace}-productName` as keyof ProductCatalogue,
       defaultSortOrder: 'descend',
@@ -50,7 +53,7 @@ export const columnsFactory = (langObj: Lang = lang): Column<ProductCatalogue>[]
       },
     },
     {
-      title: langObj.ID_TH,
+      title: t('ID'),
       dataIndex: 'uniqueId',
       key: `${TableColumnsNamespace}-uniqueId` as keyof ProductCatalogue,
     },

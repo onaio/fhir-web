@@ -6,12 +6,13 @@ import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { unicefSections } from '../../../components/InventoryItemForm/tests/fixtures';
 import { fetchSettings } from '../utils';
-import lang from '../../../lang';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
+
+const translator = (str) => str;
 
 describe('containers/InventoryAddEdit/utils/fetchSettings', () => {
   beforeAll(() => {
@@ -41,7 +42,7 @@ describe('containers/InventoryAddEdit/utils/fetchSettings', () => {
   it('fetches settings', async () => {
     fetch.once(JSON.stringify(unicefSections));
 
-    fetchSettings(openSRPBaseURL, params, setSettingsMock);
+    fetchSettings(openSRPBaseURL, params, setSettingsMock, translator);
 
     await act(async () => {
       await flushPromises();
@@ -67,13 +68,13 @@ describe('containers/InventoryAddEdit/utils/fetchSettings', () => {
     fetch.mockResponse('Server error here', { status: 500 });
     const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-    fetchSettings(openSRPBaseURL, params, setSettingsMock);
+    fetchSettings(openSRPBaseURL, params, setSettingsMock, translator);
 
     await act(async () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_GENERIC);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     expect(setSettingsMock).not.toHaveBeenCalled();
   });
 });

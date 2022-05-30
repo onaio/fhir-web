@@ -3,11 +3,12 @@ import React from 'react';
 import { Col } from 'antd';
 import { Resource404 } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
-import lang, { Lang } from '../../lang';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { Button } from 'antd';
 import { CATALOGUE_LIST_VIEW_URL } from '../../constants';
+import type { TFunction } from '@opensrp/i18n';
+import { useTranslation } from '../../mls';
 import './index.css';
 
 /**
@@ -15,15 +16,15 @@ import './index.css';
  * This pairs are iterated and displayed as they are.
  *
  * @param  product - a single product object
- * @param langObj - the translation obj lookup
+ * @param t - the translation function
  * @returns  - the mapping inform of an array
  */
-export const defaultExtractViewDetails = (product: ProductCatalogue, langObj: Lang = lang) => {
+export const defaultExtractViewDetails = (product: ProductCatalogue, t: TFunction) => {
   const mapping: Dictionary = {};
-  mapping[langObj.PRODUCT_NAME] = product.productName;
-  mapping[langObj.UNIQUE_ID] = product.uniqueId;
-  mapping[langObj.MATERIAL_NUMBER] = product.materialNumber;
-  mapping[langObj.SERVER_VERSION] = product.serverVersion;
+  mapping[t('Product Name')] = product.productName;
+  mapping[t('Unique ID')] = product.uniqueId;
+  mapping[t('Material number')] = product.materialNumber;
+  mapping[t('Server version')] = product.serverVersion;
   return Object.entries(mapping);
 };
 
@@ -31,7 +32,7 @@ export const defaultExtractViewDetails = (product: ProductCatalogue, langObj: La
 export interface ViewDetailsProps {
   object: ProductCatalogue | null;
   objectId: string;
-  extractViewDetails: (object: ProductCatalogue) => [string, number | string][];
+  extractViewDetails: (object: ProductCatalogue, t: TFunction) => [string, number | string][];
 }
 
 export const defaultProps = {
@@ -48,6 +49,7 @@ export const defaultProps = {
 const ViewDetails = (props: ViewDetailsProps) => {
   const { object, objectId, extractViewDetails } = props;
   const history = useHistory();
+  const { t } = useTranslation();
 
   if (objectId === '') {
     return null;
@@ -66,7 +68,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         <Resource404 />
       ) : (
         <div className="p-10">
-          {extractViewDetails(object as ProductCatalogue).map(([key, val]) => {
+          {extractViewDetails(object as ProductCatalogue, t).map(([key, val]) => {
             return (
               <div key={`${key}-${val}`} className="mb-3">
                 <p className="panel-label">{key}</p>

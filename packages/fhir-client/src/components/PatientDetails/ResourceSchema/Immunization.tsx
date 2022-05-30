@@ -1,9 +1,9 @@
 import React from 'react';
 import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
 import { get } from 'lodash';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
 import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseImmunization = (obj: IImmunization) => {
   return {
@@ -19,28 +19,28 @@ const occuredDateTimeSortFn = sorterFn('occurenceDateTime', true);
 
 export type ImmunizationTableData = ReturnType<typeof parseImmunization>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status',
     sorter: sorterFn,
   },
   {
-    title: 'Administration Date',
+    title: t('Administration Date'),
     dataIndex: 'occurenceDateTime',
     sorter: occuredDateTimeSortFn,
-    render: (value: string) => intlFormatDateStrings(value),
+    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
   {
-    title: 'Vaccine Admnistered',
+    title: t('Vaccine Admnistered'),
     dataIndex: 'vaccineCode',
   },
   {
-    title: 'Reason',
+    title: t('Reason'),
     dataIndex: 'reasonCode',
     render: (value: Coding[]) => {
       return <FhirCodesTooltips codings={value} />;

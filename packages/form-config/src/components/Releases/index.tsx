@@ -19,7 +19,7 @@ import { FormConfigProps, DrillDownProps } from '../../helpers/types';
 import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
@@ -70,7 +70,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
 
   const [loading, setLoading] = useState(false);
   const [stateData, setStateData] = useState<ManifestReleasesTypes[]>(data);
-
+  const { t } = useTranslation();
   const displayAlertError = (err: string): void => {
     if (customAlert) {
       customAlert(err, { type: 'error' });
@@ -80,16 +80,10 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
   useEffect(() => {
     /** get manifest releases */
     if (data.length < 1) {
-      fetchReleaseFiles(
-        accessToken,
-        baseURL,
-        fetchReleases,
-        setLoading,
-        displayAlertError,
-        endpoint,
-        undefined,
-        getPayload
-      );
+      setLoading(true);
+      fetchReleaseFiles(accessToken, baseURL, fetchReleases, endpoint, undefined, getPayload)
+        .catch(() => displayAlertError(t('An error occurred')))
+        .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [baseURL, endpoint, getPayload, customAlert, fetchReleases, data.length, accessToken]);
@@ -187,19 +181,19 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
 
 /** populate default props for ManifestReleases */
 const defaultProps: ReleasesDefaultProps = {
-  appIdLabel: lang.APP_ID_LABEL,
-  appVersionLabel: lang.APP_VERSION_LABEL,
+  appIdLabel: 'App ID',
+  appVersionLabel: `App Version`,
   data: [],
   debounceTime: 1000,
   drillDownProps: {
     paginate: false,
   },
   fetchReleases: fetchManifestReleases,
-  identifierLabel: lang.IDENTIFIER,
-  placeholder: lang.FIND_RELEASES_LABEL,
-  updatedAt: lang.UPDATED_AT_LABEL,
-  uploadFileLabel: lang.UPLOAD_NEW_FILE,
-  viewFilesLabel: lang.VIEW_FILES,
+  identifierLabel: 'Identifier',
+  placeholder: 'Find Release',
+  updatedAt: 'Updated at',
+  uploadFileLabel: 'Upload New File',
+  viewFilesLabel: 'View Files',
   accessToken: '',
 };
 

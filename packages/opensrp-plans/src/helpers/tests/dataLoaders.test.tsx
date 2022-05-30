@@ -11,7 +11,6 @@ import {
   loadAssignments,
 } from '../dataLoaders';
 import * as plansDux from '../../ducks/planDefinitions';
-import lang from '../../lang';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
 import { processRawAssignments } from '@opensrp/team-assignment';
@@ -106,15 +105,15 @@ describe('dataLoading', () => {
     const errMessage = 'An error has happened';
     fetch.mockReject(new Error(errMessage));
 
-    loadAssignments(mockBaseURL, 'planId').catch((e) => {
+    loadAssignments(mockBaseURL, 'planId', undefined, undefined, (t) => t).catch((e) => {
       expect(e.message).toEqual(errMessage);
     });
     await flushPromises();
 
     fetch.resetMocks();
     fetch.mockResponse(JSON.stringify(null));
-    loadAssignments(mockBaseURL, 'planId').catch((e) => {
-      expect(e.message).toEqual(lang.COULD_NOT_LOAD_ASSIGNMENTS);
+    loadAssignments(mockBaseURL, 'planId', undefined, undefined, (t) => t).catch((e) => {
+      expect(e.message).toEqual('Could not load assignments');
     });
   });
 

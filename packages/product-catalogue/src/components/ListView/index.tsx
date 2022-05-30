@@ -22,7 +22,7 @@ import { Helmet } from 'react-helmet';
 import { CATALOGUE_CREATE_VIEW_URL, RouteParams } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -51,8 +51,9 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   const { service, data, productUnderView, fetchProductsCreator, baseURL } = props;
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
+  const { t } = useTranslation();
 
-  const columns = columnsFactory();
+  const columns = columnsFactory(t);
 
   // see if we have a view-details product
   const productId = props.match.params.productId ?? '';
@@ -72,7 +73,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
     return <BrokenPage errorMessage={errorMessage} />;
   }
 
-  const pageTitle = `${lang.PRODUCT_CATALOGUE} (${data.length})`;
+  const pageTitle = t('Product Catalogue ({{number}})', { number: data.length });
 
   return (
     <div className="content-section product-catalogue">
@@ -84,7 +85,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
         <Col className={'main-content'}>
           <div className="main-content__header flex-right">
             <Link to={CATALOGUE_CREATE_VIEW_URL}>
-              <Button type="primary">{lang.ADD_PRODUCT_TO_CATALOGUE}</Button>
+              <Button type="primary">{t(' + Add product to catalogue')}</Button>
             </Link>
           </div>
           <TableLayout
@@ -94,9 +95,9 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
             datasource={data}
             columns={columns}
             actions={{
-              title: lang.ACTIONS_TH,
+              title: t('Actions'),
               width: '20%',
-              render: ActionsColumnCustomRender,
+              render: ActionsColumnCustomRender(t),
             }}
           />
         </Col>

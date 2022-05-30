@@ -52,7 +52,7 @@ describe('routes', () => {
         ],
         enabled: true,
         key: 'admin',
-        title: 'Admin',
+        title: 'Administration',
         url: '/admin',
       },
     ]);
@@ -80,7 +80,7 @@ describe('routes', () => {
         ],
         enabled: true,
         key: 'admin',
-        title: 'Admin',
+        title: 'Administration',
         url: '/admin',
       },
     ]);
@@ -157,11 +157,11 @@ describe('routes', () => {
           },
         ],
         enabled: true,
-        key: 'missions',
+        key: 'plans',
         otherProps: {
           icon: <MapMarkerOutlineIcon className="sidebar-icons" />,
         },
-        title: 'Missions',
+        title: 'Plans',
       },
       {
         children: [
@@ -226,12 +226,12 @@ describe('routes', () => {
             children: [
               {
                 key: 'location-unit',
-                title: 'Location units',
+                title: 'Location Units',
                 url: '/admin/location/unit',
               },
               {
                 key: 'location-group',
-                title: 'Location unit group',
+                title: 'Location Unit Group',
                 url: '/admin/location/group',
               },
             ],
@@ -294,7 +294,7 @@ describe('routes', () => {
           },
         ],
         enabled: true,
-        key: 'administration',
+        key: 'admin',
         otherProps: {
           icon: <DashboardOutlined />,
         },

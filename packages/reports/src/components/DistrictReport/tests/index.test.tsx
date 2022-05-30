@@ -13,7 +13,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import MockDate from 'mockdate';
 import * as notifications from '@opensrp/notifications';
 import { sampleTeamAssignment, locationsHierarchy } from './fixtures';
-import lang from '../../../lang';
+
 import * as submitMocks from '../utils';
 
 const history = createBrowserHistory();
@@ -200,7 +200,7 @@ describe('DistrictReport', () => {
     });
 
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      lang.USER_NOT_ASSIGNED_AND_USERS_TEAM_NOT_ASSIGNED
+      'Please confirm that the logged-in user is assigned to a team and the team is assigned to a location, otherwise contact system admin.'
     );
   });
   it('handles fetch error when fetching user data - locations hierarchy', async () => {
@@ -233,6 +233,6 @@ describe('DistrictReport', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith(lang.ERROR_OCCURRED);
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
   });
 });

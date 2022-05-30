@@ -1,5 +1,6 @@
 import { IMedicationStatement } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IMedicationStatement';
 import { get } from 'lodash';
+import type { TFunction } from '@opensrp/i18n';
 
 export const parseMedicationStatement = (obj: IMedicationStatement) => {
   return {
@@ -11,7 +12,7 @@ export const parseMedicationStatement = (obj: IMedicationStatement) => {
 
 export type MedicationStatementTableData = ReturnType<typeof parseMedicationStatement>;
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
     title: 'Id',
     dataIndex: 'id',
@@ -21,7 +22,7 @@ export const columns = [
     dataIndex: 'status',
   },
   {
-    title: 'Date asserted',
+    title: t('Date asserted'),
     dataIndex: 'dateAsserted',
   },
 ];

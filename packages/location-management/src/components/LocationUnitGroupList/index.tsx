@@ -15,7 +15,7 @@ import reducer, {
   reducerName,
 } from '../../ducks/location-unit-groups';
 import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../constants';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
 import Table from './Table';
 import './LocationUnitGroupList.css';
 import { Link } from 'react-router-dom';
@@ -32,6 +32,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const [value, setValue] = useState('');
   const [filter, setfilterData] = useState<LocationUnitGroup[] | null>(null);
   const { opensrpBaseURL } = props;
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isLoading) {
@@ -42,7 +43,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(lang.ERROR_OCCURED));
+        .catch(() => sendErrorNotification(t('An error occurred')));
     }
   });
 
@@ -62,15 +63,15 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   return (
     <section className="layout-content">
       <Helmet>
-        <title>{lang.LOCATION_UNIT_GROUP}</title>
+        <title>{t('Location Unit Group')}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{lang.LOCATION_UNIT_GROUP_MANAGEMENT}</h1>
+      <h1 className="mb-3 fs-5">{t('Location Unit Group Management')}</h1>
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
             <Input
               className="w-auto"
-              placeholder={lang.SEARCH}
+              placeholder={t('Search')}
               size="large"
               value={value}
               prefix={<SearchOutlined />}
@@ -80,7 +81,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
                   <PlusOutlined />
-                  {lang.ADD_LOCATION_UNIT_GROUP}
+                  {t('Add Location Unit Group')}
                 </Button>
               </Link>
             </div>

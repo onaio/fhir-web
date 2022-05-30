@@ -8,7 +8,8 @@ import { TEAMS_COUNT, URL_EDIT_TEAM } from '../../constants';
 import { Practitioner } from '../../ducks/practitioners';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { Column, TableLayout, PaginateData, OpenSRPService } from '@opensrp/react-utils';
-import lang from '../../lang';
+import { useTranslation } from '../../mls';
+import type { TFunction } from '@opensrp/i18n';
 
 export interface Props {
   opensrpBaseURL: string;
@@ -22,7 +23,8 @@ export interface Props {
     opensrpBaseURL: string,
     setDetail: React.Dispatch<React.SetStateAction<Organization | null>>,
     setPractitionersList: React.Dispatch<React.SetStateAction<Practitioner[]>>,
-    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>
+    setAssignedLocations: React.Dispatch<React.SetStateAction<OpenSRPJurisdiction[]>>,
+    t: TFunction
   ) => void;
 }
 
@@ -37,9 +39,11 @@ const Table: React.FC<Props> = (props: Props) => {
     searchParam,
   } = props;
 
+  const { t } = useTranslation();
+
   const columns: Column<Organization>[] = [
     {
-      title: lang.NAME,
+      title: t('Name'),
       dataIndex: 'name',
       sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
@@ -48,7 +52,7 @@ const Table: React.FC<Props> = (props: Props) => {
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
-      onError={() => sendErrorNotification(lang.ERROR_OCCURED)}
+      onError={() => sendErrorNotification(t('An error occurred'))}
       queryPram={{ searchParam }}
       pageSize={5}
       queryid="Teams"
@@ -66,14 +70,14 @@ const Table: React.FC<Props> = (props: Props) => {
           dataKeyAccessor="id"
           columns={columns}
           actions={{
-            title: lang.ACTIONS,
+            title: t('Actions'),
             width: '10%',
             // eslint-disable-next-line @typescript-eslint/naming-convention
             render: (_: unknown, record: Organization, index) => (
               <span className="d-flex justify-content-end align-items-center">
                 <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
                   <Button type="link" className="m-0 p-1">
-                    {lang.EDIT}
+                    {t('Edit')}
                   </Button>
                 </Link>
                 <Divider type="vertical" />
@@ -90,12 +94,13 @@ const Table: React.FC<Props> = (props: Props) => {
                               opensrpBaseURL,
                               setDetail,
                               setPractitionersList,
-                              setAssignedLocations
+                              setAssignedLocations,
+                              t
                             );
                           }
                         }}
                       >
-                        {lang.VIEW_DETAILS}
+                        {t('View details')}
                       </Menu.Item>
                     </Menu>
                   }

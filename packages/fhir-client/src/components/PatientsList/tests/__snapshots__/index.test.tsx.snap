@@ -24,7 +24,7 @@ exports[`renders correctly in list view: table row 1 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
-  1988-08-04
+  8/4/1988
 </td>
 `;
 
@@ -86,7 +86,7 @@ exports[`renders correctly in list view: table row 2 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
-  1988-08-04
+  8/4/1988
 </td>
 `;
 
@@ -148,7 +148,7 @@ exports[`renders correctly in list view: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
-  1988-08-04
+  8/4/1988
 </td>
 `;
 
@@ -215,7 +215,7 @@ exports[`renders correctly in list view: table row 4 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
-  1988-08-04
+  8/4/1988
 </td>
 `;
 

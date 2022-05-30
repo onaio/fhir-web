@@ -11,6 +11,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
+import { useTranslation } from './mls';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const store: Store<Record<string, any>> = createStore(rootReducer, applyMiddleware(thunk));
@@ -43,6 +44,7 @@ export const questionnaireResourceType = 'Questionnaire' as const;
 
 export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
   const { resourceId, fhirBaseURL, onSubmit, onCancel, isQuestionnaire } = props;
+  const { t } = useTranslation();
 
   const {
     isLoading: questRespIsLoading,
@@ -98,8 +100,8 @@ export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
           onSubmit={onSubmit}
           onCancel={onCancel}
           resources={{
-            formCancel: 'Cancel',
-            formSend: 'Submit',
+            formCancel: t('Cancel'),
+            formSend: t('Submit'),
           }}
           authorized={true} // Hacky - leave authentication and authorization to be handled higher up in the app during routing
         />
@@ -121,6 +123,7 @@ export type QuestRFormProps = Pick<BaseQuestRFormProps, 'fhirBaseURL'> &
 export const QuestRForm = (props: QuestRFormProps) => {
   const { resourceId, resourceType } = useParams<RouteParams>();
   const history = useHistory();
+  const { t } = useTranslation();
   const isQuestionnaire = resourceType === 'Questionnaire';
   const { fhirBaseURL } = props;
 
@@ -131,7 +134,9 @@ export const QuestRForm = (props: QuestRFormProps) => {
     );
     const op = isQuestionnaire ? () => service.create(qr) : () => service.update(qr);
     op()
-      .then(() => sendSuccessNotification('Questionnaire Response resource submitted successfully'))
+      .then(() =>
+        sendSuccessNotification(t('Questionnaire Response resource submitted successfully'))
+      )
       .catch((e) => sendErrorNotification(e));
   };
   const onCancel = () => history.goBack();

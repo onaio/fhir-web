@@ -1,6 +1,6 @@
 import { IMedicationAdministration } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IMedicationAdministration';
 import { get } from 'lodash';
-import { intlFormatDateStrings } from '@opensrp/react-utils';
+import type { TFunction } from '@opensrp/i18n';
 import { sorterFn } from '../../../helpers/utils';
 
 export const parseMedicationAdministration = (obj: IMedicationAdministration) => {
@@ -15,19 +15,19 @@ export type MedicationAdminTableData = ReturnType<typeof parseMedicationAdminist
 
 const statusSorterFn = sorterFn('status');
 
-export const columns = [
+export const columns = (t: TFunction) => [
   {
-    title: 'Id',
+    title: t('Id'),
     dataIndex: 'id',
   },
   {
-    title: 'Status',
+    title: t('Status'),
     dataIndex: 'status',
     sorter: statusSorterFn,
   },
   {
-    title: 'Occurence Date',
+    title: t('Occurence Date'),
     dataIndex: 'occurenceDateTime',
-    render: (value: string) => intlFormatDateStrings(value),
+    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
 ];
