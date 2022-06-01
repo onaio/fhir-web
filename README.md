@@ -1,4 +1,4 @@
-# OpenSRP Web
+# FHIR Web
 
 [![codecov](https://codecov.io/gh/opensrp/web/branch/master/graph/badge.svg?token=EG3TX9MAM4)](https://codecov.io/gh/opensrp/web)
 
