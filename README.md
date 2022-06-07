@@ -33,8 +33,8 @@ yarn start
   If you would prefer to ignore this check, add SKIP_PREFLIGHT_CHECK=true to an .env file in your project.
   That will permanently disable this message but you might encounter other issues.
 
-  ** Fix **
-  Make sure you have added the .env file in the app folder, and has the SKIP_PREFLIGHT_CHECK=true env
+** Fix **
+Make sure you have added the .env file in the app folder, and has the SKIP_PREFLIGHT_CHECK=true env
 
 </details>
 
@@ -61,4 +61,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 4. Ensure your PR includes tests.
 5. Ensure all your commits are signed, [see](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
 
-Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce) is necessary.
+Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce) is necessary. You can read more on our [contributing guide](docs/CONTRIBUTING.md).
