@@ -31,6 +31,121 @@ export const careTeam1 = {
   ],
 };
 
+export const careTeam4201 = {
+  resourceType: 'CareTeam',
+  id: '4201',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-11-01T10:33:47.409+00:00',
+    source: '#3671f89bf6e8bf20',
+  },
+  text: {
+    status: 'generated',
+    div: '<div xmlns="http://www.w3.org/1999/xhtml">Care Team</div>',
+  },
+  contained: [
+    {
+      resourceType: 'Practitioner',
+      id: '4193',
+      name: [
+        {
+          family: 'Careful',
+          given: ['Adam'],
+          prefix: ['Dr'],
+        },
+      ],
+    },
+  ],
+  status: 'active',
+  category: [
+    {
+      coding: [
+        {
+          system: 'http://loinc.org',
+          code: 'LA27976-2',
+          display: 'Encounter-focused care team',
+        },
+      ],
+    },
+  ],
+  name: 'Peter Charlmers Care team',
+  subject: {
+    reference: 'Patient/4195',
+    display: 'Peter James Chalmers',
+  },
+  encounter: {
+    reference: 'Encounter/4197',
+  },
+  period: {
+    end: '2013-01-01',
+  },
+  participant: [
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: 'Patient/4195',
+        display: 'Peter James Chalmers',
+      },
+    },
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: '#pr1',
+        display: 'Dorothy Dietition',
+      },
+      onBehalfOf: {
+        reference: 'Organization/f001',
+      },
+      period: {
+        end: '2013-01-01',
+      },
+    },
+  ],
+  managingOrganization: [
+    {
+      reference: 'Organization/4190',
+    },
+  ],
+};
+
+export const careTeam4201Edited = {
+  resourceType: 'CareTeam',
+  id: '4201',
+  contained: [
+    {
+      resourceType: 'Practitioner',
+      id: '4193',
+      name: [{ family: 'Careful', given: ['Adam'], prefix: ['Dr'] }],
+    },
+  ],
+  status: 'active',
+  category: [
+    {
+      coding: [
+        { system: 'http://loinc.org', code: 'LA27976-2', display: 'Encounter-focused care team' },
+      ],
+    },
+  ],
+  name: 'Peter Charlmers Care teamWho is Peter Charlmers',
+  subject: { reference: 'Patient/4195' },
+  encounter: { reference: 'Encounter/4197' },
+  period: { end: '2013-01-01' },
+  participant: [
+    { member: { reference: 'Patient/4195', display: '' } },
+    { member: { reference: '#pr1', display: '' } },
+  ],
+  managingOrganization: [{ reference: 'Organization/4190' }],
+  identifier: [{ use: 'official', value: '0b3a3311-6f5a-40dd-95e5-008001acebe1' }],
+};
+
 export const practitioners = {
   resourceType: 'Bundle',
   id: '5db4aa7e-eca6-432d-a544-d0a8279d8103',

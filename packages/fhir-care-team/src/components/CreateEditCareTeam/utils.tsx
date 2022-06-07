@@ -2,7 +2,12 @@ import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
+import {
+  FHIR_CARE_TEAM,
+  groupResourceType,
+  practitionerResourceType,
+  URL_CARE_TEAM,
+} from '../../constants';
 import { Dictionary } from '@onaio/utils';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { Fields, FormFields } from './Form';
@@ -17,9 +22,14 @@ export const submitForm = async (
   id?: string,
   uuid?: string
 ): Promise<void> => {
-  const singleGroup = groups.find((group) => group.id === values.groupsId);
+  const { initialCareTeam } = values;
+  const { meta, text, ...nonMetaFields } = initialCareTeam ?? {};
+  const singleGroup = groups.find(
+    (group) => `${groupResourceType}/${group.id}` === values.groupsId
+  );
   const careTeamId = uuid ? uuid : v4();
   const payload: Omit<IfhirR4.ICareTeam, 'meta'> = {
+    ...nonMetaFields,
     resourceType: FHIR_CARE_TEAM,
     identifier: [
       {
@@ -32,7 +42,7 @@ export const submitForm = async (
     status: values.status as IfhirR4.CareTeam.StatusEnum,
     subject: values.groupsId
       ? {
-          reference: `Group/${values.groupsId}`,
+          reference: values.groupsId,
           display: singleGroup?.name,
         }
       : undefined,
@@ -40,8 +50,12 @@ export const submitForm = async (
       values.practitionersId?.map((id) => {
         return {
           member: {
-            reference: `Practitioner/${id}`,
-            display: practitioners.find((practitioner) => practitioner.id === id)?.name,
+            reference: id,
+            display: getPatientName(
+              practitioners.find(
+                (practitioner) => `${practitionerResourceType}/${practitioner.id}` === id
+              )
+            ),
           },
         };
       }) ?? [],
@@ -52,7 +66,9 @@ export const submitForm = async (
       .update(payload)
       // TODO - possible place to use translation plurals
       .then(() => sendSuccessNotification(t('Successfully Updated Care Teams')))
-      .catch(() => sendErrorNotification(t('An error occurred')));
+      .catch(() => {
+        sendErrorNotification(t('An error occurred'));
+      });
   } else {
     await serve
       .create(payload)
