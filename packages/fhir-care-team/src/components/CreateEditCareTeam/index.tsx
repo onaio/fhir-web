@@ -5,7 +5,12 @@ import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { RouteComponentProps, useParams } from 'react-router-dom';
 import { Dictionary } from '@onaio/utils';
-import { BrokenPage, FHIRServiceClass, loadAllResources } from '@opensrp/react-utils';
+import {
+  BrokenPage,
+  FHIRServiceClass,
+  getResourcesFromBundle,
+  loadAllResources,
+} from '@opensrp/react-utils';
 import {
   FHIR_CARE_TEAM,
   FHIR_GROUPS,
@@ -16,9 +21,11 @@ import {
 } from '../../constants';
 import { CareTeamForm, FormFields } from './Form';
 import { getPatientName } from './utils';
-import { Practitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/practitioner';
 import { get } from 'lodash';
 import { useTranslation } from '../../mls';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 // Interface for route params
 interface RouteParams {
@@ -40,6 +47,7 @@ export const defaultInitialValues: FormFields = {
   status: '',
   practitionersId: [],
   groupsId: '',
+  initialCareTeam: undefined,
 };
 /**
  *
@@ -67,16 +75,16 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     async () => loadAllResources(fhirBaseURL, groupResourceType),
     {
       onError: () => sendErrorNotification(t('An error occurred')),
-      select: (res) => res,
+      select: (res) => getResourcesFromBundle<IGroup>(res),
     }
   );
 
   const fhirPractitioners = useQuery(
     FHIR_PRACTITIONERS,
-    async () => loadAllResources(fhirBaseURL, practitionerResourceType),
+    async () => loadAllResources(fhirBaseURL, practitionerResourceType, { active: true }),
     {
       onError: () => sendErrorNotification(t('An error occurred')),
-      select: (res) => res,
+      select: (res) => getResourcesFromBundle<IPractitioner>(res),
     }
   );
 
@@ -99,9 +107,10 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
         name: singleCareTeam.data.name,
         status: singleCareTeam.data.status ?? 'active',
         practitionersId: singleCareTeam.data.participant?.map(
-          (p: Dictionary) => p.member.reference.split('/')[1]
+          (p: Dictionary) => p.member.reference
         ),
-        groupsId: singleCareTeam.data.subject?.reference?.split('/')[1] ?? '',
+        groupsId: singleCareTeam.data.subject?.reference,
+        initialCareTeam: singleCareTeam.data as ICareTeam,
       }
     : defaultInitialValues;
 
@@ -110,20 +119,16 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     initialValues: buildInitialValues,
     // filter for only active practitioners and map output to object with id and name
     practitioners:
-      fhirPractitioners.data?.entry?.flatMap((e: Dictionary) =>
-        (e.resource as Practitioner).active
-          ? [
-              {
-                id: e.resource.id,
-                name: getPatientName(e.resource),
-              },
-            ]
-          : []
-      ) ?? [],
+      fhirPractitioners.data?.map((e: IPractitioner) => {
+        return {
+          id: `${e.resourceType}/${e.id}`,
+          name: getPatientName(e),
+        };
+      }) ?? [],
     groups:
-      fhirGroups.data?.entry?.map((e: Dictionary) => ({
-        id: e.resource?.id,
-        name: e.resource?.name,
+      fhirGroups.data?.map((e: IGroup) => ({
+        id: `${e.resourceType}/${e.id}`,
+        name: e.name ?? '',
       })) ?? [],
   };
 

@@ -5,6 +5,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { submitForm } from './utils';
 import { URL_CARE_TEAM } from '../../constants';
 import { useTranslation } from '../../mls';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 export interface Fields {
   id: string;
@@ -18,6 +19,7 @@ export interface FormFields {
   status: string | undefined;
   practitionersId?: string[];
   groupsId?: string;
+  initialCareTeam?: ICareTeam;
 }
 
 export interface CareTeamFormProps {
