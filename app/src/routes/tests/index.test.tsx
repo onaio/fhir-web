@@ -1,12 +1,12 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { filterFalsyRoutes, getRoutes } from './routes';
+import { filterFalsyRoutes, getRoutes } from '..';
 import React from 'react';
 import MapMarkerOutlineIcon from '@2fd/ant-design-icons/lib/MapMarkerOutline';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import ArchiveOutlineIcon from '@2fd/ant-design-icons/lib/ArchiveOutline';
 
-jest.mock('./configs/env');
+jest.mock('../../configs/env');
 
 describe('routes', () => {
   it('Test routes only return enabled values', () => {
@@ -103,7 +103,7 @@ describe('routes', () => {
       )
     );
 
-    const envModule = require('./configs/env');
+    const envModule = require('../../configs/env');
     envModule.ENABLE_LOCATIONS = true;
     envModule.ENABLE_TEAMS = true;
     envModule.ENABLE_INVENTORY = true;
@@ -113,7 +113,7 @@ describe('routes', () => {
     envModule.ENABLE_PLANS = true;
     envModule.ENABLE_SERVER_SETTINGS = true;
     envModule.ENABLE_CARD_SUPPORT = true;
-    envModule.ENABLE_USER_MANAGEMENT=true;
+    envModule.ENABLE_USER_MANAGEMENT = true;
     envModule.ENABLE_QUEST = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
