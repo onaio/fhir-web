@@ -207,8 +207,7 @@ import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
-
-import { APP_LOGIN_URL } from '../dispatchConfig';
+import { APP_LOGIN_URL } from '../configs/dispatchConfig';
 
 const { Content } = Layout;
 
@@ -252,6 +251,7 @@ const App: React.FC = () => {
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
   const activeRoles = OPENSRP_ROLES;
+
   useTranslation();
 
   return (
