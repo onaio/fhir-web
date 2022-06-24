@@ -8,7 +8,7 @@ import {
   BACKEND_ACTIVE,
 } from '../../configs/env';
 import { getFetchOptions } from '@opensrp/keycloak-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { getAccessToken, getExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -22,6 +22,8 @@ import { useTranslation } from '../../mls';
  */
 export const CustomLogout: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
+  const { oAuth2Data } = getExtraData(store.getState());
+  const idTokenHint = oAuth2Data.id_token;
   const payload = getFetchOptions(
     new AbortController().signal,
     getAccessToken(store.getState()) as string,
@@ -29,9 +31,11 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   );
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
   const history = useHistory();
-  logout(payload, OPENSRP_LOGOUT_URL, KEYCLOAK_LOGOUT_URL, redirectUri).catch((_: Error) => {
-    sendErrorNotification(t('An error occurred'));
-    history.push('/');
-  });
+  logout(payload, KEYCLOAK_LOGOUT_URL, redirectUri, OPENSRP_LOGOUT_URL, idTokenHint).catch(
+    (_: Error) => {
+      sendErrorNotification(t('An error occurred'));
+      history.push('/');
+    }
+  );
   return <Spin size="large" className="custom-spinner" />;
 };
