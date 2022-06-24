@@ -44,7 +44,7 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/reports": "^0.0.0",
-    "@opensrp/server-logout": "^0.0.1",
+    "@opensrp/server-logout": "^0.0.2",
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",
     "@opensrp/team-assignment": "^0.0.6",
