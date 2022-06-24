@@ -1,0 +1,37 @@
+{
+  "name": "@opensrp/server-logout",
+  "version": "0.0.2",
+  "types": "dist/types",
+  "description": "A util to logout from opensrp server that uses keycloak",
+  "main": "dist/index.js",
+  "repository": "https://github.com/opensrp/opensrp-web",
+  "author": "Ona Engineering",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/opensrp/opensrp-web/issues"
+  },
+  "scripts": {
+    "jest": "jest --coverage --verbose --color",
+    "tsc": "tsc",
+    "transpile": "babel src -d dist --root-mode upward --extensions '.ts,.tsx'  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^16.8.6"
+  },
+  "dependencies": {
+    "@opensrp/server-service": "^0.0.17"
+  }
+}
