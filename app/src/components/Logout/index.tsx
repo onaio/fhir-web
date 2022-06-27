@@ -23,7 +23,7 @@ import { useTranslation } from '../../mls';
 export const CustomLogout: React.FC = (): JSX.Element => {
   const { t } = useTranslation();
   const { oAuth2Data } = getExtraData(store.getState());
-  const idTokenHint = oAuth2Data.id_token;
+  const idTokenHint = oAuth2Data?.id_token;
   const payload = getFetchOptions(
     new AbortController().signal,
     getAccessToken(store.getState()) as string,

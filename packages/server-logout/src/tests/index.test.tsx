@@ -53,7 +53,7 @@ describe('gatekeeper/utils/logoutFromAuthServer', () => {
 
     expect(fetch.mock.calls).toEqual([]);
     expect(hrefMock).toHaveBeenCalledWith(
-      'https://keycloak.smartregister.org/realm/camelot/openid-connect/logout?id_token_hint=id_token_hint&post_logout_redirect_uri=https%3A%2F%2Fopensrp-web.smartregister.org'
+      'https://keycloak.smartregister.org/realm/camelot/openid-connect/logout?id_token_hint=id_token_hint&post_logout_redirect_uri=https://opensrp-web.smartregister.org'
     );
   });
 });
