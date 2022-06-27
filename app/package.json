@@ -12,7 +12,7 @@
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "^0.1.1",
+    "@onaio/gatekeeper": "^0.2.0",
     "@onaio/list-view": "^0.0.3",
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",

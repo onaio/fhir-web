@@ -2907,6 +2907,16 @@
     query-string "^6.4.2"
     reactstrap "^7.1.0"
 
+"@onaio/gatekeeper@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.2.0.tgz#4c973e0a8a7eba5aabff12e2240cda83cc76400e"
+  integrity sha512-xbuVe3Sy9rQghMer8yM1JTQAPUc5BHFkyjHKvqW/Pr32d5FI9aG4SvQ3kh+d0Jm/KPMF//RVkuKgPNanOiY0zQ==
+  dependencies:
+    "@onaio/session-reducer" "^0.0.13"
+    client-oauth2 "^4.3.3"
+    query-string "^6.4.2"
+    reactstrap "^7.1.0"
+
 "@onaio/list-view@^0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@onaio/list-view/-/list-view-0.0.3.tgz#18cb78a0721fd30d331c9c267d242d838e58f623"
@@ -2953,24 +2963,12 @@
   dependencies:
     antd "^4.6.3"
 
-"@opensrp/server-logout@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@opensrp/server-logout/-/server-logout-0.0.1.tgz#82497960c1cc5d0f1da8e8aa4be9bedd6c32a5c0"
-  integrity sha512-OAoXQsD/ZY9yT7q/jdjRTvsgRKudifc6Az9D/vfiUsgR6+zdK1YXP8afpXXY2OeY1VnJorMujSSolk/zv0a54Q==
-  dependencies:
-    "@opensrp/server-service" "^0.0.4"
-
 "@opensrp/server-service@^0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.16.tgz#0e045993370b3dfcd3219670be72f6af12addd04"
   integrity sha512-nLgDHnu3zCBi+tKHc+5G4ESSrZinzzlpV1N/pbquGTyKZu072it4mwXX86gH32+TBOTuYw2m9hCfd8Ytau0/ng==
   dependencies:
     "@onaio/utils" "^0.0.1"
-
-"@opensrp/server-service@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@opensrp/server-service/-/server-service-0.0.4.tgz#78e0301704d2b0a751402456fdf1aab36e263d71"
-  integrity sha512-iI0iWjcBPA4yRhlwl6pfqL0Pr2dXFxtbAVSyi+wLkmZ8HuBgMxg95Q0iP5UOIjBvb0xSv1SE3bpJgxE9RWN4bw==
 
 "@pmmmwh/react-refresh-webpack-plugin@0.4.3":
   version "0.4.3"
