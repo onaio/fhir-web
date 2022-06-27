@@ -52,7 +52,7 @@ describe('containers/pages/Home', () => {
       },
       preferredName: 'Superset User',
       roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
-      username: 'superset-user',
+      preferred_username: 'superset-user',
     });
     store.dispatch(authenticateUser(authenticated, user, extraData));
     const wrapper = mount(
@@ -64,6 +64,10 @@ describe('containers/pages/Home', () => {
     );
     const connectedProps = wrapper.find('Home').props();
     expect((connectedProps as HomeProps).extraData).toEqual({
+      email: null,
+      email_verified: undefined,
+      family_name: undefined,
+      given_name: undefined,
       oAuth2Data: {
         access_token: 'hunter2',
         expires_in: '3599',
@@ -71,8 +75,10 @@ describe('containers/pages/Home', () => {
         token_expires_at: '2017-07-13T20:30:59.000Z',
         token_type: 'bearer',
       },
-      preferredName: 'Superset User',
-      roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
+      organization: undefined,
+      preferred_name: undefined,
+      roles: [],
+      user_id: undefined,
       username: 'superset-user',
     });
   });
