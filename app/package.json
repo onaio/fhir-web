@@ -123,16 +123,13 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
-      "git add"
+      "eslint --fix --max-warnings 0"
     ],
     "*.{js,jsx}": [
-      "eslint --fix --max-warnings 0",
-      "git add"
+      "eslint --fix --max-warnings 0"
     ],
     "*.{json,js,jsx,ts,tsx,css,scss,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{snap, test.tsx}": [
       "eslint"
