@@ -57,3 +57,5 @@ export const OPENSRP_WEB_VERSION = '';
 export const ENABLE_QUEST = true;
 
 export const ENABLE_USER_MANAGEMENT = true;
+
+export const BACKEND_ACTIVE = true;

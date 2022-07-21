@@ -5,13 +5,14 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
 import { Link } from 'react-router-dom';
 import './Header.css';
-import { URL_LOGOUT, URL_REACT_LOGIN, URL_USER_EDIT } from '../../../constants';
+import { URL_LOGOUT, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
 import { BellOutlined } from '@ant-design/icons';
 import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
+import { APP_LOGIN_URL } from '../../../dispatchConfig';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -95,8 +96,15 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           </Button>
         </Dropdown>
       ) : (
-        <Button icon={<BellOutlined />} className="bg-transparent border-0" type="primary">
-          <Link to={URL_REACT_LOGIN}>{t('Login')}</Link>
+        <Button
+          data-index="login-button"
+          icon={<BellOutlined />}
+          className="bg-transparent border-0"
+          type="primary"
+        >
+          <Link data-index="login-link" to={APP_LOGIN_URL}>
+            {t('Login')}
+          </Link>
         </Button>
       )}
       {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}
