@@ -2,6 +2,8 @@ name: Docker
 
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
     # Publish `master` as Docker `master` tag.
     # See also https://github.com/crazy-max/ghaction-docker-meta#basic
     branches:

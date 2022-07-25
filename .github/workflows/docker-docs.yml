@@ -1,0 +1,22 @@
+name: Update Docker Hub Documentation
+
+on:
+  push:
+    paths:
+      - 'docs/how-to-use-docker-image.md'
+    branches:
+      - master
+
+jobs:
+  update-docker-hub-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Docker Hub ReadMe
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: opensrp/web
+          readme-filepath: docs/how-to-use-docker-image.md
