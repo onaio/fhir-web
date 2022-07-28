@@ -103,3 +103,60 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/opensrp/web:${{ steps.docker_meta.outputs.tags }}
+          format: json
+          output: 'trivy-results.json'
+
+      - name: Create summary of trivy issues
+        run: |
+          summary=$(jq -r '.Results[] | select(.Vulnerabilities) | .Vulnerabilities | group_by(.Severity) | map({Severity: .[0].Severity, Count: length}) | .[] | [.Severity, .Count] | join(": ")' trivy-results.json | awk 'NR > 1 { printf(" | ") } {printf "%s",$0}')
+          if [ -z $summary ]
+          then
+            summary="0 Issues"
+          fi
+          echo "SUMMARY=$summary" >> $GITHUB_ENV
+      - name: Generate trivy report for viewing
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/opensrp/web:${{ steps.docker_meta.outputs.tags }}
+          format: 'template'
+          template: '@/contrib/html.tpl'
+          output: 'trivy-results-opensrp-web-${{ steps.docker_meta.outputs.tags }}.html'
+
+      - name: Upload Trivy results as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: "trivy-results-${{ steps.docker_meta.outputs.tags }}.html"
+          path: './trivy-results-opensrp-web-${{ steps.docker_meta.outputs.tags }}.html'
+          retention-days: 30
+
+      # - name: Send Slack Notification
+      #   uses: slackapi/slack-github-action@v1.19.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "Trivy scan results for ${{ steps.docker_meta.outputs.tags }}",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "Trivy scan results: ${{ env.SUMMARY }}"
+      #             }
+      #           },
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "View result artifact: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Artifact is only valid for 30 days."
+      #             }
+      #           }
+      #         ]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
