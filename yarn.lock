@@ -2897,16 +2897,6 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
-"@onaio/gatekeeper@^0.1.1":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.1.2.tgz#87dbdb8fc28dfca403ba09c42f50e03564d56616"
-  integrity sha512-Y9o2aABhV+1HXVbiUrsy5Yqqb0dypUmNkgP8UiLYtqY4hLputsEX78kVq/rxslGHatuhqxfPnVwlZlPqj//bnQ==
-  dependencies:
-    "@onaio/session-reducer" "^0.0.13"
-    client-oauth2 "^4.3.3"
-    query-string "^6.4.2"
-    reactstrap "^7.1.0"
-
 "@onaio/gatekeeper@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.3.0.tgz#68b802968b465053f18d18f010229485020d0120"
