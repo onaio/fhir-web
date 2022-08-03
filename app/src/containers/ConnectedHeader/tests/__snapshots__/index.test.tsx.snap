@@ -9,7 +9,7 @@ exports[`components/ConnectedHeader renders the ConnectedHeader component: child
 >
   <Link
     data-index="login-link"
-    to="/fe/login"
+    to="/login"
   >
     Login
   </Link>

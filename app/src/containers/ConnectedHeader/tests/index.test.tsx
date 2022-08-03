@@ -35,7 +35,7 @@ describe('components/ConnectedHeader', () => {
     expect(toJson(wrapper.find('a[data-index="login-link"]'))).toMatchInlineSnapshot(`
       <a
         data-index="login-link"
-        href="/fe/login"
+        href="/login"
         onClick={[Function]}
       >
         Login
