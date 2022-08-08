@@ -46,7 +46,6 @@ describe('DistrictReport', () => {
   it('downloads csv correctly', async () => {
     const districtId = '0b1010010001010101';
     const period = '2022-02';
-    const accessToken = 'hunter?';
     const openSRPBaseURL = 'https://some.open.opensrp.url/opensrp/rest/';
 
     fetch.mockResponseOnce('test blob data', {
@@ -62,7 +61,6 @@ describe('DistrictReport', () => {
     submitForm(
       districtId,
       period,
-      accessToken,
       openSRPBaseURL
       // eslint-disable-next-line @typescript-eslint/no-empty-function
     ).catch(() => {});

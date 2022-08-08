@@ -164,7 +164,6 @@ describe('DistrictReport', () => {
     expect(submitFormMock).toHaveBeenLastCalledWith(
       'some-location-uuid',
       '2022-01',
-      'hunter2',
       'https://some.open.opensrp.url/opensrp/rest/'
     );
   });
