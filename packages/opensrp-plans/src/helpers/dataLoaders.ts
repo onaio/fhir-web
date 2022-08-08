@@ -1,10 +1,8 @@
 /** get the full plans data-loader */
 import { get, keyBy, uniqBy } from 'lodash';
-import { store, makeAPIStateSelector } from '@opensrp/store';
 import {
   NO_DATA_FOUND,
   OPENSRP_ACTIVE,
-  OPENSRP_API_BASE_URL,
   OPENSRP_FIND_BY_PROPERTIES,
   OPENSRP_GET_ASSIGNMENTS_ENDPOINT,
   OPENSRP_LOCATION,
@@ -13,7 +11,7 @@ import {
   OPENSRP_POST_ASSIGNMENTS_ENDPOINT,
   OPENSRP_TASK_SEARCH,
 } from '../constants';
-import { OpenSRPService as GenericOpenSRPService, URLParams } from '@opensrp/server-service';
+import { URLParams } from '@opensrp/server-service';
 import { fetchPlanDefinitions } from '../ducks/planDefinitions';
 import {
   fetchAssignments,
@@ -30,20 +28,11 @@ import {
 import { fetchJurisdictions, Jurisdiction } from '../ducks/jurisdictions';
 import { Dictionary } from '@onaio/utils';
 import type { TFunction } from '@opensrp/i18n';
-
-const sessionSelector = makeAPIStateSelector();
+import { OpenSRPService } from '@opensrp/react-utils';
 
 export interface TaskCount {
   total_records: number;
   tasks: Dictionary[];
-}
-
-/** OpenSRP service */
-export class OpenSRPService extends GenericOpenSRPService {
-  constructor(endpoint: string, baseURL: string = OPENSRP_API_BASE_URL) {
-    const accessToken = sessionSelector(store.getState(), { accessToken: true });
-    super(accessToken, baseURL, endpoint);
-  }
 }
 
 /**
@@ -463,3 +452,5 @@ export async function loadTasksIndicators(
       throw err;
     });
 }
+
+export { OpenSRPService };
