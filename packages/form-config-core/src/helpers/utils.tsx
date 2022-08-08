@@ -1,10 +1,4 @@
-import {
-  URLParams,
-  OpenSRPService,
-  getFetchOptions,
-  HTTPError,
-  GetAccessTokenType,
-} from '@opensrp/server-service';
+import { URLParams, getFetchOptions, HTTPError, GetAccessTokenType } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
 import { UploadFileFieldTypes } from './types';
 import {
@@ -22,6 +16,7 @@ import { fetchManifestDraftFiles, removeManifestDraftFiles } from '../ducks/mani
 import { Dispatch } from 'redux';
 import { fetchManifestReleases, ManifestReleasesTypes } from '../ducks/manifestReleases';
 import { format } from 'date-fns';
+import { OpenSRPService } from '@opensrp/react-utils';
 
 /**
  * format long date to YYY-mm-dd
@@ -59,7 +54,7 @@ export const downloadManifestFile = async (
   if (isJsonValidator) {
     params['is_json_validator'] = true;
   }
-  const clientService = new OpenSRPService(accessToken, baseURL, downloadEndPoint, getPayload);
+  const clientService = new OpenSRPService(downloadEndPoint, baseURL, getPayload);
   return await clientService.list(params).then((res) => {
     handleDownload(res.clientForm.json, identifier);
   });
@@ -116,7 +111,7 @@ export const submitUploadForm = async (
     };
   };
 
-  const clientService = new OpenSRPService(accessToken, opensrpBaseURL, endpoint, customOptions);
+  const clientService = new OpenSRPService(endpoint, opensrpBaseURL, customOptions);
   return clientService
     .create(formData)
     .then(() => {
@@ -158,12 +153,7 @@ export const makeRelease = (
     forms_version: data[0].version,
     identifiers,
   };
-  const clientService = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    endpoint,
-    customFetchOptions
-  );
+  const clientService = new OpenSRPService(endpoint, opensrpBaseURL, customFetchOptions);
   return clientService.create({ json: JSON.stringify(json) }).then(() => {
     if (dispatch) {
       dispatch(removeFiles());
@@ -195,12 +185,7 @@ export const fetchDrafts = (
 ) => {
   /** get manifest Draftfiles */
   const params = { is_draft: true };
-  const clientService = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    endpoint,
-    customFetchOptions
-  );
+  const clientService = new OpenSRPService(endpoint, opensrpBaseURL, customFetchOptions);
   return clientService.list(params).then((res: ManifestFilesTypes[]) => {
     if (dispatch) {
       dispatch(fetchFiles(res));
@@ -228,12 +213,7 @@ export const fetchReleaseFiles = (
   dispatch?: Dispatch,
   customFetchOptions?: typeof getFetchOptions
 ) => {
-  const clientService = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    endpoint,
-    customFetchOptions
-  );
+  const clientService = new OpenSRPService(endpoint, opensrpBaseURL, customFetchOptions);
   return clientService.list().then((res: ManifestReleasesTypes[]) => {
     if (dispatch) {
       dispatch(fetchFiles(res));
@@ -277,12 +257,7 @@ export const fetchManifests = (
     removeFiles();
   }
 
-  const clientService = new OpenSRPService(
-    accessToken,
-    opensrpBaseURL,
-    endpoint,
-    customFetchOptions
-  );
+  const clientService = new OpenSRPService(endpoint, opensrpBaseURL, customFetchOptions);
   return clientService.list(params).then((res: ManifestFilesTypes[]) => {
     if (dispatch) {
       dispatch(fetchFiles(res));

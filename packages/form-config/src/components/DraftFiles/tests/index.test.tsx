@@ -15,6 +15,7 @@ import * as formConfigCore from '@opensrp/form-config-core';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
 import fetch from 'jest-fetch-mock';
+import { authenticateUser } from '@onaio/session-reducer';
 
 const { draftReducer, draftReducerName, getAllManifestDraftFilesArray, removeManifestDraftFiles } =
   formConfigCore;
@@ -56,6 +57,20 @@ _.debounce = customDebounce;
 (global as any).URL.revokeObjectURL = jest.fn();
 
 describe('components/DraftFiles', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterAll(() => {
     _.debounce = actualDebounce;
   });
@@ -132,7 +147,7 @@ describe('components/DraftFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -160,7 +175,7 @@ describe('components/DraftFiles', () => {
       body: '{"json":"{\\"forms_version\\":\\"1.0.27\\",\\"identifiers\\":[\\"reveal-test-file.json\\",\\"test-form-1.json\\"]}"}',
       headers: {
         accept: 'application/json',
-        authorization: 'Bearer hunter2',
+        authorization: 'Bearer sometoken',
         'content-type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
