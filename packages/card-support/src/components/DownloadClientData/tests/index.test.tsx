@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { DownloadClientData } from '..';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
 import fetch from 'jest-fetch-mock';
 import { locationHierachyDucks } from '@opensrp/location-management';
 import { shallow, mount } from 'enzyme';
