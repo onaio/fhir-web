@@ -13,8 +13,8 @@ import {
   PROJECT_CODE,
   FHIR_API_BASE_URL,
   DEFAULTS_TABLE_PAGE_SIZE,
-} from './configs/env';
-import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from './constants';
+} from './env';
+import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from '../constants';
 
 export const APP_LOGIN_URL = BACKEND_ACTIVE ? URL_BACKEND_LOGIN : URL_REACT_LOGIN;
 
