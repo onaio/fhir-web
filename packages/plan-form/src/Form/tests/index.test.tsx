@@ -13,6 +13,8 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
 import moment from 'moment';
 import flushPromises from 'flush-promises';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -31,6 +33,20 @@ document.body.appendChild(div);
 jest.setTimeout(30000);
 
 describe('containers/forms/PlanForm', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     jest.resetAllMocks();
     fetch.resetMocks();
@@ -371,7 +387,7 @@ describe('containers/forms/PlanForm', () => {
         body: expect.any(String),
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'POST',

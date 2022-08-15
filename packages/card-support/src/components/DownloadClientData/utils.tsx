@@ -1,5 +1,4 @@
 import Papaparse from 'papaparse';
-import { OpenSRPService } from '@opensrp/server-service';
 import { DownloadClientDataFormFields } from '../DownloadClientData';
 import { Dispatch, SetStateAction } from 'react';
 import {
@@ -8,7 +7,7 @@ import {
   OPENSRP_URL_LOCATION_HIERARCHY,
 } from '../../constants';
 import { Client } from '../../ducks/clients';
-import { downloadFile } from '@opensrp/react-utils';
+import { downloadFile, OpenSRPService } from '@opensrp/react-utils';
 import { ParsedHierarchyNode, RawOpenSRPHierarchy } from '@opensrp/location-management';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
@@ -51,7 +50,6 @@ export const handleCardOrderDateChange = (
  * Handle download client data form submission
  *
  * @param values - sumitted form values
- * @param accessToken - OPENSRP API access token
  * @param opensrpBaseURL - OPENSRP API base URL
  * @param serviceClass - OPENSRP service class
  * @param locations location hierarchy
@@ -60,7 +58,6 @@ export const handleCardOrderDateChange = (
  */
 export const submitForm = async (
   values: DownloadClientDataFormFields,
-  accessToken: string,
   opensrpBaseURL: string,
   serviceClass: typeof OpenSRPService,
   locations: ParsedHierarchyNode[],
@@ -77,7 +74,7 @@ export const submitForm = async (
 
   // get location id's of all nested children of a selected jurisdiction
   const fetchNestedLocationIds = async (clientLocationId: string) => {
-    const serve = new serviceClass(accessToken, opensrpBaseURL, OPENSRP_URL_LOCATION_HIERARCHY);
+    const serve = new serviceClass(OPENSRP_URL_LOCATION_HIERARCHY, opensrpBaseURL);
     try {
       const res: RawOpenSRPHierarchy = await serve.read(clientLocationId);
       // parentChildren is an object with keys as parent location ids
@@ -118,7 +115,7 @@ export const submitForm = async (
 
   const startDate = cardOrderDate[0];
   const endDate = cardOrderDate[1];
-  const serve = new serviceClass(accessToken, opensrpBaseURL, OPENSRP_URL_CLIENT_SEARCH);
+  const serve = new serviceClass(OPENSRP_URL_CLIENT_SEARCH, opensrpBaseURL);
 
   serve
     .list(params)

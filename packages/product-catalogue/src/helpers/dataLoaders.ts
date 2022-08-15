@@ -2,29 +2,11 @@
   get the full product Catalogue
  */
 
-import { store, makeAPIStateSelector } from '@opensrp/store';
-import {
-  getFetchOptions,
-  OpenSRPService as GenericOpenSRPService,
-  HTTPMethod,
-} from '@opensrp/server-service';
-import { OPENSRP_API_BASE_URL, OPENSRP_PRODUCT_CATALOGUE } from '../constants';
+import { getFetchOptions, HTTPMethod } from '@opensrp/server-service';
+import { OPENSRP_PRODUCT_CATALOGUE } from '../constants';
 import { fetchProducts, ProductCatalogue } from '../ducks/productCatalogue';
 import { Dictionary } from '@onaio/utils';
-
-const sessionSelector = makeAPIStateSelector();
-
-/** OpenSRP service */
-export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
-  constructor(
-    endpoint: string,
-    baseURL: string = OPENSRP_API_BASE_URL,
-    fetchOptions: typeof getFetchOptions = getFetchOptions
-  ) {
-    const accessToken = sessionSelector(store.getState(), { accessToken: true });
-    super(accessToken, baseURL, endpoint, fetchOptions);
-  }
-}
+import { OpenSRPService } from '@opensrp/react-utils';
 
 /**
  * @param {string} baseURL -  base url of api
@@ -169,3 +151,5 @@ export async function putProduct(
     throw err;
   });
 }
+
+export { OpenSRPService };
