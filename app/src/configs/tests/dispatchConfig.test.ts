@@ -1,4 +1,4 @@
-import './dispatchConfig';
+import '../dispatchConfig';
 import { getAllConfigs } from '@opensrp/pkg-config';
 
 it('can dispatch configs', () => {

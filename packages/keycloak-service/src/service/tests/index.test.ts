@@ -5,7 +5,7 @@ import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
 import { customFetch, getFilterParams, KeycloakService } from '../serviceClass';
-import { keycloakUser, OpenSRPAPIResponse } from './fixtures';
+import { jwtAccessToken, keycloakUser, OpenSRPAPIResponse } from './fixtures';
 import { HTTPError, throwHTTPError, throwNetworkError, NetworkError } from '../errors';
 
 const getAccessToken = (): Promise<string> =>
@@ -91,7 +91,7 @@ describe('services/keycloak', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -114,7 +114,7 @@ describe('services/keycloak', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -156,7 +156,7 @@ describe('services/keycloak', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'DELETE',
@@ -202,7 +202,7 @@ describe('services/keycloak', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -281,7 +281,7 @@ describe('services/keycloak', () => {
           body: JSON.stringify(keycloakUser),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',
@@ -328,7 +328,7 @@ describe('services/keycloak', () => {
           body: JSON.stringify(obj),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: `Bearer ${jwtAccessToken}`,
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
