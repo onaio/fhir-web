@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet';
 import { act } from 'react-dom/test-utils';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
-
+import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 
@@ -25,6 +25,20 @@ const history = createBrowserHistory();
 jest.setTimeout(10000);
 
 describe('Update plan Page', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   beforeEach(() => {
     store.dispatch(removePlanDefinitions());
   });

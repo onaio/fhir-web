@@ -8,15 +8,18 @@ import {
   submitForm,
   getLocationDetails,
 } from '../utils';
-import { OpenSRPService } from '@opensrp/server-service';
 import Papaparse from 'papaparse';
 import fetch from 'jest-fetch-mock';
 import { DownloadClientDataFormFields } from '..';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 import * as functions from '../utils';
+
+const { OpenSRPService } = globalUtils;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -68,6 +71,17 @@ describe('components/DownloadClientData/utils/buildCSVFileName', () => {
       }
     };
     (global as any).Date = DateExtend;
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
   });
 
   afterAll(() => {
@@ -128,6 +142,17 @@ describe('components/DownloadClientData/utils/submitForm', () => {
       }
     };
     (global as any).Date = DateExtend;
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
   });
 
   afterAll(() => {
@@ -150,7 +175,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     cardOrderDate,
   };
   const opensrpBaseURL = 'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/';
-  const accessToken = 'hunter2';
   const setSubmittingMock = jest.fn();
 
   it('submits the form correctly', async () => {
@@ -161,7 +185,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -197,7 +220,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -227,7 +249,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -252,7 +273,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -282,7 +302,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         ...values,
         cardStatus: '',
       },
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -311,7 +330,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -336,7 +354,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         ...values,
         cardOrderDate: ['2020-11-26', '2020-11-26'],
       },
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -361,7 +378,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         ...values,
         cardOrderDate: ['2020-04-26', '2020-10-26'],
       },
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -386,7 +402,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         ...values,
         clientLocation: '',
       },
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -435,7 +450,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
         ...values,
         clientLocation: 'a2b4a441-21b5-4d03-816b-09d45b17cad9', // id not in hierarchy
       },
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,
@@ -496,7 +510,6 @@ describe('components/DownloadClientData/utils/submitForm', () => {
 
     submitForm(
       values,
-      accessToken,
       opensrpBaseURL,
       OpenSRPService,
       fixtures.locations,

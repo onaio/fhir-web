@@ -4,7 +4,8 @@ import { ActivateMissionCard } from '..';
 import toJson from 'enzyme-to-json';
 import { eusmPlans } from '../../../ducks/planDefinitions/tests/fixtures';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 import { act } from 'react-dom/test-utils';
 import * as notifications from '@opensrp/notifications';
 import flushPromises from 'flush-promises';
@@ -20,6 +21,20 @@ const plan = eusmPlans[0];
 const fetch = require('jest-fetch-mock');
 
 describe('activate mission', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   it('renders without crashing', () => {
     shallow(<ActivateMissionCard />);
   });
@@ -104,7 +119,7 @@ describe('activate mission', () => {
           body: JSON.stringify(expectedMission),
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',

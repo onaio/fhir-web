@@ -18,6 +18,7 @@ import toJson from 'enzyme-to-json';
 import fetch from 'jest-fetch-mock';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
+import { authenticateUser } from '@onaio/session-reducer';
 
 /** register the reducers */
 reducerRegistry.register(releasesReducerName, releasesReducer);
@@ -44,6 +45,20 @@ const customDebounce = (callback: any) => callback;
 _.debounce = customDebounce;
 
 describe('components/Releases', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterAll(() => {
     _.debounce = actualDebounce;
   });

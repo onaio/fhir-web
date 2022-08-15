@@ -13,6 +13,8 @@ import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import { FixManifestDraftFiles } from '../../ducks/tests/fixtures';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 /** eslint-disable @typescript-eslint/no-floating-promises */
 
@@ -42,6 +44,20 @@ describe('utils/downloadManifestFile', () => {
   const downloadEndPoint = 'form-download';
   const accessToken = 'hunter2';
 
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -63,7 +79,7 @@ describe('utils/downloadManifestFile', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -89,7 +105,7 @@ describe('utils/downloadManifestFile', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer hunter2',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -261,7 +277,7 @@ describe('helpers/utils/makeRelease', () => {
       body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
-        authorization: 'Bearer hunter2',
+        authorization: 'Bearer sometoken',
         'content-type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
@@ -293,7 +309,7 @@ describe('helpers/utils/makeRelease', () => {
       body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
-        authorization: 'Bearer hunter2',
+        authorization: 'Bearer sometoken',
         'content-type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
@@ -348,7 +364,7 @@ describe('helpers/utils/makeRelease', () => {
       body: '{"json":"{\\"forms_version\\":\\"1.0.26\\",\\"identifiers\\":[\\"test-form-1.json\\",\\"reveal-test-file.json\\"]}"}',
       headers: {
         accept: 'application/json',
-        authorization: 'Bearer hunter2',
+        authorization: 'Bearer sometoken',
         'content-type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
@@ -388,7 +404,7 @@ describe('helpers/utils/fetchDrafts', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -414,7 +430,7 @@ describe('helpers/utils/fetchDrafts', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -456,7 +472,7 @@ describe('helpers/utils/fetchDrafts', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -496,7 +512,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -522,7 +538,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -569,7 +585,7 @@ describe('helpers/utils/fetchReleaseFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -618,7 +634,7 @@ describe('helpers/utils/fetchManifests', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -647,7 +663,7 @@ describe('helpers/utils/fetchManifests', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -699,7 +715,7 @@ describe('helpers/utils/fetchManifests', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -733,7 +749,7 @@ describe('helpers/utils/fetchManifests', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',

@@ -10,8 +10,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { useQuery } from 'react-query';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { SECURITY_AUTHENTICATE, OPENSRP_URL_LOCATION_HIERARCHY } from '../../constants';
 import { submitForm } from './utils';
@@ -30,7 +29,6 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
     locationHierachyDucks.getAllHierarchiesArray(state)
   );
   const fetchAllHierarchiesActionCreator = locationHierachyDucks.fetchAllHierarchies;
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -65,7 +63,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
   // fetch logged in user data including team assigned to and location assigned to the team
   const userLocSettings = useQuery(
     SECURITY_AUTHENTICATE,
-    () => new OpenSRPService(accessToken, BASE_URL, SECURITY_AUTHENTICATE).list(),
+    () => new OpenSRPService(SECURITY_AUTHENTICATE, BASE_URL).list(),
     {
       onError: () =>
         sendErrorNotification(
@@ -81,7 +79,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
   const { isIdle, isLoading } = useQuery(
     OPENSRP_URL_LOCATION_HIERARCHY,
     () =>
-      new OpenSRPService(accessToken, opensrpBaseURL, OPENSRP_URL_LOCATION_HIERARCHY).read(
+      new OpenSRPService(OPENSRP_URL_LOCATION_HIERARCHY, opensrpBaseURL).read(
         userLocSettings.data?.uuid ?? '',
         { is_jurisdiction: true }
       ),
@@ -118,7 +116,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
           {...layout}
           onFinish={() => {
             setSubmitting(true);
-            submitForm(locationId, reportDate, accessToken, opensrpBaseURL)
+            submitForm(locationId, reportDate, opensrpBaseURL)
               .catch(() => sendErrorNotification(t('An error occurred')))
               .finally(() => setSubmitting(false));
           }}
