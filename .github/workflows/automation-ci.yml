@@ -1,0 +1,170 @@
+#TODO:
+# - use variables to make somethings dry, like path-names, routes.
+# - Caching web and express build dependencies for faster builds.
+# - better way to include the fhir-web-automation repo since its private
+
+name: Run automation tests
+on:
+  workflow_dispatch:
+    inputs:
+      branch: 
+        required: true
+        description: The branch to target
+
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      # setup code, directories and system wide dependency
+      - name: Checkout web
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          path: web
+          fetch-depth: 1
+
+      - name: Checkout express server
+        uses: actions/checkout@v3
+        with:
+          repository: onaio/express-server
+          path: express
+
+      - name: Checkout fhir automation
+        uses: actions/checkout@v3
+        with:
+          repository: onaio/fhir-web-automation
+          token: ${{ secrets.ACCESS_TOKEN }} # currently using a PAT -> not the best option.
+          path: fhir-web-automation
+          ref: p-netm-patch-1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # package, library installation and app configuration.
+
+      - name: Provision web envs
+        run: |
+          tee -a web/app/.env \n<<EOF
+          # fhir
+          SKIP_PREFLIGHT_CHECK=true
+          GENERATE_SOURCEMAP=false
+          REACT_APP_WEBSITE_NAME=Fhir-web
+          REACT_APP_DOMAIN_NAME=http://localhost:3000
+          REACT_APP_OPENSRP_ACCESS_TOKEN_URL=https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/token
+          REACT_APP_OPENSRP_AUTHORIZATION_URL=https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/auth
+          REACT_APP_OPENSRP_OAUTH_STATE=opensrp
+          REACT_APP_FHIR_API_BASE_URL=https://fhir.labs.smartregister.org/fhir
+          REACT_APP_OPENSRP_API_V2_BASE_URL=https://opensrp-fhir.labs.smartregister.org/opensrp/rest/
+          REACT_APP_OPENSRP_USER_URL=https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/userinfo
+          REACT_APP_OPENSRP_CLIENT_ID=fhir-core-client
+          REACT_APP_ENABLE_OPENSRP_OAUTH=true
+          REACT_APP_DISABLE_LOGIN_PROTECTION=false
+          REACT_APP_KEYCLOAK_API_BASE_URL=https://keycloak-stage.smartregister.org/auth/admin/realms/FHIR_Android
+          REACT_APP_EXPRESS_OAUTH_LOGOUT_URL=http://localhost:3000/logout
+          REACT_APP_EXPRESS_OAUTH_GET_STATE_URL=http://localhost:3000/oauth/state
+          REACT_APP_KEYCLOAK_LOGOUT_URL=https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/logout
+          REACT_APP_OPENSRP_OAUTH_SCOPES=openid,profile
+          REACT_APP_ENABLE_FHIR_CARE_TEAM=true
+          REACT_APP_KEYCLOAK_USERS_PAGE_SIZE=20
+          REACT_APP_FILTER_BY_PARENT_ID=true
+          REACT_APP_ENABLE_FHIR_HEALTHCARE=true
+          REACT_APP_ENABLE_PLANS=true
+          REACT_APP_ENABLE_LOCATIONS=true
+          REACT_APP_ENABLE_FHIR_LOCATIONS=true
+          REACT_APP_ENABLE_CARD_SUPPORT=true
+          REACT_APP_ENABLE_TEAMS=true
+          REACT_APP_ENABLE_FHIR_PATIENTS=true
+          REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE=true
+          REACT_APP_ENABLE_FORM_CONFIGURATION=true
+          REACT_APP_ENABLE_FHIR_USER_MANAGEMENT=true
+          REACT_APP_LANGUAGE_CODE=en
+          REACT_APP_PROJECT_CODE=core
+          REACT_APP_FHIR_API_BASE_URL=https://fhir.labs.smartregister.org/fhir
+          REACT_APP_ENABLE_FHIR_GROUP=true
+          REACT_APP_ENABLE_FHIR_PRACTITIONER_ROLE=true
+          REACT_APP_PAGINATION_SIZE=1000
+          REACT_APP_ENABLE_SERVER_SETTINGS=false
+          REACT_APP_OPENSRP_WEB_VERSION=$npm_package_version
+          REACT_APP_DEPLOYMENT_ENVIRONMENT=production
+          REACT_APP_ENABLE_FHIR_ORGANIZATION=true
+          REACT_APP_ENABLE_FHIR_TEAMS=true
+          REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER=eff94f33-c356-4634-8795-d52340706ba9
+          REACT_APP_FHIR_PATIENT_SORT_FIELDS=-_lastUpdated
+          REACT_APP_FHIR_PATIENT_BUNDLE_SIZE=5000
+          REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES=true
+          REACT_APP_ENABLE_USER_MANAGEMENT=true
+          EOF
+
+      # cache builds or artifacts, probably cache - TODO
+      - name: Build Application
+        run: |
+          cd web
+          yarn install --frozen-lockfile
+          yarn lerna:prepublish
+      
+      - name: Build express application
+        run: |
+          cd express
+          yarn install --frozen-lockfile
+          yarn build
+          yarn start > /dev/null 2>&1 &
+        env:
+          NODE_ENV: production
+          EXPRESS_OPENSRP_ACCESS_TOKEN_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/token
+          EXPRESS_OPENSRP_AUTHORIZATION_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/auth
+          EXPRESS_KEYCLOAK_LOGOUT_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/logout
+          EXPRESS_OPENSRP_USER_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/userinfo
+          EXPRESS_OPENSRP_CLIENT_ID: fhir-core-client
+          EXPRESS_OPENSRP_CLIENT_SECRET: ${{ secrets.EXPRESS_OPENSRP_CLIENT_SECRET }}
+          EXPRESS_ALLOW_TOKEN_RENEWAL: true
+          EXPRESS_REACT_BUILD_PATH: /home/runner/work/releaseDrafterExperiment/releaseDrafterExperiment/web/app/build
+
+      - name: Wait (max 2 mins) for express server to be reachable
+        run: |
+          count=0; while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:3000/)" != "200" ]]; do if [[ count -lt 24 ]]; then ((count=count+1)); else exit 1; fi; sleep 5; done
+
+      # setup automation tests
+      - name: Update integration test application properties
+        run: |
+          sed -i 's/LogTestRail = false/LogTestRail = true/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/TestRailusername = <testrail_username>/TestRailusername = '$(echo $TEST_RAIL_USERNAME)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/TestRailpassword = <testrail_password>/TestRailpassword = '$(echo $TEST_RAIL_PASSWORD)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/TestRailurl = <testrail_url>/TestRailurl='$(echo $TEST_RAIL_URL)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/TestRailprojectid = <testrail_project_id>/TestRailprojectid='$(echo $TEST_RAIL_PROJECT_ID)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/baseUrl = http:\/\/fhir-web.opensrp-stage.smartregister.org/baseUrl = http:\/\/localhost:3000/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/dashboardUrl = http:\/\/fhir-web.opensrp-stage.smartregister.org/dashboardUrl = http:\/\/localhost:3000/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/userName = <app_userName>/userName = '$(echo $LOGIN_USERNAME)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+          sed -i 's/password = <app_password>/password = '$(echo $LOGIN_PASSWORD)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
+        env:
+          TEST_RAIL_USERNAME: ${{ secrets.TEST_RAIL_USERNAME }}
+          TEST_RAIL_PASSWORD: ${{ secrets.TEST_RAIL_PASSWORD }}
+          TEST_RAIL_URL: ${{ secrets.TEST_RAIL_URL }}
+          TEST_RAIL_PROJECT_ID: ${{ secrets.TEST_RAIL_PROJECT_ID }}
+          LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
+          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+
+      - name: Debug applicationConfig properties
+        run: cat fhir-web-automation/src/main/resources/ApplicationConfig.properties
+
+      - name: Run integration test
+        run: |
+          cd fhir-web-automation 
+          mvn -f ./ clean test
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: automation-test-report
+          path: fhir-web-automation/reports
