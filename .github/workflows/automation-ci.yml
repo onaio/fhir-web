@@ -138,6 +138,7 @@ jobs:
       # setup automation tests
       - name: Update integration test application properties
         run: |
+          sed -i 's/headless = false/headless = true/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
           sed -i 's/LogTestRail = false/LogTestRail = true/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
           sed -i 's/TestRailusername = <testrail_username>/TestRailusername = '$(echo $TEST_RAIL_USERNAME)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
           sed -i 's/TestRailpassword = <testrail_password>/TestRailpassword = '$(echo $TEST_RAIL_PASSWORD)'/g' fhir-web-automation/src/main/resources/ApplicationConfig.properties
@@ -152,8 +153,8 @@ jobs:
           TEST_RAIL_PASSWORD: ${{ secrets.TEST_RAIL_PASSWORD }}
           TEST_RAIL_URL: ${{ secrets.TEST_RAIL_URL }}
           TEST_RAIL_PROJECT_ID: ${{ secrets.TEST_RAIL_PROJECT_ID }}
-          LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
-          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+          LOGIN_USERNAME: ${{ secrets.WEB_TEST_USERNAME }}
+          LOGIN_PASSWORD: ${{ secrets.WEB_TEST_PASSWORD }}
 
       - name: Debug applicationConfig properties
         run: cat fhir-web-automation/src/main/resources/ApplicationConfig.properties
