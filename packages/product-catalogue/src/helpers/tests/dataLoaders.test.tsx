@@ -8,6 +8,8 @@ import {
 } from '../dataLoaders';
 import * as catalogueDux from '../../ducks/productCatalogue';
 import flushPromises from 'flush-promises';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -17,6 +19,20 @@ const mockBaseURL = 'https://example.com/rest';
 jest.setTimeout(10000);
 
 describe('dataLoading', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     fetch.resetMocks();
   });
@@ -36,7 +52,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -61,7 +77,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -84,7 +100,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -118,7 +134,7 @@ describe('dataLoading', () => {
       {
         body: expect.any(FormData),
         headers: {
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
         },
         method: 'POST',
       },
@@ -161,7 +177,7 @@ describe('dataLoading', () => {
       {
         body: expect.any(FormData),
         headers: {
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
         },
         method: 'PUT',
       },

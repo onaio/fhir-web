@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Button, Card, Typography, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { OpenSRPService } from '@opensrp/server-service';
-import { getAccessToken } from '@onaio/session-reducer';
+import { OpenSRPService } from '@opensrp/react-utils';
 import {
   locationHierachyDucks,
   RawOpenSRPHierarchy,
@@ -65,7 +64,6 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   const locationHierarchies = useSelector((state) =>
     locationHierachyDucks.getAllHierarchiesArray(state)
   );
-  const accessToken = useSelector((state) => getAccessToken(state) as string);
   const dispatch = useDispatch();
   const { Option } = Select;
   const { RangePicker } = DatePicker;
@@ -107,7 +105,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
   // fetch logged in user data including team assigned to and location assigned to the team
   const userLocSettings = useQuery(
     SECURITY_AUTHENTICATE,
-    () => new opensrpServiceClass(accessToken, BASE_URL, SECURITY_AUTHENTICATE).list(),
+    () => new opensrpServiceClass(SECURITY_AUTHENTICATE, BASE_URL).list(),
     {
       onError: () =>
         sendErrorNotification(
@@ -124,9 +122,9 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     OPENSRP_URL_LOCATION_HIERARCHY,
     () =>
       new opensrpServiceClass(
-        accessToken,
-        opensrpBaseURL,
-        OPENSRP_URL_LOCATION_HIERARCHY
+        OPENSRP_URL_LOCATION_HIERARCHY,
+        opensrpBaseURL
+
         // eslint-disable-next-line @typescript-eslint/naming-convention
       ).read(userLocSettings.data?.uuid ?? '', { is_jurisdiction: true }),
     {
@@ -170,7 +168,6 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                   : userLocSettings.data?.uuid ?? '',
                 cardOrderDate,
               },
-              accessToken,
               opensrpBaseURL,
               opensrpServiceClass,
               locationHierarchies,

@@ -1,4 +1,4 @@
-import './dispatchConfig'; // this needs to be imported before anything else
+import './configs/dispatchConfig'; // this needs to be imported before anything else
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';

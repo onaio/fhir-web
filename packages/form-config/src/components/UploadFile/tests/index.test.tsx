@@ -12,7 +12,8 @@ import { fetchManifestFiles } from '@opensrp/form-config-core';
 import { fixManifestFiles } from '../../../helpers/fixtures';
 import sampleFile from './sampleFile.json';
 import { act } from 'react-dom/test-utils';
-import { OpenSRPService } from '@opensrp/server-service';
+import { OpenSRPService } from '@opensrp/react-utils';
+import { authenticateUser } from '@onaio/session-reducer';
 
 const history = createBrowserHistory();
 
@@ -35,6 +36,20 @@ const props = {
 };
 
 describe('components/UploadFile', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
     fetch.resetMocks();
