@@ -1,9 +1,9 @@
 .logo {
-  padding: 1rem 1rem 1rem 24px;
+  padding: 1rem 1rem 0.5rem 24px;
 }
 
 .logo img {
-  height: 40px;
+  max-height: 40px;
   width: auto;
   max-width: 100%;
 }
@@ -25,6 +25,5 @@
 .sidebar-version {
   color: rgba(255, 255, 255, 0.65);
   text-align: left;
-  margin-left: 7.5%; /* align with logo (logo centered with width 85%. Thus align left with preceding margin half of 100%-85%) */
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 0;
 }
