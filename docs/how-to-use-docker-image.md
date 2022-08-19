@@ -117,7 +117,7 @@ Opensrp web is configured as follows:
 
 Now using the image.
 
-- use a specific opensrp web tag rather than a moving target (master)
+- OpenSRP web tags correspond to [OpenSRP web releases here](https://github.com/opensrp/web/releases). It's advised to use the latest official release
 
 #### docker-compose.yml
 
