@@ -55,7 +55,13 @@ describe('components/Logout', () => {
       </Provider>
     );
     await flushPromises();
-    expect(mock).toHaveBeenCalledWith(payload, logoutURL, keycloakURL, 'http://localhost:3000');
+    expect(mock).toHaveBeenCalledWith(
+      payload,
+      keycloakURL,
+      'http://localhost:3000',
+      logoutURL,
+      undefined
+    );
   });
 
   it('handles logout failure correctly', async () => {

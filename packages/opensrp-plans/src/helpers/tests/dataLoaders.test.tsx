@@ -15,6 +15,8 @@ import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from
 import MockDate from 'mockdate';
 import { processRawAssignments } from '@opensrp/team-assignment';
 import flushPromises from 'flush-promises';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -26,6 +28,20 @@ MockDate.set('12/30/2019');
 describe('dataLoading', () => {
   afterEach(() => {
     fetch.resetMocks();
+  });
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
   });
 
   it('loadPlans works correctly', async () => {
@@ -43,7 +59,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -69,7 +85,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -93,7 +109,7 @@ describe('dataLoading', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer null',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -219,7 +235,7 @@ describe('dataLoading', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',

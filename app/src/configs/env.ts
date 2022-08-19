@@ -23,8 +23,8 @@ const defaultRoles = {
   QUEST: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
-const rawOpenSrpRoles = setEnv('REACT_APP_OPENSRP_ROLES', JSON.stringify(defaultRoles))
-export const OPENSRP_ROLES = JSON.parse(rawOpenSrpRoles)
+const rawOpenSrpRoles = setEnv('REACT_APP_OPENSRP_ROLES', JSON.stringify(defaultRoles));
+export const OPENSRP_ROLES = JSON.parse(rawOpenSrpRoles);
 
 export const WEBSITE_NAME = setEnv('REACT_APP_WEBSITE_NAME', 'OpenSRP Web');
 
@@ -88,10 +88,7 @@ export const ENABLE_PATIENTS_MODULE = setEnv('REACT_APP_ENABLE_FHIR_PATIENTS', '
 
 export const BACKEND_ACTIVE = setEnv('REACT_APP_BACKEND_ACTIVE', 'false') === 'true';
 
-export const OPENSRP_LOGOUT_URL = setEnv(
-  'REACT_APP_OPENSRP_LOGOUT_URL',
-  'https://opensrp-stage.smartregister.org/opensrp/logout.do'
-);
+export const OPENSRP_LOGOUT_URL = setEnv('REACT_APP_OPENSRP_LOGOUT_URL', undefined);
 export const OPENSRP_OAUTH_STATE = setEnv('REACT_APP_OPENSRP_OAUTH_STATE', 'opensrp');
 export const ENABLE_OPENSRP_OAUTH = setEnv('REACT_APP_ENABLE_OPENSRP_OAUTH', 'false') === 'true';
 
@@ -185,9 +182,11 @@ export const FILTER_BY_PARENT_ID = setEnv('REACT_APP_FILTER_BY_PARENT_ID', 'true
 
 export const DEFAULT_HOME_MODE = setEnv('REACT_APP_DEFAULT_HOME_MODE', 'default');
 
-export const ENABLE_USER_MANAGEMENT = setEnv('REACT_APP_ENABLE_USER_MANAGEMENT', 'false') === 'true';
+export const ENABLE_USER_MANAGEMENT =
+  setEnv('REACT_APP_ENABLE_USER_MANAGEMENT', 'false') === 'true';
 
-export const ENABLE_FHIR_USER_MANAGEMENT = setEnv('REACT_APP_ENABLE_FHIR_USER_MANAGEMENT', 'false') === 'true';
+export const ENABLE_FHIR_USER_MANAGEMENT =
+  setEnv('REACT_APP_ENABLE_FHIR_USER_MANAGEMENT', 'false') === 'true';
 
 export const FHIR_API_BASE_URL = setEnv(
   'REACT_APP_FHIR_API_BASE_URL',
@@ -217,10 +216,7 @@ export const FHIR_PATIENT_SORT_FIELDS = setEnv(
 
 export const FHIR_PATIENT_BUNDLE_SIZE = Number(setEnv('REACT_APP_FHIR_PATIENT_BUNDLE_SIZE', 5000));
 
-export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv(
-  'REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER',
-  ''
-);
+export const FHIR_ROOT_LOCATION_IDENTIFIER = setEnv('REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER', '');
 
 export const ENABLE_SERVER_SETTINGS = setEnv('REACT_APP_ENABLE_SERVER_SETTINGS', false) === 'true';
 

@@ -11,6 +11,8 @@ import { CATALOGUE_LIST_VIEW_URL } from '../../../constants';
 import { product2, product3 } from './fixtures';
 import * as opensrpReactUtils from '@opensrp/react-utils';
 import flushPromises from 'flush-promises';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -28,6 +30,19 @@ jest.setTimeout(10000);
 
 describe('productForm', () => {
   global.URL.revokeObjectURL = jest.fn();
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
 
   afterEach(() => {
     fetch.resetMocks();

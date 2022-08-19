@@ -35,7 +35,7 @@
     "@ant-design/icons": "^4.7.0",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "^0.1.1",
+    "@onaio/gatekeeper": "^0.3.0",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",

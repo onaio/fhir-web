@@ -5,6 +5,8 @@ import { eusmPlans, retiredDraftPlans } from '../../../ducks/planDefinitions/tes
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -29,6 +31,21 @@ describe('mission data listing & download', () => {
   afterEach(() => {
     fetch.resetMocks();
   });
+
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   const props = {
     plan,
   };
@@ -70,7 +87,7 @@ describe('mission data listing & download', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -81,7 +98,7 @@ describe('mission data listing & download', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -92,7 +109,7 @@ describe('mission data listing & download', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',

@@ -21,7 +21,7 @@ import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
 import { removeAssignmentsAction } from '@opensrp/team-assignment';
 import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
-
+import { authenticateUser } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';
 import { Router } from 'react-router-dom';
@@ -55,6 +55,20 @@ MockDate.set('12/30/2019');
 const fetch = require('jest-fetch-mock');
 
 describe('opensrp-plans/assignmentTable', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     fetch.resetMocks();
     store.dispatch(removeJurisdictions());
@@ -101,7 +115,7 @@ describe('opensrp-plans/assignmentTable', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -112,7 +126,7 @@ describe('opensrp-plans/assignmentTable', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -123,7 +137,7 @@ describe('opensrp-plans/assignmentTable', () => {
         {
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'GET',
@@ -255,7 +269,7 @@ describe('opensrp-plans/assignmentTable', () => {
           body,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
@@ -270,7 +284,7 @@ describe('opensrp-plans/assignmentTable', () => {
           body: '[]',
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',
@@ -335,7 +349,7 @@ describe('opensrp-plans/assignmentTable', () => {
           body: expectedAssignment,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',
@@ -404,7 +418,7 @@ describe('opensrp-plans/assignmentTable', () => {
           body,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'PUT',
@@ -419,7 +433,7 @@ describe('opensrp-plans/assignmentTable', () => {
           body: expectedAssignment1,
           headers: {
             accept: 'application/json',
-            authorization: 'Bearer null',
+            authorization: 'Bearer sometoken',
             'content-type': 'application/json;charset=UTF-8',
           },
           method: 'POST',

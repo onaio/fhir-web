@@ -29,7 +29,7 @@ import {
   ENABLE_REPORTS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_USER_MANAGEMENT,
-} from './configs/env';
+} from '../configs/env';
 import {
   URL_USER,
   URL_LOCATION_UNIT,
@@ -46,7 +46,7 @@ import {
   URL_FHIR_CARE_TEAM,
   URL_ADMIN,
   URL_DOWNLOAD_DISTRICT_REPORT,
-} from './constants';
+} from '../constants';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';

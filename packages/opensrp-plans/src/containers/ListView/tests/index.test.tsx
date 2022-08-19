@@ -11,7 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { removePlanDefinitions } from '../../../ducks/planDefinitions';
 import { getColumns, pageTitleBuilder } from '../utils';
-
+import { authenticateUser } from '@onaio/session-reducer';
 import { PlanStatus } from '@opensrp/plan-form-core';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
@@ -25,6 +25,20 @@ const fetch = require('jest-fetch-mock');
 const history = createBrowserHistory();
 
 describe('List view Page', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterEach(() => {
     fetch.resetMocks();
   });

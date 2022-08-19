@@ -15,6 +15,7 @@ import { fixManifestFiles, downloadFile } from '../../../helpers/fixtures';
 import toJson from 'enzyme-to-json';
 import _ from 'lodash';
 import { act } from 'react-dom/test-utils';
+import { authenticateUser } from '@onaio/session-reducer';
 
 jest.mock('@opensrp/form-config-core', () => ({
   __esModule: true,
@@ -54,6 +55,20 @@ _.debounce = customDebounce;
 (global as any).URL.revokeObjectURL = jest.fn();
 
 describe('components/manifestFiles', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      )
+    );
+  });
+
   afterAll(() => {
     _.debounce = actualDebounce;
   });
@@ -152,7 +167,7 @@ describe('components/manifestFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
@@ -217,7 +232,7 @@ describe('components/manifestFiles', () => {
       {
         headers: {
           accept: 'application/json',
-          authorization: 'Bearer hunter2',
+          authorization: 'Bearer sometoken',
           'content-type': 'application/json;charset=UTF-8',
         },
         method: 'GET',
