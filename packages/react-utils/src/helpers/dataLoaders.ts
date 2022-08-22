@@ -57,17 +57,24 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public resourceType: string;
+  public signal: AbortSignal;
 
   /**
    * Constructor method
    *
    * @param {string} baseURL - the base FHIR URL
    * @param {string} resourceType - FHIR resource type string
+   * @param {AbortSignal} signal - Abort fetch request
    */
-  constructor(baseURL: string, resourceType: string) {
+  constructor(
+    baseURL: string,
+    resourceType: string,
+    signal: AbortSignal = new AbortController().signal
+  ) {
     this.accessTokenOrCallBack = handleSessionOrTokenExpiry as GetAccessTokenType;
     this.baseURL = baseURL;
     this.resourceType = resourceType;
+    this.signal = signal;
   }
 
   public buildQueryParams(params: URLParams | null) {
@@ -90,13 +97,13 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public async create(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.create<T>(payload);
+    return serve.create<T>(payload, { signal: this.signal });
   }
 
   public async update(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.update<T>(payload);
+    return serve.update<T>(payload, { signal: this.signal });
   }
 
   public async list(params: URLParams | null = null) {
@@ -115,7 +122,7 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public async delete(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.delete(`${this.resourceType}/${id}`);
+    return serve.delete(`${this.resourceType}/${id}`, { signal: this.signal });
   }
 }
 
