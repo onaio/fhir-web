@@ -155,10 +155,14 @@ const LocationForm = (props: LocationFormProps) => {
               const successUrl = successURLGenerator(payload);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
+              // hierarchy request usually takes quite a while to resolve, this coupled with react-query's request
+              // de-duping mechanism means that more recent requests will get deduped on the pending request.
+              // the pending request then resolves with stale data.
+              // This cancels any pending request so that after invalidation we can get a fresh promise launched then.
               queryClient.cancelQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
-              queryClient.refetchQueries([locationHierarchyResourceType]).catch((err) => {
+              queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
               setSuccessUrl(successUrl);
