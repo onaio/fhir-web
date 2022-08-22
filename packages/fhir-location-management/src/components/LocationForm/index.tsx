@@ -155,7 +155,10 @@ const LocationForm = (props: LocationFormProps) => {
               const successUrl = successURLGenerator(payload);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
-              queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
+              queryClient.cancelQueries([locationHierarchyResourceType]).catch((err) => {
+                throw err;
+              });
+              queryClient.refetchQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
               setSuccessUrl(successUrl);

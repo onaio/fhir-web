@@ -81,8 +81,8 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     isFetching: treeIsFetching,
   } = useQuery<IBundle, Error, TreeNode | undefined>(
     [locationHierarchyResourceType, hierarchyParams],
-    async () => {
-      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
+    async ({ signal }) => {
+      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
         hierarchyParams
       );
     },
