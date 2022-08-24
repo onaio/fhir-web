@@ -216,8 +216,7 @@ Object {
           to="/"
         >
           <img
-            alt=""
-            className="img-fluid"
+            alt="The logo"
             src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
           />
         </Link>
@@ -312,8 +311,7 @@ exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
         onClick={[Function]}
       >
         <img
-          alt=""
-          className="img-fluid"
+          alt="The logo"
           src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
         />
       </a>
