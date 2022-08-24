@@ -12,7 +12,7 @@ import { LanguageOptions, LanguageSwitcher } from '@opensrp/react-utils';
 import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
-import { APP_LOGIN_URL } from '../../../dispatchConfig';
+import { APP_LOGIN_URL } from '../../../configs/dispatchConfig';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
