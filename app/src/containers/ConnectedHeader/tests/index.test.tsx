@@ -5,13 +5,16 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
 import { store } from '@opensrp/store';
+import toJson from 'enzyme-to-json';
+
+jest.mock('../../../configs/env');
 
 jest.mock('@opensrp/pkg-config', () => {
   const actual = jest.requireActual('@opensrp/pkg-config');
   return {
     ...actual,
     getConfig: () => {
-      return 'en'
+      return 'en';
     },
   };
 });
@@ -29,6 +32,15 @@ describe('components/ConnectedHeader', () => {
     expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
     expect(wrapper.find('Header').props().children).toHaveLength(2);
     expect(wrapper.text()).toMatchInlineSnapshot(`"Login"`);
+    expect(toJson(wrapper.find('a[data-index="login-link"]'))).toMatchInlineSnapshot(`
+      <a
+        data-index="login-link"
+        href="/login"
+        onClick={[Function]}
+      >
+        Login
+      </a>
+    `);
     (wrapper.find('Header').props().children as any).forEach((child: any) => {
       expect(child).toMatchSnapshot('child');
     });
