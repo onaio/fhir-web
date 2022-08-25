@@ -263,6 +263,7 @@ describe('dataloaders/FHIRService', () => {
 
   it('FHIRServiceClass update method works', async () => {
     const fhirMock = jest.spyOn(fhirCient, 'client');
+    const signal = new AbortController().signal;
     const updateMock = jest.fn();
     fhirMock.mockImplementation(
       jest.fn().mockImplementation(() => {
@@ -271,7 +272,7 @@ describe('dataloaders/FHIRService', () => {
         };
       })
     );
-    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam', signal);
     const result = await fhir.update({ ...fixtures.careTeam1, name: 'New Name' });
     await flushPromises();
     expect(updateMock.mock.calls).toEqual([
@@ -293,6 +294,7 @@ describe('dataloaders/FHIRService', () => {
           status: 'active',
           subject: { reference: 'Group/306' },
         },
+        { signal },
       ],
     ]);
     expect(result).toEqual(fixtures.careTeam1);

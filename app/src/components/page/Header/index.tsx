@@ -88,6 +88,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
               </Avatar>
             }
             className="h-auto d-flex align-items-center bg-transparent border-0 rounded-0"
+            size="large"
             type="primary"
           >
             {user.username}
