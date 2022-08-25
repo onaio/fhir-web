@@ -3,10 +3,12 @@
 exports[`components/ConnectedHeader renders the ConnectedHeader component: child 1`] = `
 <Button
   className="bg-transparent border-0"
+  data-index="login-button"
   icon={<ForwardRef(BellOutlined) />}
   type="primary"
 >
   <Link
+    data-index="login-link"
     to="/login"
   >
     Login
