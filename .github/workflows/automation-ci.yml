@@ -129,7 +129,7 @@ jobs:
           EXPRESS_OPENSRP_CLIENT_ID: fhir-core-client
           EXPRESS_OPENSRP_CLIENT_SECRET: ${{ secrets.EXPRESS_OPENSRP_CLIENT_SECRET }}
           EXPRESS_ALLOW_TOKEN_RENEWAL: true
-          EXPRESS_REACT_BUILD_PATH: /home/runner/work/releaseDrafterExperiment/releaseDrafterExperiment/web/app/build
+          EXPRESS_REACT_BUILD_PATH: /home/runner/work/web/web/web/app/build
 
       - name: Wait (max 2 mins) for express server to be reachable
         run: |
