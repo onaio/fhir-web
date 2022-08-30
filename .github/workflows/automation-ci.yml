@@ -11,7 +11,6 @@ on:
         required: true
         description: The branch to target
 
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -113,7 +112,11 @@ jobs:
           cd web
           yarn install --frozen-lockfile
           yarn lerna:prepublish
-      
+
+      - name: Get absolute path for build files
+        run: |
+          echo "REACT_BUILD_FOLDER=$(pwd)/web/app/build" >> $GITHUB_ENV
+
       - name: Build express application
         run: |
           cd express
@@ -129,7 +132,7 @@ jobs:
           EXPRESS_OPENSRP_CLIENT_ID: fhir-core-client
           EXPRESS_OPENSRP_CLIENT_SECRET: ${{ secrets.EXPRESS_OPENSRP_CLIENT_SECRET }}
           EXPRESS_ALLOW_TOKEN_RENEWAL: true
-          EXPRESS_REACT_BUILD_PATH: /home/runner/work/web/web/web/app/build
+          EXPRESS_REACT_BUILD_PATH: ${{ env.REACT_BUILD_FOLDER }}
 
       - name: Wait (max 2 mins) for express server to be reachable
         run: |
