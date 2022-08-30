@@ -159,9 +159,6 @@ jobs:
           LOGIN_USERNAME: ${{ secrets.WEB_TEST_USERNAME }}
           LOGIN_PASSWORD: ${{ secrets.WEB_TEST_PASSWORD }}
 
-      - name: Debug applicationConfig properties
-        run: cat fhir-web-automation/src/main/resources/ApplicationConfig.properties
-
       - name: Run integration test
         run: |
           cd fhir-web-automation 
