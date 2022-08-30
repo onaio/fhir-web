@@ -121,7 +121,7 @@ jobs:
           yarn build
           yarn start > /dev/null 2>&1 &
         env:
-          NODE_ENV: production
+          NODE_ENV: development # so that we can insall devDepenencies required for build
           EXPRESS_OPENSRP_ACCESS_TOKEN_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/token
           EXPRESS_OPENSRP_AUTHORIZATION_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/auth
           EXPRESS_KEYCLOAK_LOGOUT_URL: https://keycloak-stage.smartregister.org/auth/realms/FHIR_Android/protocol/openid-connect/logout
