@@ -200,7 +200,12 @@ import {
 } from '@opensrp/fhir-views';
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 import { DistrictReport } from '@opensrp/reports';
-import { GroupList, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
+import {
+  ADD_EDIT_GROUP_URL,
+  GroupList,
+  LIST_GROUP_URL,
+  GroupAddEdit,
+} from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
 import '@opensrp/team-assignment/dist/index.css';
@@ -887,6 +892,22 @@ const App: React.FC = () => {
               }
               path={LIST_HEALTHCARE_URL}
               component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={`${ADD_EDIT_GROUP_URL}/:id`}
+              exact
+              component={GroupAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={ADD_EDIT_GROUP_URL}
+              exact
+              component={GroupAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
