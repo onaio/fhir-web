@@ -56,6 +56,7 @@ describe('Health care form', () => {
 
   const formProps = {
     fhirBaseUrl: 'http://test.server.org',
+    initialValues: getGroupFormFields(),
   };
 
   beforeAll(() => {

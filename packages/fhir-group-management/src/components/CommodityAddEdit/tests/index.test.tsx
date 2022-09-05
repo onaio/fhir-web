@@ -2,7 +2,7 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { GroupAddEdit } from '..';
+import { CommodityAddEdit } from '..';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
@@ -37,10 +37,10 @@ const AppWrapper = (props: any) => {
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route exact path="/add">
-            <GroupAddEdit {...props} />
+            <CommodityAddEdit {...props} />
           </Route>
           <Route exact path="/add/:id">
-            <GroupAddEdit {...props} />
+            <CommodityAddEdit {...props} />
           </Route>
         </Switch>
       </QueryClientProvider>
