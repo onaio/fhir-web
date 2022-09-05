@@ -77,7 +77,7 @@ export const validationRulesFactory = (t: TFunction) => ({
  */
 export const getGroupFormFields = (obj?: IGroup) => {
   if (!obj) {
-    return { code: defaultCode };
+    return { initialObject: { code: defaultCode } } as GroupFormFields;
   }
   const { id, name, active, identifier, type, characteristic } = obj;
 

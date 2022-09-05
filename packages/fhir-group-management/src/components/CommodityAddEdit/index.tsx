@@ -18,7 +18,7 @@ export interface RouteParams {
   id?: string;
 }
 
-export const GroupAddEdit = (props: GroupAddEditProps) => {
+export const CommodityAddEdit = (props: GroupAddEditProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
