@@ -25,8 +25,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import {
-  ADD_EDIT_GROUP_URL,
-  GroupAddEdit,
+  ADD_EDIT_COMMODITY_URL,
+  CommodityAddEdit,
   GroupList,
   LIST_GROUP_URL,
 } from '@opensrp/fhir-group-management';
@@ -345,18 +345,18 @@ describe('App - authenticated', () => {
 
     // go to new resource page
     (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${ADD_EDIT_GROUP_URL}`
+      `${ADD_EDIT_COMMODITY_URL}`
     );
 
     wrapper.update();
-    expect(wrapper.find(GroupAddEdit)).toHaveLength(1);
+    expect(wrapper.find(CommodityAddEdit)).toHaveLength(1);
 
     // go to edit resource page
     (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${ADD_EDIT_GROUP_URL}/1`
+      `${ADD_EDIT_COMMODITY_URL}/1`
     );
     wrapper.update();
-    expect(wrapper.find(GroupAddEdit)).toHaveLength(1);
+    expect(wrapper.find(CommodityAddEdit)).toHaveLength(1);
     wrapper.unmount();
   });
 });

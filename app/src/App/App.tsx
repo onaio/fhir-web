@@ -201,10 +201,10 @@ import {
 import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 import { DistrictReport } from '@opensrp/reports';
 import {
-  ADD_EDIT_GROUP_URL,
   GroupList,
   LIST_GROUP_URL,
-  GroupAddEdit,
+  ADD_EDIT_COMMODITY_URL,
+  CommodityAddEdit,
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
@@ -897,17 +897,17 @@ const App: React.FC = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
-              path={`${ADD_EDIT_GROUP_URL}/:id`}
+              path={`${ADD_EDIT_COMMODITY_URL}/:id`}
               exact
-              component={GroupAddEdit}
+              component={CommodityAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
-              path={ADD_EDIT_GROUP_URL}
+              path={ADD_EDIT_COMMODITY_URL}
               exact
-              component={GroupAddEdit}
+              component={CommodityAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
