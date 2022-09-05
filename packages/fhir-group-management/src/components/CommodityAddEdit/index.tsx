@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { GroupForm } from './Form';
+import { CommodityForm } from './Form';
 import { useParams } from 'react-router';
 import { groupResourceType, LIST_GROUP_URL } from '../../constants';
 import { Spin } from 'antd';
@@ -54,7 +54,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
       </Helmet>
       <h5 className="mb-3 header-title">{pageTitle}</h5>
       <div className="bg-white p-5">
-        <GroupForm
+        <CommodityForm
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
           cancelUrl={LIST_GROUP_URL}

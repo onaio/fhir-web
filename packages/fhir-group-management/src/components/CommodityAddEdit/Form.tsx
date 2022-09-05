@@ -45,7 +45,7 @@ const defaultProps = {
   disabled: [],
 };
 
-const GroupForm = (props: GroupFormProps) => {
+const CommodityForm = (props: GroupFormProps) => {
   const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl } = props;
 
   const queryClient = useQueryClient();
@@ -166,6 +166,6 @@ const GroupForm = (props: GroupFormProps) => {
   );
 };
 
-GroupForm.defaultProps = defaultProps;
+CommodityForm.defaultProps = defaultProps;
 
-export { GroupForm };
+export { CommodityForm };

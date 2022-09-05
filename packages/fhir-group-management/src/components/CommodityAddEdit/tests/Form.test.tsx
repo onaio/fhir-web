@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
-import { GroupForm } from '../Form';
+import { CommodityForm } from '../Form';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
@@ -90,7 +90,7 @@ describe('Health care form', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <GroupForm {...formProps} />
+        <CommodityForm {...formProps} />
       </AppWrapper>,
       { attachTo: div }
     );
@@ -129,7 +129,7 @@ describe('Health care form', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <GroupForm {...formProps} />
+        <CommodityForm {...formProps} />
       </AppWrapper>,
       { attachTo: div }
     );
@@ -186,7 +186,7 @@ describe('Health care form', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <GroupForm successUrl={someMockURL} {...formProps} />
+        <CommodityForm successUrl={someMockURL} {...formProps} />
       </AppWrapper>,
       { attachTo: container }
     );
@@ -265,7 +265,7 @@ describe('Health care form', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <GroupForm cancelUrl={cancelUrl} {...formProps} />
+        <CommodityForm cancelUrl={cancelUrl} {...formProps} />
       </AppWrapper>,
 
       { attachTo: container }
@@ -305,7 +305,7 @@ describe('Health care form', () => {
 
     const wrapper = mount(
       <AppWrapper>
-        <GroupForm {...localProps} />
+        <CommodityForm {...localProps} />
       </AppWrapper>,
       { attachTo: container }
     );
