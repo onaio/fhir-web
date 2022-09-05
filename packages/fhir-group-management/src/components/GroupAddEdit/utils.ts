@@ -77,7 +77,7 @@ export const validationRulesFactory = (t: TFunction) => ({
  */
 export const getGroupFormFields = (obj?: IGroup) => {
   if (!obj) {
-    return {};
+    return { code: defaultCode };
   }
   const { id, name, active, identifier, type, characteristic } = obj;
 
@@ -111,8 +111,6 @@ export const generateGroupPayload = (
   let payload: IGroup = {
     resourceType: groupResourceType,
     active: !!active,
-    // TODO - not all groups will have this coding.
-    code: defaultCode,
   };
   // preserve resource details that we are not interested in editing.
   if (initialObject) {
