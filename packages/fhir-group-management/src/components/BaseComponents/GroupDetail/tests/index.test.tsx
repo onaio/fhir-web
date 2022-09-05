@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, render, screen } from '@testing-library/react';
-import { groupResourceType } from '../../../constants';
+import { groupResourceType } from '../../../../constants';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');

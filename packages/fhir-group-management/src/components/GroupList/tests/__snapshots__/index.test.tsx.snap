@@ -3,9 +3,9 @@
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
   class="ant-page-header-heading-title"
-  title="Groups list"
+  title="Groups List"
 >
-  Groups list
+  Groups List
 </span>
 `;
 

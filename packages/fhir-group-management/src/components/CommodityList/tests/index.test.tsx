@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { GroupList } from '..';
+import { CommodityList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
@@ -10,9 +10,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
-import { groupsPage2, groupsPageSearch, groupspage1 } from './fixtures';
-import userEvents from '@testing-library/user-event';
+import { groupResourceType, LIST_COMMODITY_URL } from '../../../constants';
+import { groupspage1 } from './fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -57,11 +56,11 @@ const AppWrapper = (props: any) => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Switch>
-          <Route exact path={`${LIST_GROUP_URL}`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
+          <Route exact path={`${LIST_COMMODITY_URL}`}>
+            {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
           </Route>
-          <Route exact path={`${LIST_GROUP_URL}/:id`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
+          <Route exact path={`${LIST_COMMODITY_URL}/:id`}>
+            {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
           </Route>
         </Switch>
       </QueryClientProvider>
@@ -94,33 +93,17 @@ afterAll(() => {
 
 test('renders correctly when listing resources', async () => {
   const history = createMemoryHistory();
-  history.push(LIST_GROUP_URL);
+  history.push(LIST_COMMODITY_URL);
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
       _getpagesoffset: 0,
       _count: 20,
+      code: 'http://snomed.info/sct|767524001',
     })
-    .reply(200, groupsPage2)
+    .reply(200, groupspage1)
     .persist();
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _getpagesoffset: 20,
-      _count: 20,
-    })
-    .reply(200, groupsPage2);
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      'name:contains': 'jan27',
-    })
-    .reply(200, groupsPageSearch);
 
   render(
     <Router history={history}>
@@ -132,7 +115,7 @@ test('renders correctly when listing resources', async () => {
 
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
-      Groups List
+      Commodity List
     </title>
   `);
 
@@ -144,36 +127,9 @@ test('renders correctly when listing resources', async () => {
     });
   });
 
-  fireEvent.click(screen.getByTitle('2'));
-
-  expect(history.location.search).toEqual('?pageSize=20&page=2');
-
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  document.querySelectorAll('tr').forEach((tr, idx) => {
-    tr.querySelectorAll('td').forEach((td) => {
-      expect(td).toMatchSnapshot(`table row ${idx} page 2`);
-    });
-  });
-
-  // works with search as well.
-  const searchForm = document.querySelector('[data-testid="search-form"]');
-  userEvents.type(searchForm!, 'jan27');
-
-  expect(history.location.search).toEqual('?pageSize=20&page=1&search=jan27');
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  document.querySelectorAll('tr').forEach((tr, idx) => {
-    tr.querySelectorAll('td').forEach((td) => {
-      expect(td).toMatchSnapshot(`Search ${idx} page 1`);
-    });
-  });
-
-  // remove search.
-  userEvents.clear(searchForm!);
-  expect(history.location.search).toEqual('?pageSize=20&page=1');
-
   // view details
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/49778`)
+    .get(`/${groupResourceType}/49779`)
     .reply(200, groupspage1.entry[1].resource);
 
   // target the initial row view details
@@ -183,15 +139,23 @@ test('renders correctly when listing resources', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/groups/list/49778"
+      href="/commodity/list/49779"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/groups/list/49778');
+  expect(history.location.pathname).toEqual('/commodity/list/49779');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
+  });
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
@@ -199,27 +163,4 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.pathname).toEqual('/groups/list');
   expect(nock.isDone()).toBeTruthy();
-});
-
-test('responds as expected to errors', async () => {
-  const history = createMemoryHistory();
-  history.push(LIST_GROUP_URL);
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
-    .replyWithError('coughid');
-
-  render(
-    <Router history={history}>
-      <AppWrapper debugKey="responds" {...props}></AppWrapper>
-    </Router>
-  );
-
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-
-  expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

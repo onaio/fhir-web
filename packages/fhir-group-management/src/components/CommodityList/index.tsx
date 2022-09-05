@@ -2,27 +2,40 @@ import React from 'react';
 import { Space, Button, Divider, Dropdown, Menu } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
-import { LIST_GROUP_URL } from '../../constants';
+import { ADD_EDIT_COMMODITY_URL, LIST_COMMODITY_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import { SingleKeyNestedValue } from '@opensrp/react-utils';
+import { getObjLike, SingleKeyNestedValue } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { get } from 'lodash';
 
 interface GroupListProps {
   fhirBaseURL: string;
 }
 
+// TODO - this is duplicated in the add-edit commodity pr util file. varName - defaultCharacteristic.
+const groupCodeOfInterestSystem = 'http://snomed.info/sct';
+const groupCodeOfInterestCode = '767524001';
+const groupCodeOfInterest = {
+  coding: [
+    {
+      system: groupCodeOfInterestSystem,
+      code: groupCodeOfInterestCode,
+      display: 'Unit of measure',
+    },
+  ],
+};
+
 const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
-  const { name, active, lastUpdated, id, quantity, members } = parseGroup(obj);
+  const { name, active } = parseGroup(obj);
+  const unitMeasureCharacteristic = getObjLike(obj.characteristic, 'code', groupCodeOfInterest);
+
   const keyValues = {
-    [t('Id')]: id,
     [t('Name')]: name,
-    [t('Active')]: active ? t('Active') : t('Inactive'),
-    [t('Last updated')]: t('{{val, datetime}}', { val: new Date(lastUpdated) }),
-    [t('No. of Members')]: quantity,
-    [t('Members')]: members?.map((member) => member.entity.display).join(', '),
+    [t('Active')]: active ? t('Active') : t('Disabled'),
+    [t('Unit of measure')]: get(unitMeasureCharacteristic, '0.valueCodeableConcept.text'),
   };
 
   return (
@@ -47,7 +60,7 @@ const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
  * @param  props - GroupList component props
  * @returns returns healthcare display
  */
-export const GroupList = (props: GroupListProps) => {
+export const CommodityList = (props: GroupListProps) => {
   const { fhirBaseURL } = props;
 
   const { t } = useTranslation();
@@ -62,13 +75,12 @@ export const GroupList = (props: GroupListProps) => {
       title: t('Active'),
       dataIndex: 'active' as const,
       key: 'active' as const,
-      render: (value: boolean) => <div>{value ? 'Yes' : 'No'}</div>,
+      render: (value: boolean) => <div>{value ? t('Active') : t('Disabled')}</div>,
     },
     {
-      title: t('Last Updated'),
-      dataIndex: 'lastUpdated' as const,
-      key: 'lastUpdated' as const,
-      render: (value: string) => t('{{val,datetime}}', { val: new Date(value) }),
+      title: t('type'),
+      dataIndex: 'type' as const,
+      key: 'type' as const,
     },
     {
       title: t('Actions'),
@@ -76,8 +88,8 @@ export const GroupList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`#`}>
-            <Button disabled type="link" className="m-0 p-1">
+          <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`}>
+            <Button type="link" className="m-0 p-1">
               {t('Edit')}
             </Button>
           </Link>
@@ -86,7 +98,7 @@ export const GroupList = (props: GroupListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_GROUP_URL}/${record.id}`}>{t('View Details')}</Link>
+                  <Link to={`${LIST_COMMODITY_URL}/${record.id}`}>{t('View Details')}</Link>
                 </Menu.Item>
               </Menu>
             }
@@ -104,10 +116,13 @@ export const GroupList = (props: GroupListProps) => {
   const baseListViewProps: BaseListViewProps = {
     getColumns: getColumns,
     keyValueMapperRenderProp: keyValueDetailRender,
-    createButtonLabel: t('Create Group'),
-    createButtonUrl: '#',
+    createButtonLabel: t('Create Commodity'),
+    createButtonUrl: ADD_EDIT_COMMODITY_URL,
     fhirBaseURL,
-    pageTitle: t('Groups List'),
+    pageTitle: t('Commodity List'),
+    extraQueryFilters: {
+      code: `${groupCodeOfInterestSystem}|${groupCodeOfInterestCode}`,
+    },
   };
 
   return <BaseListView {...baseListViewProps} />;
