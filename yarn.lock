@@ -2897,10 +2897,10 @@
   resolved "https://registry.yarnpkg.com/@onaio/element-map/-/element-map-0.0.5.tgz#6c8b55314d41fb76c1ea7538d4ee217a121936cb"
   integrity sha512-PxhKq2uR9j8fZkvIqiUMp8CvZTX358d3sWuLj5a7LRpTK/Y+ZS1L9XZp2Xb9pplHCSferZxzwjm/YfKqVr56lA==
 
-"@onaio/gatekeeper@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.3.0.tgz#68b802968b465053f18d18f010229485020d0120"
-  integrity sha512-ehhNvBiZdGSDH3nrlqy2lguXN3ipWsYf4xKF/rq8W0thFPScpks7E+SwIWcROkIzMBpLJlUbhU0pYSJeS8Fctw==
+"@onaio/gatekeeper@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@onaio/gatekeeper/-/gatekeeper-0.4.0.tgz#0ef97d1dcb94bd52e390026a12e6ba216f5b4725"
+  integrity sha512-GXIFLKYWFnFUOVA/Y3JFLaAOOvecdFkyWkm9K2aCCP0lTQ8N0Ek4ET8YuoqLz0DT6E7VaACsj4j4Tcb5ERRQ6A==
   dependencies:
     "@onaio/session-reducer" "^0.0.13"
     client-oauth2 "^4.3.3"
