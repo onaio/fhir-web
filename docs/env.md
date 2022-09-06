@@ -209,7 +209,7 @@ Below is a list of currently supported environment variables:
 
 - **REACT_APP_ENABLE_FHIR_USER_MANAGEMENT**
 
-  - Enable fhir in the  user management module
+  - Enable fhir in the user management module
   - **Optional**(`boolean`)
   - default: `"false"`
 
@@ -319,16 +319,24 @@ Below is a list of currently supported environment variables:
   - default: ""
 
 - **REACT_APP_ENABLE_QUEST**
+
   - Enable the fhir Quest views
   - **Optional**(_'true'|'false'_)
   - default: 'false'
 
 - **REACT_APP_ENABLE_REPORTS**
+
   - enables the reports module
   - **Optional**('true'|'false')
   - default: 'false'
 
 - **REACT_APP_ENABLE_FHIR_GROUP**
+
   - enables the fhir groups module
+  - **Optional**('true'|'false')
+  - default: 'false'
+
+- **REACT_APP_ENABLE_FHIR_COMMODITY**
+  - enables the fhir commodities module
   - **Optional**('true'|'false')
   - default: 'false'
