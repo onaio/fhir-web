@@ -27,6 +27,7 @@
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "@opensrp/i18n": "^0.0.1",
+    "@onaio/gatekeeper": "^0.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
@@ -40,7 +41,6 @@
     "react-helmet": "^6.1.0",
     "@ant-design/icons": "^4.2.2",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "^0.3.0",
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
