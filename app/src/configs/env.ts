@@ -21,6 +21,7 @@ const defaultRoles = {
   CARE_TEAM: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   SERVER_SETTINGS: Roles.ROLE_VIEW_KEYCLOAK_USERS,
   QUEST: Roles.ROLE_VIEW_KEYCLOAK_USERS,
+  COMMODITY: Roles.ROLE_VIEW_KEYCLOAK_USERS,
 };
 
 const rawOpenSrpRoles = setEnv('REACT_APP_OPENSRP_ROLES', JSON.stringify(defaultRoles));
@@ -227,3 +228,5 @@ export const SENTRY_CONFIGS = JSON.parse(setEnv('REACT_APP_SENTRY_CONFIG_JSON', 
 export const ENABLE_QUEST = setEnv('REACT_APP_ENABLE_QUEST', 'false') === 'true';
 
 export const ENABLE_REPORTS = setEnv('REACT_APP_ENABLE_REPORTS', 'false') === 'true';
+
+export const ENABLE_FHIR_COMMODITY = setEnv('REACT_APP_ENABLE_FHIR_COMMODITY', 'false') === 'true';

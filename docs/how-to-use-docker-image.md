@@ -66,6 +66,7 @@ Opensrp web is configured as follows:
      REACT_APP_ENABLE_FHIR_TEAMS: 'false',
      REACT_APP_ENABLE_FHIR_USER_MANAGEMENT: 'false',
      REACT_APP_ENABLE_QUEST: 'false',
+     REACT_APP_ENABLE_FHIR_COMMODITY: 'false',
      // others (optional override)
      SKIP_PREFLIGHT_CHECK: 'true',
      GENERATE_SOURCEMAP: 'false',
