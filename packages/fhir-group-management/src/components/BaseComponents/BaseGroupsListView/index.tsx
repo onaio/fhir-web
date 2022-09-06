@@ -91,7 +91,7 @@ export const BaseListView = (props: BaseListViewProps) => {
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} disabled />
             <Link to={createButtonUrl}>
-              <Button disabled type="primary">
+              <Button type="primary">
                 <PlusOutlined />
                 {createButtonLabel}
               </Button>
