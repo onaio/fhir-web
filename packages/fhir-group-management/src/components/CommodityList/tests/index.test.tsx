@@ -11,7 +11,7 @@ import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { groupResourceType, LIST_COMMODITY_URL } from '../../../constants';
-import { groupspage1 } from './fixtures';
+import { commoditiesPage1 } from './fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -100,9 +100,9 @@ test('renders correctly when listing resources', async () => {
     .query({
       _getpagesoffset: 0,
       _count: 20,
-      code: 'http://snomed.info/sct|767524001',
+      code: 'http://snomed.info/sct|386452003',
     })
-    .reply(200, groupspage1)
+    .reply(200, commoditiesPage1)
     .persist();
 
   render(
@@ -129,8 +129,8 @@ test('renders correctly when listing resources', async () => {
 
   // view details
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/49779`)
-    .reply(200, groupspage1.entry[1].resource);
+    .get(`/${groupResourceType}/6f3980e0-d1d6-4a7a-a950-939f3ca7b301`)
+    .reply(200, commoditiesPage1.entry[1].resource);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -139,13 +139,13 @@ test('renders correctly when listing resources', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/commodity/list/49779"
+      href="/commodity/list/6f3980e0-d1d6-4a7a-a950-939f3ca7b301"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/commodity/list/49779');
+  expect(history.location.pathname).toEqual('/commodity/list/6f3980e0-d1d6-4a7a-a950-939f3ca7b301');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

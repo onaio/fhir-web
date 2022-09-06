@@ -24,6 +24,7 @@ import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
+import { LIST_COMMODITY_URL, CommodityList } from '@opensrp/fhir-group-management';
 
 jest.mock('../../configs/env');
 
@@ -305,6 +306,38 @@ describe('App - authenticated', () => {
     );
     wrapper.update();
     expect(wrapper.find(EditProductView)).toHaveLength(1);
+    wrapper.unmount();
+  });
+
+  it('commodity routes are correctly registered', async () => {
+    // redirecting to certain routes renders the correct page
+    const queryClient = new QueryClient();
+
+    const wrapper = mount(
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: `${LIST_COMMODITY_URL}` }]}>
+            <App />
+          </MemoryRouter>
+        </Provider>
+      </QueryClientProvider>
+    );
+
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
+
+    // start with the list component
+    expect(wrapper.find(CommodityList)).toHaveLength(1);
+
+    // go to the profile view)
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${LIST_COMMODITY_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find('ViewDetails')).toHaveLength(1);
+
     wrapper.unmount();
   });
 });

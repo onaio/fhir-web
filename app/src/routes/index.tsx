@@ -29,6 +29,7 @@ import {
   ENABLE_REPORTS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_USER_MANAGEMENT,
+  ENABLE_FHIR_COMMODITY,
 } from '../configs/env';
 import {
   URL_USER,
@@ -50,7 +51,7 @@ import {
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
-import { LIST_GROUP_URL } from '@opensrp/fhir-group-management';
+import { LIST_COMMODITY_URL, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 import { LIST_PATIENTS_URL } from '@opensrp/fhir-client';
 
 /** Interface for menu items */
@@ -206,7 +207,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           ],
         },
         {
-          title: t('Group management'),
+          title: t('Group Management'),
           key: 'fhir-group',
           url: LIST_GROUP_URL,
           enabled:
@@ -214,6 +215,16 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             roles &&
             activeRoles.GROUP &&
             isAuthorized(roles, activeRoles.GROUP.split(',')),
+        },
+        {
+          title: t('Commodity Management'),
+          key: 'fhir-commodity',
+          url: LIST_COMMODITY_URL,
+          enabled:
+            ENABLE_FHIR_COMMODITY &&
+            roles &&
+            activeRoles.COMMODITY &&
+            isAuthorized(roles, activeRoles.COMMODITY.split(',')),
         },
         {
           title: t('Questionnaire'),
