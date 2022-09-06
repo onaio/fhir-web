@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import { getObjLike, SingleKeyNestedValue } from '@opensrp/react-utils';
+import { SingleKeyNestedValue } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { get } from 'lodash';
 
@@ -17,25 +17,30 @@ interface GroupListProps {
 
 // TODO - this is duplicated in the add-edit commodity pr util file. varName - defaultCharacteristic.
 const groupCodeOfInterestSystem = 'http://snomed.info/sct';
-const groupCodeOfInterestCode = '767524001';
-const groupCodeOfInterest = {
-  coding: [
-    {
-      system: groupCodeOfInterestSystem,
-      code: groupCodeOfInterestCode,
-      display: 'Unit of measure',
-    },
-  ],
-};
+const groupCodeOfInterestCode = '386452003';
+const characteristicUnitMeasureCode = '767524001';
 
 const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
   const { name, active } = parseGroup(obj);
-  const unitMeasureCharacteristic = getObjLike(obj.characteristic, 'code', groupCodeOfInterest);
+
+  let unitMeasureCharacteristic;
+  characteristicLoop: for (const characteristic of obj.characteristic ?? []) {
+    const characteristicCoding = characteristic.code.coding ?? [];
+    for (const coding of characteristicCoding) {
+      if (
+        coding.system?.toLowerCase() === groupCodeOfInterestSystem.toLowerCase() &&
+        coding.code === characteristicUnitMeasureCode
+      ) {
+        unitMeasureCharacteristic = characteristic;
+        break characteristicLoop;
+      }
+    }
+  }
 
   const keyValues = {
     [t('Name')]: name,
     [t('Active')]: active ? t('Active') : t('Disabled'),
-    [t('Unit of measure')]: get(unitMeasureCharacteristic, '0.valueCodeableConcept.text'),
+    [t('Unit of measure')]: get(unitMeasureCharacteristic, 'valueCodeableConcept.text'),
   };
 
   return (
@@ -116,7 +121,7 @@ export const CommodityList = (props: GroupListProps) => {
   const baseListViewProps: BaseListViewProps = {
     getColumns: getColumns,
     keyValueMapperRenderProp: keyValueDetailRender,
-    createButtonLabel: t('Create Commodity'),
+    createButtonLabel: t('Add Commodity'),
     createButtonUrl: ADD_EDIT_COMMODITY_URL,
     fhirBaseURL,
     pageTitle: t('Commodity List'),

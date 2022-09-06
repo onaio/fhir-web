@@ -19,7 +19,7 @@ exports[`renders correctly when listing resources 3`] = `
     <span
       class="ant-typography"
     >
-      Jan27Test
+      Amoxicillin 250mg Tablets
     </span>
   </dd>
 </div>
@@ -50,6 +50,31 @@ exports[`renders correctly when listing resources 4`] = `
 </div>
 `;
 
+exports[`renders correctly when listing resources 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Unit of measure
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Tablets
+    </span>
+  </dd>
+</div>
+`;
+
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
   class="ant-page-header-heading-title"
@@ -63,7 +88,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
-  Jan27
+  Albendazole 400mg Tablets
 </td>
 `;
 
@@ -80,7 +105,9 @@ exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
 <td
   class="ant-table-cell"
-/>
+>
+  medication
+</td>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
@@ -91,7 +118,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/commodity/add-edit/49779"
+      href="/commodity/add-edit/6f3980e0-d1d6-4a7a-a950-939f3ca7b301"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
@@ -135,7 +162,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
-  Jan27Test
+  Amoxicillin 250mg Tablets
 </td>
 `;
 
@@ -152,7 +179,9 @@ exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
 <td
   class="ant-table-cell"
-/>
+>
+  medication
+</td>
 `;
 
 exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
@@ -163,7 +192,229 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
     class="d-flex align-items-center"
   >
     <a
-      href="/commodity/add-edit/49778"
+      href="/commodity/add-edit/e50eb835-7827-4001-b233-e1dda721d4e8"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 3 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Artemether 20mg + Lumefatrine 120mg (1x6) Tablets
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 3 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Active
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 3 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  medication
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/90b10fdb-592c-47b6-a265-c8806a15d77c"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 4 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Artemether 20mg + Lumefatrine 120mg (2x6) Tablets
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 4 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Active
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 4 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  medication
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/dde1cd4f-bef4-4d2b-ad1b-f63b639ed254"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 5 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Artesunate 100mg Suppository Strips
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 5 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Active
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 5 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  medication
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/592181bc-0a68-47bc-8275-ac853bba1b09"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"
