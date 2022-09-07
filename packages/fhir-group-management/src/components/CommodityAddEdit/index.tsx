@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { CommodityForm } from './Form';
 import { useParams } from 'react-router';
-import { groupResourceType, LIST_GROUP_URL } from '../../constants';
+import { groupResourceType, LIST_COMMODITY_URL } from '../../constants';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
@@ -57,8 +57,8 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
         <CommodityForm
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
-          cancelUrl={LIST_GROUP_URL}
-          successUrl={LIST_GROUP_URL}
+          cancelUrl={LIST_COMMODITY_URL}
+          successUrl={LIST_COMMODITY_URL}
         />
       </div>
     </section>

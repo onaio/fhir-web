@@ -64,7 +64,7 @@ const CommodityForm = (props: GroupFormProps) => {
       },
       onSuccess: () => {
         sendSuccessNotification(t('Commodity updated successfully'));
-        queryClient.invalidateQueries([groupResourceType]).catch(() => {
+        queryClient.refetchQueries([groupResourceType]).catch(() => {
           sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         });
         goTo(successUrl);

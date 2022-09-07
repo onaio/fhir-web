@@ -27,8 +27,8 @@ import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
 import {
   ADD_EDIT_COMMODITY_URL,
   CommodityAddEdit,
-  GroupList,
-  LIST_GROUP_URL,
+  CommodityList,
+  LIST_COMMODITY_URL,
 } from '@opensrp/fhir-group-management';
 
 jest.mock('../../configs/env');
@@ -314,14 +314,14 @@ describe('App - authenticated', () => {
     wrapper.unmount();
   });
 
-  it('group routes are correctly registered', async () => {
+  it('commodity routes are correctly registered', async () => {
     // redirecting to certain routes renders the correct page
     const queryClient = new QueryClient();
 
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: `${LIST_GROUP_URL}` }]}>
+          <MemoryRouter initialEntries={[{ pathname: `${LIST_COMMODITY_URL}` }]}>
             <App />
           </MemoryRouter>
         </Provider>
@@ -334,11 +334,12 @@ describe('App - authenticated', () => {
     });
 
     // start with the list component
-    expect(wrapper.find(GroupList)).toHaveLength(1);
+
+    expect(wrapper.find(CommodityList)).toHaveLength(1);
 
     // go to the profile view)
     (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${LIST_GROUP_URL}/1`
+      `${LIST_COMMODITY_URL}/1`
     );
     wrapper.update();
     expect(wrapper.find('ViewDetails')).toHaveLength(1);

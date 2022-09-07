@@ -7,7 +7,6 @@ import {
   URLParams,
   GetAccessTokenType,
 } from '@opensrp/server-service';
-import queryString from 'querystring';
 import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
@@ -79,7 +78,11 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
 
   public buildQueryParams(params: URLParams | null) {
     if (params) {
-      return `${this.resourceType}/_search?${decodeURIComponent(queryString.stringify(params))}`;
+      const urlParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, element]) => {
+        urlParams.append(key, element?.toString() ?? '');
+      });
+      return `${this.resourceType}/_search?${urlParams.toString()}`;
     }
     return this.resourceType;
   }

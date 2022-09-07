@@ -1,14 +1,15 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Button, Col, Spin, Alert, Space } from 'antd';
-import { Group } from '../../types';
+import { Button, Col, Spin, Alert } from 'antd';
+import { Group } from '../../../types';
 import { useHistory } from 'react-router';
-import { groupResourceType, LIST_GROUP_URL } from '../../constants';
+import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import { FHIRServiceClass } from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { useTranslation } from '../../mls';
+import { useTranslation } from '../../../mls';
+import { TFunction } from 'i18n/dist/types';
 
 /**
  * parse a Group to object we can easily consume in Table layout
@@ -16,13 +17,16 @@ import { useTranslation } from '../../mls';
  * @param obj - the organization resource object
  */
 export const parseGroup = (obj: IGroup) => {
+  const { name, active, quantity, member, id, type, characteristic } = obj;
   return {
-    name: obj.name,
-    active: obj.active,
-    id: obj.id,
+    name,
+    active,
+    id,
     lastUpdated: get(obj, 'meta.lastUpdated'),
-    members: obj.member,
-    quantity: obj.quantity,
+    members: member,
+    quantity,
+    type,
+    characteristic,
   };
 };
 
@@ -30,9 +34,13 @@ export const parseGroup = (obj: IGroup) => {
 export interface ViewDetailsProps {
   resourceId: string;
   fhirBaseURL: string;
+  keyValueMapperRenderProp: (obj: IGroup, t: TFunction) => JSX.Element;
 }
 
-export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
+export type ViewDetailsWrapperProps = Pick<
+  ViewDetailsProps,
+  'fhirBaseURL' | 'keyValueMapperRenderProp'
+> & {
   resourceId?: string;
 };
 
@@ -42,7 +50,7 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
  * @param props - detail view component props
  */
 export const ViewDetails = (props: ViewDetailsProps) => {
-  const { resourceId, fhirBaseURL } = props;
+  const { resourceId, fhirBaseURL, keyValueMapperRenderProp } = props;
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery([groupResourceType, resourceId], () => {
@@ -58,30 +66,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   const org = data as Group;
-  const { name, active, lastUpdated, id, quantity, members } = parseGroup(org);
-  const keyValues = {
-    [t('Id')]: id,
-    [t('Name')]: name,
-    [t('Active')]: active ? 'Active' : 'Inactive',
-    [t('Last updated')]: t('{{val, datetime}}', { val: new Date(lastUpdated) }),
-    [t('No. of Members')]: quantity,
-    [t('Members')]: members?.map((member) => member.entity.display).join(', '),
-  };
-
-  return (
-    <Space direction="vertical">
-      {Object.entries(keyValues).map(([key, value]) => {
-        const props = {
-          [key]: value,
-        };
-        return value ? (
-          <div key={key} data-testid="key-value">
-            <SingleKeyNestedValue {...props} />
-          </div>
-        ) : null;
-      })}
-    </Space>
-  );
+  return keyValueMapperRenderProp(org, t);
 };
 
 /**
@@ -91,7 +76,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  * @param props - detail view component props
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
-  const { resourceId, fhirBaseURL } = props;
+  const { resourceId, fhirBaseURL, keyValueMapperRenderProp } = props;
   const history = useHistory();
 
   if (!resourceId) {
@@ -109,7 +94,11 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           onClick={() => history.push(LIST_GROUP_URL)}
         />
       </div>
-      <ViewDetails resourceId={resourceId} fhirBaseURL={fhirBaseURL} />
+      <ViewDetails
+        resourceId={resourceId}
+        fhirBaseURL={fhirBaseURL}
+        keyValueMapperRenderProp={keyValueMapperRenderProp}
+      />
     </Col>
   );
 };

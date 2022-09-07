@@ -14,6 +14,12 @@ import {
   name,
 } from '../../constants';
 import type { TFunction } from '@opensrp/i18n';
+import {
+  characteristicUnitMeasureCode,
+  getUnitMeasureCharacteristic,
+  snomedCodeSystem,
+  supplyMgSnomedCode,
+} from '../../helpers/utils';
 
 export enum UnitOfMeasure {
   Pieces = 'pieces',
@@ -41,16 +47,18 @@ export interface GroupFormFields {
 
 export const defaultCharacteristic = {
   code: {
-    coding: [{ system: 'http://snomed.info/sct', code: '767524001', display: 'Unit of measure' }],
+    coding: [
+      { system: snomedCodeSystem, code: characteristicUnitMeasureCode, display: 'Unit of measure' },
+    ],
   },
   valueCodeableConcept: {
-    coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
+    coding: [{ system: snomedCodeSystem, code: '767525000', display: 'Unit' }],
     text: undefined,
   },
 };
 
 export const defaultCode = {
-  coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
+  coding: [{ system: snomedCodeSystem, code: supplyMgSnomedCode, display: 'Supply management' }],
 };
 
 /**
@@ -79,10 +87,10 @@ export const getGroupFormFields = (obj?: IGroup) => {
   if (!obj) {
     return { initialObject: { code: defaultCode } } as GroupFormFields;
   }
-  const { id, name, active, identifier, type, characteristic } = obj;
+  const { id, name, active, identifier, type } = obj;
 
   const identifierObj = getObjLike(identifier, 'use', IdentifierUseCodes.OFFICIAL) as Identifier[];
-  const unitMeasureBackBone = getObjLike(characteristic, 'code', defaultCharacteristic.code);
+  const unitMeasureCharacteristic = getUnitMeasureCharacteristic(obj);
   const formFields: GroupFormFields = {
     initialObject: obj,
     id,
@@ -90,7 +98,7 @@ export const getGroupFormFields = (obj?: IGroup) => {
     active,
     name,
     type,
-    unitOfMeasure: get(unitMeasureBackBone, 'valueCodeableConcept.text.', undefined),
+    unitOfMeasure: get(unitMeasureCharacteristic, 'valueCodeableConcept.text', undefined),
   };
   return formFields;
 };
@@ -144,14 +152,10 @@ export const generateGroupPayload = (
   }
 
   if (unitOfMeasure) {
-    const unitMeasureBackBone = getObjLike(
-      payload.characteristic,
-      'code',
-      defaultCharacteristic.code
-    );
-    if (unitMeasureBackBone.length) {
+    const unitMeasureBackBone = getUnitMeasureCharacteristic(payload);
+    if (unitMeasureBackBone) {
       // mutable operation
-      set(unitMeasureBackBone, '0.valueCodeableConcept.text', unitOfMeasure);
+      set(unitMeasureBackBone, 'valueCodeableConcept.text', unitOfMeasure);
     } else {
       // we add a wholly new unit of measure characteristic
       const updatedCharacteristic = set(
