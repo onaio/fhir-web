@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly for edit resource: name field 1`] = `
+<input
+  class="ant-input"
+  id="name"
+  placeholder="Name"
+  type="text"
+  value="Paracetamol 100mg Tablets"
+/>
+`;
+
+exports[`renders correctly for edit resource: type field 1`] = `
+<input
+  aria-activedescendant="type_list_0"
+  aria-autocomplete="list"
+  aria-controls="type_list"
+  aria-haspopup="listbox"
+  aria-owns="type_list"
+  autocomplete="off"
+  class="ant-select-selection-search-input"
+  id="type"
+  role="combobox"
+  type="search"
+  value=""
+/>
+`;
+
+exports[`renders correctly for new resource: name field 1`] = `
+<input
+  class="ant-input"
+  id="name"
+  placeholder="Name"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`renders correctly for new resource: type field 1`] = `
+<input
+  aria-activedescendant="type_list_0"
+  aria-autocomplete="list"
+  aria-controls="type_list"
+  aria-haspopup="listbox"
+  aria-owns="type_list"
+  autocomplete="off"
+  class="ant-select-selection-search-input"
+  id="type"
+  role="combobox"
+  type="search"
+  value=""
+/>
+`;
