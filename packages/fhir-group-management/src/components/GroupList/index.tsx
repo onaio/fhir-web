@@ -104,7 +104,7 @@ export const GroupList = (props: GroupListProps) => {
   const baseListViewProps: BaseListViewProps = {
     getColumns: getColumns,
     keyValueMapperRenderProp: keyValueDetailRender,
-    createButtonLabel: t('Create Group'),
+    createButtonLabel: t('Add Group'),
     createButtonUrl: '#',
     fhirBaseURL,
     pageTitle: t('Groups List'),

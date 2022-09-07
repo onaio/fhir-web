@@ -24,7 +24,12 @@ import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
-import { LIST_COMMODITY_URL, CommodityList } from '@opensrp/fhir-group-management';
+import {
+  ADD_EDIT_COMMODITY_URL,
+  CommodityAddEdit,
+  CommodityList,
+  LIST_COMMODITY_URL,
+} from '@opensrp/fhir-group-management';
 
 jest.mock('../../configs/env');
 
@@ -329,6 +334,7 @@ describe('App - authenticated', () => {
     });
 
     // start with the list component
+
     expect(wrapper.find(CommodityList)).toHaveLength(1);
 
     // go to the profile view)
@@ -338,6 +344,20 @@ describe('App - authenticated', () => {
     wrapper.update();
     expect(wrapper.find('ViewDetails')).toHaveLength(1);
 
+    // go to new resource page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${ADD_EDIT_COMMODITY_URL}`
+    );
+
+    wrapper.update();
+    expect(wrapper.find(CommodityAddEdit)).toHaveLength(1);
+
+    // go to edit resource page
+    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
+      `${ADD_EDIT_COMMODITY_URL}/1`
+    );
+    wrapper.update();
+    expect(wrapper.find(CommodityAddEdit)).toHaveLength(1);
     wrapper.unmount();
   });
 });

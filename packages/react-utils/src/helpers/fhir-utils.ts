@@ -2,6 +2,7 @@ import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { FHIRServiceClass } from '..';
 import { URLParams } from '@opensrp/server-service';
 import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
+import { isEqual } from 'lodash';
 
 /**
  * retrieve object(s) from an array if it has a given property that has a specified value
@@ -22,7 +23,7 @@ export const getObjLike = <T extends object>(
   for (let i = 0; i < arr.length; i++) {
     const thisObj = arr[i];
     const objHasValue = (thisObj as never)[key];
-    if (objHasValue === value) {
+    if (isEqual(objHasValue, value)) {
       result.push(thisObj);
     }
     if (result.length > 0 && !all) {

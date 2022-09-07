@@ -10,32 +10,20 @@ import { TFunction } from '@opensrp/i18n';
 import { SingleKeyNestedValue } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { get } from 'lodash';
+import {
+  getUnitMeasureCharacteristic,
+  supplyMgSnomedCode,
+  snomedCodeSystem,
+} from '../..//helpers/utils';
 
 interface GroupListProps {
   fhirBaseURL: string;
 }
 
-// TODO - this is duplicated in the add-edit commodity pr util file. varName - defaultCharacteristic.
-const groupCodeOfInterestSystem = 'http://snomed.info/sct';
-const groupCodeOfInterestCode = '386452003';
-const characteristicUnitMeasureCode = '767524001';
-
 const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
   const { name, active } = parseGroup(obj);
 
-  let unitMeasureCharacteristic;
-  characteristicLoop: for (const characteristic of obj.characteristic ?? []) {
-    const characteristicCoding = characteristic.code.coding ?? [];
-    for (const coding of characteristicCoding) {
-      if (
-        coding.system?.toLowerCase() === groupCodeOfInterestSystem.toLowerCase() &&
-        coding.code === characteristicUnitMeasureCode
-      ) {
-        unitMeasureCharacteristic = characteristic;
-        break characteristicLoop;
-      }
-    }
-  }
+  const unitMeasureCharacteristic = getUnitMeasureCharacteristic(obj);
 
   const keyValues = {
     [t('Name')]: name,
@@ -126,7 +114,7 @@ export const CommodityList = (props: GroupListProps) => {
     fhirBaseURL,
     pageTitle: t('Commodity List'),
     extraQueryFilters: {
-      code: `${groupCodeOfInterestSystem}|${groupCodeOfInterestCode}`,
+      code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
     },
   };
 

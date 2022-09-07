@@ -30,12 +30,20 @@ test('get obj like works correctly', () => {
   let res = getObjLike(undefined, 'key', 'value');
   expect(res).toEqual([]);
 
-  const objs = [{ key: 'value' }, { key: 'value', oKey: 'oValue' }, { name: 'fName' }];
+  const objs = [
+    { key: 'value' },
+    { key: 'value', oKey: 'oValue' },
+    { name: 'fName' },
+    { complexValueKey: { why: 'since [] != []' } },
+  ];
   res = getObjLike(objs, 'key', 'value');
   expect(res).toEqual([objs[0]]);
 
   res = getObjLike(objs, 'key', 'value', true);
   expect(res).toEqual([objs[0], objs[1]]);
+
+  res = getObjLike(objs, 'complexValueKey', { why: 'since [] != []' }, true);
+  expect(res).toEqual([objs[3]]);
 });
 
 test('identifier use codes defined correctly', () => {

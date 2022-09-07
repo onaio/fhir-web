@@ -202,6 +202,8 @@ import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-qu
 import { DistrictReport } from '@opensrp/reports';
 import {
   CommodityList,
+  ADD_EDIT_COMMODITY_URL,
+  CommodityAddEdit,
   GroupList,
   LIST_COMMODITY_URL,
   LIST_GROUP_URL,
@@ -892,6 +894,22 @@ const App: React.FC = () => {
               }
               path={LIST_HEALTHCARE_URL}
               component={HealthCareList}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={`${ADD_EDIT_COMMODITY_URL}/:id`}
+              exact
+              component={CommodityAddEdit}
+            />
+            <PrivateComponent
+              redirectPath={APP_CALLBACK_URL}
+              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+              activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
+              path={ADD_EDIT_COMMODITY_URL}
+              exact
+              component={CommodityAddEdit}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
