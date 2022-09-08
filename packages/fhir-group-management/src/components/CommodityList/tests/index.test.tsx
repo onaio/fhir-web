@@ -161,6 +161,6 @@ test('renders correctly when listing resources', async () => {
   const closeButton = document.querySelector('[data-testid="close-button"]');
   fireEvent.click(closeButton!);
 
-  expect(history.location.pathname).toEqual('/groups/list');
+  expect(history.location.pathname).toEqual('/commodity/list');
   expect(nock.isDone()).toBeTruthy();
 });

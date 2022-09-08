@@ -27,6 +27,7 @@ export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp
   createButtonLabel: string;
   createButtonUrl: string;
   pageTitle: string;
+  viewDetailsListUrl: string;
 };
 
 interface RouteParams {
@@ -48,6 +49,7 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
+    viewDetailsListUrl,
   } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
@@ -103,6 +105,7 @@ export const BaseListView = (props: BaseListViewProps) => {
           resourceId={resourceId}
           fhirBaseURL={fhirBaseURL}
           keyValueMapperRenderProp={keyValueMapperRenderProp}
+          listUrl={viewDetailsListUrl}
         />
       </Row>
     </div>
