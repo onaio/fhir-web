@@ -108,6 +108,7 @@ export const GroupList = (props: GroupListProps) => {
     createButtonUrl: '#',
     fhirBaseURL,
     pageTitle: t('Groups List'),
+    viewDetailsListUrl: LIST_GROUP_URL,
   };
 
   return <BaseListView {...baseListViewProps} />;

@@ -116,6 +116,7 @@ export const CommodityList = (props: GroupListProps) => {
     extraQueryFilters: {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
     },
+    viewDetailsListUrl: LIST_COMMODITY_URL,
   };
 
   return <BaseListView {...baseListViewProps} />;
