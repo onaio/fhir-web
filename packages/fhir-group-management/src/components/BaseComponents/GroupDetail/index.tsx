@@ -3,7 +3,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, Spin, Alert } from 'antd';
 import { Group } from '../../../types';
 import { useHistory } from 'react-router';
-import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
+import { groupResourceType } from '../../../constants';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { get } from 'lodash';
@@ -42,6 +42,7 @@ export type ViewDetailsWrapperProps = Pick<
   'fhirBaseURL' | 'keyValueMapperRenderProp'
 > & {
   resourceId?: string;
+  listUrl: string;
 };
 
 /**
@@ -76,7 +77,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  * @param props - detail view component props
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
-  const { resourceId, fhirBaseURL, keyValueMapperRenderProp } = props;
+  const { resourceId, fhirBaseURL, keyValueMapperRenderProp, listUrl } = props;
   const history = useHistory();
 
   if (!resourceId) {
@@ -91,7 +92,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(LIST_GROUP_URL)}
+          onClick={() => history.push(listUrl)}
         />
       </div>
       <ViewDetails
