@@ -25,7 +25,7 @@ FROM node:16.16.0-alpine as nodejsbuild
 COPY --from=sources /usr/src/express-server /usr/src/express-server
 
 WORKDIR /usr/src/express-server
-RUN yarn && yarn tsc && npm prune -production
+RUN yarn && yarn tsc && npm prune -production --legacy-peer-deps
 
 # Remove unused dependencies
 RUN rm -rf ./node_modules/typescript
