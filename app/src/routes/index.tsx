@@ -227,7 +227,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             isAuthorized(roles, activeRoles.COMMODITY.split(',')),
         },
         {
-          title: t('Questionnaire'),
+          title: t('Questionnaire Management'),
           key: 'fhir-quest',
           enabled:
             ENABLE_QUEST &&
