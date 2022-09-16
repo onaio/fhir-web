@@ -73,8 +73,8 @@ const CommodityForm = (props: GroupFormProps) => {
   );
 
   const statusOptions = [
-    { label: t('Disabled'), value: false },
     { label: t('Active'), value: true },
+    { label: t('Disabled'), value: false },
   ];
 
   const unitsOfMEasureOptions = getUnitOfMeasureOptions();
