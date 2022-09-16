@@ -91,11 +91,11 @@ const CommodityForm = (props: GroupFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem hidden={true} id="id" name={id} label={t('Id')}>
+      <FormItem id="id" name={id} label={t('Commodity Id')}>
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
+      <FormItem id="identifier" name={identifier} label={t('Identifier')}>
         <Input disabled={true} />
       </FormItem>
 
