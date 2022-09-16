@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
+import { Button, Col, Row, Form, Input, Radio, Select, PageHeader } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { submitForm } from './utils';
 import { URL_CARE_TEAM } from '../../constants';
@@ -74,11 +74,14 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   return (
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
-      <h5 className="mb-3 header-title">
-        {props.initialValues.id
-          ? t('Edit Care Team | {{name}}', { name: initialValues.name })
-          : t('Create Care Team')}
-      </h5>
+      <PageHeader
+        title={
+          props.initialValues.id
+            ? t('Edit Care Team | {{name}}', { name: initialValues.name })
+            : t('Create Care Team')
+        }
+        className="page-header"
+      />
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}

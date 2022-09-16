@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col } from 'antd';
+import { Row, Col, PageHeader } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';
@@ -21,12 +21,14 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{params.id ? t('Edit Location Unit Group') : t('Add Location Unit Group')}</title>
       </Helmet>
-
-      <h5 className="mb-4 header-title">
-        {params.id
-          ? t('Edit Location Unit Group | {{title}}', { title })
-          : t('Add Location Unit Group')}
-      </h5>
+      <PageHeader
+        title={
+          params.id
+            ? t('Edit Location Unit Group | {{title}}', { title })
+            : t('Add Location Unit Group')
+        }
+        className="page-header"
+      />
 
       <Col className="bg-white p-4" span={24}>
         <Form setEditTitle={setTitle} opensrpBaseURL={opensrpBaseURL} id={params.id} />

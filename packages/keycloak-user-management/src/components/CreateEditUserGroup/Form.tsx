@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Transfer } from 'antd';
+import { Button, Col, Row, Form, Input, Transfer, PageHeader } from 'antd';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { URL_USER_GROUPS } from '../../constants';
@@ -163,9 +163,12 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
   return (
     <Row className="layout-content user-group">
       {/** If email is provided render edit group otherwise add group */}
-      <h5 className="mb-3 header-title">
-        {props.initialValues.id ? t('Edit User Group | {{name}}', { name }) : t('New User Group')}
-      </h5>
+      <PageHeader
+        title={
+          props.initialValues.id ? t('Edit User Group | {{name}}', { name }) : t('New User Group')
+        }
+        className="page-header"
+      />
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}
