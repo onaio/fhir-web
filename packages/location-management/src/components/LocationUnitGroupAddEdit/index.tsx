@@ -17,7 +17,7 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       <Helmet>
         <title>{params.id ? t('Edit Location Unit Group') : t('Add Location Unit Group')}</title>
       </Helmet>

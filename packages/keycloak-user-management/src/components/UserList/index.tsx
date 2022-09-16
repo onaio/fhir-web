@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Space } from 'antd';
+import { Row, Col, Button, Space, PageHeader } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -178,8 +178,8 @@ const UserList = (props: UserListTypes): JSX.Element => {
   };
 
   return (
-    <section className="layout-content">
-      <h5 className="mb-3">{t('User Management')}</h5>
+    <section className="content-section">
+      <PageHeader className="page-header" title={t('User Management')} />
       <Row className="list-view">
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">

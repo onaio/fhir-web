@@ -161,7 +161,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
   const { name } = initialValues;
 
   return (
-    <Row className="layout-content user-group">
+    <Row className="content-section user-group">
       {/** If email is provided render edit group otherwise add group */}
       <PageHeader
         title={

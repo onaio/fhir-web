@@ -48,7 +48,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
     : t('Create Commodity');
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

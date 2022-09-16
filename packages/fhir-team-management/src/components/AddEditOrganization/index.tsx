@@ -90,7 +90,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     : t('Create team');
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

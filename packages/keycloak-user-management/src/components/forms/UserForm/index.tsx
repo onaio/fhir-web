@@ -96,7 +96,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   }, [form, initialValues, userEnabled]);
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       {/** If email is provided render edit user otherwise add user */}
       <PageHeader
         title={

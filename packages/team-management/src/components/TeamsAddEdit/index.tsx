@@ -252,7 +252,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     return <Spin size="large" className="custom-spinner" />;
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{params.id ? t('Edit') : t('Create')} Team</title>
       </Helmet>

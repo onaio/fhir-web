@@ -112,8 +112,8 @@ describe('components/Antd/ReleaseList', () => {
         method: 'GET',
       },
     ]);
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Releases"`);
+    const content = wrapper.find('div.content-section');
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Releases"`);
     expect(content.find('input#search')).toBeTruthy();
     expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
     expect(content.find('TableLayout#FormDraftFileList')).toBeTruthy();

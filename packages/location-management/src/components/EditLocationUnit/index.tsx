@@ -222,7 +222,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   const pageTitle = t('Edit > {{name}}', { name: thisLocation.properties.name });
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

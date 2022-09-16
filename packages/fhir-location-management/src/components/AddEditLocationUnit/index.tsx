@@ -99,7 +99,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     : t('Add Location Unit');
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>

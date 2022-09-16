@@ -187,9 +187,9 @@ describe('containers/InventoryAddEdit', () => {
       },
     ]);
 
-    const content = wrapper.find('div.layout-content');
+    const content = wrapper.find('div.content-section');
     expect(document.title).toEqual('Add inventory item');
-    expect(content.find('Title').props()).toMatchSnapshot('heading');
+    expect(content.find('PageHeader').text()).toMatchSnapshot('heading');
     expect(content.find('InventoryItemForm').props()).toEqual({
       UNICEFSections: unicefSections,
       donors: donors,
@@ -412,9 +412,7 @@ describe('containers/InventoryAddEdit', () => {
     });
 
     expect(document.title).toEqual('Edit inventory item');
-    expect(wrapper.find('Title').prop('children')).toEqual(
-      `Edit > ${fixtures.inventories[0].product.productName}`
-    );
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Edit > Scale"`);
 
     const payload = {
       productName: fixtures.inventories[0].product.productName,
@@ -692,7 +690,7 @@ describe('containers/InventoryAddEdit', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(wrapper.find('Title').prop('children')).toEqual(`Edit`);
+    expect(wrapper.find('PageHeader').text()).toEqual(`Edit`);
     wrapper.unmount();
   });
 });

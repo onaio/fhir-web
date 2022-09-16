@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Col, Row, Input } from 'antd';
+import { Button, Form, Col, Row, Input, PageHeader } from 'antd';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -126,11 +126,10 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     },
   };
   const history = useHistory();
+  const heading = `${t('User Credentials')} | ${keycloakUser ? keycloakUser.username : ''}`;
   return (
-    <Row className="layout-content">
-      <h5 className="mb-3">
-        {t('User Credentials')} | {keycloakUser ? keycloakUser.username : ''}
-      </h5>
+    <Row className="content-section">
+      <PageHeader className="page-header" title={heading} />
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form

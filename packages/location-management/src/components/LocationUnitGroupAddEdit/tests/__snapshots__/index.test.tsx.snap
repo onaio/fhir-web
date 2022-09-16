@@ -10,11 +10,10 @@ Array [
       Edit Location Unit Group
     </title>
   </HelmetWrapper>,
-  <h5
-    className="mb-4 header-title"
-  >
-    Edit Location Unit Group | 
-  </h5>,
+  <PageHeader
+    className="page-header"
+    title="Edit Location Unit Group | "
+  />,
   <Col
     className="bg-white p-4"
     span={24}
@@ -37,11 +36,10 @@ Array [
       Add Location Unit Group
     </title>
   </HelmetWrapper>,
-  <h5
-    className="mb-4 header-title"
-  >
-    Add Location Unit Group
-  </h5>,
+  <PageHeader
+    className="page-header"
+    title="Add Location Unit Group"
+  />,
   <Col
     className="bg-white p-4"
     span={24}

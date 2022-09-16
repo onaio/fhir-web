@@ -122,8 +122,8 @@ describe('components/Antd/FileList', () => {
         method: 'GET',
       },
     ]);
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').text()).toMatchInlineSnapshot(`"JSON Validators"`);
+    const content = wrapper.find('div.content-section');
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"JSON Validators"`);
     expect(content.find('input#search')).toBeTruthy();
     expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
     expect(content.find('TableLayout#FormFileList')).toBeTruthy();
@@ -178,8 +178,8 @@ describe('components/Antd/FileList', () => {
         method: 'GET',
       },
     ]);
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Releases: 1.0.11"`);
+    const content = wrapper.find('div.content-section');
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Releases: 1.0.11"`);
     expect(content.find('input#search')).toBeTruthy();
     expect(content.find('TableLayout#FormFileList')).toBeTruthy();
     wrapper.unmount();

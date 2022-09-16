@@ -72,7 +72,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     (option as Option).children.toLocaleLowerCase().includes(input.toLocaleLowerCase());
 
   return (
-    <Row className="layout-content user-group">
+    <Row className="content-section user-group">
       {/** If email is provided render edit group otherwise add group */}
       <PageHeader
         title={

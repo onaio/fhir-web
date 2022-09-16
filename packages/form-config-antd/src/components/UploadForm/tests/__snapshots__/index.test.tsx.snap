@@ -11,8 +11,8 @@ Object {
 
 exports[`components/UploadForm edits form correctly: title 1`] = `
 Object {
-  "children": "Upload Form",
-  "level": 3,
+  "className": "page-header",
+  "title": "Upload Form",
 }
 `;
 

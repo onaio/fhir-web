@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, PageHeader } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { Dictionary } from '@onaio/utils';
@@ -184,11 +184,11 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   }
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{t('Teams')}</title>
       </Helmet>
-      <h5 className="mb-3">{t('Teams')}</h5>
+      <PageHeader title={t('Teams')} className="page-header" />
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
