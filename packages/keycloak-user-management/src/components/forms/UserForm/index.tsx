@@ -200,7 +200,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item name="userGroups" id="userGroups" label={t('Group')}>
+          <Form.Item name="userGroups" id="userGroups" label={t('Keycloak User Group')}>
             <Select<SelectOption[]>
               mode="multiple"
               allowClear
