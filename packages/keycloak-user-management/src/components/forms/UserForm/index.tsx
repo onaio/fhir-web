@@ -229,7 +229,7 @@ export const defaultUserFormInitialValues: FormFields = {
   id: '',
   lastName: '',
   username: '',
-  active: false,
+  active: true,
   userGroups: undefined,
   practitioner: undefined,
   contact: undefined,
