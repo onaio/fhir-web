@@ -11,9 +11,9 @@ import { KeycloakUser } from '../../ducks/user';
  * @returns  an array of table columns
  */
 export const getTableColumns = (t: TFunction, sortedInfo?: Dictionary): Column<KeycloakUser>[] => {
-  const headerItems: string[] = [t('Email'), t('First Name'), t('Last Name'), t('Username')];
+  const headerItems: string[] = [t('First Name'), t('Last Name'), t('Username')];
   const dataElements: Column<KeycloakUser>[] = [];
-  const fields: string[] = ['email', 'firstName', 'lastName', 'username'];
+  const fields: string[] = ['firstName', 'lastName', 'username'];
 
   fields.forEach((field: string, index: number) => {
     dataElements.push({
