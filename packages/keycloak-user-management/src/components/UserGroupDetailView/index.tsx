@@ -44,15 +44,15 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{t('Name')}</p>
-            <p className="mb-0" id="name">
-              {GroupDetails.name}
-            </p>
-          </div>
-          <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Group uuid')}</p>
             <p className="mb-0" id="uuid">
               {GroupDetails.id}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{t('Name')}</p>
+            <p className="mb-0" id="name">
+              {GroupDetails.name}
             </p>
           </div>
           <div className="mb-2 medium mt-2">
