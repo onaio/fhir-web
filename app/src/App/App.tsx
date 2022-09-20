@@ -116,7 +116,7 @@ import {
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config-antd';
 import { LocationSettingsView } from '@opensrp/location-settings';
-import ConnectedHomeComponent from '../containers/pages/Home/Home';
+import { Home } from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
 import {
@@ -276,7 +276,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
               path={URL_HOME}
-              component={ConnectedHomeComponent}
+              component={Home}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
