@@ -1,15 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`containers/pages/Home renders Home correctly & changes Title of page: Home page rendered 1`] = `
-<Home
-  extraData={
-    Object {
-      "roles": Array [
-        "ROLE_EDIT_KEYCLOAK_USERS",
-      ],
-    }
-  }
->
+<Home>
   <div
     className="text-center home"
   >
