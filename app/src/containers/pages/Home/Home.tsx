@@ -2,10 +2,6 @@ import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Col, Row, Button } from 'antd';
 import { Link } from 'react-router-dom';
-import { getExtraData } from '@onaio/session-reducer';
-import { connect } from 'react-redux';
-import { Store } from 'redux';
-import { Dictionary } from '@onaio/utils';
 import './Home.css';
 import { useTranslation } from '../../../mls';
 import {
@@ -19,15 +15,10 @@ import {
   ENABLE_LOCATIONS,
   ENABLE_TEAMS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
+  ENABLE_USER_MANAGEMENT,
 } from '../../../configs/env';
 
-export interface HomeProps {
-  extraData: Dictionary;
-}
-
-const Home: React.FC<HomeProps> = (props: HomeProps) => {
-  const { extraData } = props;
-  const { roles } = extraData;
+export const Home = () => {
   const { t } = useTranslation();
 
   return (
@@ -41,7 +32,7 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
         </Col>
       </Row>
       <Row gutter={16} className="links-box">
-        {roles && roles.includes('ROLE_EDIT_KEYCLOAK_USERS') && (
+        {ENABLE_USER_MANAGEMENT && (
           <Col className="gutter-row" span={12}>
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
@@ -95,24 +86,3 @@ const Home: React.FC<HomeProps> = (props: HomeProps) => {
     </div>
   );
 };
-
-export { Home };
-
-/** Connect the component to the store */
-
-/** map state to props */
-
-const mapStateToProps = (state: Partial<Store>) => {
-  const result = {
-    extraData: getExtraData(state),
-  };
-  return result;
-};
-
-/** create connected component */
-
-/** Connected Header component
- */
-const ConnectedHomeComponent = connect(mapStateToProps)(Home);
-
-export default ConnectedHomeComponent;
