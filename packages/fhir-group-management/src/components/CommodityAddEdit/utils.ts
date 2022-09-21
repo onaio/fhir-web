@@ -95,7 +95,7 @@ export const getGroupFormFields = (obj?: IGroup) => {
     initialObject: obj,
     id,
     identifier: get(identifierObj, '0.value'),
-    active: active ?? true,
+    active,
     name,
     type,
     unitOfMeasure: get(unitMeasureCharacteristic, 'valueCodeableConcept.text', undefined),
