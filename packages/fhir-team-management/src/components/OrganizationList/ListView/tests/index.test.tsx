@@ -191,12 +191,6 @@ test('renders correctly when listing organizations', async () => {
     })
     .reply(200, assignedPractitionerRole);
 
-  // see details in viewDetails
-
-  document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
-    expect(pair).toMatchSnapshot('single key value pairs detail section');
-  });
-
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
   fireEvent.click(dropdown);
@@ -213,6 +207,11 @@ test('renders correctly when listing organizations', async () => {
   expect(history.location.pathname).toEqual('/admin/teams/205');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // see details in viewDetails
+  document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
+    expect(pair).toMatchSnapshot('single key value pairs detail section');
+  });
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
