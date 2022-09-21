@@ -62,7 +62,7 @@ export const getOrgFormFields = (
   assignedPractitioners: IPractitionerRole[] = []
 ): OrganizationFormFields => {
   if (!org) {
-    return {};
+    return { type: 'team', active: true };
   }
   const { id, name, alias, active, identifier, type } = org;
 
