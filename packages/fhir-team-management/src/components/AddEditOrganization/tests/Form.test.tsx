@@ -69,6 +69,7 @@ describe('OrganizationForm', () => {
     fhirBaseUrl: 'http://test.server.org',
     practitioners: getResourcesFromBundle<IPractitioner>(allPractitioners),
     existingPractitionerRoles: [],
+    initialValues: getOrgFormFields(),
   };
 
   beforeAll(() => {
@@ -173,12 +174,10 @@ describe('OrganizationForm', () => {
     expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
 
     // status has no
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(
-      `"StatusInactiveactiveRequired"`
-    );
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusactiveInactive"`);
 
     // has default value
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"Type"`);
+    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"TypeOrganizational team"`);
 
     // not required
     expect(wrapper.find('FormItem#members').text()).toMatchSnapshot(
@@ -215,7 +214,7 @@ describe('OrganizationForm', () => {
     // simulate active change
     wrapper
       .find('FormItem#status input')
-      .last()
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
@@ -265,16 +264,6 @@ describe('OrganizationForm', () => {
     expect(afterFilterOptionTexts).toEqual(['Allay Allan']);
 
     fireEvent.click(document.querySelector('[title="Allay Allan"]'));
-
-    // simulate value selection for type
-    wrapper.find('input#type').simulate('mousedown');
-    document
-      .querySelectorAll('#type_list .ant-select-item ant-select-item-option')
-      .forEach((option) => {
-        expect(option).toMatchSnapshot('types option');
-      });
-
-    fireEvent.click(document.querySelector('[title="Organizational team"]'));
 
     await flushPromises();
     wrapper.update();
@@ -365,7 +354,7 @@ describe('OrganizationForm', () => {
     // simulate active check to be active
     wrapper
       .find('FormItem#status input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });

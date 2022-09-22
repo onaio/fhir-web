@@ -223,3 +223,88 @@ export const organizationSearchPage1 = {
     },
   ],
 };
+
+export const assignedPractitionerRole = {
+  resourceType: 'Bundle',
+  id: 'c1ea2f2d-b254-4b2c-accd-798b7a75eb8f',
+  meta: {
+    lastUpdated: '2022-09-21T08:46:13.449+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/PractitionerRole/_search?_count=1&_format=json&_include=PractitionerRole%3Apractitioner&organization=145365',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/PractitionerRole/145366',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '145366',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-09-21T08:04:22.476+00:00',
+          source: '#32215d034f3576a1',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '9d82691a-c33c-467f-a8ec-367e1cd823aa',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/206',
+          display: 'Allay Allan',
+        },
+        organization: {
+          reference: 'Organization/145365',
+          display: 'peter practitioner sep21',
+        },
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Practitioner/206',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '206',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-09-14T07:37:31.213+00:00',
+          source: '#74cc383a67268f33',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
+          },
+          {
+            use: 'secondary',
+          },
+        ],
+        active: false,
+        name: [
+          {
+            use: 'official',
+            family: 'Allan',
+            given: ['Allay'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'email',
+          },
+        ],
+      },
+      search: {
+        mode: 'include',
+      },
+    },
+  ],
+};

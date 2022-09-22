@@ -44,3 +44,25 @@ export const SingleKeyNestedValue = (props: KeyValuePairs) => {
     </dl>
   );
 };
+
+/**
+ * Dryed out util for displaying keyValue ui for an obj
+ *
+ * @param obj - obj with info to be displayed
+ */
+export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
+  return (
+    <>
+      {Object.entries(obj).map(([key, value]) => {
+        const props = {
+          [key]: value,
+        };
+        return value ? (
+          <div key={key} data-testid="key-value">
+            <SingleKeyNestedValue {...props} />
+          </div>
+        ) : null;
+      })}
+    </>
+  );
+};

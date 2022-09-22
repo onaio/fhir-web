@@ -104,8 +104,8 @@ const OrganizationForm = (props: OrganizationFormProps) => {
   }
 
   const statusOptions = [
-    { label: t('Inactive'), value: false },
     { label: t('active'), value: true },
+    { label: t('Inactive'), value: false },
   ];
 
   const practitionersSelectOptions = getPractitionerOptions(practitioners);
@@ -139,7 +139,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem id="type" name={type} label="Type" rules={validationRules.type}>
+      <FormItem hidden id="type" name={type} label="Type" rules={validationRules.type}>
         <Select disabled={disabled.includes(type)} options={getOrgTypeSelectOptions()}></Select>
       </FormItem>
 
