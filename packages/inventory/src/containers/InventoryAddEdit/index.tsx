@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { Typography, Spin } from 'antd';
+import { Spin, PageHeader } from 'antd';
 import { Helmet } from 'react-helmet';
 import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -86,7 +86,6 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const [products, setProducts] = React.useState<ProductCatalogue[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const { t } = useTranslation();
-  const { Title } = Typography;
   const isEdit = !!match.params[ROUTE_PARAM_INVENTORY_ID];
 
   useEffect(() => {
@@ -235,11 +234,11 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   const title = !isEdit ? t('Add inventory item') : t('Edit inventory item');
 
   return (
-    <div className="layout-content">
+    <div className="content-section">
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <Title level={3}>{heading}</Title>
+      <PageHeader title={heading} className="page-header" />
       <InventoryItemForm {...inventoryItemFormProps} />
     </div>
   );

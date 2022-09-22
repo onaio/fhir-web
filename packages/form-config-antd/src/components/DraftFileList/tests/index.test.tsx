@@ -129,8 +129,8 @@ describe('components/Antd/DraftFileList', () => {
         method: 'GET',
       },
     ]);
-    const content = wrapper.find('div.layout-content');
-    expect(content.find('Title').text()).toMatchInlineSnapshot(`"Draft Files"`);
+    const content = wrapper.find('div.content-section');
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Draft Files"`);
     expect(content.find('input#search')).toBeTruthy();
     expect(content.find('button#uploadNewFile').text()).toMatchInlineSnapshot(`"Upload New File"`);
     expect(content.find('TableLayout#FormDraftFileList')).toBeTruthy();

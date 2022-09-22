@@ -1,6 +1,6 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
+import { Button, Col, Row, Form, Select, Input, Radio, PageHeader } from 'antd';
 import {
   getUserGroupsOptions,
   postPutPractitioner,
@@ -96,13 +96,16 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   }, [form, initialValues, userEnabled]);
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       {/** If email is provided render edit user otherwise add user */}
-      <h5 className="mb-3 header-title">
-        {props.initialValues.id
-          ? t('Edit User | {{username}}', { username: initialValues.username })
-          : t('Add User')}
-      </h5>
+      <PageHeader
+        title={
+          props.initialValues.id
+            ? t('Edit User | {{username}}', { username: initialValues.username })
+            : t('Add User')
+        }
+        className="page-header"
+      />
       <Col className="bg-white p-3" span={24}>
         <Form
           {...layout}

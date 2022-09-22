@@ -108,7 +108,7 @@ describe('EditLocationUnit', () => {
     expect(helmet.title).toEqual('Edit > Kenya');
 
     // rendered page including title
-    expect(wrapper.find('h5').text()).toMatchInlineSnapshot(`"Edit > Kenya"`);
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Edit > Kenya"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
 

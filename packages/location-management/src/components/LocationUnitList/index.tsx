@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin, PageHeader } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -135,11 +135,11 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     return <Spin size="large" className="custom-spinner" />;
   }
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{t('Location Unit')}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{t('Location Unit Management')}</h1>
+      <PageHeader className="page-header" title={t('Location Unit Management')} />
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentClickedNode(node)} />

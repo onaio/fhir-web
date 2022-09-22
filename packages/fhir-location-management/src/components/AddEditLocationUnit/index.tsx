@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, useHistory, useLocation, useParams } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { getLocationFormFields } from '../LocationForm/utils';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col, Spin, PageHeader } from 'antd';
 import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
@@ -99,11 +99,11 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     : t('Add Location Unit');
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <h5 className="mb-4 header-title">{pageTitle}</h5>
+      <PageHeader title={pageTitle} className="page-header" />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>

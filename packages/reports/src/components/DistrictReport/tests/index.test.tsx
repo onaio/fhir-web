@@ -86,7 +86,7 @@ describe('DistrictReport', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('Title').text()).toMatchInlineSnapshot(`"Download District Report"`);
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Download District Report"`);
     expect(wrapper.find('label[htmlFor="location"]').text()).toMatchInlineSnapshot(`"Location"`);
     expect(wrapper.find('label[htmlFor="reportDate"]').text()).toMatchInlineSnapshot(
       `"Report Date"`

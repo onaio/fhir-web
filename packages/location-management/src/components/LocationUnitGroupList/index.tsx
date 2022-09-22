@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Input, Spin } from 'antd';
+import { Row, Col, Button, Input, Spin, PageHeader } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -61,11 +61,11 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   if (isLoading) return <Spin className="custom-spinner" size={'large'} />;
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{t('Location Unit Group')}</title>
       </Helmet>
-      <h1 className="mb-3 fs-5">{t('Location Unit Group Management')}</h1>
+      <PageHeader title={t('Location Unit Group Management')} className="page-header" />
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">

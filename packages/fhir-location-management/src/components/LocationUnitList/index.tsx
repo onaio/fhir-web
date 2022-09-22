@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
-import { Row, Col, Button, Spin, Alert } from 'antd';
+import { Row, Col, Button, Spin, Alert, PageHeader } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -133,11 +133,11 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
           showIcon
         />
       )}
-      <section className="layout-content">
+      <section className="content-section">
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <h1 className="mb-3 fs-5">{pageTitle}</h1>
+        <PageHeader className="page-header" title={pageTitle} />
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree

@@ -81,7 +81,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
 
   const pageTitle = t('Team Assignment');
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
