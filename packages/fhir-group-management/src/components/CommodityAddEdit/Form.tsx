@@ -73,8 +73,8 @@ const CommodityForm = (props: GroupFormProps) => {
   );
 
   const statusOptions = [
-    { label: t('Disabled'), value: false },
     { label: t('Active'), value: true },
+    { label: t('Disabled'), value: false },
   ];
 
   const unitsOfMEasureOptions = getUnitOfMeasureOptions();
@@ -91,12 +91,12 @@ const CommodityForm = (props: GroupFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem hidden={true} id="id" name={id} label={t('Id')}>
-        <Input disabled={true} />
+      <FormItem id="id" name={id} label={t('Commodity Id')}>
+        <Input placeholder={t('(Auto generated)')} disabled={true} />
       </FormItem>
 
-      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
-        <Input disabled={true} />
+      <FormItem id="identifier" name={identifier} label={t('Identifier')}>
+        <Input placeholder={t('(Auto generated)')} disabled={true} />
       </FormItem>
 
       <FormItem
