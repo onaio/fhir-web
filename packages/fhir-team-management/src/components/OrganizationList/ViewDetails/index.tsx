@@ -3,11 +3,28 @@ import { Col, Space, Spin, Button, Alert } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
-import { organizationResourceType, ORGANIZATION_LIST_URL } from '../../../constants';
+import {
+  FHIRServiceClass,
+  getObjLike,
+  getResourcesFromBundle,
+  IdentifierUseCodes,
+  parseFhirHumanName,
+  renderObjectAsKeyvalue,
+} from '@opensrp/react-utils';
+import {
+  organizationResourceType,
+  ORGANIZATION_LIST_URL,
+  practitionerResourceType,
+  practitionerRoleResourceType,
+} from '../../../constants';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { get } from 'lodash';
 import './index.css';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+import { useTranslation } from '../../../mls';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 /**
  * parse an organization to object we can easily consume in Table layout
@@ -15,9 +32,16 @@ import './index.css';
  * @param org - the organization resource object
  */
 export const parseOrganization = (org: IOrganization) => {
+  const identifierObj = getObjLike(
+    org.identifier,
+    'use',
+    IdentifierUseCodes.OFFICIAL
+  ) as Identifier[];
+  const identifier = get(identifierObj, '0.value');
   return {
     id: org.id,
-    status: org.active ? 'True' : 'False',
+    identifier,
+    active: org.active,
     name: org.name,
     type: get(org, 'type.0.coding.0.display'),
     alias: org.alias,
@@ -43,6 +67,9 @@ export type ViewDetailsWrapperProps = Pick<ViewDetailsProps, 'fhirBaseURL'> & {
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { resourceId, fhirBaseURL } = props;
 
+  const { t } = useTranslation();
+
+  // fetch organization resource
   const {
     data: organization,
     isLoading: orgIsLoading,
@@ -51,6 +78,23 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     new FHIRServiceClass<IOrganization>(fhirBaseURL, organizationResourceType).read(
       resourceId as string
     )
+  );
+
+  // fetch practitioners assigned to this organization
+  const { data: assignedPractitioners, isLoading: assignedPractitionersLoading } = useQuery(
+    [practitionerRoleResourceType, resourceId],
+    () =>
+      new FHIRServiceClass<IBundle>(fhirBaseURL, practitionerRoleResourceType)
+        .list({
+          _include: 'PractitionerRole:practitioner',
+          organization: resourceId,
+        })
+        .then(
+          (bundle) =>
+            getResourcesFromBundle<IPractitionerRole | IPractitioner>(bundle).filter(
+              (resource) => resource.resourceType === practitionerResourceType
+            ) as IPractitioner[]
+        )
   );
 
   if (orgIsLoading) {
@@ -62,26 +106,38 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   const org = organization as IOrganization;
-  const { name, type, alias, partOf } = parseOrganization(org);
-  const keyValues = {
-    Name: name,
-    Alias: alias,
-    Type: type,
-    partOf: partOf,
+  const { active, id, identifier } = parseOrganization(org);
+
+  const practitionerKeyValues = {
+    [t('Team practitioners')]: (
+      <ul id="practitioner-teams">
+        {(assignedPractitioners ?? []).map((practitioner) => {
+          const officialNames = getObjLike(practitioner.name, 'use', IdentifierUseCodes.OFFICIAL);
+          const firstOficialName = officialNames[0];
+          return <li key={practitioner.id}>{parseFhirHumanName(firstOficialName)}</li>;
+        })}
+      </ul>
+    ),
+  };
+  const organizationKeyValues = {
+    [t('Team id')]: id,
+    [t('Team identifier')]: identifier,
+    [t('Team status')]: active ? t('Active') : t('Disabled'),
   };
 
   return (
     <Space direction="vertical">
-      {Object.entries(keyValues).map(([key, value]) => {
-        const props = {
-          [key]: value,
-        };
-        return value ? (
-          <div key={key} data-testid="key-value">
-            <SingleKeyNestedValue {...props} />
-          </div>
-        ) : null;
-      })}
+      {renderObjectAsKeyvalue(organizationKeyValues)}
+      {assignedPractitionersLoading ? (
+        <Alert description={t('Fetching assigned practitioners')} type="info"></Alert>
+      ) : assignedPractitioners?.length ? (
+        renderObjectAsKeyvalue(practitionerKeyValues)
+      ) : (
+        <Alert
+          description={t('Organiation does not have any assigned practitioners')}
+          type="warning"
+        ></Alert>
+      )}
     </Space>
   );
 };

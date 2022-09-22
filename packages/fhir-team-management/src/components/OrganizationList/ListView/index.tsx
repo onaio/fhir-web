@@ -63,11 +63,6 @@ export const OrganizationList = (props: OrganizationListProps) => {
       key: 'name' as const,
     },
     {
-      title: t('Type'),
-      dataIndex: 'type' as const,
-      key: 'type' as const,
-    },
-    {
       title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name

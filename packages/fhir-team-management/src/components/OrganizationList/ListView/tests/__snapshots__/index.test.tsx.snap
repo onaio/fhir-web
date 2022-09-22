@@ -20,12 +20,6 @@ exports[`renders correctly when listing organizations: Search 1 page 1 1`] = `
 exports[`renders correctly when listing organizations: Search 1 page 1 2`] = `
 <td
   class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: Search 1 page 1 3`] = `
-<td
-  class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
@@ -71,6 +65,112 @@ exports[`renders correctly when listing organizations: Search 1 page 1 3`] = `
 </td>
 `;
 
+exports[`renders correctly when listing organizations: single key value pairs detail section 1`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Team id
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      205
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing organizations: single key value pairs detail section 2`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Team identifier
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      205
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing organizations: single key value pairs detail section 3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Team status
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Active
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing organizations: single key value pairs detail section 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Team practitioners
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul
+        id="practitioner-teams"
+      >
+        <li>
+          Allay Allan
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
 exports[`renders correctly when listing organizations: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
@@ -80,12 +180,6 @@ exports[`renders correctly when listing organizations: table row 1 page 1 1`] = 
 `;
 
 exports[`renders correctly when listing organizations: table row 1 page 1 2`] = `
-<td
-  class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 1 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -144,12 +238,6 @@ exports[`renders correctly when listing organizations: table row 1 page 2 1`] = 
 exports[`renders correctly when listing organizations: table row 1 page 2 2`] = `
 <td
   class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 1 page 2 3`] = `
-<td
-  class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
@@ -204,12 +292,6 @@ exports[`renders correctly when listing organizations: table row 2 page 1 1`] = 
 `;
 
 exports[`renders correctly when listing organizations: table row 2 page 1 2`] = `
-<td
-  class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 2 page 1 3`] = `
 <td
   class="ant-table-cell"
 >
@@ -268,12 +350,6 @@ exports[`renders correctly when listing organizations: table row 2 page 2 1`] = 
 exports[`renders correctly when listing organizations: table row 2 page 2 2`] = `
 <td
   class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 2 page 2 3`] = `
-<td
-  class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
@@ -330,12 +406,6 @@ exports[`renders correctly when listing organizations: table row 3 page 1 1`] = 
 exports[`renders correctly when listing organizations: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 3 page 1 3`] = `
-<td
-  class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
@@ -390,12 +460,6 @@ exports[`renders correctly when listing organizations: table row 3 page 2 1`] = 
 `;
 
 exports[`renders correctly when listing organizations: table row 3 page 2 2`] = `
-<td
-  class="ant-table-cell"
-/>
-`;
-
-exports[`renders correctly when listing organizations: table row 3 page 2 3`] = `
 <td
   class="ant-table-cell"
 >

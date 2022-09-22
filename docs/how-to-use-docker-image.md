@@ -70,8 +70,9 @@ Opensrp web is configured as follows:
      // others (optional override)
      SKIP_PREFLIGHT_CHECK: 'true',
      GENERATE_SOURCEMAP: 'false',
-     REACT_APP_MAIN_LOGO_SRC:
-       'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png',
+     INLINE_RUNTIME_CHUNK: 'false',
+     IMAGE_INLINE_SIZE_LIMIT: '0',
+     REACT_APP_MAIN_LOGO_SRC: 'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png',
      REACT_APP_OPENSRP_OAUTH_SCOPES: 'openid,profile',
      REACT_APP_OPENSRP_OAUTH_STATE: 'opensrp',
      REACT_APP_ENABLE_OPENSRP_OAUTH: 'true',
