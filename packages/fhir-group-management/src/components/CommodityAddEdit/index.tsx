@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { CommodityForm } from './Form';
 import { useParams } from 'react-router';
 import { groupResourceType, LIST_COMMODITY_URL } from '../../constants';
-import { Spin } from 'antd';
+import { Spin, PageHeader } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
@@ -48,11 +48,11 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
     : t('Create Commodity');
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <h5 className="mb-3 header-title">{pageTitle}</h5>
+      <PageHeader title={pageTitle} className="page-header" />
       <div className="bg-white p-5">
         <CommodityForm
           fhirBaseUrl={fhirBaseUrl}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Typography, Form, TreeSelect, DatePicker, Tooltip, Spin, Alert } from 'antd';
+import { Button, Card, Form, TreeSelect, DatePicker, Tooltip, Spin, Alert, PageHeader } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
   locationHierachyDucks,
@@ -32,7 +32,6 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { Title } = Typography;
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -109,8 +108,8 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
   }
 
   return (
-    <div className="layout-content">
-      <Title level={3}>{t('Download District Report')}</Title>
+    <div className="content-section">
+      <PageHeader title={t('Download District Report')} className="page-header" />
       <Card>
         <Form
           {...layout}

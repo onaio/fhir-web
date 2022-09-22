@@ -243,9 +243,7 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('.mb-3.header-title').text()).toEqual(
-      `Edit User Group | ${fixtures.userGroup.name}`
-    );
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Edit User Group | Admin"`);
     wrapper.unmount();
   });
 

@@ -97,7 +97,7 @@ describe('components/UploadForm', () => {
     });
     wrapper.update();
 
-    expect(wrapper.find('Title').text()).toMatchInlineSnapshot(`"Upload Form"`);
+    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Upload Form"`);
     expect(wrapper.find('UploadForm').props()).toMatchSnapshot('UploadForm');
     wrapper.unmount();
   });
@@ -244,7 +244,7 @@ describe('components/UploadForm', () => {
     });
     wrapper.update();
 
-    expect(wrapper.find('Title').props()).toMatchSnapshot('title');
+    expect(wrapper.find('PageHeader').props()).toMatchSnapshot('title');
     expect(wrapper.find('UploadForm').prop('initialValues')).toMatchSnapshot('UploadForm');
 
     expect(wrapper.find('input').at(0).props().value).toEqual('test publish');

@@ -2,7 +2,7 @@
 import { MoreOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, Dropdown, Menu } from 'antd';
+import { Row, Col, Spin, Dropdown, Menu, PageHeader } from 'antd';
 import {
   Tree,
   generateJurisdictionTree,
@@ -97,11 +97,11 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   }
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{t('Settings')}</title>
       </Helmet>
-      <h5 className="mb-3">{t('Settings')}</h5>
+      <PageHeader className="page-header" title={t('Settings')} />
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree data={treeData} OnItemClick={(node) => setCurrentLocId(node.id)} />
