@@ -3,7 +3,7 @@
 exports[`Health care form renders correctly: active field 1`] = `
 Array [
   <input
-    checked={false}
+    checked={true}
     className="ant-radio-input"
     disabled={false}
     onBlur={[Function]}
@@ -13,7 +13,7 @@ Array [
     onKeyPress={[Function]}
     onKeyUp={[Function]}
     type="radio"
-    value={false}
+    value={true}
   />,
   <input
     checked={false}
@@ -26,7 +26,7 @@ Array [
     onKeyPress={[Function]}
     onKeyUp={[Function]}
     type="radio"
-    value={true}
+    value={false}
   />,
 ]
 `;

@@ -153,7 +153,7 @@ describe('Health care form', () => {
 
     // status has no
     expect(wrapper.find('FormItem#active').text()).toMatchInlineSnapshot(
-      `"Select Commodity statusDisabledActiveRequired"`
+      `"Select Commodity statusActiveDisabled"`
     );
 
     // required
@@ -194,7 +194,7 @@ describe('Health care form', () => {
     // simulate active change
     wrapper
       .find('FormItem#active input')
-      .last()
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
@@ -315,10 +315,10 @@ describe('Health care form', () => {
       .find('FormItem#name input')
       .simulate('change', { target: { name: 'name', value: 'Dettol Strips' } });
 
-    // simulate active check to be active
+    // simulate active check to be disabled
     wrapper
       .find('FormItem#active input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });
