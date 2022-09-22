@@ -9,8 +9,17 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { organizationResourceType, ORGANIZATION_LIST_URL } from '../../../../constants';
-import { organizationSearchPage1, organizationsPage1, organizationsPage2 } from './fixtures';
+import {
+  organizationResourceType,
+  ORGANIZATION_LIST_URL,
+  practitionerRoleResourceType,
+} from '../../../../constants';
+import {
+  assignedPractitionerRole,
+  organizationSearchPage1,
+  organizationsPage1,
+  organizationsPage2,
+} from './fixtures';
 import userEvents from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
@@ -174,6 +183,13 @@ test('renders correctly when listing organizations', async () => {
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/205`)
     .reply(200, organizationSearchPage1.entry[0].resource);
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({
+      _include: 'PractitionerRole:practitioner',
+      organization: `205`,
+    })
+    .reply(200, assignedPractitionerRole);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -191,6 +207,11 @@ test('renders correctly when listing organizations', async () => {
   expect(history.location.pathname).toEqual('/admin/teams/205');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // see details in viewDetails
+  document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
+    expect(pair).toMatchSnapshot('single key value pairs detail section');
+  });
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
