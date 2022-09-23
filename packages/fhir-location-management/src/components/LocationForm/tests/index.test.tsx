@@ -231,7 +231,7 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('FormItem#isJurisdiction input')
-      .last()
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
@@ -332,7 +332,7 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('FormItem#isJurisdiction input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });

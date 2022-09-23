@@ -36,48 +36,114 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  <span>
-    <a
-      href="/admin/location/unit/edit/303"
+  <a
+    href="/admin/location/unit/edit/303"
+  >
+    <button
+      class="ant-btn ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
-    <div
-      class="ant-divider ant-divider-vertical"
-      role="separator"
-    />
-    <span
-      aria-label="more"
-      class="anticon anticon-more ant-dropdown-trigger more-options"
-      role="img"
-      tabindex="-1"
+      <span>
+        Edit
+      </span>
+    </button>
+  </a>
+  <div
+    class="ant-divider ant-divider-vertical"
+    role="separator"
+  />
+  <span
+    aria-label="more"
+    class="anticon anticon-more ant-dropdown-trigger more-options"
+    role="img"
+    tabindex="-1"
+  >
+    <svg
+      aria-hidden="true"
+      data-icon="more"
+      fill="currentColor"
+      focusable="false"
+      height="1em"
+      viewBox="64 64 896 896"
+      width="1em"
     >
-      <svg
-        aria-hidden="true"
-        data-icon="more"
-        fill="currentColor"
-        focusable="false"
-        height="1em"
-        viewBox="64 64 896 896"
-        width="1em"
-      >
-        <path
-          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
-        />
-      </svg>
-    </span>
+      <path
+        d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+      />
+    </svg>
   </span>
 </td>
 `;
 
 exports[`location-management/src/components/LocationUnitList works correctly: key value 1`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Location id
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          303
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 2`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          identifier
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          93bc9c3d-6321-41b0-9b93-1275d7114e22
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 3`] = `
 <div
   class="pb-3"
   data-testid="single-key-value"
@@ -111,7 +177,41 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
 </div>
 `;
 
-exports[`location-management/src/components/LocationUnitList works correctly: key value 2`] = `
+exports[`location-management/src/components/LocationUnitList works correctly: key value 4`] = `
+<div
+  class="pb-3"
+  data-testid="single-key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          alias
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          ona office
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`location-management/src/components/LocationUnitList works correctly: key value 5`] = `
 <div
   class="pb-3"
   data-testid="single-key-value"
@@ -145,41 +245,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
 </div>
 `;
 
-exports[`location-management/src/components/LocationUnitList works correctly: key value 3`] = `
-<div
-  class="pb-3"
-  data-testid="single-key-value"
->
-  <dl
-    class="singleKeyValue"
-  >
-    <div
-      class="singleKeyValue-pair"
-    >
-      <dt
-        class="singleKeyValue-pair__label"
-      >
-        <span
-          class="ant-typography ant-typography-secondary"
-        >
-          Description
-        </span>
-      </dt>
-      <dd
-        class="singleKeyValue-pair__value"
-      >
-        <span
-          class="ant-typography"
-        >
-          The Sub location
-        </span>
-      </dd>
-    </div>
-  </dl>
-</div>
-`;
-
-exports[`location-management/src/components/LocationUnitList works correctly: key value 4`] = `
+exports[`location-management/src/components/LocationUnitList works correctly: key value 6`] = `
 <div
   class="pb-3"
   data-testid="single-key-value"
@@ -213,7 +279,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
 </div>
 `;
 
-exports[`location-management/src/components/LocationUnitList works correctly: key value 5`] = `
+exports[`location-management/src/components/LocationUnitList works correctly: key value 7`] = `
 <div
   class="pb-3"
   data-testid="single-key-value"
@@ -230,7 +296,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         <span
           class="ant-typography ant-typography-secondary"
         >
-          alias
+          Description
         </span>
       </dt>
       <dd
@@ -239,7 +305,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         <span
           class="ant-typography"
         >
-          ona office
+          The Sub location
         </span>
       </dd>
     </div>
