@@ -169,13 +169,11 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // status has default value
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(
-      `"StatusActiveInactiveSuspended"`
-    );
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
     // has default value
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Physical typeBuildingJurisdiction"`
+      `"Physical typeJurisdictionBuilding"`
     );
 
     expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
