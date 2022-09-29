@@ -170,7 +170,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               width: '10%',
               // eslint-disable-next-line react/display-name
               render: (record) => (
-                <span className="d-flex justify-content-end align-items-center">
+                <span>
                   <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
                     <Button type="link" className="m-0 p-1">
                       {t('Edit')}
