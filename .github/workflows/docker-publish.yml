@@ -8,6 +8,7 @@ on:
     # See also https://github.com/crazy-max/ghaction-docker-meta#basic
     branches:
       - master
+      - Trivy-CI-scan
 
     # Publish `v1.2.3` tags as releases.
     tags:
@@ -104,13 +105,28 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner - JSON
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/opensrp/web:${{ steps.docker_meta.outputs.tags }}
+          image-ref: ghcr.io/${{ steps.docker_meta.outputs.tags }}
           format: json
-          output: 'trivy-results.json'
+          output: 'trivy-opensrp-web-results.json'
 
+      - name: Run Trivy vulnerability scanner - SARIF
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ghcr.io/${{ steps.docker_meta.outputs.tags }}
+          format: sarif
+          severity: 'CRITICAL, HIGH'
+          output: 'trivy-opensrp-web-results.sarif'
+          
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-opensrp-web-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          
       - name: Create summary of trivy issues
         run: |
           summary=$(jq -r '.Results[] | select(.Vulnerabilities) | .Vulnerabilities | group_by(.Severity) | map({Severity: .[0].Severity, Count: length}) | .[] | [.Severity, .Count] | join(": ")' trivy-results.json | awk 'NR > 1 { printf(" | ") } {printf "%s",$0}')
@@ -119,19 +135,20 @@ jobs:
             summary="0 Issues"
           fi
           echo "SUMMARY=$summary" >> $GITHUB_ENV
-      - name: Generate trivy report for viewing
+      
+      - name: Generate trivy HTML report for download
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/opensrp/web:${{ steps.docker_meta.outputs.tags }}
+          image-ref: ghcr.io/${{ steps.docker_meta.outputs.tags }}
           format: 'template'
           template: '@/contrib/html.tpl'
-          output: 'trivy-results-opensrp-web-${{ steps.docker_meta.outputs.tags }}.html'
+          output: 'trivy-results-opensrp-web-report.html'
 
       - name: Upload Trivy results as an artifact
         uses: actions/upload-artifact@v3
         with:
-          name: "trivy-results-${{ steps.docker_meta.outputs.tags }}.html"
-          path: './trivy-results-opensrp-web-${{ steps.docker_meta.outputs.tags }}.html'
+          name: "trivy-results-opensrp-web-report.html"
+          path: './trivy-results-opensrp-web-report.html'
           retention-days: 30
 
       # - name: Send Slack Notification
@@ -160,3 +177,4 @@ jobs:
       #   env:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      
