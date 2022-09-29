@@ -54,7 +54,7 @@ const Table: React.FC<Props> = (props: Props) => {
         width: '10%',
         // eslint-disable-next-line react/display-name
         render: (_: boolean, record) => (
-          <span className="d-flex justify-content-end align-items-center Actions">
+          <span>
             <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>
               <Button type="link" className="m-0 p-1">
                 {t('Edit')}
