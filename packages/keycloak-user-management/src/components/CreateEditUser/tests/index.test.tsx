@@ -345,8 +345,7 @@ describe('components/CreateEditUser', () => {
     });
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     expect(wrapper.text()).toMatchInlineSnapshot(
-      // eslint-disable-next-line no-irregular-whitespace
-      `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoGroupAdminAdmin 2New Group SaveCancel"`
+      `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoKeycloak User GroupAdminAdmin 2New GroupSaveCancel"`
     );
     wrapper.unmount();
   });

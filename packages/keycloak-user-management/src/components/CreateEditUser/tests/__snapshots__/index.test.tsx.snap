@@ -9,9 +9,9 @@ Object {
       extraData={Object {}}
       initialValues={
         Object {
-          "active": false,
+          "active": true,
           "contact": undefined,
-          "enabled": false,
+          "enabled": true,
           "firstName": "",
           "id": "",
           "lastName": "",
