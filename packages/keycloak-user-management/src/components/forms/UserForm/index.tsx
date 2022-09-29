@@ -233,7 +233,7 @@ export const defaultUserFormInitialValues: FormFields = {
   userGroups: undefined,
   practitioner: undefined,
   contact: undefined,
-  enabled: false,
+  enabled: true,
 };
 
 UserForm.defaultProps = {
