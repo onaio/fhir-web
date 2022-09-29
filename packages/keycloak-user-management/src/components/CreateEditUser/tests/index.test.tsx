@@ -344,9 +344,9 @@ describe('components/CreateEditUser', () => {
       wrapper.update();
     });
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-    expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoKeycloak User GroupAdminAdmin 2New GroupSaveCancel"`
-    );
+    // eslint-disable-next-line no-irregular-whitespace
+    const newLocal = `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoKeycloak User GroupAdminAdmin 2New Group SaveCancel"`;
+    expect(wrapper.text()).toMatchInlineSnapshot(newLocal);
     wrapper.unmount();
   });
 

@@ -72,7 +72,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     UserGroupDucks.KeycloakUserGroup[]
   >([groupResourceType, resourceId], () => {
     return new KeycloakService(
-      `${KEYCLOAK_URL_USERS}/${resourceId}/${KEYCLOAK_URL_USER_GROUPS}`,
+      `${KEYCLOAK_URL_USERS}/${resourceId}${KEYCLOAK_URL_USER_GROUPS}`,
       keycloakBaseUrl
     ).list();
   });
