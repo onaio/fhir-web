@@ -1,29 +1,62 @@
-import React from 'react';
-import { Col, Space, Spin, Button, Typography } from 'antd';
+import React, { Fragment } from 'react';
+import { Col, Space, Button, Alert } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
-import { Dictionary } from '@onaio/utils';
-import { useQuery, useQueries } from 'react-query';
-import { IfhirR4 } from '@smile-cdr/fhirts';
+import { useQuery } from 'react-query';
 import {
-  Resource404,
   BrokenPage,
   FHIRServiceClass,
   getObjLike,
   IdentifierUseCodes,
+  getResourcesFromBundle,
+  parseFhirHumanName,
 } from '@opensrp/react-utils';
-import { careTeamResourceType, FHIR_CARE_TEAM, URL_CARE_TEAM } from '../../constants';
-import { getPatientName } from '../CreateEditCareTeam/utils';
-import { FHIR_GROUPS, FHIR_PRACTITIONERS } from '../../constants';
-import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R3';
+import { careTeamResourceType, practitionerResourceType, URL_CARE_TEAM } from '../../constants';
 import { useTranslation } from '../../mls';
-
-const { Text } = Typography;
+import { renderObjectAsKeyvalue } from '@opensrp/react-utils';
+import { get, groupBy, keyBy } from 'lodash';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R3';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
   careTeamId: string;
   fhirBaseURL: string;
+}
+
+/**
+ * We pull a single care team with all referenced resources, this function tries ot group
+ * the referenced resources in groups by their resource type for easier parsing down the line.
+ *
+ * @param resources - referenced fhir resources
+ * @param careTeamId - care team id referencin aforementioned resources.
+ */
+function categorizeIncludedResources(resources: Resource[], careTeamId: string) {
+  const resByIds = keyBy(resources, (resource) => `${resource.resourceType}/${resource.id}`);
+  // TODO - how can we make us of type narrowing to get rid of explicit casts.
+  const thisCareTeam = resByIds[`${careTeamResourceType}/${careTeamId}`] as unknown as ICareTeam;
+
+  const subjectRef = thisCareTeam.subject?.reference;
+  const subjectResource = subjectRef ? resByIds[subjectRef] : undefined;
+  const participantResources: Resource[] = [];
+  const managingOrganizations: IOrganization[] = [];
+  thisCareTeam.participant?.forEach((participant) => {
+    const ref = participant.member?.reference;
+    if (ref) {
+      participantResources.push(resByIds[ref]);
+    }
+  });
+  thisCareTeam.managingOrganization?.forEach((organization) => {
+    const ref = organization.reference;
+    if (ref) {
+      managingOrganizations.push(resByIds[ref] as unknown as IOrganization);
+    }
+  });
+  const participantByResourceType = groupBy(participantResources, 'resourceType');
+  return { subjectResource, participantByResourceType, thisCareTeam, managingOrganizations };
 }
 
 /**
@@ -37,109 +70,103 @@ const ViewDetails = (props: ViewDetailsProps) => {
   const { t } = useTranslation();
   const history = useHistory();
 
+  // fetch this careTeam and include all its referenced resources.
   const { data, isLoading, error } = useQuery({
     queryKey: [careTeamResourceType, careTeamId],
     queryFn: () =>
-      careTeamId ? new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId) : undefined,
-    select: (res) => res,
+      new FHIRServiceClass<IBundle>(fhirBaseURL, careTeamResourceType).list({
+        _id: careTeamId,
+        _include: `${careTeamResourceType}:*`,
+      }),
+    enabled: !!careTeamId,
+    select: (res) => {
+      const resEntries = getResourcesFromBundle<Resource>(res);
+      return categorizeIncludedResources(resEntries, careTeamId);
+    },
   });
 
-  const practitioners = useQueries(
-    data && data.participant
-      ? data.participant.map((p: { member: { reference: string } }) => {
-          return {
-            queryKey: [FHIR_CARE_TEAM, p.member.reference],
-            queryFn: () =>
-              new FHIRServiceClass(fhirBaseURL, FHIR_PRACTITIONERS).read(
-                p.member.reference.split('/')[1]
-              ),
-            // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
-            select: (res: IfhirR4.IPractitioner) => res,
-          };
-        })
-      : []
-  );
+  const careTeam = data?.thisCareTeam;
+  const participantByResourceType = data?.participantByResourceType;
+  const managingOrganizations = data?.managingOrganizations;
 
-  const subject = useQuery({
-    queryKey: [FHIR_GROUPS, data?.subject?.reference],
-    queryFn: () =>
-      data?.subject?.reference
-        ? new FHIRServiceClass(fhirBaseURL, FHIR_GROUPS).read(data.subject.reference.split('/')[1])
-        : undefined,
-    select: (res) => res,
-  });
+  const officialIdentifier = getObjLike(careTeam?.identifier, 'use', IdentifierUseCodes.OFFICIAL);
 
-  if (!careTeamId) {
-    return null;
-  }
-
-  if (error) {
-    return <BrokenPage errorMessage={`${error}`} />;
-  }
-
-  const officialIdentifier = getObjLike(data?.identifier, 'use', IdentifierUseCodes.OFFICIAL)[0] as
-    | Identifier
-    | undefined;
+  const careTeamKeyValues = {
+    [t('CareTeam ID')]: careTeam?.id,
+    [t('Identifier')]: get(officialIdentifier, '0.value'),
+    [t('Name')]: careTeam?.name,
+    [t('status')]: careTeam?.status,
+    [t('Participants')]: (
+      <ul>
+        {Object.entries(participantByResourceType ?? {}).map(([resourceType, resources], index) => {
+          return (
+            <li key={index}>
+              {(() => {
+                const subKeyValues = {
+                  [resourceType]: (
+                    <ul id="care-team-participants">
+                      {resources.map((resource) => {
+                        const res = resource as unknown as IOrganization | IPractitioner;
+                        const practitionerName = getObjLike(
+                          (res as IPractitioner).name,
+                          'use',
+                          IdentifierUseCodes.OFFICIAL
+                        )[0];
+                        return (
+                          <li key={resource.id}>
+                            {resourceType === practitionerResourceType
+                              ? parseFhirHumanName(practitionerName)
+                              : res.name}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ),
+                };
+                return (
+                  <Fragment key={index}>
+                    {resources.length && renderObjectAsKeyvalue(subKeyValues)}
+                  </Fragment>
+                );
+              })()}
+            </li>
+          );
+        })}
+      </ul>
+    ),
+    [t('Managing organizations')]: managingOrganizations?.length ? (
+      <ul id="managing-organizations">
+        {managingOrganizations.map((organization) => (
+          <li key={organization.id}>{organization.name}</li>
+        ))}
+      </ul>
+    ) : (
+      <Alert>{t('No managing organizaions found')}</Alert>
+    ),
+  };
 
   return (
     <Col className="view-details-content">
       <div className="flex-right">
         <Button
+          data-test-id="cancel"
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
           onClick={() => history.push(URL_CARE_TEAM)}
         />
       </div>
-      {isLoading ? (
-        <Spin size="large" className="custom-spinner" />
-      ) : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      !isLoading && careTeamId && !data ? (
-        <Resource404 />
+      {error && !data ? (
+        <BrokenPage errorMessage={`${error}`} />
       ) : (
         <Space direction="vertical">
-          <Text strong={true} className="display-block">
-            {t('Name')}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {data?.name}
-          </Text>
-          <Text strong={true} className="display-block">
-            {t('Identifier')}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {officialIdentifier?.value}
-          </Text>
-          <Text strong={true} className="display-block">
-            {t('Status')}
-          </Text>
-          <Text type="secondary" className="display-block">
-            {data?.status}
-          </Text>
-          {subject.data && subject.data.name ? (
-            <>
-              <Text strong={true} className="display-block">
-                {t('Subject')}
-              </Text>
-              <Text type="secondary" className="display-block">
-                {subject.data.name}
-              </Text>
-            </>
+          {isLoading ? (
+            <Alert description={t('Fetching Care team')} type="info"></Alert>
+          ) : careTeam ? (
+            renderObjectAsKeyvalue(careTeamKeyValues)
           ) : (
-            ''
+            <Alert description={t('Care Team not found')} type="warning"></Alert>
           )}
-          <Text strong={true} className="display-block">
-            {t('Participant')}
-          </Text>
-          {practitioners.length
-            ? practitioners.map((datum: Dictionary) => (
-                <>
-                  <Text type="secondary" className="display-block">
-                    {getPatientName(datum.data)}
-                  </Text>
-                </>
-              ))
-            : ''}
         </Space>
       )}
     </Col>
