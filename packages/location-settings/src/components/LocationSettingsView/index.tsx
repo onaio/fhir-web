@@ -85,10 +85,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (
-    (locationSettings.error && !locationSettings.data) ||
-    (userLocSettings.error && !userLocSettings.data)
-  ) {
+  if (locationSettings.error || userLocSettings.error) {
     return <BrokenPage />;
   }
 
