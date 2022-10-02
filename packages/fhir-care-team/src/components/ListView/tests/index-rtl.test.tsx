@@ -128,7 +128,7 @@ describe('Care Teams list view', () => {
     const history = createMemoryHistory();
     history.push(URL_CARE_TEAM);
 
-    const { getByText } = render(
+    const { getByText, queryByText } = render(
       <Router history={history}>
         <AppWrapper {...props} />
       </Router>
@@ -143,7 +143,11 @@ describe('Care Teams list view', () => {
     });
 
     // view details
-    nock(props.fhirBaseURL).get(`/${careTeamResourceType}/308`).reply(200, careTeam4214).persist();
+    nock(props.fhirBaseURL)
+      .get(`/${careTeamResourceType}/_search`)
+      .query({ _id: '308', _include: 'CareTeam:*' })
+      .reply(200, careTeam4214)
+      .persist();
 
     // target the initial row view details
     const dropdown = document.querySelector(
@@ -162,8 +166,7 @@ describe('Care Teams list view', () => {
     fireEvent.click(viewDetailsLink);
     expect(history.location.pathname).toEqual('/admin/CareTeams/308');
 
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-    // view details renders correctly
+    await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
     document
       .querySelectorAll('.display-block')
       .forEach((block) => expect(block).toMatchSnapshot('view details display block'));

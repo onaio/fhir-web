@@ -215,13 +215,19 @@ exports[`Closes on clicking cancel (X)  7`] = `
       class="ant-typography"
     >
       <div
-        class="ant-alert ant-alert-info ant-alert-no-icon"
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
         data-show="true"
         role="alert"
       >
         <div
           class="ant-alert-content"
-        />
+        >
+          <div
+            class="ant-alert-description"
+          >
+            No managing organizaions found
+          </div>
+        </div>
       </div>
     </span>
   </dd>
@@ -449,13 +455,19 @@ exports[`works correctly 7`] = `
       class="ant-typography"
     >
       <div
-        class="ant-alert ant-alert-info ant-alert-no-icon"
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
         data-show="true"
         role="alert"
       >
         <div
           class="ant-alert-content"
-        />
+        >
+          <div
+            class="ant-alert-description"
+          >
+            No managing organizaions found
+          </div>
+        </div>
       </div>
     </span>
   </dd>
