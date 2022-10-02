@@ -17,13 +17,13 @@ import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import {
   careTeamResourceType,
-  groupResourceType,
+  organizationResourceType,
   practitionerResourceType,
   ROUTE_PARAM_CARE_TEAM_ID,
 } from '../../../constants';
 import { screen, render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
-import { careTeam1, careTeam4201Edited, groups } from './fixtures';
+import { careTeam1, careTeam4201Edited, organizations } from './fixtures';
 import flushPromises from 'flush-promises';
 
 jest.mock('fhirclient', () => {
@@ -98,12 +98,12 @@ test('renders correctly for create care team', async () => {
   history.push('/add');
 
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _summary: 'count' })
     .reply(200, { total: 1000 })
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _count: 1000 })
-    .reply(200, groups);
+    .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
@@ -131,7 +131,7 @@ test('renders correctly for create care team', async () => {
 
   // does not show inactive practitioners
   // find antd Select with id 'practitionersId' in the component
-  const practitionersSelect = document.querySelector('[data-testid="practitionersId"]');
+  const practitionersSelect = document.querySelector('[data-testid="practitioners"]');
 
   // simulate click on select - to show dropdown items
   fireEvent.mouseDown(practitionersSelect.querySelector('.ant-select-selector'));
@@ -143,8 +143,8 @@ test('renders correctly for create care team', async () => {
 
   // expect all practitioners (except inactive ones)
   expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
-    'Ward N Williams MD',
-    'Ward N Williams MD',
+    'Ward N 2 Williams MD',
+    'Ward N 1 Williams MD',
     'Ward N Williams MD',
     'test fhir',
     'test fhir',
@@ -166,12 +166,12 @@ test('renders correctly for edit care team', async () => {
   nock(props.fhirBaseURL).get(`/${careTeamResourceType}/${careTeamId}`).reply(200, careTeam1);
 
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _summary: 'count' })
     .reply(200, { total: 1000 })
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _count: 1000 })
-    .reply(200, groups);
+    .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
@@ -208,12 +208,12 @@ test('#1016 - does not create malformed request body', async () => {
     .reply(200, fixtures.careTeam4201);
 
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _summary: 'count' })
     .reply(200, { total: 1000 })
-    .get(`/${groupResourceType}/_search`)
+    .get(`/${organizationResourceType}/_search`)
     .query({ _count: 1000 })
-    .reply(200, groups);
+    .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
