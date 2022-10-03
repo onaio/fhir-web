@@ -63,7 +63,7 @@ exports[`components/forms/UserForm renders correctly: email label 1`] = `
 exports[`components/forms/UserForm renders correctly: enabled input 1`] = `
 Array [
   <input
-    checked={false}
+    checked={true}
     className="ant-radio-input"
     name="enabled"
     onBlur={[Function]}
@@ -76,7 +76,7 @@ Array [
     value={true}
   />,
   <input
-    checked={true}
+    checked={false}
     className="ant-radio-input"
     name="enabled"
     onBlur={[Function]}
@@ -147,9 +147,9 @@ exports[`components/forms/UserForm renders correctly: userGroups label 1`] = `
 <label
   className=""
   htmlFor="userGroups"
-  title="Group"
+  title="Keycloak User Group"
 >
-  Group
+  Keycloak User Group
 </label>
 `;
 
