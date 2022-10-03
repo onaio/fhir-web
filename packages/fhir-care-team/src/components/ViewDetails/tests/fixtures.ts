@@ -1,176 +1,211 @@
-export const careTeam1 = {
-  resourceType: 'CareTeam',
-  id: '308',
+export const careTeamWithIncluded = {
+  resourceType: 'Bundle',
+  id: '2fb071f1-cafc-4a84-9d0d-e7bdb2e7875e',
   meta: {
-    versionId: '4',
-    lastUpdated: '2021-06-18T06:07:29.649+00:00',
-    source: '#9bf085bac3f61473',
+    lastUpdated: '2022-09-29T20:32:11.641+00:00',
   },
-  identifier: [
+  type: 'searchset',
+  total: 1,
+  link: [
     {
-      use: 'official',
-      value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/CareTeam/_search?_id=131411&_include=CareTeam%3A*',
     },
   ],
-  status: 'active',
-  name: 'Care Team One',
-  subject: {
-    reference: 'Group/306',
-  },
-  participant: [
+  entry: [
     {
-      member: {
-        reference: 'Practitioner/206',
-      },
-    },
-    {
-      member: {
-        reference: 'Practitioner/103',
-      },
-    },
-  ],
-};
-
-export const group1 = {
-  resourceType: 'Group',
-  id: '306',
-  meta: {
-    versionId: '1',
-    lastUpdated: '2021-05-26T16:31:30.444+00:00',
-    source: '#0d2306dfa4b90412',
-  },
-  identifier: [
-    {
-      use: 'official',
-      value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
-    },
-  ],
-  active: true,
-  name: 'ANC patients',
-  quantity: 1,
-  member: [
-    {
-      entity: {
-        reference: 'Patient/3',
-      },
-    },
-  ],
-};
-
-export const practitioner1 = {
-  resourceType: 'Practitioner',
-  id: '206',
-  meta: {
-    versionId: '1',
-    lastUpdated: '2021-04-20T07:00:53.598+00:00',
-    source: '#85ea6b68103eba2b',
-  },
-  identifier: [
-    {
-      use: 'secondary',
-      value: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
-    },
-  ],
-  active: true,
-  name: [
-    {
-      use: 'official',
-      family: 'Allan',
-      given: ['Allay'],
-    },
-  ],
-  telecom: [
-    {
-      system: 'email',
-    },
-  ],
-};
-
-export const practitioner2 = {
-  resourceType: 'Practitioner',
-  id: '103',
-  meta: {
-    versionId: '1',
-    lastUpdated: '2021-04-06T14:23:33.833+00:00',
-    source: '#6410e3946e34d533',
-    tag: [
-      {
-        system: 'https://fhir.labs.smartregister.org/tags',
-        code: 'ona-7-2017',
-      },
-    ],
-  },
-  text: {
-    status: 'generated',
-    div: '<div xmlns="http://www.w3.org/1999/xhtml">Ward Williams</div>',
-  },
-  identifier: [
-    {
-      use: 'official',
-      type: {
-        coding: [
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/CareTeam/131411',
+      resource: {
+        resourceType: 'CareTeam',
+        id: '131411',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-05-30T00:53:35.099+00:00',
+          source: '#8pT6h5Axyf9VsdQq',
+        },
+        identifier: [
           {
-            system: 'http://hl7.org/fhir/identifier-type',
-            code: 'SB',
-            display: 'Social Beneficiary Identifier',
+            use: 'official',
+            value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
           },
         ],
-        text: 'US Social Security Number',
-      },
-      system: 'http://hl7.org/fhir/sid/us-ssn',
-      value: '000-00-0002',
-    },
-    {
-      use: 'secondary',
-      type: {
-        coding: [
+        status: 'active',
+        name: 'Care Team One',
+        subject: {
+          reference: 'Group/131410',
+        },
+        participant: [
           {
-            system: 'http://hl7.org/fhir/identifier-type',
-            code: 'KUID',
-            display: 'Keycloak user ID',
+            member: {
+              reference: 'Practitioner/131406',
+            },
+          },
+          {
+            member: {
+              reference: 'Practitioner/131406',
+            },
           },
         ],
-        text: 'Keycloak user ID',
       },
-      system: 'http://hl7.org/fhir/sid/us-ssn',
-      value: '287aff05-ff9b-4b07-b525-8860c70377d0',
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Group/131410',
+      resource: {
+        resourceType: 'Group',
+        id: '131410',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2022-06-27T03:22:27.188+00:00',
+          source: '#c6f633c24d9e6c4b',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '93bc9c3d-6321-41b0-9b93-1275d7114e34',
+          },
+        ],
+        active: true,
+        name: 'ANC patients',
+        quantity: 1,
+        member: [
+          {
+            entity: {
+              reference: 'Patient/131408',
+            },
+          },
+        ],
+      },
+      search: {
+        mode: 'include',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Practitioner/131406',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '131406',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-05-30T00:38:44.891+00:00',
+          source: '#R1qpXIa2QDrDkBrn',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'aace2e430b-64be-477e-9d86-b36c666c0211',
+          },
+          {
+            use: 'secondary',
+            value: '40353ad0-6fa0-4da3-9dd6-b2d9d5a09b6a',
+          },
+        ],
+        active: true,
+        name: [
+          {
+            use: 'official',
+            family: 'Tester family',
+            given: ['Ward test hey', 'N test'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'email',
+            value: 'reham.muzzamil@venturedive.com',
+          },
+        ],
+      },
+      search: {
+        mode: 'include',
+      },
     },
   ],
-  active: true,
-  name: [
+};
+
+export const careTeam2 = {
+  resourceType: 'Bundle',
+  id: '11112110-5942-40cb-b8ca-80650821dba4',
+  meta: {
+    lastUpdated: '2022-09-30T06:13:08.311+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
     {
-      use: 'official',
-      family: 'Williams',
-      given: ['Ward', 'N'],
-      suffix: ['MD'],
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/CareTeam?_format=json&_id=142534&_include=CareTeam%3A*',
     },
   ],
-  telecom: [
+  entry: [
     {
-      system: 'phone',
-      value: '800-651-2242',
-      use: 'home',
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/CareTeam/142534',
+      resource: {
+        resourceType: 'CareTeam',
+        id: '142534',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-09-01T12:44:38.522+00:00',
+          source: '#532e59e3409867b3',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '99c4dde5-3aca-4a4b-8b33-b50142e05da6',
+          },
+        ],
+        status: 'active',
+        name: 'Brown Bag',
+        participant: [
+          {
+            member: {
+              reference: 'Practitioner/137469',
+            },
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
     },
     {
-      system: 'phone',
-      value: '800-471-8810',
-      use: 'mobile',
-    },
-    {
-      system: 'email',
-      value: 'susan.williams@example.com',
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Practitioner/137469',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '137469',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-08-10T13:16:53.838+00:00',
+          source: '#2c648422b7a6e78e',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '175ceaa4-0f75-4ab3-a8a7-413cc225f761',
+          },
+          {
+            use: 'secondary',
+            value: 'b27939dd-4c8f-44c2-83dd-dc40e494f17d',
+          },
+        ],
+        active: true,
+        name: [
+          {
+            use: 'official',
+            family: 'Demo',
+            given: ['AeHIN'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'email',
+          },
+        ],
+      },
+      search: {
+        mode: 'include',
+      },
     },
   ],
-  address: [
-    {
-      use: 'home',
-      line: ['27 South Ave'],
-      city: 'Tulsa',
-      state: 'OK',
-      postalCode: '74126',
-      country: 'USA',
-    },
-  ],
-  gender: 'female',
-  birthDate: '1996-11-22',
 };
