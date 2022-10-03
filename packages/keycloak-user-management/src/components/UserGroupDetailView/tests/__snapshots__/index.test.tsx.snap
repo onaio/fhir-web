@@ -1,25 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View User Group Details works correctly: nominal display 1`] = `"NameGroup NameGroup uuid123-some-group-uuid-456RolesROLE_ONEROLE_TWOROLE_THREEMembersname-1name-2name-3name-4"`;
+exports[`View User Group Details works correctly: nominal display 1`] = `"Group uuid123-some-group-uuid-456NameGroup NameRolesROLE_ONEROLE_TWOROLE_THREEMembersname 1 (name-1)undefined undefined (name-2)undefined undefined (name-3)undefined undefined (name-4)"`;
 
 exports[`View User Group Details works correctly: space element 1`] = `
 Object {
   "children": Array [
-    <div
-      className="mb-2 medium mt-2"
-    >
-      <p
-        className="mb-0 font-weight-bold"
-      >
-        Name
-      </p>
-      <p
-        className="mb-0"
-        id="name"
-      >
-        Group Name
-      </p>
-    </div>,
     <div
       className="mb-2 medium mt-2"
     >
@@ -33,6 +18,21 @@ Object {
         id="uuid"
       >
         123-some-group-uuid-456
+      </p>
+    </div>,
+    <div
+      className="mb-2 medium mt-2"
+    >
+      <p
+        className="mb-0 font-weight-bold"
+      >
+        Name
+      </p>
+      <p
+        className="mb-0"
+        id="name"
+      >
+        Group Name
       </p>
     </div>,
     <div
@@ -87,7 +87,7 @@ Object {
           id="realRole"
           to="/admin/users/edit/id-1"
         >
-          name-1
+          name 1 (name-1)
         </Link>
       </p>
       <p
@@ -98,7 +98,7 @@ Object {
           id="realRole"
           to="/admin/users/edit/id-2"
         >
-          name-2
+          undefined undefined (name-2)
         </Link>
       </p>
       <p
@@ -109,7 +109,7 @@ Object {
           id="realRole"
           to="/admin/users/edit/id-3"
         >
-          name-3
+          undefined undefined (name-3)
         </Link>
       </p>
       <p
@@ -120,7 +120,7 @@ Object {
           id="realRole"
           to="/admin/users/edit/id-4"
         >
-          name-4
+          undefined undefined (name-4)
         </Link>
       </p>
     </div>,

@@ -137,13 +137,13 @@ test('renders correctly when listing resources', async () => {
     });
   });
 
-  // sort?
+  // sort? - by firstName
   const caretUp = document.querySelector('.anticon-caret-up:nth-child(1)');
   fireEvent.click(caretUp);
-  const tdsText = [...document.querySelectorAll('tr td:nth-child(3)')].map((td) => {
+  const tdsText = [...document.querySelectorAll('tr td:nth-child(1)')].map((td) => {
     return td.textContent;
   });
-  expect(tdsText).toEqual(['petertest', 'Test', 'User', 'Coda', 'Coda']);
+  expect(tdsText).toEqual(['testhh', 'test404', 'eCBIS', 'april4', 'Roy']);
 
   // works with search as well.
   const searchForm = document.querySelector('[data-testid="search-form"]');
@@ -164,7 +164,7 @@ test('renders correctly when listing resources', async () => {
   // view details
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ identifier: userFixtures[0].id })
+    .query({ identifier: userFixtures[14].id })
     .reply(200, practitioner)
     .get(`/${careTeamResourceType}/_search`)
     .query({ 'participant:Practitioner': practitionerObj.id, _summary: 'count' })
@@ -181,13 +181,13 @@ test('renders correctly when listing resources', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/admin/users/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0"
+      href="/admin/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`${URL_USER}/${userFixtures[0].id}`);
+  expect(history.location.pathname).toEqual(`${URL_USER}/${userFixtures[14].id}`);
 
   // this only await the first call to get the users.
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
@@ -241,8 +241,9 @@ test('renders correctly when listing resources', async () => {
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?max=15',
-    'http://test-keycloak.server.org/users/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0',
-    'http://test-keycloak.server.org/users/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0',
+    'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78',
+    'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78/groups',
+    'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78',
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?',
   ]);

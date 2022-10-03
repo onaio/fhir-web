@@ -36,9 +36,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  <span
-    class="d-flex justify-content-end align-items-center Actions"
-  >
+  <span>
     <a
       href="/admin/location/unit/edit/303"
     >

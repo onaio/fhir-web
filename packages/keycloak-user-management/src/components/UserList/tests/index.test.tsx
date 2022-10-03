@@ -264,7 +264,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo toPage"`
+      `"User ManagementAdd UserFirst NameLast NameUsernameActionsZembaKaliminazkaliminaEditZyingaKapelezkapeleEdit125 / pageGo toPage"`
     );
   });
 
@@ -330,7 +330,7 @@ describe('components/UserList', () => {
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     // check that table has No Data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserEmailFirst NameLast NameUsernameActionsNo Data"`
+      `"User ManagementAdd UserFirst NameLast NameUsernameActionsNo Data"`
     );
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
@@ -364,7 +364,7 @@ describe('components/UserList', () => {
       'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
     ]);
 
-    // trigger sort on second column (first name)
+    // trigger sort on second column
     const sorter = wrapper.find('th.ant-table-column-has-sorters').at(1);
     sorter.simulate('click');
 
@@ -377,9 +377,9 @@ describe('components/UserList', () => {
     const rowKeys2 = wrapper.find('tr[data-row-key]').map((row) => row.props()['data-row-key']);
     expect(rowKeys2).toMatchObject([
       '80385001-f385-42ec-8edf-8591dc181a54',
-      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
       'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
       '97f36061-52fb-4474-88f2-fd286311ff1d',
+      '520b579e-70e9-4ae9-b1f8-0775c605b8d2',
     ]);
 
     wrapper.unmount();
