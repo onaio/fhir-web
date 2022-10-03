@@ -80,11 +80,17 @@ export const parseFhirHumanName = (hName?: HumanName) => {
     return;
   }
   const { family, given, suffix, prefix } = hName;
-  const namesArray: string[] = [
-    (prefix ?? []).join(' '),
-    (given ?? []).join(' '),
-    family ?? '',
-    (suffix ?? []).join(' '),
+
+  // sanitize variable to make sure its array
+  const confirmArray = (element?: unknown) =>
+    element ? (Array.isArray(element) ? element : [element]) : [];
+
+  const namesArray = [
+    confirmArray(prefix).join(' '),
+    confirmArray(given).join(' '),
+    confirmArray(family).join(' '),
+    confirmArray(suffix).join(' '),
   ].filter((txt) => !!txt);
+
   return namesArray.join(' ');
 };

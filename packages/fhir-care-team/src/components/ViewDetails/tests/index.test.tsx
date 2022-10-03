@@ -1,161 +1,127 @@
-import { mount } from 'enzyme';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import toJson from 'enzyme-to-json';
 import React from 'react';
 import { Router } from 'react-router';
-import * as reactQuery from 'react-query';
+import { QueryClientProvider } from 'react-query';
 import { ViewDetails } from '..';
-import * as fixtures from './fixtures';
+import { careTeam2, careTeamWithIncluded } from './fixtures';
 import { createBrowserHistory } from 'history';
-import * as fhirCient from 'fhirclient';
-import { act } from 'react-dom/test-utils';
-import flushPromises from 'flush-promises';
 import { createTestQueryClient } from '../../ListView/tests/utils';
+import nock from 'nock';
+import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { careTeamResourceType } from '../../../constants';
 
-const { QueryClientProvider } = reactQuery;
+const history = createBrowserHistory();
 
 const testQueryClient = createTestQueryClient();
 
-const history = createBrowserHistory();
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-describe('View Care Team Details', () => {
-  beforeAll(() => {
-    store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
-      )
-    );
-  });
-  it('works correctly', async () => {
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockResolvedValue(fixtures.careTeam1),
-        };
-      })
-    );
-    const props = {
-      careTeamId: fixtures.careTeam1.id,
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-    };
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+  careTeamId: '131411',
+};
 
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <ViewDetails {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+});
 
-    expect(wrapper.text()).toMatchSnapshot('nominal display');
-    // att test case to capture space element props snapshot
-    expect(wrapper.find('ViewDetails Space').props()).toMatchSnapshot('space element');
-    wrapper.unmount();
-  });
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-  it('displays care team, details correctly', async () => {
-    const props = {
-      careTeamId: fixtures.careTeam1.id,
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <ViewDetails {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Router history={history}>
+      <QueryClientProvider client={testQueryClient}>
+        <ViewDetails {...props} />
+      </QueryClientProvider>
+    </Router>
+  );
+};
 
-    // check that detail view is rendered
-    expect(toJson(wrapper.find('.view-details-content'))).toBeTruthy();
+test('works correctly', async () => {
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ _id: '131411', _include: 'CareTeam:*' })
+    .reply(200, careTeamWithIncluded);
+
+  const { queryByText } = render(<AppWrapper {...props}></AppWrapper>);
+  await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
   });
 
-  it('detail view without careTeamId', () => {
-    const props = {
-      careTeamId: '',
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <ViewDetails {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
-    expect(toJson(wrapper.find('.view-details-content'))).toMatchSnapshot('Should be null');
-    wrapper.unmount();
+  expect(nock.pendingMocks()).toEqual([]);
+});
+
+test('Closes on clicking cancel (X) ', async () => {
+  const localProps = {
+    ...props,
+    careTeamId: '142534',
+  };
+
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ _id: localProps.careTeamId, _include: 'CareTeam:*' })
+    .reply(200, careTeam2);
+
+  const { queryByText } = render(<AppWrapper {...localProps}></AppWrapper>);
+  await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
   });
 
-  it('Closes on clicking cancel (X) ', () => {
-    const props = {
-      careTeamId: fixtures.careTeam1.id,
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-    };
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <ViewDetails {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+  // simulate clicking on close button
+  const button = document.querySelector('.flex-right button');
+  fireEvent.click(button);
 
-    // simulate clicking on close button
-    act(() => {
-      wrapper.find('.flex-right button').simulate('click');
-    });
+  expect(history.location.pathname).toEqual('/admin/CareTeams');
+});
 
-    expect(wrapper.props().history.location.pathname).toEqual('/admin/CareTeams');
-    wrapper.unmount();
-  });
+test('shows broken page if fhir api is down', async () => {
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ _id: props.careTeamId, _include: 'CareTeam:*' })
+    .replyWithError('coughid');
 
-  it('shows broken page if fhir api is down', async () => {
-    const props = {
-      careTeamId: fixtures.careTeam1.id,
-      fhirBaseURL: 'https://r4.smarthealthit.org/',
-    };
-    const reactQueryMock = jest.spyOn(reactQuery, 'useQuery');
-    reactQueryMock.mockImplementation(
-      () =>
-        ({
-          data: undefined,
-          error: 'Something went wrong',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any)
-    );
-    const wrapper = mount(
-      <Router history={history}>
-        <QueryClientProvider client={testQueryClient}>
-          <ViewDetails {...props} />
-        </QueryClientProvider>
-      </Router>
-    );
+  const { getByText, queryByText } = render(<AppWrapper {...props}></AppWrapper>);
+  await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
 
-    await act(async () => {
-      await flushPromises();
-    });
-
-    wrapper.update();
-    /** error view */
-    expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
-    wrapper.unmount();
-  });
+  expect(getByText(/coughid/)).toBeInTheDocument();
 });

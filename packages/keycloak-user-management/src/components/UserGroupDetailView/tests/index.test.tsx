@@ -29,6 +29,8 @@ describe('View User Group Details', () => {
       {
         id: 'id-1',
         username: 'name-1',
+        firstName: 'name',
+        lastName: '1',
       },
       {
         id: 'id-2',

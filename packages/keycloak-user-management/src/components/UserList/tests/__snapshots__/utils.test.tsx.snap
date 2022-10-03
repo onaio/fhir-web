@@ -3,14 +3,6 @@
 exports[`components/UserList/utils/getTableColumns builds table columns correctly with sorted info: table columns with sorted info 1`] = `
 Array [
   Object {
-    "dataIndex": "email",
-    "ellipsis": true,
-    "key": "email",
-    "sortOrder": false,
-    "sorter": [Function],
-    "title": "Email",
-  },
-  Object {
     "dataIndex": "firstName",
     "ellipsis": true,
     "key": "firstName",
@@ -39,14 +31,6 @@ Array [
 
 exports[`components/UserList/utils/getTableColumns builds table columns correctly: table columns 1`] = `
 Array [
-  Object {
-    "dataIndex": "email",
-    "ellipsis": true,
-    "key": "email",
-    "sortOrder": undefined,
-    "sorter": [Function],
-    "title": "Email",
-  },
   Object {
     "dataIndex": "firstName",
     "ellipsis": true,

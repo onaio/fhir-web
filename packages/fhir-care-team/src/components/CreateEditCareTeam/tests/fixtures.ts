@@ -203,7 +203,7 @@ export const practitioners = {
           {
             use: 'official',
             family: 'Williams',
-            given: ['Ward', 'N'],
+            given: ['Ward', 'N', '2'],
             suffix: ['MD'],
           },
         ],
@@ -297,7 +297,7 @@ export const practitioners = {
           {
             use: 'official',
             family: 'Williams',
-            given: ['Ward', 'N'],
+            given: ['Ward', 'N', '1'],
             suffix: ['MD'],
           },
         ],
@@ -1007,109 +1007,484 @@ export const practitioners = {
   ],
 };
 
-export const groups = {
+export const organizations = {
   resourceType: 'Bundle',
-  id: '758af2f5-0d4e-40e3-9f0e-b39239e18b11',
+  id: '09bd0a1f-2c02-431b-8b64-e8a12f7a5f54',
   meta: {
-    lastUpdated: '2021-06-21T12:04:30.775+00:00',
+    lastUpdated: '2022-10-02T10:35:08.316+00:00',
   },
   type: 'searchset',
-  total: 3,
+  total: 251,
   link: [
     {
       relation: 'self',
-      url: 'http://fhir.labs.smartregister.org/fhir/Group?_format=json',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/Organization',
+    },
+    {
+      relation: 'next',
+      url: 'https://fhir.labs.smartregister.org:443/fhir?_getpages=09bd0a1f-2c02-431b-8b64-e8a12f7a5f54&_getpagesoffset=20&_count=20&_pretty=true&_bundletype=searchset',
     },
   ],
   entry: [
     {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Group/306',
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/364',
       resource: {
-        resourceType: 'Group',
-        id: '306',
+        resourceType: 'Organization',
+        id: '364',
         meta: {
           versionId: '1',
-          lastUpdated: '2021-05-26T16:31:30.444+00:00',
-          source: '#0d2306dfa4b90412',
+          lastUpdated: '2021-06-22T13:15:30.534+00:00',
+          source: '#a2daabb58f6bbbd5',
         },
         identifier: [
           {
             use: 'official',
-            value: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
+            value: 'e91fb7fd-5dd2-4edc-980f-2a8a47afabc0',
           },
         ],
         active: true,
-        name: 'ANC patients',
-        quantity: 1,
-        member: [
-          {
-            entity: {
-              reference: 'Patient/3',
-            },
-          },
-        ],
+        name: 'Test Team 5',
       },
       search: {
         mode: 'match',
       },
     },
     {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Group/307',
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/365',
       resource: {
-        resourceType: 'Group',
-        id: '307',
+        resourceType: 'Organization',
+        id: '365',
         meta: {
           versionId: '1',
-          lastUpdated: '2021-05-26T16:33:33.242+00:00',
-          source: '#e7e82348904840a4',
+          lastUpdated: '2021-06-22T13:15:36.882+00:00',
+          source: '#ffb40bf381017dad',
         },
         identifier: [
           {
             use: 'official',
-            value: '93bc9c3d-6321-41b0-9b93-1275d7114e34',
+            value: 'a330d973-f144-42b4-b608-b5118ed21f4d',
           },
         ],
         active: true,
-        name: 'ANC patients',
-        quantity: 1,
-        member: [
-          {
-            entity: {
-              reference: 'Patient/3',
-            },
-          },
-        ],
+        name: 'Test Team 5',
       },
       search: {
         mode: 'match',
       },
     },
     {
-      fullUrl: 'http://fhir.labs.smartregister.org/fhir/Group/329',
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/366',
       resource: {
-        resourceType: 'Group',
-        id: '329',
+        resourceType: 'Organization',
+        id: '366',
         meta: {
           versionId: '1',
-          lastUpdated: '2021-06-16T07:47:27.192+00:00',
-          source: '#c01df7e48153edb1',
+          lastUpdated: '2021-06-22T13:35:11.315+00:00',
+          source: '#87395375150eac4b',
         },
         identifier: [
           {
             use: 'official',
-            value: '98828c48-a0c7-42c0-9802-48c525a916d6',
+            value: '7b83dd9c-ae06-4e1e-b45f-719e6d6af376',
           },
         ],
         active: true,
-        name: 'TEST group ',
-        quantity: 1,
-        member: [
+        name: 'Test Team 5',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/361',
+      resource: {
+        resourceType: 'Organization',
+        id: '361',
+        meta: {
+          versionId: '4',
+          lastUpdated: '2022-04-04T06:52:30.441+00:00',
+          source: '#facb326ba81aa75c',
+        },
+        identifier: [
           {
-            entity: {
-              reference: 'Patient/3',
-            },
+            use: 'official',
+            value: 'a741cd5e-5737-4731-908b-957afa91878d',
           },
         ],
+        active: true,
+        type: [
+          {
+            coding: [
+              {
+                system: 'urn:oid:2.16.840.1.113883.2.4.15.1060',
+                code: 'V6',
+                display: 'Facility',
+              },
+            ],
+          },
+        ],
+        name: 'Test Team One',
+        alias: ['test'],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/367',
+      resource: {
+        resourceType: 'Organization',
+        id: '367',
+        meta: {
+          versionId: '7',
+          lastUpdated: '2021-06-22T13:48:22.572+00:00',
+          source: '#5c5d598cd88033dd',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'd409822e-055e-49a4-9d16-642ea6437447',
+          },
+        ],
+        active: true,
+        name: 'Test UUID 46',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/368',
+      resource: {
+        resourceType: 'Organization',
+        id: '368',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-22T13:54:14.316+00:00',
+          source: '#986189221957dceb',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'b7230dc0-864f-4442-bc86-806c3eb6915b',
+          },
+        ],
+        active: true,
+        name: 'Test Team 70',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/204',
+      resource: {
+        resourceType: 'Organization',
+        id: '204',
+        meta: {
+          versionId: '3',
+          lastUpdated: '2021-06-23T12:00:36.748+00:00',
+          source: '#5ae8ab706e103ba4',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '204',
+          },
+        ],
+        active: true,
+        name: 'test123',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/319',
+      resource: {
+        resourceType: 'Organization',
+        id: '319',
+        meta: {
+          versionId: '5',
+          lastUpdated: '2021-06-25T20:22:48.045+00:00',
+          source: '#e42cc8297d93f07a',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '319',
+          },
+        ],
+        active: true,
+        name: 'testing ash123',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/401',
+      resource: {
+        resourceType: 'Organization',
+        id: '401',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:24:31.855+00:00',
+          source: '#f6040ab69abadb29',
+        },
+        identifier: [
+          {
+            use: 'official',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 1',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/402',
+      resource: {
+        resourceType: 'Organization',
+        id: '402',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:27:37.238+00:00',
+          source: '#05314c9d7d55aac8',
+        },
+        identifier: [
+          {
+            use: 'official',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 2',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/403',
+      resource: {
+        resourceType: 'Organization',
+        id: '403',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:29:50.945+00:00',
+          source: '#d2ae3118055aba16',
+        },
+        identifier: [
+          {
+            use: 'official',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 2',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/404',
+      resource: {
+        resourceType: 'Organization',
+        id: '404',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:38:37.951+00:00',
+          source: '#3af5dc8ae1cc0d63',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '09bd4bd3-901b-4cc1-b52c-9a6b542cb02b',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 2',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/405',
+      resource: {
+        resourceType: 'Organization',
+        id: '405',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:38:57.634+00:00',
+          source: '#11ec40307140656b',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '75f259e9-6646-4488-9cca-e0fe0b9c494c',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 2',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/406',
+      resource: {
+        resourceType: 'Organization',
+        id: '406',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:39:02.075+00:00',
+          source: '#f273b3d25e1bae63',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '4cae9067-1207-417b-af4a-35f1e276976d',
+          },
+        ],
+        active: true,
+        name: 'ashfahan test 2',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/407',
+      resource: {
+        resourceType: 'Organization',
+        id: '407',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:47:23.635+00:00',
+          source: '#69ea5fdea71ac706',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'c38351e9-a95f-4fbb-a089-931d687d9d95',
+          },
+        ],
+        active: true,
+        name: 'AllRoles',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/408',
+      resource: {
+        resourceType: 'Organization',
+        id: '408',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:48:18.411+00:00',
+          source: '#558a02201ef93ba5',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '1a1793e0-e52f-4136-b0f4-891e14abf18f',
+          },
+        ],
+        active: true,
+        name: 'Test team 000',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/409',
+      resource: {
+        resourceType: 'Organization',
+        id: '409',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:51:04.550+00:00',
+          source: '#c9db658aca721806',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'bc31b016-62f4-4df0-981a-de859fdaf1c6',
+          },
+        ],
+        active: true,
+        name: 'Test team 000',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/410',
+      resource: {
+        resourceType: 'Organization',
+        id: '410',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:51:39.667+00:00',
+          source: '#b4d9aed516f69326',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'b01906af-a91f-4b28-8b65-d677e1110e86',
+          },
+        ],
+        active: true,
+        name: 'Test Team two',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl:
+        'https://fhir.labs.smartregister.org:443/fhir/Organization/a741cd5e-5737-4731-908b-957afa91878d',
+      resource: {
+        resourceType: 'Organization',
+        id: 'a741cd5e-5737-4731-908b-957afa91878d',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-28T23:52:09.757+00:00',
+          source: '#e232c095a30ba026',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'a741cd5e-5737-4731-908b-957afa91878d',
+          },
+        ],
+        active: true,
+        name: 'Test Team One',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Organization/428',
+      resource: {
+        resourceType: 'Organization',
+        id: '428',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-07-02T16:29:58.530+00:00',
+          source: '#c53122e960f3192a',
+        },
+        active: true,
+        name: 'UNICEF',
       },
       search: {
         mode: 'match',
@@ -1125,6 +1500,33 @@ export const formValues = {
   status: 'active',
   practitionersId: ['103'],
   groupsId: '329',
+  practitionerParticipants: [],
+  managingOrganizations: [],
 };
 
 export const practitionerBundle = practitioners.entry;
+
+export const createdCareTeam = {
+  resourceType: 'CareTeam',
+  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+  id: '',
+  name: 'Care team 1',
+  status: 'active',
+  participant: [
+    {
+      role: [
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '394730007',
+              display: 'Healthcare related organization',
+            },
+          ],
+        },
+      ],
+      member: { reference: 'Organization/368', display: 'Test Team 70' },
+    },
+    { member: { reference: 'Practitioner/102', display: 'Ward N 2 Williams MD' } },
+  ],
+};

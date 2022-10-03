@@ -44,15 +44,15 @@ const ViewDetails = (props: ViewDetailsProps) => {
       ) : (
         <Space direction="vertical">
           <div className="mb-2 medium mt-2">
-            <p className="mb-0 font-weight-bold">{t('Name')}</p>
-            <p className="mb-0" id="name">
-              {GroupDetails.name}
-            </p>
-          </div>
-          <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Group uuid')}</p>
             <p className="mb-0" id="uuid">
               {GroupDetails.id}
+            </p>
+          </div>
+          <div className="mb-2 medium mt-2">
+            <p className="mb-0 font-weight-bold">{t('Name')}</p>
+            <p className="mb-0" id="name">
+              {GroupDetails.name}
             </p>
           </div>
           <div className="mb-2 medium mt-2">
@@ -77,10 +77,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Members')}</p>
             {userGroupMembers.length ? (
-              userGroupMembers.map((userGroup) => (
-                <p key={userGroup.id} className="mb-0" id="groupMember">
-                  <Link key={userGroup.id} to={`${URL_USER_EDIT}/${userGroup.id}`} id="realRole">
-                    {userGroup.username}
+              userGroupMembers.map((member) => (
+                <p key={member.id} className="mb-0" id="groupMember">
+                  <Link key={member.id} to={`${URL_USER_EDIT}/${member.id}`} id="realRole">
+                    {`${member.firstName} ${member.lastName} (${member.username})`}
                   </Link>
                 </p>
               ))
