@@ -13,7 +13,7 @@ import {
   getResourcesFromBundle,
   IdentifierUseCodes,
   loadAllResources,
-  SingleKeyNestedValue,
+  renderObjectAsKeyvalue,
 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -205,27 +205,5 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
         keycloakBaseUrl={keycloakBaseUrl}
       />
     </Col>
-  );
-};
-
-/**
- * Dryed out util for displaying keyValue ui for an obj
- *
- * @param obj - obj with info to be displayed
- */
-const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
-  return (
-    <>
-      {Object.entries(obj).map(([key, value]) => {
-        const props = {
-          [key]: value,
-        };
-        return value ? (
-          <div key={key} data-testid="key-value">
-            <SingleKeyNestedValue {...props} />
-          </div>
-        ) : null;
-      })}
-    </>
   );
 };

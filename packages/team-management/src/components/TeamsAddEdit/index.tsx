@@ -13,7 +13,7 @@ import {
 } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { Spin } from 'antd';
+import { PageHeader, Spin } from 'antd';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
@@ -252,16 +252,18 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
     return <Spin size="large" className="custom-spinner" />;
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{params.id ? t('Edit') : t('Create')} Team</title>
       </Helmet>
-
-      <h5 className="mb-3 header-title">
-        {initialValue?.name
-          ? t('Edit Team | {{name}}', { name: initialValue.name })
-          : t('Create Team')}
-      </h5>
+      <PageHeader
+        title={
+          initialValue?.name
+            ? t('Edit Team | {{name}}', { name: initialValue.name })
+            : t('Create Team')
+        }
+        className="page-header"
+      />
 
       <div className="bg-white p-5">
         <Form

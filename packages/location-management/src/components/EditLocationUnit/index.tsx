@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
-import { Spin, Row, Col } from 'antd';
+import { Spin, Row, Col, PageHeader } from 'antd';
 import { getUser } from '@onaio/session-reducer';
 import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
@@ -222,11 +222,11 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
   const pageTitle = t('Edit > {{name}}', { name: thisLocation.properties.name });
 
   return (
-    <Row className="layout-content">
+    <Row className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <h5 className="mb-4 header-title">{pageTitle}</h5>
+      <PageHeader title={pageTitle} className="page-header" />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>

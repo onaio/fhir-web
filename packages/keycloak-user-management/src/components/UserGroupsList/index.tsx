@@ -144,7 +144,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   if (isUserGroupsError) return <Resource404 />;
 
   return (
-    <div className="layout-content">
+    <div className="content-section">
       <Helmet>
         <title>{t('User Groups')}</title>
       </Helmet>

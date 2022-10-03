@@ -495,9 +495,7 @@ describe('components/forms/UserForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('.mb-3.header-title').text()).toEqual(
-      `Edit User | ${keycloakUser.username}`
-    );
+    expect(wrapper.find('PageHeader').text()).toEqual(`Edit User | ${keycloakUser.username}`);
   });
 
   it('show practitioner toggle when editing user and practitioner is null', async () => {

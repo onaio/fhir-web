@@ -106,7 +106,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   return (
     <Row id="patient-details">
       <Col span={24}>
-        <section className="layout-content">
+        <section className="content-section">
           <Helmet>
             <title>{t('Patient Details')}</title>
           </Helmet>

@@ -1,8 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/InventoryAddEdit renders correctly: heading 1`] = `
-Object {
-  "children": "Add inventory item to Ambatoharanana",
-  "level": 3,
-}
-`;
+exports[`containers/InventoryAddEdit renders correctly: heading 1`] = `"Add inventory item to Ambatoharanana"`;

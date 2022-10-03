@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
 import { organizationResourceType } from '@opensrp/fhir-team-management';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { Spin } from 'antd';
+import { PageHeader, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
@@ -66,11 +66,11 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
     : t('Create team');
 
   return (
-    <section className="layout-content">
+    <section className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <h5 className="mb-3 header-title">{pageTitle}</h5>
+      <PageHeader title={pageTitle} className="page-header" />
       <div className="bg-white p-5">
         <HealthCareForm
           fhirBaseUrl={fhirBaseUrl}

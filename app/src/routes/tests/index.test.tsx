@@ -263,7 +263,7 @@ describe('routes', () => {
             key: 'team-management',
             title: 'Team Management',
           },
-          { enabled: true, key: 'fhir-quest', title: 'Questionnaire', url: '/quest' },
+          { enabled: true, key: 'fhir-quest', title: 'Questionnaire Management', url: '/quest' },
           {
             children: [
               {

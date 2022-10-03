@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
+import { Card, Spin, Space, Button, Divider, Input, PageHeader } from 'antd';
 import { Dictionary } from '@onaio/utils';
 import {
   filesReducer,
@@ -70,7 +70,6 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
     isJsonValidator,
     match,
   } = props;
-  const { Title } = Typography;
   const [loading, setLoading] = useState<boolean>(false);
   const [sortedInfo, setSortedInfo] = useState<Dictionary>();
   const accessToken = useSelector((state) => getAccessToken(state) as string);
@@ -130,8 +129,8 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
   };
 
   return (
-    <div className="layout-content">
-      <Title level={3}>{title}</Title>
+    <div className="content-section">
+      <PageHeader className="page-header" title={title} />
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input

@@ -15,7 +15,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Card, Typography, Spin, Space, Button, Divider, Input } from 'antd';
+import { Card, Spin, Space, Button, Divider, Input, PageHeader } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import { TableLayout } from '@opensrp/react-utils';
@@ -49,7 +49,6 @@ const defaultProps: ReleaseListProps = {
  * @returns {Element} react element displaying the list of release items
  */
 const ReleaseList = (props: ReleaseListProps): JSX.Element => {
-  const { Title } = Typography;
   const dispatch = useDispatch();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
@@ -96,8 +95,8 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
   };
 
   return (
-    <div className="layout-content">
-      <Title level={3}>{t('Releases')}</Title>
+    <div className="content-section">
+      <PageHeader title={t('Releases')} className="page-header" />
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input
