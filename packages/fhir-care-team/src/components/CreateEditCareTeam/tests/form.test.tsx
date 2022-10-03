@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
 import nock from 'nock';
 import { history } from '@onaio/connected-reducer-registry';
@@ -7,10 +7,11 @@ import * as fhirCient from 'fhirclient';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
-import { defaultInitialValues } from '..';
 import { CareTeamForm } from '../Form';
-import { getPatientName } from '../utils';
+import { defaultInitialValues } from '../utils';
 import Client from 'fhirclient/lib/Client';
+import { getResourcesFromBundle } from '@opensrp/react-utils';
+import toJson from 'enzyme-to-json';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -45,28 +46,12 @@ describe('components/forms/CreateTeamForm', () => {
   const props = {
     initialValues: defaultInitialValues,
     fhirBaseURL: 'https://r4.smarthealthit.org/',
-    practitioners: fixtures.practitioners.entry.map((p) => ({
-      id: p.resource.id,
-      name: getPatientName(p.resource),
-    })),
-    groups: fixtures.groups.entry.map((p) => ({
-      id: p.resource.id,
-      name: getPatientName(p.resource),
-    })),
+    practitioners: getResourcesFromBundle(fixtures.practitioners),
+    organizations: getResourcesFromBundle(fixtures.organizations),
   };
 
   afterEach(() => {
     jest.resetAllMocks();
-  });
-
-  it('renders without crashing', () => {
-    shallow(<CareTeamForm {...props} />);
-  });
-
-  it('renders correctly', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
-    expect(wrapper.find('Row').at(0).text()).toMatchSnapshot();
-    wrapper.unmount();
   });
 
   it('form validation works for required fields', async () => {
@@ -79,8 +64,8 @@ describe('components/forms/CreateTeamForm', () => {
     });
     wrapper.update();
 
-    expect(wrapper.find('FormItemInput').at(1).prop('errors')).toEqual([`Name is Required`]);
-
+    // name is required and has no default
+    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is Required"`);
     wrapper.unmount();
   });
 
@@ -143,12 +128,10 @@ describe('components/forms/CreateTeamForm', () => {
       .simulate('change', {
         target: { value: ['Practitioner A'] },
       });
-    wrapper
-      .find('select')
-      .at(1)
-      .simulate('change', {
-        target: { value: ['Group A'] },
-      });
+
+    const sd = wrapper.find('#practitionersId');
+    expect(toJson(sd)).toMatchSnapshot('sd');
+
     wrapper.find('form').simulate('submit');
 
     await act(async () => {
@@ -158,7 +141,7 @@ describe('components/forms/CreateTeamForm', () => {
     wrapper.update();
 
     expect(wrapper.find('form').text()).toMatchInlineSnapshot(
-      `"UUIDNameStatusActiveInactiveParticipantWard N Williams MDWard N Williams MDWard N Williams MDtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirtest fhirMr. John CenoMr. Allay AllanBobi mapesaAllay Allanbrian krebsmarcus brownleejulian assangeSubjectSaveCancel"`
+      `"IDUUIDNameStatusActiveInactivePractitioner ParticipantManaging organizationsSaveCancel"`
     );
     wrapper.unmount();
   });

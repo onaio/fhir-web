@@ -6,7 +6,12 @@ import flushPromises from 'flush-promises';
 import * as fhirCient from 'fhirclient';
 import { history } from '@onaio/connected-reducer-registry';
 import * as notifications from '@opensrp/notifications';
-import * as fixtures from './fixtures';
+import {
+  practitioners as fixturePractitioners,
+  organizations,
+  formValues,
+  careTeam1,
+} from './fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -21,14 +26,9 @@ jest.mock('uuid', () => {
 });
 
 describe('forms/utils/submitForm', () => {
-  const practitioners = fixtures.practitioners.entry.map((prac) => ({
+  const practitioners = fixturePractitioners.entry.map((prac) => ({
     name: getPatientName(prac.resource),
     id: prac.resource.id,
-  }));
-
-  const groups = fixtures.groups.entry.map((group) => ({
-    name: group.resource.name,
-    id: group.resource.id,
   }));
 
   beforeAll(() => {
@@ -61,12 +61,12 @@ describe('forms/utils/submitForm', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          create: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          create: jest.fn().mockResolvedValue(careTeam1),
         };
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, (t) => t, '', '').catch(
+    submitForm(formValues, fhirBaseURL, organizations, practitioners, (t) => t, '', '').catch(
       jest.fn()
     );
 
@@ -85,12 +85,12 @@ describe('forms/utils/submitForm', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          create: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          create: jest.fn().mockResolvedValue(careTeam1),
         };
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, (t) => t, '', '').catch(
+    submitForm(formValues, fhirBaseURL, organizations, practitioners, (t) => t, '', '').catch(
       mockErrorCallback
     );
 
@@ -108,12 +108,12 @@ describe('forms/utils/submitForm', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          update: jest.fn().mockResolvedValue(fixtures.careTeam1),
+          update: jest.fn().mockResolvedValue(careTeam1),
         };
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, (t) => t, '308', id).catch(
+    submitForm(formValues, fhirBaseURL, organizations, practitioners, (t) => t, '308', id).catch(
       jest.fn()
     );
 
@@ -138,7 +138,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, (t) => t, '', '').catch(
+    submitForm(formValues, fhirBaseURL, organizations, practitioners, (t) => t, '', '').catch(
       jest.fn()
     );
 
@@ -161,7 +161,7 @@ describe('forms/utils/submitForm', () => {
       })
     );
 
-    submitForm(fixtures.formValues, fhirBaseURL, groups, practitioners, (t) => t, '308', id).catch(
+    submitForm(formValues, fhirBaseURL, organizations, practitioners, (t) => t, '308', id).catch(
       jest.fn()
     );
 

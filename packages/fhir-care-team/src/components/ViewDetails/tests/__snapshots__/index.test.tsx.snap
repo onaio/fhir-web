@@ -1,87 +1,475 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`View Care Team Details detail view without careTeamId: Should be null 1`] = `null`;
-
-exports[`View Care Team Details works correctly: nominal display 1`] = `"NameCare Team OneIdentifier93bc9c3d-6321-41b0-9b93-1275d7114e22StatusactiveSubjectCare Team OneParticipant"`;
-
-exports[`View Care Team Details works correctly: space element 1`] = `
-Object {
-  "children": Array [
-    <Text
-      className="display-block"
-      strong={true}
+exports[`Closes on clicking cancel (X)  1`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
     >
-      Name
-    </Text>,
-    <Text
-      className="display-block"
-      type="secondary"
+      CareTeam ID
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
     >
-      Care Team One
-    </Text>,
-    <Text
-      className="display-block"
-      strong={true}
+      142534
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  2`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
     >
       Identifier
-    </Text>,
-    <Text
-      className="display-block"
-      type="secondary"
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
     >
-      93bc9c3d-6321-41b0-9b93-1275d7114e22
-    </Text>,
-    <Text
-      className="display-block"
-      strong={true}
+      99c4dde5-3aca-4a4b-8b33-b50142e05da6
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
     >
-      Status
-    </Text>,
-    <Text
-      className="display-block"
-      type="secondary"
+      Name
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Brown Bag
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      status
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
     >
       active
-    </Text>,
-    <React.Fragment>
-      <Text
-        className="display-block"
-        strong={true}
-      >
-        Subject
-      </Text>
-      <Text
-        className="display-block"
-        type="secondary"
-      >
-        Care Team One
-      </Text>
-    </React.Fragment>,
-    <Text
-      className="display-block"
-      strong={true}
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
     >
-      Participant
-    </Text>,
-    Array [
-      <React.Fragment>
-        <Text
-          className="display-block"
-          type="secondary"
+      Participants
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul>
+        <li>
+          <div
+            data-testid="key-value"
+          >
+            <dl
+              class="singleKeyValue"
+            >
+              <div
+                class="singleKeyValue-pair"
+              >
+                <dt
+                  class="singleKeyValue-pair__label"
+                >
+                  <span
+                    class="ant-typography ant-typography-secondary"
+                  >
+                    Practitioner
+                  </span>
+                </dt>
+                <dd
+                  class="singleKeyValue-pair__value"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    <ul
+                      id="care-team-participants"
+                    >
+                      <li>
+                        AeHIN Demo
+                      </li>
+                    </ul>
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  6`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Practitioner
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul
+        id="care-team-participants"
+      >
+        <li>
+          AeHIN Demo
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  7`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Managing organizations
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <div
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        data-show="true"
+        role="alert"
+      >
+        <div
+          class="ant-alert-content"
         >
-          
-        </Text>
-      </React.Fragment>,
-      <React.Fragment>
-        <Text
-          className="display-block"
-          type="secondary"
+          <div
+            class="ant-alert-description"
+          >
+            No managing organizaions found
+          </div>
+        </div>
+      </div>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 1`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      CareTeam ID
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      131411
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 2`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Identifier
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      93bc9c3d-6321-41b0-9b93-1275d7114e22
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Name
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Care Team One
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      status
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      active
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Participants
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul>
+        <li>
+          <div
+            data-testid="key-value"
+          >
+            <dl
+              class="singleKeyValue"
+            >
+              <div
+                class="singleKeyValue-pair"
+              >
+                <dt
+                  class="singleKeyValue-pair__label"
+                >
+                  <span
+                    class="ant-typography ant-typography-secondary"
+                  >
+                    Practitioner
+                  </span>
+                </dt>
+                <dd
+                  class="singleKeyValue-pair__value"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    <ul
+                      id="care-team-participants"
+                    >
+                      <li>
+                        Ward test hey N test Tester family
+                      </li>
+                      <li>
+                        Ward test hey N test Tester family
+                      </li>
+                    </ul>
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 6`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Practitioner
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul
+        id="care-team-participants"
+      >
+        <li>
+          Ward test hey N test Tester family
+        </li>
+        <li>
+          Ward test hey N test Tester family
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 7`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Managing organizations
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <div
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        data-show="true"
+        role="alert"
+      >
+        <div
+          class="ant-alert-content"
         >
-          
-        </Text>
-      </React.Fragment>,
-    ],
-  ],
-  "direction": "vertical",
-}
+          <div
+            class="ant-alert-description"
+          >
+            No managing organizaions found
+          </div>
+        </div>
+      </div>
+    </span>
+  </dd>
+</div>
 `;
