@@ -119,13 +119,12 @@ const LocationForm = (props: LocationFormProps) => {
   const status = [
     { label: t('Active'), value: LocationUnitStatus.ACTIVE },
     { label: t('Inactive'), value: LocationUnitStatus.INACTIVE },
-    { label: t('Suspended'), value: LocationUnitStatus.SUSPENDED },
   ];
 
   // value options for isJurisdiction questions
   const locationCategoryOptions = [
-    { label: t('Building'), value: false },
     { label: t('Jurisdiction'), value: true },
+    { label: t('Building'), value: false },
   ];
 
   /** if plan is updated or saved redirect to plans page */

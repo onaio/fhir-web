@@ -67,7 +67,7 @@ export const getLocationFormFields = (
   parentId?: string
 ): LocationFormFields => {
   return {
-    ...location,
+    ...(location ?? defaultFormField),
     isJurisdiction: true, // TODO
     parentId: parentId ?? location?.partOf?.reference,
   } as LocationFormFields;
