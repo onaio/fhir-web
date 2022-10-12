@@ -2,7 +2,12 @@ import { Button, Alert, Spin, Col } from 'antd';
 import React, { MouseEventHandler } from 'react';
 import { get } from 'lodash';
 import { CloseOutlined } from '@ant-design/icons';
-import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  getObjLike,
+  IdentifierUseCodes,
+  SingleKeyNestedValue,
+} from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { locationResourceType } from '../../constants';
@@ -30,7 +35,7 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
   );
 
   if (isLoading) {
-    return <Spin size="large" className="custom-spinner" />;
+    return <Spin size="large" className="custom-spinner flex-grow-1" />;
   }
 
   if (error && !data) {
@@ -43,13 +48,16 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
     );
   }
 
-  const { name, status, description } = data;
+  const { name, status, description, id, identifier: identifierArr } = data;
+  const identifier = getObjLike(identifierArr, 'use', IdentifierUseCodes.OFFICIAL);
   const detailsMap = {
+    [t('Location id')]: id,
+    [t('identifier')]: get(identifier, '0.value'),
     [t('Name')]: name,
-    [t('Status')]: status,
-    [t('Description')]: description,
-    [t('Physical type')]: get(data, 'physicalType.coding.0.display'),
     [t('alias')]: get(data, 'alias.0'),
+    [t('Status')]: status,
+    [t('Physical type')]: get(data, 'physicalType.coding.0.display'),
+    [t('Description')]: description,
   };
 
   return (

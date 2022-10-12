@@ -30,6 +30,7 @@ import {
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_USER_MANAGEMENT,
   ENABLE_FHIR_COMMODITY,
+  ENABLE_FHIR_LOCATIONS,
 } from '../configs/env';
 import {
   URL_USER,
@@ -162,6 +163,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           children: [
             { title: t('Location Units'), url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
+              enabled: !ENABLE_FHIR_LOCATIONS,
               title: t('Location Unit Group'),
               url: URL_LOCATION_UNIT_GROUP,
               key: 'location-group',
