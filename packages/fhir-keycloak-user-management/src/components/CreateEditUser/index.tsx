@@ -27,21 +27,29 @@ const getPractitioner = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IPractitioner>(res)[0]);
 };
 
-const createGroupResource = (
+const getGroup = (baseUrl: string, userId: string) => {
+  const serve = new FHIRServiceClass<IBundle>(baseUrl, 'Group');
+  return serve
+    .list({ identifier: userId })
+    .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
+};
+
+const createEditGroupResource = (
   userEnabled: boolean,
   keycloakID: string,
   practitionerName: string,
   practitionerID: string,
   baseUrl: string,
-  t: TFunction
+  t: TFunction,
+  existingGroup?: IGroup
 ) => {
   const newGroupResourceID = v4();
 
   const payload: IGroup = {
     resourceType: 'Group',
-    id: newGroupResourceID,
+    id: existingGroup?.id ?? newGroupResourceID,
     identifier: [
-      { use: 'official', value: newGroupResourceID },
+      { use: 'official', value: existingGroup?.id ?? newGroupResourceID },
       { use: 'secondary', value: keycloakID },
     ],
     active: userEnabled,
@@ -63,16 +71,33 @@ const createGroupResource = (
   };
 
   const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
-  return serve
-    .create(payload)
-    .then(() => sendSuccessNotification(t('Group resource created successfully')))
-    .catch(() => sendErrorNotification(t('Failed to create group resource')));
+  let promise = () => serve.create(payload);
+
+  if (existingGroup) {
+    promise = () => serve.update(payload);
+  }
+
+  return promise()
+    .then(() =>
+      sendSuccessNotification(
+        t(`Group resource ${existingGroup ? 'updated' : 'created'} successfully`)
+      )
+    )
+    .catch(() =>
+      sendErrorNotification(t(`Failed to ${existingGroup ? 'update' : 'create'} group resource`))
+    );
 };
 
 const practitionerUpdater =
   (baseUrl: string) =>
-  (values: FormFields, userId: string, t: TFunction = (str) => str) => {
+  async (values: FormFields, userId: string, t: TFunction = (str) => str) => {
     const isEditMode = !!values.practitioner;
+
+    let group: IGroup | undefined;
+    if (isEditMode) {
+      group = await getGroup(baseUrl, userId);
+    }
+
     const successMessage = isEditMode
       ? t('Practitioner updated successfully')
       : t('Practitioner created successfully');
@@ -123,7 +148,7 @@ const practitionerUpdater =
     let promise = () =>
       serve.create(payload).then(async (response) => {
         try {
-          await createGroupResource(
+          await createEditGroupResource(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             values.enabled!,
             userId,
@@ -131,15 +156,35 @@ const practitionerUpdater =
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             response.id!,
             baseUrl,
-            t
+            t,
+            group
           );
         } catch (error) {
-          sendErrorNotification(t('Failed to create group resource'));
+          sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
         }
         return response;
       });
     if (isEditMode) {
-      promise = () => serve.update(payload);
+      promise = async () => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const practitioner = values.practitioner! as IPractitioner;
+        try {
+          await createEditGroupResource(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            values.enabled!,
+            userId,
+            `${values.firstName} ${values.lastName}`,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            practitioner.id!,
+            baseUrl,
+            t,
+            group
+          );
+        } catch (error) {
+          sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
+        }
+        return serve.update(payload);
+      };
     }
     return promise()
       .then(() => {
