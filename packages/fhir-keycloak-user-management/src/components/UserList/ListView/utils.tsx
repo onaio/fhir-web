@@ -4,6 +4,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { FHIRServiceClass, getResourcesFromBundle, FhirApiFilter } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { practitionerResourceType } from '../../../constants';
 import type { TFunction } from '@opensrp/i18n';
@@ -36,15 +37,27 @@ export const deleteUser = async (
     active: false,
   }));
 
-  return Promise.all([
+  const groupsServe = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
+  const groupsForThisUser = await groupsServe
+    .list({ identifier: userId })
+    .then((res) => getResourcesFromBundle<IGroup>(res as IBundle));
+  const updatedGroups: IGroup[] = groupsForThisUser.map((obj) => ({
+    ...obj,
+    active: false,
+  }));
+
+  return Promise.allSettled([
     // delete keycloak user
     deleteKeycloakUser.delete(),
-    // deactivate practitioners, we cannot quarantee that we can delink
+    // deactivate practitioners, we cannot guarantee that we can delink
     ...updatedPracts.map((obj) => practitionerServe.update(obj)),
+    // deactivate groups, we cannot guarantee that we can delink
+    ...updatedGroups.map((group) => groupsServe.update(group)),
   ])
     .then(() => {
       sendSuccessNotification(t('User deleted successfully'));
       sendSuccessNotification(t('Practitioner deactivated'));
+      sendSuccessNotification(t('Group deactivated'));
     })
     .catch((error) => sendErrorNotification(error.message));
 };
