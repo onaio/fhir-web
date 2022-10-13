@@ -17,6 +17,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { history } from '@onaio/connected-reducer-registry';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { TFunction } from 'i18n/dist/types';
 
 const getPractitioner = (baseUrl: string, userId: string) => {
@@ -24,6 +25,48 @@ const getPractitioner = (baseUrl: string, userId: string) => {
   return serve
     .list({ identifier: userId })
     .then((res: IBundle) => getResourcesFromBundle<IPractitioner>(res)[0]);
+};
+
+const createGroupResource = (
+  userEnabled: boolean,
+  keycloakID: string,
+  practitionerName: string,
+  practitionerID: string,
+  baseUrl: string,
+  t: TFunction
+) => {
+  const newGroupResourceID = v4();
+
+  const payload: IGroup = {
+    resourceType: 'Group',
+    id: newGroupResourceID,
+    identifier: [
+      { use: 'official', value: newGroupResourceID },
+      { use: 'secondary', value: keycloakID },
+    ],
+    active: userEnabled,
+    type: 'practitioner',
+    actual: true,
+    code: {
+      coding: [
+        { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
+      ],
+    },
+    name: practitionerName,
+    member: [
+      {
+        entity: {
+          reference: `Practitioner/${practitionerID}`,
+        },
+      },
+    ],
+  };
+
+  const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
+  return serve
+    .create(payload)
+    .then(() => sendSuccessNotification(t('Group resource created successfully')))
+    .catch(() => sendErrorNotification(t('Failed to create group resource')));
 };
 
 const practitionerUpdater =
@@ -77,7 +120,24 @@ const practitionerUpdater =
     };
 
     const serve = new FHIRServiceClass(baseUrl, practitionerResourceType);
-    let promise = () => serve.create(payload);
+    let promise = () =>
+      serve.create(payload).then(async (response) => {
+        try {
+          await createGroupResource(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            values.enabled!,
+            userId,
+            `${values.firstName} ${values.lastName}`,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            response.id!,
+            baseUrl,
+            t
+          );
+        } catch (error) {
+          sendErrorNotification(t('Failed to create group resource'));
+        }
+        return response;
+      });
     if (isEditMode) {
       promise = () => serve.update(payload);
     }
