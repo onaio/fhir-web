@@ -2,7 +2,7 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { CreateEditUser } from '..';
+import { CreateEditUser, getGroup, createEditGroupResource } from '..';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
@@ -11,7 +11,14 @@ import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
-import { keycloakUser, practitioner, updatedPractitioner, userGroup } from './fixtures';
+import {
+  keycloakUser,
+  practitioner,
+  updatedPractitioner,
+  userGroup,
+  group,
+  updatedGroup,
+} from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { practitionerResourceType } from '../../../constants';
@@ -113,6 +120,17 @@ test('renders correctly for edit user', async () => {
 
   nock(props.baseUrl).put(`/${practitionerResourceType}/206`, updatedPractitioner).reply(200, {});
 
+  nock(props.baseUrl)
+    .get(`/Group/_search`)
+    .query({
+      identifier: keycloakUser.id,
+    })
+    .reply(200, group);
+
+  nock(props.baseUrl)
+    .put('/Group/acb9d47e-7247-448f-be93-7a193a5312da', updatedGroup)
+    .reply(200, {});
+
   const successStub = jest
     .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(jest.fn);
@@ -135,16 +153,20 @@ test('renders correctly for edit user', async () => {
 
   // simulate first Name change
   const firstNameInput = document.querySelector('input#firstName');
-  await userEvent.type(firstNameInput, 'flotus');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(firstNameInput!, 'flotus');
 
   const lastNameInput = document.querySelector('input#lastName');
-  await userEvent.type(lastNameInput, 'plotus');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(lastNameInput!, 'plotus');
 
   const emailInput = document.querySelector('input#email');
-  await userEvent.type(emailInput, 'flotus@plotus.duck');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(emailInput!, 'flotus@plotus.duck');
 
   const usernameInput = document.querySelector('input#username');
-  await userEvent.type(usernameInput, 'flopo');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(usernameInput!, 'flopo');
 
   // change mark as practitioner to tue
   const yesMarkPractitioner = document.querySelectorAll('input[name="active"]')[0];
@@ -152,7 +174,8 @@ test('renders correctly for edit user', async () => {
 
   fetch.resetMocks();
   const submitButton = document.querySelector('button[type="submit"]');
-  fireEvent.click(submitButton);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  fireEvent.click(submitButton!);
 
   // need not concern ourselves with groups, should be tested in user-management package
 
@@ -160,6 +183,7 @@ test('renders correctly for edit user', async () => {
     expect(errorStub.mock.calls).toEqual([]);
     expect(successStub.mock.calls).toEqual([
       ['User edited successfully'],
+      ['Group resource updated successfully'],
       ['Practitioner updated successfully'],
       ['User Group edited successfully'],
     ]);
@@ -181,4 +205,39 @@ test('renders correctly for edit user', async () => {
       },
     ],
   ]);
+});
+
+test('it fetches groups', async () => {
+  nock(props.baseUrl)
+    .get(`/Group/_search`)
+    .query({
+      identifier: keycloakUser.id,
+    })
+    .reply(200, group);
+
+  const fetchGroup = await getGroup(props.baseUrl, keycloakUser.id);
+  expect(fetchGroup).toEqual(group.entry[0].resource);
+});
+
+test('it creates a group resource', async () => {
+  nock(props.baseUrl).post('/Group', updatedGroup).reply(200, {});
+
+  const successStub = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(jest.fn);
+  const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
+
+  await createEditGroupResource(
+    updatedGroup.active,
+    updatedGroup.identifier[1].value,
+    updatedGroup.name,
+    updatedGroup.member[0].entity.reference.split('/')[1],
+    props.baseUrl,
+    (string) => string
+  );
+
+  await waitFor(() => {
+    expect(errorStub.mock.calls).toEqual([]);
+    expect(successStub.mock.calls).toEqual([['Group resource created successfully']]);
+  });
 });
