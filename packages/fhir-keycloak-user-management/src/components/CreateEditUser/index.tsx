@@ -27,17 +27,17 @@ const getPractitioner = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IPractitioner>(res)[0]);
 };
 
-const getGroup = (baseUrl: string, userId: string) => {
+export const getGroup = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, 'Group');
   return serve
     .list({ identifier: userId })
     .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
 };
 
-const createEditGroupResource = (
-  userEnabled: boolean,
+export const createEditGroupResource = (
+  keycloakUserEnabled: boolean,
   keycloakID: string,
-  practitionerName: string,
+  keycloakUserName: string,
   practitionerID: string,
   baseUrl: string,
   t: TFunction,
@@ -52,7 +52,7 @@ const createEditGroupResource = (
       { use: 'official', value: existingGroup?.id ?? newGroupResourceID },
       { use: 'secondary', value: keycloakID },
     ],
-    active: userEnabled,
+    active: keycloakUserEnabled,
     type: 'practitioner',
     actual: true,
     code: {
@@ -60,7 +60,7 @@ const createEditGroupResource = (
         { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
       ],
     },
-    name: practitionerName,
+    name: keycloakUserName,
     member: [
       {
         entity: {
