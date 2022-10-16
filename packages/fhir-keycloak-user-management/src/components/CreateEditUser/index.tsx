@@ -73,7 +73,7 @@ export const createEditGroupResource = (
   const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
   return (
     serve
-      // use update (PUT) for both creating and updating a resource
+      // use update (PUT) for both creating and updating group resource
       // because create (POST) does not honour a supplied resource id
       // and overrides with a server provided one instead
       .update(payload)
@@ -137,55 +137,31 @@ const practitionerUpdater =
     };
 
     const serve = new FHIRServiceClass(baseUrl, practitionerResourceType);
-    let promise = () =>
-      serve.create(payload).then(async (response) => {
-        createEditGroupResource(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          values.enabled!,
-          userId,
-          `${values.firstName} ${values.lastName}`,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          response.id!,
-          baseUrl,
-          t,
-          group?.id
+    const promise = () => {
+      createEditGroupResource(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        values.enabled!,
+        userId,
+        `${values.firstName} ${values.lastName}`,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        (values.practitioner! as IPractitioner).id!,
+        baseUrl,
+        t,
+        group?.id
+      )
+        .then(() =>
+          sendSuccessNotification(t(`Group resource ${group ? 'updated' : 'created'} successfully`))
         )
-          .then(() =>
-            sendSuccessNotification(
-              t(`Group resource ${group ? 'updated' : 'created'} successfully`)
-            )
-          )
-          .catch(() =>
-            sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
-          );
+        .catch(() =>
+          sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
+        );
 
-        return response;
-      });
-    if (isEditMode) {
-      promise = async () => {
-        createEditGroupResource(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          values.enabled!,
-          userId,
-          `${values.firstName} ${values.lastName}`,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          (values.practitioner! as IPractitioner).id!,
-          baseUrl,
-          t,
-          group?.id
-        )
-          .then(() =>
-            sendSuccessNotification(
-              t(`Group resource ${group ? 'updated' : 'created'} successfully`)
-            )
-          )
-          .catch(() =>
-            sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
-          );
+      // use update (PUT) for both creating and updating practitioner resource
+      // because create (POST) does not honour a supplied resource id
+      // and overrides with a server provided one instead
+      return serve.update(payload);
+    };
 
-        return serve.update(payload);
-      };
-    }
     return promise()
       .then(() => {
         sendSuccessNotification(successMessage);
