@@ -159,17 +159,17 @@ const practitionerUpdater =
       // use update (PUT) for both creating and updating practitioner resource
       // because create (POST) does not honour a supplied resource id
       // and overrides with a server provided one instead
-      return serve.update(payload);
+      return serve
+        .update(payload)
+        .then(() => sendSuccessNotification(successMessage))
+        .catch(() => {
+          sendErrorNotification(t(`Failed to ${isEditMode ? 'update' : 'create'} practitioner`));
+        });
     };
 
-    return promise()
-      .then(() => {
-        sendSuccessNotification(successMessage);
-        if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
-      })
-      .catch(() => {
-        sendErrorNotification(t('Failed to update practitioner'));
-      });
+    return promise().then(() => {
+      if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
+    });
   };
 
 /**
