@@ -163,16 +163,13 @@ const practitionerUpdater =
       });
     if (isEditMode) {
       promise = async () => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const practitioner = values.practitioner! as IPractitioner;
-
         createEditGroupResource(
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           values.enabled!,
           userId,
           `${values.firstName} ${values.lastName}`,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          practitioner.id!,
+          (values.practitioner! as IPractitioner).id!,
           baseUrl,
           t,
           group?.id
