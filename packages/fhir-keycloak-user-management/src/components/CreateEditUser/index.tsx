@@ -71,19 +71,18 @@ export const createEditGroupResource = (
   };
 
   const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
-  // use update (PUT) for both creating and updating a resource
-  // because create (POST) does not honour a supplied resource id
-  // and overrides with a server provided one instead
-  return serve
-    .update(payload)
-    .then(() =>
-      sendSuccessNotification(
-        t(`Group resource ${existingGroupID ? 'updated' : 'created'} successfully`)
+  return (
+    serve
+      // use update (PUT) for both creating and updating a resource
+      // because create (POST) does not honour a supplied resource id
+      // and overrides with a server provided one instead
+      .update(payload)
+      .catch(() =>
+        sendErrorNotification(
+          t(`Failed to ${existingGroupID ? 'update' : 'create'} group resource`)
+        )
       )
-    )
-    .catch(() =>
-      sendErrorNotification(t(`Failed to ${existingGroupID ? 'update' : 'create'} group resource`))
-    );
+  );
 };
 
 const practitionerUpdater =
@@ -156,6 +155,10 @@ const practitionerUpdater =
             baseUrl,
             t,
             group?.id
+          ).then(() =>
+            sendSuccessNotification(
+              t(`Group resource ${group ? 'updated' : 'created'} successfully`)
+            )
           );
         } catch (error) {
           sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
@@ -177,6 +180,10 @@ const practitionerUpdater =
             baseUrl,
             t,
             group?.id
+          ).then(() =>
+            sendSuccessNotification(
+              t(`Group resource ${group ? 'updated' : 'created'} successfully`)
+            )
           );
         } catch (error) {
           sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
