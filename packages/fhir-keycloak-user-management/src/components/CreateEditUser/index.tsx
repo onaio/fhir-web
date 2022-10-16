@@ -71,13 +71,11 @@ export const createEditGroupResource = (
   };
 
   const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
-  let promise = () => serve.create(payload);
-
-  if (existingGroupID) {
-    promise = () => serve.update(payload);
-  }
-
-  return promise()
+  // use update (PUT) for both creating and updating a resource
+  // because create (POST) does not honour a supplied resource id
+  // and overrides with a server provided one instead
+  return serve
+    .update(payload)
     .then(() =>
       sendSuccessNotification(
         t(`Group resource ${existingGroupID ? 'updated' : 'created'} successfully`)
