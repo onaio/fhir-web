@@ -41,15 +41,15 @@ export const createEditGroupResource = (
   practitionerID: string,
   baseUrl: string,
   t: TFunction,
-  existingGroup?: IGroup
+  existingGroupID?: string
 ) => {
   const newGroupResourceID = v4();
 
   const payload: IGroup = {
     resourceType: 'Group',
-    id: existingGroup?.id ?? newGroupResourceID,
+    id: existingGroupID ?? newGroupResourceID,
     identifier: [
-      { use: 'official', value: existingGroup?.id ?? newGroupResourceID },
+      { use: 'official', value: existingGroupID ?? newGroupResourceID },
       { use: 'secondary', value: keycloakID },
     ],
     active: keycloakUserEnabled,
@@ -73,18 +73,18 @@ export const createEditGroupResource = (
   const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
   let promise = () => serve.create(payload);
 
-  if (existingGroup) {
+  if (existingGroupID) {
     promise = () => serve.update(payload);
   }
 
   return promise()
     .then(() =>
       sendSuccessNotification(
-        t(`Group resource ${existingGroup ? 'updated' : 'created'} successfully`)
+        t(`Group resource ${existingGroupID ? 'updated' : 'created'} successfully`)
       )
     )
     .catch(() =>
-      sendErrorNotification(t(`Failed to ${existingGroup ? 'update' : 'create'} group resource`))
+      sendErrorNotification(t(`Failed to ${existingGroupID ? 'update' : 'create'} group resource`))
     );
 };
 
@@ -157,7 +157,7 @@ const practitionerUpdater =
             response.id!,
             baseUrl,
             t,
-            group
+            group?.id
           );
         } catch (error) {
           sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
@@ -178,7 +178,7 @@ const practitionerUpdater =
             practitioner.id!,
             baseUrl,
             t,
-            group
+            group?.id
           );
         } catch (error) {
           sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`));
