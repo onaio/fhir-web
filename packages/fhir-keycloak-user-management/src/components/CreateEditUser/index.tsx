@@ -116,9 +116,9 @@ const practitionerUpdater =
       };
     }
 
-    const payload = {
+    const payload: IPractitioner = {
       resourceType: practitionerResourceType,
-      id: values.practitioner ? ((values.practitioner as IPractitioner).id as string) : undefined,
+      id: officialIdentifier.value,
       identifier: [officialIdentifier, secondaryIdentifier],
       active: true,
       name: [
@@ -136,40 +136,45 @@ const practitionerUpdater =
       ],
     };
 
-    const serve = new FHIRServiceClass(baseUrl, practitionerResourceType);
-    const promise = () => {
-      createEditGroupResource(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        values.enabled!,
-        userId,
-        `${values.firstName} ${values.lastName}`,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        (values.practitioner! as IPractitioner).id!,
-        baseUrl,
-        t,
-        group?.id
-      )
-        .then(() =>
-          sendSuccessNotification(t(`Group resource ${group ? 'updated' : 'created'} successfully`))
-        )
-        .catch(() =>
-          sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
-        );
-
-      // use update (PUT) for both creating and updating practitioner resource
-      // because create (POST) does not honour a supplied resource id
-      // and overrides with a server provided one instead
-      return serve
+    const serve = new FHIRServiceClass<IPractitioner>(baseUrl, practitionerResourceType);
+    return (
+      serve
+        // use update (PUT) for both creating and updating practitioner resource
+        // because create (POST) does not honour a supplied resource id
+        // and overrides with a server provided one instead
         .update(payload)
-        .then(() => sendSuccessNotification(successMessage))
-        .catch(() => {
-          sendErrorNotification(t(`Failed to ${isEditMode ? 'update' : 'create'} practitioner`));
-        });
-    };
-
-    return promise().then(() => {
-      if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
-    });
+        .then((res) => {
+          sendSuccessNotification(successMessage);
+          return res;
+        })
+        .then((res) => {
+          createEditGroupResource(
+            values.enabled ?? false,
+            userId,
+            `${values.firstName} ${values.lastName}`,
+            res.identifier?.find((identifier) => identifier.use === 'official')?.value ??
+              payload.id ??
+              '',
+            baseUrl,
+            t,
+            group?.id
+          )
+            .then(() =>
+              sendSuccessNotification(
+                t(`Group resource ${group ? 'updated' : 'created'} successfully`)
+              )
+            )
+            .catch(() =>
+              sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
+            );
+        })
+        .catch(() =>
+          sendErrorNotification(t(`Failed to ${isEditMode ? 'update' : 'create'} practitioner`))
+        )
+        .finally(() => {
+          if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
+        })
+    );
   };
 
 /**
