@@ -220,12 +220,10 @@ test('it fetches groups', async () => {
 });
 
 test('it creates a group resource', async () => {
-  nock(props.baseUrl).post('/Group', updatedGroup).reply(200, {});
+  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, {});
 
-  const successStub = jest
-    .spyOn(notifications, 'sendSuccessNotification')
-    .mockImplementation(jest.fn);
-  const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
+  const successStub = jest.fn();
+  const errorStub = jest.fn();
 
   await createEditGroupResource(
     updatedGroup.active,
@@ -234,10 +232,12 @@ test('it creates a group resource', async () => {
     updatedGroup.member[0].entity.reference.split('/')[1],
     props.baseUrl,
     (string) => string
-  );
+  )
+    .then(() => successStub())
+    .catch(() => errorStub());
 
   await waitFor(() => {
-    expect(errorStub.mock.calls).toEqual([]);
-    expect(successStub.mock.calls).toEqual([['Group resource created successfully']]);
+    expect(errorStub).not.toHaveBeenCalled();
+    expect(successStub).toHaveBeenCalledWith();
   });
 });
