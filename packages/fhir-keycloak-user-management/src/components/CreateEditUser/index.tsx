@@ -120,7 +120,7 @@ const practitionerUpdater =
       resourceType: practitionerResourceType,
       id: officialIdentifier.value,
       identifier: [officialIdentifier, secondaryIdentifier],
-      active: true,
+      active: values.enabled ?? false,
       name: [
         {
           use: IdentifierUseCodes.OFFICIAL,
