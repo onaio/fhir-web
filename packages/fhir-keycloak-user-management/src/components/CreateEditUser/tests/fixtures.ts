@@ -101,7 +101,7 @@ export const practitioner = {
 
 export const updatedPractitioner = {
   resourceType: 'Practitioner',
-  id: '206',
+  id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
   identifier: [
     { use: 'official', value: 'c1d36d9a-b771-410b-959e-af2c04d132a2' },
     { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
@@ -204,7 +204,7 @@ export const updatedGroup = {
   member: [
     {
       entity: {
-        reference: 'Practitioner/206',
+        reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2',
       },
     },
   ],
