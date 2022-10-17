@@ -118,7 +118,9 @@ test('renders correctly for edit user', async () => {
     })
     .reply(200, practitioner);
 
-  nock(props.baseUrl).put(`/${practitionerResourceType}/206`, updatedPractitioner).reply(200, {});
+  nock(props.baseUrl)
+    .put(`/${practitionerResourceType}/${updatedPractitioner.id}`, updatedPractitioner)
+    .reply(200, {});
 
   nock(props.baseUrl)
     .get(`/Group/_search`)
@@ -183,9 +185,9 @@ test('renders correctly for edit user', async () => {
     expect(errorStub.mock.calls).toEqual([]);
     expect(successStub.mock.calls).toEqual([
       ['User edited successfully'],
-      ['Group resource updated successfully'],
       ['Practitioner updated successfully'],
       ['User Group edited successfully'],
+      ['Group resource updated successfully'],
     ]);
   });
 
