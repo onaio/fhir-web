@@ -19,3 +19,7 @@
   justify-content: center;
   min-height: 85vh;
 }
+
+.flex-grow-1 {
+  flex-grow: 1;
+}

@@ -63,19 +63,6 @@ exports[`LocationForm renders correctly: description label 1`] = `
 exports[`LocationForm renders correctly: isJurisdiction field 1`] = `
 Array [
   <input
-    checked={false}
-    className="ant-radio-input"
-    disabled={false}
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    type="radio"
-    value={false}
-  />,
-  <input
     checked={true}
     className="ant-radio-input"
     disabled={false}
@@ -87,6 +74,19 @@ Array [
     onKeyUp={[Function]}
     type="radio"
     value={true}
+  />,
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onKeyPress={[Function]}
+    onKeyUp={[Function]}
+    type="radio"
+    value={false}
   />,
 ]
 `;
@@ -165,19 +165,6 @@ Array [
     onKeyUp={[Function]}
     type="radio"
     value="inactive"
-  />,
-  <input
-    checked={false}
-    className="ant-radio-input"
-    name="active"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
-    type="radio"
-    value="suspended"
   />,
 ]
 `;

@@ -13,6 +13,7 @@ import {
   KeycloakUserRole,
 } from '../../ducks/userRoles';
 import type { TFunction } from '@opensrp/i18n';
+import './form.css';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserRolesReducerName, keycloakUserRolesReducer);

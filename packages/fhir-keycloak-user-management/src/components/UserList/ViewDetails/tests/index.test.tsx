@@ -71,7 +71,10 @@ test('responds as expected to errors', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(fetch.mock.calls.map((x) => x[0])).toEqual(['http://test-keycloak.server.org/users/405']);
+  expect(fetch.mock.calls.map((x) => x[0])).toEqual([
+    'http://test-keycloak.server.org/users/405',
+    'http://test-keycloak.server.org/users/405/groups',
+  ]);
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 

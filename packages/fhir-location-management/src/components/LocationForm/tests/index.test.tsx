@@ -169,13 +169,11 @@ describe('LocationForm', () => {
     expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // status has default value
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(
-      `"StatusActiveInactiveSuspended"`
-    );
+    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
     // has default value
     expect(wrapper.find('FormItem#isJurisdiction').text()).toMatchInlineSnapshot(
-      `"Physical typeBuildingJurisdiction"`
+      `"Physical typeJurisdictionBuilding"`
     );
 
     expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
@@ -231,7 +229,7 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('FormItem#isJurisdiction input')
-      .last()
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
@@ -332,7 +330,7 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('FormItem#isJurisdiction input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });

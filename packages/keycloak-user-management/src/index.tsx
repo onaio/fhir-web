@@ -7,3 +7,4 @@ export * from './components/Credentials';
 export * from './constants';
 export * from './components/forms/UserForm/types';
 export * from './ducks/user';
+export * as UserGroupDucks from './ducks/userGroups';
