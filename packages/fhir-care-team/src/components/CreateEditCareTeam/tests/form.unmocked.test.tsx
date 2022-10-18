@@ -3,83 +3,196 @@ import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { defaultInitialValues } from '..';
 import { CareTeamForm } from '../Form';
-import { getPatientName } from '../utils';
+import { defaultInitialValues } from '../utils';
+import { getResourcesFromBundle } from '@opensrp/react-utils';
+import { cleanup, fireEvent, waitFor } from '@testing-library/react';
+import userEvents from '@testing-library/user-event';
+import * as notifications from '@opensrp/notifications';
+import nock from 'nock';
+import { careTeamResourceType } from '../../../constants';
+import { createdCareTeam } from './fixtures';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
 
-describe('components/forms/CreateTeamForm', () => {
-  const props = {
-    initialValues: defaultInitialValues,
-    fhirBaseURL: 'https://r4.smarthealthit.org/',
-    practitioners: fixtures.practitioners.entry.map((p) => ({
-      id: p.resource.id,
-      name: getPatientName(p.resource),
-    })),
-    groups: fixtures.groups.entry.map((p) => ({
-      id: p.resource.id,
-      name: getPatientName(p.resource),
-    })),
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
+  return {
+    ...actual,
+    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
   };
+});
 
-  it('filter select by text', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    // find antd Select with id 'practitionersId' in the component
-    const practitionersSelect = wrapper.find('Select#practitionersId');
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+  jest.resetAllMocks();
+});
 
-    // simulate click on select - to show dropdown items
-    practitionersSelect.find('.ant-select-selector').simulate('mousedown');
+const props = {
+  initialValues: defaultInitialValues,
+  fhirBaseURL: 'https://r4.smarthealthit.org/',
+  practitioners: getResourcesFromBundle(fixtures.practitioners),
+  organizations: getResourcesFromBundle(fixtures.organizations),
+};
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+test('filter select by text able to create new careteam', async () => {
+  const container = document.createElement('div');
+  document.body.appendChild(container);
 
-    // expect to see all options (practitioners)
-    const practitionersSelect2 = wrapper.find('Select#practitionersId');
-    // find antd select options
-    const selectOptions = practitionersSelect2.find('.ant-select-item-option-content');
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
 
-    // expect all practitioner options
-    expect(selectOptions.map((opt) => opt.text())).toStrictEqual([
-      'Ward N Williams MD',
-      'Ward N Williams MD',
-      'Ward N Williams MD',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-      'test fhir',
-    ]);
+  nock(props.fhirBaseURL).post(`/${careTeamResourceType}`, createdCareTeam).reply(200).persist();
 
-    // find search input field
-    const inputField = practitionersSelect.find('input#practitionersId');
-    // simulate change (type search phrase)
-    inputField.simulate('change', { target: { value: 'Williams' } });
+  const wrapper = mount(<CareTeamForm {...props} />, { attachTo: container });
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // expect to see only filtered options
-    const practitionersSelect3 = wrapper.find('Select#practitionersId');
-    const selectOptions2 = practitionersSelect3.find('.ant-select-item-option-content');
-    expect(selectOptions2.map((opt) => opt.text())).toMatchInlineSnapshot(`
-      Array [
-        "Ward N Williams MD",
-        "Ward N Williams MD",
-        "Ward N Williams MD",
-      ]
-    `);
+  await act(async () => {
+    await flushPromises();
+    wrapper.update();
   });
+
+  // simulate active change
+  wrapper
+    .find('FormItem#status input')
+    .first()
+    .simulate('change', {
+      target: { checked: true },
+    });
+
+  // simulate name change
+  wrapper
+    .find('FormItem#name input')
+    .simulate('change', { target: { name: 'name', value: 'Care team 1' } });
+
+  // simulate value selection for type
+  wrapper.find('input#practitionerParticipants').simulate('mousedown');
+
+  let optionTexts = [
+    ...document.querySelectorAll(
+      '#practitionerParticipants_list+div.rc-virtual-list .ant-select-item-option-content'
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(optionTexts).toHaveLength(12);
+  expect(optionTexts).toEqual([
+    'Ward N 2 Williams MD',
+    'Ward N 1 Williams MD',
+    'Ward N Williams MD',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+    'test fhir',
+  ]);
+
+  // filter searching through members works
+  await userEvents.type(document.querySelector('input#practitionerParticipants'), 'Ward');
+
+  // options after search
+  let afterFilterOptionTexts = [
+    ...document.querySelectorAll(
+      '#practitionerParticipants_list+div.rc-virtual-list .ant-select-item-option-content'
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(afterFilterOptionTexts).toEqual([
+    'Ward N 2 Williams MD',
+    'Ward N 1 Williams MD',
+    'Ward N Williams MD',
+  ]);
+
+  fireEvent.click(document.querySelector('[title="Ward N 2 Williams MD"]'));
+
+  // simulate value selection for type
+  wrapper.find('input#managingOrganizations').simulate('mousedown');
+
+  optionTexts = [
+    ...document.querySelectorAll(
+      '#managingOrganizations_list+div.rc-virtual-list .ant-select-item-option-content'
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(optionTexts).toHaveLength(12);
+  expect(optionTexts).toEqual([
+    'Test Team 5',
+    'Test Team 5',
+    'Test Team 5',
+    'Test Team One',
+    'Test UUID 46',
+    'Test Team 70',
+    'test123',
+    'testing ash123',
+    'ashfahan test 1',
+    'ashfahan test 2',
+    'ashfahan test 2',
+    'ashfahan test 2',
+  ]);
+
+  // filter searching through members works
+  await userEvents.type(document.querySelector('input#managingOrganizations'), '70');
+
+  // options after search
+  afterFilterOptionTexts = [
+    ...document.querySelectorAll(
+      '#managingOrganizations_list+div.rc-virtual-list .ant-select-item-option-content'
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(afterFilterOptionTexts).toEqual(['Test Team 70']);
+
+  fireEvent.click(document.querySelector('[title="Test Team 70"]'));
+
+  await flushPromises();
+  wrapper.update();
+
+  wrapper.find('form').simulate('submit');
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully Added Care Teams']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+  wrapper.unmount();
 });

@@ -74,7 +74,7 @@ const Table: React.FC<Props> = (props: Props) => {
             width: '10%',
             // eslint-disable-next-line @typescript-eslint/naming-convention
             render: (_: unknown, record: Organization, index) => (
-              <span className="d-flex justify-content-end align-items-center">
+              <span>
                 <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
                   <Button type="link" className="m-0 p-1">
                     {t('Edit')}

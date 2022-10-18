@@ -12,19 +12,13 @@ exports[`renders correctly when listing resources: Header title 1`] = `
 exports[`renders correctly when listing resources: Search 1 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-column-sort ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: Search 1 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="april4"
 >
   april4
 </td>
 `;
 
-exports[`renders correctly when listing resources: Search 1 page 1 3`] = `
+exports[`renders correctly when listing resources: Search 1 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="petertest"
@@ -33,7 +27,7 @@ exports[`renders correctly when listing resources: Search 1 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
+exports[`renders correctly when listing resources: Search 1 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="april4petertest"
@@ -42,7 +36,7 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: Search 1 page 1 5`] = `
+exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -82,19 +76,13 @@ exports[`renders correctly when listing resources: Search 1 page 1 5`] = `
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="april4"
 >
   april4
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
+exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="petertest"
@@ -103,7 +91,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
+exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="april4petertest"
@@ -112,7 +100,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 1 page 1 5`] = `
+exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -152,19 +140,13 @@ exports[`renders correctly when listing resources: table row 1 page 1 5`] = `
 exports[`renders correctly when listing resources: table row 2 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="Blue"
 >
   Blue
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
+exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="Test"
@@ -173,7 +155,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
+exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="blue"
@@ -182,7 +164,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 2 page 1 5`] = `
+exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -222,19 +204,13 @@ exports[`renders correctly when listing resources: table row 2 page 1 5`] = `
 exports[`renders correctly when listing resources: table row 3 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: table row 3 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="Chw"
 >
   Chw
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 3 page 1 3`] = `
+exports[`renders correctly when listing resources: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="User"
@@ -243,7 +219,7 @@ exports[`renders correctly when listing resources: table row 3 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
+exports[`renders correctly when listing resources: table row 3 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="chw_demo_user"
@@ -252,7 +228,7 @@ exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 3 page 1 5`] = `
+exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -292,19 +268,13 @@ exports[`renders correctly when listing resources: table row 3 page 1 5`] = `
 exports[`renders correctly when listing resources: table row 4 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: table row 4 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="John"
 >
   John
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 4 page 1 3`] = `
+exports[`renders correctly when listing resources: table row 4 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="Coda"
@@ -313,7 +283,7 @@ exports[`renders correctly when listing resources: table row 4 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
+exports[`renders correctly when listing resources: table row 4 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="codademo"
@@ -322,7 +292,7 @@ exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 4 page 1 5`] = `
+exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -362,19 +332,13 @@ exports[`renders correctly when listing resources: table row 4 page 1 5`] = `
 exports[`renders correctly when listing resources: table row 5 page 1 1`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
-/>
-`;
-
-exports[`renders correctly when listing resources: table row 5 page 1 2`] = `
-<td
-  class="ant-table-cell ant-table-cell-ellipsis"
   title="Jane"
 >
   Jane
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 5 page 1 3`] = `
+exports[`renders correctly when listing resources: table row 5 page 1 2`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="Coda"
@@ -383,7 +347,7 @@ exports[`renders correctly when listing resources: table row 5 page 1 3`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
+exports[`renders correctly when listing resources: table row 5 page 1 3`] = `
 <td
   class="ant-table-cell ant-table-cell-ellipsis"
   title="codademo2"
@@ -392,7 +356,7 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 5 page 1 5`] = `
+exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
@@ -445,7 +409,7 @@ exports[`renders correctly when listing resources: user details 1`] = `
         <span
           class="ant-typography ant-typography-secondary"
         >
-          UUID
+          Keycloak UUID
         </span>
       </dt>
       <dd
@@ -478,7 +442,40 @@ exports[`renders correctly when listing resources: user details 2`] = `
         <span
           class="ant-typography ant-typography-secondary"
         >
-          Practitioner Id
+          Username
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          april4petertest
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`renders correctly when listing resources: user details 3`] = `
+<div
+  data-testid="key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Practitioner ID
         </span>
       </dt>
       <dd
@@ -495,7 +492,40 @@ exports[`renders correctly when listing resources: user details 2`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources: user details 3`] = `
+exports[`renders correctly when listing resources: user details 4`] = `
+<div
+  data-testid="key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          Practitioner UUID
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          c1d36d9a-b771-410b-959e-af2c04d132a2
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
+exports[`renders correctly when listing resources: user details 5`] = `
 <div
   data-testid="key-value"
 >
