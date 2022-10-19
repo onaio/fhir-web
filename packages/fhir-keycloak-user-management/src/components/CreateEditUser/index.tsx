@@ -171,10 +171,10 @@ const practitionerUpdater =
             t,
             group?.id
           )
-            .then(() => sendSuccessNotification(t(groupSuccessMessage)))
-            .catch(() => sendErrorNotification(t(groupErrorMessage)));
+            .then(() => sendSuccessNotification(groupSuccessMessage))
+            .catch(() => sendErrorNotification(groupErrorMessage));
         })
-        .catch(() => sendErrorNotification(t(practitionerErrorMessage)))
+        .catch(() => sendErrorNotification(practitionerErrorMessage))
         .finally(() => {
           if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
         })
