@@ -4,7 +4,7 @@ import {
   URL_USER_CREDENTIALS,
   FormFields,
 } from '@opensrp/user-management';
-import { practitionerResourceType } from '../../constants';
+import { practitionerResourceType, groupResourceType } from '../../constants';
 import {
   FHIRServiceClass,
   getObjLike,
@@ -28,7 +28,7 @@ const getPractitioner = (baseUrl: string, userId: string) => {
 };
 
 export const getGroup = (baseUrl: string, userId: string) => {
-  const serve = new FHIRServiceClass<IBundle>(baseUrl, 'Group');
+  const serve = new FHIRServiceClass<IBundle>(baseUrl, groupResourceType);
   return serve
     .list({ identifier: userId })
     .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
@@ -46,11 +46,11 @@ export const createEditGroupResource = (
   const newGroupResourceID = v4();
 
   const payload: IGroup = {
-    resourceType: 'Group',
+    resourceType: groupResourceType,
     id: existingGroupID ?? newGroupResourceID,
     identifier: [
-      { use: 'official', value: existingGroupID ?? newGroupResourceID },
-      { use: 'secondary', value: keycloakID },
+      { use: IdentifierUseCodes.OFFICIAL, value: existingGroupID ?? newGroupResourceID },
+      { use: IdentifierUseCodes.SECONDARY, value: keycloakID },
     ],
     active: keycloakUserEnabled,
     type: 'practitioner',
@@ -70,7 +70,7 @@ export const createEditGroupResource = (
     ],
   };
 
-  const serve = new FHIRServiceClass<IGroup>(baseUrl, 'Group');
+  const serve = new FHIRServiceClass<IGroup>(baseUrl, groupResourceType);
   return (
     serve
       // use update (PUT) for both creating and updating group resource
@@ -90,9 +90,21 @@ const practitionerUpdater =
       group = await getGroup(baseUrl, userId);
     }
 
-    const successMessage = isEditMode
+    const practitionerSuccessMessage = isEditMode
       ? t('Practitioner updated successfully')
       : t('Practitioner created successfully');
+
+    const practitionerErrorMessage = isEditMode
+      ? t('Failed to update practitioner')
+      : t('Failed to create practitioner');
+
+    const groupSuccessMessage = group
+      ? t('Group resource updated successfully')
+      : t('Group resource created successfully');
+
+    const groupErrorMessage = group
+      ? t('Failed to update group resource')
+      : t('Failed to create group resource');
 
     let officialIdentifier;
     let secondaryIdentifier;
@@ -144,7 +156,7 @@ const practitionerUpdater =
         // and overrides with a server provided one instead
         .update(payload)
         .then((res) => {
-          sendSuccessNotification(successMessage);
+          sendSuccessNotification(practitionerSuccessMessage);
           return res;
         })
         .then((res) => {
@@ -159,18 +171,10 @@ const practitionerUpdater =
             t,
             group?.id
           )
-            .then(() =>
-              sendSuccessNotification(
-                t(`Group resource ${group ? 'updated' : 'created'} successfully`)
-              )
-            )
-            .catch(() =>
-              sendErrorNotification(t(`Failed to ${group ? 'update' : 'create'} group resource`))
-            );
+            .then(() => sendSuccessNotification(t(groupSuccessMessage)))
+            .catch(() => sendErrorNotification(t(groupErrorMessage)));
         })
-        .catch(() =>
-          sendErrorNotification(t(`Failed to ${isEditMode ? 'update' : 'create'} practitioner`))
-        )
+        .catch(() => sendErrorNotification(t(practitionerErrorMessage)))
         .finally(() => {
           if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
         })
