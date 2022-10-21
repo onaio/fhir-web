@@ -422,3 +422,67 @@ export const careTeams = {
     },
   ],
 };
+
+export const group = {
+  resourceType: 'Bundle',
+  id: 'f20c0276-8364-4e31-ae99-e4bcdb3813ce',
+  meta: {
+    lastUpdated: '2022-10-14T01:43:51.928+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/Group/_search?identifier=cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
+  ],
+  entry: [
+    {
+      fullUrl:
+        'https://fhir.labs.smartregister.org:443/fhir/Group/acb9d47e-7247-448f-be93-7a193a5312da',
+      resource: {
+        resourceType: 'Group',
+        id: 'acb9d47e-7247-448f-be93-7a193a5312da',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2022-10-14T01:40:59.365+00:00',
+          source: '#9a5be796c77bd270',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'acb9d47e-7247-448f-be93-7a193a5312da',
+          },
+          {
+            use: 'secondary',
+            value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+          },
+        ],
+        active: true,
+        type: 'practitioner',
+        actual: true,
+        code: {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '405623001',
+              display: 'Assigned practitioner',
+            },
+          ],
+        },
+        name: 'Demoflotus kenyaplotus',
+        member: [
+          {
+            entity: {
+              reference: 'Practitioner/206',
+            },
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};

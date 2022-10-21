@@ -11,7 +11,7 @@ import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { URL_USER } from '@opensrp/user-management';
-import { careTeams, practitioner, userFixtures } from './fixtures';
+import { careTeams, practitioner, userFixtures, group } from './fixtures';
 import fetch from 'jest-fetch-mock';
 import { careTeamResourceType, practitionerResourceType } from '../../../../constants';
 import flushPromises from 'flush-promises';
@@ -166,6 +166,9 @@ test('renders correctly when listing resources', async () => {
     .get(`/${practitionerResourceType}/_search`)
     .query({ identifier: userFixtures[14].id })
     .reply(200, practitioner)
+    .get(`/Group/_search`)
+    .query({ identifier: userFixtures[14].id })
+    .reply(200, group)
     .get(`/${careTeamResourceType}/_search`)
     .query({ 'participant:Practitioner': practitionerObj.id, _summary: 'count' })
     .reply(200, { total: 2 })
@@ -236,6 +239,7 @@ test('renders correctly when listing resources', async () => {
 
   await waitFor(async () => {
     expect(screen.queryByText(/Practitioner deactivated/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Group deactivated/i)).toBeInTheDocument();
   });
 
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
