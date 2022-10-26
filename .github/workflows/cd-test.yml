@@ -6,16 +6,14 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-  pull_request:
-    paths-ignore:
-      - 'docs/**'
 
 jobs:
   test:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
