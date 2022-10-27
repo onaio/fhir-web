@@ -26,7 +26,7 @@ export const postPutOrganization = (baseUrl: string, payload: IOrganization) => 
   if (isEdit) {
     return serve.update(payload);
   }
-  return serve.create(payload);
+  return serve.update(payload);
 };
 
 export interface SelectOption {
@@ -148,7 +148,7 @@ export const updatePractitionerRoles = (
       return practitionerRole;
     })
     .map((practRole) => {
-      return () => serve.create(practRole);
+      return () => serve.update(practRole);
     });
 
   return Promise.all([...removePromises, ...additionPromises].map((p) => p()));
