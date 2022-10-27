@@ -191,7 +191,7 @@ export const postPutAffiliations = (
         },
       ],
     };
-    promises.push(() => serve.create(affiliationPayload));
+    promises.push(() => serve.update(affiliationPayload));
   });
 
   return Promise.all(promises.map((p) => p()));
