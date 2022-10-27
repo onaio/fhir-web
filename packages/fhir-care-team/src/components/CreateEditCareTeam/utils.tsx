@@ -111,7 +111,7 @@ export const submitForm = async (
       });
   } else {
     await serve
-      .create(payload)
+      .update(payload)
       .then(() => sendSuccessNotification(t('Successfully Added Care Teams')))
       .catch(() => {
         sendErrorNotification(t('An error occurred'));
