@@ -178,5 +178,5 @@ export const postPutHealthCareService = (baseUrl: string, payload: IHealthcareSe
   if (isEdit) {
     return serve.update(payload);
   }
-  return serve.create(payload);
+  return serve.update(payload);
 };
