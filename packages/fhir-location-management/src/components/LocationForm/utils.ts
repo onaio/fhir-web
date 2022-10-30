@@ -190,16 +190,10 @@ export const treeToOptions = (
 /**
  * @param payload - the payload
  * @param baseUrl -  base url of api
- * @param isEdit - help decide whether to post or put plan
  */
-export async function postPutLocationUnit(payload: ILocation, baseUrl: string, isEdit = true) {
+export async function postPutLocationUnit(payload: ILocation, baseUrl: string) {
   const serve = new FHIRServiceClass<ILocation>(baseUrl, 'Location');
-  if (isEdit) {
-    return serve.update(payload).catch((err: Error) => {
-      throw err;
-    });
-  }
-  return serve.create(payload).catch((err: Error) => {
+  return serve.update(payload).catch((err: Error) => {
     throw err;
   });
 }
