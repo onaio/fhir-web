@@ -132,8 +132,8 @@ export const QuestRForm = (props: QuestRFormProps) => {
       fhirBaseURL,
       questionnaireResponseResourceType
     );
-    const op = isQuestionnaire ? () => service.create(qr) : () => service.update(qr);
-    op()
+    service
+      .update(qr)
       .then(() =>
         sendSuccessNotification(t('Questionnaire Response resource submitted successfully'))
       )
