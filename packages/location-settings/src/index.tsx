@@ -1,1 +1,1 @@
-export * from './components/LocationSettingsView';
+export * from './components/ServerSettingsView';

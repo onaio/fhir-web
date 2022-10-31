@@ -27,7 +27,7 @@ export interface Props {
   v2BaseURL: string;
 }
 
-export const LocationSettingsView: React.FC<Props> = (props: Props) => {
+export const ServerSettingsView: React.FC<Props> = (props: Props) => {
   const { baseURL, v2BaseURL } = props;
   const [currentLocId, setCurrentLocId] = useState<string>('');
   const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
@@ -68,7 +68,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     }
   }, [userLocSettings.data, setTreeData, setCurrentLocId]);
 
-  const locationSettings = useQuery(
+  const serverSettings = useQuery(
     [SETTINGS_ENDPOINT, currentLocId],
     async () =>
       currentLocId
@@ -85,11 +85,11 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (locationSettings.error || userLocSettings.error) {
+  if (serverSettings.error || userLocSettings.error) {
     return <BrokenPage />;
   }
 
-  if (locationSettings.isLoading || userLocSettings.isLoading) {
+  if (serverSettings.isLoading || userLocSettings.isLoading) {
     return <Spin size="large" className="custom-spinner" />;
   }
 
@@ -106,7 +106,7 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
-              data={locationSettings.data ?? []}
+              data={serverSettings.data ?? []}
               tree={treeData}
               actioncolumn={{
                 title: t('Actions'),
@@ -170,4 +170,4 @@ export const LocationSettingsView: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default LocationSettingsView;
+export default ServerSettingsView;

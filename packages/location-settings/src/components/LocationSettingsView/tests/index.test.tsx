@@ -2,8 +2,8 @@ import { createBrowserHistory } from 'history';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import * as notifications from '@opensrp/notifications';
-import { LocationSettingsView } from '..';
-import { locationSettings, locationSettingsLevel1, securityAuthenticateEndpoint } from './fixtures';
+import { ServerSettingsView } from '..';
+import { serverSettings, serverSettingsLevel1, securityAuthenticateEndpoint } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
@@ -45,13 +45,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient();
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -84,13 +84,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -194,13 +194,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -304,13 +304,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -390,13 +390,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.once(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponse(JSON.stringify(locationSettings));
+    fetch.mockResponse(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -428,7 +428,7 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    fetch.mockResponse(JSON.stringify(locationSettingsLevel1));
+    fetch.mockResponse(JSON.stringify(serverSettingsLevel1));
 
     await act(async () => {
       await flushPromises();
@@ -449,7 +449,7 @@ describe('activate mission', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
