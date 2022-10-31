@@ -1,7 +1,7 @@
 import { ParsedHierarchyNode } from '@opensrp/location-management/dist/types';
 import { Setting } from '../../../ducks/settings';
 
-export const locationSettings: Setting[] = [
+export const serverSettings: Setting[] = [
   {
     key: 'pop_hepc',
     value: 'false',
@@ -239,7 +239,7 @@ export const locationSettings: Setting[] = [
   },
 ];
 
-export const locationSettingsLevel1: Setting[] = [
+export const serverSettingsLevel1: Setting[] = [
   {
     key: 'pop_hepc',
     value: 'false',
