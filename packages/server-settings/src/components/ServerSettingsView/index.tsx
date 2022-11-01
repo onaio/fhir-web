@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { MoreOutlined } from '@ant-design/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Spin, Dropdown, Menu, PageHeader } from 'antd';
 import {
@@ -56,17 +56,14 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     {
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
+      onSuccess: (userLocSettings) => {
+        const processedHierarchy = generateJurisdictionTree(userLocSettings).model;
+        setTreeData([processedHierarchy]);
+        const { map: userLocMap } = userLocSettings.locationsHierarchy;
+        setCurrentLocId(Object.keys(userLocMap)[0]);
+      },
     }
   );
-
-  useEffect(() => {
-    if (userLocSettings.data) {
-      const processedHierarchy = generateJurisdictionTree(userLocSettings.data).model;
-      setTreeData([processedHierarchy]);
-      const { map: userLocMap } = userLocSettings.data.locationsHierarchy;
-      setCurrentLocId(Object.keys(userLocMap)[0]);
-    }
-  }, [userLocSettings.data, setTreeData, setCurrentLocId]);
 
   const serverSettings = useQuery(
     [SETTINGS_ENDPOINT, currentLocId],
