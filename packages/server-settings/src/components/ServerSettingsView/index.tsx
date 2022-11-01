@@ -50,7 +50,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       });
   };
 
-  const userLocSettings = useQuery(
+  const { isError: isUserLocSettingsError, isLoading: isUserLocSettingsLoading } = useQuery(
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
@@ -65,7 +65,11 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  const serverSettings = useQuery(
+  const {
+    isError: isServerSettingsError,
+    isLoading: isServerSettingsLoading,
+    data: serverSettingsData,
+  } = useQuery(
     [SETTINGS_ENDPOINT, currentLocId],
     async () =>
       currentLocId
@@ -82,11 +86,11 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
-  if (serverSettings.error || userLocSettings.error) {
+  if (isServerSettingsError || isUserLocSettingsError) {
     return <BrokenPage />;
   }
 
-  if (serverSettings.isLoading || userLocSettings.isLoading) {
+  if (isServerSettingsLoading || isUserLocSettingsLoading) {
     return <Spin size="large" className="custom-spinner" />;
   }
 
@@ -103,7 +107,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
-              data={serverSettings.data ?? []}
+              data={serverSettingsData ?? []}
               tree={treeData}
               actioncolumn={{
                 title: t('Actions'),
