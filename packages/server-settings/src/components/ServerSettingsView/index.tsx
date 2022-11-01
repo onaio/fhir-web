@@ -72,17 +72,16 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
   } = useQuery(
     [SETTINGS_ENDPOINT, currentLocId],
     async () =>
-      currentLocId
-        ? await new OpenSRPService(SETTINGS_ENDPOINT, v2BaseURL).list({
-            identifier: POP_CHARACTERISTICS_PARAM,
-            locationId: currentLocId,
-            resolve: true,
-            serverVersion: 0,
-          })
-        : undefined,
+      await new OpenSRPService(SETTINGS_ENDPOINT, v2BaseURL).list({
+        identifier: POP_CHARACTERISTICS_PARAM,
+        locationId: currentLocId,
+        resolve: true,
+        serverVersion: 0,
+      }),
     {
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: Setting[]) => res,
+      enabled: !!currentLocId.length,
     }
   );
 
