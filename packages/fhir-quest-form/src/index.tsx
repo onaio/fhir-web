@@ -12,6 +12,7 @@ import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useTranslation } from './mls';
+import { v4 } from 'uuid';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const store: Store<Record<string, any>> = createStore(rootReducer, applyMiddleware(thunk));
@@ -128,12 +129,13 @@ export const QuestRForm = (props: QuestRFormProps) => {
   const { fhirBaseURL } = props;
 
   const onSubmit = (qr: IQuestionnaire) => {
+    const payload = { ...qr, id: v4() };
     const service = new FHIRServiceClass<IQuestionnaire>(
       fhirBaseURL,
       questionnaireResponseResourceType
     );
     service
-      .update(qr)
+      .update(payload)
       .then(() =>
         sendSuccessNotification(t('Questionnaire Response resource submitted successfully'))
       )

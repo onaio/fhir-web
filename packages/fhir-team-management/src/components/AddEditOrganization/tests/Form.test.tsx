@@ -198,9 +198,9 @@ describe('OrganizationForm', () => {
     const someMockURL = '/someURL';
 
     nock(formProps.fhirBaseUrl)
-      .post(`/${organizationResourceType}`, createdOrg)
+      .put(`/${organizationResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdOrg)
       .reply(200, { ...createdOrg, id: '123' })
-      .post(`/${practitionerRoleResourceType}`, createdRole2)
+      .put(`/${practitionerRoleResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdRole2)
       .reply(200, {})
       .persist();
 
@@ -324,7 +324,7 @@ describe('OrganizationForm', () => {
       .reply(200, editedOrg)
       .delete(`/${practitionerRoleResourceType}/392`)
       .reply(200, {})
-      .post(`/${practitionerRoleResourceType}`, createdRole1)
+      .put(`/${practitionerRoleResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdRole1)
       .replyWithError('Failed operation outcome')
       .persist();
 
@@ -332,7 +332,6 @@ describe('OrganizationForm', () => {
       getResourcesFromBundle<IPractitionerRole>(org105Practitioners);
 
     const initialValues = getOrgFormFields(org105, existingPractitionerRoles);
-
     const localProps = {
       ...formProps,
       initialValues,
@@ -389,7 +388,7 @@ describe('OrganizationForm', () => {
       expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
       expect(errorNoticeMock.mock.calls).toEqual([
         [
-          'request to http://test.server.org/PractitionerRole failed, reason: Failed operation outcome',
+          'request to http://test.server.org/PractitionerRole/9b782015-8392-4847-b48c-50c11638656b failed, reason: Failed operation outcome',
         ],
       ]);
     });

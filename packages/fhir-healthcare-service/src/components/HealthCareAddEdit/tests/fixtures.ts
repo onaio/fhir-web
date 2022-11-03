@@ -166,6 +166,7 @@ export const createdHealthCareService = {
   resourceType: 'HealthcareService',
   active: true,
   name: 'Good doctor',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
   providedBy: { reference: 'Organization/361', display: 'Test Team One' },
   extraDetails: 'Treatment using cutting-edge stuff',

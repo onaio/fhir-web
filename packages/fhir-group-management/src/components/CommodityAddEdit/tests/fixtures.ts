@@ -58,6 +58,7 @@ export const createdCommodity = {
     coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
   },
   name: 'Dettol',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
   type: 'device',
   characteristic: [

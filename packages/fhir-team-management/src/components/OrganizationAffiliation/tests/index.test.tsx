@@ -114,7 +114,10 @@ test('Edits organization affiliation correctly', async () => {
     .reply(200, allOrgs);
 
   nock(props.fhirBaseURL)
-    .post(`/${organizationAffiliationResourceType}`, createdAffiliation1)
+    .put(`/${organizationAffiliationResourceType}/75482e89-40ce-4512-a74a-ccc30aeae073`, {
+      ...createdAffiliation1,
+      id: '75482e89-40ce-4512-a74a-ccc30aeae073',
+    })
     .reply(201, {})
     .put(`/${organizationAffiliationResourceType}/${createdAffiliation2.id}`, createdAffiliation2)
     .reply(201, {});

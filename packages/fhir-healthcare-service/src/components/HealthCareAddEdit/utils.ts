@@ -105,6 +105,8 @@ export const generateHealthCarePayload = (
   }
   if (id) {
     payload.id = id;
+  } else {
+    payload.id = v4();
   }
 
   let identifier = rawIdentifier;
@@ -172,11 +174,6 @@ export const orgFilterFunction = (inputValue: string, option?: SelectOption) => 
  * @param payload - the organization payload
  */
 export const postPutHealthCareService = (baseUrl: string, payload: IHealthcareService) => {
-  const { id } = payload;
-  const isEdit = !!id;
   const serve = new FHIRServiceClass<IOrganization>(baseUrl, healthCareServiceResourceType);
-  if (isEdit) {
-    return serve.update(payload);
-  }
   return serve.update(payload);
 };

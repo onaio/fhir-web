@@ -173,6 +173,7 @@ export const postPutAffiliations = (
     // we create a wholly new affiliation
     const affiliationPayload: IOrganizationAffiliation = {
       resourceType: organizationAffiliationResourceType,
+      id: v4(),
       identifier: [
         {
           use: IdentifierUseCodes.OFFICIAL,
