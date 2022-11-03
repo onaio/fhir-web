@@ -104,8 +104,6 @@ export const submitForm = async (
   let successNotifictaionMessage: string;
   if (id) {
     successNotifictaionMessage = t('Successfully Updated Care Teams');
-  } else {
-    successNotifictaionMessage = t('Successfully Added Care Teams');
   }
   await serve
     .update(payload)
