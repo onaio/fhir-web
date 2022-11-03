@@ -105,8 +105,15 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
         })
         .then(() => sendSuccessNotification(t('Successfully Updated')));
     } else {
-      const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
-      await settingsServe(row.settingMetadataId)
+      // remove inheritedFrom field from record
+      // no longer inherit settings from parent location
+      const { inheritedFrom, ...rest } = row;
+      const payload = {
+        ...rest,
+        value: valueIsYes ? 'true' : 'false',
+        locationId: currentLocId,
+      };
+      await settingsServe(rest.settingMetadataId)
         .update(payload)
         .catch(() => sendErrorNotification(t('An error occurred')))
         .then(async () => {
