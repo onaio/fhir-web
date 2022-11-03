@@ -13,6 +13,7 @@ import { ErrorBoundaryFallback } from '@opensrp/error-boundary-fallback';
 import { URL_HOME } from './constants';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { OpensrpWebI18nProvider } from '@opensrp/i18n';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
+console.log('Should be called out.');
 ReactDOM.render(
   <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
     <Provider store={store}>
