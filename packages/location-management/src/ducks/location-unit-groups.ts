@@ -30,18 +30,8 @@ export interface LocationUnitGroupPayloadPUT extends LocationUnitGroupPayloadPOS
 /** reducer name for the Item module */
 export const reducerName = 'location-unit-groups';
 
-/** Action types */
-const customfetchedActionType = 'location-unit-groups/LOCATION_UNIT_GROUPS_FETCHED';
-const customRemoveActionType = 'location-unit-groups/REMOVE_LOCATION_UNIT_GROUPS';
-const customSetTotalRecordsActionType = 'location-unit-groups/SET_TOTAL_LOCATION_UNIT_GROUPS';
-
 /** Item Reducer */
-export const reducer = reducerFactory<LocationUnitGroup>(
-  reducerName,
-  customfetchedActionType,
-  customRemoveActionType,
-  customSetTotalRecordsActionType
-);
+export const reducer = reducerFactory<LocationUnitGroup>(reducerName);
 
 // action
 /** actionCreator returns action to to add Item records to store */
