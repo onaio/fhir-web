@@ -11,11 +11,12 @@ import {
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
-import { Setting } from '../../ducks/settings';
+import { Setting, LocationHierarchyAncestors } from '../../ducks/settings';
 import {
   POP_CHARACTERISTICS_PARAM,
   SECURITY_AUTHENTICATE_ENDPOINT,
   SETTINGS_ENDPOINT,
+  LOCATION_HIERARCHY_ANCESTORS,
 } from '../../constants';
 import { useQuery, useQueryClient } from 'react-query';
 import { Table } from './Table';
@@ -35,19 +36,84 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
 
   const queryClient = useQueryClient();
 
-  const updateSettings = async (row: Setting, currentLocId: string, valueIsYes: boolean) => {
-    const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
-    const serve = new OpenSRPService(`${SETTINGS_ENDPOINT}/${row.settingMetadataId}`, v2BaseURL);
-    await serve
-      .update(payload)
-      .catch(() => sendErrorNotification(t('An error occurred')))
-      .then(() => {
-        queryClient
-          .invalidateQueries([SETTINGS_ENDPOINT, currentLocId])
-          .catch(() => sendErrorNotification(t('Cant Invalidate')));
+  const getServerSettings = (locationId: string) =>
+    new OpenSRPService(SETTINGS_ENDPOINT, v2BaseURL).list({
+      identifier: POP_CHARACTERISTICS_PARAM,
+      locationId: locationId,
+      resolve: true,
+      serverVersion: 0,
+    }) as Promise<Setting[]>;
 
-        sendSuccessNotification(t('Successfully Updated'));
-      });
+  const settingsServe = (settingMetadataId: string) =>
+    new OpenSRPService(`${SETTINGS_ENDPOINT}/${settingMetadataId}`, v2BaseURL);
+
+  const invalidateSettingsQueries = () =>
+    queryClient
+      .invalidateQueries([SETTINGS_ENDPOINT, currentLocId])
+      .catch(() => sendErrorNotification(t('Cant Invalidate')));
+
+  const getLocationHierarchy = (locationId: string) => {
+    return new OpenSRPService(LOCATION_HIERARCHY_ANCESTORS, `${baseURL}rest/`).read(
+      locationId
+    ) as Promise<LocationHierarchyAncestors[]>;
+  };
+
+  /**
+   * Check if server setting is already similar to the parent's setting
+   *
+   * @param settingKey setting.key
+   * @param locationId current location hierarchy id
+   * @param newValue new server.value
+   * @returns boolean
+   */
+  const isSettingSimilarToParent = async (
+    settingKey: string,
+    locationId: string,
+    newValue: 'true' | 'false'
+  ) => {
+    const locationHierarchy = await getLocationHierarchy(locationId);
+    const currentLocation = locationHierarchy.find(
+      (location) => location.identifier === locationId
+    );
+    const parentLocation = locationHierarchy.find(
+      (location) => location.identifier === currentLocation?.parentId
+    );
+
+    if (!parentLocation) return false;
+
+    const parentSettings = await getServerSettings(parentLocation.identifier);
+    const specificSetting = parentSettings.find((setting) => setting.key === settingKey);
+    return specificSetting?.value === newValue;
+  };
+
+  const updateSettings = async (row: Setting, currentLocId: string, valueIsYes: boolean) => {
+    const settingIsSimilarToParent = await isSettingSimilarToParent(
+      row.key,
+      currentLocId,
+      valueIsYes ? 'true' : 'false'
+    );
+
+    // if setting being anticipated already exists in the parent location
+    // delete existing setting and inherit from the parent location instead
+    // server returns inherited parent value instead by default
+    if (settingIsSimilarToParent) {
+      await settingsServe(row.settingMetadataId)
+        .delete()
+        .catch(() => sendErrorNotification(t('An error occurred')))
+        .then(async () => {
+          await invalidateSettingsQueries();
+        })
+        .then(() => sendSuccessNotification(t('Successfully Updated')));
+    } else {
+      const payload = { ...row, value: valueIsYes ? 'true' : 'false', locationId: currentLocId };
+      await settingsServe(row.settingMetadataId)
+        .update(payload)
+        .catch(() => sendErrorNotification(t('An error occurred')))
+        .then(async () => {
+          await invalidateSettingsQueries();
+        })
+        .then(() => sendSuccessNotification(t('Successfully Updated')));
+    }
   };
 
   const { isError: isUserLocSettingsError, isLoading: isUserLocSettingsLoading } = useQuery(
@@ -71,13 +137,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     data: serverSettingsData,
   } = useQuery(
     [SETTINGS_ENDPOINT, currentLocId],
-    async () =>
-      await new OpenSRPService(SETTINGS_ENDPOINT, v2BaseURL).list({
-        identifier: POP_CHARACTERISTICS_PARAM,
-        locationId: currentLocId,
-        resolve: true,
-        serverVersion: 0,
-      }),
+    async () => await getServerSettings(currentLocId),
     {
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: Setting[]) => res,
@@ -132,20 +192,17 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                             {t('No')}
                           </Menu.Item>
                           <Menu.Item
+                            // for inherit
+                            // delete existing setting and inherit from the parent location instead
+                            // server returns inherited parent value instead by default
                             onClick={async () => {
-                              await new OpenSRPService(
-                                `${SETTINGS_ENDPOINT}/${row.settingMetadataId}`,
-                                v2BaseURL
-                              )
+                              await settingsServe(row.settingMetadataId)
                                 .delete()
                                 .catch(() => sendErrorNotification(t('An error occurred')))
-                                .then(() => {
-                                  queryClient
-                                    .invalidateQueries([SETTINGS_ENDPOINT, currentLocId])
-                                    .catch(() => sendErrorNotification(t('Cant Invalidate')));
-
-                                  sendSuccessNotification(t('Successfully Updated'));
-                                });
+                                .then(async () => {
+                                  await invalidateSettingsQueries();
+                                })
+                                .then(() => sendSuccessNotification(t('Successfully Updated')));
                             }}
                           >
                             {t('Inherit')}
