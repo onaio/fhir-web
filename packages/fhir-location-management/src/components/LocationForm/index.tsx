@@ -149,7 +149,7 @@ const LocationForm = (props: LocationFormProps) => {
             ? t(`Location was successfully updated`)
             : t('Location was successfully created');
 
-          postPutLocationUnit(payload, fhirBaseURL, isEditMode)
+          postPutLocationUnit(payload, fhirBaseURL)
             .then(() => {
               const successUrl = successURLGenerator(payload);
               sendSuccessNotification(successMessage);

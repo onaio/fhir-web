@@ -115,7 +115,6 @@ export const generateGroupPayload = (
 ): IGroup => {
   const { id, identifier: rawIdentifier, active, name, type, unitOfMeasure } = values;
   const { initialObject } = initialValues;
-
   let payload: IGroup = {
     resourceType: groupResourceType,
     active: !!active,
@@ -134,6 +133,8 @@ export const generateGroupPayload = (
   }
   if (id) {
     payload.id = id;
+  } else {
+    payload.id = v4();
   }
 
   let identifier = rawIdentifier;
@@ -218,11 +219,6 @@ export const groupSelectfilterFunction = (inputValue: string, option?: SelectOpt
  * @param payload - the organization payload
  */
 export const postPutGroup = (baseUrl: string, payload: IGroup) => {
-  const { id } = payload;
-  const isEdit = !!id;
   const serve = new FHIRServiceClass<IGroup>(baseUrl, groupResourceType);
-  if (isEdit) {
-    return serve.update(payload);
-  }
-  return serve.create(payload);
+  return serve.update(payload);
 };

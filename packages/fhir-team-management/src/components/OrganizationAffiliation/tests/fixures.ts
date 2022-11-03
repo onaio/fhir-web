@@ -1449,6 +1449,7 @@ export const allOrgs = {
 
 export const createdAffiliation1 = {
   resourceType: 'OrganizationAffiliation',
+  id: '75482e89-40ce-4512-a74a-ccc30aeae073',
   identifier: [{ use: 'official', value: '75482e89-40ce-4512-a74a-ccc30aeae073' }],
   active: true,
   organization: { reference: 'Organization/void', display: 'Voidsingers' },
