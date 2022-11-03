@@ -3,7 +3,14 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import * as notifications from '@opensrp/notifications';
 import { ServerSettingsView } from '..';
-import { serverSettings, serverSettingsLevel1, securityAuthenticateEndpoint } from './fixtures';
+import {
+  serverSettings,
+  serverSettingsLevel1,
+  securityAuthenticateEndpoint,
+  locationHierarchyWithoutParent,
+  locationHierarchyWithParent,
+  serverSettingsSimilarToParent,
+} from './fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
@@ -85,6 +92,9 @@ describe('activate mission', () => {
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
     fetch.mockResponseOnce(JSON.stringify(serverSettings));
+    fetch.mockResponseOnce(JSON.stringify(locationHierarchyWithoutParent));
+    fetch.mockResponseOnce(JSON.stringify({}));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -117,84 +127,34 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    const payload = {
-      key: 'pop_anaemia_20',
-      value: 'true',
-      label: 'Anaemia prevalence 20% or lower',
-      inheritedFrom: 'Test',
-      description:
-        'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
-      uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
-      settingIdentifier: 'population_characteristics',
-      settingMetadataId: '5',
-      locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
-      v1Settings: false,
-      resolveSettings: false,
-      documentId: '0f851168-044d-4cff-9f81-689a567ade65',
-      serverVersion: 2,
-      type: 'Setting',
-      identifier: 'population_characteristics',
-      _id: '5',
-    };
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/security/authenticate',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((call) => [call[0], call[1]?.method])).toEqual([
+      ['https://opensrp-stage.smartregister.org/opensrp/security/authenticate', 'GET'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(payload),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/heirarchy/ancestors/02ebbc84-5e29-4cd5-9b79-c594058923e9',
+        'GET',
       ],
+      ['https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5', 'PUT'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
     ]);
     wrapper.unmount();
   });
 
-  it('Updates settings correctly when value is no', async () => {
+  it('Updates settings correctly when value is no - and similar to parent settings', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(serverSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
+    fetch.mockResponseOnce(JSON.stringify(locationHierarchyWithParent));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
+    fetch.mockResponseOnce(JSON.stringify({}));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
 
     const wrapper = mount(
       <Provider store={store}>
@@ -227,74 +187,24 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    const payload = {
-      key: 'pop_anaemia_20',
-      value: 'false',
-      label: 'Anaemia prevalence 20% or lower',
-      inheritedFrom: 'Test',
-      description:
-        'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
-      uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
-      settingIdentifier: 'population_characteristics',
-      settingMetadataId: '5',
-      locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
-      v1Settings: false,
-      resolveSettings: false,
-      documentId: '0f851168-044d-4cff-9f81-689a567ade65',
-      serverVersion: 2,
-      type: 'Setting',
-      identifier: 'population_characteristics',
-      _id: '5',
-    };
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/security/authenticate',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((call) => [call[0], call[1]?.method])).toEqual([
+      ['https://opensrp-stage.smartregister.org/opensrp/security/authenticate', 'GET'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(payload),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/heirarchy/ancestors/02ebbc84-5e29-4cd5-9b79-c594058923e9',
+        'GET',
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=b652b2f4-a95d-489b-9e28-4629746db96a&resolve=true&serverVersion=0',
+        'GET',
+      ],
+      ['https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5', 'DELETE'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
     ]);
     wrapper.unmount();

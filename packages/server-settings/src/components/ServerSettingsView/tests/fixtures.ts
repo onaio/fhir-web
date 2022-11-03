@@ -817,3 +817,57 @@ export const securityAuthenticateEndpoint = {
   },
   jurisdictions: ['Jambula Girls School', 'Nsalo Secondary School'],
 };
+
+export const locationHierarchyWithoutParent = [
+  {
+    id: 5,
+    identifier: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
+    name: 'Test Location',
+    parentId: '',
+    voided: false,
+    tags: 'Demo Test',
+    geographicLevel: 0,
+  },
+];
+
+export const locationHierarchyWithParent = [
+  {
+    id: 5,
+    identifier: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
+    name: 'Test Location',
+    parentId: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+    voided: false,
+    tags: 'Demo Test',
+    geographicLevel: 1,
+  },
+  {
+    id: 14,
+    identifier: 'b652b2f4-a95d-489b-9e28-4629746db96a',
+    name: 'Test Nested Location',
+    parentId: '',
+    voided: false,
+    tags: 'TEST14',
+    geographicLevel: 0,
+  },
+];
+
+export const serverSettingsSimilarToParent: Setting[] = [
+  {
+    key: 'pop_anaemia_20',
+    value: 'false',
+    label: 'Anaemia prevalence 20% or lower',
+    inheritedFrom: 'Test',
+    description:
+      'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
+    uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
+    settingsId: '2',
+    settingIdentifier: 'population_characteristics',
+    settingMetadataId: '5',
+    locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
+    v1Settings: false,
+    resolveSettings: false,
+    documentId: '0f851168-044d-4cff-9f81-689a567ade65',
+    serverVersion: 2,
+    type: 'Setting',
+  },
+];
