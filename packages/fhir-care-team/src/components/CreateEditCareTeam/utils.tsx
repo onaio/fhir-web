@@ -101,7 +101,7 @@ export const submitForm = async (
   };
 
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
-  let successNotifictaionMessage: string;
+  let successNotifictaionMessage = t('Successfully Added Care Teams');
   if (id) {
     successNotifictaionMessage = t('Successfully Updated Care Teams');
   }

@@ -29,13 +29,6 @@ jest.mock('uuid', () => {
     v4: () => '9b782015-8392-4847-b48c-50c11638656b',
   };
 });
-jest.mock('uuid', () => {
-  const actual = jest.requireActual('uuid');
-  return {
-    ...actual,
-    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
-  };
-});
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
