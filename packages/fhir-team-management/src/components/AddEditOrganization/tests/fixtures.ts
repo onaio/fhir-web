@@ -363,6 +363,7 @@ export const createdOrg = {
   resourceType: 'Organization',
   active: true,
   name: 'Seal team',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
   alias: ['ghosts'],
   type: [
@@ -384,6 +385,7 @@ export const editedOrg = {
 export const createdRole1 = {
   resourceType: 'PractitionerRole',
   active: true,
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   organization: { reference: 'Organization/105', display: 'Owls of Minerva' },
   practitioner: { reference: 'Practitioner/114', display: 'test fhir' },
   identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
@@ -392,6 +394,7 @@ export const createdRole1 = {
 export const createdRole2 = {
   resourceType: 'PractitionerRole',
   active: true,
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   organization: { reference: 'Organization/123', display: 'Seal team' },
   practitioner: { reference: 'Practitioner/206', display: 'Allay Allan' },
   identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],

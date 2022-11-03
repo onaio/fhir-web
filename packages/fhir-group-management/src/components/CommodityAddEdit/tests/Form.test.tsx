@@ -180,7 +180,7 @@ describe('Health care form', () => {
     const someMockURL = '/someURL';
 
     nock(formProps.fhirBaseUrl)
-      .post(`/${groupResourceType}`, createdCommodity)
+      .put(`/${groupResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdCommodity)
       .reply(200, { ...createdCommodity, id: '123' })
       .persist();
 
@@ -297,7 +297,6 @@ describe('Health care form', () => {
       .persist();
 
     const initialValues = getGroupFormFields(commodity1);
-
     const localProps = {
       ...formProps,
       initialValues,

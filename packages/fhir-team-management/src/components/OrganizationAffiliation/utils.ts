@@ -173,6 +173,7 @@ export const postPutAffiliations = (
     // we create a wholly new affiliation
     const affiliationPayload: IOrganizationAffiliation = {
       resourceType: organizationAffiliationResourceType,
+      id: v4(),
       identifier: [
         {
           use: IdentifierUseCodes.OFFICIAL,
@@ -191,7 +192,7 @@ export const postPutAffiliations = (
         },
       ],
     };
-    promises.push(() => serve.create(affiliationPayload));
+    promises.push(() => serve.update(affiliationPayload));
   });
 
   return Promise.all(promises.map((p) => p()));

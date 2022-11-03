@@ -22,6 +22,13 @@ jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
+  return {
+    ...actual,
+    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
+  };
+});
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
@@ -60,7 +67,9 @@ test('renders and submits a questionnaire correctly', async () => {
   };
 
   nock(props.fhirBaseURL).get('/Questionnaire/123').reply(200, openChoiceQuest);
-  nock(props.fhirBaseURL).post('/QuestionnaireResponse').reply(200, {});
+  nock(props.fhirBaseURL)
+    .put('/QuestionnaireResponse/9b782015-8392-4847-b48c-50c11638656b')
+    .reply(200, {});
 
   render(
     <Router history={history}>

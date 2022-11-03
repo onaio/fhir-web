@@ -181,7 +181,10 @@ describe('Health care form', () => {
     const someMockURL = '/someURL';
 
     nock(formProps.fhirBaseUrl)
-      .post(`/${healthCareServiceResourceType}`, createdHealthCareService)
+      .put(
+        `/${healthCareServiceResourceType}/9b782015-8392-4847-b48c-50c11638656b`,
+        createdHealthCareService
+      )
       .reply(200, { ...createdHealthCareService, id: '123' })
       .persist();
 
