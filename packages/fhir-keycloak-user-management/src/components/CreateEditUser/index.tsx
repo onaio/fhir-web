@@ -40,7 +40,6 @@ export const createEditGroupResource = (
   keycloakUserName: string,
   practitionerID: string,
   baseUrl: string,
-  t: TFunction,
   existingGroupID?: string
 ) => {
   const newGroupResourceID = v4();
@@ -168,7 +167,6 @@ const practitionerUpdater =
               payload.id ??
               '',
             baseUrl,
-            t,
             group?.id
           )
             .then(() => sendSuccessNotification(groupSuccessMessage))
