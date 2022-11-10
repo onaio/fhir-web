@@ -177,6 +177,16 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
+          <Form.Item id="userType" name="userType" label={t('User Type')}>
+            <Radio.Group
+              options={[
+                { label: t('Practitioner'), value: 'practitioner' },
+                { label: t('Supervisor'), value: 'supervisor' },
+              ]}
+              name="userType"
+            ></Radio.Group>
+          </Form.Item>
+
           <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
             <Radio.Group
               options={status}
@@ -185,6 +195,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               onChange={(e) => setUserEnabled(e.target.value)}
             ></Radio.Group>
           </Form.Item>
+
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
               <Radio.Group name="active">
@@ -233,6 +244,7 @@ export const defaultUserFormInitialValues: FormFields = {
   lastName: '',
   username: '',
   active: true,
+  userType: 'practitioner',
   userGroups: undefined,
   practitioner: undefined,
   contact: undefined,
