@@ -101,7 +101,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   const data: T[] = useMemo(() => {
     return datasource.map((e, index) => ({
       ...e,
-      key: e.key ?? dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index,
+      key: e.key ?? (dataKeyAccessor ? e[dataKeyAccessor as keyof T] : index),
     }));
   }, [dataKeyAccessor, datasource]);
 
