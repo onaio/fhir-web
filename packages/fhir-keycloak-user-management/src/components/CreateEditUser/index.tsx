@@ -173,6 +173,14 @@ const practitionerUpdater =
       ? t('Failed to update group resource')
       : t('Failed to create group resource');
 
+    const practitionerRoleSuccessMessage = isEditMode
+      ? t('PractitionerRole updated successfully')
+      : t('PractitionerRole created successfully');
+
+    const practitionerRoleErrorMessage = isEditMode
+      ? t('Failed to update practitionerRole')
+      : t('Failed to create practitionerRole');
+
     let officialIdentifier;
     let secondaryIdentifier;
     if (values.practitioner) {
@@ -227,18 +235,31 @@ const practitionerUpdater =
           return res;
         })
         .then((res) => {
+          const practitionerID =
+            res.identifier?.find((identifier) => identifier.use === 'official')?.value ??
+            payload.id;
+
           createEditGroupResource(
             values.enabled ?? false,
             userId,
             `${values.firstName} ${values.lastName}`,
-            res.identifier?.find((identifier) => identifier.use === 'official')?.value ??
-              payload.id ??
-              '',
+            practitionerID ?? '',
             baseUrl,
             group?.id
           )
             .then(() => sendSuccessNotification(groupSuccessMessage))
             .catch(() => sendErrorNotification(groupErrorMessage));
+
+          createEditPractitionerRoleResource(
+            values.userType,
+            userId,
+            values.enabled ?? false,
+            practitionerID ?? '',
+            baseUrl,
+            values.practitionerRole?.id
+          )
+            .then(() => sendSuccessNotification(practitionerRoleSuccessMessage))
+            .catch(() => sendErrorNotification(practitionerRoleErrorMessage));
         })
         .catch(() => sendErrorNotification(practitionerErrorMessage))
         .finally(() => {
