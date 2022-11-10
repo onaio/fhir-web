@@ -17,6 +17,7 @@ import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -199,11 +200,13 @@ export const submitForm = async (
  * @param keycloakUser - the keycloak user to be edited, undefined if creating user
  * @param practitioner - the associated practitioner
  * @param userGroups -  user groups assigned to this user
+ * @param practitionerRole -  user practitioner role assigned to this user
  */
 export const getFormValues = (
   keycloakUser?: KeycloakUser,
   practitioner?: Practitioner | IPractitioner,
-  userGroups?: UserGroup[]
+  userGroups?: UserGroup[],
+  practitionerRole?: IPractitionerRole
 ): FormFields => {
   if (!keycloakUser) {
     // this should mean we are in create mode
@@ -212,6 +215,33 @@ export const getFormValues = (
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
   const { contact: contacts } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
+
+  // get the code of a practitioner resource type
+  // to be used to determine the resource type
+  // i.e if it's a practitioner or a supervisor resource type
+  const getUserTypeCode = (role: IPractitionerRole) =>
+    role.code?.find((code) => code.coding)?.coding?.find((coding) => coding.code)?.code;
+
+  let userType: FormFields['userType'] = 'practitioner';
+
+  if (practitionerRole) {
+    // getting the user type to default to when editing a user
+    // by comparing practitioner resource user type codes
+    // this is probably not the best way because these codes are constants
+    // but it's the best for now
+    const userTypeCode = getUserTypeCode(practitionerRole);
+    if (userTypeCode) {
+      switch (userTypeCode) {
+        case '405623001':
+          userType = 'practitioner';
+          break;
+        case '236321002':
+          userType = 'supervisor';
+          break;
+      }
+    }
+  }
+
   return {
     id,
     firstName,
@@ -221,9 +251,11 @@ export const getFormValues = (
     enabled,
     contact: contacts?.[0],
     active,
+    userType,
     practitioner,
     userGroups: userGroups?.map((tag) => tag.id),
     keycloakUser,
+    practitionerRole,
   };
 };
 
