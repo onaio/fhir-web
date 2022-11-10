@@ -30,6 +30,7 @@ import { FormFields, UserFormProps } from '../forms/UserForm/types';
 import { defaultUserFormInitialValues, UserForm } from '../forms/UserForm';
 import { getFormValues, postPutPractitioner } from '../forms/UserForm/utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -48,6 +49,7 @@ export interface CreateEditUserProps {
   userFormHiddenFields?: UserFormProps['hiddenFields'];
   userFormRenderFields?: UserFormProps['renderFields'];
   getPractitionerFun: (baseUrl: string, userId: string) => Promise<Practitioner | IPractitioner>;
+  getPractitionerRoleFun?: (baseUrl: string, userId: string) => Promise<IPractitionerRole>;
   postPutPractitionerFactory: UserFormProps['practitionerUpdaterFactory'];
 }
 
@@ -77,6 +79,8 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const [assignedUserGroups, setAssignedUserGroups] = useState<UserGroup[]>([]);
   const [initialValues, setInitialValues] = useState<FormFields>(defaultUserFormInitialValues);
   const [practitioner, setPractitioner] = useState<Practitioner | IPractitioner>();
+  const [practitionerRoleLoading, setPractitionerRoleLoading] = useState(false);
+  const [practitionerRole, setPractitionerRole] = useState<IPractitionerRole>();
   const { t } = useTranslation();
 
   const {
@@ -89,6 +93,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     userFormRenderFields,
     getPractitionerFun,
     postPutPractitionerFactory,
+    getPractitionerRoleFun,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -166,11 +171,32 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     }
   }, [userId, baseUrl, getPractitionerFun, t]);
 
+  /**
+   * Fetch practitioner role assigned to user being edited
+   */
   useEffect(() => {
-    setInitialValues(getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups));
-  }, [keycloakUser, practitioner, assignedUserGroups]);
+    if (userId && getPractitionerRoleFun) {
+      setPractitionerRoleLoading(true);
+      getPractitionerRoleFun(baseUrl, userId)
+        .then((resp) => setPractitionerRole(resp))
+        .catch(() => sendErrorNotification(t('Failed to load practitioner role')))
+        .finally(() => setPractitionerRoleLoading(false));
+    }
+  }, [baseUrl, getPractitionerRoleFun, t, userId]);
 
-  if (userGroupsLoading || keyCloakUserLoading || userGroupLoading || practitionerLoading)
+  useEffect(() => {
+    setInitialValues(
+      getFormValues(keycloakUser ?? undefined, practitioner, assignedUserGroups, practitionerRole)
+    );
+  }, [keycloakUser, practitioner, assignedUserGroups, practitionerRole]);
+
+  if (
+    userGroupsLoading ||
+    keyCloakUserLoading ||
+    userGroupLoading ||
+    practitionerLoading ||
+    practitionerRoleLoading
+  )
     return <Spin size="large" className="custom-spinner" />;
 
   return (
