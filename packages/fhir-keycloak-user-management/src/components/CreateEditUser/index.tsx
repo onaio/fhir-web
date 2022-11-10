@@ -39,6 +39,13 @@ export const getGroup = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
 };
 
+const getPractitionerRole = (baseUrl: string, userId: string) => {
+  const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerRoleResourceType);
+  return serve
+    .list({ identifier: userId })
+    .then((res: IBundle) => getResourcesFromBundle<IPractitionerRole>(res)[0]);
+};
+
 export const createEditGroupResource = (
   keycloakUserEnabled: boolean,
   keycloakID: string,
@@ -277,6 +284,7 @@ export function CreateEditUser(props: CreateEditPropTypes) {
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
+    getPractitionerRoleFun: getPractitionerRole,
     postPutPractitionerFactory: practitionerUpdater,
   };
 
