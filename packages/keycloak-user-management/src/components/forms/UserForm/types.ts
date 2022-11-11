@@ -33,6 +33,7 @@ export interface UserFormProps {
   hiddenFields?: FormFieldsKey[];
   renderFields?: FormFieldsKey[];
   practitionerUpdaterFactory: PractitionerUpdaterFactory;
+  isFHIRInstance: boolean;
 }
 
 /** descibes antd select component options */
