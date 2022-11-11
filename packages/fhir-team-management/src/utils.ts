@@ -20,13 +20,8 @@ import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
  * @param payload - the organization payload
  */
 export const postPutOrganization = (baseUrl: string, payload: IOrganization) => {
-  const { id } = payload;
-  const isEdit = !!id;
   const serve = new FHIRServiceClass<IOrganization>(baseUrl, organizationResourceType);
-  if (isEdit) {
-    return serve.update(payload);
-  }
-  return serve.create(payload);
+  return serve.update(payload);
 };
 
 export interface SelectOption {
@@ -130,6 +125,7 @@ export const updatePractitionerRoles = (
       const practitionerRole: IPractitionerRole = {
         resourceType: practitionerRoleResourceType,
         active: true,
+        id: v4(),
         organization: {
           reference: `${organizationResourceType}/${orgId}`,
           display: organization.name,
@@ -148,7 +144,7 @@ export const updatePractitionerRoles = (
       return practitionerRole;
     })
     .map((practRole) => {
-      return () => serve.create(practRole);
+      return () => serve.update(practRole);
     });
 
   return Promise.all([...removePromises, ...additionPromises].map((p) => p()));

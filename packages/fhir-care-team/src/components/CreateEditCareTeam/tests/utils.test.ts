@@ -61,7 +61,7 @@ describe('forms/utils/submitForm', () => {
     fhir.mockImplementation(
       jest.fn().mockImplementation(() => {
         return {
-          create: jest.fn().mockResolvedValue(careTeam1),
+          update: jest.fn().mockResolvedValue(careTeam1),
         };
       })
     );
