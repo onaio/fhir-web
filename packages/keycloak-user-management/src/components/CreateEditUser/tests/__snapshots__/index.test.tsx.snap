@@ -17,9 +17,11 @@ Object {
           "lastName": "",
           "practitioner": undefined,
           "userGroups": undefined,
+          "userType": "practitioner",
           "username": "",
         }
       }
+      isFHIRInstance={false}
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
       practitionerUpdaterFactory={[Function]}
       userGroups={
