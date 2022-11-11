@@ -194,6 +194,22 @@ export const submitForm = async (
   }
 };
 
+// get the code of a practitioner resource type
+// to be used to determine the resource type
+// i.e if it's a practitioner or a supervisor resource type
+export const getUserTypeCode = (role: IPractitionerRole) =>
+  role.code?.find((code) => code.coding)?.coding?.find((coding) => coding.code)?.code;
+
+// get user type from user type code
+export const getUserType = (userTypeCode: '405623001' | '236321002') => {
+  switch (userTypeCode) {
+    case '405623001':
+      return 'practitioner';
+    case '236321002':
+      return 'supervisor';
+  }
+};
+
 /**
  * abstraction to derive formValues from keycloak user and optional associated practitioner
  *
@@ -216,12 +232,6 @@ export const getFormValues = (
   const { contact: contacts } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
 
-  // get the code of a practitioner resource type
-  // to be used to determine the resource type
-  // i.e if it's a practitioner or a supervisor resource type
-  const getUserTypeCode = (role: IPractitionerRole) =>
-    role.code?.find((code) => code.coding)?.coding?.find((coding) => coding.code)?.code;
-
   let userType: FormFields['userType'] = 'practitioner';
 
   if (practitionerRole) {
@@ -231,14 +241,7 @@ export const getFormValues = (
     // but it's the best for now
     const userTypeCode = getUserTypeCode(practitionerRole);
     if (userTypeCode) {
-      switch (userTypeCode) {
-        case '405623001':
-          userType = 'practitioner';
-          break;
-        case '236321002':
-          userType = 'supervisor';
-          break;
-      }
+      userType = getUserType(userTypeCode as '405623001' | '236321002');
     }
   }
 
