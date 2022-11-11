@@ -39,7 +39,7 @@ export const getGroup = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
 };
 
-const getPractitionerRole = (baseUrl: string, userId: string) => {
+export const getPractitionerRole = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerRoleResourceType);
   return serve
     .list({ identifier: userId })
