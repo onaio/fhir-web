@@ -211,6 +211,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           hiddenFields={userFormHiddenFields}
           renderFields={userFormRenderFields}
           practitionerUpdaterFactory={postPutPractitionerFactory}
+          isFHIRInstance={!!getPractitionerRoleFun}
         />
       </Col>
     </Row>

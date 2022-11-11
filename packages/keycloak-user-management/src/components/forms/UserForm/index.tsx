@@ -29,6 +29,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     userGroups,
     renderFields,
     hiddenFields,
+    isFHIRInstance,
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
@@ -177,15 +178,17 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
-          <Form.Item id="userType" name="userType" label={t('User Type')}>
-            <Radio.Group
-              options={[
-                { label: t('Practitioner'), value: 'practitioner' },
-                { label: t('Supervisor'), value: 'supervisor' },
-              ]}
-              name="userType"
-            ></Radio.Group>
-          </Form.Item>
+          {isFHIRInstance ? (
+            <Form.Item id="userType" name="userType" label={t('User Type')}>
+              <Radio.Group
+                options={[
+                  { label: t('Practitioner'), value: 'practitioner' },
+                  { label: t('Supervisor'), value: 'supervisor' },
+                ]}
+                name="userType"
+              ></Radio.Group>
+            </Form.Item>
+          ) : null}
 
           <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
             <Radio.Group
