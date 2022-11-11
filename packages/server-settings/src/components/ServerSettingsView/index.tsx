@@ -24,7 +24,6 @@ import { useTranslation } from '../../mls';
 
 export interface Props {
   baseURL: string;
-  restBaseURL: string;
   v2BaseURL: string;
 }
 
