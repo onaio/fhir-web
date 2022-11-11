@@ -134,6 +134,10 @@ export const generateOrgPayload = (values: OrganizationFormFields): IOrganizatio
     ];
   }
 
+  if (id === undefined) {
+    payload.id = v4();
+  }
+
   return payload;
 };
 
