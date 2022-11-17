@@ -106,7 +106,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   );
 
   if (userIsLoading) {
-    return <Spin size="large" className="custom-spinner" />;
+    return <Spin size="large" className="custom-spinner" data-testid="custom-spinner" />;
   }
 
   if (userError && !user) {
@@ -164,7 +164,11 @@ export const ViewDetails = (props: ViewDetailsProps) => {
           if (userTypeCode) {
             userType = getUserType(userTypeCode as '405623001' | '236321002');
           }
-          return <li key={role.id}>{userType}</li>;
+          return (
+            <li key={role.id} data-testid="user-type">
+              {userType}
+            </li>
+          );
         })}
       </ul>
     ),
