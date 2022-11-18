@@ -222,7 +222,9 @@ test('it fetches groups', async () => {
 });
 
 test('it creates a group resource', async () => {
-  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, {});
+  const successMessage = { message: 'Successfully created' };
+
+  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, successMessage);
 
   const successStub = jest.fn();
   const errorStub = jest.fn();
@@ -232,14 +234,13 @@ test('it creates a group resource', async () => {
     updatedGroup.identifier[1].value,
     updatedGroup.name,
     updatedGroup.member[0].entity.reference.split('/')[1],
-    props.baseUrl,
-    (string) => string
+    props.baseUrl
   )
-    .then(() => successStub())
+    .then((resp) => successStub(resp))
     .catch(() => errorStub());
 
   await waitFor(() => {
     expect(errorStub).not.toHaveBeenCalled();
-    expect(successStub).toHaveBeenCalledWith();
+    expect(successStub).toHaveBeenCalledWith(successMessage);
   });
 });
