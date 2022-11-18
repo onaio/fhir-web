@@ -268,3 +268,25 @@ export const practitionerRoleBundle = {
     },
   ],
 };
+
+export const updatedPractitionerRole = {
+  resourceType: 'PractitionerRole',
+  id: '38f12000-a066-45ef-8668-65d10e295279',
+  identifier: [
+    { use: 'official', value: '38f12000-a066-45ef-8668-65d10e295279' },
+    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+  ],
+  active: true,
+  practitioner: { reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2' },
+  code: [
+    {
+      coding: [
+        {
+          system: 'http://snomed.info/sct',
+          code: '236321002',
+          display: 'Supervisor (occupation)',
+        },
+      ],
+    },
+  ],
+};

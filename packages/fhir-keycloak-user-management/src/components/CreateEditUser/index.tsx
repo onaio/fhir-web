@@ -25,7 +25,7 @@ import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { TFunction } from 'i18n/dist/types';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
-const getPractitioner = (baseUrl: string, userId: string) => {
+export const getPractitioner = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType);
   return serve
     .list({ identifier: userId })
@@ -154,7 +154,7 @@ export const createEditPractitionerRoleResource = (
   );
 };
 
-const practitionerUpdater =
+export const practitionerUpdater =
   (baseUrl: string) =>
   async (values: FormFields, userId: string, t: TFunction = (str) => str) => {
     const isEditMode = !!values.practitioner;
