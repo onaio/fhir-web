@@ -10,6 +10,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import fetch from 'jest-fetch-mock';
 import { KeycloakUser } from '@opensrp/user-management';
 import { practitionerRoleResourceType } from '../../../../constants';
+import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -35,29 +36,6 @@ const keycloakUser = {
   id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
   username: 'allay_allan',
 } as KeycloakUser;
-
-const practitionerRoleBundle = {
-  resourceType: 'Bundle',
-  entry: [
-    {
-      resource: {
-        resourceType: 'PractitionerRole',
-        id: '38f12000-a066-45ef-8668-65d10e295279',
-        code: [
-          {
-            coding: [
-              {
-                system: 'http://snomed.info/sct',
-                code: '405623001',
-                display: 'Assigned practitioner',
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
 
 beforeAll(() => {
   nock.disableNetConnect();
