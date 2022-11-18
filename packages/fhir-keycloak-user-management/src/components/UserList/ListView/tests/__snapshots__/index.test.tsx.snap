@@ -558,6 +558,47 @@ exports[`renders correctly when listing resources: user details 5`] = `
 </div>
 `;
 
+exports[`renders correctly when listing resources: user details 6`] = `
+<div
+  data-testid="key-value"
+>
+  <dl
+    class="singleKeyValue"
+  >
+    <div
+      class="singleKeyValue-pair"
+    >
+      <dt
+        class="singleKeyValue-pair__label"
+      >
+        <span
+          class="ant-typography ant-typography-secondary"
+        >
+          User Type
+        </span>
+      </dt>
+      <dd
+        class="singleKeyValue-pair__value"
+      >
+        <span
+          class="ant-typography"
+        >
+          <ul
+            id="user-type"
+          >
+            <li
+              data-testid="user-type"
+            >
+              practitioner
+            </li>
+          </ul>
+        </span>
+      </dd>
+    </div>
+  </dl>
+</div>
+`;
+
 exports[`renders correctly when listing resources: yes button 1`] = `
 <button
   class="ant-btn ant-btn-primary ant-btn-sm"
