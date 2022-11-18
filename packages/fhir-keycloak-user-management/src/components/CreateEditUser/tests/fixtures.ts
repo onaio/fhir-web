@@ -209,3 +209,62 @@ export const updatedGroup = {
     },
   ],
 };
+
+export const practitionerRoleBundle = {
+  resourceType: 'Bundle',
+  id: 'bd011ab9-ee83-484e-bdbc-6f76a40724c9',
+  meta: {
+    lastUpdated: '2022-11-17T22:22:17.387+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/PractitionerRole/_search?identifier=b27939dd-4c8f-44c2-83dd-dc40e494f17d',
+    },
+  ],
+  entry: [
+    {
+      fullUrl:
+        'https://fhir.labs.smartregister.org:443/fhir/PractitionerRole/38f12000-a066-45ef-8668-65d10e295279',
+      resource: {
+        resourceType: 'PractitionerRole',
+        id: '38f12000-a066-45ef-8668-65d10e295279',
+        meta: {
+          versionId: '3',
+          lastUpdated: '2022-11-11T02:09:31.563+00:00',
+          source: '#81c0e33f98658cdd',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: '38f12000-a066-45ef-8668-65d10e295279',
+          },
+          {
+            use: 'secondary',
+            value: 'b27939dd-4c8f-44c2-83dd-dc40e494f17d',
+          },
+        ],
+        active: true,
+        practitioner: {
+          reference: 'Practitioner/175ceaa4-0f75-4ab3-a8a7-413cc225f761',
+        },
+        code: [
+          {
+            coding: [
+              {
+                system: 'http://snomed.info/sct',
+                code: '405623001',
+                display: 'Assigned practitioner',
+              },
+            ],
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
