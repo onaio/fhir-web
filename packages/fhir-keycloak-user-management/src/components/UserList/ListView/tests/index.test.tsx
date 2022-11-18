@@ -13,8 +13,13 @@ import userEvents from '@testing-library/user-event';
 import { URL_USER } from '@opensrp/user-management';
 import { careTeams, practitioner, userFixtures, group } from './fixtures';
 import fetch from 'jest-fetch-mock';
-import { careTeamResourceType, practitionerResourceType } from '../../../../constants';
+import {
+  careTeamResourceType,
+  practitionerResourceType,
+  practitionerRoleResourceType,
+} from '../../../../constants';
 import flushPromises from 'flush-promises';
+import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 
 jest.mock('@opensrp/notifications', () => {
   return { _esModule: true, ...Object.assign({}, jest.requireActual('@opensrp/notifications')) };
@@ -138,7 +143,7 @@ test('renders correctly when listing resources', async () => {
   });
 
   // sort? - by firstName
-  const caretUp = document.querySelector('.anticon-caret-up:nth-child(1)');
+  const caretUp = document.querySelector('.anticon-caret-up:nth-child(1)') as Element;
   fireEvent.click(caretUp);
   const tdsText = [...document.querySelectorAll('tr td:nth-child(1)')].map((td) => {
     return td.textContent;
@@ -146,7 +151,7 @@ test('renders correctly when listing resources', async () => {
   expect(tdsText).toEqual(['testhh', 'test404', 'eCBIS', 'april4', 'Roy']);
 
   // works with search as well.
-  const searchForm = document.querySelector('[data-testid="search-form"]');
+  const searchForm = document.querySelector('[data-testid="search-form"]') as Element;
   userEvents.paste(searchForm as HTMLElement, 'petertest');
 
   expect(history.location.search).toEqual('?search=petertest');
@@ -160,7 +165,7 @@ test('renders correctly when listing resources', async () => {
   userEvents.clear(searchForm);
   expect(history.location.search).toEqual('');
 
-  const practitionerObj = practitioner.entry[0].resource;
+  const practitionerObj = practitioner.entry?.[0].resource;
   // view details
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
@@ -170,15 +175,20 @@ test('renders correctly when listing resources', async () => {
     .query({ identifier: userFixtures[14].id })
     .reply(200, group)
     .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj.id, _summary: 'count' })
+    .query({ 'participant:Practitioner': practitionerObj?.id, _summary: 'count' })
     .reply(200, { total: 2 })
     .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj.id, _count: '2' })
+    .query({ 'participant:Practitioner': practitionerObj?.id, _count: '2' })
     .reply(200, careTeams)
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({ identifier: userFixtures[14].id })
+    .reply(200, practitionerRoleBundle)
     .persist();
 
   // target the initial row view details
-  const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
+  const dropdown = document.querySelector(
+    'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
+  ) as Element;
   fireEvent.click(dropdown);
 
   const viewDetailsLink = screen.getByText(/View Details/);
@@ -209,7 +219,7 @@ test('renders correctly when listing resources', async () => {
     .forEach((keyValue) => expect(keyValue).toMatchSnapshot('user details'));
 
   // close view details
-  const closeButton = document.querySelector('[data-testid="close-button"]');
+  const closeButton = document.querySelector('[data-testid="close-button"]') as Element;
   fireEvent.click(closeButton);
 
   expect(history.location.pathname).toEqual(URL_USER);
@@ -217,7 +227,7 @@ test('renders correctly when listing resources', async () => {
   // try and delete certain user
   // one nock request to get practitioner is already mocked above.
   nock(props.fhirBaseURL)
-    .put(`/${practitionerResourceType}/${practitionerObj.id}`, {
+    .put(`/${practitionerResourceType}/${practitionerObj?.id}`, {
       ...practitionerObj,
       active: false,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -225,7 +235,7 @@ test('renders correctly when listing resources', async () => {
     .reply(200, {})
     .persist();
 
-  const deleteBtn = document.querySelector('[data-testid="delete-user"]');
+  const deleteBtn = document.querySelector('[data-testid="delete-user"]') as Element;
   fireEvent.click(deleteBtn);
 
   // confirm
