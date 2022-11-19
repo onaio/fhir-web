@@ -183,7 +183,7 @@ test('renders correctly for edit user', async () => {
     </Router>
   );
 
-  expect(getByTestId('custom-spinner')).toBeInTheDocument();
+  expect(getByTestId('custom-create-user-spinner')).toBeInTheDocument();
 
   await waitFor(() => {
     expect(getByText(/User Type/)).toBeInTheDocument();
