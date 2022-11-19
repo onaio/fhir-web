@@ -8,6 +8,7 @@ import {
   generateJurisdictionTree,
   ParsedHierarchyNode,
   RawOpenSRPHierarchy,
+  RawHierarchyNode,
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
@@ -29,7 +30,7 @@ export interface Props {
 
 export const ServerSettingsView: React.FC<Props> = (props: Props) => {
   const { baseURL, v2BaseURL } = props;
-  const [currentLocId, setCurrentLocId] = useState<string>('');
+  const [currentLocation, setCurrentLocation] = useState<RawHierarchyNode | ParsedHierarchyNode>();
   const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
   const { t } = useTranslation();
 
@@ -48,7 +49,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
 
   const invalidateSettingsQueries = () =>
     queryClient
-      .invalidateQueries([SETTINGS_ENDPOINT, currentLocId])
+      .invalidateQueries([SETTINGS_ENDPOINT, currentLocation?.id])
       .catch(() => sendErrorNotification(t('Cant Invalidate')));
 
   const getLocationHierarchy = (locationId: string) => {
@@ -132,7 +133,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
         const processedHierarchy = generateJurisdictionTree(userLocSettings).model;
         setTreeData([processedHierarchy]);
         const { map: userLocMap } = userLocSettings.locationsHierarchy;
-        setCurrentLocId(Object.keys(userLocMap)[0]);
+        setCurrentLocation(Object.values(userLocMap)[0]);
       },
     }
   );
@@ -142,12 +143,12 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     isLoading: isServerSettingsLoading,
     data: serverSettingsData,
   } = useQuery(
-    [SETTINGS_ENDPOINT, currentLocId],
-    async () => await getServerSettings(currentLocId),
+    [SETTINGS_ENDPOINT, currentLocation?.id ?? ''],
+    async () => await getServerSettings(currentLocation?.id ?? ''),
     {
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: Setting[]) => res,
-      enabled: !!currentLocId.length,
+      enabled: !!currentLocation?.id,
     }
   );
 
@@ -164,10 +165,17 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{t('Settings')}</title>
       </Helmet>
-      <PageHeader className="page-header" title={t('Settings')} />
+      <PageHeader
+        className="page-header"
+        title={
+          currentLocation?.label
+            ? t('Settings | {{currentLocation}}', { currentLocation: currentLocation.label })
+            : t('Settings')
+        }
+      />
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentLocId(node.id)} />
+          <Tree data={treeData} OnItemClick={(node) => setCurrentLocation(node)} />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
@@ -185,14 +193,14 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                         <Menu className="menu">
                           <Menu.Item
                             onClick={async () => {
-                              await updateSettings(row, currentLocId, true);
+                              await updateSettings(row, currentLocation?.id ?? '', true);
                             }}
                           >
                             {t('Yes')}
                           </Menu.Item>
                           <Menu.Item
                             onClick={async () => {
-                              await updateSettings(row, currentLocId, false);
+                              await updateSettings(row, currentLocation?.id ?? '', false);
                             }}
                           >
                             {t('No')}
