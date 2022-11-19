@@ -197,7 +197,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     practitionerLoading ||
     practitionerRoleLoading
   )
-    return <Spin size="large" className="custom-spinner" />;
+    return (
+      <Spin size="large" className="custom-spinner" data-testid="custom-create-user-spinner" />
+    );
 
   return (
     <Row>
