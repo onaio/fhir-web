@@ -116,7 +116,7 @@ export const CommodityList = (props: GroupListProps) => {
     pageTitle: t('Commodity List'),
     extraQueryFilters: {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
-      _has: `List:item:_id=${listId}`,
+      '_has:List:item:_id': listId,
     },
     viewDetailsListUrl: LIST_COMMODITY_URL,
   };

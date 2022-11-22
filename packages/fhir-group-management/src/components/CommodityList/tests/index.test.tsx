@@ -104,7 +104,7 @@ test('renders correctly when listing resources', async () => {
       _getpagesoffset: 0,
       _count: 20,
       code: 'http://snomed.info/sct|386452003',
-      _has: `List:item:_id=${listResId}`,
+      '_has:List:item:_id': listResId,
     })
     .reply(200, commoditiesPage1)
     .persist();
