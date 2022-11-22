@@ -15,6 +15,7 @@ import { commodity1, createdCommodity, newList } from './fixtures';
 import { groupResourceType, listResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
+import flushPromises from 'flush-promises';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -70,6 +71,7 @@ const AppWrapper = (props: any) => {
 afterEach(() => {
   cleanup();
   nock.cleanAll();
+  jest.resetAllMocks();
 });
 
 beforeAll(() => {
@@ -263,7 +265,8 @@ test('#1116 adding new group but list does not exist', async () => {
 
   await waitFor(() => {
     expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
+    expect(nock.isDone()).toBeTruthy();
   });
 
-  expect(nock.isDone()).toBeTruthy();
+  await flushPromises();
 });
