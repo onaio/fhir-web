@@ -170,6 +170,7 @@ import {
   teamManagementProps,
   patientProps,
   fhirCreateEditUserProps,
+  commodityAddEditProps,
 } from './utils';
 import './App.css';
 import {
@@ -901,6 +902,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={`${ADD_EDIT_COMMODITY_URL}/:id`}
               exact
+              {...commodityAddEditProps}
               component={CommodityAddEdit}
             />
             <PrivateComponent
@@ -908,6 +910,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={ADD_EDIT_COMMODITY_URL}
+              {...commodityAddEditProps}
               exact
               component={CommodityAddEdit}
             />
