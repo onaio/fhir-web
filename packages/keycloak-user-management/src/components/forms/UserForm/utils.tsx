@@ -246,7 +246,9 @@ export const getFormValues = (
     // but it's the best for now
     const userTypeCode = getUserTypeCode(practitionerRole);
     if (userTypeCode) {
-      userType = getUserType(userTypeCode as '405623001' | '236321002');
+      userType = getUserType(
+        userTypeCode as typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+      );
     }
   }
 

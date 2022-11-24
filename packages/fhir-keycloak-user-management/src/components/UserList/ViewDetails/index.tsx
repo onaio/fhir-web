@@ -6,6 +6,8 @@ import {
   getUserTypeCode,
   getUserType,
   FormFields,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '@opensrp/user-management';
 import { Col, Button, Space, Alert, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -162,7 +164,9 @@ export const ViewDetails = (props: ViewDetailsProps) => {
           let userType: FormFields['userType'];
           const userTypeCode = getUserTypeCode(role);
           if (userTypeCode) {
-            userType = getUserType(userTypeCode as '405623001' | '236321002');
+            userType = getUserType(
+              userTypeCode as typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+            );
           }
           return (
             <li key={role.id} data-testid="user-type">

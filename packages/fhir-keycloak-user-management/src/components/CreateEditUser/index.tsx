@@ -3,6 +3,8 @@ import {
   CreateEditPropTypes,
   URL_USER_CREDENTIALS,
   FormFields,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '@opensrp/user-management';
 import {
   practitionerResourceType,
@@ -68,7 +70,11 @@ export const createEditGroupResource = (
     actual: true,
     code: {
       coding: [
-        { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
+        {
+          system: 'http://snomed.info/sct',
+          code: PRACTITIONER_USER_TYPE_CODE,
+          display: 'Assigned practitioner',
+        },
       ],
     },
     name: keycloakUserName,
@@ -106,7 +112,7 @@ export const createEditPractitionerRoleResource = (
       coding: [
         {
           system: 'http://snomed.info/sct',
-          code: '405623001',
+          code: PRACTITIONER_USER_TYPE_CODE,
           display: 'Assigned practitioner',
         },
       ],
@@ -119,7 +125,7 @@ export const createEditPractitionerRoleResource = (
         coding: [
           {
             system: 'http://snomed.info/sct',
-            code: '236321002',
+            code: SUPERVISOR_USER_TYPE_CODE,
             display: 'Supervisor (occupation)',
           },
         ],
