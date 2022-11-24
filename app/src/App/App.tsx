@@ -115,7 +115,7 @@ import {
   ReleaseList,
   ROUTE_PARAM_FORM_VERSION,
 } from '@opensrp/form-config-antd';
-import { LocationSettingsView } from '@opensrp/location-settings';
+import { ServerSettingsView } from '@opensrp/server-settings';
 import { Home } from '../containers/pages/Home/Home';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import { TeamsView, TeamsAddEdit } from '@opensrp/team-management';
@@ -849,7 +849,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.SERVER_SETTINGS && activeRoles.SERVER_SETTINGS.split(',')}
               path={URL_SERVER_SETTINGS}
               {...serverSettingsProps}
-              component={LocationSettingsView}
+              component={ServerSettingsView}
             />
             <PrivateComponent
               redirectPath={APP_CALLBACK_URL}
