@@ -61,7 +61,13 @@ export const Table: React.FC<Props> = (props: Props) => {
         dataIndex: 'inheritedFrom',
         width: '20%',
         key: `inheritedFrom`,
-        render: (value) => (value !== '' ? getHierarchyNodeFromArray(tree, value)?.label : '-'),
+        render: (value) => {
+          if (value) {
+            const hierarchy = getHierarchyNodeFromArray(tree, value);
+            return hierarchy?.label ?? '-';
+          }
+          return '-';
+        },
       },
     ];
     if (actioncolumn) col.push(actioncolumn);
