@@ -21,3 +21,13 @@ export interface Setting {
   identifier?: string;
   _id?: string;
 }
+
+export interface LocationHierarchyAncestors {
+  id: number;
+  identifier: string;
+  name: string;
+  parentId: string;
+  voided: boolean;
+  tags: string;
+  geographicLevel: number;
+}

@@ -4,4 +4,4 @@ export const useTranslation = (ns?: string, options?: UseTranslationOptions) => 
   return useOrigTranslation(ns ? ns : namespace, options);
 };
 
-export const namespace = 'location-settings';
+export const namespace = 'server-settings';

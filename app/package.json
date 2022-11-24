@@ -34,7 +34,7 @@
     "@opensrp/inventory": "^0.0.9",
     "@opensrp/keycloak-service": "^0.0.17",
     "@opensrp/location-management": "^0.0.15",
-    "@opensrp/location-settings": "^0.0.1",
+    "@opensrp/server-settings": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/plan-form": "^0.0.4",
