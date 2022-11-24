@@ -1,5 +1,5 @@
 {
-  "name": "@opensrp/location-settings",
+  "name": "@opensrp/server-settings",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": "https://github.com/opensrp/web",
   "config": {
-    "folderName": "location-settings"
+    "folderName": "server-settings"
   },
   "scripts": {
     "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
