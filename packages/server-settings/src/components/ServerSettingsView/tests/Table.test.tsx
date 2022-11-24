@@ -2,14 +2,14 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { ColumnType } from 'antd/lib/table';
 import { Table } from '../Table';
-import { locationSettings, tree } from './fixtures';
+import { serverSettings, tree } from './fixtures';
 import { Setting } from '../../../ducks/settings';
 
 describe('Settings table view', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Table
-        data={locationSettings}
+        data={serverSettings}
         tree={tree}
         actioncolumn={{
           title: 'Actions',
