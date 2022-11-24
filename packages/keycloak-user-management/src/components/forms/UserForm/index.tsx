@@ -18,6 +18,7 @@ import {
 } from './types';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
+import { PRACTITIONER, SUPERVISOR } from '../../../constants';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
@@ -182,8 +183,8 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Form.Item id="userType" name="userType" label={t('User Type')}>
               <Radio.Group
                 options={[
-                  { label: t('Practitioner'), value: 'practitioner' },
-                  { label: t('Supervisor'), value: 'supervisor' },
+                  { label: t('Practitioner'), value: PRACTITIONER },
+                  { label: t('Supervisor'), value: SUPERVISOR },
                 ]}
                 name="userType"
               ></Radio.Group>

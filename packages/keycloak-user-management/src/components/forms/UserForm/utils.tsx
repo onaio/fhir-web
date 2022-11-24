@@ -9,6 +9,9 @@ import {
   URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
   PRACTITIONER,
+  SUPERVISOR,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
@@ -201,12 +204,14 @@ export const getUserTypeCode = (role: IPractitionerRole) =>
   role.code?.find((code) => code.coding)?.coding?.find((coding) => coding.code)?.code;
 
 // get user type from user type code
-export const getUserType = (userTypeCode: '405623001' | '236321002') => {
+export const getUserType = (
+  userTypeCode: typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+) => {
   switch (userTypeCode) {
-    case '405623001':
-      return 'practitioner';
-    case '236321002':
-      return 'supervisor';
+    case PRACTITIONER_USER_TYPE_CODE:
+      return PRACTITIONER;
+    case SUPERVISOR_USER_TYPE_CODE:
+      return SUPERVISOR;
   }
 };
 
