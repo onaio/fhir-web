@@ -2,8 +2,15 @@ import { createBrowserHistory } from 'history';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import * as notifications from '@opensrp/notifications';
-import { LocationSettingsView } from '..';
-import { locationSettings, locationSettingsLevel1, securityAuthenticateEndpoint } from './fixtures';
+import { ServerSettingsView } from '..';
+import {
+  serverSettings,
+  serverSettingsLevel1,
+  securityAuthenticateEndpoint,
+  locationHierarchyWithoutParent,
+  locationHierarchyWithParent,
+  serverSettingsSimilarToParent,
+} from './fixtures';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
@@ -45,13 +52,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient();
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -75,7 +82,7 @@ describe('activate mission', () => {
     expect(wrapper.find('Tree').at(0).text()).toMatchInlineSnapshot(`"Uganda"`);
     expect(wrapper.find('Table')).toBeTruthy();
     expect(wrapper.find('Table').at(0).text()).toMatchInlineSnapshot(
-      `"NameDescriptionSettingsInherited fromActionsAnaemia prevalence 20% or lowerThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.YesAnaemia prevalence 40% or higherThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 40% or higher.No-HIV incidence greater than 3 per 100 person-years in the absence of PrEPWomen in the population have a substantial risk of HIV infection. Substantial risk of HIV infection is provisionally defined as HIV incidence greater than 3 per 100 person–years in the absence of pre-exposure prophylaxis (PrEP).No-HIV prevalence 5% or higherThe HIV prevalence in pregnant women in the population is 5% or higher.No-Hep B prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis B surface antigen (HBsAg) seroprevalance in the general population is 2% or higher.No-Hep C prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis C virus (HCV) antibody seroprevalence in the general population is 2% or higher. No-Low dietary calcium intakeWomen in the population are likely to have low dietary calcium intake (less than 900 mg of calcium per day).Yes-Malaria-endemic settingThis is a malaria-endemic setting.Yes-National Hep B ANC routine screening program establishedThere is a national Hepatitis B ANC routine screening program in place.Yes-Soil-transmitted helminth infection prevalence 20% or higherThe percentage of individuals in the general population infected with at least one species of soil-transmitted helminth is 20% or higher.No-12"`
+      `"NameDescriptionSettingsInherited fromActionsAnaemia prevalence 20% or lowerThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.Yes-Anaemia prevalence 40% or higherThe proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 40% or higher.No-HIV incidence greater than 3 per 100 person-years in the absence of PrEPWomen in the population have a substantial risk of HIV infection. Substantial risk of HIV infection is provisionally defined as HIV incidence greater than 3 per 100 person–years in the absence of pre-exposure prophylaxis (PrEP).No-HIV prevalence 5% or higherThe HIV prevalence in pregnant women in the population is 5% or higher.No-Hep B prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis B surface antigen (HBsAg) seroprevalance in the general population is 2% or higher.No-Hep C prevalence is intermediate (2% or higher) or high (5% or higher)The proportion of Hepatitis C virus (HCV) antibody seroprevalence in the general population is 2% or higher. No-Low dietary calcium intakeWomen in the population are likely to have low dietary calcium intake (less than 900 mg of calcium per day).Yes-Malaria-endemic settingThis is a malaria-endemic setting.Yes-National Hep B ANC routine screening program establishedThere is a national Hepatitis B ANC routine screening program in place.Yes-Soil-transmitted helminth infection prevalence 20% or higherThe percentage of individuals in the general population infected with at least one species of soil-transmitted helminth is 20% or higher.No-12"`
     );
     wrapper.unmount();
   });
@@ -84,13 +91,16 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
+    fetch.mockResponseOnce(JSON.stringify(locationHierarchyWithoutParent));
+    fetch.mockResponseOnce(JSON.stringify({}));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -117,90 +127,40 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    const payload = {
-      key: 'pop_anaemia_20',
-      value: 'true',
-      label: 'Anaemia prevalence 20% or lower',
-      inheritedFrom: 'Test',
-      description:
-        'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
-      uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
-      settingIdentifier: 'population_characteristics',
-      settingMetadataId: '5',
-      locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
-      v1Settings: false,
-      resolveSettings: false,
-      documentId: '0f851168-044d-4cff-9f81-689a567ade65',
-      serverVersion: 2,
-      type: 'Setting',
-      identifier: 'population_characteristics',
-      _id: '5',
-    };
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/security/authenticate',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((call) => [call[0], call[1]?.method])).toEqual([
+      ['https://opensrp-stage.smartregister.org/opensrp/security/authenticate', 'GET'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(payload),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/heirarchy/ancestors/02ebbc84-5e29-4cd5-9b79-c594058923e9',
+        'GET',
       ],
+      ['https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5', 'PUT'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
     ]);
     wrapper.unmount();
   });
 
-  it('Updates settings correctly when value is no', async () => {
+  it('Updates settings correctly when value is no - and similar to parent settings', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
+    fetch.mockResponseOnce(JSON.stringify(locationHierarchyWithParent));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
+    fetch.mockResponseOnce(JSON.stringify({}));
+    fetch.mockResponseOnce(JSON.stringify(serverSettingsSimilarToParent));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -227,74 +187,24 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    const payload = {
-      key: 'pop_anaemia_20',
-      value: 'false',
-      label: 'Anaemia prevalence 20% or lower',
-      inheritedFrom: 'Test',
-      description:
-        'The proportion of pregnant women in the population with anaemia (haemoglobin level less than 11 g/dl) is 20% or lower.',
-      uuid: '140126bd-04b5-4202-96c7-105271f26f7d',
-      settingsId: '0f851168-044d-4cff-9f81-689a567ade65',
-      settingIdentifier: 'population_characteristics',
-      settingMetadataId: '5',
-      locationId: '02ebbc84-5e29-4cd5-9b79-c594058923e9',
-      v1Settings: false,
-      resolveSettings: false,
-      documentId: '0f851168-044d-4cff-9f81-689a567ade65',
-      serverVersion: 2,
-      type: 'Setting',
-      identifier: 'population_characteristics',
-      _id: '5',
-    };
-
-    expect(fetch.mock.calls).toEqual([
-      [
-        'https://opensrp-stage.smartregister.org/opensrp/security/authenticate',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
-      ],
+    expect(fetch.mock.calls.map((call) => [call[0], call[1]?.method])).toEqual([
+      ['https://opensrp-stage.smartregister.org/opensrp/security/authenticate', 'GET'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
       [
-        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5',
-        {
-          'Cache-Control': 'no-cache',
-          Pragma: 'no-cache',
-          body: JSON.stringify(payload),
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'PUT',
-        },
+        'https://opensrp-stage.smartregister.org/opensrp/rest/location/heirarchy/ancestors/02ebbc84-5e29-4cd5-9b79-c594058923e9',
+        'GET',
       ],
+      [
+        'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=b652b2f4-a95d-489b-9e28-4629746db96a&resolve=true&serverVersion=0',
+        'GET',
+      ],
+      ['https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings/5', 'DELETE'],
       [
         'https://opensrp-stage.smartregister.org/opensrp/rest/v2/settings?identifier=population_characteristics&locationId=02ebbc84-5e29-4cd5-9b79-c594058923e9&resolve=true&serverVersion=0',
-        {
-          headers: {
-            accept: 'application/json',
-            authorization: 'Bearer sometoken',
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          method: 'GET',
-        },
+        'GET',
       ],
     ]);
     wrapper.unmount();
@@ -304,13 +214,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.mockResponseOnce(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponseOnce(JSON.stringify(locationSettings));
+    fetch.mockResponseOnce(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -390,13 +300,13 @@ describe('activate mission', () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     fetch.once(JSON.stringify(securityAuthenticateEndpoint));
-    fetch.mockResponse(JSON.stringify(locationSettings));
+    fetch.mockResponse(JSON.stringify(serverSettings));
 
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
@@ -428,7 +338,7 @@ describe('activate mission', () => {
     });
     wrapper.update();
 
-    fetch.mockResponse(JSON.stringify(locationSettingsLevel1));
+    fetch.mockResponse(JSON.stringify(serverSettingsLevel1));
 
     await act(async () => {
       await flushPromises();
@@ -449,7 +359,7 @@ describe('activate mission', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <LocationSettingsView
+            <ServerSettingsView
               baseURL="https://opensrp-stage.smartregister.org/opensrp/"
               restBaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/"
               v2BaseURL="https://opensrp-stage.smartregister.org/opensrp/rest/v2/"
