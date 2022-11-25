@@ -29,15 +29,17 @@ import {
 } from './utils';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../mls';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 const { Item: FormItem } = Form;
 
-interface GroupFormProps {
+export interface GroupFormProps {
   fhirBaseUrl: string;
   initialValues: GroupFormFields;
   disabled: string[];
   cancelUrl?: string;
   successUrl?: string;
+  postSuccess?: (commodity: IGroup, edited: boolean) => Promise<unknown>;
 }
 
 const defaultProps = {
@@ -46,7 +48,7 @@ const defaultProps = {
 };
 
 const CommodityForm = (props: GroupFormProps) => {
-  const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl } = props;
+  const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl, postSuccess } = props;
 
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -62,8 +64,12 @@ const CommodityForm = (props: GroupFormProps) => {
       onError: (err: Error) => {
         sendErrorNotification(err.message);
       },
-      onSuccess: () => {
+      onSuccess: async (createdGroup) => {
         sendSuccessNotification(t('Commodity updated successfully'));
+        const isEdit = !!initialValues.id;
+        await postSuccess?.(createdGroup, isEdit).catch((err) => {
+          sendErrorNotification(err.message);
+        });
         queryClient.refetchQueries([groupResourceType]).catch(() => {
           sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         });
