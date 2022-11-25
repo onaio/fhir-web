@@ -14,8 +14,8 @@ import flushPromises from 'flush-promises';
 import { groupResourceType } from '../../../constants';
 import { commodity1, createdCommodity, editedCommodity } from './fixtures';
 import { getGroupFormFields } from '../utils';
-import * as notifications from '@opensrp/notifications';
 import userEvents from '@testing-library/user-event';
+import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,

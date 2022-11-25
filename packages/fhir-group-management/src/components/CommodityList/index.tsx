@@ -18,6 +18,7 @@ import {
 
 interface GroupListProps {
   fhirBaseURL: string;
+  listId: string; // commodities are added to list resource with this id
 }
 
 const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
@@ -54,7 +55,7 @@ const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
  * @returns returns healthcare display
  */
 export const CommodityList = (props: GroupListProps) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, listId } = props;
 
   const { t } = useTranslation();
 
@@ -115,6 +116,7 @@ export const CommodityList = (props: GroupListProps) => {
     pageTitle: t('Commodity List'),
     extraQueryFilters: {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
+      '_has:List:item:_id': listId,
     },
     viewDetailsListUrl: LIST_COMMODITY_URL,
   };

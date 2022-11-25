@@ -230,3 +230,5 @@ export const ENABLE_QUEST = setEnv('REACT_APP_ENABLE_QUEST', 'false') === 'true'
 export const ENABLE_REPORTS = setEnv('REACT_APP_ENABLE_REPORTS', 'false') === 'true';
 
 export const ENABLE_FHIR_COMMODITY = setEnv('REACT_APP_ENABLE_FHIR_COMMODITY', 'false') === 'true';
+
+export const COMMODITIES_LIST_RESOURCE_ID = setEnv('REACT_APP_COMMODITIES_LIST_RESOURCE_ID', '');

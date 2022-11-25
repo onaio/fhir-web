@@ -1,9 +1,10 @@
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
 import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
 import { getObjLike, IdentifierUseCodes, FHIRServiceClass } from '@opensrp/react-utils';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
-import { capitalize, get, set, values } from 'lodash';
+import { capitalize, cloneDeep, get, set, values } from 'lodash';
 import {
   active,
   groupResourceType,
@@ -12,6 +13,7 @@ import {
   type,
   unitOfMeasure,
   name,
+  listResourceType,
 } from '../../constants';
 import type { TFunction } from '@opensrp/i18n';
 import {
@@ -219,6 +221,80 @@ export const groupSelectfilterFunction = (inputValue: string, option?: SelectOpt
  * @param payload - the organization payload
  */
 export const postPutGroup = (baseUrl: string, payload: IGroup) => {
+  // check if we are creating, then update the list url, where do we get the list url from, can add a form hook as a postSubmit action.
   const serve = new FHIRServiceClass<IGroup>(baseUrl, groupResourceType);
   return serve.update(payload);
 };
+
+/**
+ * Gets list resource for given id, create it if it does not exist
+ *
+ * @param baseUrl - api base url
+ * @param listId - list id
+ */
+export async function getOrCreateList(baseUrl: string, listId: string) {
+  const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
+  return serve.read(listId).catch((err) => {
+    if (err.statusCode === 404) {
+      const listResource = createSupplyManagementList(listId);
+      return serve.update(listResource);
+    }
+    throw err;
+  });
+}
+
+/**
+ * @param baseUrl - the api base url
+ * @param listId - list resource id to add the group to
+ */
+export const updateListReferencesFactory =
+  (baseUrl: string, listId: string) => async (group: IGroup, edited: boolean) => {
+    if (edited) {
+      return;
+    }
+    const commoditiesListResource = await getOrCreateList(baseUrl, listId);
+    // TODO - make data immutable across the application
+    const payload = cloneDeep(commoditiesListResource);
+    if (payload.entry) {
+      payload.entry.push({
+        item: {
+          reference: `${groupResourceType}/${group.id}`,
+        },
+      });
+    }
+    const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
+    return serve.update(payload);
+  };
+
+/**
+ * Creates a very specific list resource that will curate a set of commodities to be used on the client.
+ * This is so that the list resource can then be used when configuring the fhir mobile client
+ *
+ * @param id - externally defined id that will be the id of the new list resource
+ */
+export function createSupplyManagementList(id: string): IList {
+  return {
+    resourceType: listResourceType,
+    id: id,
+    identifier: [
+      {
+        use: IdentifierUseCodes.OFFICIAL,
+        value: id,
+      },
+    ],
+    status: 'current',
+    mode: 'working',
+    title: 'Supply Chain commodities',
+    code: {
+      coding: [
+        {
+          system: 'http://ona.io',
+          code: 'supply-chain',
+          display: 'Supply Chain Commodity',
+        },
+      ],
+      text: 'Supply Chain Commodity',
+    },
+    entry: [],
+  };
+}
