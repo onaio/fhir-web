@@ -337,6 +337,12 @@ Below is a list of currently supported environment variables:
   - default: 'false'
 
 - **REACT_APP_ENABLE_FHIR_COMMODITY**
+
   - enables the fhir commodities module
   - **Optional**('true'|'false')
   - default: 'false'
+
+- **REACT_APP_COMMODITIES_LIST_RESOURCE_ID**
+  - scopes down what commodities are shown on the fhir commidities module.
+  - **Conditionally Optional**(`string`) - required when `REACT_APP_ENABLE_FHIR_COMMODITY` is set to `"true"`
+  - default: ''

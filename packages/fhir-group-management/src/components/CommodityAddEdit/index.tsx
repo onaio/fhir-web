@@ -7,11 +7,12 @@ import { Spin, PageHeader } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { getGroupFormFields } from './utils';
+import { getGroupFormFields, updateListReferencesFactory } from './utils';
 import { useTranslation } from '../../mls';
 
 export interface GroupAddEditProps {
   fhirBaseURL: string;
+  listId: string;
 }
 
 export interface RouteParams {
@@ -19,7 +20,7 @@ export interface RouteParams {
 }
 
 export const CommodityAddEdit = (props: GroupAddEditProps) => {
-  const { fhirBaseURL: fhirBaseUrl } = props;
+  const { fhirBaseURL: fhirBaseUrl, listId } = props;
 
   const { id: resourceId } = useParams<RouteParams>();
   const { t } = useTranslation();
@@ -47,6 +48,8 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
     ? t('Edit Commodity | {{name}}', { name: groupQuery.data.name ?? '' })
     : t('Create Commodity');
 
+  const postSuccess = updateListReferencesFactory(fhirBaseUrl, listId);
+
   return (
     <section className="content-section">
       <Helmet>
@@ -59,6 +62,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           initialValues={initialValues}
           cancelUrl={LIST_COMMODITY_URL}
           successUrl={LIST_COMMODITY_URL}
+          postSuccess={postSuccess}
         />
       </div>
     </section>
