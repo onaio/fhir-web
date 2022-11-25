@@ -6,6 +6,7 @@ export const LIST_COMMODITY_URL = '/commodity/list';
 
 // magic strings
 export const groupResourceType = 'Group';
+export const listResourceType = 'List';
 
 // form constants
 export const id = 'id' as const;

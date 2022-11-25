@@ -31,6 +31,7 @@ import {
   FHIR_PATIENT_SORT_FIELDS,
   FHIR_PATIENT_BUNDLE_SIZE,
   FHIR_ROOT_LOCATION_IDENTIFIER,
+  COMMODITIES_LIST_RESOURCE_ID,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -174,12 +175,16 @@ export const createEditUserProps = {
   baseUrl: OPENSRP_API_BASE_URL,
 };
 
-export const  fhirCreateEditUserProps = {
+export const fhirCreateEditUserProps = {
   ...createEditUserProps,
   baseUrl: FHIR_API_BASE_URL,
-}
+};
 
 export const patientProps = {
   sortFields: FHIR_PATIENT_SORT_FIELDS,
   patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
+};
+
+export const commodityAddEditProps = {
+  listId: COMMODITIES_LIST_RESOURCE_ID,
 };

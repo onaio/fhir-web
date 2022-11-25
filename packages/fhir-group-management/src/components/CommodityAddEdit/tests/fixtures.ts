@@ -101,3 +101,42 @@ export const editedCommodity = {
     },
   ],
 };
+
+export const newList = {
+  resourceType: 'List',
+  id: 'list-resource-id',
+  identifier: [{ use: 'official', value: 'list-resource-id' }],
+  status: 'current',
+  mode: 'working',
+  title: 'Supply Chain commodities',
+  code: {
+    coding: [{ system: 'http://ona.io', code: 'supply-chain', display: 'Supply Chain Commodity' }],
+    text: 'Supply Chain Commodity',
+  },
+  entry: [],
+};
+
+export const createdCommodity1 = {
+  code: {
+    coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
+  },
+  resourceType: 'Group',
+  active: true,
+  name: 'Dettol',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
+  identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
+  type: 'device',
+  characteristic: [
+    {
+      code: {
+        coding: [
+          { system: 'http://snomed.info/sct', code: '767524001', display: 'Unit of measure' },
+        ],
+      },
+      valueCodeableConcept: {
+        coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
+        text: 'bottles',
+      },
+    },
+  ],
+};
