@@ -201,7 +201,11 @@ export const submitForm = async (
 // to be used to determine the resource type
 // i.e if it's a practitioner or a supervisor resource type
 export const getUserTypeCode = (role: IPractitionerRole) =>
-  role.code?.find((code) => code.coding)?.coding?.find((coding) => coding.code)?.code;
+  role.code
+    ?.find((code) => code.coding)
+    ?.coding?.find(
+      (coding) => coding.code === SUPERVISOR_USER_TYPE_CODE || PRACTITIONER_USER_TYPE_CODE
+    )?.code;
 
 // get user type from user type code
 export const getUserType = (
