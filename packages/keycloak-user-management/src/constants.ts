@@ -36,3 +36,7 @@ export const DELETE_PRACTITIONER_ROLE = 'practitionerRole/delete/';
 export const SEARCH_QUERY_PARAM = 'searchQuery';
 
 export const UserQueryId = 'User';
+
+export const SUPERVISOR = 'supervisor';
+export const SUPERVISOR_USER_TYPE_CODE = '236321002';
+export const PRACTITIONER_USER_TYPE_CODE = '405623001';

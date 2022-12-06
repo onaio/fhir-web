@@ -2,12 +2,19 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { CreateEditUser, getGroup, createEditGroupResource } from '..';
+import {
+  CreateEditUser,
+  getGroup,
+  createEditGroupResource,
+  practitionerUpdater,
+  getPractitioner,
+  getPractitionerRole,
+} from '..';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
+import { waitFor } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
@@ -18,10 +25,14 @@ import {
   userGroup,
   group,
   updatedGroup,
+  practitionerRoleBundle,
+  updatedPractitionerRole,
 } from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
-import { practitionerResourceType } from '../../../constants';
+import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
+import { fetchKeycloakUsers } from '@opensrp/user-management';
+import { history } from '@onaio/connected-reducer-registry';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -52,12 +63,25 @@ const queryClient = new QueryClient({
 const props = {
   baseUrl: 'http://test.server.org',
   keycloakBaseURL: 'http://test-keycloak.server.org',
+  history,
+  location: {
+    hash: '',
+    pathname: '/users/edit',
+    search: '',
+    state: '',
+  },
   match: {
     isExact: true,
     params: { userId: keycloakUser.id },
     path: `/add/:id`,
     url: `/add/${keycloakUser.id}`,
   },
+  keycloakUser,
+  extraData: {},
+  fetchKeycloakUsersCreator: fetchKeycloakUsers,
+  getPractitionerFun: getPractitioner,
+  getPractitionerRoleFun: getPractitionerRole,
+  postPutPractitionerFactory: practitionerUpdater,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -119,7 +143,21 @@ test('renders correctly for edit user', async () => {
     .reply(200, practitioner);
 
   nock(props.baseUrl)
+    .get('/PractitionerRole/_search')
+    .query({
+      identifier: keycloakUser.id,
+    })
+    .reply(200, practitionerRoleBundle);
+
+  nock(props.baseUrl)
     .put(`/${practitionerResourceType}/${updatedPractitioner.id}`, updatedPractitioner)
+    .reply(200, updatedPractitioner);
+
+  nock(props.baseUrl)
+    .put(
+      `/${practitionerRoleResourceType}/${practitionerRoleBundle.entry[0].resource.id}`,
+      updatedPractitionerRole
+    )
     .reply(200, {});
 
   nock(props.baseUrl)
@@ -139,13 +177,17 @@ test('renders correctly for edit user', async () => {
 
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
 
-  render(
+  const { getByTestId, getByText } = render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  expect(getByTestId('custom-create-user-spinner')).toBeInTheDocument();
+
+  await waitFor(() => {
+    expect(getByText(/User Type/)).toBeInTheDocument();
+  });
 
   expect(fetch.mock.calls.map((req) => req[0])).toEqual([
     'http://test-keycloak.server.org/groups',
@@ -174,7 +216,9 @@ test('renders correctly for edit user', async () => {
   const yesMarkPractitioner = document.querySelectorAll('input[name="active"]')[0];
   userEvent.click(yesMarkPractitioner);
 
-  fetch.resetMocks();
+  const markSupervisor = document.querySelectorAll('input[name="userType"]')[1];
+  userEvent.click(markSupervisor);
+
   const submitButton = document.querySelector('button[type="submit"]');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   fireEvent.click(submitButton!);
@@ -188,24 +232,29 @@ test('renders correctly for edit user', async () => {
       ['Practitioner updated successfully'],
       ['User Group edited successfully'],
       ['Group resource updated successfully'],
+      ['PractitionerRole updated successfully'],
     ]);
   });
 
-  expect(fetch.mock.calls).toEqual([
-    [
-      'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-      {
-        'Cache-Control': 'no-cache',
-        Pragma: 'no-cache',
-        body: '{"id":"cab07278-c77b-4bc7-b154-bcbf01b7d35b","createdTimestamp":1600156317992,"username":"opensrp","enabled":true,"totp":false,"emailVerified":false,"firstName":"Demoflotus","lastName":"kenyaplotus","email":"test@onatest.comflotus@plotus.duck","disableableCredentialTypes":[],"requiredActions":[],"notBefore":0,"access":{"manageGroupMembership":true,"view":true,"mapRoles":true,"impersonate":false,"manage":true}}',
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer sometoken',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'PUT',
-      },
-    ],
+  expect(
+    fetch.mock.calls.map((call) => ({
+      endpoint: call[0],
+      method: call[1]?.method,
+    }))
+  ).toEqual([
+    { endpoint: 'http://test-keycloak.server.org/groups', method: 'GET' },
+    {
+      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      method: 'GET',
+    },
+    {
+      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
+      method: 'GET',
+    },
+    {
+      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+      method: 'PUT',
+    },
   ]);
 });
 
@@ -222,7 +271,9 @@ test('it fetches groups', async () => {
 });
 
 test('it creates a group resource', async () => {
-  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, {});
+  const successMessage = { message: 'Successfully created' };
+
+  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, successMessage);
 
   const successStub = jest.fn();
   const errorStub = jest.fn();
@@ -232,14 +283,13 @@ test('it creates a group resource', async () => {
     updatedGroup.identifier[1].value,
     updatedGroup.name,
     updatedGroup.member[0].entity.reference.split('/')[1],
-    props.baseUrl,
-    (string) => string
+    props.baseUrl
   )
-    .then(() => successStub())
+    .then((resp) => successStub(resp))
     .catch(() => errorStub());
 
   await waitFor(() => {
     expect(errorStub).not.toHaveBeenCalled();
-    expect(successStub).toHaveBeenCalledWith();
+    expect(successStub).toHaveBeenCalledWith(successMessage);
   });
 });

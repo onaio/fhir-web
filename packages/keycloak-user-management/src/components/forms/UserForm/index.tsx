@@ -18,6 +18,7 @@ import {
 } from './types';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
+import { PRACTITIONER, SUPERVISOR } from '../../../constants';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
@@ -29,6 +30,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     userGroups,
     renderFields,
     hiddenFields,
+    isFHIRInstance,
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
@@ -177,6 +179,18 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             </Form.Item>
           ) : null}
 
+          {isFHIRInstance ? (
+            <Form.Item id="userType" name="userType" label={t('User Type')}>
+              <Radio.Group
+                options={[
+                  { label: t('Practitioner'), value: PRACTITIONER },
+                  { label: t('Supervisor'), value: SUPERVISOR },
+                ]}
+                name="userType"
+              ></Radio.Group>
+            </Form.Item>
+          ) : null}
+
           <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
             <Radio.Group
               options={status}
@@ -185,6 +199,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               onChange={(e) => setUserEnabled(e.target.value)}
             ></Radio.Group>
           </Form.Item>
+
           {initialValues.id && initialValues.id !== extraData.user_id ? (
             <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
               <Radio.Group name="active">
@@ -233,6 +248,7 @@ export const defaultUserFormInitialValues: FormFields = {
   lastName: '',
   username: '',
   active: true,
+  userType: 'practitioner',
   userGroups: undefined,
   practitioner: undefined,
   contact: undefined,

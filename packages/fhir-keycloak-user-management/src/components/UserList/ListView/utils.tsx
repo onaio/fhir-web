@@ -6,8 +6,9 @@ import { FHIRServiceClass, getResourcesFromBundle, FhirApiFilter } from '@opensr
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { practitionerResourceType } from '../../../constants';
+import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
 import type { TFunction } from '@opensrp/i18n';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 /**
  * Delete keycloak user and practitioner
@@ -46,6 +47,18 @@ export const deleteUser = async (
     active: false,
   }));
 
+  const practitionerRoleServe = new FHIRServiceClass<IPractitionerRole>(
+    baseUrl,
+    practitionerRoleResourceType
+  );
+  const practitionerRolesForThisUser = await practitionerRoleServe
+    .list({ identifier: userId })
+    .then((res) => getResourcesFromBundle<IPractitionerRole>(res as IBundle));
+  const updatedPractitionerRoles: IPractitionerRole[] = practitionerRolesForThisUser.map((obj) => ({
+    ...obj,
+    active: false,
+  }));
+
   return Promise.allSettled([
     // delete keycloak user
     deleteKeycloakUser.delete(),
@@ -53,11 +66,14 @@ export const deleteUser = async (
     ...updatedPracts.map((obj) => practitionerServe.update(obj)),
     // deactivate groups, we cannot guarantee that we can delink
     ...updatedGroups.map((group) => groupsServe.update(group)),
+    // deactivate practitioner role, we cannot guarantee that we can delink
+    ...updatedPractitionerRoles.map((obj) => practitionerRoleServe.update(obj)),
   ])
     .then(() => {
       sendSuccessNotification(t('User deleted successfully'));
       sendSuccessNotification(t('Practitioner deactivated'));
       sendSuccessNotification(t('Group deactivated'));
+      sendSuccessNotification(t('Practitioner role deactivated'));
     })
     .catch((error) => sendErrorNotification(error.message));
 };
