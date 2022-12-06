@@ -9,6 +9,9 @@ import {
   URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
   PRACTITIONER,
+  SUPERVISOR,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
@@ -17,6 +20,7 @@ import { defaultUserFormInitialValues } from '.';
 import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -193,17 +197,40 @@ export const submitForm = async (
   }
 };
 
+// get the code of a practitioner resource type
+// to be used to determine the resource type
+// i.e if it's a practitioner or a supervisor resource type
+// handles multiple codeable concept with multiple codings
+export const getUserTypeCode = (role: IPractitionerRole) =>
+  role.code
+    ?.flatMap((code) => code.coding?.map((coding) => coding.code))
+    .find((code) => code === SUPERVISOR_USER_TYPE_CODE || code === PRACTITIONER_USER_TYPE_CODE);
+
+// get user type from user type code
+export const getUserType = (
+  userTypeCode: typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+) => {
+  switch (userTypeCode) {
+    case PRACTITIONER_USER_TYPE_CODE:
+      return PRACTITIONER;
+    case SUPERVISOR_USER_TYPE_CODE:
+      return SUPERVISOR;
+  }
+};
+
 /**
  * abstraction to derive formValues from keycloak user and optional associated practitioner
  *
  * @param keycloakUser - the keycloak user to be edited, undefined if creating user
  * @param practitioner - the associated practitioner
  * @param userGroups -  user groups assigned to this user
+ * @param practitionerRole -  user practitioner role assigned to this user
  */
 export const getFormValues = (
   keycloakUser?: KeycloakUser,
   practitioner?: Practitioner | IPractitioner,
-  userGroups?: UserGroup[]
+  userGroups?: UserGroup[],
+  practitionerRole?: IPractitionerRole
 ): FormFields => {
   if (!keycloakUser) {
     // this should mean we are in create mode
@@ -212,6 +239,22 @@ export const getFormValues = (
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
   const { contact: contacts } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
+
+  let userType: FormFields['userType'] = 'practitioner';
+
+  if (practitionerRole) {
+    // getting the user type to default to when editing a user
+    // by comparing practitioner resource user type codes
+    // this is probably not the best way because these codes are constants
+    // but it's the best for now
+    const userTypeCode = getUserTypeCode(practitionerRole);
+    if (userTypeCode) {
+      userType = getUserType(
+        userTypeCode as typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+      );
+    }
+  }
+
   return {
     id,
     firstName,
@@ -221,9 +264,11 @@ export const getFormValues = (
     enabled,
     contact: contacts?.[0],
     active,
+    userType,
     practitioner,
     userGroups: userGroups?.map((tag) => tag.id),
     keycloakUser,
+    practitionerRole,
   };
 };
 

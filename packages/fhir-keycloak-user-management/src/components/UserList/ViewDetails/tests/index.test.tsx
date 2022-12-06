@@ -6,8 +6,11 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import fetch from 'jest-fetch-mock';
+import { KeycloakUser } from '@opensrp/user-management';
+import { practitionerRoleResourceType } from '../../../../constants';
+import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -28,6 +31,11 @@ const props = {
   keycloakBaseUrl: 'http://test-keycloak.server.org',
   resourceId: 405,
 };
+
+const keycloakUser = {
+  id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
+  username: 'allay_allan',
+} as KeycloakUser;
 
 beforeAll(() => {
   nock.disableNetConnect();
@@ -79,4 +87,29 @@ test('responds as expected to errors', async () => {
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 
   expect(nock.isDone()).toBeTruthy();
+});
+
+test('shows user type in details', async () => {
+  fetch.mockOnce(JSON.stringify(keycloakUser));
+  fetch.mockResponseOnce(JSON.stringify([]));
+
+  nock(props.fhirBaseUrl)
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({
+      identifier: props.resourceId,
+    })
+    .reply(200, practitionerRoleBundle);
+
+  const { getByText, getByTestId } = render(<AppWrapper {...props}></AppWrapper>);
+
+  expect(getByTestId('custom-spinner')).toBeInTheDocument();
+
+  await waitFor(() => {
+    expect(getByText(/Fetching linked practitionerRole/)).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(getByText(/User Type/)).toBeInTheDocument();
+    expect(getByTestId('user-type')).toBeInTheDocument();
+  });
 });

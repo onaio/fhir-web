@@ -1,4 +1,4 @@
-import { submitForm, postPutPractitioner } from '../utils';
+import { submitForm, postPutPractitioner, getUserTypeCode } from '../utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -11,6 +11,8 @@ import { value, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { FormFields } from '../types';
 import { cloneDeep } from 'lodash';
 import { Dictionary } from '@onaio/utils/dist/types/types';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { SUPERVISOR_USER_TYPE_CODE } from '../../../../constants';
 
 jest.mock('@opensrp/notifications', () => {
   const actualNotifications = jest.requireActual('@opensrp/notifications');
@@ -625,5 +627,51 @@ describe('forms/utils/submitForm', () => {
         },
       },
     ]);
+  });
+
+  it('handles multiple codeable concept with multiple codings', () => {
+    const practitionerRole = {
+      code: [
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: SUPERVISOR_USER_TYPE_CODE,
+              display: 'Assigned practitioner',
+            },
+            {
+              system: 'http://snomed.info/sct',
+              code: '123456',
+              display: 'random code 1',
+            },
+            {
+              system: 'http://snomed.info/sct',
+              code: '78910',
+              display: 'random code 2',
+            },
+          ],
+        },
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '5557855546',
+              display: 'random code 3',
+            },
+          ],
+        },
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '258858588',
+              display: 'random code 4',
+            },
+          ],
+        },
+      ],
+    } as IPractitionerRole;
+
+    expect(getUserTypeCode(practitionerRole)).toEqual(SUPERVISOR_USER_TYPE_CODE);
   });
 });

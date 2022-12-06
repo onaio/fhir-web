@@ -3,8 +3,14 @@ import {
   CreateEditPropTypes,
   URL_USER_CREDENTIALS,
   FormFields,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '@opensrp/user-management';
-import { practitionerResourceType, groupResourceType } from '../../constants';
+import {
+  practitionerResourceType,
+  groupResourceType,
+  practitionerRoleResourceType,
+} from '../../constants';
 import {
   FHIRServiceClass,
   getObjLike,
@@ -19,8 +25,9 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { TFunction } from 'i18n/dist/types';
+import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 
-const getPractitioner = (baseUrl: string, userId: string) => {
+export const getPractitioner = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType);
   return serve
     .list({ identifier: userId })
@@ -34,13 +41,19 @@ export const getGroup = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IGroup>(res)[0]);
 };
 
+export const getPractitionerRole = (baseUrl: string, userId: string) => {
+  const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerRoleResourceType);
+  return serve
+    .list({ identifier: userId })
+    .then((res: IBundle) => getResourcesFromBundle<IPractitionerRole>(res)[0]);
+};
+
 export const createEditGroupResource = (
   keycloakUserEnabled: boolean,
   keycloakID: string,
   keycloakUserName: string,
   practitionerID: string,
   baseUrl: string,
-  t: TFunction,
   existingGroupID?: string
 ) => {
   const newGroupResourceID = v4();
@@ -57,7 +70,11 @@ export const createEditGroupResource = (
     actual: true,
     code: {
       coding: [
-        { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
+        {
+          system: 'http://snomed.info/sct',
+          code: PRACTITIONER_USER_TYPE_CODE,
+          display: 'Assigned practitioner',
+        },
       ],
     },
     name: keycloakUserName,
@@ -80,7 +97,70 @@ export const createEditGroupResource = (
   );
 };
 
-const practitionerUpdater =
+export const createEditPractitionerRoleResource = (
+  userType: FormFields['userType'],
+  keycloakID: string,
+  keycloakUserEnabled: boolean,
+  practitionerID: string,
+  baseUrl: string,
+  existingPractitionerRoleID?: string
+) => {
+  const newPractitionerRoleResourceID = v4();
+
+  let practitionerRoleResourceCode: IPractitionerRole['code'] = [
+    {
+      coding: [
+        {
+          system: 'http://snomed.info/sct',
+          code: PRACTITIONER_USER_TYPE_CODE,
+          display: 'Assigned practitioner',
+        },
+      ],
+    },
+  ];
+
+  if (userType === 'supervisor') {
+    practitionerRoleResourceCode = [
+      {
+        coding: [
+          {
+            system: 'http://snomed.info/sct',
+            code: SUPERVISOR_USER_TYPE_CODE,
+            display: 'Supervisor (occupation)',
+          },
+        ],
+      },
+    ];
+  }
+
+  const payload: IPractitionerRole = {
+    resourceType: practitionerRoleResourceType,
+    id: existingPractitionerRoleID ?? newPractitionerRoleResourceID,
+    identifier: [
+      {
+        use: IdentifierUseCodes.OFFICIAL,
+        value: existingPractitionerRoleID ?? newPractitionerRoleResourceID,
+      },
+      { use: IdentifierUseCodes.SECONDARY, value: keycloakID },
+    ],
+    active: keycloakUserEnabled,
+    practitioner: {
+      reference: `Practitioner/${practitionerID}`,
+    },
+    code: practitionerRoleResourceCode,
+  };
+
+  const serve = new FHIRServiceClass<IPractitionerRole>(baseUrl, practitionerRoleResourceType);
+  return (
+    serve
+      // use update (PUT) for both creating and updating practitioner resource
+      // because create (POST) does not honour a supplied resource id
+      // and overrides with a server provided one instead
+      .update(payload)
+  );
+};
+
+export const practitionerUpdater =
   (baseUrl: string) =>
   async (values: FormFields, userId: string, t: TFunction = (str) => str) => {
     const isEditMode = !!values.practitioner;
@@ -105,6 +185,14 @@ const practitionerUpdater =
     const groupErrorMessage = group
       ? t('Failed to update group resource')
       : t('Failed to create group resource');
+
+    const practitionerRoleSuccessMessage = isEditMode
+      ? t('PractitionerRole updated successfully')
+      : t('PractitionerRole created successfully');
+
+    const practitionerRoleErrorMessage = isEditMode
+      ? t('Failed to update practitionerRole')
+      : t('Failed to create practitionerRole');
 
     let officialIdentifier;
     let secondaryIdentifier;
@@ -160,19 +248,31 @@ const practitionerUpdater =
           return res;
         })
         .then((res) => {
+          const practitionerID =
+            res.identifier?.find((identifier) => identifier.use === 'official')?.value ??
+            payload.id;
+
           createEditGroupResource(
             values.enabled ?? false,
             userId,
             `${values.firstName} ${values.lastName}`,
-            res.identifier?.find((identifier) => identifier.use === 'official')?.value ??
-              payload.id ??
-              '',
+            practitionerID ?? '',
             baseUrl,
-            t,
             group?.id
           )
             .then(() => sendSuccessNotification(groupSuccessMessage))
             .catch(() => sendErrorNotification(groupErrorMessage));
+
+          createEditPractitionerRoleResource(
+            values.userType,
+            userId,
+            values.enabled ?? false,
+            practitionerID ?? '',
+            baseUrl,
+            values.practitionerRole?.id
+          )
+            .then(() => sendSuccessNotification(practitionerRoleSuccessMessage))
+            .catch(() => sendErrorNotification(practitionerRoleErrorMessage));
         })
         .catch(() => sendErrorNotification(practitionerErrorMessage))
         .finally(() => {
@@ -190,6 +290,7 @@ export function CreateEditUser(props: CreateEditPropTypes) {
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
+    getPractitionerRoleFun: getPractitionerRole,
     postPutPractitionerFactory: practitionerUpdater,
   };
 

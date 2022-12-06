@@ -3,6 +3,11 @@ import {
   KEYCLOAK_URL_USER_GROUPS,
   URL_USER,
   UserGroupDucks,
+  getUserTypeCode,
+  getUserType,
+  FormFields,
+  PRACTITIONER_USER_TYPE_CODE,
+  SUPERVISOR_USER_TYPE_CODE,
 } from '@opensrp/user-management';
 import { Col, Button, Space, Alert, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -21,7 +26,9 @@ import {
   careTeamResourceType,
   groupResourceType,
   practitionerResourceType,
+  practitionerRoleResourceType,
 } from '../../../constants';
+import { getPractitionerRole } from '../../CreateEditUser';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
@@ -94,8 +101,14 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     }
   );
 
+  // get practitioner role where this practitioner is assigned.
+  const { data: practitionerRole, isLoading: practitionerRoleIsLoading } = useQuery(
+    [practitionerRoleResourceType, resourceId],
+    () => getPractitionerRole(fhirBaseUrl, resourceId)
+  );
+
   if (userIsLoading) {
-    return <Spin size="large" className="custom-spinner" />;
+    return <Spin size="large" className="custom-spinner" data-testid="custom-spinner" />;
   }
 
   if (userError && !user) {
@@ -140,6 +153,31 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     ),
   };
 
+  const practitionerRoleKeyValues = {
+    [t('User Type')]: (
+      <ul id="user-type">
+        {((practitionerRole ? [practitionerRole] : undefined) ?? []).map((role) => {
+          // getting the user type to default to when editing a user
+          // by comparing practitioner resource user type codes
+          // this is probably not the best way because these codes are constants
+          // but it's the best for now
+          let userType: FormFields['userType'];
+          const userTypeCode = getUserTypeCode(role);
+          if (userTypeCode) {
+            userType = getUserType(
+              userTypeCode as typeof PRACTITIONER_USER_TYPE_CODE | typeof SUPERVISOR_USER_TYPE_CODE
+            );
+          }
+          return (
+            <li key={role.id} data-testid="user-type">
+              {userType}
+            </li>
+          );
+        })}
+      </ul>
+    ),
+  };
+
   return (
     <Space direction="vertical">
       {renderObjectAsKeyvalue(keycloakUserValues)}
@@ -158,6 +196,14 @@ export const ViewDetails = (props: ViewDetailsProps) => {
         renderObjectAsKeyvalue(practitionerKeyValues)
       ) : (
         <Alert description={t('User does not have a linked practitioner')} type="warning"></Alert>
+      )}
+
+      {practitionerRoleIsLoading ? (
+        <Alert description={t('Fetching linked practitionerRole')} type="info"></Alert>
+      ) : practitionerRole ? (
+        renderObjectAsKeyvalue(practitionerRoleKeyValues)
+      ) : (
+        <Alert description={t('User has not been assigned a user type')} type="warning"></Alert>
       )}
 
       {careTeamsIsLoading ? (
