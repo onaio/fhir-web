@@ -29,11 +29,12 @@ Opensrp web is configured as follows:
      REACT_APP_OPENSRP_AUTHORIZATION_URL:
        '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/auth',
      REACT_APP_OPENSRP_CLIENT_ID: '<keycloak-client-id>',
-     REACT_APP_OPENSRP_USER_URL: '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo',
-     // opensrp server - comment out for fhir instances
-     REACT_APP_OPENSRP_API_BASE_URL: '<opensrp-server-domain>/opensrp/rest/',
-     REACT_APP_OPENSRP_API_V2_BASE_URL: '<opensrp-server-domain>/opensrp/rest/v2/',
-     REACT_APP_OPENSRP_LOGOUT_URL: '<opensrp-server-domain>/opensrp/logout.do' // null for fhir instances,
+     REACT_APP_OPENSRP_USER_URL:
+       '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo',
+     // opensrp server
+     REACT_APP_OPENSRP_API_BASE_URL: '<opensrp-server-domain>/opensrp/rest/', // comment out for fhir instances
+     REACT_APP_OPENSRP_API_V2_BASE_URL: '<opensrp-server-domain>/opensrp/rest/v2/', // comment out for fhir instances
+     REACT_APP_OPENSRP_LOGOUT_URL: '<opensrp-server-domain>/opensrp/logout.do', // "null" for fhir instances
      // opensrp web
      REACT_APP_WEBSITE_NAME: '<website-name>',
      REACT_APP_OPENSRP_WEB_VERSION: '<opensrp-web-tag>',
@@ -72,7 +73,8 @@ Opensrp web is configured as follows:
      GENERATE_SOURCEMAP: 'false',
      INLINE_RUNTIME_CHUNK: 'false',
      IMAGE_INLINE_SIZE_LIMIT: '0',
-     REACT_APP_MAIN_LOGO_SRC: 'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png',
+     REACT_APP_MAIN_LOGO_SRC:
+       'https://github.com/opensrp/web/raw/master/app/src/assets/images/opensrp-logo-color-40.png', // "https://github.com/opensrp/web/raw/master/app/src/assets/images/fhir-web-logo.png" for fhir instances
      REACT_APP_OPENSRP_OAUTH_SCOPES: 'openid,profile',
      REACT_APP_OPENSRP_OAUTH_STATE: 'opensrp',
      REACT_APP_ENABLE_OPENSRP_OAUTH: 'true',
@@ -141,7 +143,7 @@ services:
       - 'EXPRESS_FRONTEND_OPENSRP_CALLBACK_URL=<opensrp-web-domain>/fe/oauth/callback/opensrp'
       - 'EXPRESS_SERVER_LOGOUT_URL=<opensrp-web-domain>/logout'
       - 'EXPRESS_SESSION_SECRET=<randomly-generated-string>'
-      - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-domain>","<opensrp-server-domain>","<fhir-server-domain>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/OpenSRP/","https://*.githubusercontent.com/OpenSRP/"],"script-src":["''self''","''unsafe-inline''"]}'
+      - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-domain>","<opensrp-server-domain>","<fhir-server-domain>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"],"script-src":["''self''","''unsafe-inline''"]}'
       # others (optional override)
       - 'NODE_ENV=production' # 'development' for <opensrp-web-domain> == localhost
       - 'EXPRESS_PORT=3000'
@@ -158,7 +160,8 @@ services:
       - 'EXPRESS_FRONTEND_LOGIN_URL=/fe/login'
       - 'EXPRESS_ALLOW_TOKEN_RENEWAL=true'
       - 'EXPRESS_OPENSRP_OAUTH_STATE=opensrp'
-      - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-domain>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}' # or {}
+      # optional sentry config
+      # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-domain>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}' # or {}
       # optional redis and redis sentinel session store config
       # - 'EXPRESS_REDIS_STAND_ALONE_URL=redis://username:password@redis-domain:port/db'
       # - 'EXPRESS_REDIS_SENTINEL_CONFIG={"name":"sentinelMasterName","sentinelPassword":"sentinelMasterPassword","sentinels":[{"host":"sentinel-node-1-domain","port":"12345"},{"host":"sentinel-node-2-domain","port":"12345"},{"host":"sentinel-node-3-domain","port":"12345"}]}'
