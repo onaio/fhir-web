@@ -200,12 +200,11 @@ export const submitForm = async (
 // get the code of a practitioner resource type
 // to be used to determine the resource type
 // i.e if it's a practitioner or a supervisor resource type
+// handles multiple codeable concept with multiple codings
 export const getUserTypeCode = (role: IPractitionerRole) =>
   role.code
-    ?.find((code) => code.coding)
-    ?.coding?.find(
-      (coding) => coding.code === SUPERVISOR_USER_TYPE_CODE || PRACTITIONER_USER_TYPE_CODE
-    )?.code;
+    ?.flatMap((code) => code.coding?.map((coding) => coding.code))
+    .find((code) => code === SUPERVISOR_USER_TYPE_CODE || code === PRACTITIONER_USER_TYPE_CODE);
 
 // get user type from user type code
 export const getUserType = (
