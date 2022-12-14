@@ -90,7 +90,7 @@ export const submitForm = async (
         value: careTeamId, // uuid
       },
     ],
-    id: id, // human readable id
+    id: id ? id : careTeamId,
     name: values.name,
     status: values.status as IfhirR4.CareTeam.StatusEnum,
     participant: [
