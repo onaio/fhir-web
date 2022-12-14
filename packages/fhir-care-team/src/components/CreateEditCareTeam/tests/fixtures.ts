@@ -1509,7 +1509,7 @@ export const practitionerBundle = practitioners.entry;
 export const createdCareTeam = {
   resourceType: 'CareTeam',
   identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
-  id: '',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   name: 'Care team 1',
   status: 'active',
   participant: [
