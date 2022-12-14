@@ -72,7 +72,10 @@ test('filter select by text able to create new careteam', async () => {
     .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(() => undefined);
 
-  nock(props.fhirBaseURL).put(`/${careTeamResourceType}/`, createdCareTeam).reply(200).persist();
+  nock(props.fhirBaseURL)
+    .put(`/${careTeamResourceType}/${createdCareTeam.id}`, createdCareTeam)
+    .reply(200)
+    .persist();
 
   const wrapper = mount(<CareTeamForm {...props} />, { attachTo: container });
 
