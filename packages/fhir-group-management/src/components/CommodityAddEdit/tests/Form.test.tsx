@@ -238,9 +238,29 @@ describe('Health care form', () => {
     fireEvent.click(document.querySelector('[title="Device"]'));
 
     // unit of measure
-
     // simulate value selection for members
     wrapper.find('input#unitOfMeasure').simulate('mousedown');
+
+    const measureUnitOptions = [
+      ...document.querySelectorAll(
+        '#unitOfMeasure_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(measureUnitOptions).toHaveLength(9);
+    expect(measureUnitOptions).toEqual([
+      'Pieces',
+      'Tablets',
+      'Ampoules',
+      'Strips',
+      'Cycles',
+      'Bottles',
+      'Test kits',
+      'Sachets',
+      'Straps',
+    ]);
 
     fireEvent.click(document.querySelector('[title="Bottles"]'));
 
