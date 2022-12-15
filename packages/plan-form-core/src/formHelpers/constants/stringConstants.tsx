@@ -47,6 +47,7 @@ export const DYNAMIC_IRS_ACTIVITY_CODE = 'dynamicIRS';
 export const DYNAMIC_MDA_COMMUNITY_DISPENSE_ACTIVITY_CODE = 'dynamicCommunityDispenseMDA';
 export const DYNAMIC_MDA_COMMUNITY_ADHERENCE_ACTIVITY_CODE = 'dynamicCommunityAdherenceMDA';
 export const PRODUCT_CHECK_ACTIVITY_CODE = 'dynamicProductCheck';
+export const COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE = 'dynamicServiceCheckWithProblem';
 export const RECORD_GPS_ACTIVITY_CODE = 'dynamicRecordGPS';
 export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'dynamicServicePoint';
 export const LOOKS_GOOD_ACTIVITY_CODE = 'dynamicLooksGood';
@@ -76,6 +77,7 @@ export const FLAG_PROBLEM_CODE = 'flag_problem';
 export const COMPLETE_FLAG_PROBLEM_CODE = 'complete_flag_problem';
 export const COMPLETE_RECORD_GPS_CODE = 'complete_record_gps';
 export const COMPLETE_SERVICE_CHECK_CODE = 'complete_service_point_check';
+export const COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE = 'complete_service_point_with_flag_problem';
 
 export const GOAL_CONFIRMATION_GOAL_ID = 'Case_Confirmation';
 export const GOAL_ID = 'goal_id';

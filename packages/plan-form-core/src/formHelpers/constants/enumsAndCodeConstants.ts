@@ -67,6 +67,8 @@ import {
   COMPLETE_FLAG_PROBLEM_CODE,
   COMPLETE_RECORD_GPS_CODE,
   COMPLETE_SERVICE_CHECK_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
 } from './stringConstants';
 
 /** Enum representing the possible goal unitss */
@@ -124,6 +126,7 @@ export const PlanActionCodes = [
   COMPLETE_FLAG_PROBLEM_CODE,
   COMPLETE_RECORD_GPS_CODE,
   COMPLETE_SERVICE_CHECK_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
 ] as const;
 
 /** Allowed taskGenerationStatus values */
@@ -164,6 +167,7 @@ export const PlanActivityTitles = [
   COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
   COMPLETE_RECORD_GPS_ACTIVITY_CODE,
   COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
 ] as const;
 
 /** Enum representing the possible intervention types */

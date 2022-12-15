@@ -34,6 +34,8 @@ import {
   COMPLETE_FLAG_PROBLEM_CODE,
   COMPLETE_RECORD_GPS_CODE,
   COMPLETE_SERVICE_CHECK_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
+  COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
 } from './constants/stringConstants';
 import {
   BCC_ACTIVITY_DESCRIPTION,
@@ -1120,6 +1122,70 @@ export const planActivities: PlanActivities = {
           },
           due: '',
           measure: PRODUCT_CHECK_GOAL_MEASURE,
+        },
+      ],
+    },
+  },
+  [COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 9,
+      title: 'Complete Service Point Check With Problem',
+      description: 'Completes Service Point Check Task With Problem',
+      code: COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
+      timingPeriod: { start: '', end: '' },
+      reason: ROUTINE,
+      goalId: COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'service_point_check'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'check consult_beneficiaries_flag field',
+            expression: "$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'",
+          },
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'has_problem'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      type: UPDATE_TYPE,
+    },
+    goal: {
+      id: COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
+      description:
+        'Complete check for a particular service point (100%) with flag problem within the Jurisdiction',
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: 'Percent of service points checked with flag problem',
+          detail: {
+            detailQuantity: {
+              value: 100.0,
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+            },
+          },
+          due: '',
         },
       ],
     },
