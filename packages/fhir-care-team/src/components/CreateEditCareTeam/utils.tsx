@@ -101,18 +101,18 @@ export const submitForm = async (
   };
 
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
-  let successNotifictaionMessage = t('Successfully Added Care Teams');
+  let successNotificationMessage = t('Successfully Added Care Teams');
   if (id) {
-    successNotifictaionMessage = t('Successfully Updated Care Teams');
+    successNotificationMessage = t('Successfully Updated Care Teams');
   }
   await serve
     .update(payload)
     // TODO - possible place to use translation plurals
-    .then(() => sendSuccessNotification(successNotifictaionMessage))
+    .then(() => sendSuccessNotification(successNotificationMessage))
     .catch(() => {
       sendErrorNotification(t('An error occurred'));
-    });
-  history.push(URL_CARE_TEAM);
+    })
+    .finally(() => history.push(URL_CARE_TEAM));
 };
 
 /**
