@@ -24,12 +24,15 @@ import {
 } from '../../helpers/utils';
 
 export enum UnitOfMeasure {
-  Pieces = 'pieces',
-  Tablets = 'tablets',
-  Ampoules = 'ampoules',
-  Strips = 'strips',
-  Cycles = 'cycles',
-  Bottles = 'bottles',
+  Pieces = 'Pieces',
+  Tablets = 'Tablets',
+  Ampoules = 'Ampoules',
+  Strips = 'Strips',
+  Cycles = 'Cycles',
+  Bottles = 'Bottles',
+  TestKits = 'Test kits',
+  Sachets = 'Sachets',
+  Straps = 'Straps',
 }
 
 export enum TypeOfGroup {
