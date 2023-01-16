@@ -532,8 +532,66 @@ export const mission1 = {
 export const newPayload1 = {
   action: [
     {
-      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
+      code: 'complete_service_point_with_flag_problem',
+      condition: [
+        {
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'check consult_beneficiaries_flag field',
+            expression: "$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'",
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'service_point_check.json',
+      description: 'Completes Service Point Check Task With Problem',
+      dynamicValue: [
+        {
+          expression: {
+            expression: "'has_problem'",
+          },
+          path: 'businessStatus',
+        },
+        {
+          expression: {
+            expression: "'Completed'",
+          },
+          path: 'status',
+        },
+      ],
+      goalId: 'complete_service_point_with_flag_problem',
+      identifier: '8f3af396-34dd-5a61-97f7-c89df80ca273',
       prefix: 1,
+      reason: 'Routine',
+      subjectCodableConcept: {
+        text: 'Task',
+      },
+      timingPeriod: {
+        end: '2017-07-20',
+        start: '2017-07-13',
+      },
+      title: 'Complete Service Point Check With Problem',
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'service_point_check'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      type: 'update',
+    },
+    {
+      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
+      prefix: 2,
       title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
       code: 'product_check',
@@ -569,7 +627,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'e1252828-447f-553a-ae82-960c5973d29e',
-      prefix: 2,
+      prefix: 3,
       title: 'Complete Looks Good',
       description: 'Complete full check for product',
       code: 'looks_good',
@@ -605,7 +663,7 @@ export const newPayload1 = {
     },
     {
       identifier: '956ba81a-57c3-5074-a112-10e945a64a82',
-      prefix: 3,
+      prefix: 4,
       title: 'Complete Fix problem task',
       description: 'Completes Fix problem task',
       code: 'complete_fix_problem',
@@ -641,7 +699,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'b5a4fdee-8db9-5ab4-b20c-f19ae93f8a33',
-      prefix: 4,
+      prefix: 5,
       title: 'Complete Flag Problem',
       description: 'Completes Flag problem task',
       code: 'complete_flag_problem',
@@ -677,7 +735,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'e5c7a70b-11b1-5c0b-80b3-6df681e27fa6',
-      prefix: 5,
+      prefix: 6,
       title: 'Record GPS',
       description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'record_gps',
@@ -717,7 +775,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'b527bc28-71d9-596c-b03b-acbae41898e9',
-      prefix: 6,
+      prefix: 7,
       title: 'Complete Record GPS',
       description: 'Completes Record GPS activity for structure',
       code: 'complete_record_gps',
@@ -753,7 +811,7 @@ export const newPayload1 = {
     },
     {
       identifier: '117644ec-920f-57bb-8746-4c2641c571ab',
-      prefix: 7,
+      prefix: 8,
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'service_point_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
@@ -789,7 +847,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'f4aa75b0-77db-5f7a-9b2e-e9f4490a5611',
-      prefix: 8,
+      prefix: 9,
       title: 'Complete Service Point Check',
       description: 'Completes Service Point Check',
       code: 'complete_service_point_check',
@@ -825,6 +883,25 @@ export const newPayload1 = {
     },
   ],
   goal: [
+    {
+      description:
+        'Complete check for a particular service point (100%) with flag problem within the Jurisdiction',
+      id: 'complete_service_point_with_flag_problem',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: 'Percent',
+              value: 100,
+            },
+          },
+          due: '2017-07-20',
+          measure: 'Percent of service points checked with flag problem',
+        },
+      ],
+    },
     {
       description: 'Check for all products (100%) within the jurisdiction',
       id: 'product_check',
