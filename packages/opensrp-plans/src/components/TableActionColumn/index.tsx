@@ -151,9 +151,9 @@ export const ActionColumn = (props: ActionColumnProps) => {
   };
 
   const areasModalProps = {
-    invokeText: t('Edit areas'),
-    modalTitle: t('Edit areas'),
-    placeHolder: t('Select areas'),
+    invokeText: t('Edit regions'),
+    modalTitle: t('Edit regions'),
+    placeHolder: t('Select regions'),
     options: allJurisdictionOptions,
     existingOptions: assignedJursOptions,
     saveHandler: areasSaveHandler,
