@@ -20,6 +20,8 @@ import {
   editedOrg,
   org105,
   org105Practitioners,
+  practitionersRoleBundle,
+  practitionerRoleBundle392,
 } from './fixtures';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
@@ -200,6 +202,10 @@ describe('OrganizationForm', () => {
     nock(formProps.fhirBaseUrl)
       .put(`/${organizationResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdOrg)
       .reply(200, { ...createdOrg, id: '123' })
+      .get('/PractitionerRole/_search?_summary=count&practitioner=Practitioner/206')
+      .reply(200, { total: 1 })
+      .get('/PractitionerRole/_search?_count=1&practitioner=Practitioner/206')
+      .reply(200, practitionersRoleBundle)
       .put(`/${practitionerRoleResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdRole2)
       .reply(200, {})
       .persist();
@@ -322,7 +328,11 @@ describe('OrganizationForm', () => {
     nock(formProps.fhirBaseUrl)
       .put(`/${organizationResourceType}/${org105.id}`, editedOrg)
       .reply(200, editedOrg)
-      .delete(`/${practitionerRoleResourceType}/392`)
+      .put(`/${practitionerRoleResourceType}/392`, practitionerRoleBundle392)
+      .reply(200, {})
+      .get('/PractitionerRole/_search?_summary=count&practitioner=Practitioner/114')
+      .reply(200, { total: 0 })
+      .get('/PractitionerRole/_search?practitioner=Practitioner/114')
       .reply(200, {})
       .put(`/${practitionerRoleResourceType}/9b782015-8392-4847-b48c-50c11638656b`, createdRole1)
       .replyWithError('Failed operation outcome')
