@@ -112,9 +112,9 @@ export const updatePractitionerRoles = (
     const organizationId = orgId as string;
     const role =
       existingRolesByOrgPractIds[`${organizationResourceType}/${organizationId}`][practId];
-    // invariant if we are removing a practitioner initially assigned to this team
-    // then a role should exist
-    return () => serve.delete(role.id as string);
+    // remove organization assignment from role
+    const { organization, ...rest } = role;
+    return () => serve.update(rest);
   });
 
   // TODO - possibility of posting this as a bundle in a single api call
