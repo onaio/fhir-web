@@ -133,7 +133,7 @@ export const updatePractitionerRoles = async (
       display: organization.name,
     };
 
-    // get practitioner roles for all new practitioners to be added to organization
+    // get existing practitioner roles for all new practitioners to be added to organization
     const existingPractitionerRoles = (await loadAllResources(
       baseUrl,
       practitionerRoleResourceType,
@@ -142,6 +142,7 @@ export const updatePractitionerRoles = async (
       }
     ).then((resp) => getResourcesFromBundle(resp))) as IPractitionerRole[];
 
+    // inject organization attribute into existing practitioner roles
     const existingPractitionerRolesPromises = existingPractitionerRoles
       .map((practitionerRole) => ({
         ...practitionerRole,
@@ -153,16 +154,16 @@ export const updatePractitionerRoles = async (
 
     practitionerRolesModifyPromises.push(...existingPractitionerRolesPromises);
 
-    // create roles if they don't exist
-    const arrayOfExistingPractitionerRolesPractitioners = existingPractitionerRoles.map(
+    // create practitioner roles against practitioners to be added if they don't exist
+    const practitionersWithExistingPractitionerRoles = existingPractitionerRoles.map(
       (existingPractitionerRole) => existingPractitionerRole.practitioner?.reference
     );
 
-    const nonExistentPractitionerRoles = toAdd.filter(
-      (practitionerId) => !arrayOfExistingPractitionerRolesPractitioners.includes(practitionerId)
+    const practitionersWithoutExistingPractitionerRoles = toAdd.filter(
+      (practitionerId) => !practitionersWithExistingPractitionerRoles.includes(practitionerId)
     );
 
-    for (const practitionerID of nonExistentPractitionerRoles) {
+    for (const practitionerID of practitionersWithoutExistingPractitionerRoles) {
       const newPractitionerRoleResourceID = v4();
       const practitioner = practitionersById[practitionerID];
       // get secondary identifier (keycloak uuid) from practitioner
@@ -176,7 +177,7 @@ export const updatePractitionerRoles = async (
         true
       )[0];
 
-      const practitionerRole: IPractitionerRole = {
+      const newPractitionerRole: IPractitionerRole = {
         resourceType: practitionerRoleResourceType,
         id: newPractitionerRoleResourceID,
         identifier: [
@@ -205,7 +206,7 @@ export const updatePractitionerRoles = async (
         ],
       };
 
-      practitionerRolesModifyPromises.push(() => serve.update(practitionerRole));
+      practitionerRolesModifyPromises.push(() => serve.update(newPractitionerRole));
     }
   }
 
