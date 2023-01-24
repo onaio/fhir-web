@@ -277,7 +277,10 @@ export const updatedPractitionerRole = {
     { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
   ],
   active: true,
-  practitioner: { reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2' },
+  practitioner: {
+    reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2',
+    display: 'Demoflotus  kenyaplotus',
+  },
   code: [
     {
       coding: [

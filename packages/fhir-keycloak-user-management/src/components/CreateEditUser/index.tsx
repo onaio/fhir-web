@@ -16,6 +16,7 @@ import {
   getObjLike,
   getResourcesFromBundle,
   IdentifierUseCodes,
+  parseFhirHumanName,
 } from '@opensrp/react-utils';
 import React from 'react';
 import { v4 } from 'uuid';
@@ -26,6 +27,8 @@ import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { TFunction } from 'i18n/dist/types';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
+import { HumanNameUseCodes } from '@opensrp/fhir-team-management';
 
 export const getPractitioner = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType);
@@ -102,6 +105,7 @@ export const createEditPractitionerRoleResource = (
   keycloakID: string,
   keycloakUserEnabled: boolean,
   practitionerID: string,
+  practitionerName: HumanName[],
   baseUrl: string,
   existingPractitionerRoleID?: string
 ) => {
@@ -133,6 +137,13 @@ export const createEditPractitionerRoleResource = (
     ];
   }
 
+  const practitionerDisplayName = getObjLike(
+    practitionerName,
+    'use',
+    HumanNameUseCodes.OFFICIAL,
+    true
+  )[0];
+
   const payload: IPractitionerRole = {
     resourceType: practitionerRoleResourceType,
     id: existingPractitionerRoleID ?? newPractitionerRoleResourceID,
@@ -146,6 +157,7 @@ export const createEditPractitionerRoleResource = (
     active: keycloakUserEnabled,
     practitioner: {
       reference: `Practitioner/${practitionerID}`,
+      display: parseFhirHumanName(practitionerDisplayName),
     },
     code: practitionerRoleResourceCode,
   };
@@ -268,6 +280,7 @@ export const practitionerUpdater =
             userId,
             values.enabled ?? false,
             practitionerID ?? '',
+            res.name ?? [],
             baseUrl,
             values.practitionerRole?.id
           )
