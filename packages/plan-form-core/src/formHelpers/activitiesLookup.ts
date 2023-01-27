@@ -36,6 +36,16 @@ import {
   COMPLETE_SERVICE_CHECK_CODE,
   COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
   COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE,
+  BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
+  BENEFICIARY_CONSULTATION_CODE,
+  COMPLETE_BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
+  COMPLETE_BENEFICIARY_CONSULTATION_CODE,
+  COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE,
+  WAREHOUSE_CHECK_ACTVITY_CODE,
+  COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
+  COMPLETE_WAREHOUSE_CHECK_CODE,
+  WAREHOUSE_CHECK_CODE,
+  COMPLETE_BENEFICIARY_FLAG_CODE,
 } from './constants/stringConstants';
 import {
   BCC_ACTIVITY_DESCRIPTION,
@@ -1185,6 +1195,272 @@ export const planActivities: PlanActivities = {
               unit: GoalUnit.PERCENT,
             },
           },
+          due: '',
+        },
+      ],
+    },
+  },
+  [COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 9,
+      title: 'Complete Warehouse Check',
+      description: 'Complete Warehouse Check for all Service Points with type warehouse',
+      code: COMPLETE_WAREHOUSE_CHECK_CODE,
+      timingPeriod: { start: '', end: '' },
+      reason: ROUTINE,
+      goalId: COMPLETE_WAREHOUSE_CHECK_CODE,
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Service Point Check event is submitted',
+            expression: "questionnaire = 'warehouse_check'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Service Point Checked',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'warehouse_check.json',
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'Visited'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      type: UPDATE_TYPE,
+    },
+    goal: {
+      id: COMPLETE_WAREHOUSE_CHECK_CODE,
+      description: 'Complete Warehouse Check for all Service Points with type warehouse',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
+          due: '',
+        },
+      ],
+    },
+  },
+  [WAREHOUSE_CHECK_ACTVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 8,
+      title: 'Warehouse Check',
+      description: 'Warehouse Check for all Service Points with type warehouse',
+      code: WAREHOUSE_CHECK_CODE,
+      timingPeriod: { start: '', end: '' },
+      reason: ROUTINE,
+      goalId: WAREHOUSE_CHECK_CODE,
+      subjectCodableConcept: { text: 'Location.Stock' },
+      trigger: [{ type: 'named-event', name: 'plan-activation' }],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: { description: 'All service points', expression: '$this.is(FHIR.Bundle)' },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Check if service point is a warehouse',
+            expression:
+              "Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'",
+          },
+        },
+      ],
+      definitionUri: 'warehouse_check.json',
+      dynamicValue: [{ path: 'structureId', expression: { expression: '$this.id' } }],
+      type: CREATE_TYPE,
+    },
+    goal: {
+      id: WAREHOUSE_CHECK_CODE,
+      description: 'Warehouse Check for all Service Points with type warehouse',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
+          due: '',
+        },
+      ],
+    },
+  },
+  [COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 9,
+      title: 'Complete Consult beneficiaries With Problem',
+      description: 'Completes Service Point Check Task With Problem',
+      code: COMPLETE_BENEFICIARY_FLAG_CODE,
+      timingPeriod: { start: '', end: '' },
+      reason: ROUTINE,
+      goalId: COMPLETE_BENEFICIARY_FLAG_CODE,
+      subjectCodableConcept: { text: 'Task' },
+      trigger: [
+        {
+          type: 'named-event',
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Flag Problem event is submitted',
+            expression: "questionnaire = 'beneficiary_consultation'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Problem Flagged',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'check consult_beneficiaries_flag field',
+            expression: "$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'",
+          },
+        },
+      ],
+      definitionUri: 'beneficiary_consultation.json',
+      dynamicValue: [
+        { path: 'businessStatus', expression: { expression: "'has_problem'" } },
+        { path: 'status', expression: { expression: "'Completed'" } },
+      ],
+      type: 'update',
+    },
+    goal: {
+      id: COMPLETE_BENEFICIARY_FLAG_CODE,
+      description:
+        'Complete the Consult beneficiaries for a particular service point with a problem flag',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
+          due: '',
+        },
+      ],
+    },
+  },
+  [COMPLETE_BENEFICIARY_CONSULTATION_ACTIVITY_CODE]: {
+    action: {
+      code: COMPLETE_BENEFICIARY_CONSULTATION_CODE,
+      condition: [
+        {
+          expression: {
+            description: 'Service Point Checked',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: APPLICABILITY_CONDITION_KIND,
+        },
+      ],
+      definitionUri: 'beneficiary_consultation.json',
+      description: 'Complete the Consult beneficiaries for a particular service point',
+      dynamicValue: [
+        { expression: { expression: "'Visited'" }, path: 'businessStatus' },
+        { expression: { expression: "'Completed'" }, path: 'status' },
+      ],
+      goalId: COMPLETE_BENEFICIARY_CONSULTATION_CODE,
+      identifier: '',
+      prefix: 9,
+      reason: ROUTINE,
+      subjectCodableConcept: { text: 'Task' },
+      timingPeriod: { end: '', start: '' },
+      title: 'Complete Beneficiary Consultation',
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Beneficiary Consultation event is submitted',
+            expression: "questionnaire = 'beneficiary_consultation'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      type: 'update',
+    },
+    goal: {
+      id: COMPLETE_BENEFICIARY_CONSULTATION_CODE,
+      description: 'Complete the Consult beneficiaries for a particular service point',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
+          due: '',
+        },
+      ],
+    },
+  },
+  [BENEFICIARY_CONSULTATION_ACTIVITY_CODE]: {
+    action: {
+      code: BENEFICIARY_CONSULTATION_CODE,
+      condition: [
+        {
+          expression: { description: 'All service points', expression: '$this.is(FHIR.Bundle)' },
+          kind: APPLICABILITY_CONDITION_KIND,
+        },
+        {
+          expression: {
+            description: 'Check if service point has stock',
+            expression: 'Bundle.entry.resource.ofType(SupplyDelivery).exists()',
+          },
+          kind: APPLICABILITY_CONDITION_KIND,
+        },
+        {
+          expression: {
+            description: 'Check if service point has active stock',
+            expression:
+              "Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()",
+          },
+          kind: APPLICABILITY_CONDITION_KIND,
+        },
+      ],
+      definitionUri: 'beneficiary_consultation.json',
+      description: 'Consult beneficiaries for all service point checks',
+      dynamicValue: [{ expression: { expression: '$this.id' }, path: 'structureId' }],
+      goalId: BENEFICIARY_CONSULTATION_CODE,
+      identifier: '',
+      prefix: 8,
+      reason: ROUTINE,
+      subjectCodableConcept: { text: 'Location.Stock' },
+      timingPeriod: { end: '', start: '' },
+      title: 'Beneficiary Consultation',
+      trigger: [{ name: 'plan-activation', type: 'named-event' }],
+      type: CREATE_TYPE,
+    },
+    goal: {
+      id: BENEFICIARY_CONSULTATION_CODE,
+      description: 'Consult beneficiaries for all service point checks',
+      priority: 'medium-priority',
+      target: [
+        {
+          measure: 'Percent of service points checked',
+          detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
           due: '',
         },
       ],
