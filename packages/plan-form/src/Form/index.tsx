@@ -80,7 +80,7 @@ const { TextArea } = Input;
 const defaultInterventionType = InterventionType.SM;
 const initialJurisdictionValues: PlanJurisdictionFormFields[] = [];
 const defaultEnvs = defaultEnvConfig;
-const defaultPlanActivitiesMap = getPlanActivitiesMap(defaultEnvs);
+const defaultPlanActivitiesMap = getPlanActivitiesMap(t=> t, defaultEnvs);
 const defaultFiReasonRoutine = FIReasons[0];
 
 /**
@@ -190,7 +190,7 @@ const PlanForm = (props: PlanFormProps) => {
     ...envConfigs,
   };
 
-  const planActivitiesMap = getPlanActivitiesMap(configs);
+  const planActivitiesMap = getPlanActivitiesMap(t, configs);
 
   const [form] = Form.useForm();
 
@@ -315,7 +315,7 @@ const PlanForm = (props: PlanFormProps) => {
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={(values) => {
           const baseFormValues = processToBasePlanForm(values);
-          const payload = generatePlanDefinition(baseFormValues, null, isEditMode, configs);
+          const payload = generatePlanDefinition(baseFormValues,t,  null, isEditMode, configs);
           const shouldContinue = props.beforeSubmit && props.beforeSubmit(payload);
           if (!shouldContinue) {
             setSubmitting(false);
@@ -669,7 +669,7 @@ const PlanForm = (props: PlanFormProps) => {
                                       <Input
                                         addonAfter={
                                           goalUnitDisplay[
-                                            getGoalUnitFromActionCode(
+                                            getGoalUnitFromActionCode(t,
                                               planActivities[index]
                                                 .actionCode as PlanActionCodesType
                                             )
