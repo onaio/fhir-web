@@ -4,7 +4,7 @@ import { parseISO } from 'date-fns';
 import { findKey, pick } from 'lodash';
 import moment from 'moment';
 import { FormEvent } from 'react';
-import { planActivities } from './activitiesLookup';
+import { getPlanActivities } from './activitiesLookup';
 import {
   goalPriorities,
   PlanActionCodes,
@@ -88,6 +88,7 @@ import {
   PlanActivityDynamicValue,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
+import { TFunction } from 'i18n/dist/types';
 
 /**
  * Generate a namespaced uuid using uuidv5
@@ -113,17 +114,20 @@ export const isFIOrDynamicFI = (interventionType: InterventionType): boolean => 
  * activities section
  *
  * @param {PlanActivity} activityObj - the plan activity object
+ * @param {TFunction} t - translator function
  * @param {EnvConfig} envConfig - env configuration variables
  * @returns {PlanActivityFormFields} -
  */
 export function extractActivityForForm(
   activityObj: PlanActivity,
+  t: TFunction,
   envConfig?: Partial<EnvConfig>
 ): PlanActivityFormFields {
   const configs = {
     ...defaultEnvConfig,
     ...envConfig,
   };
+  const planActivities = getPlanActivities(t);
   const planActivityKey: string =
     findKey(planActivities, (a: PlanActivity) => a.action.code === activityObj.action.code) ?? '';
 
@@ -191,52 +195,63 @@ export function extractActivityForForm(
   };
 }
 
-/** group plan activities */
-export const FIActivities = pick(planActivities, [
-  BCC_ACTIVITY_CODE,
-  BEDNET_DISTRIBUTION_ACTIVITY_CODE,
-  BLOOD_SCREENING_ACTIVITY_CODE,
-  CASE_CONFIRMATION_ACTIVITY_CODE,
-  FAMILY_REGISTRATION_ACTIVITY_CODE,
-  LARVAL_DIPPING_ACTIVITY_CODE,
-  MOSQUITO_COLLECTION_ACTIVITY_CODE,
-]);
-export const IRSActivities = pick(planActivities, [IRS_ACTIVITY_CODE]);
-export const MDAActivities = pick(planActivities, [CASE_CONFIRMATION_ACTIVITY_CODE]);
-export const MDAPointActivities = pick(planActivities, [
-  MDA_POINT_ADVERSE_EFFECTS_ACTIVITY_CODE,
-  MDA_POINT_DISPENSE_ACTIVITY_CODE,
-]);
-export const DynamicFIActivities = pick(planActivities, [
-  DYNAMIC_BCC_ACTIVITY_CODE,
-  DYNAMIC_BEDNET_DISTRIBUTION_ACTIVITY_CODE,
-  DYNAMIC_BLOOD_SCREENING_ACTIVITY_CODE,
-  DYNAMIC_FAMILY_REGISTRATION_ACTIVITY_CODE,
-  DYNAMIC_LARVAL_DIPPING_ACTIVITY_CODE,
-  DYNAMIC_MOSQUITO_COLLECTION_ACTIVITY_CODE,
-]);
-export const DynamicMDAActivities = pick(planActivities, [
-  DYNAMIC_MDA_COMMUNITY_ADHERENCE_ACTIVITY_CODE,
-  DYNAMIC_MDA_COMMUNITY_DISPENSE_ACTIVITY_CODE,
-  DYNAMIC_FAMILY_REGISTRATION_ACTIVITY_CODE,
-]);
-export const DynamicIRSActivities = pick(planActivities, [DYNAMIC_IRS_ACTIVITY_CODE]);
-export const SMActivities = pick(planActivities, [
-  PRODUCT_CHECK_ACTIVITY_CODE,
-  RECORD_GPS_ACTIVITY_CODE,
-  SERVICE_POINT_CHECK_ACTIVITY_CODE,
-  LOOKS_GOOD_ACTIVITY_CODE,
-  COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
-  COMPLETE_FIX_PROBLEM_ACTIVITY_CODE,
-  COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
-  COMPLETE_RECORD_GPS_ACTIVITY_CODE,
-  COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
-  BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
-  COMPLETE_BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
-  COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE,
-  WAREHOUSE_CHECK_ACTVITY_CODE,
-  COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
-]);
+/**
+ * group plan activities
+ *
+ * @param {TFunction} t -  translator function
+ */
+export const FIActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [
+    BCC_ACTIVITY_CODE,
+    BEDNET_DISTRIBUTION_ACTIVITY_CODE,
+    BLOOD_SCREENING_ACTIVITY_CODE,
+    CASE_CONFIRMATION_ACTIVITY_CODE,
+    FAMILY_REGISTRATION_ACTIVITY_CODE,
+    LARVAL_DIPPING_ACTIVITY_CODE,
+    MOSQUITO_COLLECTION_ACTIVITY_CODE,
+  ]);
+export const IRSActivities = (t: TFunction) => pick(getPlanActivities(t), [IRS_ACTIVITY_CODE]);
+export const MDAActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [CASE_CONFIRMATION_ACTIVITY_CODE]);
+export const MDAPointActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [
+    MDA_POINT_ADVERSE_EFFECTS_ACTIVITY_CODE,
+    MDA_POINT_DISPENSE_ACTIVITY_CODE,
+  ]);
+export const DynamicFIActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [
+    DYNAMIC_BCC_ACTIVITY_CODE,
+    DYNAMIC_BEDNET_DISTRIBUTION_ACTIVITY_CODE,
+    DYNAMIC_BLOOD_SCREENING_ACTIVITY_CODE,
+    DYNAMIC_FAMILY_REGISTRATION_ACTIVITY_CODE,
+    DYNAMIC_LARVAL_DIPPING_ACTIVITY_CODE,
+    DYNAMIC_MOSQUITO_COLLECTION_ACTIVITY_CODE,
+  ]);
+export const DynamicMDAActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [
+    DYNAMIC_MDA_COMMUNITY_ADHERENCE_ACTIVITY_CODE,
+    DYNAMIC_MDA_COMMUNITY_DISPENSE_ACTIVITY_CODE,
+    DYNAMIC_FAMILY_REGISTRATION_ACTIVITY_CODE,
+  ]);
+export const DynamicIRSActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [DYNAMIC_IRS_ACTIVITY_CODE]);
+export const SMActivities = (t: TFunction) =>
+  pick(getPlanActivities(t), [
+    PRODUCT_CHECK_ACTIVITY_CODE,
+    RECORD_GPS_ACTIVITY_CODE,
+    SERVICE_POINT_CHECK_ACTIVITY_CODE,
+    LOOKS_GOOD_ACTIVITY_CODE,
+    COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE,
+    COMPLETE_FIX_PROBLEM_ACTIVITY_CODE,
+    COMPLETE_SERVICE_CHECK_ACTIVITY_CODE,
+    COMPLETE_RECORD_GPS_ACTIVITY_CODE,
+    COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE,
+    BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
+    COMPLETE_BENEFICIARY_CONSULTATION_ACTIVITY_CODE,
+    COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE,
+    WAREHOUSE_CHECK_ACTVITY_CODE,
+    COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
+  ]);
 
 export type FormActivity =
   | typeof FIActivities
@@ -251,29 +266,43 @@ export type FormActivity =
  * Converts a plan activities objects to a list of activities for use on PlanForm
  *
  * @param {object} items - plan activities
+ * @param {TFunction} t -  translator function
  * @param {EnvConfig} configs - environment configs
  * @returns {PlanActivityFormFields[]} -
  */
-export function getFormActivities(items: FormActivity, configs?: EnvConfig) {
+export function getFormActivities(items: FormActivity, t: TFunction, configs?: EnvConfig) {
   return Object.values(items)
     .sort((a, b) => a.action.prefix - b.action.prefix)
-    .map((e) => extractActivityForForm(e, configs));
+    .map((e) => extractActivityForForm(e, t, configs));
 }
 /**
  * returns a lookup object for activities per interventionType
  *
+ * @param {TFunction} t -  translator function -  translator function
  * @param {EnvConfig} configs - configurations
  * @returns {object} -
  */
-export const getPlanActivitiesMap = (configs?: EnvConfig) => {
+export const getPlanActivitiesMap = (t: TFunction, configs?: EnvConfig) => {
   const planActivitiesMap: Dictionary<PlanActivityFormFields[]> = {};
-  planActivitiesMap[InterventionType.IRS] = getFormActivities(IRSActivities, configs);
-  planActivitiesMap[InterventionType.FI] = getFormActivities(FIActivities, configs);
-  planActivitiesMap[InterventionType.MDAPoint] = getFormActivities(MDAPointActivities, configs);
-  planActivitiesMap[InterventionType.DynamicFI] = getFormActivities(DynamicFIActivities, configs);
-  planActivitiesMap[InterventionType.DynamicIRS] = getFormActivities(DynamicIRSActivities, configs);
-  planActivitiesMap[InterventionType.DynamicMDA] = getFormActivities(DynamicMDAActivities, configs);
-  planActivitiesMap[InterventionType.SM] = getFormActivities(SMActivities, configs);
+  planActivitiesMap[InterventionType.IRS] = getFormActivities(IRSActivities, t, configs);
+  planActivitiesMap[InterventionType.FI] = getFormActivities(FIActivities, t, configs);
+  planActivitiesMap[InterventionType.MDAPoint] = getFormActivities(MDAPointActivities, t, configs);
+  planActivitiesMap[InterventionType.DynamicFI] = getFormActivities(
+    DynamicFIActivities,
+    t,
+    configs
+  );
+  planActivitiesMap[InterventionType.DynamicIRS] = getFormActivities(
+    DynamicIRSActivities,
+    t,
+    configs
+  );
+  planActivitiesMap[InterventionType.DynamicMDA] = getFormActivities(
+    DynamicMDAActivities,
+    t,
+    configs
+  );
+  planActivitiesMap[InterventionType.SM] = getFormActivities(SMActivities, t, configs);
   return planActivitiesMap;
 };
 
@@ -306,13 +335,16 @@ export function getActivityFromPlan(
  * Get plan activity object using an action code
  *
  * @param {PlanActionCodesType} actionCode - the action code
+ * @param {TFunction} t -  translator function
  * @param {boolean} isDynamic - whether we are looking for dynamic activities
  * @returns {PlanActivity | null } -
  */
 export function getPlanActivityFromActionCode(
   actionCode: PlanActionCodesType,
+  t: TFunction,
   isDynamic = false
 ): PlanActivity | null {
+  const planActivities = getPlanActivities(t);
   const search = Object.values(planActivities).filter((item) => {
     if (isDynamic) {
       return (
@@ -400,6 +432,7 @@ const getDynamicValuesFromFormField = (element: PlanActivityFormFields) => {
  * Get action and plans from PlanForm activities
  *
  * @param {PlanActivityFormFields[]} activities - this of activities from PlanForm
+ * @param {TFunction} t -  translator function
  * @param {string} planIdentifier - this plan identifier
  * @param {PlanDefinition | null} planObj - a plan object
  * @param {EnvConfig} envConfigs - environment config variables
@@ -407,6 +440,7 @@ const getDynamicValuesFromFormField = (element: PlanActivityFormFields) => {
  */
 export function extractActivitiesFromPlanForm(
   activities: PlanActivityFormFields[],
+  t: TFunction,
   planIdentifier = '',
   planObj: PlanDefinition | null = null,
   envConfigs?: Partial<EnvConfig>
@@ -415,6 +449,7 @@ export function extractActivitiesFromPlanForm(
     ...defaultEnvConfig,
     ...envConfigs,
   };
+  const planActivities = getPlanActivities(t);
 
   const actions: PlanAction[] = [];
   const goals: PlanGoal[] = [];
@@ -437,6 +472,7 @@ export function extractActivitiesFromPlanForm(
         Object.keys(element).includes(CONDITION) || Object.keys(element).includes(TRIGGER);
       const planActivity = getPlanActivityFromActionCode(
         element.actionCode as PlanActionCodesType,
+        t,
         isDynamic
       );
 
@@ -620,6 +656,7 @@ export const getTaskGenerationValue = (
  * Generate an OpenSRP plan definition object from the PlanForm
  *
  * @param {PlanFormFields} formValue - the value gotten from the PlanForm
+ * @param {TFunction} t -  translator function
  * @param {PlanDefinition | null}planObj -  the plan object
  * @param {boolean} isEditMode - creating or editing plan?
  * @param {EnvConfig} envConfigs - the env configuration vars
@@ -627,6 +664,7 @@ export const getTaskGenerationValue = (
  */
 export function generatePlanDefinition(
   formValue: PlanFormFields,
+  t: TFunction,
   planObj: PlanDefinition | null = null,
   isEditMode = false,
   envConfigs?: Partial<EnvConfig>
@@ -647,6 +685,7 @@ export function generatePlanDefinition(
 
   const actionAndGoals = extractActivitiesFromPlanForm(
     formValue.activities,
+    t,
     planObj ? planObj.identifier : '',
     planObj,
     envConfigs
@@ -726,11 +765,13 @@ export function generatePlanDefinition(
  * Get plan form field values from plan definition object
  *
  * @param {PlanDefinition} planObject - the plan definition object
+ * @param {TFunction} t -  translator function
  * @param {EnvConfig} envConfigs - the environmental configurations
  * @returns {PlanFormFields} - the plan form field values
  */
 export function getPlanFormValues(
   planObject: PlanDefinition,
+  t: TFunction,
   envConfigs?: Partial<EnvConfig>
 ): PlanFormFields {
   const configs = {
@@ -786,6 +827,7 @@ export function getPlanFormValues(
             action: currentAction,
             goal: currentGoal,
           },
+          t,
           envConfigs
         );
         accumulator.push(currentActivity);
@@ -796,7 +838,7 @@ export function getPlanFormValues(
     []
   );
 
-  const planActivitiesMap = getPlanActivitiesMap(configs);
+  const planActivitiesMap = getPlanActivitiesMap(t, configs);
 
   if (activities.length < 1) {
     // eslint-disable-next-line no-prototype-builtins
@@ -853,14 +895,16 @@ export function getPlanFormValues(
  * Get goal unit from action code
  *
  * @param {PlanActionCodesType} actionCode - the plan action code
+ * @param {TFunction} t -  translator function
  * @param {boolean} isDynamic - whether we are looking for dynamic activities
  * @returns {GoalUnit} -
  */
 export function getGoalUnitFromActionCode(
   actionCode: PlanActionCodesType,
+  t: TFunction,
   isDynamic = false
 ): GoalUnit {
-  const planActivity = getPlanActivityFromActionCode(actionCode, isDynamic);
+  const planActivity = getPlanActivityFromActionCode(actionCode, t, isDynamic);
   if (planActivity) {
     return planActivity.goal.target[0].detail.detailQuantity.unit;
   }

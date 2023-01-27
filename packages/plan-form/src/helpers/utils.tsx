@@ -133,8 +133,8 @@ export const parseBasePlanFormValues = (baseFormValues: BasePlanFormFields): Pla
  * @param {PlanDefinition} plan - the plan object
  * @returns {PlanFormFields} - the form values
  */
-export const getPlanFormValues = (plan: PlanDefinition) => {
-  const basePlanFormValues = getBasePlanFormValues(plan);
+export const getPlanFormValues = (plan: PlanDefinition, t: TFunction) => {
+  const basePlanFormValues = getBasePlanFormValues(plan, t);
   const planFormValues = parseBasePlanFormValues(basePlanFormValues);
   const finalFormValues = {
     ...planFormValues,
@@ -150,7 +150,7 @@ export const getPlanFormValues = (plan: PlanDefinition) => {
  * @param {PlanFormFields} planFormValues - the form values
  * @returns {PlanDefinition} a plan definition
  */
-export const generatePlanDefinition = (planFormValues: PlanFormFields) => {
+export const generatePlanDefinition = (planFormValues: PlanFormFields, t:TFunction) => {
   const basePlanFormValues = processToBasePlanForm(planFormValues);
-  return generateBasePlanDefinition(basePlanFormValues);
+  return generateBasePlanDefinition(basePlanFormValues, t);
 };
