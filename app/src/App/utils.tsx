@@ -185,6 +185,6 @@ export const patientProps = {
   patientBundleSize: FHIR_PATIENT_BUNDLE_SIZE,
 };
 
-export const commodityAddEditProps = {
+export const commmodityProps = {
   listId: COMMODITIES_LIST_RESOURCE_ID,
 };
