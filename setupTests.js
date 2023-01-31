@@ -26,6 +26,7 @@ setAllConfigs({
   languageCode: 'en',
 });
 
+// TODO - don't mock this globally. Problematic when relying on Node
 global.fetch = require('jest-fetch-mock');
 MockDate.set('2017-07-13T19:31:00.000Z'); // 7-13-17 19:31 => Mersenne primes :)
 
