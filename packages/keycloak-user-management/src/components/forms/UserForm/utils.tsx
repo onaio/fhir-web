@@ -21,6 +21,7 @@ import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -237,7 +238,7 @@ export const getFormValues = (
     return defaultUserFormInitialValues;
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
-  const { contact: contacts } = keycloakUser.attributes ?? {};
+  const { contact: contacts, fhir_core_app_id: fhirCoreAppId } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
 
   let userType: FormFields['userType'] = 'practitioner';
@@ -269,6 +270,7 @@ export const getFormValues = (
     userGroups: userGroups?.map((tag) => tag.id),
     keycloakUser,
     practitionerRole,
+    fhirCoreAppId,
   };
 };
 
@@ -282,9 +284,10 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
   const isEditMode = !!values.id;
   // possibility of creating a practitioner for an existing user if one was not created before
 
-  const { id, username, firstName, lastName, email, enabled, contact } = values;
+  const { id, username, firstName, lastName, email, enabled, contact, fhirCoreAppId } = values;
   const preUserAttributes = {
     ...(contact ? { contact: [contact] } : {}),
+    ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
   };
 
   const cleanedAttributes = pickBy(
@@ -362,3 +365,17 @@ export const postPutPractitioner =
 
     return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode, t);
   };
+
+export const getCompositionOptions = (composition: IComposition) => {
+  const { title, identifier } = composition;
+  if (!identifier) return;
+  const value = identifier.value as string;
+  return { label: `${title}(${value})`, value, ref: composition };
+};
+
+const deviceSettingCodeableSystem = 'http://snomed.info/sct';
+const deviceSettingCodeableCode = '1156600005';
+export const compositionUrlFilter = {
+  type: `${deviceSettingCodeableSystem}|${deviceSettingCodeableCode}`,
+  _elements: 'identifier,title',
+};

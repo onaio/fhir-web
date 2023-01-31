@@ -27,6 +27,7 @@ export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-acti
 
 // OpenSRP API strings
 export const PRACTITIONER = 'practitioner';
+export const compositionResourceType = 'Composition';
 export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
 
 // practitioner role

@@ -2,6 +2,8 @@ import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio, PageHeader } from 'antd';
 import {
+  compositionUrlFilter,
+  getCompositionOptions,
   getUserGroupsOptions,
   postPutPractitioner,
   submitForm,
@@ -18,7 +20,9 @@ import {
 } from './types';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
-import { PRACTITIONER, SUPERVISOR } from '../../../constants';
+import { compositionResourceType, PRACTITIONER, SUPERVISOR } from '../../../constants';
+import { FhirSelect } from '@opensrp/react-utils';
+import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
@@ -228,6 +232,25 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
             ></Select>
           </Form.Item>
+
+          {isFHIRInstance ? (
+            <Form.Item
+              id="fhirCoreAppId"
+              name="fhirCoreAppId"
+              label={t('Application ID')}
+              rules={[{ required: true, message: t('Application Id is required') }]}
+              data-testid="fhirCoreAppId"
+            >
+              <FhirSelect<IComposition>
+                baseUrl={baseUrl}
+                resourceType={compositionResourceType}
+                transformOption={getCompositionOptions}
+                extraQueryParams={compositionUrlFilter}
+                showSearch={true}
+              ></FhirSelect>
+            </Form.Item>
+          ) : null}
+
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? t('SAVING') : t('Save')}
