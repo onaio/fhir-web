@@ -9,7 +9,7 @@ import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
 import { getFormValues, postPutPractitioner } from '../utils';
 import nock from 'nock';
-import * as reactQuery from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { compositionResourceType } from '../../../../constants';
@@ -40,8 +40,6 @@ jest.mock('fhirclient', () => {
 });
 
 jest.unmock('');
-
-const { QueryClient, QueryClientProvider } = reactQuery;
 
 const queryClient = new QueryClient({
   defaultOptions: {
