@@ -11,7 +11,7 @@ import { getResourcesFromBundle } from '../../helpers/utils';
 import { useTranslation } from '../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
 
-type SelectOption<T extends IResource> = {
+export type SelectOption<T extends IResource> = {
   label: string;
   value: string | number;
   ref: T;
