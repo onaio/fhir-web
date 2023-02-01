@@ -13,7 +13,7 @@ import {
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -27,6 +27,7 @@ import {
   updatedGroup,
   practitionerRoleBundle,
   updatedPractitionerRole,
+  compositionResource,
 } from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
@@ -171,6 +172,12 @@ test('renders correctly for edit user', async () => {
     .put('/Group/acb9d47e-7247-448f-be93-7a193a5312da', updatedGroup)
     .reply(200, {});
 
+  nock(props.baseUrl)
+    .get(`/Composition/_search`)
+    .query(() => true)
+    .reply(200, compositionResource)
+    .persist();
+
   const successStub = jest
     .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(jest.fn);
@@ -220,6 +227,20 @@ test('renders correctly for edit user', async () => {
   userEvent.click(markSupervisor);
 
   const submitButton = document.querySelector('button[type="submit"]');
+
+  // find antd Select with id 'practitioners' in the 'Form' component
+  const appIdSection = document.querySelector('[data-testid="fhirCoreAppId"]') as Element;
+
+  // click on input. - should see the first 5 records by default
+  const appIdInput = appIdSection.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(appIdInput);
+
+  await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+
+  fireEvent.click(document.querySelector('[title="Device configurations(cha)"]') as Element);
+
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   fireEvent.click(submitButton!);
 

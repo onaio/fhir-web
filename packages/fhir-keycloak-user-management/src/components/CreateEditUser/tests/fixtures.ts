@@ -293,3 +293,53 @@ export const updatedPractitionerRole = {
     },
   ],
 };
+
+export const compositionResource = {
+  resourceType: 'Bundle',
+  id: '0b694c63-16fc-4242-89e7-3ecc871be129',
+  meta: {
+    lastUpdated: '2023-01-31T19:40:53.704+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/Composition/_search?_count=1&_elements=identifier%2Ctitle&_getpagesoffset=0&type=http%3A%2F%2Fsnomed.info%2Fsct%7C1156600005',
+    },
+    {
+      relation: 'next',
+      url: 'https://fhir.labs.smartregister.org:443/fhir?_getpages=0b694c63-16fc-4242-89e7-3ecc871be129&_getpagesoffset=1&_count=1&_pretty=true&_bundletype=searchset&_elements=identifier,title',
+    },
+  ],
+  entry: [
+    {
+      fullUrl:
+        'https://fhir.labs.smartregister.org:443/fhir/Composition/4a5e4d98-9bac-41de-9775-7ca795c3de12',
+      resource: {
+        resourceType: 'Composition',
+        id: '4a5e4d98-9bac-41de-9775-7ca795c3de12',
+        meta: {
+          versionId: '12',
+          lastUpdated: '2022-10-31T15:26:18.785+00:00',
+          source: '#49475fbba4633d3c',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'cha',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
