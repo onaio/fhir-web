@@ -12,6 +12,8 @@ import {
   SUPERVISOR,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
+  SNOMED_CODEABLE_SYSTEM,
+  DEVICE_SETTING_CODEABLE_CODE,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
@@ -373,9 +375,8 @@ export const getCompositionOptions = (composition: IComposition) => {
   return { label: `${title}(${value})`, value, ref: composition };
 };
 
-const deviceSettingCodeableSystem = 'http://snomed.info/sct';
-const deviceSettingCodeableCode = '1156600005';
+/** search param for filter to get composition resources of the type device setting */
 export const compositionUrlFilter = {
-  type: `${deviceSettingCodeableSystem}|${deviceSettingCodeableCode}`,
+  type: `${SNOMED_CODEABLE_SYSTEM}|${DEVICE_SETTING_CODEABLE_CODE}`,
   _elements: 'identifier,title',
 };
