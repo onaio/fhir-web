@@ -461,96 +461,15 @@ exports[`containers/forms/PlanForm renders correctly: version field 1`] = `
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 0 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 0 2`] = `
-Array [
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="structureId"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="$this.id"
-  />,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 0 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 1 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 1 2`] = `
-Array [
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="structureId"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="$this.id"
-  />,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 1 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 2 1`] = `null`;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 2 2`] = `
-Array [
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="structureId"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_0_dynamicValue_0_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="$this.id"
-  />,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 2 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 3 1`] = `null`;
 
@@ -659,7 +578,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -671,31 +590,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -714,7 +609,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -726,31 +621,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -769,7 +640,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -781,31 +652,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_2_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -836,7 +683,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -891,7 +738,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -946,7 +793,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -1001,7 +848,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1056,7 +903,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1111,7 +958,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1166,7 +1013,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -1221,7 +1068,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -1276,7 +1123,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
+    value="'has_problem'"
   />,
   <input
     className="ant-input"
@@ -1319,7 +1166,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1331,7 +1178,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.entry.resource.as(Device).location.reference.substring(9)"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -1350,7 +1221,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1362,7 +1233,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.entry.resource.as(Device).location.reference.substring(9)"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -1381,7 +1276,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1393,7 +1288,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.entry.resource.as(Device).location.reference.substring(9)"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_6_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -1412,7 +1331,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -1424,31 +1343,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.entry.resource.as(Device).location.reference.substring(9)"
   />,
 ]
 `;
@@ -1467,7 +1362,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -1479,31 +1374,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.entry.resource.as(Device).location.reference.substring(9)"
   />,
 ]
 `;
@@ -1522,7 +1393,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -1534,31 +1405,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_7_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.entry.resource.as(Device).location.reference.substring(9)"
   />,
 ]
 `;
@@ -1754,7 +1601,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1809,7 +1656,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1864,7 +1711,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'has_problem'"
+    value="'Visited'"
   />,
   <input
     className="ant-input"
@@ -1907,7 +1754,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1919,7 +1766,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'has_problem'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -1938,7 +1809,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1950,7 +1821,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'has_problem'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -1969,7 +1864,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -1981,7 +1876,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'has_problem'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_10_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -2000,7 +1919,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2012,31 +1931,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -2055,7 +1950,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2067,31 +1962,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -2110,7 +1981,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2122,31 +1993,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_11_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -2165,7 +2012,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -2177,7 +2024,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -2196,7 +2067,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -2208,7 +2079,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -2227,7 +2122,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="structureId"
+    value="businessStatus"
   />,
   <input
     className="ant-input"
@@ -2239,7 +2134,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="$this.id"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_12_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
   />,
 ]
 `;
@@ -2258,7 +2177,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2270,31 +2189,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_13_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_13_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -2313,7 +2208,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2325,31 +2220,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="'Visited'"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_13_dynamicValue_1_path"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="status"
-  />,
-  <input
-    className="ant-input"
-    disabled={false}
-    id="planForm_activities_13_dynamicValue_1_expression"
-    onBlur={[Function]}
-    onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    type="text"
-    value="'Completed'"
+    value="$this.id"
   />,
 ]
 `;
@@ -2368,7 +2239,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
-    value="businessStatus"
+    value="structureId"
   />,
   <input
     className="ant-input"
@@ -2380,12 +2251,43 @@ Array [
     onKeyDown={[Function]}
     required={true}
     type="text"
+    value="$this.id"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 42 1`] = `null`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 42 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="businessStatus"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
     value="'Visited'"
   />,
   <input
     className="ant-input"
     disabled={false}
-    id="planForm_activities_13_dynamicValue_1_path"
+    id="planForm_activities_14_dynamicValue_1_path"
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
@@ -2397,7 +2299,117 @@ Array [
   <input
     className="ant-input"
     disabled={false}
-    id="planForm_activities_13_dynamicValue_1_expression"
+    id="planForm_activities_14_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 43 1`] = `null`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 43 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="businessStatus"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_1_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Completed'"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 44 1`] = `null`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions inputs 44 2`] = `
+Array [
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="businessStatus"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_0_expression"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="'Visited'"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_1_path"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    type="text"
+    value="status"
+  />,
+  <input
+    className="ant-input"
+    disabled={false}
+    id="planForm_activities_14_dynamicValue_1_expression"
     onBlur={[Function]}
     onChange={[Function]}
     onFocus={[Function]}
@@ -2425,55 +2437,10 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 0 2`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 0 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 1 1`] = `
 Array [
@@ -2491,55 +2458,10 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 1 2`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 1 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 2 1`] = `
 Array [
@@ -2557,55 +2479,10 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 2 2`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_0_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-]
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 2 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 3 1`] = `
 Array [
@@ -2647,20 +2524,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_1_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_description"
     title="Description"
   >
     Description
@@ -2731,20 +2594,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -2811,20 +2660,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_1_condition_3_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -2877,6 +2712,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2892,20 +2755,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_2_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -2943,6 +2792,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -2958,20 +2835,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_2_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3009,6 +2872,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_2_condition_3_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3028,20 +2919,6 @@ Array [
   >
     Expression
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_dynamicValue_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
 ]
 `;
 
@@ -3057,6 +2934,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_3_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_description"
     title="Description"
   >
     Description
@@ -3113,6 +3004,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3161,6 +3066,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_3_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_3_condition_1_description"
     title="Description"
   >
     Description
@@ -3217,20 +3136,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -3279,20 +3184,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_4_condition_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_description"
     title="Description"
   >
     Description
@@ -3349,20 +3240,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_4_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -3411,6 +3288,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_5_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
     title="Description"
   >
     Description
@@ -3467,6 +3358,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3515,6 +3420,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_5_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_5_condition_1_description"
     title="Description"
   >
     Description
@@ -3571,20 +3490,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -3600,6 +3505,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_6_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3623,20 +3542,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -3652,6 +3557,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_6_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3675,20 +3594,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_6_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -3704,6 +3609,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_6_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3727,6 +3646,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3742,20 +3675,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_7_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3779,6 +3698,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3794,20 +3727,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_7_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -3831,6 +3750,20 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_7_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -3846,20 +3779,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_7_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4195,34 +4114,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4238,6 +4129,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_10_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4261,34 +4166,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4304,6 +4181,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_10_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4327,34 +4218,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_10_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4370,6 +4233,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_10_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4393,6 +4270,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4408,20 +4313,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_11_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4445,6 +4336,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4460,20 +4379,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_11_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4497,6 +4402,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_11_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4512,20 +4445,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_11_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4549,34 +4468,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4592,6 +4483,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_12_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4615,34 +4520,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4658,6 +4535,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_12_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4681,34 +4572,6 @@ Array [
   >
     Description
   </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_1_description"
-    title="Description"
-  >
-    Description
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_12_condition_2_description"
-    title="Description"
-  >
-    Description
-  </label>,
 ]
 `;
 
@@ -4724,6 +4587,20 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_12_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4747,6 +4624,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4762,20 +4667,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_13_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4799,6 +4690,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4814,20 +4733,6 @@ Array [
   <label
     className=""
     htmlFor="planForm_activities_13_dynamicValue_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_path"
-    title="Path"
-  >
-    Path
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4851,6 +4756,34 @@ Array [
   >
     Description
   </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_1_description"
+    title="Description"
+  >
+    Description
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_13_condition_2_description"
+    title="Description"
+  >
+    Description
+  </label>,
 ]
 `;
 
@@ -4870,16 +4803,158 @@ Array [
   >
     Expression
   </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 42 1`] = `
+Array [
   <label
     className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_path"
+    htmlFor="planForm_activities_14_condition_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 42 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_0_path"
     title="Path"
   >
     Path
   </label>,
   <label
     className=""
-    htmlFor="planForm_activities_13_dynamicValue_1_expression"
+    htmlFor="planForm_activities_14_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 43 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_condition_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 43 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 44 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_condition_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_condition_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions labels 44 2`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_0_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_path"
+    title="Path"
+  >
+    Path
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_dynamicValue_1_expression"
     title="Expression"
   >
     Expression
@@ -4893,11 +4968,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 0 2`] = `
-<legend>
-  Dynamic Value
-</legend>
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 0 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 1 1`] = `
 <legend>
@@ -4905,11 +4976,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 1 2`] = `
-<legend>
-  Dynamic Value
-</legend>
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 1 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 2 1`] = `
 <legend>
@@ -4917,11 +4984,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 2 2`] = `
-<legend>
-  Dynamic Value
-</legend>
-`;
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 2 2`] = `null`;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 3 1`] = `
 <legend>
@@ -5391,6 +5454,42 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions l
 </legend>
 `;
 
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 42 1`] = `
+<legend>
+  Conditions
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 42 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 43 1`] = `
+<legend>
+  Conditions
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 43 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 44 1`] = `
+<legend>
+  Conditions
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions legends 44 2`] = `
+<legend>
+  Dynamic Value
+</legend>
+`;
+
 exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions textareas 0 1`] = `
 Array [
   <textarea
@@ -5403,7 +5502,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -5415,55 +5514,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Product exists"
   />,
 ]
 `;
@@ -5480,7 +5531,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -5492,55 +5543,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Product exists"
   />,
 ]
 `;
@@ -5557,7 +5560,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -5569,55 +5572,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_0_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Product exists"
   />,
 ]
 `;
@@ -5696,30 +5651,6 @@ Array [
     style={Object {}}
     value="Check if service point has active stock"
   />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point is a warehouse"
-  />,
 ]
 `;
 
@@ -5796,30 +5727,6 @@ Array [
     required={true}
     style={Object {}}
     value="Check if service point has active stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point is a warehouse"
   />,
 ]
 `;
@@ -5898,30 +5805,6 @@ Array [
     style={Object {}}
     value="Check if service point has active stock"
   />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_1_condition_3_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point is a warehouse"
-  />,
 ]
 `;
 
@@ -5937,7 +5820,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -5949,7 +5832,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="All service points"
   />,
   <textarea
     className="ant-input form-control"
@@ -5961,7 +5844,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
   />,
   <textarea
     className="ant-input form-control"
@@ -5973,7 +5856,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point is a warehouse"
   />,
 ]
 `;
@@ -5990,7 +5921,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6002,7 +5933,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="All service points"
   />,
   <textarea
     className="ant-input form-control"
@@ -6014,7 +5945,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
   />,
   <textarea
     className="ant-input form-control"
@@ -6026,7 +5957,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point is a warehouse"
   />,
 ]
 `;
@@ -6043,7 +6022,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6055,7 +6034,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="All service points"
   />,
   <textarea
     className="ant-input form-control"
@@ -6067,7 +6046,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
   />,
   <textarea
     className="ant-input form-control"
@@ -6079,7 +6058,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(Location).type.where(id='locationType').text='Warehouse'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_2_condition_3_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point is a warehouse"
   />,
 ]
 `;
@@ -6108,7 +6135,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6137,7 +6188,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6166,7 +6241,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_3_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6195,31 +6294,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6248,31 +6323,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6301,31 +6352,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_4_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="check consult_beneficiaries_flag field"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6354,7 +6381,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6383,7 +6434,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6412,7 +6487,31 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="Problem Flagged"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_5_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="check consult_beneficiaries_flag field"
   />,
 ]
 `;
@@ -6429,7 +6528,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6441,31 +6540,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Product exists"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Product is active"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6482,7 +6557,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6494,31 +6569,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Product exists"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Product is active"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6535,7 +6586,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6547,31 +6598,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Product exists"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_6_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Product is active"
+    value="Service Point Checked"
   />,
 ]
 `;
@@ -6588,7 +6615,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6601,6 +6628,30 @@ Array [
     required={true}
     style={Object {}}
     value="Product exists"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
   />,
 ]
 `;
@@ -6617,7 +6668,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6630,6 +6681,30 @@ Array [
     required={true}
     style={Object {}}
     value="Product exists"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
   />,
 ]
 `;
@@ -6646,7 +6721,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6659,6 +6734,30 @@ Array [
     required={true}
     style={Object {}}
     value="Product exists"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_7_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Product is active"
   />,
 ]
 `;
@@ -6687,7 +6786,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Fixed"
+    value="Product exists"
   />,
 ]
 `;
@@ -6716,7 +6815,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Fixed"
+    value="Product exists"
   />,
 ]
 `;
@@ -6745,7 +6844,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Fixed"
+    value="Product exists"
   />,
 ]
 `;
@@ -6774,7 +6873,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="Problem Fixed"
   />,
 ]
 `;
@@ -6803,7 +6902,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="Problem Fixed"
   />,
 ]
 `;
@@ -6832,7 +6931,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Problem Flagged"
+    value="Problem Fixed"
   />,
 ]
 `;
@@ -6849,7 +6948,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6861,55 +6960,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service point does not have geometry"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Problem Flagged"
   />,
 ]
 `;
@@ -6926,7 +6977,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -6938,55 +6989,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service point does not have geometry"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Problem Flagged"
   />,
 ]
 `;
@@ -7003,7 +7006,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7015,55 +7018,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service point does not have geometry"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_10_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="Problem Flagged"
   />,
 ]
 `;
@@ -7080,7 +7035,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -7092,7 +7047,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="GPS recorded"
+    value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -7109,7 +7112,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -7121,7 +7124,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="GPS recorded"
+    value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -7138,7 +7189,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="Bundle.entry.resource.ofType(Location).identifier.where(system='hasGeometry').value='false'"
   />,
   <textarea
     className="ant-input form-control"
@@ -7150,7 +7201,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="GPS recorded"
+    value="Service point does not have geometry"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_11_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -7167,7 +7266,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7179,55 +7278,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="GPS recorded"
   />,
 ]
 `;
@@ -7244,7 +7295,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7256,55 +7307,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="GPS recorded"
   />,
 ]
 `;
@@ -7321,7 +7324,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.Bundle)"
+    value="$this.is(FHIR.QuestionnaireResponse)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7333,55 +7336,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="All service points"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_1_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has stock"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_expression"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
-  />,
-  <textarea
-    className="ant-input form-control"
-    disabled={false}
-    id="planForm_activities_12_condition_2_description"
-    onChange={[Function]}
-    onCompositionEnd={[Function]}
-    onCompositionStart={[Function]}
-    onKeyDown={[Function]}
-    required={true}
-    style={Object {}}
-    value="Check if service point has active stock"
+    value="GPS recorded"
   />,
 ]
 `;
@@ -7398,7 +7353,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7410,7 +7365,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -7427,7 +7430,7 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
@@ -7439,7 +7442,55 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="Service Point Checked"
+    value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
   />,
 ]
 `;
@@ -7456,12 +7507,147 @@ Array [
     onKeyDown={[Function]}
     required={true}
     style={Object {}}
-    value="$this.is(FHIR.QuestionnaireResponse)"
+    value="$this.is(FHIR.Bundle)"
   />,
   <textarea
     className="ant-input form-control"
     disabled={false}
     id="planForm_activities_13_condition_0_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="All service points"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_1_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has stock"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Bundle.entry.resource.ofType(SupplyDelivery).identifier.where(system='isPastAccountabilityDate' and value='false').exists()"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_13_condition_2_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Check if service point has active stock"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions textareas 42 1`] = `
+Array [
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.is(FHIR.QuestionnaireResponse)"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Service Point Checked"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions textareas 43 1`] = `
+Array [
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.is(FHIR.QuestionnaireResponse)"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_description"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="Service Point Checked"
+  />,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: conditions textareas 44 1`] = `
+Array [
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_expression"
+    onChange={[Function]}
+    onCompositionEnd={[Function]}
+    onCompositionStart={[Function]}
+    onKeyDown={[Function]}
+    required={true}
+    style={Object {}}
+    value="$this.is(FHIR.QuestionnaireResponse)"
+  />,
+  <textarea
+    className="ant-input form-control"
+    disabled={false}
+    id="planForm_activities_14_condition_0_description"
     onChange={[Function]}
     onCompositionEnd={[Function]}
     onCompositionStart={[Function]}
@@ -7484,7 +7670,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7499,7 +7685,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7514,7 +7700,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7574,7 +7760,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7589,7 +7775,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7604,7 +7790,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7754,7 +7940,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7769,7 +7955,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7784,7 +7970,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7799,7 +7985,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7814,7 +8000,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7829,7 +8015,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7934,7 +8120,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7949,7 +8135,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7964,7 +8150,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -7979,7 +8165,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -7994,7 +8180,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -8009,7 +8195,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -8024,7 +8210,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -8039,7 +8225,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -8054,7 +8240,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="plan-activation"
+  value="event-submission"
 />
 `;
 
@@ -8069,7 +8255,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -8084,7 +8270,7 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
-  value="event-submission"
+  value="plan-activation"
 />
 `;
 
@@ -8099,38 +8285,131 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inp
   onKeyDown={[Function]}
   required={true}
   type="text"
+  value="plan-activation"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inputs 42 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="planForm_activities_14_trigger_0_name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value="event-submission"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inputs 43 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="planForm_activities_14_trigger_0_name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
+  value="event-submission"
+/>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers inputs 44 1`] = `
+<input
+  className="ant-input"
+  disabled={false}
+  id="planForm_activities_14_trigger_0_name"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  required={true}
+  type="text"
   value="event-submission"
 />
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 0 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_0_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 1 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_0_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 2 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_0_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_0_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 3 1`] = `
@@ -8164,81 +8443,33 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers lab
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 6 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_2_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 7 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_2_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 8 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_2_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_2_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 9 1`] = `
@@ -8476,111 +8707,111 @@ Array [
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 18 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_6_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 19 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_6_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 20 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_6_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 21 1`] = `
 <label
   className=""
-  htmlFor="planForm_activities_6_trigger_0_name"
+  htmlFor="planForm_activities_7_trigger_0_name"
   title="Name"
 >
   Name
 </label>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 21 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
-`;
-
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 22 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_7_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 23 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_7_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_7_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 24 1`] = `
@@ -8740,214 +8971,292 @@ Array [
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 30 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_10_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 31 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_10_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 32 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_10_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_10_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 33 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_11_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 34 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_11_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 35 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_11_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_11_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 36 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_12_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 37 1`] = `
-<label
-  className=""
-  htmlFor="planForm_activities_12_trigger_0_name"
-  title="Name"
->
-  Name
-</label>
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 38 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_12_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 39 1`] = `
 <label
   className=""
-  htmlFor="planForm_activities_12_trigger_0_name"
+  htmlFor="planForm_activities_13_trigger_0_name"
   title="Name"
 >
   Name
 </label>
 `;
 
-exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 39 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
-`;
-
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 40 1`] = `
-Array [
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_name"
-    title="Name"
-  >
-    Name
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_expression"
-    title="Expression"
-  >
-    Expression
-  </label>,
-  <label
-    className=""
-    htmlFor="planForm_activities_13_trigger_0_description"
-    title="Description"
-  >
-    Description
-  </label>,
-]
+<label
+  className=""
+  htmlFor="planForm_activities_13_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 41 1`] = `
+<label
+  className=""
+  htmlFor="planForm_activities_13_trigger_0_name"
+  title="Name"
+>
+  Name
+</label>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 42 1`] = `
 Array [
   <label
     className=""
-    htmlFor="planForm_activities_13_trigger_0_name"
+    htmlFor="planForm_activities_14_trigger_0_name"
     title="Name"
   >
     Name
   </label>,
   <label
     className=""
-    htmlFor="planForm_activities_13_trigger_0_expression"
+    htmlFor="planForm_activities_14_trigger_0_expression"
     title="Expression"
   >
     Expression
   </label>,
   <label
     className=""
-    htmlFor="planForm_activities_13_trigger_0_description"
+    htmlFor="planForm_activities_14_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 43 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_description"
+    title="Description"
+  >
+    Description
+  </label>,
+]
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers labels 44 1`] = `
+Array [
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_name"
+    title="Name"
+  >
+    Name
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_expression"
+    title="Expression"
+  >
+    Expression
+  </label>,
+  <label
+    className=""
+    htmlFor="planForm_activities_14_trigger_0_description"
     title="Description"
   >
     Description
@@ -9202,6 +9511,24 @@ exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers leg
 `;
 
 exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers legends 41 1`] = `
+<legend>
+  Triggers
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers legends 42 1`] = `
+<legend>
+  Triggers
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers legends 43 1`] = `
+<legend>
+  Triggers
+</legend>
+`;
+
+exports[`containers/forms/PlanForm renders dynamic plans correctly: triggers legends 44 1`] = `
 <legend>
   Triggers
 </legend>
