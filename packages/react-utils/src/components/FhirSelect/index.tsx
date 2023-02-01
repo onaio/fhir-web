@@ -39,7 +39,12 @@ export interface FhirSelectProps<ResourceT extends IResource>
 const debouncedFn = debounce((callback) => callback(), 500);
 
 /**
-  Select component to use with async search
+ * Problem: When we want to api resources as options we need to fetch all resources on the api first
+ * and add support for searching/filtering on the frontend. This leads to slow views and esentially means
+ * we have to pull more data than sometimes we need.
+ *
+ * The solution: This component is a wrapper around the antd select component. It adds support for optional api side
+ * searching, This means we no longer need to fetch all records of a certain specific resource to support searching.
  *
  * @param props - component props
  */
