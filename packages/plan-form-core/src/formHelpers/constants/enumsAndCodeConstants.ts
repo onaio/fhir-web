@@ -79,6 +79,8 @@ import {
   COMPLETE_BENEFICIARY_FLAG_CODE,
   COMPLETE_BENEFICIARY_CONSULTATION_CODE,
   COMPLETE_WAREHOUSE_CHECK_CODE,
+  FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
+  FIX_PRODUCT_PROBLEMS_CODE,
 } from './stringConstants';
 
 /** Enum representing the possible goal unitss */
@@ -142,6 +144,7 @@ export const PlanActionCodes = [
   COMPLETE_BENEFICIARY_FLAG_CODE,
   WAREHOUSE_CHECK_CODE,
   COMPLETE_WAREHOUSE_CHECK_CODE,
+  FIX_PRODUCT_PROBLEMS_CODE,
 ] as const;
 
 /** Allowed taskGenerationStatus values */
@@ -188,6 +191,7 @@ export const PlanActivityTitles = [
   COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE,
   WAREHOUSE_CHECK_ACTVITY_CODE,
   COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
+  FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
 ] as const;
 
 /** Enum representing the possible intervention types */
