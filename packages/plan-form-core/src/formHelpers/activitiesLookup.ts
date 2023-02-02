@@ -46,6 +46,8 @@ import {
   COMPLETE_WAREHOUSE_CHECK_CODE,
   WAREHOUSE_CHECK_CODE,
   COMPLETE_BENEFICIARY_FLAG_CODE,
+  FIX_PRODUCT_PROBLEMS_CODE,
+  FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
 } from './constants/stringConstants';
 import {
   BCC_ACTIVITY_DESCRIPTION,
@@ -1962,6 +1964,63 @@ export const planActivities: PlanActivities = {
       target: [
         {
           measure: 'Percent of service points checked',
+          detail: {
+            detailQuantity: {
+              comparator: '>',
+              unit: GoalUnit.PERCENT,
+              value: 100,
+            },
+          },
+          due: '',
+        },
+      ],
+    },
+  },
+  [FIX_PRODUCT_PROBLEM_ACTIVITY_CODE]: {
+    action: {
+      identifier: '',
+      prefix: 1,
+      title: 'Fix Problem',
+      description: 'Fix problems for all products (100%) within the jurisdiction',
+      code: FIX_PRODUCT_PROBLEMS_CODE,
+      timingPeriod: {
+        end: '',
+        start: '',
+      },
+      reason: ROUTINE,
+      goalId: FIX_PRODUCT_PROBLEMS_CODE,
+      subjectCodableConcept: {
+        text: 'Device',
+      },
+      trigger: [
+        {
+          type: NAMED_EVENT_TRIGGER_TYPE,
+          name: 'event-submission',
+          expression: {
+            description: 'Trigger when a Fix Product event is submitted',
+            expression: "questionnaire = 'flag_problem'",
+          },
+        },
+      ],
+      condition: [
+        {
+          kind: APPLICABILITY_CONDITION_KIND,
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      type: CREATE_TYPE,
+    },
+    goal: {
+      description: 'Fix problems for all products (100%) within the jurisdiction',
+      id: FIX_PRODUCT_PROBLEMS_CODE,
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          measure: 'Percent of products problems fixed',
           detail: {
             detailQuantity: {
               comparator: '>',
