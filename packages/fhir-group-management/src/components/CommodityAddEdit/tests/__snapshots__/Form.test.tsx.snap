@@ -75,6 +75,56 @@ exports[`Health care form renders correctly: cancel button 1`] = `
 </button>
 `;
 
+exports[`Health care form renders correctly: id field 1`] = `
+<input
+  className="ant-input ant-input-disabled"
+  disabled={true}
+  id="id"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="(Auto generated)"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`Health care form renders correctly: id label 1`] = `
+<label
+  className=""
+  htmlFor="id"
+  title="Commodity Id"
+>
+  Commodity Id
+</label>
+`;
+
+exports[`Health care form renders correctly: identifier field 1`] = `
+<input
+  className="ant-input ant-input-disabled"
+  disabled={true}
+  id="identifier"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="(Auto generated)"
+  type="text"
+  value=""
+/>
+`;
+
+exports[`Health care form renders correctly: identifier label 1`] = `
+<label
+  className=""
+  htmlFor="identifier"
+  title="Identifier"
+>
+  Identifier
+</label>
+`;
+
 exports[`Health care form renders correctly: name field 1`] = `
 <input
   className="ant-input"
