@@ -1,4 +1,4 @@
-# OpenSRP Web
+# OpenSRP WEB DOCKER DEPLOYMENT
 
 [OpenSRP Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP Server](https://hub.docker.com/r/opensrp/opensrp-server-web); providing access to the data collected on the server, configuration options as well as any functionality provided by the API server.
 
