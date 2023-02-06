@@ -56,22 +56,22 @@
 
 ## Notes
 
-1.  You can use OAuth 2.0's `Implicit Grant flow` to run the app with direct authentication to Keyckloak. I.e bypassing the express authentication backend.
+1. You can use OAuth 2.0's `Implicit Grant flow` to run the app with direct authentication to Keyckloak. I.e bypassing the express authentication backend.
 
-    - This is done by setting the `REACT_APP_BACKEND_ACTIVE` env to false
+   - This is done by setting the `REACT_APP_BACKEND_ACTIVE` env to false
 
-      ```bash
-      REACT_APP_BACKEND_ACTIVE=false
-      ```
+     ```bash
+     REACT_APP_BACKEND_ACTIVE=false
+     ```
 
-2.  To see changes in the UI after making a code change to a package, cd into the packages directory and rebuild it using the build command in it's package.json
+2. To see changes in the UI after making a code change to a package, cd into the packages directory and rebuild it using the build command in it's package.json
 
-    - e.g to rebuild the Fhir Group Management package after making code changes to it:
+   - e.g to rebuild the Fhir Group Management package after making code changes to it:
 
-      ```bash
-      cd packages/fhir-group-management
+     ```bash
+     cd packages/fhir-group-management
 
-      # ...make a code change
+     # ...make a code change
 
-      yarn build
-      ```
+     yarn build
+     ```
