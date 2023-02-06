@@ -146,11 +146,7 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
       // UUID's
       REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: '<randomly-generated-uuid>',
       REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<randomly-generated-uuid>',
-
-      // TODO: are these needed for fhir?
       REACT_APP_DEFAULT_PLAN_ID: '<default-opensrp-plan-uuid>',
-      REACT_APP_ACTION_UUID_NAMESPACE: '<randomly-generated-uuid>',
-      REACT_APP_PLAN_UUID_NAMESPACE: '<randomly-generated-uuid>',
 
       // toggle fhir-web modules
       REACT_APP_ENABLE_FHIR_CARE_TEAM: 'false',
