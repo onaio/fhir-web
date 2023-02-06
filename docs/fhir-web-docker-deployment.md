@@ -31,7 +31,7 @@
 
 - The config file is created by [confd utility](https://github.com/kelseyhightower/confd) reading a volume file (`config.js.tpl`) holding the react app configurations, and injecting it into the container.
 
-- There are two ways to run the application on docker: one using the docker cli with the `docker run` command and the other a `docker compose` config file.
+- There are two ways to run the application on docker: Using the `docker run` docker cli command or using a `docker compose` config file.
 
 ### Docker CLI
 
