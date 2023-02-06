@@ -174,7 +174,12 @@ test('renders correctly for edit user', async () => {
 
   nock(props.baseUrl)
     .get(`/Composition/_search`)
-    .query(() => true)
+    .query({
+      _getpagesoffset: '0',
+      _count: '20',
+      type: `http://snomed.info/sct|1156600005`,
+      _elements: 'identifier,title',
+    })
     .reply(200, compositionResource)
     .persist();
 
@@ -229,7 +234,7 @@ test('renders correctly for edit user', async () => {
   const submitButton = document.querySelector('button[type="submit"]');
 
   // find antd Select with id 'practitioners' in the 'Form' component
-  const appIdSection = document.querySelector('[data-testid="fhirCoreAppId"]') as Element;
+  const appIdSection = getByTestId('fhirCoreAppId') as Element;
 
   // click on input. - should see the first 5 records by default
   const appIdInput = appIdSection.querySelector('.ant-select-selector') as Element;
