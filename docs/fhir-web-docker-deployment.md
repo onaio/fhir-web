@@ -1,5 +1,11 @@
 # FHIR WEB DOCKER DEPLOYMENT
 
+[OpenSRP FHIR Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
+
+## What is OpenSRP FHIR Core?
+
+FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
+
 ## Prerequisites
 
 ---
@@ -193,14 +199,18 @@
 
 ### Notes
 
-- Running a docker deployment exposes the app on `port 3000`. To expose it to the internet, point a reverse proxy, e.g [nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), to `localhost:3000`
+- Running a docker deployment exposes the FHIR Web application on `port 3000`. To expose it to the internet, point a reverse proxy, e.g [nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), to `localhost:3000`
 
 - Use the detached flag (`-d`) to run the container in the background. Both for `docker run -d` and `docker compose up -d`
 
-- To enforce a react config override (in `config.js.tpl`), run `docker compose down` first before re-running the deployment. This stops, and remove containers, networks, images, and volumes, allowing them to be created again
+- To enforce a react config override (in `config.js.tpl`), run `docker compose down` first before re-running the deployment. This stops, and remove containers, networks, images, and volumes, allowing them to be created again on `docker compose up`
 
 ## Toggling App Modules
 
 - To toggle the application's modules, set the react configurations starting with `REACT_APP_ENABLE_` on or off by setting their values to either `true` or `false`.
 
-  - E.g to toggle the fhir teams module off, set the configuration to `REACT_APP_ENABLE_FHIR_TEAMS: 'false',`
+  - E.g to toggle the fhir teams module off, set the `REACT_APP_ENABLE_FHIR_TEAMS` configuration to false
+
+    ```bash
+    REACT_APP_ENABLE_FHIR_TEAMS: 'false',
+    ```
