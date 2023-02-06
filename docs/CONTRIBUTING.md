@@ -27,7 +27,7 @@ The terms `peerDependencies` and `dependencies` are to be interpreted as defined
 
 #### Running tests
 
-```
+```bash
 # make sure there are no stale package builds
 yarn lerna:prepublish
 yarn test
