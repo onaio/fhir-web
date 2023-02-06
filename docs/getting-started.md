@@ -64,14 +64,14 @@
      REACT_APP_BACKEND_ACTIVE=false
      ```
 
-2. To see changes in the UI after making a code change to a package, cd into the packages directory and rebuild it using the build command in it's package.json
+2. To make a code contribution follow the [contributing documentation](./CONTRIBUTING.md)
+
+3. To see UI changes after making a contribution to a package, cd into the packages' directory and rebuild it using the build command in it's package.json
 
    - e.g to rebuild the Fhir Group Management package after making code changes to it:
 
      ```bash
      cd packages/fhir-group-management
-
-     # ...make a code change
 
      yarn build
      ```
