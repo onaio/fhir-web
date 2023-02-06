@@ -70,7 +70,7 @@ export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<R
       setDebouncedSearchValue(searchValue);
       setPage(defaultStartPage);
     });
-  });
+  }, [searchValue]);
 
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isFetching, error } =
     useInfiniteQuery({
