@@ -1,17 +1,24 @@
 # FHIR WEB DOCKER DEPLOYMENT
 
-[OpenSRP FHIR Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
+[OpenSRP FHIR Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
+
+We different containerization technologies to deploy OpenSRP FHIR Web. This documentation will focus on deployment using 
+[Docker](https://www.docker.com/) 
 
 ## What is OpenSRP FHIR Core?
 
-FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
+OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations 
+from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
 
 ## Prerequisites
 
 ---
 
-- A well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak)
-- A well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter)
+- A basic knowledge containerization technologies with the focus on Docker. 
+- A deployed and well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak). 
+   - We currently support versions `18.0.0-legacy`
+   - The configuration here should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configuration.  
+- A deployed well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter)
 
 ## Background
 
@@ -39,7 +46,7 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
 
 - There are two ways to run the application on docker: Using the `docker run` docker cli command or using a `docker compose` config file.
 
-### Docker CLI
+### Docker CLI `docker run`
 
 - Use the following docker command paired with a volume config file
 
@@ -53,7 +60,7 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
   --name fhir-web opensrp/web:v2.3.2
   ```
 
-  - With the volume file in the same directory, as below:
+  - With the volume file (`config.js.tpl`) in the same directory, as below:
 
   ```js
   // config.js.tpl
@@ -65,7 +72,7 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
   };
   ```
 
-### Docker Compose
+### Docker Compose `docker compose`
 
 - Use a docker-compose file with a volume file
 
@@ -85,29 +92,29 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
           - ./config.js.tpl:/etc/confd/templates/config.js.tmpl
         environment:
           # optional overrides
-          - 'NODE_ENV=production' # 'NODE_ENV=development' if fhir-web-domain === http://localhost:3000
+          - 'NODE_ENV=production' # 'NODE_ENV=development' if fhir-web-base-url === http://localhost:3000
           - 'EXPRESS_ALLOW_TOKEN_RENEWAL=true'
           - 'EXPRESS_OPENSRP_LOGOUT_URL=null'
 
           # keycloak
           - 'EXPRESS_OPENSRP_CLIENT_ID=<keycloak-client-id>'
           - 'EXPRESS_OPENSRP_CLIENT_SECRET=<keycloak-client-secret>'
-          - 'EXPRESS_OPENSRP_ACCESS_TOKEN_URL=<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/token'
-          - 'EXPRESS_OPENSRP_AUTHORIZATION_URL=<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/auth'
-          - 'EXPRESS_KEYCLOAK_LOGOUT_URL=<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/logout'
-          - 'EXPRESS_OPENSRP_USER_URL=<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo'
+          - 'EXPRESS_OPENSRP_ACCESS_TOKEN_URL=<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/token'
+          - 'EXPRESS_OPENSRP_AUTHORIZATION_URL=<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/auth'
+          - 'EXPRESS_KEYCLOAK_LOGOUT_URL=<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/logout'
+          - 'EXPRESS_OPENSRP_USER_URL=<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo'
 
           # fhir web
-          - 'EXPRESS_OPENSRP_CALLBACK_URL=<fhir-web-domain>/oauth/callback/OpenSRP/'
-          - 'EXPRESS_FRONTEND_OPENSRP_CALLBACK_URL=<fhir-web-domain>/fe/oauth/callback/opensrp'
-          - 'EXPRESS_SERVER_LOGOUT_URL=<fhir-web-domain>/logout'
+          - 'EXPRESS_OPENSRP_CALLBACK_URL=<fhir-web-base-url>/oauth/callback/OpenSRP/'
+          - 'EXPRESS_FRONTEND_OPENSRP_CALLBACK_URL=<fhir-web-base-url>/fe/oauth/callback/opensrp'
+          - 'EXPRESS_SERVER_LOGOUT_URL=<fhir-web-base-url>/logout'
 
           # UUID's
           - 'EXPRESS_SESSION_SECRET=<randomly-generated-secret-string>'
 
           # content security policy configuration
           # remove optional-sentry-domain config block if your deployment has no sentry
-          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-domain>","<fhir-server-domain>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"],"script-src":["''self''","''unsafe-inline''"]}'
+          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"],"script-src":["''self''","''unsafe-inline''"]}'
 
         # optional sentry config
         # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-domain>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}'
@@ -122,30 +129,30 @@ FHIR Core is a Kotlin application for delivering offline-capable, mobile-first h
 
     window._env_ = {
       // keycloak
-      REACT_APP_KEYCLOAK_API_BASE_URL: '<keycloak-domain>/auth/admin/realms/<keycloak-realm>',
+      REACT_APP_KEYCLOAK_API_BASE_URL: '<keycloak-base-url>/auth/admin/realms/<keycloak-realm>',
       REACT_APP_KEYCLOAK_LOGOUT_URL:
-        '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/logout',
+        '<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/logout',
       REACT_APP_OPENSRP_ACCESS_TOKEN_URL:
-        '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/token',
+        '<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/token',
       REACT_APP_OPENSRP_AUTHORIZATION_URL:
-        '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/auth',
+        '<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/auth',
       REACT_APP_OPENSRP_CLIENT_ID: '<keycloak-client-id>',
       REACT_APP_OPENSRP_USER_URL:
-        '<keycloak-domain>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo',
+        '<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/userinfo',
 
       // fhir-web
       REACT_APP_WEBSITE_NAME: '<website-name>',
-      REACT_APP_OPENSRP_WEB_VERSION: '<fhir-web-tag>',
-      REACT_APP_DOMAIN_NAME: '<fhir-web-domain>',
-      REACT_APP_EXPRESS_OAUTH_GET_STATE_URL: '<fhir-web-domain>/oauth/state',
-      REACT_APP_EXPRESS_OAUTH_LOGOUT_URL: '<fhir-web-domain>/logout',
+      REACT_APP_OPENSRP_WEB_VERSION: '<fhir-web-release-tag>',
+      REACT_APP_DOMAIN_NAME: '<fhir-web-base-url>',
+      REACT_APP_EXPRESS_OAUTH_GET_STATE_URL: '<fhir-web-base-url>/oauth/state',
+      REACT_APP_EXPRESS_OAUTH_LOGOUT_URL: '<fhir-web-base-url>/logout',
 
       // fhir-server
-      REACT_APP_FHIR_API_BASE_URL: '<fhir-server-domain>/fhir',
+      REACT_APP_FHIR_API_BASE_URL: '<fhir-server-base-url>/fhir',
 
       // UUID's
-      REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: '<randomly-generated-uuid>',
-      REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<randomly-generated-uuid>',
+      REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: '<identifier-of-the-root-location-on-the-HAPI-server>',
+      REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<id-of-a-list-on-HAPI-fhir-server>',
       REACT_APP_DEFAULT_PLAN_ID: '<default-opensrp-plan-uuid>',
 
       // toggle fhir-web modules
