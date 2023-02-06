@@ -163,15 +163,6 @@
       REACT_APP_ENABLE_TEAMS: 'false',
       REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE: 'false',
 
-      // TODO: are these needed for fhir?
-      REACT_APP_ENABLE_CARD_SUPPORT: 'false',
-      REACT_APP_ENABLE_INVENTORY: 'false',
-      REACT_APP_ENABLE_PLANS: 'false',
-      REACT_APP_ENABLE_PRODUCT_CATALOGUE: 'false',
-      REACT_APP_ENABLE_REPORTS: 'false',
-      REACT_APP_ENABLE_SERVER_SETTINGS: 'false',
-      REACT_APP_ENABLE_FORM_CONFIGURATION: 'false',
-
       // optional overrides
       SKIP_PREFLIGHT_CHECK: 'true',
       GENERATE_SOURCEMAP: 'false',
