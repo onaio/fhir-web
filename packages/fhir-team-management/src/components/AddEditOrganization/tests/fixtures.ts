@@ -384,11 +384,21 @@ export const editedOrg = {
 
 export const createdRole1 = {
   resourceType: 'PractitionerRole',
-  active: true,
   id: '9b782015-8392-4847-b48c-50c11638656b',
-  organization: { reference: 'Organization/105', display: 'Owls of Minerva' },
+  identifier: [
+    { use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' },
+    { use: 'secondary', value: 'fede58ef-4716-4ca8-8185-c04d8de77bcb' },
+  ],
+  active: true,
   practitioner: { reference: 'Practitioner/114', display: 'test fhir' },
-  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+  organization: { reference: 'Organization/105', display: 'Owls of Minerva' },
+  code: [
+    {
+      coding: [
+        { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
+      ],
+    },
+  ],
 };
 
 export const createdRole2 = {
@@ -398,4 +408,41 @@ export const createdRole2 = {
   organization: { reference: 'Organization/123', display: 'Seal team' },
   practitioner: { reference: 'Practitioner/206', display: 'Allay Allan' },
   identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+};
+
+export const practitionersRoleBundle = {
+  resourceType: 'Bundle',
+  id: '420',
+  entry: [
+    {
+      resource: {
+        resourceType: 'PractitionerRole',
+        active: true,
+        id: '9b782015-8392-4847-b48c-50c11638656b',
+        practitioner: { reference: 'Practitioner/206', display: 'Allay Allan' },
+        identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+      },
+    },
+  ],
+};
+
+export const practitionerRoleBundle392 = {
+  resourceType: 'PractitionerRole',
+  id: '392',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-08-16T13:18:48.115+00:00',
+    source: '#1543381bed80d1f5',
+  },
+  identifier: [
+    {
+      use: 'official',
+      value: '94c29adc-c73f-4246-b44c-d10f3720c4ef',
+    },
+  ],
+  active: true,
+  practitioner: {
+    reference: 'Practitioner/213',
+    display: 'Bobi mapesa',
+  },
 };

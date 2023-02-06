@@ -1,4 +1,11 @@
-import { FHIRServiceClass, getObjLike, parseFhirHumanName } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  getObjLike,
+  parseFhirHumanName,
+  loadAllResources,
+  getResourcesFromBundle,
+  IdentifierUseCodes,
+} from '@opensrp/react-utils';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { keyBy, transform } from 'lodash';
 import {
@@ -12,6 +19,7 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { OrganizationFormFields } from './components/AddEditOrganization/utils';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
+import { PRACTITIONER_USER_TYPE_CODE } from '@opensrp/user-management';
 
 /**
  * either posts or puts an organization payload to fhir server
@@ -58,7 +66,7 @@ const arrKeyBy = (arr: string[]) =>
  * @param practitioners - all practitioners
  * @param existingRoles - all existing practitioner assignments to organizations
  */
-export const updatePractitionerRoles = (
+export const updatePractitionerRoles = async (
   baseUrl: string,
   values: OrganizationFormFields,
   initialValues: OrganizationFormFields,
@@ -112,40 +120,95 @@ export const updatePractitionerRoles = (
     const organizationId = orgId as string;
     const role =
       existingRolesByOrgPractIds[`${organizationResourceType}/${organizationId}`][practId];
-    // invariant if we are removing a practitioner initially assigned to this team
-    // then a role should exist
-    return () => serve.delete(role.id as string);
+    // remove organization assignment from role
+    const { organization, ...rest } = role;
+    return () => serve.update(rest);
   });
 
-  // TODO - possibility of posting this as a bundle in a single api call
-  const additionPromises = toAdd
-    .map((practId) => {
-      const practitioner = practitionersById[practId];
-      const name = getObjLike(practitioner.name, 'use', HumanNameUseCodes.OFFICIAL, true)[0];
-      const practitionerRole: IPractitionerRole = {
+  const practitionerRolesModifyPromises = [];
+
+  if (toAdd.length > 0) {
+    const organizationPayload = {
+      reference: `${organizationResourceType}/${orgId}`,
+      display: organization.name,
+    };
+
+    // get existing practitioner roles for all new practitioners to be added to organization
+    const existingPractitionerRoles = (await loadAllResources(
+      baseUrl,
+      practitionerRoleResourceType,
+      {
+        practitioner: toAdd.join(),
+      }
+    ).then((resp) => getResourcesFromBundle(resp))) as IPractitionerRole[];
+
+    // inject organization attribute into existing practitioner roles
+    const existingPractitionerRolesPromises = existingPractitionerRoles
+      .map((practitionerRole) => ({
+        ...practitionerRole,
+        organization: organizationPayload,
+      }))
+      .map((practitionerRole) => {
+        return () => serve.update(practitionerRole);
+      });
+
+    practitionerRolesModifyPromises.push(...existingPractitionerRolesPromises);
+
+    // create practitioner roles against practitioners to be added if they don't exist
+    const practitionersWithExistingPractitionerRoles = existingPractitionerRoles.map(
+      (existingPractitionerRole) => existingPractitionerRole.practitioner?.reference
+    );
+
+    const practitionersWithoutExistingPractitionerRoles = toAdd.filter(
+      (practitionerId) => !practitionersWithExistingPractitionerRoles.includes(practitionerId)
+    );
+
+    for (const practitionerID of practitionersWithoutExistingPractitionerRoles) {
+      const newPractitionerRoleResourceID = v4();
+      const practitioner = practitionersById[practitionerID];
+      // get secondary identifier (keycloak uuid) from practitioner
+      const practitionerSecondaryIdentifier = practitioner.identifier?.find(
+        (identifier) => identifier.use === 'secondary'
+      );
+      const practitionerDisplayName = getObjLike(
+        practitioner.name,
+        'use',
+        HumanNameUseCodes.OFFICIAL,
+        true
+      )[0];
+
+      const newPractitionerRole: IPractitionerRole = {
         resourceType: practitionerRoleResourceType,
-        active: true,
-        id: v4(),
-        organization: {
-          reference: `${organizationResourceType}/${orgId}`,
-          display: organization.name,
-        },
-        practitioner: {
-          reference: practId,
-          display: parseFhirHumanName(name),
-        },
+        id: newPractitionerRoleResourceID,
         identifier: [
           {
-            use: 'official',
-            value: v4(),
+            use: IdentifierUseCodes.OFFICIAL,
+            value: newPractitionerRoleResourceID,
+          },
+          ...(practitionerSecondaryIdentifier ? [practitionerSecondaryIdentifier] : []),
+        ],
+        active: true,
+        practitioner: {
+          reference: practitionerID,
+          display: parseFhirHumanName(practitionerDisplayName),
+        },
+        organization: organizationPayload,
+        code: [
+          {
+            coding: [
+              {
+                system: 'http://snomed.info/sct',
+                code: PRACTITIONER_USER_TYPE_CODE,
+                display: 'Assigned practitioner',
+              },
+            ],
           },
         ],
       };
-      return practitionerRole;
-    })
-    .map((practRole) => {
-      return () => serve.update(practRole);
-    });
 
-  return Promise.all([...removePromises, ...additionPromises].map((p) => p()));
+      practitionerRolesModifyPromises.push(() => serve.update(newPractitionerRole));
+    }
+  }
+
+  return Promise.all([...removePromises, ...practitionerRolesModifyPromises].map((p) => p()));
 };
