@@ -125,6 +125,8 @@ export const generateLocationUnit = (
 
   if (id) {
     payload.id = id;
+  } else {
+    payload.id = v4();
   }
 
   return payload;
