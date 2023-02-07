@@ -94,6 +94,7 @@ from local community to national and international scale using FHIR and the WHO 
           - 'NODE_ENV=production' # 'NODE_ENV=development' if fhir-web-base-url === http://localhost:3000
           - 'EXPRESS_ALLOW_TOKEN_RENEWAL=true'
           - 'EXPRESS_OPENSRP_LOGOUT_URL=null'
+          - 'EXPRESS_REACT_BUILD_PATH=/usr/src/web'
 
           # keycloak
           - 'EXPRESS_OPENSRP_CLIENT_ID=<keycloak-client-id>'
@@ -113,7 +114,7 @@ from local community to national and international scale using FHIR and the WHO 
 
           # content security policy configuration
           # remove optional-sentry-domain config block if your deployment has no sentry
-          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"],"script-src":["''self''","''unsafe-inline''"]}'
+          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"]}'
 
         # optional sentry config
         # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-domain>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}'
@@ -153,7 +154,6 @@ from local community to national and international scale using FHIR and the WHO 
       REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER:
         '<identifier-of-the-root-location-on-the-HAPI-server>',
       REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<id-of-a-list-on-HAPI-fhir-server>',
-      REACT_APP_DEFAULT_PLAN_ID: '<default-opensrp-plan-uuid>',
 
       // toggle fhir-web modules
       REACT_APP_ENABLE_FHIR_CARE_TEAM: 'false',
