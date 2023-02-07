@@ -2,23 +2,22 @@
 
 [OpenSRP FHIR Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
 
-We different containerization technologies to deploy OpenSRP FHIR Web. This documentation will focus on deployment using 
-[Docker](https://www.docker.com/) 
+We use different technologies to deploy OpenSRP FHIR Web. This documentation will focus on [Docker](https://www.docker.com/)
 
 ## What is OpenSRP FHIR Core?
 
-OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations 
+OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations
 from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
 
 ## Prerequisites
 
 ---
 
-- A basic knowledge containerization technologies with the focus on Docker. 
-- A deployed and well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak). 
-   - We currently support versions `18.0.0-legacy`
-   - The configuration here should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configuration.  
-- A deployed well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter)
+- A basic knowledge of containerization technologies with focus on Docker.
+- A deployed and well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak).
+  - We currently support version `18.0.0-legacy`
+  - This should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configurations.
+- A deployed and well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter)
 
 ## Background
 
@@ -46,7 +45,7 @@ from local community to national and international scale using FHIR and the WHO 
 
 - There are two ways to run the application on docker: Using the `docker run` docker cli command or using a `docker compose` config file.
 
-### Docker CLI `docker run`
+### Docker CLI (`docker run`)
 
 - Use the following docker command paired with a volume config file
 
@@ -72,7 +71,7 @@ from local community to national and international scale using FHIR and the WHO 
   };
   ```
 
-### Docker Compose `docker compose`
+### Docker Compose (`docker compose`)
 
 - Use a docker-compose file with a volume file
 
@@ -84,7 +83,7 @@ from local community to national and international scale using FHIR and the WHO 
     version: '3.9'
     services:
       fhir-web:
-        image: opensrp/web:<fhir-web-tag>
+        image: opensrp/web:<fhir-web-release-tag>
         ports:
           - '3000:3000'
         volumes:
@@ -151,7 +150,8 @@ from local community to national and international scale using FHIR and the WHO 
       REACT_APP_FHIR_API_BASE_URL: '<fhir-server-base-url>/fhir',
 
       // UUID's
-      REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER: '<identifier-of-the-root-location-on-the-HAPI-server>',
+      REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER:
+        '<identifier-of-the-root-location-on-the-HAPI-server>',
       REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<id-of-a-list-on-HAPI-fhir-server>',
       REACT_APP_DEFAULT_PLAN_ID: '<default-opensrp-plan-uuid>',
 
