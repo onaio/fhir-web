@@ -113,15 +113,15 @@ from local community to national and international scale using FHIR and the WHO 
           - 'EXPRESS_SESSION_SECRET=<randomly-generated-secret-string>'
 
           # content security policy configuration
-          # remove optional-sentry-domain config block if your deployment has no sentry
-          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-domain>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"]}'
+          # remove optional-sentry-base-url config block if your deployment has no sentry
+          - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-base-url>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"]}'
 
         # optional sentry config
-        # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-domain>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}'
+        # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-base-url>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}'
 
         # optional redis and redis sentinel session store config (use either or neither not both)
-        # - 'EXPRESS_REDIS_STAND_ALONE_URL=redis://username:password@redis-domain:port/db'
-        # - 'EXPRESS_REDIS_SENTINEL_CONFIG={"name":"sentinelMasterName","sentinelPassword":"sentinelMasterPassword","sentinels":[{"host":"sentinel-node-1-domain","port":"12345"},{"host":"sentinel-node-2-domain","port":"12345"},{"host":"sentinel-node-3-domain","port":"12345"}]}'
+        # - 'EXPRESS_REDIS_STAND_ALONE_URL=redis://username:password@redis-base-url:port/db'
+        # - 'EXPRESS_REDIS_SENTINEL_CONFIG={"name":"sentinelMasterName","sentinelPassword":"sentinelMasterPassword","sentinels":[{"host":"sentinel-node-1-base-url","port":"12345"},{"host":"sentinel-node-2-base-url","port":"12345"},{"host":"sentinel-node-3-base-url","port":"12345"}]}'
     ```
 
     ```js
