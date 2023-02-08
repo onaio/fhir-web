@@ -52,6 +52,11 @@ export const PRODUCT_CHECK_ACTIVITY_DESCRIPTION =
   'Check for all products (100%) within the jurisdiction';
 export const PRODUCT_CHECK_GOAL_MEASURE = 'Percent of products checked';
 
+export const FIX_PRODUCT_PROBLEM_ACTIVITY = 'Fix Problem';
+export const FIX_PRODUCT_PROBLEM_ACTIVITY_DESCRIPTION =
+  'Fix problems for all products (100%) within the jurisdiction';
+export const FIX_PRODUCT_PROBLEM_GOAL_MEASURE = 'Percent of products problems fixed';
+
 export const RECORD_GPS_ACTIVITY = 'Record GPS';
 export const RECORD_GPS_ACTIVITY_DESCRIPTION =
   'Record GPS for all service points (100%) without GPS within the jurisdiction';
