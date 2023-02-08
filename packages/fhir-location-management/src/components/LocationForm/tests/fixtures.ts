@@ -1,9 +1,9 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 
 export const createdLocation1 = {
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   resourceType: 'Location',
-  status: 'suspended',
+  status: 'inactive',
   name: 'area51',
   alias: 'creepTown',
   description:
@@ -22,8 +22,21 @@ export const createdLocation1 = {
 } as unknown as ILocation;
 
 export const createdLocation2 = {
-  ...onaOfficeSubLocation,
+  resourceType: 'Location',
   status: 'active',
   name: 'Yosemite',
   alias: 'world wonder',
+  description: 'The Sub location',
+  partOf: { reference: 'Location/2252', display: 'Root FHIR Location' },
+  identifier: [{ use: 'official', value: '93bc9c3d-6321-41b0-9b93-1275d7114e22' }],
+  physicalType: {
+    coding: [
+      {
+        system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+        code: 'bu',
+        display: 'Building',
+      },
+    ],
+  },
+  id: '303',
 };
