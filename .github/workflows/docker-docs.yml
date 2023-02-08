@@ -3,7 +3,7 @@ name: Update Docker Hub Documentation
 on:
   push:
     paths:
-      - 'docs/how-to-use-docker-image.md'
+      - "docs/fhir-web-docker-deployment.md"
     branches:
       - master
 
@@ -19,4 +19,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: opensrp/web
-          readme-filepath: docs/how-to-use-docker-image.md
+          readme-filepath: docs/fhir-web-docker-deployment.md
