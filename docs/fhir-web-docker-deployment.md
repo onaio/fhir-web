@@ -41,7 +41,7 @@ from local community to national and international scale using FHIR and the WHO 
 
 - The react front-end receives a config file, [config.js](https://github.com/opensrp/web/blob/master/app/public/config.js), with environment variables that are read into the browser's windows environment at run time.
 
-- The config file is created by [confd utility](https://github.com/kelseyhightower/confd) reading a volume file (`config.js.tpl`) holding the react app configurations, and injecting it into the container.
+- Configs are injected into the container by a [confd](https://github.com/kelseyhightower/confd) service that runs during container startup. This service creates the `config.js` file within the container by parsing and syncing the mounted file `config.js.tpl` contents to the `config.js` file.
 
 - There are two ways to run the application on docker: Using the `docker run` docker cli command or using a `docker compose` config file.
 
