@@ -17,6 +17,7 @@ import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtur
 import { convertApiResToTree } from '../../../helpers/utils';
 import { cleanup, waitFor } from '@testing-library/react';
 import flushPromises from 'flush-promises';
+import * as notifications from '@opensrp/notifications';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -189,12 +190,13 @@ describe('LocationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseURL)
-      .post('/Location', createdLocation1 as unknown as RequestBodyMatcher)
+      .put(`/Location/${createdLocation1.id}`, createdLocation1 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
     const someMockURL = '/someURL';
     const successURLGeneratorMock = jest.fn(() => someMockURL);
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
 
     const wrapper = mount(
       <AppWrapper>
@@ -255,8 +257,11 @@ describe('LocationForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    wrapper.update();
 
+    await waitFor(() => {
+      expect(notificationSuccessMock).toHaveBeenCalledWith('Location was successfully created');
+    });
+    wrapper.update();
     wrapper.unmount();
   });
 
@@ -296,12 +301,13 @@ describe('LocationForm', () => {
   it('is able to edit a location unit', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
 
     nock(formProps.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
       .query({ identifier: formProps.fhirRootLocationIdentifier })
       .reply(200, fhirHierarchy)
-      .post('/Location', createdLocation2 as unknown as RequestBodyMatcher)
+      .put(`/Location/${createdLocation2.id}`, createdLocation2 as unknown as RequestBodyMatcher)
       .reply(201, {})
       .persist();
 
@@ -349,6 +355,10 @@ describe('LocationForm', () => {
     await act(async () => {
       await flushPromises();
       wrapper.update();
+    });
+
+    await waitFor(() => {
+      expect(notificationSuccessMock).toHaveBeenCalledWith('Location was successfully updated');
     });
 
     wrapper.unmount();
