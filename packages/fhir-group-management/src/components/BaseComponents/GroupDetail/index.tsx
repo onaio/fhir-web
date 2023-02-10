@@ -5,11 +5,12 @@ import { Group } from '../../../types';
 import { useHistory } from 'react-router';
 import { groupResourceType } from '../../../constants';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, getObjLike, IdentifierUseCodes } from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
 import { TFunction } from 'i18n/dist/types';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /**
  * parse a Group to object we can easily consume in Table layout
@@ -17,16 +18,33 @@ import { TFunction } from 'i18n/dist/types';
  * @param obj - the organization resource object
  */
 export const parseGroup = (obj: IGroup) => {
-  const { name, active, quantity, member, id, type, characteristic } = obj;
+  const {
+    name,
+    active,
+    quantity,
+    member,
+    id,
+    type,
+    characteristic,
+    identifier: rawIdentifier,
+  } = obj;
+  const identifierObj = getObjLike(
+    rawIdentifier,
+    'use',
+    IdentifierUseCodes.OFFICIAL
+  ) as Identifier[];
+  const identifier = get(identifierObj, '0.value');
   return {
     name,
     active,
     id,
+    identifier,
     lastUpdated: get(obj, 'meta.lastUpdated'),
     members: member,
     quantity,
     type,
     characteristic,
+    obj,
   };
 };
 
