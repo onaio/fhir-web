@@ -14,6 +14,7 @@ export interface FormFields
   keycloakUser?: KeycloakUser;
   contact?: string;
   practitionerRole?: IPractitionerRole;
+  fhirCoreAppId?: string;
 }
 
 export type FormFieldsKey = keyof FormFields | keyof UserAttributes;
