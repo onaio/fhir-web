@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useInfiniteQuery } from 'react-query';
-import { PlusOutlined } from '@ant-design/icons';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
@@ -155,7 +155,7 @@ export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<R
             )}
             <Button
               type="text"
-              icon={<PlusOutlined />}
+              icon={<VerticalAlignBottomOutlined />}
               disabled={!hasNextPage || isFetchingNextPage || isFetching}
               loading={isFetchingNextPage}
               onClick={() => fetchNextPage()}

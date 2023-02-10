@@ -128,7 +128,7 @@ test('works correctly nominal case', async () => {
   expect(recordsText).toBeInTheDocument();
 
   // load more button
-  let loadMoreButton = getByRole('button', { name: 'plus Load more options' });
+  let loadMoreButton = getByRole('button', { name: /Load more options/ });
   expect(loadMoreButton).toBeInTheDocument();
 
   // load more data.
@@ -176,7 +176,7 @@ test('works correctly nominal case', async () => {
   recordsText = queryByText(/Showing\s*10\s*\s*;\s*0\s*more records/);
   expect(recordsText).toBeInTheDocument();
 
-  loadMoreButton = getByRole('button', { name: 'plus Load more options' });
+  loadMoreButton = getByRole('button', { name: /Load more options/ });
   expect(loadMoreButton).toHaveAttribute('disabled', '');
 
   // search and then select.
