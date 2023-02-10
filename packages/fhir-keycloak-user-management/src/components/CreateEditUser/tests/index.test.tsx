@@ -189,7 +189,7 @@ test('renders correctly for edit user', async () => {
 
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
 
-  const { getByTestId, getByText } = render(
+  const { getByTestId, getByText, queryByTitle } = render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
@@ -233,8 +233,8 @@ test('renders correctly for edit user', async () => {
 
   const submitButton = document.querySelector('button[type="submit"]');
 
-  // find antd Select with id 'practitioners' in the 'Form' component
-  const appIdSection = getByTestId('fhirCoreAppId') as Element;
+  // find antd Select with id 'fhirCoreAppId' in the 'Form' component
+  const appIdSection = document.querySelector('[data-testid="fhirCoreAppId"]') as Element;
 
   // click on input. - should see the first 5 records by default
   const appIdInput = appIdSection.querySelector('.ant-select-selector') as Element;
@@ -244,7 +244,7 @@ test('renders correctly for edit user', async () => {
 
   await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
 
-  fireEvent.click(document.querySelector('[title="Device configurations(cha)"]') as Element);
+  fireEvent.click(queryByTitle('Device configurations(cha)') as Element);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   fireEvent.click(submitButton!);

@@ -96,7 +96,7 @@ test('works correctly nominal case', async () => {
     getFullOptionOnChange: fullOptionHandlerMock,
   };
 
-  const { queryByText, getByRole } = render(
+  const { queryByText, getByRole, getByTitle } = render(
     <QueryWrapper>
       <FhirSelect<IOrganization> {...props}></FhirSelect>
     </QueryWrapper>
@@ -182,7 +182,7 @@ test('works correctly nominal case', async () => {
   // search and then select.
   // userEvent.type(input.querySelector('input') as Element, 'test');
 
-  fireEvent.click(document.querySelector('[title="Hospital Krel Tarron"]') as Element);
+  fireEvent.click(getByTitle('Hospital Krel Tarron') as Element);
 
   const tarronHospitalId = '30099';
   const tarronHospital = {

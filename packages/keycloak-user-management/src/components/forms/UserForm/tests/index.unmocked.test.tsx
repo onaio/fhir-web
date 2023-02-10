@@ -14,6 +14,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { compositionResourceType } from '../../../../constants';
 import {
+  screen,
   cleanup,
   fireEvent,
   render,
@@ -182,7 +183,7 @@ describe('forms/userForm', () => {
     userEvent.type(emailInput, 'testone@gmail.com');
 
     // find antd Select with id 'practitioners' in the 'Form' component
-    const appIdSection = document.querySelector('[data-testid="fhirCoreAppId"]') as Element;
+    const appIdSection = screen.getByTestId('fhirCoreAppId') as Element;
 
     // click on input. - should see the first 5 records by default
     const appIdInput = appIdSection.querySelector('.ant-select-selector') as Element;
@@ -208,7 +209,7 @@ describe('forms/userForm', () => {
       'Device configurations(ay)',
     ]);
 
-    fireEvent.click(document.querySelector('[title="Device configurations(cha)"]') as Element);
+    fireEvent.click(screen.getByTitle('Device configurations(cha)') as Element);
 
     const saveBtn = getByRole('button', { name: 'Save' });
     fireEvent.click(saveBtn);
