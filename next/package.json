@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --no-cache --continue",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=docs^... && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "eslint": "^8.33.0",
+    "eslint-config-opensrp": "workspace:*",
+    "prettier": "^2.8.4",
+    "turbo": "latest",
+    "typescript": "^4.9.5",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10"
+  },
+  "packageManager": "pnpm@7.27.0",
+  "engines": {
+    "node": ">=18.14.0",
+    "pnpm": ">=7.27.0"
+  }
+}

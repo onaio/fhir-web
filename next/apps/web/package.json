@@ -1,0 +1,33 @@
+{
+  "name": "@opensrp/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "start": "next start ",
+    "dev": "next dev -p 3002",
+    "lint": "TIMING=1 next lint",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .next"
+  },
+  "dependencies": {
+    "next": "13.1.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@opensrp/tsconfig": "workspace:*",
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "eslint-config-opensrp": "workspace:*"
+  },
+  "repository": {
+    "url": "https://github.com/opensrp/web",
+    "type": "git",
+    "directory": "apps/web"
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0"
+}
