@@ -9,9 +9,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { groupResourceType, LIST_COMMODITY_URL } from '../../../constants';
-import { commoditiesPage1 } from './fixtures';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { groupResourceType, listResourceType, LIST_COMMODITY_URL } from '../../../constants';
+import { commoditiesPage1, listResource } from './fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -46,7 +46,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const listResId = 'list-resource-id';
+const listResId = listResource.id;
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
@@ -167,4 +167,118 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.pathname).toEqual('/commodity/list');
   expect(nock.isDone()).toBeTruthy();
+});
+
+test('Can delete commodity', async () => {
+  const history = createMemoryHistory();
+  history.push(LIST_COMMODITY_URL);
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+    })
+    .reply(200, commoditiesPage1)
+    .persist();
+
+  const { queryByRole, queryByText } = render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  const firstMoreOptions = document.querySelectorAll('.more-options')[0];
+
+  fireEvent.click(firstMoreOptions);
+  const editedGroup = {
+    ...commoditiesPage1.entry[0].resource,
+    active: false,
+  };
+  const editedListResource = {
+    ...listResource,
+    entry: [listResource.entry[1]],
+  };
+
+  nock(props.fhirBaseURL)
+    .put(`/${groupResourceType}/${editedGroup.id}`, editedGroup)
+    .reply(201, {});
+  nock(props.fhirBaseURL).get(`/${listResourceType}/${listResId}`).reply(200, listResource);
+  nock(props.fhirBaseURL)
+    .put(`/${listResourceType}/${editedListResource.id}`, editedListResource)
+    .reply(200, {});
+
+  const deleteBtn = queryByRole('button', { name: 'Delete' }) as Element;
+  fireEvent.click(deleteBtn);
+  const promptText = queryByText(/Are you sure you want to delete this Commodity\?/);
+  expect(promptText).toBeInTheDocument();
+  // simulate yes
+  const yesBtn = queryByRole('button', { name: 'Yes' }) as Element;
+  fireEvent.click(yesBtn);
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Successfully deleted commodity/)).toBeInTheDocument();
+  });
+
+  fireEvent.click(document.querySelector('.ant-notification-notice-close') as Element);
+});
+
+test('Failed commodity deletion', async () => {
+  const history = createMemoryHistory();
+  history.push(LIST_COMMODITY_URL);
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+    })
+    .reply(200, commoditiesPage1)
+    .persist();
+
+  const { queryByRole, queryByText } = render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  const firstMoreOptions = document.querySelectorAll('.more-options')[0];
+
+  fireEvent.click(firstMoreOptions);
+  const editedGroup = {
+    ...commoditiesPage1.entry[0].resource,
+    active: false,
+  };
+  const editedListResource = {
+    ...listResource,
+    entry: [listResource.entry[1]],
+  };
+
+  nock(props.fhirBaseURL)
+    .put(`/${groupResourceType}/${editedGroup.id}`, editedGroup)
+    .reply(201, {});
+  nock(props.fhirBaseURL).get(`/${listResourceType}/${listResId}`).reply(200, listResource);
+  nock(props.fhirBaseURL)
+    .put(`/${listResourceType}/${editedListResource.id}`, editedListResource)
+    .reply(500, 'server down');
+
+  const deleteBtn = queryByRole('button', { name: 'Delete' }) as Element;
+  fireEvent.click(deleteBtn);
+  const promptText = queryByText(/Are you sure you want to delete this Commodity\?/);
+  expect(promptText).toBeInTheDocument();
+  // simulate yes
+  const yesBtn = queryByRole('button', { name: 'Yes' }) as Element;
+  fireEvent.click(yesBtn);
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Deletion of commodity failed/)).toBeInTheDocument();
+  });
 });

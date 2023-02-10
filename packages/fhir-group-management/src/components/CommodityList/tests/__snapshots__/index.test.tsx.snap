@@ -10,6 +10,56 @@ exports[`renders correctly when listing resources 3`] = `
     <span
       class="ant-typography ant-typography-secondary"
     >
+      Commodity Id
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      e50eb835-7827-4001-b233-e1dda721d4e8
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Identifier
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      64524533643
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
       Name
     </span>
   </dt>
@@ -25,7 +75,7 @@ exports[`renders correctly when listing resources 3`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 4`] = `
+exports[`renders correctly when listing resources 6`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -50,7 +100,7 @@ exports[`renders correctly when listing resources 4`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 5`] = `
+exports[`renders correctly when listing resources 7`] = `
 <div
   class="singleKeyValue-pair"
 >

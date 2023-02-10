@@ -329,3 +329,44 @@ export const commoditiesPage1 = {
     },
   ],
 };
+
+export const listResource = {
+  resourceType: 'List',
+  id: 'ea15c35a-8e8c-47ce-8122-c347cefa1b4a',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2023-01-29T23:23:38.919+00:00',
+    source: '#615efee7bf681ece',
+  },
+  identifier: [
+    {
+      use: 'official',
+      value: 'ea15c35a-8e8c-47ce-8122-c347cefa1b4a',
+    },
+  ],
+  status: 'current',
+  mode: 'working',
+  title: 'Supply Chain commodities',
+  code: {
+    coding: [
+      {
+        system: 'http://ona.io',
+        code: 'supply-chain',
+        display: 'Supply Chain Commodity',
+      },
+    ],
+    text: 'Supply Chain Commodity',
+  },
+  entry: [
+    {
+      item: {
+        reference: 'Group/6f3980e0-d1d6-4a7a-a950-939f3ca7b301',
+      },
+    },
+    {
+      item: {
+        reference: 'Group/e50eb835-7827-4001-b233-e1dda721d4e8',
+      },
+    },
+  ],
+};
