@@ -1,5 +1,12 @@
 # Getting Started With FHIR Web
 
+## Prerequisites
+
+1. [Nodejs](https://nodejs.org/en/)
+2. [Git](https://git-scm.com/)
+
+## Steps
+
 1. Clone the repository
 
    ```bash
