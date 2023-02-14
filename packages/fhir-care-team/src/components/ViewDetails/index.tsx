@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { Col, Space, Button, Alert } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { Col, Button, Alert } from 'antd';
+import { CloseOutlined, SyncOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import {
@@ -161,15 +161,20 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {error && !data ? (
         <BrokenPage errorMessage={`${error}`} />
       ) : (
-        <Space direction="vertical">
+        <>
           {isLoading ? (
-            <Alert description={t('Fetching Care team')} type="info"></Alert>
+            <Alert
+              description={t('Fetching Care team')}
+              type="info"
+              showIcon
+              icon={<SyncOutlined spin />}
+            ></Alert>
           ) : careTeam ? (
             renderObjectAsKeyvalue(careTeamKeyValues)
           ) : (
             <Alert description={t('Care Team not found')} type="warning"></Alert>
           )}
-        </Space>
+        </>
       )}
     </Col>
   );
