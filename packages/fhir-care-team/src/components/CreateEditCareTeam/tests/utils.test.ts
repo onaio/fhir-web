@@ -74,7 +74,7 @@ describe('forms/utils/submitForm', () => {
       await flushPromises();
     });
 
-    expect(notificationSuccessMock.mock.calls).toMatchObject([['Successfully Added Care Teams']]);
+    expect(notificationSuccessMock.mock.calls).toMatchObject([['Successfully added CareTeams']]);
     expect(historyPushMock).toHaveBeenCalledWith(`/admin/CareTeams`);
   });
 
@@ -121,8 +121,8 @@ describe('forms/utils/submitForm', () => {
       await flushPromises();
     });
 
-    expect(notificationSuccessMock.mock.calls).toMatchObject([['Successfully Updated Care Teams']]);
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Successfully Updated Care Teams');
+    expect(notificationSuccessMock.mock.calls).toMatchObject([['Successfully updated CareTeams']]);
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Successfully updated CareTeams');
     expect(historyPushMock).toHaveBeenCalledWith('/admin/CareTeams');
   });
 

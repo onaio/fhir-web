@@ -1,17 +1,23 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
-import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { CareTeamForm } from '../Form';
-import { defaultInitialValues } from '../utils';
+import { defaultInitialValues, getCareTeamFormFields } from '../utils';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
-import { cleanup, fireEvent, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import nock from 'nock';
 import { careTeamResourceType } from '../../../constants';
-import { createdCareTeam } from './fixtures';
+import {
+  careTeam4201,
+  createdCareTeam,
+  createdCareTeam2,
+  editedCareTeam4201,
+  organizations,
+  practitioners,
+} from './fixtures';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 
@@ -60,8 +66,8 @@ afterEach(() => {
 const props = {
   initialValues: defaultInitialValues,
   fhirBaseURL: 'https://r4.smarthealthit.org/',
-  practitioners: getResourcesFromBundle(fixtures.practitioners),
-  organizations: getResourcesFromBundle(fixtures.organizations),
+  practitioners: getResourcesFromBundle(practitioners),
+  organizations: getResourcesFromBundle(organizations),
 };
 
 test('filter select by text able to create new careteam', async () => {
@@ -193,9 +199,101 @@ test('filter select by text able to create new careteam', async () => {
   wrapper.find('form').simulate('submit');
 
   await waitFor(() => {
-    expect(successNoticeMock.mock.calls).toEqual([['Successfully Added Care Teams']]);
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully added CareTeams']]);
   });
 
   expect(nock.isDone()).toBeTruthy();
   wrapper.unmount();
+});
+
+test('1157 - Create care team works corectly', async () => {
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  nock(props.fhirBaseURL)
+    .put(`/${careTeamResourceType}/${createdCareTeam2.id}`, createdCareTeam2)
+    .reply(200)
+    .persist();
+
+  render(<CareTeamForm {...props} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Create Care Team/)).toBeInTheDocument();
+  });
+
+  const nameInput = screen.getByLabelText('Name') as Element;
+  userEvents.type(nameInput, 'care team');
+
+  const activeStatusRadio = screen.getByLabelText('Active');
+  expect(activeStatusRadio).toBeChecked();
+
+  const inactiveStatusRadio = screen.getByLabelText('Inactive');
+  expect(inactiveStatusRadio).not.toBeChecked();
+  userEvents.click(inactiveStatusRadio);
+
+  const practitionersInput = screen.getByLabelText('Practitioner Participant');
+  userEvents.click(practitionersInput);
+  fireEvent.click(screen.getByTitle('Ward N 2 Williams MD'));
+
+  const managingOrgsSelect = screen.getByLabelText('Managing organizations');
+  userEvents.click(managingOrgsSelect);
+  fireEvent.click(screen.getByTitle('Test Team 70'));
+
+  const saveBtn = screen.getByRole('button', { name: 'Save' });
+  userEvents.click(saveBtn);
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully added CareTeams']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+});
+
+test('1157 - editing care team works corectly', async () => {
+  const thisProps = {
+    ...props,
+    initialValues: getCareTeamFormFields(careTeam4201),
+  };
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  nock(props.fhirBaseURL)
+    .put(`/${careTeamResourceType}/${editedCareTeam4201.id}`, editedCareTeam4201)
+    .reply(200)
+    .persist();
+
+  render(<CareTeamForm {...thisProps} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Edit Care Team /)).toBeInTheDocument();
+  });
+
+  const nameInput = screen.getByLabelText('Name') as Element;
+  userEvents.type(nameInput, 'care team');
+
+  const activeStatusRadio = screen.getByLabelText('Active');
+  expect(activeStatusRadio).toBeChecked();
+
+  const inactiveStatusRadio = screen.getByLabelText('Inactive');
+  expect(inactiveStatusRadio).not.toBeChecked();
+  userEvents.click(inactiveStatusRadio);
+
+  const practitionersInput = screen.getByLabelText('Practitioner Participant');
+  userEvents.click(practitionersInput);
+  fireEvent.click(screen.getByTitle('Ward N 2 Williams MD'));
+
+  const managingOrgsSelect = screen.getByLabelText('Managing organizations');
+  userEvents.click(managingOrgsSelect);
+  fireEvent.click(screen.getByTitle('Test Team 70'));
+
+  const saveBtn = screen.getByRole('button', { name: 'Save' });
+  userEvents.click(saveBtn);
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully updated CareTeams']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
 });

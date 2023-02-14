@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio, Select, PageHeader } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -41,6 +41,11 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   const history = useHistory();
   const { t } = useTranslation();
   const [form] = Form.useForm();
+
+  const effectInitalValuesDep = JSON.stringify(initialValues);
+  useEffect(() => {
+    form.resetFields();
+  }, [form, effectInitalValuesDep]);
 
   const orgOptions = getOrgSelectOptions(organizations);
   const practOptions = getPractitionerSelectOptions(practitioners);
