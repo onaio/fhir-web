@@ -30,22 +30,53 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { CareTeamParticipant } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/careTeamParticipant';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
+/**
+ * computes participants that should be carried over when generating the payload
+ *
+ * @param values - current form values
+ * @param initialValues - initial form values
+ */
+const getCarriedOverParticipants = (values: FormFields, initialValues: FormFields) => {
+  const { participant } = initialValues.initialCareTeam ?? {};
+  const participantByKey = (participant ?? []).reduce((ac, val) => {
+    const reference = val.member?.reference as string;
+    return { ...ac, [reference]: val };
+  }, {}) as Record<string, CareTeamParticipant>;
+  const currentManagingOrgValuesyId = values[managingOrganizations].reduce((ac, val) => {
+    return {
+      ...ac,
+      [val]: val,
+    };
+  }, {});
+  const currentpractitionersById = values[practitionerParticipants].reduce((ac, val) => {
+    return {
+      ...ac,
+      [val]: val,
+    };
+  }, {});
+  const cleanParticipants = (refs: string[], lookup: Record<string, string>) => {
+    refs.forEach((ref) => {
+      if (!lookup[ref]) {
+        delete participantByKey[ref];
+      }
+    });
+  };
+  cleanParticipants(initialValues.practitionerParticipants, currentpractitionersById);
+  cleanParticipants(initialValues.managingOrganizations, currentManagingOrgValuesyId);
+  return participantByKey;
+};
+
 export const submitForm = async (
   values: FormFields,
+  initialValues: FormFields,
   fhirBaseURL: string,
   organizations: IOrganization[],
   practitioners: IPractitioner[],
-  t: TFunction,
-  id?: string,
-  uuid?: string
+  t: TFunction
 ): Promise<void> => {
-  const { initialCareTeam } = values;
+  const { initialCareTeam, id, uuid } = initialValues;
   const { meta, text, participant, ...nonMetaFields } = initialCareTeam ?? {};
 
-  const carriedOverParticipantsById = keyBy(participant, (res) => res.member?.reference) as Record<
-    string,
-    CareTeamParticipant
-  >;
   const allPractitionersById = keyBy(
     practitioners,
     (practitioner) => `${practitionerResourceType}/${practitioner.id}`
@@ -84,6 +115,8 @@ export const submitForm = async (
       },
     };
   });
+
+  const carriedOverParticipantsById = getCarriedOverParticipants(values, initialValues);
   const finalParticipantsById = {
     ...carriedOverParticipantsById,
     ...practitionerParticipantsById,

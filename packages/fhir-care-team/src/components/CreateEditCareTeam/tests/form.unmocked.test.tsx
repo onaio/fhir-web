@@ -11,12 +11,12 @@ import * as notifications from '@opensrp/notifications';
 import nock from 'nock';
 import { careTeamResourceType } from '../../../constants';
 import {
-  careTeam4201,
   createdCareTeam,
   createdCareTeam2,
-  editedCareTeam4201,
+  careTeam4201alternativeEdited,
   organizations,
   practitioners,
+  careTeam4201alternative,
 } from './fixtures';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -253,14 +253,17 @@ test('1157 - Create care team works corectly', async () => {
 test('1157 - editing care team works corectly', async () => {
   const thisProps = {
     ...props,
-    initialValues: getCareTeamFormFields(careTeam4201),
+    initialValues: getCareTeamFormFields(careTeam4201alternative),
   };
   const successNoticeMock = jest
     .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(() => undefined);
 
   nock(props.fhirBaseURL)
-    .put(`/${careTeamResourceType}/${editedCareTeam4201.id}`, editedCareTeam4201)
+    .put(
+      `/${careTeamResourceType}/${careTeam4201alternativeEdited.id}`,
+      careTeam4201alternativeEdited
+    )
     .reply(200)
     .persist();
 
@@ -280,13 +283,20 @@ test('1157 - editing care team works corectly', async () => {
   expect(inactiveStatusRadio).not.toBeChecked();
   userEvents.click(inactiveStatusRadio);
 
+  // remove assigned
+  const selectClear = [...document.querySelectorAll('.ant-select-selection-item-remove')];
+  expect(selectClear).toHaveLength(2);
+  selectClear.forEach((clear) => {
+    fireEvent.click(clear);
+  });
+
   const practitionersInput = screen.getByLabelText('Practitioner Participant');
   userEvents.click(practitionersInput);
-  fireEvent.click(screen.getByTitle('Ward N 2 Williams MD'));
+  fireEvent.click(screen.getByTitle('Ward N 1 Williams MD'));
 
   const managingOrgsSelect = screen.getByLabelText('Managing organizations');
   userEvents.click(managingOrgsSelect);
-  fireEvent.click(screen.getByTitle('Test Team 70'));
+  fireEvent.click(screen.getByTitle('testing ash123'));
 
   const saveBtn = screen.getByRole('button', { name: 'Save' });
   userEvents.click(saveBtn);
