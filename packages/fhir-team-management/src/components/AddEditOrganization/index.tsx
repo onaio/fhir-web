@@ -74,7 +74,8 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
 
   if (
     (!organization.isIdle && organization.isLoading) ||
-    (!practitioners.isIdle && practitioners.isLoading)
+    (!practitioners.isIdle && practitioners.isLoading) ||
+    (!assignedPractitioners.isIdle && assignedPractitioners.isLoading)
   ) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
