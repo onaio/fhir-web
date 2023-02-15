@@ -125,6 +125,8 @@ test('renders correctly for edit locations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  expect(nock.pendingMocks()).toEqual([]);
+
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
       Edit team | OpenSRP web Test Organisation
