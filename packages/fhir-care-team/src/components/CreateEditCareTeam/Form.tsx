@@ -68,15 +68,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           initialValues={initialValues}
           onFinish={(values: FormFields) => {
             setIsSubmitting(true);
-            submitForm(
-              { ...initialValues, ...values },
-              fhirBaseURL,
-              organizations,
-              practitioners,
-              t,
-              initialValues.id,
-              initialValues.uuid
-            )
+            submitForm(values, initialValues, fhirBaseURL, organizations, practitioners, t)
               .catch(() => sendErrorNotification(t('An error occurred')))
               .finally(() => setIsSubmitting(false));
           }}

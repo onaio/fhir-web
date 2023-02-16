@@ -209,3 +209,272 @@ export const careTeam2 = {
     },
   ],
 };
+
+export const careTeam3500 = {
+  resourceType: 'Bundle',
+  id: '964d0cdc-3297-41fa-991f-47d639ff7635',
+  meta: {
+    lastUpdated: '2023-02-10T08:22:04.594+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org/fhir/CareTeam/_search?_id=3500&_include=CareTeam%3A*',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/CareTeam/3500',
+      resource: {
+        resourceType: 'CareTeam',
+        id: '3500',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-10-12T07:29:44.733+00:00',
+          source: '#9837ac48046ef77c',
+        },
+        text: {
+          status: 'generated',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml">Care Team</div>',
+        },
+        contained: [
+          {
+            resourceType: 'Practitioner',
+            id: '3457',
+            name: [
+              {
+                family: 'Careful',
+                given: ['Adam'],
+                prefix: ['Dr'],
+              },
+            ],
+          },
+        ],
+        status: 'active',
+        category: [
+          {
+            coding: [
+              {
+                system: 'http://loinc.org',
+                code: 'LA27976-2',
+                display: 'Encounter-focused care team',
+              },
+            ],
+          },
+        ],
+        name: 'Peter James Charlmers Care team',
+        subject: {
+          reference: 'Patient/3455',
+          display: 'Peter James Chalmers',
+        },
+        encounter: {
+          reference: 'Encounter/3458',
+        },
+        period: {
+          end: '2013-01-01',
+        },
+        participant: [
+          {
+            role: [
+              {
+                text: 'responsiblePerson',
+              },
+            ],
+            member: {
+              reference: 'Patient/3455',
+              display: 'Peter James Chalmers',
+            },
+          },
+          {
+            role: [
+              {
+                text: 'adviser',
+              },
+            ],
+            member: {
+              reference: '#pr1',
+              display: 'Dorothy Dietition',
+            },
+            onBehalfOf: {
+              reference: 'Organization/0000',
+            },
+            period: {
+              end: '2013-01-01',
+            },
+          },
+        ],
+        managingOrganization: [
+          {
+            reference: 'Organization/3461',
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/Encounter/3458',
+      resource: {
+        resourceType: 'Encounter',
+        id: '3458',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2021-10-25T06:53:54.230+00:00',
+          source: '#1350520584a57b46',
+        },
+        text: {
+          status: 'generated',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml">Encounter with patient @example</div>',
+        },
+        status: 'finished',
+        class: {
+          system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
+          code: 'IMP',
+          display: 'inpatient encounter to check on Obsesity',
+        },
+        subject: {
+          reference: 'Patient/3455',
+        },
+      },
+      search: {
+        mode: 'include',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/Patient/3455',
+      resource: {
+        resourceType: 'Patient',
+        id: '3455',
+        meta: {
+          versionId: '3',
+          lastUpdated: '2021-10-22T13:49:19.121+00:00',
+          source: '#70532eaf6e0ba7df',
+        },
+        text: {
+          status: 'generated',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml"><div class="hapiHeaderText">Peter James <b>CHALMERS </b></div><table class="hapiPropertyTable"><tbody><tr><td>Address</td><td><span>534 Erewhon St </span><br/><span>PleasantVille </span><span>Vic </span></td></tr><tr><td>Date of birth</td><td><span>25 December 1974</span></td></tr></tbody></table></div>',
+        },
+        active: true,
+        name: [
+          {
+            use: 'official',
+            family: 'Chalmers',
+            given: ['Peter', 'James'],
+          },
+          {
+            use: 'usual',
+            given: ['Jim'],
+          },
+          {
+            use: 'maiden',
+            family: 'Windsor',
+            given: ['Peter', 'James'],
+            period: {
+              end: '2002',
+            },
+          },
+        ],
+        telecom: [
+          {
+            use: 'home',
+          },
+          {
+            system: 'phone',
+            value: '(03) 5555 6473',
+            use: 'work',
+            rank: 1,
+          },
+          {
+            system: 'phone',
+            value: '(03) 3410 5613',
+            use: 'mobile',
+            rank: 2,
+          },
+          {
+            system: 'phone',
+            value: '(03) 5555 8834',
+            use: 'old',
+            period: {
+              end: '2014',
+            },
+          },
+        ],
+        gender: 'male',
+        birthDate: '1974-12-25',
+        deceasedBoolean: false,
+        address: [
+          {
+            use: 'home',
+            type: 'both',
+            text: '534 Erewhon St PeasantVille, Rainbow, Vic  3999',
+            line: ['534 Erewhon St'],
+            city: 'PleasantVille',
+            district: 'Rainbow',
+            state: 'Vic',
+            postalCode: '3999',
+            period: {
+              start: '1974-12-25',
+            },
+          },
+        ],
+        contact: [
+          {
+            relationship: [
+              {
+                coding: [
+                  {
+                    system: 'http://terminology.hl7.org/CodeSystem/v2-0131',
+                    code: 'N',
+                  },
+                ],
+              },
+            ],
+            name: {
+              family: 'du Marché',
+              _family: {
+                extension: [
+                  {
+                    url: 'http://hl7.org/fhir/StructureDefinition/humanname-own-prefix',
+                    valueString: 'VV',
+                  },
+                ],
+              },
+              given: ['Bénédicte'],
+            },
+            telecom: [
+              {
+                system: 'phone',
+                value: '+33 (237) 998327',
+              },
+            ],
+            address: {
+              use: 'home',
+              type: 'both',
+              line: ['534 Erewhon St'],
+              city: 'PleasantVille',
+              district: 'Rainbow',
+              state: 'Vic',
+              postalCode: '3999',
+              period: {
+                start: '1974-12-25',
+              },
+            },
+            gender: 'female',
+            period: {
+              start: '2012',
+            },
+          },
+        ],
+        managingOrganization: {
+          reference: 'Organization/3454',
+        },
+      },
+      search: {
+        mode: 'include',
+      },
+    },
+  ],
+};

@@ -55,6 +55,8 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res) => res,
       enabled: !!careTeamId,
+      cacheTime: 0,
+      staleTime: 0,
     }
   );
 
