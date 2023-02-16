@@ -4,7 +4,7 @@ import React from 'react';
 import { Router } from 'react-router';
 import { QueryClientProvider } from 'react-query';
 import { ViewDetails } from '..';
-import { careTeam2, careTeamWithIncluded } from './fixtures';
+import { careTeam2, careTeam3500, careTeamWithIncluded } from './fixtures';
 import { createBrowserHistory } from 'history';
 import { createTestQueryClient } from '../../ListView/tests/utils';
 import nock from 'nock';
@@ -124,4 +124,28 @@ test('shows broken page if fhir api is down', async () => {
   await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
 
   expect(getByText(/coughid/)).toBeInTheDocument();
+});
+
+test('1157 - view details errors out for careTeam 3500', async () => {
+  const thisProps = {
+    ...props,
+    careTeamId: '3500',
+  };
+  nock(props.fhirBaseURL)
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ _id: '3500', _include: 'CareTeam:*' })
+    .reply(200, careTeam3500);
+
+  const { queryByText } = render(<AppWrapper {...thisProps}></AppWrapper>);
+  await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
+  });
+
+  expect(nock.pendingMocks()).toEqual([]);
 });
