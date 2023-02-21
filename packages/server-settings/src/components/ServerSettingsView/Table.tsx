@@ -10,6 +10,7 @@ interface Props {
   data: Setting[];
   tree: ParsedHierarchyNode[];
   actioncolumn?: ColumnType<Setting>;
+  loading?: boolean;
 }
 
 export interface TableData extends Setting {
@@ -17,7 +18,7 @@ export interface TableData extends Setting {
 }
 
 export const Table: React.FC<Props> = (props: Props) => {
-  const { data: Settings, tree, actioncolumn } = props;
+  const { data: Settings, tree, actioncolumn, loading } = props;
   const { t } = useTranslation();
 
   const data = Settings.map((setting) => {
@@ -74,7 +75,7 @@ export const Table: React.FC<Props> = (props: Props) => {
     return col;
   }, [actioncolumn, t, tree]);
 
-  return <AntTable dataSource={data} columns={columns} />;
+  return <AntTable dataSource={data} columns={columns} loading={loading} />;
 };
 
 export default Table;

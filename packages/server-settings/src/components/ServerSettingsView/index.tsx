@@ -6,9 +6,8 @@ import { Row, Col, Spin, Dropdown, Menu, PageHeader } from 'antd';
 import {
   Tree,
   generateJurisdictionTree,
-  ParsedHierarchyNode,
   RawOpenSRPHierarchy,
-  RawHierarchyNode,
+  TreeNode,
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
@@ -30,9 +29,11 @@ export interface Props {
 
 export const ServerSettingsView: React.FC<Props> = (props: Props) => {
   const { baseURL, v2BaseURL } = props;
-  const [currentLocation, setCurrentLocation] = useState<RawHierarchyNode | ParsedHierarchyNode>();
-  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
+  const [currentLocationNode, setCurrentLocationNode] = useState<TreeNode>();
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
   const { t } = useTranslation();
+
+  const currentLocation = currentLocationNode?.model;
 
   const queryClient = useQueryClient();
 
@@ -130,10 +131,9 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       onError: () => sendErrorNotification(t('An error occurred')),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
       onSuccess: (userLocSettings) => {
-        const processedHierarchy = generateJurisdictionTree(userLocSettings).model;
+        const processedHierarchy = generateJurisdictionTree(userLocSettings);
         setTreeData([processedHierarchy]);
-        const { map: userLocMap } = userLocSettings.locationsHierarchy;
-        setCurrentLocation(Object.values(userLocMap)[0]);
+        setCurrentLocationNode(currentLocationNode ?? processedHierarchy);
       },
     }
   );
@@ -156,9 +156,13 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     return <BrokenPage />;
   }
 
-  if (isServerSettingsLoading || isUserLocSettingsLoading) {
+  if (isUserLocSettingsLoading) {
     return <Spin size="large" className="custom-spinner" />;
   }
+
+  const handleTreeSelect = (node?: TreeNode) => {
+    setCurrentLocationNode(node);
+  };
 
   return (
     <section className="content-section">
@@ -175,13 +179,14 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       />
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentLocation(node)} />
+          <Tree data={treeData} onSelect={handleTreeSelect} selectedNode={currentLocationNode} />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
+              loading={isServerSettingsLoading}
               data={serverSettingsData ?? []}
-              tree={treeData}
+              tree={treeData.map((treeNode) => treeNode.model)}
               actioncolumn={{
                 title: t('Actions'),
                 key: `actions`,
