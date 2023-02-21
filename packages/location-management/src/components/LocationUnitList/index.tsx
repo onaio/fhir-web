@@ -74,7 +74,7 @@ export async function loadSingleLocation(
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL, filterByParentId } = props;
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
-  const [currentClickedNode, setCurrentClickedNode] = useState<TreeNode | null>(null);
+  const [currentClickedNode, setCurrentClickedNode] = useState<TreeNode>();
   const { t } = useTranslation();
 
   const locationUnits = useQuery(
@@ -141,7 +141,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
           <Tree
             data={treeData}
             selectedNode={currentClickedNode}
-            onSelect={(node: TreeNode | null) => setCurrentClickedNode(node)}
+            onSelect={(node: TreeNode | undefined) => setCurrentClickedNode(node)}
           />
         </Col>
         <Col className="bg-white p-3 border-left" span={detail ? 13 : 18}>

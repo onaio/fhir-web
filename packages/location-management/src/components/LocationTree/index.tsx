@@ -21,8 +21,8 @@ interface SelectCallbackInfo {
 
 interface TreeProp {
   data: TreeNode[];
-  selectedNode: TreeNode | null;
-  onSelect: (item: TreeNode | null) => void;
+  selectedNode: TreeNode | undefined;
+  onSelect: (item: TreeNode | undefined) => void;
 }
 
 interface ExpandCallbackInfo {
@@ -166,7 +166,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
           } else {
             const kys = expandedKeys.filter((key) => key !== nodekey);
             setExpandedKeys(kys);
-            onSelect(null);
+            onSelect(undefined);
           }
         }}
       />

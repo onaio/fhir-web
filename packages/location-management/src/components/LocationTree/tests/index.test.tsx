@@ -18,7 +18,7 @@ describe('location-management/src/components/LocationTree', () => {
   it('renders without crashing', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={jest.fn} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={jest.fn} />
       </Provider>
     );
 
@@ -33,7 +33,7 @@ describe('location-management/src/components/LocationTree', () => {
   it('test tree search functionality', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={jest.fn} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={jest.fn} />
       </Provider>
     );
 
@@ -51,7 +51,7 @@ describe('location-management/src/components/LocationTree', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={mockfn} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={mockfn} />
       </Provider>
     );
 
@@ -83,7 +83,7 @@ describe('location-management/src/components/LocationTree', () => {
   it('expand tree child using click', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={jest.fn()} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={jest.fn()} />
       </Provider>
     );
 
@@ -104,7 +104,7 @@ describe('location-management/src/components/LocationTree', () => {
   it('expand tree child using caret click', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={jest.fn()} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={jest.fn()} />
       </Provider>
     );
 
@@ -121,7 +121,7 @@ describe('location-management/src/components/LocationTree', () => {
   it('expand tree child using title click', async () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Tree selectedNode={null} data={treeData} onSelect={jest.fn()} />
+        <Tree selectedNode={undefined} data={treeData} onSelect={jest.fn()} />
       </Provider>
     );
 
@@ -147,7 +147,7 @@ describe('location-management/src/components/LocationTree', () => {
     const tunisiaTree = generateJurisdictionTree(rawHierarchy[0]);
     const wrapper = mount(
       <Provider store={store}>
-        <Tree data={[tunisiaTree]} selectedNode={null} onSelect={jest.fn()} />
+        <Tree data={[tunisiaTree]} selectedNode={undefined} onSelect={jest.fn()} />
       </Provider>,
       { attachTo: div }
     );
