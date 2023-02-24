@@ -61,6 +61,7 @@ export const COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE = 'completeBeneficiaryConsu
 export const WAREHOUSE_CHECK_ACTVITY_CODE = 'warehouseCheck';
 export const COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE = 'completeWarehouseCheck';
 export const FIX_PRODUCT_PROBLEM_ACTIVITY_CODE = 'dynamicFixProductProblem';
+export const FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE = 'fixProblemConsultBeneficiaries';
 
 // task action codes
 export const BCC_CODE = 'BCC';
@@ -90,6 +91,7 @@ export const COMPLETE_BENEFICIARY_FLAG_CODE = 'complete_beneficiary_consultation
 export const WAREHOUSE_CHECK_CODE = 'warehouse_check';
 export const COMPLETE_WAREHOUSE_CHECK_CODE = 'complete_warehouse_check';
 export const FIX_PRODUCT_PROBLEMS_CODE = 'fix_problem';
+export const FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE = 'fix_problem_consult_beneficiaries';
 
 export const GOAL_CONFIRMATION_GOAL_ID = 'Case_Confirmation';
 export const GOAL_ID = 'goal_id';
