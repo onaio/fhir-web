@@ -48,6 +48,8 @@ import {
   COMPLETE_BENEFICIARY_FLAG_CODE,
   FIX_PRODUCT_PROBLEMS_CODE,
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
+  FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE,
+  FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE,
 } from './constants/stringConstants';
 import {
   BCC_ACTIVITY_DESCRIPTION,
@@ -1464,6 +1466,59 @@ export const planActivities: PlanActivities = {
           measure: 'Percent of service points checked',
           detail: { detailQuantity: { value: 100.0, comparator: '>', unit: GoalUnit.PERCENT } },
           due: '',
+        },
+      ],
+    },
+  },
+  [FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE]: {
+    action: {
+      code: FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE,
+      condition: [
+        {
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'check consult_beneficiaries_flag field',
+            expression: "$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'",
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      description: 'Fix problems for consult beneficiaries with problem',
+      goalId: FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE,
+      identifier: '',
+      prefix: 9,
+      reason: ROUTINE,
+      subjectCodableConcept: { text: 'Location' },
+      timingPeriod: { end: '', start: '' },
+      title: 'Fix Problem',
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Fix Beneficiary Consultation event is submitted',
+            expression: "questionnaire = 'beneficiary_consultation'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      type: CREATE_TYPE,
+    },
+    goal: {
+      description: 'Fix problems for all flagged consult beneficiaries task',
+      id: FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE,
+      priority: MEDIUM_PRIORITY,
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: GoalUnit.PERCENT, value: 100.0 } },
+          due: '',
+          measure: 'Percent of products problems fixed',
         },
       ],
     },

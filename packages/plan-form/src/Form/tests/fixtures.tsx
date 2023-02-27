@@ -532,30 +532,15 @@ export const mission1 = {
 export const newPayload1 = {
   action: [
     {
-      code: 'fix_problem',
-      condition: [
-        {
-          expression: {
-            description: 'Product exists',
-            expression: '$this.is(FHIR.QuestionnaireResponse)',
-          },
-          kind: 'applicability',
-        },
-      ],
-      definitionUri: 'fix_problem.json',
-      description: 'Fix problems for all products (100%) within the jurisdiction',
-      goalId: 'fix_problem',
       identifier: '24f02243-19d4-57de-a205-22a14205627a',
       prefix: 1,
-      reason: 'Routine',
-      subjectCodableConcept: {
-        text: 'Device',
-      },
-      timingPeriod: {
-        end: '2017-07-20',
-        start: '2017-07-13',
-      },
       title: 'Fix Problem',
+      description: 'Fix problems for all products (100%) within the jurisdiction',
+      code: 'fix_problem',
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      reason: 'Routine',
+      goalId: 'fix_problem',
+      subjectCodableConcept: { text: 'Device' },
       trigger: [
         {
           expression: {
@@ -566,6 +551,16 @@ export const newPayload1 = {
           type: 'named-event',
         },
       ],
+      condition: [
+        {
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'fix_problem.json',
       type: 'create',
     },
     {
@@ -807,8 +802,47 @@ export const newPayload1 = {
       type: 'update',
     },
     {
-      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
+      code: 'fix_problem_consult_beneficiaries',
+      condition: [
+        {
+          expression: {
+            description: 'Product exists',
+            expression: '$this.is(FHIR.QuestionnaireResponse)',
+          },
+          kind: 'applicability',
+        },
+        {
+          expression: {
+            description: 'check consult_beneficiaries_flag field',
+            expression: "$this.item.where(linkId='consult_beneficiaries_flag').answer.value ='yes'",
+          },
+          kind: 'applicability',
+        },
+      ],
+      definitionUri: 'fix_problem.json',
+      description: 'Fix problems for consult beneficiaries with problem',
+      goalId: 'fix_problem_consult_beneficiaries',
+      identifier: '914f0ca4-124b-5bdb-8e97-f1e1685c5dd1',
       prefix: 8,
+      reason: 'Routine',
+      subjectCodableConcept: { text: 'Location' },
+      timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
+      title: 'Fix Problem',
+      trigger: [
+        {
+          expression: {
+            description: 'Trigger when a Fix Beneficiary Consultation event is submitted',
+            expression: "questionnaire = 'beneficiary_consultation'",
+          },
+          name: 'event-submission',
+          type: 'named-event',
+        },
+      ],
+      type: 'create',
+    },
+    {
+      identifier: '0c8f5b3a-6023-5917-b944-acbfba254efe',
+      prefix: 9,
       title: 'Product Check',
       description: 'Check for all products (100%) within the jurisdiction',
       code: 'product_check',
@@ -844,7 +878,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'e1252828-447f-553a-ae82-960c5973d29e',
-      prefix: 9,
+      prefix: 10,
       title: 'Complete Looks Good',
       description: 'Complete full check for product',
       code: 'looks_good',
@@ -880,7 +914,7 @@ export const newPayload1 = {
     },
     {
       identifier: '956ba81a-57c3-5074-a112-10e945a64a82',
-      prefix: 10,
+      prefix: 11,
       title: 'Complete Fix problem task',
       description: 'Completes Fix problem task',
       code: 'complete_fix_problem',
@@ -916,7 +950,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'b5a4fdee-8db9-5ab4-b20c-f19ae93f8a33',
-      prefix: 11,
+      prefix: 12,
       title: 'Complete Flag Problem',
       description: 'Completes Flag problem task',
       code: 'complete_flag_problem',
@@ -952,7 +986,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'e5c7a70b-11b1-5c0b-80b3-6df681e27fa6',
-      prefix: 12,
+      prefix: 13,
       title: 'Record GPS',
       description: 'Record GPS for all service points (100%) without GPS within the jurisdiction',
       code: 'record_gps',
@@ -992,7 +1026,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'b527bc28-71d9-596c-b03b-acbae41898e9',
-      prefix: 13,
+      prefix: 14,
       title: 'Complete Record GPS',
       description: 'Completes Record GPS activity for structure',
       code: 'complete_record_gps',
@@ -1028,7 +1062,7 @@ export const newPayload1 = {
     },
     {
       identifier: '117644ec-920f-57bb-8746-4c2641c571ab',
-      prefix: 14,
+      prefix: 15,
       description: 'Conduct checks for all service point (100%) within the Jurisdiction',
       code: 'service_point_check',
       timingPeriod: { end: '2017-07-20', start: '2017-07-13' },
@@ -1064,7 +1098,7 @@ export const newPayload1 = {
     },
     {
       identifier: 'f4aa75b0-77db-5f7a-9b2e-e9f4490a5611',
-      prefix: 15,
+      prefix: 16,
       title: 'Complete Service Point Check',
       description: 'Completes Service Point Check',
       code: 'complete_service_point_check',
@@ -1106,15 +1140,9 @@ export const newPayload1 = {
       priority: 'medium-priority',
       target: [
         {
-          detail: {
-            detailQuantity: {
-              comparator: '>',
-              unit: 'Percent',
-              value: 100,
-            },
-          },
-          due: '2017-07-20',
           measure: 'Percent of products problems fixed',
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
         },
       ],
     },
@@ -1189,6 +1217,18 @@ export const newPayload1 = {
           measure: 'Percent of service points checked',
           detail: { detailQuantity: { value: 100, comparator: '>', unit: 'Percent' } },
           due: '2017-07-20',
+        },
+      ],
+    },
+    {
+      description: 'Fix problems for all flagged consult beneficiaries task',
+      id: 'fix_problem_consult_beneficiaries',
+      priority: 'medium-priority',
+      target: [
+        {
+          detail: { detailQuantity: { comparator: '>', unit: 'Percent', value: 100 } },
+          due: '2017-07-20',
+          measure: 'Percent of products problems fixed',
         },
       ],
     },

@@ -101,7 +101,7 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#planform-submit-button button'))).toMatchSnapshot('submit button');
 
     // should have triggers or conditions
-    expect(wrapper.find('.triggers-conditions')).toHaveLength(45);
+    expect(wrapper.find('.triggers-conditions')).toHaveLength(48);
 
     wrapper.unmount();
   });
@@ -646,7 +646,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // there are initially 4 activities
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(16);
     // lets get the form input values of the triggers
     const expectedTriggerInputValues = wrapper
       .find('.triggers-fieldset input')
@@ -682,7 +682,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // 1 less activity
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(14);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
     // the slice values are determined by the type of activity that was removed
     // the meaning is that we should be left with ALL the triggers excluding the ones removed
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(
@@ -732,7 +732,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // we should have 6 activities again
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(16);
     // and now we come full circle.  The inputs should be what we had on initial load,
     // with those of the first activity moved to the end of the arrays
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(

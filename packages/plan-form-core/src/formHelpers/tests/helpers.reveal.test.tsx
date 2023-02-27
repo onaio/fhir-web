@@ -296,6 +296,7 @@ describe('containers/forms/PlanForm/helpers', () => {
       GoalUnit.PERCENT, // WAREHOUSE_CHECK_ACTVITY_CODE,
       GoalUnit.PERCENT, // COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
       GoalUnit.PERCENT, // Fix_problem code,
+      GoalUnit.PERCENT, // fix problem beneficiary,
     ];
     for (let index = 0; index < 11; index++) {
       expect(getGoalUnitFromActionCode(PlanActionCodes[index])).toEqual(expectedUnits[index]);
