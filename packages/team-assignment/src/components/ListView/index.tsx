@@ -14,10 +14,9 @@ import {
 } from '@opensrp/team-management';
 import {
   Tree,
-  generateJurisdictionTree,
-  locationHierachyDucks,
-  ParsedHierarchyNode,
   RawOpenSRPHierarchy,
+  updatedLocationHierachyDucks,
+  TreeNode,
 } from '@opensrp/location-management';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import { Helmet } from 'react-helmet';
@@ -42,13 +41,15 @@ import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
 import { processRawAssignments } from '../../ducks/assignments/utils';
 
-const { fetchAllHierarchies, getAllHierarchiesArray } = locationHierachyDucks;
+const { fetchTree, getLocationsByLevel, hierarchyReducerName, hierarchyReducer, deforest } =
+  updatedLocationHierachyDucks;
 
 reducerRegistry.register(orgReducerName, organizationsReducer);
-reducerRegistry.register(locationHierachyDucks.reducerName, locationHierachyDucks.reducer);
+reducerRegistry.register(hierarchyReducerName, hierarchyReducer);
 reducerRegistry.register(assignmentsReducerName, assignmentsReducer);
 
 const assignmentsSelector = getAssignmentsArrayByPlanId();
+const nodesSelector = getLocationsByLevel();
 
 export interface TableData {
   id: string;
@@ -146,9 +147,7 @@ async function fetchOrgsRecursively(
 
 const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const { opensrpBaseURL, defaultPlanId } = props;
-  const Treedata = useSelector(
-    (state) => getAllHierarchiesArray(state) as unknown as ParsedHierarchyNode[]
-  );
+  const treeData = useSelector((state) => nodesSelector(state, { geoLevel: 0 }));
   const assignmentsList: Assignment[] = useSelector((state) =>
     assignmentsSelector(state, { planId: defaultPlanId })
   );
@@ -160,7 +159,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   const [assignedLocAndTeams, setAssignedLocAndTeams] = useState<AssignedLocationAndTeams | null>(
     null
   );
-  const [currentParentChildren, setCurrentParentChildren] = useState<ParsedHierarchyNode[]>([]);
+  const [currentParent, setCurrentParent] = useState<TreeNode>();
   const [existingAssignments, setExistingAssignments] = useState<Assignment[]>([]);
   const { t } = useTranslation();
   const columns = columnsFactory(t);
@@ -174,8 +173,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         hierarchyService
           .read(getJurisdictionCode)
           .then((response: RawOpenSRPHierarchy) => {
-            const hierarchy = generateJurisdictionTree(response);
-            dispatch(fetchAllHierarchies([hierarchy.model] as ParsedHierarchyNode[]));
+            dispatch(fetchTree(response));
           })
           .catch((err) => {
             return err;
@@ -212,8 +210,8 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
   React.useEffect(() => {
     // team assignment only needs one hierarchy
     // i.e when user switches from location unit module
-    if (Treedata.length > 1) {
-      dispatch(fetchAllHierarchies([]));
+    if (treeData.length > 1) {
+      dispatch(deforest);
     }
   });
 
@@ -250,13 +248,14 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
     return expr1 || expr2;
   }
 
-  const dataSource = currentParentChildren.length ? currentParentChildren : Treedata;
+  const dataSource = currentParent ? [currentParent, ...currentParent.children] : treeData;
 
   if (!dataSource.length) {
     return null;
   }
 
-  const tableData = dataSource.map((datum: ParsedHierarchyNode) => {
+  const tableData = dataSource.map((node: TreeNode) => {
+    const datum = node.model;
     const jurisdictionAssignments = assignmentsList.filter(
       (assignment) => assignment.jurisdiction === datum.id
     );
@@ -359,12 +358,10 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
-            data={Treedata}
-            OnItemClick={(node) => {
-              if (node.children) {
-                const children = [node, ...node.children];
-                setCurrentParentChildren(children);
-              }
+            data={treeData}
+            selectedNode={currentParent}
+            onSelect={(locationNode) => {
+              setCurrentParent(locationNode);
             }}
           />
         </Col>

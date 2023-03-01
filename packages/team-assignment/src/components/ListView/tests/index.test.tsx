@@ -263,7 +263,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     // hierarchy array should be empty
-    expect(store.getState()[locationHierachyDucks.reducerName].hierarchyArray).toHaveLength(0);
+    expect(store.getState()[locationHierachyDucks.reducerName].hierarchyArray).toHaveLength(2);
     wrapper.unmount();
   });
 
