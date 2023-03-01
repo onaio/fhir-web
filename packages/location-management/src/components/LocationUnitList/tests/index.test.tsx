@@ -13,7 +13,6 @@ import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
-
 import { generateJurisdictionTree, getBaseTreeNode } from '../../../ducks/locationHierarchy/utils';
 import {
   fetchAllHierarchies,
@@ -29,7 +28,13 @@ import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { TableData } from '../Table';
 import toJson from 'enzyme-to-json';
-import { waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/react';
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -188,6 +193,46 @@ describe('location-management/src/components/LocationUnitList', () => {
     });
 
     expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tablelastrow); // table changed
+  });
+
+  it('1122 - highlights the correct tree node', async () => {
+    fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[1]]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    const queryClient = new QueryClient();
+
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <LocationUnitList opensrpBaseURL={baseURL} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Kenya]));
+
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+    const tree = document.querySelector('.ant-tree');
+    const caretsDown = tree?.querySelectorAll('.anticon-caret-down') as NodeList;
+    expect(caretsDown).toHaveLength(1);
+    const withinTree = within(tree as HTMLElement);
+    const topLevelKenyanNode = withinTree.getByText(/Kenya/i);
+    fireEvent.click(topLevelKenyanNode);
+
+    const nairobiNode = withinTree.getByText(/Nairobi/i);
+    fireEvent.click(nairobiNode);
+
+    const nairobiWestNode = withinTree.getByText(/Nairobi West/i);
+    fireEvent.click(nairobiWestNode);
+
+    // reclick nairobi Node
+    fireEvent.click(nairobiNode);
+
+    // which node is selected
+    const selectedNode = document.querySelector('.ant-tree-node-selected');
+    expect(selectedNode?.textContent).toEqual('Nairobi');
   });
 
   it('test Open and close view details', async () => {
