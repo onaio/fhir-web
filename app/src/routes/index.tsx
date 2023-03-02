@@ -206,7 +206,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
-              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE || ENABLE_FHIR_TEAMS,
+              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
         },
