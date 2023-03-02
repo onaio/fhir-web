@@ -103,7 +103,7 @@ describe('routes', () => {
       )
     );
 
-    const envModule = require('../../configs/env');
+    let envModule = require('../../configs/env');
     envModule.ENABLE_LOCATIONS = true;
     envModule.ENABLE_TEAMS = true;
     envModule.ENABLE_INVENTORY = true;
@@ -128,7 +128,7 @@ describe('routes', () => {
       QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
-    const routes = getRoutes(
+    let routes = getRoutes(
       ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
       (t: string) => t
     );
@@ -306,5 +306,53 @@ describe('routes', () => {
     expect((routes.find((r) => r.key === 'inventory')?.children as any)[1].title).toEqual(
       'Add inventory via CSV'
     );
+  });
+
+  it('#1135 Enable envs are not coupled', () => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        {
+          roles: ['ROLE_VIEW_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
+    );
+
+    let envModule = require('../../configs/env');
+    envModule.OPENSRP_ROLES = {
+      USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
+      PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      CARD_SUPPORT: 'ROLE_VIEW_KEYCLOAK_USERS',
+      INVENTORY: 'ROLE_VIEW_KEYCLOAK_USERS',
+      TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
+      FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
+      SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
+    };
+    envModule = require('../../configs/env');
+    envModule.ENABLE_LOCATIONS = false;
+    envModule.ENABLE_FHIR_LOCATIONS = true;
+    envModule.ENABLE_TEAMS = false;
+    envModule.ENABLE_FHIR_TEAMS = true;
+    envModule.ENABLE_USER_MANAGEMENT = false;
+    envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
+
+    const routes = getRoutes(
+      ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
+      (t: string) => t
+    );
+    const parentKeys = routes.flatMap((x) => x.children).map((x) => x.key);
+    expect(parentKeys).toContain('team-management');
+    expect(parentKeys).toContain('user-management');
+    expect(parentKeys).toContain('location-management');
   });
 });
