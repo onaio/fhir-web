@@ -160,12 +160,6 @@ We use different technologies to deploy OpenSRP FHIR Web. This documentation wil
       REACT_APP_ENABLE_FHIR_COMMODITY: 'false',
       REACT_APP_ENABLE_QUEST: 'false',
 
-      // composite fhir-web modules
-      REACT_APP_ENABLE_USER_MANAGEMENT: 'false',
-      REACT_APP_ENABLE_LOCATIONS: 'false',
-      REACT_APP_ENABLE_TEAMS: 'false',
-      REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE: 'false',
-
       // optional overrides
       SKIP_PREFLIGHT_CHECK: 'true',
       GENERATE_SOURCEMAP: 'false',
