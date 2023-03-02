@@ -31,6 +31,8 @@ import {
   ENABLE_USER_MANAGEMENT,
   ENABLE_FHIR_COMMODITY,
   ENABLE_FHIR_LOCATIONS,
+  ENABLE_FHIR_TEAMS,
+  ENABLE_FHIR_USER_MANAGEMENT,
 } from '../configs/env';
 import {
   URL_USER,
@@ -142,7 +144,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('User Management'),
           key: 'user-management',
           enabled:
-            ENABLE_USER_MANAGEMENT &&
+            (ENABLE_USER_MANAGEMENT || ENABLE_FHIR_USER_MANAGEMENT) &&
             roles &&
             activeRoles.USERS &&
             isAuthorized(roles, activeRoles.USERS.split(',')),
@@ -156,7 +158,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Location Management'),
           key: 'location-management',
           enabled:
-            ENABLE_LOCATIONS &&
+            (ENABLE_LOCATIONS || ENABLE_FHIR_LOCATIONS) &&
             roles &&
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
@@ -194,7 +196,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Team Management'),
           key: 'team-management',
           enabled:
-            ENABLE_TEAMS &&
+            (ENABLE_TEAMS || ENABLE_FHIR_TEAMS) &&
             roles &&
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
@@ -204,7 +206,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
               title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
-              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
+              enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE || ENABLE_FHIR_TEAMS,
             },
           ],
         },
