@@ -1,4 +1,3 @@
-import React from 'react';
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '@opensrp/inventory';
 import {
@@ -14,9 +13,7 @@ import MapMarkerOutline from '@2fd/ant-design-icons/lib/MapMarkerOutline';
 import {
   ENABLE_PLANS,
   ENABLE_INVENTORY,
-  ENABLE_LOCATIONS,
   ENABLE_PRODUCT_CATALOGUE,
-  ENABLE_TEAMS,
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FORM_CONFIGURATION,
   ENABLE_CARD_SUPPORT,
@@ -28,11 +25,8 @@ import {
   ENABLE_QUEST,
   ENABLE_REPORTS,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
-  ENABLE_USER_MANAGEMENT,
   ENABLE_FHIR_COMMODITY,
   ENABLE_FHIR_LOCATIONS,
-  ENABLE_FHIR_TEAMS,
-  ENABLE_FHIR_USER_MANAGEMENT,
 } from '../configs/env';
 import {
   URL_USER,
@@ -56,6 +50,12 @@ import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
 import { LIST_COMMODITY_URL, LIST_GROUP_URL } from '@opensrp/fhir-group-management';
 import { LIST_PATIENTS_URL } from '@opensrp/fhir-client';
+import {
+  COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
+  COMPOSITE_ENABLE_TEAM_MANAGEMENT,
+  COMPOSITE_ENABLE_USER_MANAGEMENT,
+} from '../configs/settings';
+import React from 'react';
 
 /** Interface for menu items */
 export interface Route {
@@ -144,7 +144,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('User Management'),
           key: 'user-management',
           enabled:
-            (ENABLE_USER_MANAGEMENT || ENABLE_FHIR_USER_MANAGEMENT) &&
+            COMPOSITE_ENABLE_USER_MANAGEMENT &&
             roles &&
             activeRoles.USERS &&
             isAuthorized(roles, activeRoles.USERS.split(',')),
@@ -158,7 +158,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Location Management'),
           key: 'location-management',
           enabled:
-            (ENABLE_LOCATIONS || ENABLE_FHIR_LOCATIONS) &&
+            COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT &&
             roles &&
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
@@ -196,7 +196,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Team Management'),
           key: 'team-management',
           enabled:
-            (ENABLE_TEAMS || ENABLE_FHIR_TEAMS) &&
+            COMPOSITE_ENABLE_TEAM_MANAGEMENT &&
             roles &&
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),

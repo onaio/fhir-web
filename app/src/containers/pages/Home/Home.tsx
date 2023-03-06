@@ -1,22 +1,16 @@
-import * as React from 'react';
 import { Helmet } from 'react-helmet';
 import { Col, Row, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import { useTranslation } from '../../../mls';
+import { URL_USER, URL_LOCATION_UNIT, URL_TEAM_ASSIGNMENT, URL_TEAMS } from '../../../constants';
+import { ENABLE_TEAMS_ASSIGNMENT_MODULE } from '../../../configs/env';
+import React from 'react';
 import {
-  URL_USER,
-  URL_LOCATION_UNIT,
-  URL_LOCATION_UNIT_GROUP,
-  URL_TEAM_ASSIGNMENT,
-  URL_TEAMS,
-} from '../../../constants';
-import {
-  ENABLE_LOCATIONS,
-  ENABLE_TEAMS,
-  ENABLE_TEAMS_ASSIGNMENT_MODULE,
-  ENABLE_USER_MANAGEMENT,
-} from '../../../configs/env';
+  COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
+  COMPOSITE_ENABLE_TEAM_MANAGEMENT,
+  COMPOSITE_ENABLE_USER_MANAGEMENT,
+} from '../../../configs/settings';
 
 export const Home = () => {
   const { t } = useTranslation();
@@ -32,7 +26,7 @@ export const Home = () => {
         </Col>
       </Row>
       <Row gutter={16} className="links-box">
-        {ENABLE_USER_MANAGEMENT && (
+        {COMPOSITE_ENABLE_USER_MANAGEMENT && (
           <Col className="gutter-row" span={12}>
             <Link to={URL_USER} className="admin-link">
               <Button color="outline" className="btn-links">
@@ -41,7 +35,7 @@ export const Home = () => {
             </Link>
           </Col>
         )}
-        {ENABLE_TEAMS && (
+        {COMPOSITE_ENABLE_TEAM_MANAGEMENT && (
           <Col className="gutter-row" span={12}>
             <Link to={URL_TEAMS} className="admin-link">
               <Button color="outline" className="btn-links">
@@ -52,20 +46,12 @@ export const Home = () => {
         )}
       </Row>
       <Row gutter={16} className="links-box">
-        {ENABLE_LOCATIONS && (
+        {COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT && (
           <>
             <Col className="gutter-row" span={12}>
               <Link to={URL_LOCATION_UNIT} className="admin-link">
                 <Button color="outline" className="btn-links">
                   {t('Location Units')}
-                </Button>
-              </Link>
-            </Col>
-
-            <Col className="gutter-row" span={12}>
-              <Link to={URL_LOCATION_UNIT_GROUP} className="admin-link">
-                <Button color="outline" className="btn-links">
-                  {t('Location Unit Group')}
                 </Button>
               </Link>
             </Col>

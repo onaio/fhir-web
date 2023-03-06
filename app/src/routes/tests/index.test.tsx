@@ -7,6 +7,7 @@ import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import ArchiveOutlineIcon from '@2fd/ant-design-icons/lib/ArchiveOutline';
 
 jest.mock('../../configs/env');
+jest.mock('../../configs/settings');
 
 describe('routes', () => {
   it('Test routes only return enabled values', () => {
@@ -324,28 +325,6 @@ describe('routes', () => {
         }
       )
     );
-
-    let envModule = require('../../configs/env');
-    envModule.OPENSRP_ROLES = {
-      USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
-      PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      CARD_SUPPORT: 'ROLE_VIEW_KEYCLOAK_USERS',
-      INVENTORY: 'ROLE_VIEW_KEYCLOAK_USERS',
-      TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
-      FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
-      SERVER_SETTINGS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
-    };
-    envModule = require('../../configs/env');
-    envModule.ENABLE_LOCATIONS = false;
-    envModule.ENABLE_FHIR_LOCATIONS = true;
-    envModule.ENABLE_TEAMS = false;
-    envModule.ENABLE_FHIR_TEAMS = true;
-    envModule.ENABLE_USER_MANAGEMENT = false;
-    envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
-
     const routes = getRoutes(
       ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
       (t: string) => t
