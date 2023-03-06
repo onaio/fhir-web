@@ -136,6 +136,10 @@ test('renders correctly when listing resources', async () => {
     </title>
   `);
 
+  // does not render the add group button
+  const addGroupBtn = screen.queryByText(/Add Group/);
+  expect(addGroupBtn).not.toBeInTheDocument();
+
   expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {

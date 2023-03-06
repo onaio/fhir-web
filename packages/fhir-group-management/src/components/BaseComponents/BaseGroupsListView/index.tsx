@@ -25,7 +25,7 @@ export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp
   getColumns: (t: TFunction) => Column<TableData>[];
   extraQueryFilters?: Record<string, string>;
   createButtonLabel: string;
-  createButtonUrl: string;
+  createButtonUrl?: string;
   pageTitle: string;
   viewDetailsListUrl: string;
 };
@@ -92,12 +92,14 @@ export const BaseListView = (props: BaseListViewProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} disabled />
-            <Link to={createButtonUrl}>
-              <Button type="primary">
-                <PlusOutlined />
-                {createButtonLabel}
-              </Button>
-            </Link>
+            {createButtonUrl && (
+              <Link to={createButtonUrl}>
+                <Button type="primary">
+                  <PlusOutlined />
+                  {createButtonLabel}
+                </Button>
+              </Link>
+            )}
           </div>
           <TableLayout {...tableProps} />
         </Col>
