@@ -80,6 +80,13 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
   return columns;
 };
 
+const getSearchParams = (search: string | null) => {
+  if (search) {
+    return { [`title:contains`]: `${search},name:contains=${search}` };
+  }
+  return {};
+};
+
 /**
  * api paginated table view listing questionnaires
  *
@@ -88,11 +95,11 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
 const QuestionnaireList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
-  // const t = t => t;
 
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView(
     fhirBaseURL,
-    questionnaireResourceType
+    questionnaireResourceType,
+    getSearchParams
   );
   const { data, isFetching, isLoading, error } = queryValues;
 

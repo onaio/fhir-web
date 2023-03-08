@@ -116,7 +116,7 @@ test('pagination events work correctly', async () => {
     .query({
       _getpagesoffset: 0,
       _count: 20,
-      'name:contains': 'sample',
+      'title:contains': 'sample,name:contains=sample',
     })
     .reply(200, questionnairesSearchPage)
     .persist();
