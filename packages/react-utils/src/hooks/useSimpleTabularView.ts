@@ -15,6 +15,8 @@ export interface FhirApiFilter {
   search: string | null;
 }
 
+export type ExtraParams = URLParams | ((search: string | null) => URLParams);
+
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
 export const searchQuery = 'search';
@@ -48,6 +50,13 @@ export const getNumberParam = (
   return isNaN(paramVal) ? fallback : paramVal;
 };
 
+const defaultGetExtraParams = (search: string | null) => {
+  if (search) {
+    return { 'name:contains': search };
+  }
+  return {};
+};
+
 /**
  * Unified function that gets a list of FHIR resources from a FHIR hapi server
  *
@@ -56,24 +65,39 @@ export const getNumberParam = (
  * @param params - our params
  * @param extraParams - any extra user-defined params
  */
-const loadResources = (
+const loadResources = async (
   baseUrl: string,
   resourceType: string,
   params: FhirApiFilter,
-  extraParams: URLParams
+  extraParams: ExtraParams
 ) => {
   const { page, pageSize, search } = params;
-  const filterParams: URLParams = {
+  let filterParams: URLParams = {};
+
+  let otherParams = extraParams;
+  if (typeof extraParams === 'function') {
+    otherParams = extraParams(search);
+  }
+
+  filterParams = {
+    ...filterParams,
+    ...otherParams,
     _getpagesoffset: (page - 1) * pageSize,
     _count: pageSize,
-    ...extraParams,
   };
-  if (search) {
-    filterParams['name:contains'] = search;
+  const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
+  const res = await service.list(filterParams);
+  if (res.total === undefined) {
+    // patient endpoint does not include total after _search response like other resource endpoints do
+    const countFilter = {
+      ...filterParams,
+      _summary: 'count',
+    };
+    const { total } = await service.list(countFilter);
+    res.total = total;
+    return res;
   }
-  return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(
-    filterParams
-  ) as Promise<IBundle>;
+  return res;
 };
 
 /**
@@ -87,7 +111,7 @@ const loadResources = (
 export function useSimpleTabularView<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
-  extraParams: URLParams = {}
+  extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams
 ) {
   const location = useLocation();
   const history = useHistory();
@@ -104,28 +128,7 @@ export function useSimpleTabularView<T extends Resource>(
 
   const queryFn = useCallback(
     async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) => {
-      const res = await loadResources(
-        fhirBaseUrl,
-        resourceType,
-        { page, pageSize, search },
-        extraParams
-      );
-      if (res.total === undefined) {
-        // patient endpoint does not include total after _searc response like other resource endpoints do
-        const countFilter = {
-          ...extraParams,
-          _summary: 'count',
-        };
-        const { total } = await loadResources(
-          fhirBaseUrl,
-          resourceType,
-          { page, pageSize, search },
-          countFilter
-        );
-        res.total = total;
-        return res;
-      }
-      return res;
+      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams);
     },
     [fhirBaseUrl, resourceType]
   );

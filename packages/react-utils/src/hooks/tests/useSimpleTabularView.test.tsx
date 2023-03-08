@@ -199,4 +199,6 @@ test('pagination and search work correctly', async () => {
   // remove search.
   userEvents.clear(searchForm);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
+
+  expect(nock.pendingMocks()).toEqual([]);
 });
