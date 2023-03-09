@@ -1,3 +1,4 @@
+import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -65,4 +66,18 @@ export const getNextUrlOnSearch = (
 
   nextUrl = ''.concat(nextUrl, '?').concat(currentSParams.toString());
   return nextUrl;
+};
+
+/**
+ * how should objects be matched against the search string
+ *
+ * @param obj - resource payload
+ * @param search - the search string
+ */
+export const matchesOnName = <T extends IResource>(obj: T, search: string) => {
+  const name = (obj as { name?: string }).name;
+  if (name === undefined) {
+    return false;
+  }
+  return name.toLowerCase().includes(search.toLowerCase());
 };

@@ -15,3 +15,4 @@ export * from './helpers/fhir-utils';
 export * from './hooks/useSimpleTabularView';
 export * from './hooks/useTabularViewWithLocalSearch';
 export * from './components/FhirSelect';
+export * from './hooks/utils';

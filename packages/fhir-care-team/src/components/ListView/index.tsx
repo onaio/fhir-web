@@ -22,9 +22,9 @@ import {
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 // route params for care team pages
 interface RouteParams {
@@ -51,20 +51,6 @@ export const deleteCareTeam = async (
 };
 
 /**
- * how should objects be matched against the search string
- *
- * @param obj - resource payload
- * @param search - the search string
- */
-export const matchesCareTeam = (obj: ICareTeam, search: string) => {
-  const name = obj.name;
-  if (name === undefined) {
-    return false;
-  }
-  return name.toLowerCase().includes(search.toLowerCase());
-};
-
-/**
  * Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
@@ -79,7 +65,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     queryValues: { data, isFetching, isLoading, error, refetch },
     tablePaginationProps,
     searchFormProps,
-  } = useTabularViewWithLocalSearch(fhirBaseURL, careTeamResourceType, matchesCareTeam);
+  } = useTabularViewWithLocalSearch<ICareTeam>(fhirBaseURL, careTeamResourceType);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;

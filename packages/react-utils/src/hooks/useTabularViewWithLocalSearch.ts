@@ -12,6 +12,7 @@ import {
   getNextUrlOnSearch,
   getNumberParam,
   getStringParam,
+  matchesOnName,
   pageQuery,
   pageSizeQuery,
   searchQuery,
@@ -25,14 +26,14 @@ import {
  *
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
- * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  * @param extraParams - further custom search param filters during api requests
+ * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  */
 export function useTabularViewWithLocalSearch<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
-  matchesSearch: (obj: T, search: string) => boolean,
-  extraParams: URLParams | ((search: string | null) => URLParams) = {}
+  extraParams: URLParams | ((search: string | null) => URLParams) = {},
+  matchesSearch: (obj: T, search: string) => boolean = matchesOnName
 ) {
   const location = useLocation();
   const history = useHistory();

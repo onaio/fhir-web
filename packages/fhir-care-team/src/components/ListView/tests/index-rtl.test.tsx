@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
-import { CareTeamList, matchesCareTeam } from '..';
+import { CareTeamList } from '..';
 import { Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
@@ -11,7 +11,6 @@ import { store } from '@opensrp/store';
 import { careTeam4214, careTeams } from './fixtures';
 import { careTeamResourceType, URL_CARE_TEAM } from '../../../constants';
 import { createMemoryHistory } from 'history';
-import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -158,7 +157,7 @@ describe('Care Teams list view', () => {
     // target the initial row view details
     const dropdown = document.querySelector(
       'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
-    );
+    ) as Element;
     fireEvent.click(dropdown);
 
     const viewDetailsLink = getByText(/View Details/);
@@ -176,15 +175,5 @@ describe('Care Teams list view', () => {
     document
       .querySelectorAll('.display-block')
       .forEach((block) => expect(block).toMatchSnapshot('view details display block'));
-  });
-
-  test('search match util works correctly', () => {
-    const singleCareTeam = careTeams.entry[0].resource as unknown as ICareTeam;
-    let result = matchesCareTeam(singleCareTeam, 'eam');
-    expect(result).toBeTruthy();
-    result = matchesCareTeam(singleCareTeam, 'EAm');
-    expect(result).toBeTruthy();
-    result = matchesCareTeam(singleCareTeam, 'non-existent');
-    expect(result).toBeFalsy();
   });
 });

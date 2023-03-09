@@ -34,21 +34,6 @@ interface RouteParams {
 }
 
 /**
- * how should objects be matched against the search string
- *
- * @param obj - resource payload
- * @param search - the search string
- */
-//  TODO - Repeated.
-export const matchesGroup = (obj: IGroup, search: string) => {
-  const name = obj.name;
-  if (name === undefined) {
-    return false;
-  }
-  return name.toLowerCase().includes(search.toLowerCase());
-};
-
-/**
  * Shows the list of all group and there details
  *
  * @param  props - GroupList component props
@@ -73,12 +58,7 @@ export const BaseListView = (props: BaseListViewProps) => {
     queryValues: { data, isFetching, isLoading, error },
     tablePaginationProps,
     searchFormProps,
-  } = useTabularViewWithLocalSearch(
-    fhirBaseURL,
-    groupResourceType,
-    matchesGroup,
-    extraQueryFilters
-  );
+  } = useTabularViewWithLocalSearch<IGroup>(fhirBaseURL, groupResourceType, extraQueryFilters);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;

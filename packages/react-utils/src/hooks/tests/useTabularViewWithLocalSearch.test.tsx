@@ -68,8 +68,8 @@ const SampleApp = () => {
   const { tablePaginationProps, queryValues, searchFormProps } = useTabularViewWithLocalSearch(
     baseUrl,
     endpoint,
-    matchesSearch,
-    {}
+    {},
+    matchesSearch
   );
 
   const { data, isFetching, isLoading } = queryValues;
