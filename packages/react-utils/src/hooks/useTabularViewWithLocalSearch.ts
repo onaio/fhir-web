@@ -81,7 +81,7 @@ export function useTabularViewWithLocalSearch<T extends Resource>(
   const tablePaginationProps = {
     current: page,
     pageSize,
-    total: data?.length,
+    total: filteredData?.length,
     defaultPageSize,
     onChange: (current: number, pageSize?: number) => {
       if (current && pageSize) {
