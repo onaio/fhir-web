@@ -1,5 +1,4 @@
 import { ChangeEvent, useCallback } from 'react';
-import { FHIRServiceClass } from '../helpers/dataLoaders';
 import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
@@ -8,6 +7,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
+import { loadAllResources } from '../helpers/fhir-utils';
 import {
   getNextUrlOnSearch,
   getNumberParam,
@@ -19,76 +19,20 @@ import {
   startingPageSize,
 } from './utils';
 
-export interface FhirApiFilter {
-  page: number;
-  pageSize: number;
-  search: string | null;
-}
-
-export type ExtraParams = URLParams | ((search: string | null) => URLParams);
-
-const defaultGetExtraParams = (search: string | null) => {
-  if (search) {
-    return { 'name:contains': search };
-  }
-  return {};
-};
-
-/**
- * Unified function that gets a list of FHIR resources from a FHIR hapi server
- *
- * @param baseUrl - base url
- * @param resourceType - resource type as endpoint
- * @param params - our params
- * @param extraParams - any extra user-defined params
- */
-const loadResources = async (
-  baseUrl: string,
-  resourceType: string,
-  params: FhirApiFilter,
-  extraParams: ExtraParams
-) => {
-  const { page, pageSize, search } = params;
-  let filterParams: URLParams = {};
-
-  let otherParams = extraParams;
-  if (typeof extraParams === 'function') {
-    otherParams = extraParams(search);
-  }
-
-  filterParams = {
-    ...filterParams,
-    ...otherParams,
-    _getpagesoffset: (page - 1) * pageSize,
-    _count: pageSize,
-  };
-  const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
-  const res = await service.list(filterParams);
-  if (res.total === undefined) {
-    // patient endpoint does not include total after _search response like other resource endpoints do
-    const countFilter = {
-      ...filterParams,
-      _summary: 'count',
-    };
-    const { total } = await service.list(countFilter);
-    res.total = total;
-    return res;
-  }
-  return res;
-};
-
 /**
  * Re-usable hook that abstracts search and table pagination for usual list view component
  * Should only be used when getting data from a server that follows the hapi FHIR spec
  *
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
+ * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  * @param extraParams - further custom search param filters during api requests
  */
-export function useSimpleTabularView<T extends Resource>(
+export function useTabularViewWithLocalSearch<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
-  extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams
+  matchesSearch: (obj: T, search: string) => boolean,
+  extraParams: URLParams | ((search: string | null) => URLParams) = {}
 ) {
   const location = useLocation();
   const history = useHistory();
@@ -100,30 +44,31 @@ export function useSimpleTabularView<T extends Resource>(
     (getConfig('defaultTablesPageSize') as number | undefined) ?? startingPageSize;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
 
-  type TRQuery = [string, number, number, string, URLParams];
+  type TRQuery = [string, URLParams];
   type QueryKeyType = { queryKey: TRQuery };
 
   const queryFn = useCallback(
-    async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) => {
-      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams);
+    async ({ queryKey: [_, extraParams] }: QueryKeyType) => {
+      return loadAllResources(fhirBaseUrl, resourceType, extraParams);
     },
     [fhirBaseUrl, resourceType]
   );
 
   const rQuery = {
-    queryKey: [resourceType, page, pageSize, search, extraParams] as TRQuery,
+    queryKey: [resourceType, extraParams] as TRQuery,
     queryFn,
-    select: (data: IBundle) => ({
-      records: getResourcesFromBundle<T>(data),
-      total: data.total ?? 0,
-    }),
-    keepPreviousData: true,
-    staleTime: 5000,
-    refetchOnMount: false,
+    select: (data: IBundle) => getResourcesFromBundle<T>(data),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   };
+
   const { data, ...restQueryValues } = useQuery(rQuery);
+  let filteredData = data;
+  if (search) {
+    filteredData = data?.filter((obj) => {
+      return matchesSearch(obj, search);
+    });
+  }
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
@@ -136,7 +81,7 @@ export function useSimpleTabularView<T extends Resource>(
   const tablePaginationProps = {
     current: page,
     pageSize,
-    total: data?.total,
+    total: data?.length,
     defaultPageSize,
     onChange: (current: number, pageSize?: number) => {
       if (current && pageSize) {
@@ -151,7 +96,7 @@ export function useSimpleTabularView<T extends Resource>(
   return {
     tablePaginationProps,
     queryValues: {
-      data,
+      data: filteredData,
       ...restQueryValues,
     },
     searchFormProps,
