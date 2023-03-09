@@ -7,7 +7,7 @@ import { RouteComponentProps, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
-  useSimpleTabularView,
+  useTabularViewWithLocalSearch,
   BrokenPage,
   SearchForm,
   TableLayout,
@@ -51,6 +51,20 @@ export const deleteCareTeam = async (
 };
 
 /**
+ * how should objects be matched against the search string
+ *
+ * @param obj - resource payload
+ * @param search - the search string
+ */
+export const matchesCareTeam = (obj: ICareTeam, search: string) => {
+  const name = obj.name;
+  if (name === undefined) {
+    return false;
+  }
+  return name.toLowerCase().includes(search.toLowerCase());
+};
+
+/**
  * Function which shows the list of all roles and their details
  *
  * @param {Object} props - UserRolesList component props
@@ -59,19 +73,19 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
-
   const { careTeamId: resourceId } = useParams<RouteParams>();
-  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<ICareTeam>(
-    fhirBaseURL,
-    careTeamResourceType
-  );
-  const { data, isFetching, isLoading, error, refetch } = queryValues;
+
+  const {
+    queryValues: { data, isFetching, isLoading, error, refetch },
+    tablePaginationProps,
+    searchFormProps,
+  } = useTabularViewWithLocalSearch(fhirBaseURL, careTeamResourceType, matchesCareTeam);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data?.records ?? []).map((datum: Dictionary) => {
+  const tableData = (data ?? []).map((datum: Dictionary) => {
     return {
       key: datum.id,
       id: datum.id,
@@ -149,7 +163,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm {...searchFormProps} disabled />
+            <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
                 <PlusOutlined />
