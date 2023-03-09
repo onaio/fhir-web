@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button } from 'antd';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
-import { Group } from '../../../types';
 import { groupResourceType } from '../../../constants';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
@@ -11,8 +10,8 @@ import {
   SearchForm,
   BrokenPage,
   TableLayout,
-  useSimpleTabularView,
   Column,
+  useTabularViewWithLocalSearch,
 } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
@@ -35,6 +34,21 @@ interface RouteParams {
 }
 
 /**
+ * how should objects be matched against the search string
+ *
+ * @param obj - resource payload
+ * @param search - the search string
+ */
+//  TODO - Repeated.
+export const matchesGroup = (obj: IGroup, search: string) => {
+  const name = obj.name;
+  if (name === undefined) {
+    return false;
+  }
+  return name.toLowerCase().includes(search.toLowerCase());
+};
+
+/**
  * Shows the list of all group and there details
  *
  * @param  props - GroupList component props
@@ -55,18 +69,22 @@ export const BaseListView = (props: BaseListViewProps) => {
   const { id: resourceId } = useParams<RouteParams>();
   const { t } = useTranslation();
 
-  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<Group>(
+  const {
+    queryValues: { data, isFetching, isLoading, error },
+    tablePaginationProps,
+    searchFormProps,
+  } = useTabularViewWithLocalSearch(
     fhirBaseURL,
     groupResourceType,
+    matchesGroup,
     extraQueryFilters
   );
-  const { data, isFetching, isLoading, error } = queryValues;
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data?.records ?? []).map((org: IGroup, index: number) => {
+  const tableData = (data ?? []).map((org: IGroup, index: number) => {
     return {
       ...parseGroup(org),
       key: `${index}`,
@@ -91,7 +109,7 @@ export const BaseListView = (props: BaseListViewProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm data-testid="search-form" {...searchFormProps} disabled />
+            <SearchForm data-testid="search-form" {...searchFormProps} />
             {createButtonUrl && (
               <Link to={createButtonUrl}>
                 <Button type="primary">

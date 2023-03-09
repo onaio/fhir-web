@@ -11,7 +11,7 @@ import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { groupResourceType, listResourceType, LIST_COMMODITY_URL } from '../../../constants';
-import { commoditiesPage1, listResource } from './fixtures';
+import { firstFiftyCommodities, listResource } from './fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -101,13 +101,20 @@ test('renders correctly when listing resources', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': listResId,
     })
-    .reply(200, commoditiesPage1)
-    .persist();
+    .reply(200, { total: 50 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _count: 50,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+    })
+    .reply(200, firstFiftyCommodities);
 
   render(
     <Router history={history}>
@@ -134,7 +141,7 @@ test('renders correctly when listing resources', async () => {
   // view details
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/6f3980e0-d1d6-4a7a-a950-939f3ca7b301`)
-    .reply(200, commoditiesPage1.entry[1].resource);
+    .reply(200, firstFiftyCommodities.entry[1].resource);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -176,12 +183,20 @@ test('Can delete commodity', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': listResId,
     })
-    .reply(200, commoditiesPage1)
+    .reply(200, { total: 50 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+      _count: 50,
+    })
+    .reply(200, firstFiftyCommodities)
     .persist();
 
   const { queryByRole, queryByText } = render(
@@ -196,7 +211,7 @@ test('Can delete commodity', async () => {
 
   fireEvent.click(firstMoreOptions);
   const editedGroup = {
-    ...commoditiesPage1.entry[0].resource,
+    ...firstFiftyCommodities.entry[0].resource,
     active: false,
   };
   const editedListResource = {
@@ -234,13 +249,20 @@ test('Failed commodity deletion', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': listResId,
     })
-    .reply(200, commoditiesPage1)
-    .persist();
+    .reply(200, { total: 50 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _count: 50,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+    })
+    .reply(200, firstFiftyCommodities);
 
   const { queryByRole, queryByText } = render(
     <Router history={history}>
@@ -254,7 +276,7 @@ test('Failed commodity deletion', async () => {
 
   fireEvent.click(firstMoreOptions);
   const editedGroup = {
-    ...commoditiesPage1.entry[0].resource,
+    ...firstFiftyCommodities.entry[0].resource,
     active: false,
   };
   const editedListResource = {
