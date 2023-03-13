@@ -169,7 +169,7 @@ export const getDataSource = (
  */
 export const staticColumns = (t: TFunction): ColumnsType<TableData> => [
   {
-    title: t('Assigned areas'),
+    title: t('Assigned regions'),
     dataIndex: 'jurisdictions',
     key: `${TableColumnsNamespace}-assigned-areas`,
     width: '40%',
