@@ -170,13 +170,13 @@ test('renders correctly when listing resources', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/groups/list/49778"
+      href="/groups/list/145838"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`/groups/list/49778`);
+  expect(history.location.pathname).toEqual(`/groups/list/145838`);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
