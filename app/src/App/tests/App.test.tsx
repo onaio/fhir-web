@@ -30,6 +30,7 @@ import {
   CommodityList,
   LIST_COMMODITY_URL,
 } from '@opensrp/fhir-group-management';
+import { viewDetailsQuery } from '@opensrp/react-utils';
 
 jest.mock('../../configs/env');
 
@@ -339,7 +340,7 @@ describe('App - authenticated', () => {
 
     // go to the profile view)
     (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${LIST_COMMODITY_URL}/1`
+      `${LIST_COMMODITY_URL}?${viewDetailsQuery}=1`
     );
     wrapper.update();
     expect(wrapper.find('ViewDetails')).toHaveLength(1);
