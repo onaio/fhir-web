@@ -9,7 +9,9 @@ import { act } from 'react-dom/test-utils';
 import { getActiveKey } from '../../../components/page/Sidebar/utils';
 import toJson from 'enzyme-to-json';
 import { Route } from '../../../routes';
+
 jest.mock('../../../configs/env');
+jest.mock('../../../configs/settings');
 
 describe('components/ConnectedSidebar', () => {
   it('renders the ConnectedSidebar component', () => {

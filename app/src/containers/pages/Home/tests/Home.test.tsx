@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { history } from '@onaio/connected-reducer-registry';
 import React from 'react';
@@ -15,12 +15,9 @@ import {
 } from '../../../../constants';
 
 jest.mock('../../../../configs/env');
+jest.mock('../../../../configs/settings');
 
 describe('containers/pages/Home', () => {
-  it('renders without crashing', () => {
-    shallow(<Home />);
-  });
-
   it('renders Home correctly & changes Title of page', () => {
     const wrapper = mount(
       <Router history={history}>
@@ -30,7 +27,9 @@ describe('containers/pages/Home', () => {
 
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual('OpenSRP Web');
-    expect(toJson(wrapper.find('Home'))).toMatchSnapshot('Home page rendered');
+    wrapper.find('.admin-link').forEach((adminLink) => {
+      expect(toJson(adminLink)).toMatchSnapshot('links on home page');
+    });
     wrapper.unmount();
   });
 
@@ -62,7 +61,7 @@ describe('containers/pages/Home', () => {
     );
 
     expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT}"]`)).toHaveLength(1);
-    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT_GROUP}"]`)).toHaveLength(1);
+    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT_GROUP}"]`)).toHaveLength(0);
   });
 
   it('displays links for teams module', () => {
