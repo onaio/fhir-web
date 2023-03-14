@@ -1,7 +1,6 @@
 import React from 'react';
 import { Col, Space, Spin, Button, Alert } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
@@ -10,10 +9,11 @@ import {
   IdentifierUseCodes,
   parseFhirHumanName,
   renderObjectAsKeyvalue,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import {
   organizationResourceType,
-  ORGANIZATION_LIST_URL,
   practitionerResourceType,
   practitionerRoleResourceType,
 } from '../../../constants';
@@ -150,7 +150,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
   const { resourceId, fhirBaseURL } = props;
-  const history = useHistory();
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -164,7 +164,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(ORGANIZATION_LIST_URL)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails resourceId={resourceId} fhirBaseURL={fhirBaseURL} />
