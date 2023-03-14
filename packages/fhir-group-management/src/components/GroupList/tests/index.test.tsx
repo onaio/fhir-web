@@ -163,6 +163,10 @@ test('renders correctly when listing resources', async () => {
 
   // view details
 
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/145838`)
+    .reply(200, firstFiftygroups.entry[1].resource);
+
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
   fireEvent.click(dropdown!);
@@ -179,6 +183,14 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.pathname).toEqual(`/groups/list/145838`);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
+  });
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');

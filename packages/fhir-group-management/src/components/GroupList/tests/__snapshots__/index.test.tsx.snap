@@ -1,5 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renders correctly when listing resources 3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Id
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      49778
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Name
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Jan27Test
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Active
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Inactive
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 6`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Last updated
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      4/27/2022
+    </span>
+  </dd>
+</div>
+`;
+
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
   class="ant-page-header-heading-title"
