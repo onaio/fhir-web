@@ -169,14 +169,12 @@ test('renders correctly when listing resources', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/groups/list/145838"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`/groups/list/145838`);
+  expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=145838');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

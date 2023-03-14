@@ -149,14 +149,12 @@ test('renders correctly when listing resources', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/commodity/list/6f3980e0-d1d6-4a7a-a950-939f3ca7b301"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/commodity/list/6f3980e0-d1d6-4a7a-a950-939f3ca7b301');
+  expect(history.location.search).toEqual('?viewDetails=6f3980e0-d1d6-4a7a-a950-939f3ca7b301');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
