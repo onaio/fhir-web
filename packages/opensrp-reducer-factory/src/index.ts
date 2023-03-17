@@ -25,6 +25,7 @@ export let SET_TOTAL_RECORDS = 'opensrp/reducer/objects/SET_TOTAL_RECORDS';
 export interface FetchAction<ObjectType> extends AnyAction {
   objectsById: Dictionary<ObjectType>;
   type: typeof FETCHED;
+  overwrite: boolean;
   reducerName: string;
 }
 
@@ -63,16 +64,18 @@ export function fetchActionCreatorFactory<ObjectType>(
   /**
    * Fetch action
    *
-   * @param {object []} objectsList - objects array to add to store
-   * @returns {Function} - an action to add objects to redux store
+   * @param objectsList - objects array to add to store
+   * @param overwrite whether to override existing data in store slice
+   * @returns - an action to add objects to redux store
    */
-  return (objectsList: ObjectType[] = []): FetchAction<ObjectType> => ({
+  return (objectsList: ObjectType[] = [], overwrite = false): FetchAction<ObjectType> => ({
     /** HACK: casting object[field] to unknown since i don't know how to better handle this */
     objectsById: keyBy<ObjectType>(
       objectsList,
       (object: ObjectType) => object[idField] as unknown as string
     ),
     type: FETCHED,
+    overwrite,
     reducerName,
   });
 }
@@ -168,6 +171,12 @@ export const reducerFactory = <ObjectType>(
 
     switch (action.type) {
       case FETCHED:
+        if (action.overwrite) {
+          return SeamlessImmutable({
+            ...state,
+            objectsById: { ...action.objectsById },
+          });
+        }
         return SeamlessImmutable({
           ...state,
           objectsById: { ...state.objectsById, ...action.objectsById },
