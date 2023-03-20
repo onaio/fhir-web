@@ -11,7 +11,7 @@ import { locationHierarchyResourceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -94,11 +94,9 @@ test('renders correctly for new locations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('title')).toMatchInlineSnapshot(`
-    <title>
-      Add Location Unit
-    </title>
-  `);
+  await waitFor(() => {
+    expect(screen.getByText('Add Location Unit')).toBeInTheDocument();
+  });
 
   // some small but inconclusive proof that the form rendered
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');
