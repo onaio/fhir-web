@@ -78,7 +78,7 @@ export const getOrgOptionsFromAffiliations = (
 };
 
 /**
- * key affiliations bye orgId and then locationID
+ * key affiliations by orgId and then locationID
  *
  * @param affiliations - affiliation
  */
@@ -170,7 +170,49 @@ export const postPutAffiliations = (
 
   // adding new entries
   toAdd.forEach((option: OrgSelectOptions) => {
-    // we create a wholly new affiliation
+    const affiliationPayload = getNewAffiliationPayload(option, affsByOrgLoc, location);
+    promises.push(() => serve.update(affiliationPayload));
+  });
+
+  return Promise.all(promises.map((p) => p()));
+};
+
+/**
+ * Helps create an organizationAffiliation payload when making new organization assignments to locations.
+ *
+ * @param option -  added option
+ * @param affiliationsByOrgLocation - A map lookup of all affiliations keyed by the organization and then by location
+ * @param location - location that is the target of the assignment.
+ */
+function getNewAffiliationPayload(
+  option: OrgSelectOptions,
+  affiliationsByOrgLocation: Record<string, Record<string, IOrganizationAffiliation>>,
+  location: ILocation
+) {
+  const orgReference = option.value;
+  const affiliationByLocation =
+    (affiliationsByOrgLocation[orgReference] as
+      | Record<string, IOrganizationAffiliation>
+      | undefined) ?? {};
+
+  // check if any affiliations already exist for this organization.
+  const existingAffiliations: IOrganizationAffiliation[] = Object.values(affiliationByLocation);
+  if (existingAffiliations.length > 0) {
+    // pick any/first affiliation, we will add the location there.
+    const anyAffiliation = existingAffiliations[0];
+    // update affiliation with location information.
+    const updatedAffiliation = {
+      ...anyAffiliation,
+      location: [
+        ...(anyAffiliation.location ?? []),
+        {
+          reference: `${locationResourceType}/${location.id}`,
+          display: location.name,
+        },
+      ],
+    };
+    return updatedAffiliation;
+  } else {
     const affiliationPayload: IOrganizationAffiliation = {
       resourceType: organizationAffiliationResourceType,
       id: v4(),
@@ -192,8 +234,6 @@ export const postPutAffiliations = (
         },
       ],
     };
-    promises.push(() => serve.update(affiliationPayload));
-  });
-
-  return Promise.all(promises.map((p) => p()));
-};
+    return affiliationPayload;
+  }
+}
