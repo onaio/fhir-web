@@ -168,10 +168,14 @@ export const postPutAffiliations = (
   });
 
   // adding new entries
+  const pyaloadToAddMap: Record<string, IOrganizationAffiliation> = {};
   toAdd.forEach((option: OrgSelectOptions) => {
     const affiliationPayload = getNewAffiliationPayload(option, affsByOrgLoc, location);
-    promises.push(() => serve.update(affiliationPayload));
+    pyaloadToAddMap[affiliationPayload.id as string] = affiliationPayload;
   });
+  Object.values(pyaloadToAddMap).forEach((affiliation) =>
+    promises.push(() => serve.update(affiliation))
+  );
 
   return Promise.all(promises.map((p) => p()));
 };
