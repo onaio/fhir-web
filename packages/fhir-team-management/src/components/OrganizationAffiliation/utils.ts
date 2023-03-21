@@ -157,8 +157,7 @@ export const postPutAffiliations = (
       if (remainingLocations.length === 0) {
         // no locations mapped to this org, so remove the affiliation
         promises.push(() => serve.delete(existingAffiliation.id as string));
-      }
-      if (remainingLocations.length !== locations.length) {
+      } else if (remainingLocations.length !== locations.length) {
         // means that we are merely updating the existingAffiliation
         existingAffiliation.location = remainingLocations;
         promises.push(() => serve.update(existingAffiliation));
