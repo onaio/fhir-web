@@ -30,20 +30,12 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
-      # - name: Lint
-      #   run: yarn lint
+      - name: Lint
+        run: yarn lint
 
         # TODO: cache and only build packages that were changed
       - name: Build packages
         run: yarn lerna:prepublish 
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-        # with:
-        #   ## limits ssh access and adds the ssh public key for the user which triggered the workflow
-        #   limit-access-to-actor: true
-        #   ## limits ssh access and adds the ssh public keys of the listed GitHub users
-        #   limit-access-to-users: p-netm,githubuser2
 
       - name: Run all tests
         run: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
