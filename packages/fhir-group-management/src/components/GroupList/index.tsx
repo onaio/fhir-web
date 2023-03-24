@@ -105,7 +105,6 @@ export const GroupList = (props: GroupListProps) => {
     getColumns: getColumns,
     keyValueMapperRenderProp: keyValueDetailRender,
     createButtonLabel: t('Add Group'),
-    createButtonUrl: '#',
     fhirBaseURL,
     pageTitle: t('Groups List'),
     viewDetailsListUrl: LIST_GROUP_URL,

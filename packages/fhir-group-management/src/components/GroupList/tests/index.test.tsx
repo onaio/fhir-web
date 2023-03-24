@@ -11,7 +11,7 @@ import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
-import { groupsPage2, groupsPageSearch, groupspage1 } from './fixtures';
+import { firstFiftygroups } from './fixtures';
 import userEvents from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
@@ -99,28 +99,16 @@ test('renders correctly when listing resources', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
     })
-    .reply(200, groupsPage2)
-    .persist();
+    .reply(200, { total: 50 });
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 20,
-      _count: 20,
+      _count: 50,
     })
-    .reply(200, groupsPage2);
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      'name:contains': 'jan27',
-    })
-    .reply(200, groupsPageSearch);
+    .reply(200, firstFiftygroups);
 
   render(
     <Router history={history}>
@@ -136,6 +124,10 @@ test('renders correctly when listing resources', async () => {
     </title>
   `);
 
+  // does not render the add group button
+  const addGroupBtn = screen.queryByText(/Add Group/);
+  expect(addGroupBtn).not.toBeInTheDocument();
+
   expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
@@ -148,7 +140,6 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -160,7 +151,6 @@ test('renders correctly when listing resources', async () => {
   userEvents.type(searchForm!, 'jan27');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=jan27');
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -172,9 +162,10 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.search).toEqual('?pageSize=20&page=1');
 
   // view details
+
   nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/49778`)
-    .reply(200, groupspage1.entry[1].resource);
+    .get(`/${groupResourceType}/145838`)
+    .reply(200, firstFiftygroups.entry[1].resource);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -183,15 +174,23 @@ test('renders correctly when listing resources', async () => {
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
     <a
-      href="/groups/list/49778"
+      href="/groups/list/145838"
     >
       View Details
     </a>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/groups/list/49778');
+  expect(history.location.pathname).toEqual(`/groups/list/145838`);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // see view details contents
+  const keyValuePairs = document.querySelectorAll(
+    'div[data-testid="key-value"] .singleKeyValue-pair'
+  );
+  keyValuePairs.forEach((pair) => {
+    expect(pair).toMatchSnapshot();
+  });
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
@@ -208,8 +207,14 @@ test('responds as expected to errors', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
+    })
+    .reply(200, { total: 50 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _count: 50,
     })
     .replyWithError('coughid');
 
