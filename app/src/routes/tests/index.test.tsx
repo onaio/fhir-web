@@ -54,7 +54,6 @@ describe('routes', () => {
         enabled: true,
         key: 'admin',
         title: 'Administration',
-        url: '/admin',
       },
     ]);
 
@@ -82,7 +81,6 @@ describe('routes', () => {
         enabled: true,
         key: 'admin',
         title: 'Administration',
-        url: '/admin',
       },
     ]);
   });
@@ -300,7 +298,6 @@ describe('routes', () => {
           icon: <DashboardOutlined />,
         },
         title: 'Administration',
-        url: '/admin',
       },
     ]);
     // check inventory bulk upload title in routes as second item under inventory sub menu

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import { Col, Row, Button } from 'antd';
+import { Col, Row, Button, Alert } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import { useTranslation } from '../../../mls';
@@ -44,9 +44,23 @@ export const Home = () => {
         ]}
         className="links-box"
       >
+        {routes.length === 0 && (
+          <Alert
+            message="403"
+            description="Missing require permissions to view data on this page"
+            type="warning"
+          />
+        )}
         {routes.map((route) => {
           return (
-            <Col className="gutter-row" xl={normalSpanLength} lg={8} md={8} sm={12}>
+            <Col
+              key={route.title}
+              className="gutter-row"
+              xl={normalSpanLength}
+              lg={8}
+              md={8}
+              sm={12}
+            >
               <Link to={route.url as string} className="admin-link">
                 <Button color="outline" className="btn-links">
                   {route.title}
