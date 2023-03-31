@@ -2,23 +2,22 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  healthCareServiceResourceType,
-  ADD_EDIT_HEALTHCARE_SERVICE_URL,
-  LIST_HEALTHCARE_URL,
-} from '../../constants';
-import { Link, useParams } from 'react-router-dom';
+import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
+import { Link } from 'react-router-dom';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
-import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
+import {
+  SearchForm,
+  BrokenPage,
+  TableLayout,
+  useSimpleTabularView,
+  viewDetailsQuery,
+  useSearchParams,
+} from '@opensrp/react-utils';
 import { parseHealthCare, ViewDetailsWrapper } from '../HealthCareDetail';
 import { useTranslation } from '../../mls';
 
 interface HealthCareListProps {
   fhirBaseURL: string;
-}
-
-interface RouteParams {
-  id?: string;
 }
 
 /**
@@ -29,7 +28,10 @@ interface RouteParams {
  */
 export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareListProps) => {
   const { fhirBaseURL } = props;
-  const { id: resourceId } = useParams<RouteParams>();
+
+  const { sParams, addParam } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+
   const { t } = useTranslation();
 
   const { searchFormProps, tablePaginationProps, queryValues } =
@@ -83,7 +85,9 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_HEALTHCARE_URL}/${record.id}`}>{t('View Details')}</Link>
+                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+                    {t('View Details')}
+                  </Button>
                 </Menu.Item>
               </Menu>
             }

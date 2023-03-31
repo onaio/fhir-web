@@ -5,13 +5,14 @@ import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router';
 import {
   SearchForm,
   BrokenPage,
   TableLayout,
   Column,
   useTabularViewWithLocalSearch,
+  viewDetailsQuery,
+  useSearchParams,
 } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
@@ -26,12 +27,7 @@ export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp
   createButtonLabel: string;
   createButtonUrl?: string;
   pageTitle: string;
-  viewDetailsListUrl: string;
 };
-
-interface RouteParams {
-  id?: string;
-}
 
 /**
  * Shows the list of all group and there details
@@ -48,10 +44,10 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
-    viewDetailsListUrl,
   } = props;
 
-  const { id: resourceId } = useParams<RouteParams>();
+  const { sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
   const { t } = useTranslation();
 
   const {
@@ -105,7 +101,6 @@ export const BaseListView = (props: BaseListViewProps) => {
           resourceId={resourceId}
           fhirBaseURL={fhirBaseURL}
           keyValueMapperRenderProp={keyValueMapperRenderProp}
-          listUrl={viewDetailsListUrl}
         />
       </Row>
     </div>

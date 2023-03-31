@@ -179,14 +179,13 @@ test('renders correctly when listing resources', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/healthcare/list/323"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/healthcare/list/323');
+  expect(history.location.pathname).toEqual('/healthcare/list');
+  expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=323');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
