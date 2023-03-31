@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { getTableColumns } from './utils';
 import { Link } from 'react-router-dom';
@@ -60,11 +60,13 @@ const InventoryList = (props: InventoryListProps) => {
     getInventoriesByExpiry(state, { servicePointIds: [servicePointId], expired: false })
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
     // api call to get inventory by id
+    setLoading(true);
     const serve = new OpenSRPService(
       `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}`,
       opensrpBaseURL
@@ -72,12 +74,12 @@ const InventoryList = (props: InventoryListProps) => {
     serve
       .list({ returnProduct: true })
       .then((res: Inventory[]) => {
-        dispatch(fetchInventories(res));
+        dispatch(fetchInventories(res, true));
       })
-      .catch((err: Error) => handleBrokenPage(err));
-
+      .catch((err: Error) => handleBrokenPage(err))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [opensrpBaseURL, servicePointId]);
 
   if (broken) {
     return <Alert message={t('Unable to fetch inventories for service point')} type="error" />;
@@ -113,6 +115,7 @@ const InventoryList = (props: InventoryListProps) => {
             className="custom-table"
             pagination={false}
             datasource={datasource}
+            loading={loading}
             columns={getTableColumns(t)}
             actions={{
               title: t('Actions'),

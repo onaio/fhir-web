@@ -193,14 +193,13 @@ test('renders correctly when listing resources', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/admin/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`${URL_USER}/${userFixtures[14].id}`);
+  expect(history.location.pathname).toEqual(`${URL_USER}`);
+  expect(history.location.search).toEqual('?viewDetails=b79e5f2d-37de-4c7e-9b3d-4341bf62ad78');
 
   // this only await the first call to get the users.
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
