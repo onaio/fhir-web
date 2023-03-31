@@ -19,6 +19,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
+import { fetchInventories } from '../../../ducks/inventory';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -115,6 +116,14 @@ describe('Inventory list Page', () => {
     expect(toJson(wrapper.find('.inventory-profile a'))).toMatchSnapshot(
       'link to add new inventory item'
     );
+
+    store.dispatch(fetchInventories([], true));
+    wrapper.update();
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+    );
+
     wrapper.unmount();
   });
 

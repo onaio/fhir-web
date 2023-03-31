@@ -79,6 +79,10 @@ describe('reducers/clients', () => {
     expect(getANCById(store.getState(), 'f1a3e6ee-58d2-4d5c-9588-5e2658abe21c')).toEqual(
       ANCClient1
     );
+    store.dispatch(fetchANC([ANCClient1], true));
+    expect(getAllANCById(store.getState())).toEqual({
+      'f1a3e6ee-58d2-4d5c-9588-5e2658abe21c': ANCClient1,
+    });
   });
 
   it('removes clients correctly', () => {
