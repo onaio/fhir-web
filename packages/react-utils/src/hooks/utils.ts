@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
 export const searchQuery = 'search';
+export const viewDetailsQuery = 'viewDetails';
 
 /**
  * get a string search param from url
@@ -53,7 +54,7 @@ export const getNextUrlOnSearch = (
   match: RouteComponentProps['match']
 ) => {
   const searchText = event.target.value;
-  let nextUrl = match.url;
+  let nextUrl = match.path;
   const currentSParams = new URLSearchParams(location.search);
 
   if (searchText) {

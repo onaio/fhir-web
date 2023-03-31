@@ -6,13 +6,18 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
+import {
+  SearchForm,
+  BrokenPage,
+  TableLayout,
+  useSimpleTabularView,
+  viewDetailsQuery,
+  useSearchParams,
+} from '@opensrp/react-utils';
 import {
   URL_ADD_ORGANIZATION,
   URL_EDIT_ORGANIZATION,
-  ORGANIZATION_LIST_URL,
   organizationResourceType,
 } from '../../../constants';
 import { parseOrganization, ViewDetailsWrapper } from '../ViewDetails';
@@ -25,10 +30,6 @@ interface OrganizationListProps {
   fhirBaseURL: string;
 }
 
-interface RouteParams {
-  id?: string;
-}
-
 /**
  * Renders organization in a table
  *
@@ -38,7 +39,8 @@ export const OrganizationList = (props: OrganizationListProps) => {
   const { fhirBaseURL } = props;
 
   const { t } = useTranslation();
-  const { id: resourceId } = useParams<RouteParams>();
+  const { addParam, sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
   const { searchFormProps, tablePaginationProps, queryValues } =
     useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
   const { data, isFetching, isLoading, error } = queryValues;
@@ -78,7 +80,9 @@ export const OrganizationList = (props: OrganizationListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${ORGANIZATION_LIST_URL}/${record.id}`}>{t('View Details')}</Link>
+                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+                    {t('View Details')}
+                  </Button>
                 </Menu.Item>
               </Menu>
             }

@@ -2,12 +2,11 @@ import React from 'react';
 import { Space, Button, Divider, Dropdown, Menu } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
-import { LIST_GROUP_URL } from '../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import { SingleKeyNestedValue } from '@opensrp/react-utils';
+import { SingleKeyNestedValue, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 interface GroupListProps {
@@ -51,6 +50,7 @@ export const GroupList = (props: GroupListProps) => {
   const { fhirBaseURL } = props;
 
   const { t } = useTranslation();
+  const { addParam } = useSearchParams();
 
   const getColumns = (t: TFunction) => [
     {
@@ -86,7 +86,9 @@ export const GroupList = (props: GroupListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_GROUP_URL}/${record.id}`}>{t('View Details')}</Link>
+                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+                    {t('View Details')}
+                  </Button>
                 </Menu.Item>
               </Menu>
             }
@@ -107,7 +109,6 @@ export const GroupList = (props: GroupListProps) => {
     createButtonLabel: t('Add Group'),
     fhirBaseURL,
     pageTitle: t('Groups List'),
-    viewDetailsListUrl: LIST_GROUP_URL,
   };
 
   return <BaseListView {...baseListViewProps} />;
