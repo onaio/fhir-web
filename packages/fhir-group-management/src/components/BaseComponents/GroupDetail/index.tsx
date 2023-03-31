@@ -2,10 +2,15 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, Spin, Alert } from 'antd';
 import { Group } from '../../../types';
-import { useHistory } from 'react-router';
 import { groupResourceType } from '../../../constants';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, getObjLike, IdentifierUseCodes } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  getObjLike,
+  IdentifierUseCodes,
+  useSearchParams,
+  viewDetailsQuery,
+} from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
@@ -60,7 +65,6 @@ export type ViewDetailsWrapperProps = Pick<
   'fhirBaseURL' | 'keyValueMapperRenderProp'
 > & {
   resourceId?: string;
-  listUrl: string;
 };
 
 /**
@@ -95,8 +99,8 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  * @param props - detail view component props
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
-  const { resourceId, fhirBaseURL, keyValueMapperRenderProp, listUrl } = props;
-  const history = useHistory();
+  const { resourceId, fhirBaseURL, keyValueMapperRenderProp } = props;
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -110,7 +114,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(listUrl)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails

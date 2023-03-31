@@ -2,17 +2,17 @@ import React from 'react';
 import { Space, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
-import {
-  ADD_EDIT_COMMODITY_URL,
-  groupResourceType,
-  listResourceType,
-  LIST_COMMODITY_URL,
-} from '../../constants';
+import { ADD_EDIT_COMMODITY_URL, groupResourceType, listResourceType } from '../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  SingleKeyNestedValue,
+  useSearchParams,
+  viewDetailsQuery,
+} from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
 import { get } from 'lodash';
@@ -73,6 +73,7 @@ export const CommodityList = (props: GroupListProps) => {
 
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { addParam } = useSearchParams();
 
   const getColumns = (t: TFunction) => [
     {
@@ -107,7 +108,9 @@ export const CommodityList = (props: GroupListProps) => {
             overlay={
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_COMMODITY_URL}/${record.id}`}>{t('View Details')}</Link>
+                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+                    {t('View Details')}
+                  </Button>
                 </Menu.Item>
                 <Menu.Item key="delete">
                   <Popconfirm
@@ -158,7 +161,6 @@ export const CommodityList = (props: GroupListProps) => {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
       '_has:List:item:_id': listId,
     },
-    viewDetailsListUrl: LIST_COMMODITY_URL,
   };
 
   return <BaseListView {...baseListViewProps} />;

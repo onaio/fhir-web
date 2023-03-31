@@ -6,12 +6,14 @@ import {
   TableLayout,
   BrokenPage,
   searchQuery,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { loadKeycloakResources } from './utils';
 import { getTableColumns } from './tableColumns';
-import { useHistory, useLocation, useParams, useRouteMatch } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
@@ -28,10 +30,6 @@ interface OrganizationListProps {
   keycloakBaseURL: string;
 }
 
-interface RouteParams {
-  id?: string;
-}
-
 /**
  * Renders users in a table
  *
@@ -46,7 +44,9 @@ export const UserList = (props: OrganizationListProps) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  const { id: resourceId } = useParams<RouteParams>();
+  const { sParams, addParam } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+
   const { isLoading, data, error, isFetching } = useQuery([KEYCLOAK_URL_USERS], () =>
     loadKeycloakResources(keycloakBaseURL, KEYCLOAK_URL_USERS)
   );
@@ -76,7 +76,15 @@ export const UserList = (props: OrganizationListProps) => {
       };
     });
 
-  const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, queryClient, t);
+  const onViewDetails = (resourceId: string) => addParam(viewDetailsQuery, resourceId);
+  const columns = getTableColumns(
+    keycloakBaseURL,
+    fhirBaseURL,
+    extraData,
+    queryClient,
+    t,
+    onViewDetails
+  );
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
