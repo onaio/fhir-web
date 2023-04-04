@@ -68,11 +68,14 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
     data: affiliationsData,
     isLoading: affiliationsLoading,
     error: affiliationsError,
+    ...affiliationsQuery
   } = useQuery(
     [organizationAffiliationResourceType],
     () => loadAllResources(baseUrl, organizationAffiliationResourceType),
     {
-      select: (res) => getResourcesFromBundle<IOrganizationAffiliation>(res),
+      select: (res) => {
+        return getResourcesFromBundle<IOrganizationAffiliation>(res);
+      },
     }
   );
 
@@ -150,7 +153,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
         allAffiliations={affiliationsData ?? []}
       />
       <TableLayout
-        loading={orgsLoading || affiliationsLoading}
+        loading={orgsLoading || affiliationsLoading || affiliationsQuery.isRefetching}
         id="org-affiliation"
         persistState={true}
         datasource={tableDispData}

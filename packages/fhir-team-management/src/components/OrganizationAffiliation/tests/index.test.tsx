@@ -19,6 +19,12 @@ import {
 } from './fixures';
 import { organizationAffiliationResourceType, organizationResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -50,13 +56,13 @@ const props = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppWrapper = (props: any) => {
+const AppWrapper = ({ children }: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route exact path="/assignments">
-            <AffiliationList {...props} />
+            {children}
           </Route>
         </Switch>
       </QueryClientProvider>
@@ -89,6 +95,15 @@ afterAll(() => {
 });
 
 test('Edits organization affiliation correctly', async () => {
+  // - Simulates conditions where we edit 2 organizationAffiliation like so:
+  // - one organization affiliation is modified - starts with mapping an organization to several locations
+  // - one organization affiliation is deleted - organization is no longer assigned to any location.
+
+  const successMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => {
+      return;
+    });
   const history = createMemoryHistory();
   history.push('/assignments');
 
@@ -113,18 +128,11 @@ test('Edits organization affiliation correctly', async () => {
     .query({ _count: 1000 })
     .reply(200, allOrgs);
 
-  nock(props.fhirBaseURL)
-    .put(`/${organizationAffiliationResourceType}/75482e89-40ce-4512-a74a-ccc30aeae073`, {
-      ...createdAffiliation1,
-      id: '75482e89-40ce-4512-a74a-ccc30aeae073',
-    })
-    .reply(201, {})
-    .put(`/${organizationAffiliationResourceType}/${createdAffiliation2.id}`, createdAffiliation2)
-    .reply(201, {});
-
-  render(
+  const { unmount } = render(
     <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+      <AppWrapper>
+        <AffiliationList {...props} />
+      </AppWrapper>
     </Router>
   );
 
@@ -167,35 +175,71 @@ test('Edits organization affiliation correctly', async () => {
   fireEvent.mouseDown(input);
 
   // see what org options are listed as available for selection
-  document.querySelectorAll('.ant-select-item-option').forEach((element) => {
-    expect(element).toMatchSnapshot('available options');
-  });
+  const beforeFilterOptions = [...document.querySelectorAll('.ant-select-item-option')].map(
+    (element) => {
+      return element.textContent;
+    }
+  );
+  expect(beforeFilterOptions).toEqual([
+    'Test Team 3',
+    'Test Team 4',
+    'Test Team 5',
+    'Test Team 5',
+    'Voidsingers',
+  ]);
 
   // try and filter
   await userEvent.type(input, 'void');
   // see what org options are listed as available for selection
-  document.querySelectorAll('.ant-select-item-option').forEach((element) => {
-    expect(element).toMatchSnapshot('available options after filter');
-  });
+  const afterFilterOptions = [...document.querySelectorAll('.ant-select-item-option')].map(
+    (element) => {
+      return element.textContent;
+    }
+  );
+  expect(afterFilterOptions).toEqual(['Voidsingers']);
 
-  // remove one of the selection test Team 3
-  const testTeam3Span = screen.getByTitle((content, element) => {
-    return content.includes('Test Team 3') && element.tagName === 'SPAN';
-  });
-  const removeIcon = testTeam3Span.querySelector('.ant-select-selection-item-remove');
-  fireEvent.click(removeIcon);
-
-  expect(testTeam3Span).toMatchSnapshot('Test team 3 selected option');
+  // util to help remove selected options using the display value
+  const removeSelectedOptionWithText = (textContent) => {
+    //remove one of the selection test Team 3
+    const testTeam3Span = screen.getByTitle((content, element) => {
+      return content.includes(textContent) && element.tagName === 'SPAN';
+    });
+    const removeIcon = testTeam3Span.querySelector('.ant-select-selection-item-remove') as Element;
+    fireEvent.click(removeIcon);
+  };
+  // remove all selected options for ona office sub location
+  removeSelectedOptionWithText('Test Team 3');
+  removeSelectedOptionWithText('Test Team 4');
 
   // select Voidsingers
   fireEvent.click(screen.getByTitle(/Voidsingers/));
 
+  // only voidSingers is selected
+  const selectedOptions = [...document.querySelectorAll('.ant-select-item-option-selected')].map(
+    (option) => option.textContent
+  );
+  expect(selectedOptions).toEqual(['Voidsingers']);
+
   // then try and submit
+
+  // nock queries at this point
+  nock(props.fhirBaseURL)
+    .put(`/${organizationAffiliationResourceType}/75482e89-40ce-4512-a74a-ccc30aeae073`, {
+      ...createdAffiliation1,
+      id: '75482e89-40ce-4512-a74a-ccc30aeae073',
+    })
+    .reply(201, {})
+    .put(`/${organizationAffiliationResourceType}/${createdAffiliation2.id}`, createdAffiliation2)
+    .reply(201, {})
+    .delete(`/${organizationAffiliationResourceType}/1575`)
+    .reply(200, {});
+
+  // now submit
   const submitBtn = screen.getByTestId('submit-affiliations');
   fireEvent.click(submitBtn);
 
   await waitFor(() => {
-    expect(screen.getByText(/Team assignments updated successfully/)).toBeInTheDocument();
+    expect(successMock).toHaveBeenCalledWith('Team assignments updated successfully');
     expect(screen.queryByText(/Assign\/Unassign Teams/i)).not.toBeInTheDocument();
   });
 
@@ -220,7 +264,14 @@ test('Edits organization affiliation correctly', async () => {
   // table change
   expect(document.querySelectorAll('table tbody tr')).toHaveLength(5);
 
+  expect(nock.pendingMocks()).toEqual([]);
   expect(nock.isDone()).toBeTruthy();
+
+  await waitFor(() => {
+    expect(successMock).toHaveBeenCalledWith('Team assignments updated successfully');
+  });
+
+  unmount();
 });
 
 test('api error response', async () => {
@@ -234,7 +285,9 @@ test('api error response', async () => {
 
   render(
     <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+      <AppWrapper>
+        <AffiliationList {...props} />
+      </AppWrapper>
     </Router>
   );
 
@@ -255,7 +308,9 @@ test('api undefined response', async () => {
 
   render(
     <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+      <AppWrapper>
+        <AffiliationList {...props} />
+      </AppWrapper>
     </Router>
   );
 
