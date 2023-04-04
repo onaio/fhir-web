@@ -1,493 +1,120 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 1`] = `
-<Link
-  className="admin-link"
-  to="/admin/users"
->
-  <LinkAnchor
-    className="admin-link"
-    href="/admin/users"
-    navigate={[Function]}
-  >
-    <a
-      className="admin-link"
-      href="/admin/users"
-      onClick={[Function]}
-    >
-      <Button
-        className="btn-links"
-        color="outline"
-      >
-        <Wave
-          disabled={false}
-        >
-          <button
-            className="ant-btn ant-btn-default btn-links"
-            color="outline"
-            onClick={[Function]}
-            type="button"
-          >
-            <LoadingIcon
-              existIcon={false}
-              loading={false}
-              prefixCls="ant-btn"
-            >
-              <CSSMotion
-                motionName="ant-btn-loading-icon-motion"
-                onAppearActive={[Function]}
-                onAppearStart={[Function]}
-                onEnterActive={[Function]}
-                onEnterStart={[Function]}
-                onLeaveActive={[Function]}
-                onLeaveStart={[Function]}
-                removeOnLeave={true}
-                visible={false}
-              >
-                <DomWrapper />
-              </CSSMotion>
-            </LoadingIcon>
-            <span
-              key=".0"
-            >
-              User Management
-            </span>
-          </button>
-        </Wave>
-      </Button>
-    </a>
-  </LinkAnchor>
-</Link>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 2`] = `
-<LinkAnchor
-  className="admin-link"
-  href="/admin/users"
-  navigate={[Function]}
->
-  <a
-    className="admin-link"
-    href="/admin/users"
-    onClick={[Function]}
-  >
-    <Button
-      className="btn-links"
-      color="outline"
-    >
-      <Wave
-        disabled={false}
-      >
-        <button
-          className="ant-btn ant-btn-default btn-links"
-          color="outline"
-          onClick={[Function]}
-          type="button"
-        >
-          <LoadingIcon
-            existIcon={false}
-            loading={false}
-            prefixCls="ant-btn"
-          >
-            <CSSMotion
-              motionName="ant-btn-loading-icon-motion"
-              onAppearActive={[Function]}
-              onAppearStart={[Function]}
-              onEnterActive={[Function]}
-              onEnterStart={[Function]}
-              onLeaveActive={[Function]}
-              onLeaveStart={[Function]}
-              removeOnLeave={true}
-              visible={false}
-            >
-              <DomWrapper />
-            </CSSMotion>
-          </LoadingIcon>
-          <span
-            key=".0"
-          >
-            User Management
-          </span>
-        </button>
-      </Wave>
-    </Button>
-  </a>
-</LinkAnchor>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 3`] = `
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Card Support 1`] = `
 <a
-  className="admin-link"
-  href="/admin/users"
-  onClick={[Function]}
+  class="admin-link"
+  href="/card-support/download-client-data"
 >
-  <Button
-    className="btn-links"
+  <button
+    class="ant-btn ant-btn-default btn-links"
     color="outline"
+    type="button"
   >
-    <Wave
-      disabled={false}
-    >
-      <button
-        className="ant-btn ant-btn-default btn-links"
-        color="outline"
-        onClick={[Function]}
-        type="button"
-      >
-        <LoadingIcon
-          existIcon={false}
-          loading={false}
-          prefixCls="ant-btn"
-        >
-          <CSSMotion
-            motionName="ant-btn-loading-icon-motion"
-            onAppearActive={[Function]}
-            onAppearStart={[Function]}
-            onEnterActive={[Function]}
-            onEnterStart={[Function]}
-            onLeaveActive={[Function]}
-            onLeaveStart={[Function]}
-            removeOnLeave={true}
-            visible={false}
-          >
-            <DomWrapper />
-          </CSSMotion>
-        </LoadingIcon>
-        <span
-          key=".0"
-        >
-          User Management
-        </span>
-      </button>
-    </Wave>
-  </Button>
+    <span>
+      Card Support
+    </span>
+  </button>
 </a>
 `;
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 4`] = `
-<Link
-  className="admin-link"
-  to="/admin/teams"
->
-  <LinkAnchor
-    className="admin-link"
-    href="/admin/teams"
-    navigate={[Function]}
-  >
-    <a
-      className="admin-link"
-      href="/admin/teams"
-      onClick={[Function]}
-    >
-      <Button
-        className="btn-links"
-        color="outline"
-      >
-        <Wave
-          disabled={false}
-        >
-          <button
-            className="ant-btn ant-btn-default btn-links"
-            color="outline"
-            onClick={[Function]}
-            type="button"
-          >
-            <LoadingIcon
-              existIcon={false}
-              loading={false}
-              prefixCls="ant-btn"
-            >
-              <CSSMotion
-                motionName="ant-btn-loading-icon-motion"
-                onAppearActive={[Function]}
-                onAppearStart={[Function]}
-                onEnterActive={[Function]}
-                onEnterStart={[Function]}
-                onLeaveActive={[Function]}
-                onLeaveStart={[Function]}
-                removeOnLeave={true}
-                visible={false}
-              >
-                <DomWrapper />
-              </CSSMotion>
-            </LoadingIcon>
-            <span
-              key=".0"
-            >
-              Team Management
-            </span>
-          </button>
-        </Wave>
-      </Button>
-    </a>
-  </LinkAnchor>
-</Link>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 5`] = `
-<LinkAnchor
-  className="admin-link"
-  href="/admin/teams"
-  navigate={[Function]}
->
-  <a
-    className="admin-link"
-    href="/admin/teams"
-    onClick={[Function]}
-  >
-    <Button
-      className="btn-links"
-      color="outline"
-    >
-      <Wave
-        disabled={false}
-      >
-        <button
-          className="ant-btn ant-btn-default btn-links"
-          color="outline"
-          onClick={[Function]}
-          type="button"
-        >
-          <LoadingIcon
-            existIcon={false}
-            loading={false}
-            prefixCls="ant-btn"
-          >
-            <CSSMotion
-              motionName="ant-btn-loading-icon-motion"
-              onAppearActive={[Function]}
-              onAppearStart={[Function]}
-              onEnterActive={[Function]}
-              onEnterStart={[Function]}
-              onLeaveActive={[Function]}
-              onLeaveStart={[Function]}
-              removeOnLeave={true}
-              visible={false}
-            >
-              <DomWrapper />
-            </CSSMotion>
-          </LoadingIcon>
-          <span
-            key=".0"
-          >
-            Team Management
-          </span>
-        </button>
-      </Wave>
-    </Button>
-  </a>
-</LinkAnchor>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 6`] = `
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Form Configuration 1`] = `
 <a
-  className="admin-link"
-  href="/admin/teams"
-  onClick={[Function]}
+  class="admin-link"
+  href="/admin/form-config/releases"
 >
-  <Button
-    className="btn-links"
+  <button
+    class="ant-btn ant-btn-default btn-links"
     color="outline"
+    type="button"
   >
-    <Wave
-      disabled={false}
-    >
-      <button
-        className="ant-btn ant-btn-default btn-links"
-        color="outline"
-        onClick={[Function]}
-        type="button"
-      >
-        <LoadingIcon
-          existIcon={false}
-          loading={false}
-          prefixCls="ant-btn"
-        >
-          <CSSMotion
-            motionName="ant-btn-loading-icon-motion"
-            onAppearActive={[Function]}
-            onAppearStart={[Function]}
-            onEnterActive={[Function]}
-            onEnterStart={[Function]}
-            onLeaveActive={[Function]}
-            onLeaveStart={[Function]}
-            removeOnLeave={true}
-            visible={false}
-          >
-            <DomWrapper />
-          </CSSMotion>
-        </LoadingIcon>
-        <span
-          key=".0"
-        >
-          Team Management
-        </span>
-      </button>
-    </Wave>
-  </Button>
+    <span>
+      Form Configuration
+    </span>
+  </button>
 </a>
 `;
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 7`] = `
-<Link
-  className="admin-link"
-  to="/admin/location/unit"
->
-  <LinkAnchor
-    className="admin-link"
-    href="/admin/location/unit"
-    navigate={[Function]}
-  >
-    <a
-      className="admin-link"
-      href="/admin/location/unit"
-      onClick={[Function]}
-    >
-      <Button
-        className="btn-links"
-        color="outline"
-      >
-        <Wave
-          disabled={false}
-        >
-          <button
-            className="ant-btn ant-btn-default btn-links"
-            color="outline"
-            onClick={[Function]}
-            type="button"
-          >
-            <LoadingIcon
-              existIcon={false}
-              loading={false}
-              prefixCls="ant-btn"
-            >
-              <CSSMotion
-                motionName="ant-btn-loading-icon-motion"
-                onAppearActive={[Function]}
-                onAppearStart={[Function]}
-                onEnterActive={[Function]}
-                onEnterStart={[Function]}
-                onLeaveActive={[Function]}
-                onLeaveStart={[Function]}
-                removeOnLeave={true}
-                visible={false}
-              >
-                <DomWrapper />
-              </CSSMotion>
-            </LoadingIcon>
-            <span
-              key=".0"
-            >
-              Location Units
-            </span>
-          </button>
-        </Wave>
-      </Button>
-    </a>
-  </LinkAnchor>
-</Link>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 8`] = `
-<LinkAnchor
-  className="admin-link"
-  href="/admin/location/unit"
-  navigate={[Function]}
->
-  <a
-    className="admin-link"
-    href="/admin/location/unit"
-    onClick={[Function]}
-  >
-    <Button
-      className="btn-links"
-      color="outline"
-    >
-      <Wave
-        disabled={false}
-      >
-        <button
-          className="ant-btn ant-btn-default btn-links"
-          color="outline"
-          onClick={[Function]}
-          type="button"
-        >
-          <LoadingIcon
-            existIcon={false}
-            loading={false}
-            prefixCls="ant-btn"
-          >
-            <CSSMotion
-              motionName="ant-btn-loading-icon-motion"
-              onAppearActive={[Function]}
-              onAppearStart={[Function]}
-              onEnterActive={[Function]}
-              onEnterStart={[Function]}
-              onLeaveActive={[Function]}
-              onLeaveStart={[Function]}
-              removeOnLeave={true}
-              visible={false}
-            >
-              <DomWrapper />
-            </CSSMotion>
-          </LoadingIcon>
-          <span
-            key=".0"
-          >
-            Location Units
-          </span>
-        </button>
-      </Wave>
-    </Button>
-  </a>
-</LinkAnchor>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page: links on home page 9`] = `
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Inventory 1`] = `
 <a
-  className="admin-link"
-  href="/admin/location/unit"
-  onClick={[Function]}
+  class="admin-link"
+  href="/inventory"
 >
-  <Button
-    className="btn-links"
+  <button
+    class="ant-btn ant-btn-default btn-links"
     color="outline"
+    type="button"
   >
-    <Wave
-      disabled={false}
-    >
-      <button
-        className="ant-btn ant-btn-default btn-links"
-        color="outline"
-        onClick={[Function]}
-        type="button"
-      >
-        <LoadingIcon
-          existIcon={false}
-          loading={false}
-          prefixCls="ant-btn"
-        >
-          <CSSMotion
-            motionName="ant-btn-loading-icon-motion"
-            onAppearActive={[Function]}
-            onAppearStart={[Function]}
-            onEnterActive={[Function]}
-            onEnterStart={[Function]}
-            onLeaveActive={[Function]}
-            onLeaveStart={[Function]}
-            removeOnLeave={true}
-            visible={false}
-          >
-            <DomWrapper />
-          </CSSMotion>
-        </LoadingIcon>
-        <span
-          key=".0"
-        >
-          Location Units
-        </span>
-      </button>
-    </Wave>
-  </Button>
+    <span>
+      Inventory
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Location Management 1`] = `
+<a
+  class="admin-link"
+  href="/admin/location/unit"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Location Management
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Plans 1`] = `
+<a
+  class="admin-link"
+  href="/missions/active"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Plans
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Product Catalogue 1`] = `
+<a
+  class="admin-link"
+  href="/admin/product-catalogue"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Product Catalogue
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
+<a
+  class="admin-link"
+  href=""
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Team Management
+    </span>
+  </button>
 </a>
 `;
