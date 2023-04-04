@@ -16,7 +16,9 @@ export const Home = () => {
   const { roles } = extraData;
   const routes = React.useMemo(() => getRoutesForHomepage(roles as string[], t), [roles, t]);
 
+  // home page has 2 columns by defualt
   let columnNum = 2;
+  // then depending on enabled modules set the number of colums to either 3 or 4
   if (routes.length < 5) {
     columnNum = 2;
   } else if (routes.length < 7) {
@@ -47,7 +49,7 @@ export const Home = () => {
         {routes.length === 0 && (
           <Alert
             message="403"
-            description="Missing require permissions to view data on this page"
+            description={t('Missing the required permissions to view data on this page')}
             type="warning"
           />
         )}

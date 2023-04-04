@@ -6,6 +6,7 @@ import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import { cleanup, render, screen } from '@testing-library/react';
 import { authenticateUser } from '@onaio/session-reducer';
+import React from 'react';
 
 jest.mock('../../../../configs/env');
 jest.mock('../../../../configs/settings');
@@ -25,7 +26,7 @@ describe('containers/pages/Home', () => {
 
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual('OpenSRP Web');
-    screen.getByText(/Missing require permissions to view data on this page/i);
+    screen.getByText(/Missing the required permissions to view data on this page/i);
   });
 
   it('renders Home correctly & changes Title of page 2', () => {
