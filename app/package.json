@@ -50,6 +50,7 @@
     "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
     "@opensrp/user-management": "^0.1.19",
+    "@opensrp/rbac": "^0.0.1",
     "@sentry/react": "^5.27.4",
     "@smile-cdr/fhirts": "1.2.5",
     "antd": "^4.6.3",
