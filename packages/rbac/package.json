@@ -1,0 +1,46 @@
+{
+  "name": "@opensrp/rbac",
+  "version": "0.0.1",
+  "description": "Opensrp rbac's implementation",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "config": {
+    "folderName": "rbac"
+  },
+  "scripts": {
+    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
+    "tsc": "tsc",
+    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "yarn run tsc && yarn run transpile && yarn run copy",
+    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "dependencies": {
+    "@onaio/session-reducer": "^0.0.12",
+    "@opensrp/i18n": "^0.0.1",
+    "@opensrp/pkg-config": "^0.0.9"
+  },
+  "peerDependencies": {
+    "@opensrp/store": "^0.0.10",
+    "react": "^16.18.1",
+    "react-redux": "^7.2.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0"
+}
