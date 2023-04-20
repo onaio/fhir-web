@@ -75,13 +75,13 @@ describe('containers/pages/Home', () => {
     expect(helmet.title).toEqual('OpenSRP Web');
     const links = [...screen.queryAllByRole('link')];
     expect(links.map((x) => x.textContent)).toEqual([
+      'Plans',
       'Card Support',
-      'Form Configuration',
       'Inventory',
       'Location Management',
-      'Plans',
       'Product Catalogue',
       'Team Management',
+      'Form Configuration',
     ]);
     links.forEach((link) => {
       expect(link).toMatchSnapshot(link.textContent ?? undefined);

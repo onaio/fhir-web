@@ -183,7 +183,7 @@ describe('App - authenticated', () => {
     );
     // before resolving get oauth state request, the user is logged out
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"InventoryAdministrationdemoWelcome to OpenSRPInventoryProduct CatalogueQuestionnaire ManagementUser Management"`
+      `"InventoryAdministrationdemoWelcome to OpenSRPInventoryUser ManagementProduct CatalogueQuestionnaire Management"`
     );
 
     await act(async () => {
