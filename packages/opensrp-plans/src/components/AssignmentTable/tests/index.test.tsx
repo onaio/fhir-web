@@ -151,7 +151,7 @@ describe('opensrp-plans/assignmentTable', () => {
 
     // check the rendered output, will only have jurisdictions as ids that were in the plan
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Assigned areasAssigned teamsActions9b5dd829-89de-45a5-98f2-fd37787ae949, 6bb05db0-730b-409b-991d-4abfe6a59ea1, 1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb, 7d150b42-11e7-4362-8d0d-1a8ef506c754, 9fb0f2cf-7836-4557-a908-4b8cd628d193 - Edit regionsEdit teams"`
+      `"Assigned regionsAssigned teamsActions9b5dd829-89de-45a5-98f2-fd37787ae949, 6bb05db0-730b-409b-991d-4abfe6a59ea1, 1b14ff5b-1f24-4b50-a59a-33cef0ed7bfb, 7d150b42-11e7-4362-8d0d-1a8ef506c754, 9fb0f2cf-7836-4557-a908-4b8cd628d193 - Edit regionsEdit teams"`
     );
     wrapper.unmount();
   });
@@ -179,7 +179,7 @@ describe('opensrp-plans/assignmentTable', () => {
 
     // check the rendered output
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Assigned areasAssigned teamsActionsIITANANGA, OKASHANDJAOna testOrgEdit regionsEdit teamsIITANANGATest Test TeamEdit regionsEdit teamsOKASHANDJANAIMA old test teamEdit regionsEdit teamsIIYALA N.6, OKANKETE-2, OSHIPUMBU MAKILINDIDI NO 2-1 - Edit regionsEdit teams"`
+      `"Assigned regionsAssigned teamsActionsIITANANGA, OKASHANDJAOna testOrgEdit regionsEdit teamsIITANANGATest Test TeamEdit regionsEdit teamsOKASHANDJANAIMA old test teamEdit regionsEdit teamsIIYALA N.6, OKANKETE-2, OSHIPUMBU MAKILINDIDI NO 2-1 - Edit regionsEdit teams"`
     );
     wrapper.unmount();
   });
@@ -234,7 +234,7 @@ describe('opensrp-plans/assignmentTable', () => {
 
     // check the rendered output
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Assigned areasAssigned teamsActionsEdit regionsEdit teams"`
+      `"Assigned regionsAssigned teamsActionsEdit regionsEdit teams"`
     );
 
     // edit teams modal button should be disabled
@@ -322,7 +322,7 @@ describe('opensrp-plans/assignmentTable', () => {
 
     // check the rendered output
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Assigned areasAssigned teamsActionsIITANANGA - Edit regionsEdit teams"`
+      `"Assigned regionsAssigned teamsActionsIITANANGA - Edit regionsEdit teams"`
     );
 
     fetch.resetMocks();
@@ -387,7 +387,7 @@ describe('opensrp-plans/assignmentTable', () => {
 
     // check the rendered output
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Assigned areasAssigned teamsActionsIITANANGAOna testOrgEdit regionsEdit teams"`
+      `"Assigned regionsAssigned teamsActionsIITANANGAOna testOrgEdit regionsEdit teams"`
     );
 
     fetch.resetMocks();
