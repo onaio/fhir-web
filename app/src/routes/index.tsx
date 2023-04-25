@@ -373,5 +373,5 @@ export const getRoutesForHomepage: GetRoutes = (roles, t) => {
   }
 
   extractHomePAgeLink(routes);
-  return homePageRoutes.sort((route1, route2) => route1.title.localeCompare(route2.title));
+  return homePageRoutes;
 };
