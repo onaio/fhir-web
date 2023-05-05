@@ -42,7 +42,6 @@ import {
   URL_USER_ROLES,
   URL_SERVER_SETTINGS,
   URL_FHIR_CARE_TEAM,
-  URL_ADMIN,
   URL_DOWNLOAD_DISTRICT_REPORT,
 } from '../constants';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
@@ -63,10 +62,15 @@ export interface Route {
   enabled?: boolean;
   url?: string;
   title: string;
+  isHomePageLink?: boolean;
   otherProps?: {
     icon?: string | JSX.Element;
   };
   children?: Route[];
+}
+
+export interface GetRoutes {
+  (roles: string[], t: TFunction): Route[];
 }
 
 /** Gets Routes For Application
@@ -82,6 +86,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       otherProps: { icon: <MapMarkerOutline className="sidebar-icons" /> },
       title: t('Plans'),
       key: 'plans',
+      url: ACTIVE_PLANS_LIST_VIEW_URL,
+      isHomePageLink: true,
       enabled:
         ENABLE_PLANS &&
         roles &&
@@ -98,6 +104,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       otherProps: { icon: <IdcardOutlined /> },
       title: t('Card Support'),
       key: 'card-support',
+      url: URL_DOWNLOAD_CLIENT_DATA,
+      isHomePageLink: true,
       enabled:
         ENABLE_CARD_SUPPORT &&
         roles &&
@@ -115,6 +123,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       otherProps: { icon: <ArchiveOutline className="sidebar-icons" /> },
       title: t('Inventory'),
       key: 'inventory',
+      isHomePageLink: true,
+      url: INVENTORY_SERVICE_POINT_LIST_VIEW,
       enabled:
         ENABLE_INVENTORY &&
         roles &&
@@ -138,11 +148,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       title: t('Administration'),
       key: 'admin',
       enabled: true,
-      url: URL_ADMIN,
       children: [
         {
           title: t('User Management'),
           key: 'user-management',
+          isHomePageLink: true,
+          url: URL_USER,
           enabled:
             COMPOSITE_ENABLE_USER_MANAGEMENT &&
             roles &&
@@ -157,6 +168,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Location Management'),
           key: 'location-management',
+          isHomePageLink: true,
+          url: URL_LOCATION_UNIT,
           enabled:
             COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT &&
             roles &&
@@ -175,6 +188,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Product Catalogue'),
           key: 'product-catalogue',
+          isHomePageLink: true,
           enabled:
             ENABLE_PRODUCT_CATALOGUE &&
             roles &&
@@ -185,6 +199,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Care Teams Management'),
           key: 'fhir-care-team',
+          isHomePageLink: true,
           enabled:
             ENABLE_FHIR_CARE_TEAM &&
             roles &&
@@ -195,6 +210,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Team Management'),
           key: 'team-management',
+          isHomePageLink: true,
           enabled:
             COMPOSITE_ENABLE_TEAM_MANAGEMENT &&
             roles &&
@@ -214,6 +230,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Group Management'),
           key: 'fhir-group',
           url: LIST_GROUP_URL,
+          isHomePageLink: true,
           enabled:
             ENABLE_FHIR_GROUP &&
             roles &&
@@ -223,6 +240,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Commodity Management'),
           key: 'fhir-commodity',
+          isHomePageLink: true,
           url: LIST_COMMODITY_URL,
           enabled:
             ENABLE_FHIR_COMMODITY &&
@@ -239,10 +257,12 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.QUEST &&
             isAuthorized(roles, activeRoles.QUEST.split(',')),
           url: QUEST_VIEW_URL,
+          isHomePageLink: true,
         },
         {
           title: t('Healthcare Services'),
           key: 'healthcare',
+          isHomePageLink: true,
           url: LIST_HEALTHCARE_URL,
           enabled:
             ENABLE_HEALTHCARE_SERVICES &&
@@ -253,6 +273,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         {
           title: t('Form Configuration'),
           key: 'form-config',
+          isHomePageLink: true,
+          url: URL_MANIFEST_RELEASE_LIST,
           enabled:
             ENABLE_FORM_CONFIGURATION &&
             roles &&
@@ -281,10 +303,13 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.SERVER_SETTINGS &&
             isAuthorized(roles, activeRoles.SERVER_SETTINGS.split(',')),
           url: URL_SERVER_SETTINGS,
+          isHomePageLink: true,
         },
         {
           title: t('Reports'),
           key: 'reports',
+          url: URL_DOWNLOAD_DISTRICT_REPORT,
+          isHomePageLink: true,
           enabled:
             ENABLE_REPORTS &&
             roles &&
@@ -310,6 +335,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       key: 'fhir-patients',
       enabled: ENABLE_PATIENTS_MODULE,
       url: LIST_PATIENTS_URL,
+      isHomePageLink: true,
     },
   ];
 
@@ -330,3 +356,22 @@ export function filterFalsyRoutes(routes: Route[]): Route[] {
       return e.children ? { ...e, children: filterFalsyRoutes(e.children) } : e;
     });
 }
+
+export const getRoutesForHomepage: GetRoutes = (roles, t) => {
+  const routes = getRoutes(roles, t);
+  const homePageRoutes: Route[] = [];
+
+  function extractHomePAgeLink(routes: Route[]) {
+    for (const route of routes) {
+      if (route.isHomePageLink) {
+        homePageRoutes.push(route);
+      }
+      if (route.children) {
+        extractHomePAgeLink(route.children);
+      }
+    }
+  }
+
+  extractHomePAgeLink(routes);
+  return homePageRoutes;
+};
