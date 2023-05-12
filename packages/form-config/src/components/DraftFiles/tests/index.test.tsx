@@ -155,10 +155,10 @@ describe('components/DraftFiles', () => {
     ]);
 
     // search
-    const search = wrapper.find('SearchForm input');
-    search.simulate('input', { target: { value: 'test form' } });
+    const search = wrapper.find('input');
+    search.simulate('change', { target: { value: 'test form' } });
     wrapper.update();
-    expect(wrapper.find('input')).toHaveLength(1);
+    expect(wrapper.find('.tbody .tr')).toHaveLength(1);
 
     // test creating manifest file
     expect(wrapper.find('Button').text()).toEqual('Make Release');

@@ -128,7 +128,7 @@ describe('components/manifestFiles', () => {
 
     // search
     const search = wrapper.find('SearchForm input');
-    search.simulate('input', { target: { value: 'reveal-test' } });
+    search.simulate('change', { target: { value: 'reveal-test' } });
     wrapper.update();
     expect(wrapper.find('input')).toHaveLength(1);
 

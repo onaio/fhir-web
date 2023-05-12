@@ -121,9 +121,9 @@ describe('components/Releases', () => {
 
     // search
     const search = wrapper.find('SearchForm input');
-    search.simulate('input', { target: { value: '1.0.12' } });
+    search.simulate('change', { target: { value: '1.0.12' } });
     wrapper.update();
-    expect(wrapper.find('input')).toHaveLength(1);
+    expect(wrapper.find('.tbody .tr')).toHaveLength(1);
   });
 
   it('handles failure when fetching releases', async () => {

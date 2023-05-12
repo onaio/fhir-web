@@ -20,11 +20,12 @@ import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import { useTranslation } from '../../mls';
+
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
 /** default props interface */
-export interface ReleasesDefaultProps extends SearchFormProps {
+export interface ReleasesDefaultProps extends Pick<SearchFormProps, 'placeholder'> {
   appIdLabel: string;
   appVersionLabel: string;
   data: ManifestReleasesTypes[];
@@ -192,9 +193,6 @@ const defaultProps: ReleasesDefaultProps = {
   uploadFileLabel: 'Upload New File',
   viewFilesLabel: 'View Files',
   accessToken: '',
-  onChangeHandler: function (_event: React.ChangeEvent<HTMLInputElement>): void {
-    throw new Error('Function not implemented.');
-  },
 };
 
 /** pass default props to component */
