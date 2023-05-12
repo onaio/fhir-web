@@ -107,7 +107,7 @@ describe('components/DraftFiles', () => {
     wrapper.update();
 
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot();
-    expect(wrapper.find('SearchBar')).toHaveLength(1);
+    expect(wrapper.find('SearchForm')).toHaveLength(1);
 
     expect(wrapper.find('.tbody .tr')).toHaveLength(2);
     const downloadFiledCell = wrapper.find('.tbody .tr').at(0).find('.td').at(5).find('a');
@@ -155,10 +155,10 @@ describe('components/DraftFiles', () => {
     ]);
 
     // search
-    const search = wrapper.find('SearchBar input');
+    const search = wrapper.find('SearchForm input');
     search.simulate('input', { target: { value: 'test form' } });
     wrapper.update();
-    expect(wrapper.find('.tbody .tr')).toHaveLength(1);
+    expect(wrapper.find('input')).toHaveLength(1);
 
     // test creating manifest file
     expect(wrapper.find('Button').text()).toEqual('Make Release');

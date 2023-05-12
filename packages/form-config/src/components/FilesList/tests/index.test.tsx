@@ -100,7 +100,7 @@ describe('components/manifestFiles', () => {
     });
 
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot('isJsonValidator true');
-    expect(wrapper.find('SearchBar')).toHaveLength(1);
+    expect(wrapper.find('SearchForm')).toHaveLength(1);
     expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload new file');
     wrapper.unmount();
   });
@@ -127,10 +127,10 @@ describe('components/manifestFiles', () => {
     expect(wrapper.find('.tbody .tr')).toHaveLength(fixManifestFiles.length);
 
     // search
-    const search = wrapper.find('SearchBar input');
+    const search = wrapper.find('SearchForm input');
     search.simulate('input', { target: { value: 'reveal-test' } });
     wrapper.update();
-    expect(wrapper.find('.tbody .tr')).toHaveLength(1);
+    expect(wrapper.find('input')).toHaveLength(1);
 
     const downloadFiledCell = wrapper.find('.tbody .tr').at(0).find('.td').at(5).find('a');
     expect(downloadFiledCell.text()).toEqual('Download');

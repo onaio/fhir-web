@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
+import { SearchForm, SearchFormProps } from '@opensrp/react-utils';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
@@ -28,7 +28,7 @@ import type { Dictionary } from '@onaio/utils';
 reducerRegistry.register(draftReducerName, draftReducer);
 
 /** default props interface */
-export interface DraftsDefaultProps extends SearchBarDefaultProps {
+export interface DraftsDefaultProps extends SearchFormProps {
   clearDraftFiles: typeof removeManifestDraftFiles;
   createdAt: string;
   data: ManifestFilesTypes[];
@@ -66,7 +66,6 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     getPayload,
     LoadingComponent,
     data,
-    debounceTime,
     placeholder,
     fetchDraftFiles,
     clearDraftFiles,
@@ -184,8 +183,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     ...drillDownProps,
   };
 
-  const searchBarProps = {
-    debounceTime,
+  const searchFormProps = {
     onChangeHandler,
     placeholder,
   };
@@ -209,7 +207,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
     <div>
       <Row>
         <Col xs="8">
-          <SearchBar {...searchBarProps} />
+          <SearchForm {...searchFormProps} />
         </Col>
         <Col xs="4">
           <Link className="btn btn-secondary float-right" to={uploadLink}>
@@ -248,7 +246,6 @@ const defaultProps: DraftsDefaultProps = {
   clearDraftFiles: removeManifestDraftFiles,
   createdAt: 'Created at',
   data: [],
-  debounceTime: 1000,
   downloadLabel: `Download`,
   drillDownProps: {
     paginate: false,
@@ -262,6 +259,9 @@ const defaultProps: DraftsDefaultProps = {
   placeholder: `Find Draft Files`,
   uploadFileLabel: `Upload New File`,
   accessToken: '',
+  onChangeHandler: function (_event: React.ChangeEvent<HTMLInputElement>): void {
+    throw new Error('Function not implemented.');
+  },
 };
 
 /** pass default props to component */
