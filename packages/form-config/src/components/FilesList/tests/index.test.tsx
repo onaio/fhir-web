@@ -130,7 +130,7 @@ describe('components/manifestFiles', () => {
     const search = wrapper.find('SearchForm input');
     search.simulate('change', { target: { value: 'reveal-test' } });
     wrapper.update();
-    expect(wrapper.find('input')).toHaveLength(1);
+    expect(wrapper.find('.tbody .tr')).toHaveLength(1);
 
     const downloadFiledCell = wrapper.find('.tbody .tr').at(0).find('.td').at(5).find('a');
     expect(downloadFiledCell.text()).toEqual('Download');
