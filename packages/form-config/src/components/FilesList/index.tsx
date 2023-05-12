@@ -27,7 +27,7 @@ import { useTranslation } from '../../mls';
 reducerRegistry.register(filesReducerName, filesReducer);
 
 /** default props interface */
-export interface FilesListDefaultProps extends SearchFormProps {
+export interface FilesListDefaultProps extends Pick<SearchFormProps, 'placeholder'> {
   createdAt: string;
   data: ManifestFilesTypes[];
   downloadLabel: string;
@@ -274,9 +274,6 @@ const defaultProps: FilesListDefaultProps = {
   uploadEditLabel: 'Upload edit',
   uploadFileLabel: 'Upload new file',
   accessToken: '',
-  onChangeHandler: function (_event: React.ChangeEvent<HTMLInputElement>): void {
-    throw new Error('Function not implemented.');
-  },
 };
 
 /** pass default props to component */

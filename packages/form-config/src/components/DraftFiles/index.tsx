@@ -27,8 +27,10 @@ import type { Dictionary } from '@onaio/utils';
 /** Register reducer */
 reducerRegistry.register(draftReducerName, draftReducer);
 
+type SearchProps = Pick<SearchFormProps, 'placeholder'>;
+
 /** default props interface */
-export interface DraftsDefaultProps extends SearchFormProps {
+export interface DraftsDefaultProps extends SearchProps {
   clearDraftFiles: typeof removeManifestDraftFiles;
   createdAt: string;
   data: ManifestFilesTypes[];
@@ -259,9 +261,6 @@ const defaultProps: DraftsDefaultProps = {
   placeholder: `Find Draft Files`,
   uploadFileLabel: `Upload New File`,
   accessToken: '',
-  onChangeHandler: function (_event: React.ChangeEvent<HTMLInputElement>): void {
-    throw new Error('Function not implemented.');
-  },
 };
 
 /** pass default props to component */
