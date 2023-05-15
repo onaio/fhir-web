@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
+import { SearchForm, SearchFormProps } from '@opensrp/react-utils';
 import { Store } from 'redux';
 import { DrillDownTable, DrillDownColumn } from '@onaio/drill-down-table';
 import { connect } from 'react-redux';
@@ -27,7 +27,7 @@ import { useTranslation } from '../../mls';
 reducerRegistry.register(filesReducerName, filesReducer);
 
 /** default props interface */
-export interface FilesListDefaultProps extends SearchBarDefaultProps {
+export interface FilesListDefaultProps extends Pick<SearchFormProps, 'placeholder'> {
   createdAt: string;
   data: ManifestFilesTypes[];
   downloadLabel: string;
@@ -67,7 +67,6 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     getPayload,
     LoadingComponent,
     data,
-    debounceTime,
     placeholder,
     fetchFiles,
     fileUploadUrl,
@@ -224,8 +223,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     ...drillDownProps,
   };
 
-  const searchBarProps = {
-    debounceTime,
+  const searchFormProps = {
     onChangeHandler,
     placeholder,
   };
@@ -238,7 +236,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
     <div>
       <Row>
         <Col xs="8">
-          <SearchBar {...searchBarProps} />
+          <SearchForm {...searchFormProps} />
         </Col>
         <Col xs="4">
           {isJsonValidator && (
@@ -261,7 +259,6 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
 const defaultProps: FilesListDefaultProps = {
   createdAt: 'Created at',
   data: [],
-  debounceTime: 1000,
   downloadLabel: 'Download',
   drillDownProps: {
     paginate: false,
