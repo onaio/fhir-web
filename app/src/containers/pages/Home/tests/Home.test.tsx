@@ -1,75 +1,69 @@
-import { mount, shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import { history } from '@onaio/connected-reducer-registry';
-import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Router } from 'react-router';
 import { Home } from '../Home';
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
-import {
-  URL_LOCATION_UNIT,
-  URL_LOCATION_UNIT_GROUP,
-  URL_TEAMS,
-  URL_USER,
-} from '../../../../constants';
+import { cleanup, render, screen } from '@testing-library/react';
+import { authenticateUser } from '@onaio/session-reducer';
+import React from 'react';
 
 jest.mock('../../../../configs/env');
+jest.mock('../../../../configs/settings');
 
 describe('containers/pages/Home', () => {
-  it('renders without crashing', () => {
-    shallow(<Home />);
+  afterEach(() => {
+    cleanup();
   });
-
   it('renders Home correctly & changes Title of page', () => {
-    const wrapper = mount(
-      <Router history={history}>
-        <Home />
-      </Router>
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Home />
+        </Router>
+      </Provider>
     );
 
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual('OpenSRP Web');
-    expect(toJson(wrapper.find('Home'))).toMatchSnapshot('Home page rendered');
-    wrapper.unmount();
+    screen.getByText(/Missing the required permissions to view data on this page/i);
   });
 
-  it('displays links for user management module', () => {
-    const envModule = require('../../../../configs/env');
-    envModule.ENABLE_USER_MANAGEMENT = true;
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Home />
-        </Router>
-      </Provider>
+  it('renders Home correctly & changes Title of page 2', () => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        { email: 'bob@example.com', name: 'Bobbie', username: 'RobertBaratheon' },
+        {
+          roles: ['ROLE_VIEW_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
     );
-
-    expect(wrapper.find(`Link[to="${URL_USER}"]`)).toHaveLength(1);
-  });
-
-  it('displays links for location unit module', () => {
     const envModule = require('../../../../configs/env');
     envModule.ENABLE_LOCATIONS = true;
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <Home />
-        </Router>
-      </Provider>
-    );
-
-    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT}"]`)).toHaveLength(1);
-    expect(wrapper.find(`Link[to="${URL_LOCATION_UNIT_GROUP}"]`)).toHaveLength(1);
-  });
-
-  it('displays links for teams module', () => {
-    const envModule = require('../../../../configs/env');
     envModule.ENABLE_TEAMS = true;
-
-    const wrapper = mount(
+    envModule.ENABLE_INVENTORY = true;
+    envModule.ENABLE_FORM_CONFIGURATION = true;
+    envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
+    envModule.ENABLE_PRODUCT_CATALOGUE = true;
+    envModule.ENABLE_PLANS = true;
+    envModule.ENABLE_CARD_SUPPORT = true;
+    envModule.ENABLE_USER_MANAGEMENT = true;
+    envModule.ENABLE_LOCATIONS = true;
+    envModule.ENABLE_TEAMS = true;
+    envModule.OPENSRP_ROLES = {
+      USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
+      PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      CARD_SUPPORT: 'ROLE_VIEW_KEYCLOAK_USERS',
+      PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
+      FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
+      LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
+      INVENTORY: 'ROLE_VIEW_KEYCLOAK_USERS',
+      TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
+    };
+    render(
       <Provider store={store}>
         <Router history={history}>
           <Home />
@@ -77,6 +71,20 @@ describe('containers/pages/Home', () => {
       </Provider>
     );
 
-    expect(wrapper.find(`Link[to="${URL_TEAMS}"]`)).toHaveLength(1);
+    const helmet = Helmet.peek();
+    expect(helmet.title).toEqual('OpenSRP Web');
+    const links = [...screen.queryAllByRole('link')];
+    expect(links.map((x) => x.textContent)).toEqual([
+      'Plans',
+      'Card Support',
+      'Inventory',
+      'Location Management',
+      'Product Catalogue',
+      'Team Management',
+      'Form Configuration',
+    ]);
+    links.forEach((link) => {
+      expect(link).toMatchSnapshot(link.textContent ?? undefined);
+    });
   });
 });

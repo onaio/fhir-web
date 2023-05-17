@@ -197,14 +197,12 @@ test('renders correctly when listing organizations', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/admin/teams/205"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/admin/teams/205');
+  expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=205');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

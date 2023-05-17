@@ -1297,10 +1297,6 @@ export const allAffiliations = {
             reference: 'Location/303',
             display: 'Ona Office Sub Location',
           },
-          {
-            reference: 'Location/304',
-            display: 'Part Of Sub Location',
-          },
         ],
       },
       search: {

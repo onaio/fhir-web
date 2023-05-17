@@ -3,10 +3,14 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, Spin, Alert, Space } from 'antd';
 import { get } from 'lodash';
 import { useQuery } from 'react-query';
-import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
-import { useHistory } from 'react-router';
+import { healthCareServiceResourceType } from '../../constants';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
-import { FHIRServiceClass, SingleKeyNestedValue } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  SingleKeyNestedValue,
+  useSearchParams,
+  viewDetailsQuery,
+} from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 
 export const parseHealthCare = (obj: IHealthcareService) => {
@@ -94,7 +98,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
   const { resourceId, fhirBaseURL } = props;
-  const history = useHistory();
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -108,7 +112,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(LIST_HEALTHCARE_URL)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails resourceId={resourceId} fhirBaseURL={fhirBaseURL} />

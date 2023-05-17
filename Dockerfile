@@ -21,7 +21,9 @@ RUN chown -R node .
 USER node
 RUN yarn lerna:prepublish
 
+
 FROM node:16.18-alpine as nodejsbuild
+
 COPY --from=sources /usr/src/express-server /usr/src/express-server
 
 WORKDIR /usr/src/express-server

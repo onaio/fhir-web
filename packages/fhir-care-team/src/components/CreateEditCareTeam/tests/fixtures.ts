@@ -1,3 +1,5 @@
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+
 export const careTeam1 = {
   resourceType: 'CareTeam',
   id: '308',
@@ -114,7 +116,7 @@ export const careTeam4201 = {
       reference: 'Organization/4190',
     },
   ],
-};
+} as unknown as ICareTeam;
 
 export const careTeam4201Edited = {
   resourceType: 'CareTeam',
@@ -144,6 +146,155 @@ export const careTeam4201Edited = {
   ],
   managingOrganization: [{ reference: 'Organization/4190' }],
   identifier: [{ use: 'official', value: '0b3a3311-6f5a-40dd-95e5-008001acebe1' }],
+};
+
+export const careTeam4201alternative = {
+  resourceType: 'CareTeam',
+  id: '4201',
+  meta: {
+    versionId: '2',
+    lastUpdated: '2021-11-01T10:33:47.409+00:00',
+    source: '#3671f89bf6e8bf20',
+  },
+  text: {
+    status: 'generated',
+    div: '<div xmlns="http://www.w3.org/1999/xhtml">Care Team</div>',
+  },
+  contained: [
+    {
+      resourceType: 'Practitioner',
+      id: '4193',
+      name: [
+        {
+          family: 'Careful',
+          given: ['Adam'],
+          prefix: ['Dr'],
+        },
+      ],
+    },
+  ],
+  status: 'active',
+  category: [
+    {
+      coding: [
+        {
+          system: 'http://loinc.org',
+          code: 'LA27976-2',
+          display: 'Encounter-focused care team',
+        },
+      ],
+    },
+  ],
+  name: 'Peter Charlmers Care team',
+  subject: {
+    reference: 'Patient/4195',
+    display: 'Peter James Chalmers',
+  },
+  encounter: {
+    reference: 'Encounter/4197',
+  },
+  period: {
+    end: '2013-01-01',
+  },
+  participant: [
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: 'Patient/4195',
+        display: 'Peter James Chalmers',
+      },
+    },
+    {
+      role: [
+        {
+          text: 'responsiblePerson',
+        },
+      ],
+      member: {
+        reference: '#pr1',
+        display: 'Dorothy Dietition',
+      },
+      onBehalfOf: {
+        reference: 'Organization/f001',
+      },
+      period: {
+        end: '2013-01-01',
+      },
+    },
+    { member: { reference: 'Practitioner/102', display: 'Ward N 2 Williams MD' } },
+    {
+      role: [
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '394730007',
+              display: 'Healthcare related organization',
+            },
+          ],
+        },
+      ],
+      member: { display: 'Test Team 70', reference: 'Organization/368' },
+    },
+  ],
+  managingOrganization: [{ display: 'Test Team 70', reference: 'Organization/368' }],
+} as unknown as ICareTeam;
+
+export const careTeam4201alternativeEdited = {
+  resourceType: 'CareTeam',
+  id: '4201',
+  contained: [
+    {
+      resourceType: 'Practitioner',
+      id: '4193',
+      name: [{ family: 'Careful', given: ['Adam'], prefix: ['Dr'] }],
+    },
+  ],
+  status: 'inactive',
+  category: [
+    {
+      coding: [
+        { system: 'http://loinc.org', code: 'LA27976-2', display: 'Encounter-focused care team' },
+      ],
+    },
+  ],
+  name: 'Peter Charlmers Care teamcare team',
+  subject: { reference: 'Patient/4195', display: 'Peter James Chalmers' },
+  encounter: { reference: 'Encounter/4197' },
+  period: { end: '2013-01-01' },
+  managingOrganization: [{ display: 'testing ash123', reference: 'Organization/319' }],
+  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+  participant: [
+    {
+      role: [{ text: 'responsiblePerson' }],
+      member: { reference: 'Patient/4195', display: 'Peter James Chalmers' },
+    },
+    {
+      role: [{ text: 'responsiblePerson' }],
+      member: { reference: '#pr1', display: 'Dorothy Dietition' },
+      onBehalfOf: { reference: 'Organization/f001' },
+      period: { end: '2013-01-01' },
+    },
+    { member: { reference: 'Practitioner/103', display: 'Ward N 1 Williams MD' } },
+    {
+      role: [
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '394730007',
+              display: 'Healthcare related organization',
+            },
+          ],
+        },
+      ],
+      member: { display: 'testing ash123', reference: 'Organization/319' },
+    },
+  ],
 };
 
 export const practitioners = {
@@ -1509,10 +1660,37 @@ export const practitionerBundle = practitioners.entry;
 export const createdCareTeam = {
   resourceType: 'CareTeam',
   identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
-  id: '',
+  id: '9b782015-8392-4847-b48c-50c11638656b',
   name: 'Care team 1',
   status: 'active',
   participant: [
+    { member: { reference: 'Practitioner/102', display: 'Ward N 2 Williams MD' } },
+    {
+      role: [
+        {
+          coding: [
+            {
+              system: 'http://snomed.info/sct',
+              code: '394730007',
+              display: 'Healthcare related organization',
+            },
+          ],
+        },
+      ],
+      member: { display: 'Test Team 70', reference: 'Organization/368' },
+    },
+  ],
+  managingOrganization: [{ display: 'Test Team 70', reference: 'Organization/368' }],
+};
+
+export const createdCareTeam2 = {
+  resourceType: 'CareTeam',
+  identifier: [{ use: 'official', value: '9b782015-8392-4847-b48c-50c11638656b' }],
+  id: '9b782015-8392-4847-b48c-50c11638656b',
+  name: 'care team',
+  status: 'inactive',
+  participant: [
+    { member: { reference: 'Practitioner/102', display: 'Ward N 2 Williams MD' } },
     {
       role: [
         {
@@ -1527,6 +1705,6 @@ export const createdCareTeam = {
       ],
       member: { reference: 'Organization/368', display: 'Test Team 70' },
     },
-    { member: { reference: 'Practitioner/102', display: 'Ward N 2 Williams MD' } },
   ],
+  managingOrganization: [{ reference: 'Organization/368', display: 'Test Team 70' }],
 };

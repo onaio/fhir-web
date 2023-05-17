@@ -12,7 +12,7 @@ import {
   formatDate,
   fetchReleaseFiles,
 } from '@opensrp/form-config-core';
-import { SearchBar, SearchBarDefaultProps } from '../SearchBar';
+import { SearchForm, SearchFormProps } from '@opensrp/react-utils';
 import { Link } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import { FormConfigProps, DrillDownProps } from '../../helpers/types';
@@ -20,11 +20,12 @@ import { Cell } from 'react-table';
 import { Dictionary } from '@onaio/utils';
 import { GetAccessTokenType } from '@opensrp/server-service';
 import { useTranslation } from '../../mls';
+
 /** Register reducer */
 reducerRegistry.register(releasesReducerName, releasesReducer);
 
 /** default props interface */
-export interface ReleasesDefaultProps extends SearchBarDefaultProps {
+export interface ReleasesDefaultProps extends Pick<SearchFormProps, 'placeholder'> {
   appIdLabel: string;
   appVersionLabel: string;
   data: ManifestReleasesTypes[];
@@ -52,7 +53,6 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     fetchReleases,
     data,
     LoadingComponent,
-    debounceTime,
     placeholder,
     currentUrl,
     formUploadUrl,
@@ -145,8 +145,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     setStateData(searchResult);
   };
 
-  const searchBarProps = {
-    debounceTime,
+  const searchFormProps = {
     onChangeHandler,
     placeholder,
   };
@@ -166,7 +165,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     <>
       <Row>
         <Col xs="8">
-          <SearchBar {...searchBarProps} />
+          <SearchForm {...searchFormProps} />
         </Col>
         <Col xs="4">
           <Link className="btn btn-secondary float-right" to={uploadLink}>
@@ -184,7 +183,6 @@ const defaultProps: ReleasesDefaultProps = {
   appIdLabel: 'App ID',
   appVersionLabel: `App Version`,
   data: [],
-  debounceTime: 1000,
   drillDownProps: {
     paginate: false,
   },

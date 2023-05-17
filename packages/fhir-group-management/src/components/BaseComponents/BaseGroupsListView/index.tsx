@@ -3,16 +3,16 @@ import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button } from 'antd';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
-import { Group } from '../../../types';
 import { groupResourceType } from '../../../constants';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router';
 import {
   SearchForm,
   BrokenPage,
   TableLayout,
-  useSimpleTabularView,
   Column,
+  useTabularViewWithLocalSearch,
+  viewDetailsQuery,
+  useSearchParams,
 } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
@@ -25,14 +25,9 @@ export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp
   getColumns: (t: TFunction) => Column<TableData>[];
   extraQueryFilters?: Record<string, string>;
   createButtonLabel: string;
-  createButtonUrl: string;
+  createButtonUrl?: string;
   pageTitle: string;
-  viewDetailsListUrl: string;
 };
-
-interface RouteParams {
-  id?: string;
-}
 
 /**
  * Shows the list of all group and there details
@@ -49,24 +44,23 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
-    viewDetailsListUrl,
   } = props;
 
-  const { id: resourceId } = useParams<RouteParams>();
+  const { sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
   const { t } = useTranslation();
 
-  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<Group>(
-    fhirBaseURL,
-    groupResourceType,
-    extraQueryFilters
-  );
-  const { data, isFetching, isLoading, error } = queryValues;
+  const {
+    queryValues: { data, isFetching, isLoading, error },
+    tablePaginationProps,
+    searchFormProps,
+  } = useTabularViewWithLocalSearch<IGroup>(fhirBaseURL, groupResourceType, extraQueryFilters);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data?.records ?? []).map((org: IGroup, index: number) => {
+  const tableData = (data ?? []).map((org: IGroup, index: number) => {
     return {
       ...parseGroup(org),
       key: `${index}`,
@@ -91,13 +85,15 @@ export const BaseListView = (props: BaseListViewProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm data-testid="search-form" {...searchFormProps} disabled />
-            <Link to={createButtonUrl}>
-              <Button type="primary">
-                <PlusOutlined />
-                {createButtonLabel}
-              </Button>
-            </Link>
+            <SearchForm data-testid="search-form" {...searchFormProps} />
+            {createButtonUrl && (
+              <Link to={createButtonUrl}>
+                <Button type="primary">
+                  <PlusOutlined />
+                  {createButtonLabel}
+                </Button>
+              </Link>
+            )}
           </div>
           <TableLayout {...tableProps} />
         </Col>
@@ -105,7 +101,6 @@ export const BaseListView = (props: BaseListViewProps) => {
           resourceId={resourceId}
           fhirBaseURL={fhirBaseURL}
           keyValueMapperRenderProp={keyValueMapperRenderProp}
-          listUrl={viewDetailsListUrl}
         />
       </Row>
     </div>

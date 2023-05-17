@@ -1,7 +1,6 @@
 import {
   KEYCLOAK_URL_USERS,
   KEYCLOAK_URL_USER_GROUPS,
-  URL_USER,
   UserGroupDucks,
   getUserTypeCode,
   getUserType,
@@ -11,7 +10,6 @@ import {
 } from '@opensrp/user-management';
 import { Col, Button, Space, Alert, Spin } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import {
   FHIRServiceClass,
   getObjLike,
@@ -19,6 +17,8 @@ import {
   IdentifierUseCodes,
   loadAllResources,
   renderObjectAsKeyvalue,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -228,7 +228,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
   const { resourceId, fhirBaseUrl, keycloakBaseUrl } = props;
-  const history = useHistory();
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -242,7 +242,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(URL_USER)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails

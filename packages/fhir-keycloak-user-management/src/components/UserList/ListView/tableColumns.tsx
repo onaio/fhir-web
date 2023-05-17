@@ -8,7 +8,6 @@ import {
   URL_USER_CREDENTIALS,
   URL_USER_EDIT,
   KEYCLOAK_URL_USERS,
-  URL_USER,
 } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
@@ -24,13 +23,15 @@ import type { TFunction } from '@opensrp/i18n';
  * @param extraData - session data about logged in user
  * @param queryClient - react query client
  * @param t - translator function
+ * @param onViewDetails - callback when view details is clicked.
  */
 export const getTableColumns = (
   keycloakBaseUrl: string,
   baseUrl: string,
   extraData: Dictionary,
   queryClient: QueryClient,
-  t: TFunction
+  t: TFunction,
+  onViewDetails: (recordId: string) => void
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
@@ -70,7 +71,9 @@ export const getTableColumns = (
               <Menu>
                 <Menu.Item key="view-details" className="view-details">
                   <Button type="link">
-                    <Link to={`${URL_USER}/${record.id}`}>{t('View Details')}</Link>
+                    <Button onClick={() => onViewDetails(record.id)} type="link">
+                      {t('View Details')}
+                    </Button>
                   </Button>
                 </Menu.Item>
                 <Menu.Item key="delete-user">

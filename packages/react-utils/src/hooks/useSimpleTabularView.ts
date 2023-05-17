@@ -4,10 +4,20 @@ import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
 import { getConfig } from '@opensrp/pkg-config';
-import { RouteComponentProps, useHistory, useLocation, useRouteMatch } from 'react-router';
+import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
+import {
+  getNextUrlOnSearch,
+  getNumberParam,
+  getStringParam,
+  pageQuery,
+  pageSizeQuery,
+  searchQuery,
+  startingPage,
+  startingPageSize,
+} from './utils';
 
 export interface FhirApiFilter {
   page: number;
@@ -15,37 +25,13 @@ export interface FhirApiFilter {
   search: string | null;
 }
 
-export const pageSizeQuery = 'pageSize';
-export const pageQuery = 'page';
-export const searchQuery = 'search';
+export type ExtraParams = URLParams | ((search: string | null) => URLParams);
 
-/**
- * get a string search param from url
- *
- * @param location - route information
- * @param paramKey - search param key
- */
-export const getStringParam = (location: RouteComponentProps['location'], paramKey: string) => {
-  const sParams = new URLSearchParams(location.search);
-  return sParams.get(paramKey);
-};
-
-/**
- * get a search param that's of Number from url
- *
- * @param location -  route information
- * @param paramKey - search param key
- * @param fallback - fallback if key not found, or malformed
- */
-export const getNumberParam = (
-  location: RouteComponentProps['location'],
-  paramKey: string,
-  fallback: number | null = null
-) => {
-  const sParams = new URLSearchParams(location.search);
-  const rawParamVal = sParams.get(paramKey);
-  const paramVal = rawParamVal ? Number(rawParamVal) : NaN;
-  return isNaN(paramVal) ? fallback : paramVal;
+const defaultGetExtraParams = (search: string | null) => {
+  if (search) {
+    return { 'name:contains': search };
+  }
+  return {};
 };
 
 /**
@@ -56,24 +42,39 @@ export const getNumberParam = (
  * @param params - our params
  * @param extraParams - any extra user-defined params
  */
-const loadResources = (
+const loadResources = async (
   baseUrl: string,
   resourceType: string,
   params: FhirApiFilter,
-  extraParams: URLParams
+  extraParams: ExtraParams
 ) => {
   const { page, pageSize, search } = params;
-  const filterParams: URLParams = {
+  let filterParams: URLParams = {};
+
+  let otherParams = extraParams;
+  if (typeof extraParams === 'function') {
+    otherParams = extraParams(search);
+  }
+
+  filterParams = {
+    ...filterParams,
+    ...otherParams,
     _getpagesoffset: (page - 1) * pageSize,
     _count: pageSize,
-    ...extraParams,
   };
-  if (search) {
-    filterParams['name:contains'] = search;
+  const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
+  const res = await service.list(filterParams);
+  if (res.total === undefined) {
+    // patient endpoint does not include total after _search response like other resource endpoints do
+    const countFilter = {
+      ...filterParams,
+      _summary: 'count',
+    };
+    const { total } = await service.list(countFilter);
+    res.total = total;
+    return res;
   }
-  return new FHIRServiceClass<IBundle>(baseUrl, resourceType).list(
-    filterParams
-  ) as Promise<IBundle>;
+  return res;
 };
 
 /**
@@ -87,16 +88,16 @@ const loadResources = (
 export function useSimpleTabularView<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
-  extraParams: URLParams = {}
+  extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams
 ) {
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
 
-  const defaultPage = 1;
-  const page = getNumberParam(location, pageQuery, 1) as number;
+  const page = getNumberParam(location, pageQuery, startingPage) as number;
   const search = getStringParam(location, searchQuery);
-  const defaultPageSize = (getConfig('defaultTablesPageSize') as number | undefined) ?? 20;
+  const defaultPageSize =
+    (getConfig('defaultTablesPageSize') as number | undefined) ?? startingPageSize;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
 
   type TRQuery = [string, number, number, string, URLParams];
@@ -104,28 +105,7 @@ export function useSimpleTabularView<T extends Resource>(
 
   const queryFn = useCallback(
     async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) => {
-      const res = await loadResources(
-        fhirBaseUrl,
-        resourceType,
-        { page, pageSize, search },
-        extraParams
-      );
-      if (res.total === undefined) {
-        // patient endpoint does not include total after _searc response like other resource endpoints do
-        const countFilter = {
-          ...extraParams,
-          _summary: 'count',
-        };
-        const { total } = await loadResources(
-          fhirBaseUrl,
-          resourceType,
-          { page, pageSize, search },
-          countFilter
-        );
-        res.total = total;
-        return res;
-      }
-      return res;
+      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams);
     },
     [fhirBaseUrl, resourceType]
   );
@@ -148,19 +128,7 @@ export function useSimpleTabularView<T extends Resource>(
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: ChangeEvent<HTMLInputElement>) {
-      const searchText = event.target.value;
-      let nextUrl = match.url;
-      const currentSParams = new URLSearchParams(location.search);
-
-      if (searchText) {
-        currentSParams.set(searchQuery, searchText);
-        currentSParams.set(pageQuery, defaultPage.toString());
-        currentSParams.set(pageSizeQuery, defaultPageSize.toString());
-      } else {
-        currentSParams.delete(searchQuery);
-      }
-
-      nextUrl = ''.concat(nextUrl, '?').concat(currentSParams.toString());
+      const nextUrl = getNextUrlOnSearch(event, location, match);
       history.push(nextUrl);
     },
   };

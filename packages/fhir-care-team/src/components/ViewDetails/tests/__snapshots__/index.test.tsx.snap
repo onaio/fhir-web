@@ -1,5 +1,214 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`1157 - view details errors out for careTeam 3500 1`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      CareTeam ID
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      3500
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 2`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Name
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      Peter James Charlmers Care team
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      status
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      active
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Participants
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul>
+        <li>
+          <div
+            data-testid="key-value"
+          >
+            <dl
+              class="singleKeyValue"
+            >
+              <div
+                class="singleKeyValue-pair"
+              >
+                <dt
+                  class="singleKeyValue-pair__label"
+                >
+                  <span
+                    class="ant-typography ant-typography-secondary"
+                  >
+                    Patient
+                  </span>
+                </dt>
+                <dd
+                  class="singleKeyValue-pair__value"
+                >
+                  <span
+                    class="ant-typography"
+                  >
+                    <ul
+                      id="care-team-participants"
+                    >
+                      <li>
+                        Peter James Chalmers
+                      </li>
+                    </ul>
+                  </span>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Patient
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <ul
+        id="care-team-participants"
+      >
+        <li>
+          Peter James Chalmers
+        </li>
+      </ul>
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 6`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary"
+    >
+      Managing organizations
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography"
+    >
+      <div
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        data-show="true"
+        role="alert"
+      >
+        <div
+          class="ant-alert-content"
+        >
+          <div
+            class="ant-alert-description"
+          >
+            No managing organizaions found
+          </div>
+        </div>
+      </div>
+    </span>
+  </dd>
+</div>
+`;
+
 exports[`Closes on clicking cancel (X)  1`] = `
 <div
   class="singleKeyValue-pair"

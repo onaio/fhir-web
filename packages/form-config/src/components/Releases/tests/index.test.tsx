@@ -93,7 +93,7 @@ describe('components/Releases', () => {
     wrapper.update();
 
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot();
-    expect(wrapper.find('SearchBar')).toHaveLength(1);
+    expect(wrapper.find('SearchForm')).toHaveLength(1);
     expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload New File');
 
     expect(wrapper.find('.tbody .tr')).toHaveLength(fixManifestReleases.length);
@@ -120,8 +120,8 @@ describe('components/Releases', () => {
     wrapper.update();
 
     // search
-    const search = wrapper.find('SearchBar input');
-    search.simulate('input', { target: { value: '1.0.12' } });
+    const search = wrapper.find('SearchForm input');
+    search.simulate('change', { target: { value: '1.0.12' } });
     wrapper.update();
     expect(wrapper.find('.tbody .tr')).toHaveLength(1);
   });

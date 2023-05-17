@@ -6,7 +6,7 @@ import { AddEditOrganization } from '..';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -125,11 +125,11 @@ test('renders correctly for edit locations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('title')).toMatchInlineSnapshot(`
-    <title>
-      Edit team | OpenSRP web Test Organisation
-    </title>
-  `);
+  expect(nock.pendingMocks()).toEqual([]);
+
+  await waitFor(() => {
+    expect(screen.getByText('Edit team | OpenSRP web Test Organisation')).toBeInTheDocument();
+  });
 
   // some small but incoclusive proof that the form rendered and has some initial values
   expect(screen.getByLabelText(/name/i)).toMatchSnapshot('name field');

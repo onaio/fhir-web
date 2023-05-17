@@ -185,8 +185,8 @@ test('pagination and search work correctly', async () => {
   });
 
   // works with search as well.
-  const searchForm = document.querySelector('[data-testid="search-form"]');
-  await userEvents.type(searchForm, '345');
+  const searchForm = document.querySelector('[data-testid="search-form"]') as Element;
+  userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
@@ -199,4 +199,6 @@ test('pagination and search work correctly', async () => {
   // remove search.
   userEvents.clear(searchForm);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
+
+  expect(nock.pendingMocks()).toEqual([]);
 });
