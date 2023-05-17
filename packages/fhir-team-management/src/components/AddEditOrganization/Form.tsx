@@ -9,6 +9,7 @@ import {
   type,
   members,
   organizationResourceType,
+  practitionerResourceType,
 } from '../../constants';
 import { useQueryClient, useMutation } from 'react-query';
 import { useTranslation } from '../../mls';
@@ -79,9 +80,17 @@ const OrganizationForm = (props: OrganizationFormProps) => {
           organization,
           practitioners,
           existingPractitionerRoles
-        ).then(() => {
-          sendSuccessNotification(t('Practitioner assignments updated successfully'));
-        });
+        )
+          .then(() =>
+            queryClient.invalidateQueries([
+              practitionerResourceType,
+              organizationResourceType,
+              organization.id,
+            ])
+          )
+          .then(() => {
+            sendSuccessNotification(t('Practitioner assignments updated successfully'));
+          });
       });
     },
     {

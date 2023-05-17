@@ -47,6 +47,7 @@ export const DYNAMIC_IRS_ACTIVITY_CODE = 'dynamicIRS';
 export const DYNAMIC_MDA_COMMUNITY_DISPENSE_ACTIVITY_CODE = 'dynamicCommunityDispenseMDA';
 export const DYNAMIC_MDA_COMMUNITY_ADHERENCE_ACTIVITY_CODE = 'dynamicCommunityAdherenceMDA';
 export const PRODUCT_CHECK_ACTIVITY_CODE = 'dynamicProductCheck';
+export const COMPLETE_POINT_CHECK_WITH_PROBLEM_ACTIVITY_CODE = 'dynamicServiceCheckWithProblem';
 export const RECORD_GPS_ACTIVITY_CODE = 'dynamicRecordGPS';
 export const SERVICE_POINT_CHECK_ACTIVITY_CODE = 'dynamicServicePoint';
 export const LOOKS_GOOD_ACTIVITY_CODE = 'dynamicLooksGood';
@@ -54,6 +55,13 @@ export const COMPLETE_FIX_PROBLEM_ACTIVITY_CODE = 'dynamicCompleteFixProblem';
 export const COMPLETE_FLAG_PROBLEM_ACTIVITY_CODE = 'dynamicCompleteFlagProblem';
 export const COMPLETE_RECORD_GPS_ACTIVITY_CODE = 'dynamicCompleteRecordGPS';
 export const COMPLETE_SERVICE_CHECK_ACTIVITY_CODE = 'dynamicCompleteServiceCheck';
+export const BENEFICIARY_CONSULTATION_ACTIVITY_CODE = 'beneficiaryConsultation';
+export const COMPLETE_BENEFICIARY_CONSULTATION_ACTIVITY_CODE = 'completeBeneficiaryConsulation';
+export const COMPLETE_BENEFICIARY_FLAG_ACTIVITY_CODE = 'completeBeneficiaryConsultationWithFlag';
+export const WAREHOUSE_CHECK_ACTVITY_CODE = 'warehouseCheck';
+export const COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE = 'completeWarehouseCheck';
+export const FIX_PRODUCT_PROBLEM_ACTIVITY_CODE = 'dynamicFixProductProblem';
+export const FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE = 'fixProblemConsultBeneficiaries';
 
 // task action codes
 export const BCC_CODE = 'BCC';
@@ -76,10 +84,17 @@ export const FLAG_PROBLEM_CODE = 'flag_problem';
 export const COMPLETE_FLAG_PROBLEM_CODE = 'complete_flag_problem';
 export const COMPLETE_RECORD_GPS_CODE = 'complete_record_gps';
 export const COMPLETE_SERVICE_CHECK_CODE = 'complete_service_point_check';
+export const COMPLETE_POINT_CHECK_WITH_PROBLEM_CODE = 'complete_service_point_with_flag_problem';
+export const BENEFICIARY_CONSULTATION_CODE = 'beneficiary_consultation';
+export const COMPLETE_BENEFICIARY_CONSULTATION_CODE = 'complete_beneficiary_consultation';
+export const COMPLETE_BENEFICIARY_FLAG_CODE = 'complete_beneficiary_consultation_with_flag';
+export const WAREHOUSE_CHECK_CODE = 'warehouse_check';
+export const COMPLETE_WAREHOUSE_CHECK_CODE = 'complete_warehouse_check';
+export const FIX_PRODUCT_PROBLEMS_CODE = 'fix_problem';
+export const FIX_PROBLEM_CONSULT_BENEFICIARIES_CODE = 'fix_problem_consult_beneficiaries';
 
 export const GOAL_CONFIRMATION_GOAL_ID = 'Case_Confirmation';
 export const GOAL_ID = 'goal_id';
-
 export const CREATE_TYPE = 'create';
 export const UPDATE_TYPE = 'update';
 

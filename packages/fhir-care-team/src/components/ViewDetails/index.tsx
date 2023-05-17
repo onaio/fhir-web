@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { Col, Space, Button, Alert } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { Col, Button, Alert } from 'antd';
+import { CloseOutlined, SyncOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import {
@@ -11,7 +11,7 @@ import {
   getResourcesFromBundle,
   parseFhirHumanName,
 } from '@opensrp/react-utils';
-import { careTeamResourceType, practitionerResourceType, URL_CARE_TEAM } from '../../constants';
+import { careTeamResourceType, URL_CARE_TEAM } from '../../constants';
 import { useTranslation } from '../../mls';
 import { renderObjectAsKeyvalue } from '@opensrp/react-utils';
 import { get, groupBy, keyBy } from 'lodash';
@@ -41,21 +41,23 @@ function categorizeIncludedResources(resources: Resource[], careTeamId: string) 
 
   const subjectRef = thisCareTeam.subject?.reference;
   const subjectResource = subjectRef ? resByIds[subjectRef] : undefined;
-  const participantResources: Resource[] = [];
+  const participants: Resource[] = [];
   const managingOrganizations: IOrganization[] = [];
   thisCareTeam.participant?.forEach((participant) => {
     const ref = participant.member?.reference;
-    if (ref) {
-      participantResources.push(resByIds[ref]);
+    const referencedResource = resByIds[ref ?? ''] as unknown as Resource | undefined;
+    if (referencedResource) {
+      participants.push(referencedResource);
     }
   });
   thisCareTeam.managingOrganization?.forEach((organization) => {
     const ref = organization.reference;
-    if (ref) {
-      managingOrganizations.push(resByIds[ref] as unknown as IOrganization);
+    const referencedResource = resByIds[ref ?? ''] as unknown as IOrganization | undefined;
+    if (referencedResource) {
+      managingOrganizations.push(referencedResource);
     }
   });
-  const participantByResourceType = groupBy(participantResources, 'resourceType');
+  const participantByResourceType = groupBy(participants, 'resourceType');
   return { subjectResource, participantByResourceType, thisCareTeam, managingOrganizations };
 }
 
@@ -114,9 +116,9 @@ const ViewDetails = (props: ViewDetailsProps) => {
                         )[0];
                         return (
                           <li key={resource.id}>
-                            {resourceType === practitionerResourceType
-                              ? parseFhirHumanName(practitionerName)
-                              : res.name}
+                            {typeof res.name === 'string'
+                              ? res.name
+                              : parseFhirHumanName(practitionerName)}
                           </li>
                         );
                       })}
@@ -159,15 +161,20 @@ const ViewDetails = (props: ViewDetailsProps) => {
       {error && !data ? (
         <BrokenPage errorMessage={`${error}`} />
       ) : (
-        <Space direction="vertical">
+        <>
           {isLoading ? (
-            <Alert description={t('Fetching Care team')} type="info"></Alert>
+            <Alert
+              description={t('Fetching Care team')}
+              type="info"
+              showIcon
+              icon={<SyncOutlined spin />}
+            ></Alert>
           ) : careTeam ? (
             renderObjectAsKeyvalue(careTeamKeyValues)
           ) : (
             <Alert description={t('Care Team not found')} type="warning"></Alert>
           )}
-        </Space>
+        </>
       )}
     </Col>
   );

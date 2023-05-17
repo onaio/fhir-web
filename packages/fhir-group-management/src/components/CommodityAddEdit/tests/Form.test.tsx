@@ -100,6 +100,12 @@ describe('Health care form', () => {
       wrapper.update();
     });
 
+    expect(toJson(wrapper.find('FormItem#id label'))).toMatchSnapshot('id label');
+    expect(toJson(wrapper.find('FormItem#id input'))).toMatchSnapshot('id field');
+
+    expect(toJson(wrapper.find('FormItem#identifier label'))).toMatchSnapshot('identifier label');
+    expect(toJson(wrapper.find('FormItem#identifier input'))).toMatchSnapshot('identifier field');
+
     expect(toJson(wrapper.find('FormItem#name label'))).toMatchSnapshot('name label');
     expect(toJson(wrapper.find('FormItem#name input'))).toMatchSnapshot('name field');
 
@@ -238,9 +244,29 @@ describe('Health care form', () => {
     fireEvent.click(document.querySelector('[title="Device"]'));
 
     // unit of measure
-
     // simulate value selection for members
     wrapper.find('input#unitOfMeasure').simulate('mousedown');
+
+    const measureUnitOptions = [
+      ...document.querySelectorAll(
+        '#unitOfMeasure_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(measureUnitOptions).toHaveLength(9);
+    expect(measureUnitOptions).toEqual([
+      'Pieces',
+      'Tablets',
+      'Ampoules',
+      'Strips',
+      'Cycles',
+      'Bottles',
+      'Test kits',
+      'Sachets',
+      'Straps',
+    ]);
 
     fireEvent.click(document.querySelector('[title="Bottles"]'));
 

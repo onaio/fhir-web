@@ -2,14 +2,20 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Col, Spin, Alert } from 'antd';
 import { Group } from '../../../types';
-import { useHistory } from 'react-router';
 import { groupResourceType } from '../../../constants';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  getObjLike,
+  IdentifierUseCodes,
+  useSearchParams,
+  viewDetailsQuery,
+} from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
 import { TFunction } from 'i18n/dist/types';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /**
  * parse a Group to object we can easily consume in Table layout
@@ -17,16 +23,33 @@ import { TFunction } from 'i18n/dist/types';
  * @param obj - the organization resource object
  */
 export const parseGroup = (obj: IGroup) => {
-  const { name, active, quantity, member, id, type, characteristic } = obj;
+  const {
+    name,
+    active,
+    quantity,
+    member,
+    id,
+    type,
+    characteristic,
+    identifier: rawIdentifier,
+  } = obj;
+  const identifierObj = getObjLike(
+    rawIdentifier,
+    'use',
+    IdentifierUseCodes.OFFICIAL
+  ) as Identifier[];
+  const identifier = get(identifierObj, '0.value');
   return {
     name,
     active,
     id,
+    identifier,
     lastUpdated: get(obj, 'meta.lastUpdated'),
     members: member,
     quantity,
     type,
     characteristic,
+    obj,
   };
 };
 
@@ -42,7 +65,6 @@ export type ViewDetailsWrapperProps = Pick<
   'fhirBaseURL' | 'keyValueMapperRenderProp'
 > & {
   resourceId?: string;
-  listUrl: string;
 };
 
 /**
@@ -77,8 +99,8 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  * @param props - detail view component props
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
-  const { resourceId, fhirBaseURL, keyValueMapperRenderProp, listUrl } = props;
-  const history = useHistory();
+  const { resourceId, fhirBaseURL, keyValueMapperRenderProp } = props;
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -92,7 +114,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(listUrl)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails

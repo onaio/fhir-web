@@ -1,110 +1,92 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, Tree as AntTree } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import reducerRegistry from '@onaio/redux-reducer-registry';
-import {
-  getLocationTreeState,
-  reducerName,
-  setLocationTreeState,
-  reducer,
-} from '../../ducks/location-hierarchy';
 import { AntTreeProps } from '../LocationUnitList';
 import './tree.css';
 import { ParsedHierarchyNode } from '../../ducks/locationHierarchy/types';
-import { getHierarchyNodeFromArray } from '../../ducks/locationHierarchy/utils';
 import { useTranslation } from '../../mls';
+import TreeModel from 'tree-model';
 import { Key } from 'rc-tree/lib/interface';
-reducerRegistry.register(reducerName, reducer);
+
+/** helper type, shortened form */
+export type TreeNode = TreeModel.Node<ParsedHierarchyNode>;
+
+interface SelectCallbackInfo {
+  event: 'select';
+  selected: boolean;
+  node: TreeNode;
+  selectedNodes: TreeNode;
+  nativeEvent: MouseEvent;
+}
 
 interface TreeProp {
-  data: ParsedHierarchyNode[];
-  OnItemClick: (item: ParsedHierarchyNode) => void;
+  data: TreeNode[];
+  selectedNode: TreeNode | undefined;
+  onSelect: (item: TreeNode | undefined) => void;
+}
+
+interface ExpandCallbackInfo {
+  node: TreeNode;
+  expanded: boolean;
+  nativeEvent: MouseEvent;
 }
 
 export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
-  const { data, OnItemClick } = props;
-  const dispatch = useDispatch();
+  const { data, onSelect, selectedNode } = props;
   const { t } = useTranslation();
 
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const filterData: ParsedHierarchyNode[] = [];
-  const locationTreeState = useSelector((state) => getLocationTreeState(state));
-
-  /**
-   * Function to to expand tree
-   *
-   * @param {string} value - value to be searched and expanded
-   */
-  function expandTree(value: string) {
-    const expandedKeys = filterData
-      .map((item) =>
-        value.length && item.label.toLocaleLowerCase().indexOf(value.toLowerCase()) > -1
-          ? getParentKey(item.id, item.parent as string, filterData)
-          : null
-      )
-      .filter((item, i, self) => item && self.indexOf(item) === i);
-    setExpandedKeys(expandedKeys as string[]);
-    dispatch(
-      setLocationTreeState({
-        keys: expandedKeys as React.Key[],
-        node: locationTreeState?.node as ParsedHierarchyNode,
-      })
-    );
-  }
+  const [searchExpandedKeys, setSearchExpandedKeys] = useState<Key[]>([]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (locationTreeState?.node) {
-      const node = getHierarchyNodeFromArray(filterData, locationTreeState.node.id);
-      if (node) {
-        onExpand(locationTreeState.keys);
-        OnItemClick(node);
-      }
+    const updateExpandedKeys = (keys: Key[]) => setExpandedKeys([...expandedKeys, ...keys]);
+    // set expanded and selected keys depending on location tree state and searchValue
+    if (selectedNode) {
+      let parentPath = selectedNode.getPath();
+      parentPath = parentPath.slice(1, parentPath.length);
+      const parentKeys = parentPath.map((node) => node.model.id);
+      updateExpandedKeys(parentKeys);
+    }
+    if (searchValue) {
+      let matchedNodes: TreeNode[] = [];
+      data.forEach((tree: TreeNode) => {
+        const matchedNodesPerTree = tree.all(
+          (node) => node.model.title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1
+        );
+        matchedNodes = [...matchedNodes, ...matchedNodesPerTree];
+      });
+      // parent keys of matched nodes
+      const parentNodeKeys = matchedNodes
+        .map((node: TreeNode) => {
+          if (node.parent) {
+            return node.parent.model.id;
+          }
+          return undefined;
+        })
+        .filter((key) => key !== undefined);
+      setSearchExpandedKeys(parentNodeKeys);
+    } else {
+      setSearchExpandedKeys([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data, searchValue, selectedNode]);
 
   /**
-   * Return the the parent key in a tree for the supplied key
-   *
-   * @param {string} key the key to find parent of
-   * @param {string} parentId the id of current node
-   * @param {Array<ParsedHierarchyNode>} tree the orignal tree
-   * @returns {string} - returns parent key
+   * @param keys - node keys
+   * @param other -
    */
-  function getParentKey(key: string, parentId: string, tree: ParsedHierarchyNode[]): string {
-    let nodeKey = '';
-    tree.forEach((node) => {
-      if (node.children) {
-        if (node.children.some((item: ParsedHierarchyNode) => item.parent === parentId)) {
-          nodeKey = node.key;
-        } else if (getParentKey(key, parentId, node.children))
-          return getParentKey(key, parentId, node.children);
-      } else {
-        nodeKey = node.parent as string;
-      }
-    });
-    return nodeKey;
-  }
-
-  /**
-   * Function to handle event when a tree is expanded
-   *
-   * @param allExpandedKeys currently expanded keys
-   */
-  function onExpand(allExpandedKeys: Key[]) {
-    if (expandedKeys.length !== 0) {
-      for (let i = 0; i < expandedKeys.length; i++) {
-        if (expandedKeys[i] !== allExpandedKeys[i]) {
-          allExpandedKeys.length = i;
-          break;
-        }
-      }
+  function expandHandler(keys: Key[], other: unknown) {
+    const info = other as unknown as ExpandCallbackInfo;
+    const node = info.node.data;
+    const location = node.model;
+    const thisNodeKey = location.id;
+    if (info.expanded) {
+      setExpandedKeys([...expandedKeys, thisNodeKey]);
+    } else {
+      const kys = expandedKeys.filter((key) => key !== thisNodeKey);
+      setExpandedKeys(kys);
     }
-    setExpandedKeys(allExpandedKeys);
   }
 
   /**
@@ -115,23 +97,25 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   function onChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     setSearchValue(value);
-    expandTree(value);
   }
 
   /**
    * process the data before it could be displayed in tree
    *
-   * @param {Array<ParsedHierarchyNode[]>} data the tree data to preprocess
+   * @param {Array<TreeNode[]>} data the tree data to preprocess
    * @returns {object} - returns obj with title, key and children
    */
   const buildTreeData = React.useCallback(
-    (data: ParsedHierarchyNode[]): AntTreeProps[] => {
-      return data.map((item) => {
-        const index = item.title.toLowerCase().indexOf(searchValue.toLowerCase());
-        const beforeStr = item.title.toLowerCase().substr(0, index);
-        const afterStr = item.title.toLowerCase().substr(index + searchValue.length);
+    (data: TreeNode[]): AntTreeProps[] => {
+      return data.map((itemNode) => {
+        const item = itemNode.model;
+        const itemTitle = item.title;
+        const index = itemTitle.toLowerCase().indexOf(searchValue.toLowerCase());
+        const beforeStr = itemTitle.toLowerCase().substring(0, index);
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+        const afterStr = itemTitle.toLowerCase().substring(index + searchValue.length);
         const title = (
-          <span key={item.id}>
+          <span key={item.id} title={itemTitle}>
             {searchValue.length > 0 && index > -1 ? (
               <>
                 {beforeStr}
@@ -145,38 +129,16 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         );
 
         return {
-          // important : we are mixing the antTreeProps with ParsedHierarchyNode
-          data: item,
-          key: item.key,
+          data: itemNode,
+          key: item.id,
           title: title,
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          ...(item.children && { children: buildTreeData(item.children) }),
+          ...(item.children && { children: buildTreeData(itemNode.children) }),
         } as AntTreeProps;
       });
     },
     [searchValue]
   );
-
-  /**
-   * Generate filter data to later used to compare and filter keys on input with ant tree node
-   *
-   * @param {Array<ParsedHierarchyNode>} data the tree data to preprocess
-   */
-  const generateFilterData = React.useCallback(
-    (data: ParsedHierarchyNode[]) => {
-      data.forEach((node) => {
-        filterData.push({ ...node });
-        if (node.children) {
-          generateFilterData(node.children);
-        }
-      });
-    },
-    [filterData]
-  );
-
-  React.useMemo(() => {
-    generateFilterData(data);
-  }, [data, generateFilterData]);
 
   // se we want to support a usecase where a node is selected but can be collapsed
   return (
@@ -189,23 +151,24 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         onChange={onChange}
       />
       <AntTree
-        onClick={(_, antTreeNode) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const node = (antTreeNode as any).data as ParsedHierarchyNode; // seperating all data mixed with ParsedHierarchyNode
-          OnItemClick(node);
-          const allExpandedKeys = [...new Set([...expandedKeys, node.key])];
-          const index = expandedKeys.indexOf(node.key);
-          if (index > -1) {
-            allExpandedKeys.splice(index, 1);
-          }
-          dispatch(setLocationTreeState({ keys: allExpandedKeys, node }));
-          onExpand(allExpandedKeys);
-        }}
-        selectedKeys={[locationTreeState?.keys[locationTreeState.keys.length - 1]] as React.Key[]}
-        onExpand={onExpand}
-        expandedKeys={expandedKeys}
-        autoExpandParent={true}
+        autoExpandParent={false}
+        selectedKeys={selectedNode ? [selectedNode.model.id] : undefined}
+        onExpand={expandHandler}
+        expandedKeys={[...expandedKeys, ...searchExpandedKeys]}
         treeData={buildTreeData(data)}
+        onSelect={(_: Key[], other) => {
+          const info = other as unknown as SelectCallbackInfo;
+          const locNode = info.node.data;
+          const nodekey = locNode.model.id;
+          if (info.selected) {
+            setExpandedKeys([...new Set([...expandedKeys, nodekey])]);
+            onSelect(locNode);
+          } else {
+            const kys = expandedKeys.filter((key) => key !== nodekey);
+            setExpandedKeys(kys);
+            onSelect(undefined);
+          }
+        }}
       />
     </div>
   );

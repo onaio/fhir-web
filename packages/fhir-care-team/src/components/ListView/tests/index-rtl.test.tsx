@@ -119,11 +119,16 @@ describe('Care Teams list view', () => {
     nock(props.fhirBaseURL)
       .get(`/${careTeamResourceType}/_search`)
       .query({
-        _getpagesoffset: 0,
-        _count: 20,
+        _summary: 'count',
       })
-      .reply(200, careTeams)
-      .persist();
+      .reply(200, { total: 100 });
+
+    nock(props.fhirBaseURL)
+      .get(`/${careTeamResourceType}/_search`)
+      .query({
+        _count: 100,
+      })
+      .reply(200, careTeams);
 
     const history = createMemoryHistory();
     history.push(URL_CARE_TEAM);
@@ -152,7 +157,7 @@ describe('Care Teams list view', () => {
     // target the initial row view details
     const dropdown = document.querySelector(
       'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
-    );
+    ) as Element;
     fireEvent.click(dropdown);
 
     const viewDetailsLink = getByText(/View Details/);

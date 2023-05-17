@@ -38,6 +38,7 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
+    "@opensrp/user-management": "^0.1.19",
     "uuid": "^8.3.1"
   },
   "devDependencies": {

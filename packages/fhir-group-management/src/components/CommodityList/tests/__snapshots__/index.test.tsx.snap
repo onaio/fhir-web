@@ -10,7 +10,7 @@ exports[`renders correctly when listing resources 3`] = `
     <span
       class="ant-typography ant-typography-secondary"
     >
-      Name
+      Commodity Id
     </span>
   </dt>
   <dd
@@ -19,7 +19,7 @@ exports[`renders correctly when listing resources 3`] = `
     <span
       class="ant-typography"
     >
-      Amoxicillin 250mg Tablets
+      e50eb835-7827-4001-b233-e1dda721d4e8
     </span>
   </dd>
 </div>
@@ -35,7 +35,7 @@ exports[`renders correctly when listing resources 4`] = `
     <span
       class="ant-typography ant-typography-secondary"
     >
-      Active
+      Name
     </span>
   </dt>
   <dd
@@ -44,7 +44,7 @@ exports[`renders correctly when listing resources 4`] = `
     <span
       class="ant-typography"
     >
-      Active
+      Amoxicillin 250mg Tablets
     </span>
   </dd>
 </div>
@@ -60,7 +60,7 @@ exports[`renders correctly when listing resources 5`] = `
     <span
       class="ant-typography ant-typography-secondary"
     >
-      Unit of measure
+      Active
     </span>
   </dt>
   <dd
@@ -69,7 +69,7 @@ exports[`renders correctly when listing resources 5`] = `
     <span
       class="ant-typography"
     >
-      Tablets
+      Disabled
     </span>
   </dd>
 </div>
@@ -97,7 +97,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
   class="ant-table-cell"
 >
   <div>
-    Active
+    Disabled
   </div>
 </td>
 `;
@@ -105,9 +105,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
 <td
   class="ant-table-cell"
->
-  medication
-</td>
+/>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
@@ -171,7 +169,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
   class="ant-table-cell"
 >
   <div>
-    Active
+    Disabled
   </div>
 </td>
 `;
@@ -179,9 +177,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 2 page 1 3`] = `
 <td
   class="ant-table-cell"
->
-  medication
-</td>
+/>
 `;
 
 exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
@@ -245,7 +241,7 @@ exports[`renders correctly when listing resources: table row 3 page 1 2`] = `
   class="ant-table-cell"
 >
   <div>
-    Active
+    Disabled
   </div>
 </td>
 `;
@@ -253,9 +249,7 @@ exports[`renders correctly when listing resources: table row 3 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 3 page 1 3`] = `
 <td
   class="ant-table-cell"
->
-  medication
-</td>
+/>
 `;
 
 exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
@@ -319,7 +313,7 @@ exports[`renders correctly when listing resources: table row 4 page 1 2`] = `
   class="ant-table-cell"
 >
   <div>
-    Active
+    Disabled
   </div>
 </td>
 `;
@@ -327,9 +321,7 @@ exports[`renders correctly when listing resources: table row 4 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 4 page 1 3`] = `
 <td
   class="ant-table-cell"
->
-  medication
-</td>
+/>
 `;
 
 exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
@@ -393,7 +385,7 @@ exports[`renders correctly when listing resources: table row 5 page 1 2`] = `
   class="ant-table-cell"
 >
   <div>
-    Active
+    Disabled
   </div>
 </td>
 `;
@@ -401,9 +393,7 @@ exports[`renders correctly when listing resources: table row 5 page 1 2`] = `
 exports[`renders correctly when listing resources: table row 5 page 1 3`] = `
 <td
   class="ant-table-cell"
->
-  medication
-</td>
+/>
 `;
 
 exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
@@ -415,6 +405,1086 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
   >
     <a
       href="/commodity/add-edit/592181bc-0a68-47bc-8275-ac853bba1b09"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 6 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  AS (25mg) + AQ (67.5mg) ( 2-11months) Tablets
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 6 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 6 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 6 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/b339a63b-84db-45e8-b357-7fcce3bddc34"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 7 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  AS (50mg) + AQ (135mg) ( 1-5years) Tablets
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 7 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 7 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 7 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/7c5c3eb6-0382-4c7b-8c2d-3abfb31d29f4"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 8 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Dispensing Bags for Tablets (s)
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 8 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 8 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 8 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/9aa4d38c-1c8c-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 9 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Dispensing Envelopes
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 9 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 9 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 9 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/3e5529c8-1c8d-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 10 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Disposable Gloves
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 10 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 10 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 10 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/1a06dc73-575f-4cff-9424-c95605ba7c30"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 11 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Examination Gloves (Nitrile) Large
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 11 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 11 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 11 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/961eb18c-1c8e-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 12 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Examination Gloves (Nitrile) Medium
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 12 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 12 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 12 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/23c0fed8-1c8e-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 13 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Examination Gloves (Nitrile) Small
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 13 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 13 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 13 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/8e6fc3e6-1c8d-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 14 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Face Mask, Surgical
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 14 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 14 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 14 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/75a7f6ec-1c8f-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 15 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Face Shield (Flexible, Disposable)
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 15 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 15 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 15 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/3b603f72-22b1-40f9-b2e0-5e9c3df7003f"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 16 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  MNP
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 16 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 16 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 16 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/3af23539-850a-44ed-8fb1-d4999e2145ff"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 17 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Goggles
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 17 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 17 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 17 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/21fc9958-1c8f-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 18 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Hand sanitizer gel 250ml w/ pump
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 18 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 18 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 18 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/6e7d2b70-1c90-11ed-861d-0242ac120002"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 19 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Male Condoms
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 19 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 19 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 19 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/951da426-1506-4cab-b03e-5583bdf0ca76"
+    >
+      <button
+        class="ant-btn ant-btn-link m-0 p-1"
+        type="button"
+      >
+        <span>
+          Edit
+        </span>
+      </button>
+    </a>
+    <div
+      class="ant-divider ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 20 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Microgynon
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 20 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Disabled
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 20 page 1 3`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 20 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      href="/commodity/add-edit/f2734756-a6bb-4e90-bbc6-1c34f51d3d5c"
     >
       <button
         class="ant-btn ant-btn-link m-0 p-1"

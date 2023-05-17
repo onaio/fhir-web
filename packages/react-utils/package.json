@@ -37,17 +37,17 @@
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
+    "@opensrp/i18n": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/i18n": "^0.0.1",
     "antd": "^4.6.3",
     "fhirclient": "^2.4.0",
     "react-query": "^3.15.1"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
     "@onaio/gatekeeper": "^0.4.0",
+    "@opensrp/store": "^0.0.10",
     "antd": "^4.6.3",
     "lodash": "^4.17.21",
     "react": "^16.18.1",
@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@smile-cdr/fhirts": "1.2.5",
+    "@testing-library/react-hooks": "^8.0.1",
     "nock": "^13.0.6"
   },
   "author": "OpenSRP Engineering",

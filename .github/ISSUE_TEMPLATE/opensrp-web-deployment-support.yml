@@ -1,148 +1,192 @@
+---
 name: OpenSRP web Deployment Support Request.
-description: A support request for the OpenSRP web team to deploy a web instance for a specific project.
-title: '[Deployment Support]: '
-labels: [OpenSRP web Deployment Support]
+description: A support request for the OpenSRP web team to deploy a web instance
+  for a specific project.
+title: "[Deployment Support]: "
+labels:
+  - OpenSRP web Deployment Support
+
 body:
- - type: markdown
-   attributes:
-     value: |
-       Thanks for taking the time to fill out this deployment support request!
- - type: markdown
-   attributes:
-     value: |
-       Remember to have the following before requesting for deployment support.
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this deployment support request!
 
-       1. Deployed the OpenSRP or FHIR server to be used in the deployment.
-       2. Created the Keycloak Realm required for the deployment.
-       3. Added the keycloak client to be used for this deployment.
-       4. Created a realm user (realm admin user is preferred). We will use this user to login to the web instance after deployment.
-       5. Added the following items & credentials to onas password manager.
-          1. Client secret
-          2. Client id
-          3. User sign in credentials i.e username & password.
+  - type: markdown
+    attributes:
+      value: >
+        Remember to have the following before requesting for deployment support.
 
-       In case some of these items are not available to you, please contact the following people in your project
+        1. Deployed the OpenSRP or FHIR server to be used in the deployment.
 
-       1. Technical Project Manager (If available)
-       2. OpenSRP engineer (If available)
-       3. OpenSRP Support
+        2. Created the Keycloak Realm required for the deployment.
 
- - type: input
-   id: deployment_project
-   attributes:
-     label: Which project requires this deployment?
-     description: Which project requires this deployment?
-     placeholder: ZEIR, WHO ANC,
-   validations:
-     required: true
- - type: dropdown
-   id: deployment_urgency
-   attributes:
-     label: How urgent is this deployment?
-     description: WHow urgent is this deployment i.e HIGH (Needs to be worked on now), MEDIUM (Will be urgent in the next 3 - 7 days), LOW (can wait for the next 7 -14 days)?
-     options:
-       - HIGH (Needs to be worked on now)
-       - MEDIUM (Will be urgent in the next 3 - 7 days)
-       - LOW (can wait for the next 7 -14 days)
-   validations:
-     required: true
- - type: dropdown
-   id: deployment_type
-   attributes:
-     label: What type of deployment is this?
-     description: What type of deployment is this i.e. staging, preview, production?
-     options:
-       - Staging
-       - Preview
-       - Production
-   validations:
-     required: true
- - type: dropdown
-   id: deployment_host
-   attributes:
-     label: Where is the deployment hosted?
-     description: Where is the deployment hosted i.e. Ona AWS, Client Virtual server (AWS, AZURE, AliCloud), In Country?
-     options:
-       - Ona AWS
-       - Client Virtual server (AWS, AZURE, AliCloud, e.t.c)
-       - In Country
-   validations:
-     required: true
- - type: input
-   id: project_contact
-   attributes:
-     label: Project Contact
-     description: Who is the technical lead on this project?
-     placeholder: John Doe
-   validations:
-     required: false
- - type: input
-   id: deployment_deadline
-   attributes:
-     label: Deployment deadlines
-     description: Do we have any deadlines tied to this deployment?
-     placeholder: 17th June 2021
-   validations:
-     required: true
- - type: input
-   id: deployment_keycloak_url
-   attributes:
-     label: Provide the Keycloak URL
-     description: Please provide the keycloak URL to use?
-     placeholder: https://keycloak.labs.smartregister.org/
-   validations:
-     required: true
- - type: input
-   id: deployment_keycloak_realm
-   attributes:
-     label: Provide the Keycloak Realm
-     description: Please provide the keycloak Realm to use?
-     placeholder: opensrp-web-stage
-   validations:
-     required: true
- - type: input
-   id: deployment_server_url
-   attributes:
-     label: Provide the Backend Server URL
-     description: What OpenSRP or OpenSRP FHIR server are we deploying aganist?
-     placeholder: https://opensrp-stage.smartregister.org/ or https://fhir.labs.smartregister.org/
-   validations:
-     required: true
- - type: input
-   id: deployment_domain_name
-   attributes:
-     label: Provide the web instance Domain name
-     description: Please provide the the domain name to be used for this instance
-     placeholder: https://web.opensrp-stage.smartregister.org/
-   validations:
-     required: true
- - type: textarea
-   id: bug_extra_info
-   attributes:
-     label: Does this deployment need extra functionality?
-     description: Do you require any other functionality other than the default functionality we have?.
-   validations:
-     required: false
- - type: markdown
-   attributes:
-     value: |
-       Default functionality
+        3. Added the keycloak client to be used for this deployment.
 
-       1. Location management
-           1. Creating, editing, viewing & deletion of location units
-           2. Creating, editing, viewing & deletion of locations unit group
-       2. User management
-           1. Creating, editing, viewing of users
-           2. Creating, editing, viewing of user groups
-           3. Viewing user roles
-       3. Team management
-           1. Creating, editing, viewing of teams
-           2. Assigning team members to teams
-           3. Assigning teams to locations
- - type: markdown
-   attributes:
-     value: |
-       Remember
+        4. Created a realm user (realm admin user is preferred). We will use this user to login to the web instance after deployment.
 
-       1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
-       2. To follow up on delivery. You're in-charge.
+        5. Added the following items & credentials to onas password manager.
+           1. Client secret
+           2. Client id
+           3. User sign in credentials i.e username & password.
+
+        In case some of these items are not available to you, please contact the following people in your project
+
+
+        1. Technical Project Manager (If available)
+
+        2. OpenSRP engineer (If available)
+
+        3. OpenSRP Support
+
+  - type: input
+    id: deployment_project
+    attributes:
+      label: Which project requires this deployment?
+      description: Which project requires this deployment?
+      placeholder: ZEIR, WHO ANC,
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment_urgency
+    attributes:
+      label: How urgent is this deployment?
+      description: WHow urgent is this deployment i.e HIGH (Needs to be worked on
+        now), MEDIUM (Will be urgent in the next 3 - 7 days), LOW (can wait for
+        the next 7 -14 days)?
+      options:
+        - HIGH (Needs to be worked on now)
+        - MEDIUM (Will be urgent in the next 3 - 7 days)
+        - LOW (can wait for the next 7 -14 days)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment_type
+    attributes:
+      label: What type of deployment is this?
+      description: What type of deployment is this i.e. staging, preview, production?
+      options:
+        - Staging
+        - Preview
+        - Production
+    validations:
+      required: true
+
+  - type: dropdown
+    id: deployment_host
+    attributes:
+      label: Where is the deployment hosted?
+      description: Where is the deployment hosted i.e. Ona AWS, Client Virtual server
+        (AWS, AZURE, AliCloud), In Country?
+      options:
+        - Ona AWS
+        - Client Virtual server (AWS, AZURE, AliCloud, e.t.c)
+        - In Country
+    validations:
+      required: true
+
+  - type: input
+    id: project_contact
+    attributes:
+      label: Project Contact
+      description: Who is the technical lead on this project?
+      placeholder: John Doe
+    validations:
+      required: false
+
+  - type: input
+    id: deployment_deadline
+    attributes:
+      label: Deployment deadlines
+      description: Do we have any deadlines tied to this deployment?
+      placeholder: 17th June 2021
+    validations:
+      required: true
+
+  - type: input
+    id: deployment_keycloak_url
+    attributes:
+      label: Provide the Keycloak URL
+      description: Please provide the keycloak URL to use?
+      placeholder: https://keycloak.labs.smartregister.org/
+    validations:
+      required: true
+
+  - type: input
+    id: deployment_keycloak_realm
+    attributes:
+      label: Provide the Keycloak Realm
+      description: Please provide the keycloak Realm to use?
+      placeholder: opensrp-web-stage
+    validations:
+      required: true
+
+  - type: input
+    id: deployment_server_url
+    attributes:
+      label: Provide the Backend Server URL
+      description: What OpenSRP or OpenSRP FHIR server are we deploying aganist?
+      placeholder: https://opensrp-stage.smartregister.org/ or
+        https://fhir.labs.smartregister.org/
+    validations:
+      required: true
+
+  - type: input
+    id: deployment_domain_name
+    attributes:
+      label: Provide the web instance Domain name
+      description: Please provide the the domain name to be used for this instance
+      placeholder: https://web.opensrp-stage.smartregister.org/
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug_extra_info
+    attributes:
+      label: Does this deployment need extra functionality?
+      description: Do you require any other functionality other than the default
+        functionality we have?.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Default functionality
+
+        - [ ] Location management
+          1. Creating, editing, viewing & deletion of location units
+          2. Creating, editing, viewing & deletion of locations unit group
+        - [ ] User management
+          1. Creating, editing, viewing of users
+          2. Creating, editing, viewing of user groups
+          3. Viewing user roles
+        - [ ] Team management
+          1. Creating, editing, viewing of teams
+          2. Assigning team members to teams
+          3. Assigning teams to locations
+
+        Extra functionality(Fhir Web)
+
+        - [ ] Patients Management
+          1. Viewing patients information
+        - [ ] Questionnaire management
+          1. View Questionnaires and Questionnaire Responses
+          2. Create Questionnaire Responses
+        - [ ]  Care Team Management
+          1. Creating, editing, viewing & deletion of care Teams
+        - [ ] Group Management
+          1. Creating, editing , viewing & deletion of Groups
+        - [ ] Commodity Management
+          1. Creating, editing, viewing & deletion of Commodities
+
+  - type: markdown
+    attributes:
+      value: >
+        Remember
+
+        1. To alert the team in the [#opensrp-web](https://onaio.slack.com/archives/C01R82Y9N58) channel.
+
+        2. To follow up on delivery. You're in-charge.

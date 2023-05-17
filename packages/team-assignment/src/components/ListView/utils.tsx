@@ -49,7 +49,6 @@ export const columnsFactory = (t: TFunction): Column<TableData>[] => {
       title: t('Name'),
       dataIndex: 'locationName',
       key: `${TableColumnsNamespace}-locationName` as keyof TableData,
-      defaultSortOrder: 'descend',
       sorter: (rec1, rec2) => {
         if (rec1.locationName > rec2.locationName) {
           return -1;

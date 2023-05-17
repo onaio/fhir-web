@@ -1,165 +1,120 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page: Home page rendered 1`] = `
-<Home>
-  <div
-    className="text-center home"
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Card Support 1`] = `
+<a
+  class="admin-link"
+  href="/card-support/download-client-data"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
   >
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
-    >
-      <SideEffect(NullComponent)
-        defer={true}
-        encodeSpecialCharacters={true}
-        title="OpenSRP Web"
-        titleAttributes={Object {}}
-      >
-        <NullComponent
-          defer={true}
-          encodeSpecialCharacters={true}
-          title="OpenSRP Web"
-          titleAttributes={Object {}}
-        />
-      </SideEffect(NullComponent)>
-    </HelmetWrapper>
-    <Row
-      className="weclome-box"
-      justify="center"
-    >
-      <div
-        className="ant-row ant-row-center weclome-box"
-        style={Object {}}
-      >
-        <Col
-          span={6}
-        >
-          <div
-            className="ant-col ant-col-6"
-            style={Object {}}
-          >
-            <h3>
-              Welcome to OpenSRP
-            </h3>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      >
-        <Col
-          className="gutter-row"
-          span={12}
-        >
-          <div
-            className="ant-col ant-col-12 gutter-row"
-            style={
-              Object {
-                "paddingLeft": 8,
-                "paddingRight": 8,
-              }
-            }
-          >
-            <Link
-              className="admin-link"
-              to="/admin/users"
-            >
-              <LinkAnchor
-                className="admin-link"
-                href="/admin/users"
-                navigate={[Function]}
-              >
-                <a
-                  className="admin-link"
-                  href="/admin/users"
-                  onClick={[Function]}
-                >
-                  <Button
-                    className="btn-links"
-                    color="outline"
-                  >
-                    <Wave
-                      disabled={false}
-                    >
-                      <button
-                        className="ant-btn ant-btn-default btn-links"
-                        color="outline"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <LoadingIcon
-                          existIcon={false}
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <CSSMotion
-                            motionName="ant-btn-loading-icon-motion"
-                            onAppearActive={[Function]}
-                            onAppearStart={[Function]}
-                            onEnterActive={[Function]}
-                            onEnterStart={[Function]}
-                            onLeaveActive={[Function]}
-                            onLeaveStart={[Function]}
-                            removeOnLeave={true}
-                            visible={false}
-                          >
-                            <DomWrapper />
-                          </CSSMotion>
-                        </LoadingIcon>
-                        <span
-                          key=".0"
-                        >
-                          User Management
-                        </span>
-                      </button>
-                    </Wave>
-                  </Button>
-                </a>
-              </LinkAnchor>
-            </Link>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      />
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      />
-    </Row>
-  </div>
-</Home>
+    <span>
+      Card Support
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Form Configuration 1`] = `
+<a
+  class="admin-link"
+  href="/admin/form-config/releases"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Form Configuration
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Inventory 1`] = `
+<a
+  class="admin-link"
+  href="/inventory"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Inventory
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Location Management 1`] = `
+<a
+  class="admin-link"
+  href="/admin/location/unit"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Location Management
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Plans 1`] = `
+<a
+  class="admin-link"
+  href="/missions/active"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Plans
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Product Catalogue 1`] = `
+<a
+  class="admin-link"
+  href="/admin/product-catalogue"
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Product Catalogue
+    </span>
+  </button>
+</a>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
+<a
+  class="admin-link"
+  href=""
+>
+  <button
+    class="ant-btn ant-btn-default btn-links"
+    color="outline"
+    type="button"
+  >
+    <span>
+      Team Management
+    </span>
+  </button>
+</a>
 `;

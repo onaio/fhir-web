@@ -70,7 +70,7 @@ export const createdCommodity = {
       },
       valueCodeableConcept: {
         coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
-        text: 'bottles',
+        text: 'Bottles',
       },
     },
   ],
@@ -96,7 +96,7 @@ export const editedCommodity = {
       },
       valueCodeableConcept: {
         coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
-        text: 'strips',
+        text: 'Strips',
       },
     },
   ],
@@ -135,7 +135,7 @@ export const createdCommodity1 = {
       },
       valueCodeableConcept: {
         coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
-        text: 'bottles',
+        text: 'Bottles',
       },
     },
   ],

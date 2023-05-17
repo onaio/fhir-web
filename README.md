@@ -1,64 +1,118 @@
-# FHIR Web
+# OpenSRP FHIR Web
 
 [![codecov](https://codecov.io/gh/opensrp/web/branch/master/graph/badge.svg?token=EG3TX9MAM4)](https://codecov.io/gh/opensrp/web)
 
-The goal of OpenSRP Web is to be the default frontend for the [OpenSRP Server](https://github.com/OpenSRP/opensrp-server-core) API, providing access to
-the data collected on the server, configuration options as well as any
-functionality provided by the API server.
+<!-- We need an intoduction banner here -->
 
-This repository is divided into 2 [workTrees](https://yarnpkg.com/features/workspaces), the first contains the actual react application workspace `app`, the second contain the different workspace packages that `app` consumes.
+OpenSRP FHIR Web is the default frontend for [OpenSRP HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
 
-## Run the app
+## Table of Contents
 
-```sh
-# create a .env file in the repo/app folder, you can copy the .env.sample and then override its values
-# cp app/.env.sample app/.env
+---
 
-# Install dependencies
-yarn install
+- [FHIR Standard](#what-is-the-fhir-standard)
+- [OpenSRP FHIR Core](#what-is-opensrp-fhir-core)
+- [Project Architecture](#project-architecture)
+- [Repository Setup](#repository-setup)
+  - [Bootstrapping](#bootstrapping)
+  - [Current Build Tools](#current-build-tools)
+  - [Deprecated Build Tools](#deprecated-build-tools)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [Deployments](#deployments)
+  - [Prerequisites](#prerequisites)
+  - [Docker](#1-docker)
+  - [Kubernetes](#2-kubernetes)
+  - [Ansible](#3-ansible)
+- [Configuration](#configuration)
+  - [Environment Variables](#environment-variables)
+  - [Multi-language Support](#multi-language-support-mls)
+- [Publishing](#publishing)
 
-# Build the packages, this involves generating their type definitions and transpiling using babel to cjs
-yarn lerna:prepublish
+## What is the FHIR Standard
 
-# start the react app
-yarn start
-```
+HL7 Fast Healthcare Interoperability Resources (`FHIR`), is a standard to enable quick and efficient representation and exchange of health care data, including clinical and administrative data, by digital health systems.
 
-**Gotcha**
+## What is OpenSRP FHIR Core
 
-<details>
-  <summary>Skip preflight check error on yarn start</summary>
-  
-  ** Error: ** 
-  If you would prefer to ignore this check, add SKIP_PREFLIGHT_CHECK=true to an .env file in your project.
-  That will permanently disable this message but you might encounter other issues.
+OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
 
-  ** Fix **
-  Make sure you have added the .env file in the app folder, and has the SKIP_PREFLIGHT_CHECK=true env
+## Project Architecture
 
-</details>
+<!-- We need an architecture diagram here -->
 
-You can get the list of all configurable envs, their descriptions and sane defaults in the [env docs file](docs/env.md)
+OpenSRP FHIR Web consumes FHIR resources from the[ OpenSRP HAPI FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter). Both OpenSRP FHIR Web and OpenSRP HAPI FHIR server use a [Keycloak Server](https://hub.docker.com/r/onaio/keycloak) for authentication (Oauth 2.0). On top of the React Js web application, there is a tiny [Express JS Server](https://github.com/onaio/express-server) that is bundled together with OpenSRP FHIR Web that handles both authentication and serving the compiled FHIR Web files. For All Intents and Purposes, both the Express and the React Js apps are bundled together and collectively referred to as the OpenSRP FHIR Web.
 
-## setting up with docker
+## Repository Setup
 
-TBD
+### Bootstrapping
 
-## Testing
+This repository is a monorepo bootstrapped with [Lerna](https://github.com/lerna/lerna) and [Yarn Workspaces](https://yarnpkg.com/features/workspaces). It is divided into two workTrees, the first, [/app](/app/), containing the actual React application, and the second, [/packages](/packages/) containing the different packages that `/app` consume.
 
-```sh
-yarn lerna:prepublish
-yarn test
-```
+### Current Build Tools
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Ant Design](https://ant.design/)
+- [Lerna](https://github.com/lerna/lerna)
+- [Yarn Workspaces](https://yarnpkg.com/features/workspaces)
+- [TanStack Query](https://tanstack.com/query)
+- [Jest](https://jestjs.io/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+- [React Router](https://reactrouter.com/)
+- [Eslint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+
+### Deprecated Build Tools
+
+- [Enzyme](https://enzymejs.github.io/enzyme/)
+- [React Redux](https://react-redux.js.org/)
+
+## Getting Started
+
+- [Getting Started Documentation](/docs/getting-started.md).
 
 ## Contributing
 
-1. Before creating a PR, create an issue.
-2. At least two approvals are required before merging a PR
-3. Ensure all status checks are passing, including tests before following up on reviews. A review is likely not going to review if there are failing status checks.
-4. Ensure your PR includes tests.
-5. Ensure all your commits are signed, [see](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
+- [Contributing Documentation](/docs/CONTRIBUTING.md).
 
-Familiarity with [React](https://reactjs.org/) and [Ant](https://ant.design/docs/react/introduce) is necessary.
+## Deployments
+
+We use different technologies to deploy OpenSRP FHIR Web.
+
+### Prerequisites
+
+- A well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak) deployment.
+  - We currently support version `18.0.0-legacy`
+  - This should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configurations.
+- A well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter) deployment.
+
+### 1. Docker
+
+- [FHIR Web Docker Deployment Documentation](/docs/fhir-web-docker-deployment.md).
+
+- [OpenSRP Web Docker Deployment Documentation](/docs/opensrp-web-docker-deployment.md).
+
+### 2. Kubernetes
+
+- [FHIR Web and OpenSRP Web Kubernetes Helm Chart](https://github.com/opensrp/helm-charts/tree/main/charts/opensrp-web).
+
+### 3. Ansible
+
+- [OpenSRP Web Ansible Playbook](https://github.com/opensrp/playbooks/blob/master/web.yml)
+  - Run an OpenSRP Web deployment with certbot, react, express, and nginx.
+  - You'll need accompanying ansible inventories
+
+## Configuration
+
+### Environment Variables
+
+- [List Of Configurable Environment Variables](/docs/env.md).
+
+### Multi-language Support (MLS)
+
+- [Internalization and Multi Language Support Documentation](/docs/I18n.md).
+
+## Publishing
+
+- [Publishing Documentation](/docs/publishing.md).

@@ -170,7 +170,7 @@ import {
   teamManagementProps,
   patientProps,
   fhirCreateEditUserProps,
-  commodityAddEditProps,
+  commmodityProps,
 } from './utils';
 import './App.css';
 import {
@@ -902,7 +902,7 @@ const App: React.FC = () => {
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={`${ADD_EDIT_COMMODITY_URL}/:id`}
               exact
-              {...commodityAddEditProps}
+              {...commmodityProps}
               component={CommodityAddEdit}
             />
             <PrivateComponent
@@ -910,7 +910,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
               path={ADD_EDIT_COMMODITY_URL}
-              {...commodityAddEditProps}
+              {...commmodityProps}
               exact
               component={CommodityAddEdit}
             />
@@ -933,6 +933,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.COMMODITY && activeRoles.COMMODITY.split(',')}
               path={`${LIST_COMMODITY_URL}/:id`}
+              {...commmodityProps}
               component={CommodityList}
             />
             <PrivateComponent
@@ -940,6 +941,7 @@ const App: React.FC = () => {
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               activeRoles={activeRoles.COMMODITY && activeRoles.COMMODITY.split(',')}
               path={LIST_COMMODITY_URL}
+              {...commmodityProps}
               component={CommodityList}
             />
             <PrivateComponent
