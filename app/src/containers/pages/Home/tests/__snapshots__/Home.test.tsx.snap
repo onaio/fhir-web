@@ -105,7 +105,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
 exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
 <a
   class="admin-link"
-  href=""
+  href="/admin/teams"
 >
   <button
     class="ant-btn ant-btn-default btn-links"
