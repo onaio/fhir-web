@@ -14,10 +14,17 @@ export function getActiveKey(path: string, routes: Route[]) {
 
     // Exact Match
     if (path === menu.url) activeKey = menu.key;
+
     // Trying to Match with Children
-    else if (menu.children && path !== menu.url) menu.children.forEach(mapMenus);
+    if (menu.children) menu.children.forEach(mapMenus);
   }
-  routes.forEach(mapMenus);
+
+  for (let i: number = 0; i < routes.length; i++) {
+    let route = routes[i];
+    if (activeKey === undefined) {
+      mapMenus(route);
+    }
+  }
 
   return activeKey;
 }
