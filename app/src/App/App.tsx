@@ -77,7 +77,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
-import { TeamAssignmentView } from '@opensrp/team-assignment';
+import { TeamAssignmentView } from '@opensrp/team-management';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -211,7 +211,6 @@ import {
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
-import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';

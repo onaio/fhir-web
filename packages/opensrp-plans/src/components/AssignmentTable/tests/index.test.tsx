@@ -19,8 +19,11 @@ import {
 import { act } from 'react-dom/test-utils';
 import { jurisdictions } from './fixtures';
 import { Jurisdiction, removeJurisdictions } from '../../../ducks/jurisdictions';
-import { removeAssignmentsAction } from '@opensrp/team-assignment';
-import { Organization, removeOrganizationsAction } from '@opensrp/team-management';
+import {
+  removeAssignmentsAction,
+  Organization,
+  removeOrganizationsAction,
+} from '@opensrp/team-management';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
 import MockDate from 'mockdate';

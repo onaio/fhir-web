@@ -14,7 +14,7 @@ import {
   Assignment,
   fetchAssignments,
   getAssignmentsArrayByPlanId,
-} from '@opensrp/team-assignment';
+} from '@opensrp/team-management';
 import {
   JurisdictionsReducer,
   jurisdictionReducerName,
