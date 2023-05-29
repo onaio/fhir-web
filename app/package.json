@@ -47,7 +47,6 @@
     "@opensrp/server-logout": "^0.0.2",
     "@opensrp/server-service": "^0.0.16",
     "@opensrp/store": "^0.0.10",
-    "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
     "@opensrp/user-management": "^0.1.19",
     "@sentry/react": "^5.27.4",

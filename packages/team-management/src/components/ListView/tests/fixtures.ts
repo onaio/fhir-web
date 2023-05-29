@@ -14,6 +14,11 @@ export const samplePlan: PlanDefinition = {
   goal: [],
   action: [],
   experimental: false,
+  effectivePeriod: {
+    end: '',
+    start: '',
+  },
+  useContext: [],
 };
 
 export const sampleHierarchy: RawOpenSRPHierarchy = {

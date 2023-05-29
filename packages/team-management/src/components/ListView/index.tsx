@@ -11,7 +11,7 @@ import {
   Organization,
   getOrganizationsArray,
   reducerName as orgReducerName,
-} from '@opensrp/team-management';
+} from '../../ducks/organizations';
 import {
   Tree,
   RawOpenSRPHierarchy,

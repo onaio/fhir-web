@@ -36,16 +36,7 @@ import { Practitioner } from '../../ducks/practitioners';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
-
-// TODO - duplicate Raw assignment type from @opensrp/team-assignment - issue https://github.com/opensrp/web/issues/869
-/** the raw assignment object as received from openSRP API */
-export interface RawAssignment {
-  jurisdictionId: string;
-  organizationId: string;
-  planId: string;
-  fromDate: number;
-  toDate: number;
-}
+import { RawAssignment } from '../../ducks/assignments';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
