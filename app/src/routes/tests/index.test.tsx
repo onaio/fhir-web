@@ -171,7 +171,7 @@ describe('routes', () => {
           },
         ],
         enabled: true,
-        key: 'card-support',
+        key: 'download-client-data',
         otherProps: {
           icon: <IdcardOutlined />,
         },
@@ -218,13 +218,13 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'user-management',
+            key: 'users',
             title: 'User Management',
           },
           {
             children: [
               {
-                key: 'location-unit',
+                key: 'location-units',
                 title: 'Location Units',
                 url: '/admin/location/unit',
               },
@@ -235,7 +235,7 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'location-management',
+            key: 'location-units',
             title: 'Location Management',
           },
           {
@@ -247,7 +247,7 @@ describe('routes', () => {
           {
             children: [
               {
-                key: 'TEAMS',
+                key: 'teams',
                 title: 'Teams',
                 url: '/admin/teams',
               },
@@ -259,7 +259,7 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'team-management',
+            key: 'teams',
             title: 'Team Management',
           },
           { enabled: true, key: 'fhir-quest', title: 'Questionnaire Management', url: '/quest' },
@@ -282,7 +282,7 @@ describe('routes', () => {
               },
             ],
             enabled: true,
-            key: 'form-config',
+            key: 'form-config-releases',
             title: 'Form Configuration',
           },
           {
@@ -327,8 +327,8 @@ describe('routes', () => {
       (t: string) => t
     );
     const parentKeys = routes.flatMap((x) => x.children).map((x) => x.key);
-    expect(parentKeys).toContain('team-management');
-    expect(parentKeys).toContain('user-management');
-    expect(parentKeys).toContain('location-management');
+    expect(parentKeys).toContain('teams');
+    expect(parentKeys).toContain('users');
+    expect(parentKeys).toContain('location-units');
   });
 });
