@@ -103,7 +103,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
     {
       otherProps: { icon: <IdcardOutlined /> },
       title: t('Card Support'),
-      key: 'download-client-data',
+      key: 'card-support',
       url: URL_DOWNLOAD_CLIENT_DATA,
       isHomePageLink: true,
       enabled:
@@ -151,7 +151,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       children: [
         {
           title: t('User Management'),
-          key: 'users',
+          key: 'user-management',
           isHomePageLink: true,
           url: URL_USER,
           enabled:
@@ -167,7 +167,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         },
         {
           title: t('Location Management'),
-          key: 'location-units',
+          key: 'location-management',
           isHomePageLink: true,
           url: URL_LOCATION_UNIT,
           enabled:
@@ -176,7 +176,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.LOCATIONS &&
             isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
           children: [
-            { title: t('Location Units'), url: URL_LOCATION_UNIT, key: 'location-units' },
+            { title: t('Location Units'), url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
               enabled: !ENABLE_FHIR_LOCATIONS,
               title: t('Location Unit Group'),
@@ -209,7 +209,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         },
         {
           title: t('Team Management'),
-          key: 'teams',
+          key: 'team-management',
           isHomePageLink: true,
           enabled:
             COMPOSITE_ENABLE_TEAM_MANAGEMENT &&
@@ -217,7 +217,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
             activeRoles.TEAMS &&
             isAuthorized(roles, activeRoles.TEAMS.split(',')),
           children: [
-            { title: t('Teams'), url: URL_TEAMS, key: 'teams' },
+            { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS' },
             {
               title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
@@ -272,7 +272,7 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
         },
         {
           title: t('Form Configuration'),
-          key: 'form-config-releases',
+          key: 'form-config',
           isHomePageLink: true,
           url: URL_MANIFEST_RELEASE_LIST,
           enabled:
