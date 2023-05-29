@@ -1,4 +1,4 @@
-import { processRawAssignments } from '@opensrp/team-assignment';
+import { processRawAssignments } from '@opensrp/team-management';
 import { compressAssignments, getDataSource, mergeIdsWithNames } from '../utils';
 import {
   expectedMergedIds1,

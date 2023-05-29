@@ -18,7 +18,7 @@ import {
   Assignment,
   RawAssignment,
   processRawAssignments,
-} from '@opensrp/team-assignment';
+} from '@opensrp/team-management';
 import { PlanDefinition } from '@opensrp/plan-form-core';
 import moment from 'moment';
 import {

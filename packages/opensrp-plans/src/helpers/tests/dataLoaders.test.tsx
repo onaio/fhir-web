@@ -13,7 +13,7 @@ import {
 import * as plansDux from '../../ducks/planDefinitions';
 import { helperRawAssignment1, helperRawAssignment2, helperRawAssignment3 } from './fixtures';
 import MockDate from 'mockdate';
-import { processRawAssignments } from '@opensrp/team-assignment';
+import { processRawAssignments } from '@opensrp/team-management';
 import flushPromises from 'flush-promises';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';

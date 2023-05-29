@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditAssignmentsModal, SelectOption } from '../AssignmentModal';
 import { Divider } from 'antd';
-import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
+import { Assignment, fetchAssignments } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
 import { Organization } from '@opensrp/team-management';
 import {
