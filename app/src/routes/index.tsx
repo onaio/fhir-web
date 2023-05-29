@@ -211,7 +211,6 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Team Management'),
           key: 'team-management',
           isHomePageLink: true,
-          url: URL_TEAMS,
           enabled:
             COMPOSITE_ENABLE_TEAM_MANAGEMENT &&
             roles &&
