@@ -5,7 +5,7 @@ import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
-import { getActiveKey } from './utils';
+import { getActiveKey, getPathKey } from './utils';
 import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
@@ -55,9 +55,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     return routes.map(mapChildren);
   }, [routes]);
 
-  const activeLocationPaths = location.pathname
-    .split('/')
-    .filter((locString: string) => locString.length);
+  const activePaths = getPathKey(location.pathname, routes);
   const activeKey = getActiveKey(location.pathname, routes);
 
   return (
@@ -75,8 +73,8 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         key="main-menu"
         theme="dark"
         selectedKeys={[activeKey ?? '']}
-        openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
-        defaultOpenKeys={activeLocationPaths}
+        openKeys={openKeys.length ? (openKeys as string[]) : activePaths}
+        defaultOpenKeys={activePaths}
         defaultSelectedKeys={[activeKey ?? '']}
         onOpenChange={(keys) => setOpenKeys(keys)}
         mode="inline"
