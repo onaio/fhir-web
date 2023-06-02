@@ -9,7 +9,7 @@ import {
   URL_USER_ROLES,
 } from '../../../../constants';
 
-describe('getActiveKey/utils', () => {
+describe('getActiveKey', () => {
   const routes: Route[] = [
     {
       title: 'Administration',
@@ -62,7 +62,7 @@ describe('getActiveKey/utils', () => {
   });
 });
 
-describe('getPathKey/utils', () => {
+describe('getPathKey', () => {
   const routes: Route[] = [
     {
       title: 'Administration',

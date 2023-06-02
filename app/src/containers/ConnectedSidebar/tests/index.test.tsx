@@ -1,5 +1,6 @@
 import { authenticateUser } from '@onaio/session-reducer';
 import { mount } from 'enzyme';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
