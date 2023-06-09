@@ -28,8 +28,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { roles } = extraData;
   let location = useLocation();
 
-  // const [collapsedKeys, setCollapsedKeys] = React.useState<React.Key[]>([activePaths.activePaths]);
-
   const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
 
   const sidebaritems: JSX.Element[] = React.useMemo(() => {
@@ -58,19 +56,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const { activeKey, activePaths } = getActivePath(location.pathname, routes);
 
-  // const activePaths = getActivePath(location.pathname, routes)
-
-  // console.log(activePaths)
   const [collapsedKeys, setCollapsedKeys] = useState<string[]>([]);
-  // console.log({collapsedKeys, activePaths})
 
   useEffect(() => {
     const { activePaths } = getActivePath(location.pathname, routes);
-    setCollapsedKeys(activePaths);
-  }, [location.pathname, routes]);
-
-  // const activePaths = getPathKey(location.pathname, routes);
-  // const activeKey = getActiveKey(location.pathname, routes);
+    setCollapsedKeys(activePaths.concat(...collapsedKeys));
+  }, [location.pathname, routes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
