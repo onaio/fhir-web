@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
@@ -27,7 +27,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
-  
+
   // const [collapsedKeys, setCollapsedKeys] = React.useState<React.Key[]>([activePaths.activePaths]);
 
   const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
@@ -61,12 +61,13 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   // const activePaths = getActivePath(location.pathname, routes)
 
   // console.log(activePaths)
-  const [collapsedKeys, setCollapsedKeys] = React.useState(activePaths);
-  console.log({collapsedKeys, activePaths})
+  const [collapsedKeys, setCollapsedKeys] = useState<string[]>([]);
+  // console.log({collapsedKeys, activePaths})
 
   useEffect(() => {
-    setCollapsedKeys(activePaths)
-  }, [])
+    const { activePaths } = getActivePath(location.pathname, routes);
+    setCollapsedKeys(activePaths);
+  }, [location.pathname, routes]);
 
   // const activePaths = getPathKey(location.pathname, routes);
   // const activeKey = getActiveKey(location.pathname, routes);
