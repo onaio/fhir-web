@@ -310,6 +310,7 @@ const PlanForm = (props: PlanFormProps) => {
         {...formItemLayout}
         form={form}
         name="planForm"
+        className='form'
         scrollToFirstError
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
@@ -345,6 +346,7 @@ const PlanForm = (props: PlanFormProps) => {
             rules={validationRules.interventionType}
             hidden={isHidden(interventionType)}
             id={interventionType}
+            className='interventionType'
           >
             <Select
               disabled={disabledFields.includes(interventionType)}
@@ -498,8 +500,7 @@ const PlanForm = (props: PlanFormProps) => {
                     {fields.length > 1 ? (
                       <MinusCircleOutlined
                         className="jurisdiction-fields__delete dynamic-delete-button"
-                        onClick={() => remove(field.name)}
-                      />
+                        onClick={() => remove(field.name)} rev={undefined}                      />
                     ) : null}
                   </Form.Item>
                 ))}
@@ -508,7 +509,7 @@ const PlanForm = (props: PlanFormProps) => {
                     className="jurisdiction-fields__add"
                     type="dashed"
                     onClick={() => add()}
-                    icon={<PlusOutlined />}
+                    icon={<PlusOutlined rev={undefined} />}
                   >
                     {t('Add Jurisdiction')}
                   </Button>
@@ -549,7 +550,7 @@ const PlanForm = (props: PlanFormProps) => {
                                   <Button
                                     className="removeActivity"
                                     aria-label="Close"
-                                    icon={<CloseOutlined />}
+                                    icon={<CloseOutlined rev={undefined} />}
                                     onClick={() => {
                                       /**
                                        * when we remove an item, we want to also remove its value from

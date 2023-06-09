@@ -27,7 +27,7 @@
   },
   "peerDependencies": {
     "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.19.5",
+    "antd": "^5.5.1",
     "react": "^16.18.1",
     "react-query": "^3.34.19",
     "react-redux": "^7.2.8"
@@ -36,7 +36,7 @@
   "license": "Apache-2.0",
   "private": false,
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
+    "@ant-design/icons": "^5.1.4",
     "@onaio/utils": "^0.0.1",
     "@opensrp/location-management": "^0.0.15",
     "@opensrp/pkg-config": "^0.0.9",

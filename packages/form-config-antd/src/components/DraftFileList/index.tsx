@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Spin, Space, Button, Divider, Input, PageHeader } from 'antd';
+import { Card, Spin, Space, Button, Divider, Input } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { getAccessToken } from '@onaio/session-reducer';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
@@ -113,20 +114,21 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             placeholder={t('Search')}
             size="large"
             value={value}
-            prefix={<SearchOutlined />}
+            prefix={<SearchOutlined rev={undefined} />}
             onChange={onChange}
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
-            <UploadOutlined />
+            <UploadOutlined rev={undefined} />
             {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
-          <SettingOutlined />
+          <SettingOutlined rev={undefined} />
         </Space>
         <TableLayout
           id="FormDraftFileList"
+          className="FormDraftFileList"
           persistState={true}
           columns={getTableColumns(t, sortedInfo)}
           actions={{
@@ -152,6 +154,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             <Button
               type="primary"
               id="makeRelease"
+              className="makeRelease"
               onClick={() =>
                 makeRelease(
                   data,

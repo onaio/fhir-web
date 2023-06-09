@@ -28,7 +28,7 @@
     ]
   },
   "peerDependencies": {
-    "antd": "^4.6.3",
+    "antd": "^5.5.1",
     "react": "^16.13.1",
     "@opensrp/i18n": "^0.0.1"
   },

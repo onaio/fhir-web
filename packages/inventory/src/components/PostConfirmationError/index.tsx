@@ -49,7 +49,7 @@ const PostConfirmError = (props: PostConfirmErrorProps) => {
 
   const cardTitle = (
     <CardTitle
-      IconRender={<WarningOutlined className="card-title__icon" />}
+      IconRender={<WarningOutlined className="card-title__icon" rev={undefined} />}
       text={t('Processing error: inventory items failed to be added')}
     />
   );

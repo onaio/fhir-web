@@ -108,17 +108,17 @@ describe('Care Teams list view', () => {
     });
 
     wrapper.update();
-    wrapper.find('.more-options').at(0).simulate('click');
+    wrapper.find('.ant-dropdown.more-options').at(0).simulate('click');
     wrapper.update();
-    wrapper.find('Button').at(2).simulate('click');
-    expect(wrapper.find('Button').at(2).text()).toEqual('Delete');
+    wrapper.find('.ant-btn').at(2).simulate('click');
+    expect(wrapper.find('.ant-btn').at(2).text()).toEqual('Delete');
     wrapper.update();
     // check pop up text
     expect(wrapper.find('.ant-popover-content').at(0).text()).toMatchInlineSnapshot(
       `"Are you sure you want to delete this Care Team?NoYes"`
     );
     const popconfirm = wrapper.find('.ant-popover-content').at(0);
-    popconfirm.find('Button').at(1).simulate('click');
+    popconfirm.find('.ant-btn').at(1).simulate('click');
 
     await act(async () => {
       await flushPromises();

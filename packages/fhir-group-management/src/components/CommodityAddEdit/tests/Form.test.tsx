@@ -100,32 +100,32 @@ describe('Health care form', () => {
       wrapper.update();
     });
 
-    expect(toJson(wrapper.find('FormItem#id label'))).toMatchSnapshot('id label');
-    expect(toJson(wrapper.find('FormItem#id input'))).toMatchSnapshot('id field');
+    expect(toJson(wrapper.find('.ant-form-item.id label'))).toMatchSnapshot('id label');
+    expect(toJson(wrapper.find('.ant-form-item.id input'))).toMatchSnapshot('id field');
 
-    expect(toJson(wrapper.find('FormItem#identifier label'))).toMatchSnapshot('identifier label');
-    expect(toJson(wrapper.find('FormItem#identifier input'))).toMatchSnapshot('identifier field');
+    expect(toJson(wrapper.find('.ant-form-item.identifier label'))).toMatchSnapshot('identifier label');
+    expect(toJson(wrapper.find('.ant-form-item.identifier input'))).toMatchSnapshot('identifier field');
 
-    expect(toJson(wrapper.find('FormItem#name label'))).toMatchSnapshot('name label');
-    expect(toJson(wrapper.find('FormItem#name input'))).toMatchSnapshot('name field');
+    expect(toJson(wrapper.find('.ant-form-item.name label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('.ant-form-item.name input'))).toMatchSnapshot('name field');
 
-    expect(toJson(wrapper.find('FormItem#active label').first())).toMatchSnapshot('active label');
-    expect(toJson(wrapper.find('FormItem#active input'))).toMatchSnapshot('active field');
+    expect(toJson(wrapper.find('.ant-form-item.active label').first())).toMatchSnapshot('active label');
+    expect(toJson(wrapper.find('.ant-form-item.active input'))).toMatchSnapshot('active field');
 
-    expect(toJson(wrapper.find('FormItem#type label').first())).toMatchSnapshot('type label');
-    expect(toJson(wrapper.find('FormItem#type input#type'))).toMatchSnapshot('type field');
+    expect(toJson(wrapper.find('.ant-form-item.type label').first())).toMatchSnapshot('type label');
+    expect(toJson(wrapper.find('.ant-form-item.type input#type'))).toMatchSnapshot('type field');
 
-    expect(toJson(wrapper.find('FormItem#unitOfMeasure label').first())).toMatchSnapshot(
+    expect(toJson(wrapper.find('.ant-form-item.unitOfMeasure label').first())).toMatchSnapshot(
       'unit of measure label'
     );
-    expect(toJson(wrapper.find('FormItem#unitOfMeasure input#unitOfMeasure'))).toMatchSnapshot(
+    expect(toJson(wrapper.find('.ant-form-item.unitOfMeasure input.unitOfMeasure'))).toMatchSnapshot(
       'unit of measure field'
     );
 
-    expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
-    expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
+    expect(toJson(wrapper.find('.submit-button button'))).toMatchSnapshot('submit button');
+    expect(toJson(wrapper.find('.cancel-button button'))).toMatchSnapshot('cancel button');
 
-    wrapper.find('button#cancel-button').simulate('click');
+    wrapper.find('button.cancel-button').simulate('click');
     wrapper.unmount();
   });
 

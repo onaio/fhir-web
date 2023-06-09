@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Row, PageHeader, Col, Button, Modal, Form, Select, Spin } from 'antd';
+import { Row, Col, Button, Modal, Form, Select, Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { columnsFactory, getPayload, ActionsColumnCustomRender } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService, TableLayout, BrokenPage } from '@opensrp/react-utils';
@@ -290,7 +291,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
         title={t('Assign/Unassign Teams | {{locationName}}', {
           locationName: assignedLocAndTeams?.locationName,
         })}
-        visible={visible}
+        open={visible}
         onCancel={handleCancel}
         okText={t('Save')}
         cancelText={t('Cancel')}

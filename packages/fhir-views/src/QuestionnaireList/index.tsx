@@ -9,7 +9,8 @@ import {
 import { Column } from '@opensrp/react-utils';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useSimpleTabularView } from '@opensrp/react-utils';
-import { PageHeader, Row, Col, Button } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { ParsedQuestionnaire, parseQuestionnaire } from '@opensrp/fhir-resources';
@@ -39,7 +40,7 @@ export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
  *
  * @param t - translator function
  */
-export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
+export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {Date
   const columns: Column<ParsedQuestionnaire>[] = [
     {
       title: t('Name/Id'),
@@ -130,7 +131,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
             <SearchForm {...searchFormProps} data-testid="search-form" />
             <Link to={'#'}>
               <Button type="primary" disabled={true}>
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Create questionnaire')}
               </Button>
             </Link>

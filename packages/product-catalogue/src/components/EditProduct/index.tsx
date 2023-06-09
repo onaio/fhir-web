@@ -6,7 +6,8 @@ import { RouteParams } from '../../constants';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ProductForm } from '../ProductForm';
-import { Layout, PageHeader, Spin } from 'antd';
+import { Layout, Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import {
   fetchProducts,
   getProductById,

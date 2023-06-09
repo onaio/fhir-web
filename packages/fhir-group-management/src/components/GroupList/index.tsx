@@ -1,5 +1,6 @@
 import React from 'react';
 import { Space, Button, Divider, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -83,7 +84,7 @@ export const GroupList = (props: GroupListProps) => {
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
+            menu={(
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
                   <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
@@ -91,12 +92,12 @@ export const GroupList = (props: GroupListProps) => {
                   </Button>
                 </Menu.Item>
               </Menu>
-            }
+            ) as MenuProps}
             placement="bottomRight"
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
           </Dropdown>
         </span>
       ),

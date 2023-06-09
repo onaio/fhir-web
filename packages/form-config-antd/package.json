@@ -38,16 +38,16 @@
     "react": "^16.18.1"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.3.0",
+    "@ant-design/icons": "^5.1.4",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.13",
     "@onaio/utils": "^0.0.1",
     "@opensrp/form-config-core": "^0.0.4",
+    "@opensrp/i18n": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.6.3"
+    "antd": "^5.5.2"
   }
 }

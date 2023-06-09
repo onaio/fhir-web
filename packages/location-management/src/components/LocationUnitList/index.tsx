@@ -156,7 +156,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
                 }}
               >
                 <Button type="primary">
-                  <PlusOutlined />
+                  <PlusOutlined rev={undefined} />
                   {t('Add Location Unit')}
                 </Button>
               </Link>

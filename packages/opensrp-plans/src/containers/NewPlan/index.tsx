@@ -3,7 +3,8 @@
  */
 import React from 'react';
 import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import Helmet from 'react-helmet';
 import {
   CommonProps,

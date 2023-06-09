@@ -2,7 +2,8 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { Card, Spin, Space, Button, Divider, Input, PageHeader } from 'antd';
+import { Card, Spin, Space, Button, Divider, Input } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { Dictionary } from '@onaio/utils';
 import {
   filesReducer,
@@ -138,7 +139,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             placeholder="Search"
             size="large"
             value={value}
-            prefix={<SearchOutlined />}
+            prefix={<SearchOutlined rev={undefined} />}
             onChange={onChange}
           />
         </Space>
@@ -147,13 +148,13 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             <>
               <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
-                <UploadOutlined />
+                <UploadOutlined rev={undefined} />
                 {t('Upload New File')}
               </Button>
               <Divider type="vertical" />
             </>
           )}
-          <SettingOutlined />
+          <SettingOutlined rev={undefined} />
         </Space>
         <TableLayout
           id="FormFileList"

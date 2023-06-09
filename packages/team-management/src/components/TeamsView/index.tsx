@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, PageHeader } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { Dictionary } from '@onaio/utils';
@@ -191,7 +192,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
             <div>
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
-                  <PlusOutlined />
+                  <PlusOutlined rev={undefined} />
                   {t('Create Team')}
                 </Button>
               </Link>

@@ -17,7 +17,7 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
@@ -124,7 +124,7 @@ export const UserList = (props: OrganizationListProps) => {
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_USER_CREATE}>
               <Button type="primary">
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Add User')}
               </Button>
             </Link>

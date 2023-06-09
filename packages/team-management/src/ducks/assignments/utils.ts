@@ -1,14 +1,15 @@
 import { RawAssignment } from '.';
-import moment from 'moment';
+// import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const processRawAssignments = (rawAssignments: RawAssignment[]) => {
   return rawAssignments.map((assignment) => {
     return {
-      fromDate: moment(assignment.fromDate).format(),
+      fromDate: dayjs(assignment.fromDate).format(),
       jurisdiction: assignment.jurisdictionId,
       organization: assignment.organizationId,
       plan: assignment.planId,
-      toDate: moment(assignment.toDate).format(),
+      toDate: dayjs(assignment.toDate).format(),
     };
   });
 };

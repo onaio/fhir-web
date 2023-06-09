@@ -13,7 +13,7 @@ import {
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -184,11 +184,11 @@ test('renders correctly for edit user', async () => {
     .persist();
 
   const successStub = jest
-    .spyOn(notifications, 'sendSuccessNotification')
+    .spyOn(notifications, 'sendSuccessNotification')  
     .mockImplementation(jest.fn);
 
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
-
+    
   const { getByTestId, getByText, queryByTitle } = render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
@@ -242,7 +242,11 @@ test('renders correctly for edit user', async () => {
   // simulate click on select - to show dropdown items
   fireEvent.mouseDown(appIdInput);
 
-  await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+  // await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+  await waitFor(() => {
+    const spin = appIdSection.querySelector('.anticon-spin');
+    expect(spin).toBeNull();
+  })
 
   fireEvent.click(queryByTitle('Device configurations(cha)') as Element);
 

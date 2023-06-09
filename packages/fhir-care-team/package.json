@@ -31,17 +31,17 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
+    "@ant-design/icons": "^5.1.4",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/react-utils": "^0.0.12",
     "@smile-cdr/fhirts": "^1.2.5",
-    "antd": "^4.19.5",
-    "lodash": "^4.17.21",
+    "antd": "^5.5.2",
     "fhirclient": "^2.4.0",
+    "lodash": "^4.17.21",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -49,12 +49,12 @@
     "nock": "^13.0.6"
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "@opensrp/store": "^0.0.10",
     "react": "^16.13.1",
     "react-query": "^3.15.1",
     "react-redux": "^7.1.22",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.2.1",
-    "@opensrp/i18n": "^0.0.1"
+    "react-router-dom": "^5.2.1"
   }
 }

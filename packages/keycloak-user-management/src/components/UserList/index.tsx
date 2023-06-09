@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Space, PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -194,7 +195,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 className="create-user"
                 onClick={() => history.push(URL_USER_CREATE)}
               >
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Add User')}
               </Button>
             </Space>

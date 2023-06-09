@@ -2,7 +2,9 @@
 import { MoreOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, Dropdown, Menu, PageHeader } from 'antd';
+import { Row, Col, Spin, Dropdown, Menu } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import type { MenuProps } from 'antd';
 import {
   Tree,
   generateJurisdictionTree,
@@ -194,7 +196,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                 render: (_, row: Setting) => {
                   return (
                     <Dropdown
-                      overlay={
+                      menu={(
                         <Menu className="menu">
                           <Menu.Item
                             onClick={async () => {
@@ -227,12 +229,13 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                             {t('Inherit')}
                           </Menu.Item>
                         </Menu>
-                      }
+                  ) as MenuProps}
+                      className='drop'
                       placement="bottomLeft"
                       arrow
                       trigger={['click']}
                     >
-                      <MoreOutlined className="more-options" />
+                      <MoreOutlined className="more-options" rev={undefined} />
                     </Dropdown>
                   );
                 },

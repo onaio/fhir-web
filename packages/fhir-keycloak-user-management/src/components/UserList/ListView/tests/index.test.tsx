@@ -127,7 +127,11 @@ test('renders correctly when listing resources', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  })
 
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
     'http://test-keycloak.server.org/users/count',
@@ -239,6 +243,8 @@ test('renders correctly when listing resources', async () => {
 
   // confirm
   const yesBtn = document.querySelectorAll('.ant-popover-buttons button')[1];
+  // const yasBtn = 
+  // const yesBtn = 
   expect(yesBtn).toMatchSnapshot('yes button');
   fireEvent.click(yesBtn);
 
@@ -277,7 +283,11 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  })
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { getQueryParams } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';

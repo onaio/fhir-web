@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
@@ -89,7 +90,7 @@ export const BaseListView = (props: BaseListViewProps) => {
             {createButtonUrl && (
               <Link to={createButtonUrl}>
                 <Button type="primary">
-                  <PlusOutlined />
+                  <PlusOutlined rev={undefined} />
                   {createButtonLabel}
                 </Button>
               </Link>

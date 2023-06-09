@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Dictionary } from '@onaio/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FormEvent } from 'react';
 import { PlanActivityFormFields, PlanFormFields } from '../types';
 import { GoalUnit, InterventionType, PlanStatus } from '../constants/enumsAndCodeConstants';
@@ -11,13 +11,13 @@ import { defaultEnvConfig } from '../settings';
 
 const DEFAULT_ACTIVITY_DURATION_DAYS = defaultEnvConfig.defaultActivityDurationDays;
 
-const goalDue = moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
+const goalDue = dayjs().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
 goalDue.setMilliseconds(0);
 
-const timingPeriodEnd = moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
+const timingPeriodEnd = dayjs().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
 timingPeriodEnd.setMilliseconds(0);
 
-const timingPeriodStart = moment().toDate();
+const timingPeriodStart = dayjs().toDate();
 timingPeriodStart.setMilliseconds(0);
 
 export const activities: PlanActivityFormFields[] = [
@@ -1280,11 +1280,11 @@ export const planFormValues2 = {
       actionReason: 'Investigation',
       actionTitle: 'Case Confirmation',
       goalDescription: 'Confirm the index case',
-      goalDue: moment('2019-05-21T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-21T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 1,
-      timingPeriodEnd: moment('2019-05-24T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-24T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'RACD Register Family',
@@ -1296,11 +1296,11 @@ export const planFormValues2 = {
       actionTitle: 'Family Registration',
       goalDescription:
         'Register all families and family members in all residential structures enumerated or added (100%) within operational area',
-      goalDue: moment('2019-08-30T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-08-30T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-08-30T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-08-30T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Bednet Distribution',
@@ -1312,11 +1312,11 @@ export const planFormValues2 = {
       actionTitle: 'Bednet Distribution',
       goalDescription:
         'Visit 100% of residential structures in the operational area and provide nets',
-      goalDue: moment('2019-08-30T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-08-30T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-08-30T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-08-30T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Blood Screening',
@@ -1328,11 +1328,11 @@ export const planFormValues2 = {
       actionTitle: 'RACD Blood screening',
       goalDescription:
         'Visit all residential structures (100%) within a 1 km radius of a confirmed index case and test each registered person',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Larval Dipping',
@@ -1344,11 +1344,11 @@ export const planFormValues2 = {
       actionTitle: 'Larval Dipping',
       goalDescription:
         'Perform a minimum of three larval dipping activities in the operational area',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 3,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Mosquito Collection',
@@ -1360,11 +1360,11 @@ export const planFormValues2 = {
       actionTitle: 'Mosquito Collection',
       goalDescription:
         'Set a minimum of three mosquito collection traps and complete the mosquito collection process',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 3,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'BCC',
@@ -1374,16 +1374,16 @@ export const planFormValues2 = {
       actionReason: 'Investigation',
       actionTitle: 'Behaviour Change Communication',
       goalDescription: 'Complete at least 1 BCC activity for the operational area',
-      goalDue: moment('2019-06-21T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-06-21T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 1,
-      timingPeriodEnd: moment('2019-06-21T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-06-21T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
   ],
   caseNum: '',
-  date: moment('2019-05-19T00:00:00.000Z').toDate(),
-  end: moment('2019-08-30T00:00:00.000Z').toDate(),
+  date: dayjs('2019-05-19T00:00:00.000Z').toDate(),
+  end: dayjs('2019-08-30T00:00:00.000Z').toDate(),
   fiReason: 'Routine',
   fiStatus: 'A2',
   identifier: '356b6b84-fc36-4389-a44a-2b038ed2f38d',
@@ -1391,7 +1391,7 @@ export const planFormValues2 = {
   jurisdictions: [{ id: '3952', name: '3952' }],
   name: 'A2-Lusaka_Akros_Focus_2',
   opensrpEventId: undefined,
-  start: moment('2019-05-20T00:00:00.000Z').toDate(),
+  start: dayjs('2019-05-20T00:00:00.000Z').toDate(),
   status: 'active',
   taskGenerationStatus: 'False',
   teamAssignmentStatus: '',
@@ -1420,11 +1420,11 @@ export const planFormValues3 = {
         },
       ],
       goalDescription: 'Spray structures in the operational area',
-      goalDue: moment('2020-12-31T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2020-12-31T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 90,
-      timingPeriodEnd: moment('2020-12-31T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2020-06-24T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2020-12-31T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2020-06-24T00:00:00.000Z').toDate(),
       trigger: [
         { name: 'plan-activation' },
         {
@@ -1436,8 +1436,8 @@ export const planFormValues3 = {
     },
   ],
   caseNum: '',
-  date: moment('2020-06-24T00:00:00.000Z').toDate(),
-  end: moment('2020-12-31T00:00:00.000Z').toDate(),
+  date: dayjs('2020-06-24T00:00:00.000Z').toDate(),
+  end: dayjs('2020-12-31T00:00:00.000Z').toDate(),
   fiReason: undefined,
   fiStatus: undefined,
   identifier: '043fc8cb-0459-4b39-b71c-abc15f13a5dd',
@@ -1447,7 +1447,7 @@ export const planFormValues3 = {
   ],
   name: 'IRS-2020-06-24-Dynamic-Task-Test-Plan',
   opensrpEventId: undefined,
-  start: moment('2020-06-24T00:00:00.000Z').toDate(),
+  start: dayjs('2020-06-24T00:00:00.000Z').toDate(),
   status: PlanStatus.ACTIVE,
   taskGenerationStatus: 'Disabled',
   title: 'IRS 2020-06-24 Dynamic Task Test Plan',

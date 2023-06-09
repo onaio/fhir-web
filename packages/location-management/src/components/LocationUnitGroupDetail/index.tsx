@@ -19,7 +19,7 @@ const LocationUnitGroupDetail = (props: LocationUnitGroupDetailProps) => {
         onClick={() => (props.onClose ? props.onClose() : '')}
         className="float-right"
         type="text"
-        icon={<CloseOutlined />}
+        icon={<CloseOutlined rev={undefined} />}
       />
       <div className="mb-4 small mt-4">
         <p className="mb-0 font-weight-bold">{t('Name')}</p>

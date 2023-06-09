@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Radio, Select, PageHeader } from 'antd';
+import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   FormFields,
@@ -84,6 +85,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           <Form.Item
             name={name}
             id="name"
+            className='name'
             label={t('Name')}
             rules={[{ required: true, message: t('Name is Required') }]}
           >
@@ -102,7 +104,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
 
           <Form.Item
             data-testid="practitioners"
-            name={practitionerParticipants}
+            name={practitionerParticipants} 
             id="practitionerParticipants"
             label={t('Practitioner Participant')}
           >

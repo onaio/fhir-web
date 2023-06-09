@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu, Dropdown, Button, Divider } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { Column, OpenSRPService, TableLayout } from '@opensrp/react-utils';
@@ -66,7 +67,7 @@ const Table: React.FC<Props> = (props: Props) => {
             </Link>
             <Divider type="vertical" />
             <Dropdown
-              overlay={
+              menu={(
                 <Menu className="menu">
                   <Menu.Item
                     className="viewdetails"
@@ -78,12 +79,12 @@ const Table: React.FC<Props> = (props: Props) => {
                     {t('Deactivate')}
                   </Menu.Item>
                 </Menu>
-              }
+        ) as MenuProps}
               placement="bottomLeft"
               arrow
               trigger={['click']}
             >
-              <MoreOutlined className="more-options" />
+              <MoreOutlined className="more-options" rev={undefined} />
             </Dropdown>
           </span>
         ),

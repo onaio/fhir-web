@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, PageHeader } from 'antd';
+import { Row, Col, Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { RouteComponentProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader } from 'antd';
+import { Row, Col } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';

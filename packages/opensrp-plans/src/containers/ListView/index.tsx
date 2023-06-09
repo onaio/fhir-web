@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {

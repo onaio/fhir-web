@@ -74,13 +74,13 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
               placeholder={t('Search')}
               size="large"
               value={value}
-              prefix={<SearchOutlined />}
+              prefix={<SearchOutlined rev={undefined} />}
               onChange={onChange}
             />
             <div>
               <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
                 <Button type="primary">
-                  <PlusOutlined />
+                  <PlusOutlined rev={undefined} />
                   {t('Add Location Unit Group')}
                 </Button>
               </Link>

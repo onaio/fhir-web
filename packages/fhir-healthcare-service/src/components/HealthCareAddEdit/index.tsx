@@ -5,7 +5,8 @@ import { useParams } from 'react-router';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
 import { organizationResourceType } from '@opensrp/fhir-team-management';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader, Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,

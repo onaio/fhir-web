@@ -94,7 +94,7 @@ function EditAssignmentsModal(props: EditAssignmentsModalProps) {
       </Button>
       <Modal
         title={modalTitle}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}

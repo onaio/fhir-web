@@ -11,7 +11,7 @@ import {
   InterventionType,
   PlanStatus,
 } from './constants/enumsAndCodeConstants';
-import { Moment } from 'moment';
+import dayjs  from 'dayjs';
 import {
   actionCode,
   name,
@@ -48,7 +48,7 @@ import {
   dynamicValue,
 } from './constants/stringConstants';
 
-export type DateType = Moment | Date;
+export type DateType = dayjs.Dayjs | Date;
 
 /** FI Status type */
 export type FIStatusType = typeof FIStatuses[number];

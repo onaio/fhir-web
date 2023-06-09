@@ -13,7 +13,8 @@ import {
 } from '../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader, Spin } from 'antd';
+import { Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { Practitioner, PractitionerPOST } from '../../ducks/practitioners';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';

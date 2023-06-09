@@ -463,7 +463,8 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table says no data
     const tableText = wrapper.find('table').text();
-    expect(tableText).toContain('No Data');
+    // expect(tableText).toContain('No Data');
+    expect(tableText).toContain("NameLevelActionsNo data")
     expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
     expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
     wrapper.unmount();

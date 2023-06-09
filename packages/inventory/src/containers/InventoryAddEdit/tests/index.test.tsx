@@ -1,5 +1,5 @@
 import { mount, shallow } from 'enzyme';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 import { store } from '@opensrp/store';
 import {
@@ -237,10 +237,10 @@ describe('containers/InventoryAddEdit', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: unicefSections[0].value },
@@ -377,10 +377,10 @@ describe('containers/InventoryAddEdit', () => {
     );
     expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"1"`);
     expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(
-      moment(fixtures.inventories[0].deliveryDate)
+      dayjs(fixtures.inventories[0].deliveryDate)
     );
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
-      moment(fixtures.inventories[0].accountabilityEndDate)
+      dayjs(fixtures.inventories[0].accountabilityEndDate)
     );
     expect(wrapper.find('select#unicefSection').get(0).props.value).toEqual(
       fixtures.inventories[0].customProperties['UNICEF section']
@@ -393,10 +393,10 @@ describe('containers/InventoryAddEdit', () => {
     // Make edits
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: unicefSections[1].value },
@@ -434,8 +434,8 @@ describe('containers/InventoryAddEdit', () => {
       redirectURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
       initialValues: {
-        accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
-        deliveryDate: moment(fixtures.inventories[0].deliveryDate),
+        accountabilityEndDate: dayjs(fixtures.inventories[0].accountabilityEndDate),
+        deliveryDate: dayjs(fixtures.inventories[0].deliveryDate),
         donor: fixtures.inventories[0].donor,
         poNumber: fixtures.inventories[0].customProperties['PO Number'],
         productName: fixtures.inventories[0].product.productName,
@@ -638,8 +638,8 @@ describe('containers/InventoryAddEdit', () => {
       redirectURL: `/inventory/profile/${fixtures.servicePoint2.id}`,
       servicePointId: 'b8a7998c-5df6-49eb-98e6-f0675db71848',
       initialValues: {
-        accountabilityEndDate: moment(fixtures.inventories[0].accountabilityEndDate),
-        deliveryDate: moment(fixtures.inventories[0].deliveryDate),
+        accountabilityEndDate: dayjs(fixtures.inventories[0].accountabilityEndDate),
+        deliveryDate: dayjs(fixtures.inventories[0].deliveryDate),
         donor: fixtures.inventories[0].donor,
         poNumber: fixtures.inventories[0].customProperties['PO Number'],
         productName: fixtures.inventories[0].product.productName,

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
-import { Button, Card, Form, Select, TreeSelect, DatePicker, Tooltip, PageHeader } from 'antd';
+import  dayjs from 'dayjs';
+import { Button, Card, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
@@ -87,9 +89,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     },
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const disabledDate = (current: moment.Moment) => {
+  // const disabledDate = (current: moment.Moment) => {
+    const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     // Can not select days after
-    return current > moment().startOf('day');
+    return current > dayjs().startOf('day');
   };
 
   interface DefaultLocation {
@@ -217,7 +220,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                 htmlType="submit"
                 disabled={!cardOrderDate[0] || !cardOrderDate[1]}
               >
-                <DownloadOutlined />
+                <DownloadOutlined rev={undefined} />
                 {isSubmitting ? t('Downloading...') : t('Download CSV')}
               </Button>
             </Tooltip>

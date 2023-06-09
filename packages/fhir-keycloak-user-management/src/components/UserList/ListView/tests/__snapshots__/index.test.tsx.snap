@@ -2,7 +2,7 @@
 
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
-  class="ant-page-header-heading-title"
+  class="ant-page-header-heading-title "
   title="User Management"
 >
   User Management
@@ -46,7 +46,7 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -110,7 +110,7 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -174,7 +174,7 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -238,7 +238,7 @@ exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -302,7 +302,7 @@ exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -366,7 +366,7 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
     Edit
   </a>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -407,7 +407,7 @@ exports[`renders correctly when listing resources: user details 1`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Keycloak UUID
         </span>
@@ -416,7 +416,7 @@ exports[`renders correctly when listing resources: user details 1`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0
         </span>
@@ -440,7 +440,7 @@ exports[`renders correctly when listing resources: user details 2`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Username
         </span>
@@ -449,7 +449,7 @@ exports[`renders correctly when listing resources: user details 2`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           april4petertest
         </span>
@@ -473,7 +473,7 @@ exports[`renders correctly when listing resources: user details 3`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Practitioner ID
         </span>
@@ -482,7 +482,7 @@ exports[`renders correctly when listing resources: user details 3`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           206
         </span>
@@ -506,7 +506,7 @@ exports[`renders correctly when listing resources: user details 4`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Practitioner UUID
         </span>
@@ -515,7 +515,7 @@ exports[`renders correctly when listing resources: user details 4`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           c1d36d9a-b771-410b-959e-af2c04d132a2
         </span>
@@ -539,7 +539,7 @@ exports[`renders correctly when listing resources: user details 5`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Practitioner status
         </span>
@@ -548,7 +548,7 @@ exports[`renders correctly when listing resources: user details 5`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           inactive
         </span>
@@ -572,7 +572,7 @@ exports[`renders correctly when listing resources: user details 6`] = `
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           User Type
         </span>
@@ -581,7 +581,7 @@ exports[`renders correctly when listing resources: user details 6`] = `
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           <ul
             id="user-type"
@@ -599,13 +599,4 @@ exports[`renders correctly when listing resources: user details 6`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources: yes button 1`] = `
-<button
-  class="ant-btn ant-btn-primary ant-btn-sm"
-  type="button"
->
-  <span>
-    Yes
-  </span>
-</button>
-`;
+exports[`renders correctly when listing resources: yes button 1`] = `undefined`;

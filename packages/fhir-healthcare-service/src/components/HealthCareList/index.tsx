@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Divider, Dropdown, Menu } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
 import { Link } from 'react-router-dom';
@@ -95,7 +96,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
           </Dropdown>
         </span>
       ),
@@ -123,7 +124,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
               <Button type="primary">
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Create Care Service')}
               </Button>
             </Link>

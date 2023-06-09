@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
-    "antd": "^4.6.3",
+    "antd": "^5.5.1",
     "i18next": "^19.8.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -39,7 +39,7 @@
     "react-router-dom": "^5.2.0"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
+    "@ant-design/icons": "^5.1.4",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@opensrp/fhir-team-management": "^0.0.5",

@@ -78,7 +78,7 @@ const Table: React.FC<Props> = (props: Props) => {
               arrow
               trigger={['click']}
             >
-              <MoreOutlined className="more-options" />
+              <MoreOutlined className="more-options" rev={undefined} />
             </Dropdown>
           </>
         ),

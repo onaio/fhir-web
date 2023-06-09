@@ -1,0 +1,409 @@
+yarn run v1.18.0
+$ jest packages/plan-form/src/Form/tests/index.test.tsx
+  console.error
+    Warning: Cannot update a component (`PlanForm`) while rendering a different component (`Field`). To locate the bad setState() call inside `Field`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
+        at Field (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Field.js:79:34)
+        at WrapperField (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Field.js:651:20)
+        at List (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/List.js:29:19)
+        at FormList (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormList.js:42:31)
+        at div
+        at div
+        at div
+        at /home/james/Projects/web/packages/plan-form/node_modules/antd/lib/grid/col.js:59:33
+        at FormItemInput (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormItemInput.js:44:25)
+        at div
+        at /home/james/Projects/web/packages/plan-form/node_modules/antd/lib/grid/row.js:56:34
+        at FormItem (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormItem.js:101:20)
+        at form
+        at Form (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Form.js:33:19)
+        at SizeContextProvider (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/config-provider/SizeContext.js:19:23)
+        at InternalForm (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/Form.js:66:27)
+        at div
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      864 |                             )}
+      865 |                           {/** Turn off modal if all activities selected */}
+    > 866 |                           {checkIfAllActivitiesSelected(allValues) && setActivityModal(false)}
+          |                                                                       ^
+      867 |                         </>
+      868 |                       );
+      869 |                     })()}
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnAboutRenderPhaseUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24002:15)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:21836:3)
+      at setActivityModal (node_modules/react-dom/cjs/react-dom.development.js:16139:5)
+      at packages/plan-form/src/Form/index.tsx:866:71
+      at packages/plan-form/src/Form/index.tsx:529:22
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/date.ts:31:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.error
+    Warning: An update to FormItem inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+        at FormItem (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormItem.js:101:20)
+        at form
+        at Form (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Form.js:33:19)
+        at SizeContextProvider (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/config-provider/SizeContext.js:19:23)
+        at InternalForm (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/Form.js:66:27)
+        at div
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24064:9)
+      at dispatchAction (node_modules/react-dom/cjs/react-dom.development.js:16135:9)
+      at onMetaChange (packages/plan-form/node_modules/antd/lib/form/FormItem.js:163:5)
+      at Field._this.triggerMetaEvent (packages/plan-form/node_modules/rc-field-form/lib/Field.js:146:67)
+      at Field._this.onStoreChange (packages/plan-form/node_modules/rc-field-form/lib/Field.js:174:15)
+
+  console.error
+    Warning: An update to FormItem inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+        at FormItem (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormItem.js:101:20)
+        at form
+        at Form (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Form.js:33:19)
+        at SizeContextProvider (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/config-provider/SizeContext.js:19:23)
+        at InternalForm (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/Form.js:66:27)
+        at div
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24064:9)
+      at dispatchAction (node_modules/react-dom/cjs/react-dom.development.js:16135:9)
+      at onMetaChange (packages/plan-form/node_modules/antd/lib/form/FormItem.js:163:5)
+      at Field._this.triggerMetaEvent (packages/plan-form/node_modules/rc-field-form/lib/Field.js:146:67)
+      at Field._this.onStoreChange (packages/plan-form/node_modules/rc-field-form/lib/Field.js:174:15)
+
+  console.warn
+    async-validator: [ "'${name}' must be one of [${enum}]" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/enum.ts:26:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/required.ts:8:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/date.ts:31:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.error
+    Warning: An update to FormItem inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+        at FormItem (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/FormItem.js:101:20)
+        at form
+        at Form (/home/james/Projects/web/packages/plan-form/node_modules/rc-field-form/lib/Form.js:33:19)
+        at SizeContextProvider (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/config-provider/SizeContext.js:19:23)
+        at InternalForm (/home/james/Projects/web/packages/plan-form/node_modules/antd/lib/form/Form.js:66:27)
+        at div
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24064:9)
+      at dispatchAction (node_modules/react-dom/cjs/react-dom.development.js:16135:9)
+      at onMetaChange (packages/plan-form/node_modules/antd/lib/form/FormItem.js:163:5)
+      at Field._this.triggerMetaEvent (packages/plan-form/node_modules/rc-field-form/lib/Field.js:146:67)
+      at Field._this.onStoreChange (packages/plan-form/node_modules/rc-field-form/lib/Field.js:174:15)
+
+  console.warn
+    async-validator: [ "'${name}' must be one of [${enum}]" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/enum.ts:26:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/required.ts:8:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/date.ts:31:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/string.ts:23:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.warn
+    async-validator: [ "Plan name cannot contain '/'" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at cb (packages/plan-form/node_modules/src/index.ts:206:20)
+      at packages/plan-form/node_modules/rc-field-form/lib/utils/validateUtil.js:191:13
+
+  console.warn
+    async-validator: [ "Plan name cannot contain '/'" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at cb (packages/plan-form/node_modules/src/index.ts:206:20)
+      at packages/plan-form/node_modules/rc-field-form/lib/utils/validateUtil.js:191:13
+
+  console.error
+    Warning: unmountComponentAtNode(): The node you're attempting to unmount was rendered by another copy of React.
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at Object.unmountComponentAtNode (node_modules/react-dom/cjs/react-dom.development.js:26141:9)
+      at fn (node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:454:20)
+      at node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:360:37
+      at batchedUpdates$1 (node_modules/react-dom/cjs/react-dom.development.js:22380:12)
+      at Object.act (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
+
+  console.error
+    Warning: An update to PlanForm inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      439 |               onCalendarChange={
+      440 |                 ((val: Moment[]) => {
+    > 441 |                   setDates(val);
+          |                   ^
+      442 |                 }) as RangePickerSharedProps<Moment>['onCalendarChange']
+      443 |               }
+      444 |               onOpenChange={(open: boolean) => {
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24064:9)
+      at setDates (node_modules/react-dom/cjs/react-dom.development.js:16135:9)
+      at Object.onCalendarChange (packages/plan-form/src/Form/index.tsx:441:19)
+      at _callee9$ (packages/plan-form/src/Form/tests/index.test.tsx:326:14)
+      at tryCatch (node_modules/regenerator-runtime/runtime.js:63:40)
+
+  console.error
+    Warning: An update to PlanForm inside a test was not wrapped in act(...).
+    
+    When testing, code that causes React state updates should be wrapped into act(...):
+    
+    act(() => {
+      /* fire events that update state */
+    });
+    /* assert on the output */
+    
+    This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+        at PlanForm (/home/james/Projects/web/packages/plan-form/src/Form/index.tsx:167:45)
+        at Router (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:95:30)
+        at MemoryRouter (/home/james/Projects/web/node_modules/react-router/cjs/react-router.js:185:35)
+        at WrapperComponent (/home/james/Projects/web/node_modules/@wojtekmaj/enzyme-adapter-utils/src/createMountWrapper.jsx:46:26)
+
+      445 |                 if (open) {
+      446 |                   if (form.getFieldValue('dateRange')) {
+    > 447 |                     setDates(
+          |                     ^
+      448 |                       form.getFieldValue('dateRange')[0] && form.getFieldValue('dateRange')[1]
+      449 |                         ? form.getFieldValue('dateRange')
+      450 |                         : []
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at warnIfNotCurrentlyActingUpdatesInDEV (node_modules/react-dom/cjs/react-dom.development.js:24064:9)
+      at setDates (node_modules/react-dom/cjs/react-dom.development.js:16135:9)
+      at Object.onOpenChange (packages/plan-form/src/Form/index.tsx:447:21)
+      at _callee9$ (packages/plan-form/src/Form/tests/index.test.tsx:327:14)
+      at tryCatch (node_modules/regenerator-runtime/runtime.js:63:40)
+
+  console.error
+    Warning: unmountComponentAtNode(): The node you're attempting to unmount was rendered by another copy of React.
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at Object.unmountComponentAtNode (node_modules/react-dom/cjs/react-dom.development.js:26141:9)
+      at fn (node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:454:20)
+      at node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:360:37
+      at batchedUpdates$1 (node_modules/react-dom/cjs/react-dom.development.js:22380:12)
+      at Object.act (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
+
+  console.warn
+    async-validator: [ "'${name}' is required" ]
+
+      at Function.warning (packages/plan-form/node_modules/src/util.ts:33:17)
+      at callback (packages/plan-form/node_modules/src/index.ts:206:20)
+      at Object.validator (packages/plan-form/node_modules/src/validator/date.ts:31:3)
+      at func (packages/plan-form/node_modules/src/index.ts:286:22)
+      at forEach (packages/plan-form/node_modules/src/util.ts:136:5)
+          at Array.forEach (<anonymous>)
+      at asyncParallelArray (packages/plan-form/node_modules/src/util.ts:135:7)
+
+  console.error
+    Warning: unmountComponentAtNode(): The node you're attempting to unmount was rendered by another copy of React.
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:67:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:43:5)
+      at Object.unmountComponentAtNode (node_modules/react-dom/cjs/react-dom.development.js:26141:9)
+      at fn (node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:454:20)
+      at node_modules/@wojtekmaj/enzyme-adapter-react-17/src/ReactSeventeenAdapter.js:360:37
+      at batchedUpdates$1 (node_modules/react-dom/cjs/react-dom.development.js:22380:12)
+      at Object.act (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1042:14)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

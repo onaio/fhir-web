@@ -15,7 +15,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Card, Spin, Space, Button, Divider, Input, PageHeader } from 'antd';
+import { Card, Spin, Space, Button, Divider, Input } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import { TableLayout } from '@opensrp/react-utils';
@@ -104,17 +105,17 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
             placeholder={t('Search')}
             size="large"
             value={value}
-            prefix={<SearchOutlined />}
+            prefix={<SearchOutlined rev={undefined} />}
             onChange={onChange}
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
-            <UploadOutlined />
+            <UploadOutlined rev={undefined} />
             {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
-          <SettingOutlined />
+          <SettingOutlined rev={undefined} />
         </Space>
         <TableLayout
           id="FormReleaseList"

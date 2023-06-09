@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import { Form, Button, Input, Upload, Card, PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import {
   submitUploadForm,
@@ -179,7 +180,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
             rules={[{ required: true, message: t('Form is required') }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined />}>{t('Click to upload')}</Button>
+              <Button icon={<UploadOutlined rev={undefined} />}>{t('Click to upload')}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>

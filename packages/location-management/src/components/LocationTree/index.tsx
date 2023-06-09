@@ -147,7 +147,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
         className="mb-3"
         placeholder={t('Search')}
         size="large"
-        prefix={<SearchOutlined />}
+        prefix={<SearchOutlined rev={undefined} />}
         onChange={onChange}
       />
       <AntTree

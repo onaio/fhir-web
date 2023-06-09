@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { OpenSRPService, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
 import { HTTPError } from '@opensrp/server-service';
@@ -6,6 +6,7 @@ import { InventoryPost } from '../../ducks/inventory';
 import { Dispatch, SetStateAction } from 'react';
 import { OPENSRP_ENDPOINT_STOCK_RESOURCE } from '../../constants';
 import type { TFunction } from '@opensrp/i18n';
+import type { RangePickerProps } from 'antd/es/date-picker';
 
 /**
  * Submit form
@@ -95,8 +96,8 @@ export const submitForm = async (
  *
  * @param current date
  */
-export const isDatePastOrToday = (current: moment.Moment) => {
-  return current < moment().endOf('day');
+export const isDatePastOrToday: RangePickerProps['disabledDate'] = (current) => {
+  return current < dayjs().endOf('day');
 };
 
 /**
@@ -104,6 +105,6 @@ export const isDatePastOrToday = (current: moment.Moment) => {
  *
  * @param current date
  */
-export const isDateFuture = (current: moment.Moment) => {
-  return current > moment().endOf('day');
+export const isDateFuture: RangePickerProps['disabledDate']  = (current) => {
+  return current > dayjs().endOf('day');
 };

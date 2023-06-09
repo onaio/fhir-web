@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Form, Col, Row, Input, PageHeader } from 'antd';
+import { Button, Form, Col, Row, Input } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';

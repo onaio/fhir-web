@@ -255,7 +255,7 @@ describe('components/Antd/FileList', () => {
 
     const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
 
     expect(submenu.find('Button').text()).toEqual('Download');
 
@@ -326,7 +326,7 @@ describe('components/Antd/FileList', () => {
 
     const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(5);
     const dropdown = downloadCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
 
     expect(submenu.find('Button').text()).toEqual('Download');
 
@@ -415,7 +415,7 @@ describe('components/Antd/FileList', () => {
 
     const downloadFiledCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadFiledCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
 
     submenu.find('Button').simulate('click');
 

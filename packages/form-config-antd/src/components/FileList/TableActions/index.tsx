@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Divider, Button, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import {
   ManifestFilesTypes,
   OPENSRP_FORMS_ENDPOINT,
@@ -72,12 +73,11 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         {t('Edit')}
       </Link>
       <Divider type="vertical" />
-      <Dropdown overlay={menu}>
+      <Dropdown menu={(menu) as MenuProps}>
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }}
-          />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }} rev={undefined}          />
         </Button>
       </Dropdown>
     </>

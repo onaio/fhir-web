@@ -32,6 +32,7 @@
       "eslint"
     ]
   },
+
   "devDependencies": {
     "@babel/cli": "^7.16.8",
     "@babel/eslint-parser": "^7.17.0",
@@ -91,7 +92,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-sonarjs": "^0.12.0",
     "flush-promises": "^1.0.2",
-    "glob": "^8.0.1",
+    "glob": "^8.0.1", 
     "husky": "^8.0.0",
     "i18next-parser": "^5.4.0",
     "jest": "27.5.1",
@@ -106,6 +107,7 @@
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.5.1",
+    "antd": "^5.5.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",

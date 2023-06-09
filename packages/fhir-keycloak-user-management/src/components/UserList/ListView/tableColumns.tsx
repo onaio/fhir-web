@@ -111,7 +111,7 @@ export const getTableColumns = (
               </Menu>
             }
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
           </Dropdown>
         </>
       );

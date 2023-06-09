@@ -32,16 +32,17 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "@opensrp/store": "^0.0.10",
-    "antd": "^4.6.3",
+    "antd": "^5.5.1",
     "react": "^16.18.1",
     "react-query": "^3.15.1",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.2.1",
-    "@opensrp/i18n": "^0.0.1"
+    "react-router-dom": "^5.2.1"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.2.2",
+    "@ant-design/icons": "^5.1.4",
+    "@ant-design/pro-layout": "^7.14.3",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.13",
     "@onaio/utils": "^0.0.1",

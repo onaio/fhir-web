@@ -1,6 +1,7 @@
 /** globe icon with a dropdown where users can select language */
 import React from 'react';
 import { Menu, Dropdown, Button } from 'antd';
+import type { MenuProps } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import { LanguageCode } from '@opensrp/pkg-config';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
@@ -71,11 +72,12 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
   );
 
   return (
-    <Dropdown overlay={LangMenu} placement="bottomRight">
+    <Dropdown menu={(LangMenu) as MenuProps } placement="bottomRight">
       <Button
+        className='button'
         onClick={(e) => e.preventDefault()}
         shape="circle"
-        icon={<GlobalOutlined />}
+        icon={<GlobalOutlined rev={undefined} />}
         style={{
           background: 'transparent',
           border: 0,

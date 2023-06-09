@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Row, Col, Button, Spin, Divider, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -155,7 +157,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
               <Button type="primary">
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('New User Group')}
               </Button>
             </Link>
@@ -178,7 +180,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown
-                    overlay={
+                    menu={(
                       <Menu className="menu">
                         <Menu.Item
                           key={record.id}
@@ -190,12 +192,12 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                           {t('View Details')}
                         </Menu.Item>
                       </Menu>
-                    }
+                    ) as MenuProps}
                     placement="bottomLeft"
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" />
+                    <MoreOutlined className="more-options" rev={undefined} />
                   </Dropdown>
                 </span>
               ),

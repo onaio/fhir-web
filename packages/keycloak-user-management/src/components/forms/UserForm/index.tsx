@@ -1,6 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Input, Radio, PageHeader } from 'antd';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import {
   compositionUrlFilter,
   getCompositionOptions,

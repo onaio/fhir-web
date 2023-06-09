@@ -1,0 +1,2 @@
+yarn run v1.18.0
+$ jest packages/fhir-group-management/src/components/GroupList/tests/index.test.tsx .txt

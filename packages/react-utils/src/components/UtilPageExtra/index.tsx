@@ -31,7 +31,7 @@ const ExtraLinks = (props: UtilPageExtraProps) => {
           history.goBack();
         }}
       >
-        <ArrowLeftOutlined />
+        <ArrowLeftOutlined rev={undefined} />
         {t('Go back')}
       </Button>
       <Link to={homeUrl}>

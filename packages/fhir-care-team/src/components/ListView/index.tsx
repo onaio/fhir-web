@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import { Row, Col, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import type { MenuProps } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -100,7 +102,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
+            menu={(
               <Menu className="menu">
                 <Menu.Item key="delete">
                   <Popconfirm
@@ -121,12 +123,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
                   <Link to={`${URL_CARE_TEAM}/${record.id}`}>View Details</Link>
                 </Menu.Item>
               </Menu>
-            }
+            ) as MenuProps}
             placement="bottomRight"
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" data-testid="action-dropdown" />
+            <MoreOutlined className="more-options" data-testid="action-dropdown" rev={undefined} />
           </Dropdown>
         </span>
       ),
@@ -152,7 +154,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Create Care Team')}
               </Button>
             </Link>

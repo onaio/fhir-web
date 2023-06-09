@@ -4,7 +4,8 @@
  */
 import React from 'react';
 import { ProductForm } from '../ProductForm';
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import Helmet from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { useTranslation } from '../../mls';

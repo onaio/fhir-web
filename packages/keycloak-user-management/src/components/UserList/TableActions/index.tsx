@@ -102,8 +102,7 @@ const TableActions = (props: Props): JSX.Element => {
           <MoreOutlined
             data-testid="action-dropdown"
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }}
-          />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }} rev={undefined}          />
         </Button>
       </Dropdown>
     </>

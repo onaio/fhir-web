@@ -574,7 +574,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(toJson(wrapper.find('Modal'))).toBeTruthy();
-    expect(wrapper.find('Modal').props()['visible']).toBeTruthy();
+    expect(wrapper.find('Modal').props()['open']).toBeTruthy();
     expect(wrapper.find('button').at(2).text()).toEqual('Cancel');
     wrapper.find('button').at(2).simulate('click');
     await act(async () => {
@@ -582,7 +582,7 @@ describe('List view Page', () => {
       wrapper.update();
     });
     // check visibility is set to false
-    expect(wrapper.find('Modal').props()['visible']).toBeFalsy();
+    expect(wrapper.find('Modal').props()['open']).toBeFalsy();
   });
 
   it('updates table when clicking on tree node', async () => {

@@ -8,12 +8,7 @@ Array [
     checked={false}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -21,12 +16,7 @@ Array [
     checked={false}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -45,7 +35,8 @@ exports[`Health care form renders correctly: active label 1`] = `
 
 exports[`Health care form renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn ant-btn-default"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default"
+  disabled={false}
   id="cancel-button"
   onClick={[Function]}
   type="button"
@@ -79,16 +70,22 @@ exports[`Health care form renders correctly: cancel button 1`] = `
 
 exports[`Health care form renders correctly: comment field 1`] = `
 <textarea
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="comment"
+  onBlur={[Function]}
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
+  onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter comment"
   rows={2}
-  style={Object {}}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
   value=""
 />
 `;
@@ -109,7 +106,8 @@ exports[`Health care form renders correctly: extraDetails label 1`] = `null`;
 
 exports[`Health care form renders correctly: name field 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="name"
   onBlur={[Function]}
@@ -117,6 +115,7 @@ exports[`Health care form renders correctly: name field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Name"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -134,7 +133,7 @@ exports[`Health care form renders correctly: name label 1`] = `
 
 exports[`Health care form renders correctly: submit button 1`] = `
 <button
-  className="ant-btn ant-btn-primary"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
   disabled={false}
   id="submit-button"
   onClick={[Function]}

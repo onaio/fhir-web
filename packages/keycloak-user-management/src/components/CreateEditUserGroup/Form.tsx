@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Transfer, PageHeader } from 'antd';
+import { Button, Col, Row, Form, Input, Transfer } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { URL_USER_GROUPS } from '../../constants';
