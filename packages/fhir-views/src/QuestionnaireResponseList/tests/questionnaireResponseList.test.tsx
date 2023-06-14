@@ -14,6 +14,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { Router, Route, Switch } from 'react-router';
 import nock from 'nock';
 import { questionnairesPage1, questRespPage1, questRespPage2 } from '../../tests/fixtures';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -99,6 +100,8 @@ test('pagination events work correctly', async () => {
   // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
     expect(screen.getByText(/d8eb71c1-085d-4667-8fe1-b64ad1c6dd77/)).toBeInTheDocument();
   });
 
@@ -112,16 +115,15 @@ test('pagination events work correctly', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));/
   await waitFor(() => {
     const spinner = document.querySelector('.ant-spin');
-    expect(spinner).toBeNull();
-    expect(screen.getByText(/8d8d0c07-c2bf-4e5a-9cb3-6c264c3e58dd/)).toBeInTheDocument();
-    document.querySelectorAll('tr').forEach((tr, idx) => {
-      tr.querySelectorAll('td').forEach((td) => {
-        expect(td).toMatchSnapshot(`table row ${idx} page 2`);
+      expect(spinner).toBeNull();
+      expect(screen.getByText(/8d8d0c07-c2bf-4e5a-9cb3-6c264c3e58dd/)).toBeInTheDocument();
+      document.querySelectorAll('tr').forEach((tr, idx) => {
+        tr.querySelectorAll('td').forEach((td) => {
+          expect(td).toMatchSnapshot(`table row ${idx} page 2`);
+        });
       });
     });
-  });
-
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-});
+  })

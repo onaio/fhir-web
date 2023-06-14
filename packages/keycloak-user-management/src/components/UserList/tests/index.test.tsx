@@ -289,7 +289,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     // expect(toJson(wrapper.find('.create-user').at(1))).toEqual('');
-    wrapper.find('.create-user').at(0).simulate('click');
+    wrapper.find('.create-user button').at(0).simulate('click');
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users/new');
   });
 

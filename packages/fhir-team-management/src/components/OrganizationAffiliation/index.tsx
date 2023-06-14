@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Row, Col, Spin } from 'antd';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import AffiliationTable from './Table';

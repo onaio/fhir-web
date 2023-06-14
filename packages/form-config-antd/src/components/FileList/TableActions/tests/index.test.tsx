@@ -77,7 +77,7 @@ describe('components/Antd/FileList/TableActions', () => {
     );
 
     const dropdown = wrapper.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
 
     submenu.find('Button').simulate('click');
 

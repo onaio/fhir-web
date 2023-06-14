@@ -115,26 +115,26 @@ describe('OrganizationForm', () => {
       wrapper.update();
     });
 
-    expect(toJson(wrapper.find('FormItem#id label'))).toMatchSnapshot('id label');
-    expect(toJson(wrapper.find('FormItem#id input'))).toMatchSnapshot('id field');
+    expect(toJson(wrapper.find('.ant-form-item.id label'))).toMatchSnapshot('id label');
+    expect(toJson(wrapper.find('.ant-form-item.id input'))).toMatchSnapshot('id field');
 
-    expect(toJson(wrapper.find('FormItem#identifier label'))).toMatchSnapshot('identifier label');
-    expect(toJson(wrapper.find('FormItem#identifier input'))).toMatchSnapshot('identifier field');
+    expect(toJson(wrapper.find('.ant-form-item.identifier label'))).toMatchSnapshot('identifier label');
+    expect(toJson(wrapper.find('.ant-form-item.identifier input'))).toMatchSnapshot('identifier field');
 
-    expect(toJson(wrapper.find('FormItem#name label'))).toMatchSnapshot('name label');
-    expect(toJson(wrapper.find('FormItem#name input'))).toMatchSnapshot('name field');
+    expect(toJson(wrapper.find('.ant-form-item.name label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('.ant-form-item.name input'))).toMatchSnapshot('name field');
 
-    expect(toJson(wrapper.find('FormItem#alias label'))).toMatchSnapshot('alias label');
-    expect(toJson(wrapper.find('FormItem#alias input'))).toMatchSnapshot('alias field');
+    expect(toJson(wrapper.find('.ant-form-item.alias label'))).toMatchSnapshot('alias label');
+    expect(toJson(wrapper.find('.ant-form-item.alias input'))).toMatchSnapshot('alias field');
 
-    expect(toJson(wrapper.find('FormItem#status label').first())).toMatchSnapshot('status label');
-    expect(toJson(wrapper.find('FormItem#status input'))).toMatchSnapshot('status field');
+    expect(toJson(wrapper.find('.ant-form-item.status label').first())).toMatchSnapshot('status label');
+    expect(toJson(wrapper.find('.ant-form-item.status input'))).toMatchSnapshot('status field');
 
-    expect(toJson(wrapper.find('FormItem#type label').first())).toMatchSnapshot('type label');
-    expect(toJson(wrapper.find('FormItem#type select'))).toMatchSnapshot('type field');
+    expect(toJson(wrapper.find('.ant-form-item.type label').first())).toMatchSnapshot('type label');
+    expect(toJson(wrapper.find('.ant-form-item.type select'))).toMatchSnapshot('type field');
 
-    expect(toJson(wrapper.find('FormItem#members label'))).toMatchSnapshot('members label');
-    expect(toJson(wrapper.find('FormItem#members select'))).toMatchSnapshot('members field');
+    expect(toJson(wrapper.find('.ant-form-item.members label'))).toMatchSnapshot('members label');
+    expect(toJson(wrapper.find('.ant-form-item.members select'))).toMatchSnapshot('members field');
 
     expect(toJson(wrapper.find('#submit-button button'))).toMatchSnapshot('submit button');
     expect(toJson(wrapper.find('#cancel-button button'))).toMatchSnapshot('cancel button');
@@ -167,22 +167,22 @@ describe('OrganizationForm', () => {
     });
 
     // not required
-    expect(wrapper.find('FormItem#id').text()).toMatchInlineSnapshot(`"Id"`);
+    expect(wrapper.find('.ant-form-item.id').text()).toMatchInlineSnapshot(`"Id"`);
 
     // name is required and has no default
-    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameRequired"`);
+    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(`"NameRequired"`);
 
     // alias is not required required and has no default
-    expect(wrapper.find('FormItem#alias').text()).toMatchInlineSnapshot(`"Alias"`);
+    expect(wrapper.find('.ant-form-item.alias').text()).toMatchInlineSnapshot(`"Alias"`);
 
     // status has no
-    expect(wrapper.find('FormItem#status').text()).toMatchInlineSnapshot(`"StatusactiveInactive"`);
+    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(`"StatusactiveInactive"`);
 
     // has default value
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(`"TypeOrganizational team"`);
+    expect(wrapper.find('.ant-form-item.type').text()).toMatchInlineSnapshot(`"TypeOrganizational team"`);
 
     // not required
-    expect(wrapper.find('FormItem#members').text()).toMatchSnapshot(
+    expect(wrapper.find('.ant-form-item.members').text()).toMatchSnapshot(
       `"Practitioners Select user (practitioners only)"`
     );
 
@@ -219,7 +219,7 @@ describe('OrganizationForm', () => {
 
     // simulate active change
     wrapper
-      .find('FormItem#status input')
+      .find('.ant-form-item.status input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -227,11 +227,11 @@ describe('OrganizationForm', () => {
 
     // simulate name change
     wrapper
-      .find('FormItem#name input')
+      .find('.ant-form-item.name input')
       .simulate('change', { target: { name: 'name', value: 'Seal team' } });
 
     wrapper
-      .find('FormItem#alias input')
+      .find('.ant-form-item.alias input')
       .simulate('change', { target: { name: 'alias', value: 'ghosts' } });
 
     // simulate value selection for members
@@ -357,12 +357,12 @@ describe('OrganizationForm', () => {
 
     // simulate name change
     wrapper
-      .find('FormItem#name input')
+      .find('.ant-form-item.name input')
       .simulate('change', { target: { name: 'name', value: 'Owls of Minerva' } });
 
     // simulate active check to be active
     wrapper
-      .find('FormItem#status input')
+      .find('.ant-form-item.status input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -386,7 +386,7 @@ describe('OrganizationForm', () => {
     bobiRemoveAction.simulate('click');
 
     wrapper
-      .find('FormItem#alias input')
+      .find('.ant-form-item.alias input')
       .simulate('change', { target: { name: 'alias', value: 'Ss' } });
 
     await flushPromises();

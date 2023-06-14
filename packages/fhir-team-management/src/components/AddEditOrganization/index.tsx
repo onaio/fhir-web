@@ -9,7 +9,8 @@ import {
   ORGANIZATION_LIST_URL,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader, Spin } from 'antd';
+import { Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,

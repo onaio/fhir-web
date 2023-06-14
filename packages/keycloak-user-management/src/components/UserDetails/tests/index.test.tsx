@@ -65,7 +65,7 @@ describe('components/TeamsDetail', () => {
   it('removes it self on close', () => {
     const wrapper = mount(<UserDetails {...props} onClose={() => wrapper.unmount()} />);
     expect(wrapper.children()).toHaveLength(1);
-    wrapper.find('Button.close-btn').simulate('click');
+    wrapper.find('.close-btn button').simulate('click');
     expect(wrapper).toHaveLength(0);
   });
 });

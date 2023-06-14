@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { fireEvent, waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { patients, sortedAscPatients, sortedDescPatients } from './fixtures';
 import userEvents from '@testing-library/user-event';
 import { LIST_PATIENTS_URL, patientResourceType } from '../../../constants';
@@ -116,7 +116,12 @@ test('renders correctly in list view', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
 
   expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
 
@@ -131,7 +136,12 @@ test('renders correctly in list view', async () => {
   const searchForm = document.querySelector('[data-testid="search-form"]');
   userEvents.paste(searchForm as HTMLElement, '345');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
 
   expect(history.location.search).toEqual('?search=345&page=1&pageSize=20');
 
@@ -171,7 +181,12 @@ test('renders correctly in list view', async () => {
     .persist();
 
   fireEvent.click(dobCaretUp);
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
 
   // its now selected and is active.
   expect(dobCaretUp).toHaveClass('active');
@@ -212,7 +227,12 @@ test('renders correctly in list view', async () => {
     .persist();
 
   fireEvent.click(dobCaretDown);
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
 
   const ascendingBirthDates = Array.from(document.querySelectorAll('tr td:nth-child(2)')).map(
     (td) => td.textContent
@@ -246,7 +266,12 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
 
   expect(screen.getByText(/An error happened/)).toBeInTheDocument();
 });

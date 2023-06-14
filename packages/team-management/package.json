@@ -38,6 +38,8 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
+    "@testing-library/react": "^14.0.0",
+    "antd": "^5.6.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
@@ -49,6 +51,7 @@
   },
   "peerDependencies": {
     "@opensrp/i18n": "^0.0.1",
+    "@testing-library/react": "^12.1.2",
     "antd": "^5.5.1",
     "react": "^16.18.1",
     "react-query": "^3.15.1",

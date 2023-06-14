@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   healthCareServicePage1,
   healthCareServicePage2,
@@ -145,7 +145,12 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -187,7 +192,11 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.pathname).toEqual('/healthcare/list');
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=323');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
@@ -216,7 +225,11 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

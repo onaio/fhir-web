@@ -229,7 +229,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                             {t('Inherit')}
                           </Menu.Item>
                         </Menu>
-                  ) as MenuProps}
+                      ) as MenuProps}
                       className='drop'
                       placement="bottomLeft"
                       arrow

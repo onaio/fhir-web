@@ -3,6 +3,8 @@ import { LanguageCode } from '@opensrp/pkg-config';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { LanguageOptions, LanguageSwitcher } from '..';
+import renderer from 'react-test-renderer';
+import { wrap } from 'module';
 
 jest.mock('antd', () => {
   const actual = jest.requireActual('antd');
@@ -46,6 +48,8 @@ describe('components/pages/languageSwitcher', () => {
 
     const wrapper = mount(<LanguageSwitcher {...props} />);
     expect(wrapper.find('button')).toHaveLength(1);
+
+    console.log(wrapper.debug())
 
     expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançais"`);
 

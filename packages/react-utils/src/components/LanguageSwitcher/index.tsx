@@ -72,7 +72,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
   );
 
   return (
-    <Dropdown menu={(LangMenu) as MenuProps } placement="bottomRight">
+    <Dropdown menu={LangMenu} placement="bottomRight">
       <Button
         className='button'
         onClick={(e) => e.preventDefault()}

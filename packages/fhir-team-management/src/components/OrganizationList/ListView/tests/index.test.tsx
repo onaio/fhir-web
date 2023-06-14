@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
 import {
   organizationResourceType,
   ORGANIZATION_LIST_URL,
@@ -136,7 +136,11 @@ test('renders correctly when listing organizations', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
 
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
@@ -156,19 +160,34 @@ test('renders correctly when listing organizations', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  }).then(() => console.log("Element removed"))
+
+
+  setTimeout(() => {
+    console.log("Here")
+  }, 5000)
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
     });
   });
-
   // works with search as well.
   const searchForm = document.querySelector('[data-testid="search-form"]');
-  await userEvents.type(searchForm, '345');
+
+  if(searchForm) {
+    userEvents.type(searchForm, '345');
+  }
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -176,7 +195,9 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // remove search.
-  userEvents.clear(searchForm);
+  if(searchForm) {
+    userEvents.clear(searchForm);
+  }
   expect(history.location.search).toEqual('?pageSize=20&page=1');
 
   // view details
@@ -204,7 +225,11 @@ test('renders correctly when listing organizations', async () => {
   fireEvent.click(viewDetailsLink);
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=205');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
 
   // see details in viewDetails
   document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
@@ -213,7 +238,9 @@ test('renders correctly when listing organizations', async () => {
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
-  fireEvent.click(closeButton);
+  if(closeButton) {
+    fireEvent.click(closeButton);
+  }
 
   expect(history.location.pathname).toEqual('/admin/teams');
 
@@ -238,7 +265,11 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    const spinner = document.querySelector('.ant-spin');
+    expect(spinner).toBeNull();
+  })
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

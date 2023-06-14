@@ -4,7 +4,9 @@
  */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
+import { Row, Col, Button, Divider, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import {
@@ -77,7 +79,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
+            menu={(
               <Menu className="menu">
                 <Menu.Item key="view-details" className="view-details">
                   <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
@@ -85,12 +87,12 @@ export const OrganizationList = (props: OrganizationListProps) => {
                   </Button>
                 </Menu.Item>
               </Menu>
-            }
+      ) as MenuProps }
             placement="bottomRight"
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
           </Dropdown>
         </span>
       ),
@@ -117,7 +119,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_ADD_ORGANIZATION}>
               <Button type="primary">
-                <PlusOutlined />
+                <PlusOutlined rev={undefined} />
                 {t('Add Organization')}
               </Button>
             </Link>

@@ -259,6 +259,7 @@ describe('components/UserGroupsList', () => {
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Admin');
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual('New Group');
+    const dropdown = wrapper.find('Dropdown').at(0);
     expect(wrapper.find('tbody').find('tr').at(2).find('td').at(0).text()).toEqual('Super User');
     expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual(
       'Test User Group'
@@ -301,7 +302,7 @@ describe('components/UserGroupsList', () => {
     wrapper.update();
 
     await act(async () => {
-      wrapper.find('Dropdown').at(0).simulate('click');
+      wrapper.find('.ant-dropdown').at(0).simulate('click');
     });
     wrapper.update();
     await act(async () => {

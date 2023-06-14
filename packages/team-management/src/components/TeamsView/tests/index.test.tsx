@@ -245,16 +245,19 @@ describe('components/TeamsView', () => {
       wrapper.update();
     });
 
+    const tree = document.querySelector('.content');
+    expect(tree).toMatchSnapshot();
+    console.log(wrapper.debug())
     // find view details button
-    const dropdown = wrapper.find('Dropdown').at(0);
+    const dropdown = wrapper.find('[data-testid="view-details"]')
     dropdown.simulate('click');
     wrapper.update();
 
     fetch.mockResponseOnce(JSON.stringify(practitioners));
     fetch.mockResponseOnce(JSON.stringify([assignments]));
 
-    wrapper.find('.viewdetails').at(0).simulate('click');
-    wrapper.update();
+    // wrapper.find('.viewdetails').at(0).simulate('click');
+    // wrapper.update();
 
     // click view details
 

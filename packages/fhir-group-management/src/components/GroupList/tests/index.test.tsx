@@ -9,11 +9,10 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
 import { firstFiftygroups } from './fixtures';
 import userEvents from '@testing-library/user-event';
-import { wait } from '@testing-library/user-event/dist/utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -117,18 +116,13 @@ test('renders correctly when listing resources', async () => {
     </Router>
   );
 
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  await waitFor(() => {
-    const spinner = document.querySelector('.ant-spin');
-    expect(spinner).toBeNull();
-  })
-  
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
-      <title>
-        Groups List
-      </title>
-    `);
+    <title>
+      Groups List
+    </title>
+  `);
 
   // does not render the add group button
   const addGroupBtn = screen.queryByText(/Add Group/);
@@ -187,13 +181,7 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=145838');
   expect(history.location.pathname).toEqual(`/groups/list`);
 
-
-
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  await waitFor(() => {
-    const spinner = document.querySelector('.ant-spin');
-    expect(spinner).toBeNull();
-  })
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
@@ -209,7 +197,6 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.pathname).toEqual('/groups/list');
   expect(nock.isDone()).toBeTruthy();
-
 });
 
 test('responds as expected to errors', async () => {
@@ -236,11 +223,7 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  await waitFor(() => {
-    const spinner = document.querySelector('.ant-spin');
-    expect(spinner).toBeNull();
-  })
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

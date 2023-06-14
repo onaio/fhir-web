@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Dropdown, Menu } from 'antd';
+import { Button, Divider, Dropdown, Menu, message } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -49,7 +49,30 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
   ];
-
+  
+  const getItems = (record: Organization): MenuProps['items']  => [
+    {
+      key: '1',
+      label: (
+        <Button 
+          type='link' 
+          data-testId='view-details'
+          onClick={() => {
+          if (onViewDetails) {
+            onViewDetails(
+              record,
+              opensrpBaseURL,
+              setDetail,
+              setPractitionersList,
+              setAssignedLocations,
+              t
+            );
+          }
+        }}>t('View Details')</Button>
+      )
+    }
+  ]
+ 
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
@@ -83,31 +106,8 @@ const Table: React.FC<Props> = (props: Props) => {
                 </Link>
                 <Divider type="vertical" />
                 <Dropdown
-                  menu={(
-                    <Menu className="menu">
-                      <Menu.Item
-                        className="viewdetails"
-                        key={index}
-                        onClick={() => {
-                          if (onViewDetails) {
-                            onViewDetails(
-                              record,
-                              opensrpBaseURL,
-                              setDetail,
-                              setPractitionersList,
-                              setAssignedLocations,
-                              t
-                            );
-                          }
-                        }}
-                      >
-                        {t('View details')}
-                      </Menu.Item>
-                    </Menu>
-            ) as MenuProps}
+                  menu={{items: getItems(record)}}
                   placement="bottomRight"
-                  arrow
-                  trigger={['click']}
                 >
                   <MoreOutlined className="more-options" rev={undefined} />
                 </Dropdown>

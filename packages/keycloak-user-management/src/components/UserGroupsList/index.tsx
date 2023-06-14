@@ -180,7 +180,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown
-                    menu={(
+                    menu={
                       <Menu className="menu">
                         <Menu.Item
                           key={record.id}
@@ -192,7 +192,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                           {t('View Details')}
                         </Menu.Item>
                       </Menu>
-                    ) as MenuProps}
+                    }
                     placement="bottomLeft"
                     arrow
                     trigger={['click']}

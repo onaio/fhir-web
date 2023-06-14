@@ -37,7 +37,7 @@ interface OrganizationListProps {
  */
 export const UserList = (props: OrganizationListProps) => {
   const { fhirBaseURL, keycloakBaseURL } = props;
-  const location = useLocation();
+  const location = useLocation();                                       
   const history = useHistory();
   const match = useRouteMatch();
   const extraData = useSelector(getExtraData);

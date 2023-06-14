@@ -6,12 +6,7 @@ Array [
     checked={true}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -19,12 +14,7 @@ Array [
     checked={false}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -43,7 +33,8 @@ exports[`Health care form renders correctly: active label 1`] = `
 
 exports[`Health care form renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn ant-btn-default"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default cancel-button"
+  disabled={false}
   id="cancel-button"
   onClick={[Function]}
   type="button"
@@ -77,7 +68,7 @@ exports[`Health care form renders correctly: cancel button 1`] = `
 
 exports[`Health care form renders correctly: id field 1`] = `
 <input
-  className="ant-input ant-input-disabled"
+  className="ant-input ant-input-disabled css-dev-only-do-not-override-k7429z"
   disabled={true}
   id="id"
   onBlur={[Function]}
@@ -85,6 +76,7 @@ exports[`Health care form renders correctly: id field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="(Auto generated)"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -102,7 +94,7 @@ exports[`Health care form renders correctly: id label 1`] = `
 
 exports[`Health care form renders correctly: identifier field 1`] = `
 <input
-  className="ant-input ant-input-disabled"
+  className="ant-input ant-input-disabled css-dev-only-do-not-override-k7429z"
   disabled={true}
   id="identifier"
   onBlur={[Function]}
@@ -110,6 +102,7 @@ exports[`Health care form renders correctly: identifier field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="(Auto generated)"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -127,7 +120,8 @@ exports[`Health care form renders correctly: identifier label 1`] = `
 
 exports[`Health care form renders correctly: name field 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="name"
   onBlur={[Function]}
@@ -135,6 +129,7 @@ exports[`Health care form renders correctly: name field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Name"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -152,7 +147,7 @@ exports[`Health care form renders correctly: name label 1`] = `
 
 exports[`Health care form renders correctly: submit button 1`] = `
 <button
-  className="ant-btn ant-btn-primary"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary submit-button"
   disabled={false}
   id="submit-button"
   onClick={[Function]}
@@ -190,8 +185,10 @@ exports[`Health care form renders correctly: type field 1`] = `
   aria-activedescendant="type_list_0"
   aria-autocomplete="list"
   aria-controls="type_list"
+  aria-expanded={false}
   aria-haspopup="listbox"
   aria-owns="type_list"
+  aria-required="true"
   autoComplete="off"
   className="ant-select-selection-search-input"
   disabled={false}
@@ -230,8 +227,10 @@ exports[`Health care form renders correctly: unit of measure field 1`] = `
   aria-activedescendant="unitOfMeasure_list_0"
   aria-autocomplete="list"
   aria-controls="unitOfMeasure_list"
+  aria-expanded={false}
   aria-haspopup="listbox"
   aria-owns="unitOfMeasure_list"
+  aria-required="true"
   autoComplete="off"
   className="ant-select-selection-search-input"
   disabled={false}
@@ -266,546 +265,629 @@ exports[`Health care form renders correctly: unit of measure label 1`] = `
 `;
 
 exports[`Health care form submits new group: asd 1`] = `
-<FormItem
-  id="type"
-  label="Select Commodity Type"
-  name="type"
-  rules={
-    Array [
-      Object {
-        "enum": Array [
-          "medication",
-          "device",
-        ],
-        "required": true,
-        "type": "enum",
-      },
-    ]
-  }
+<div
+  className="ant-form-item type css-dev-only-do-not-override-k7429z"
 >
-  <WrapperField
-    id="type"
-    label="Select Commodity Type"
-    messageVariables={
-      Object {
-        "label": "Select Commodity Type",
-      }
-    }
-    name="type"
-    onMetaChange={[Function]}
-    rules={
-      Array [
-        Object {
-          "enum": Array [
-            "medication",
-            "device",
-          ],
-          "required": true,
-          "type": "enum",
-        },
-      ]
-    }
-    trigger="onChange"
-    validateTrigger="onChange"
+  <Row
+    className="ant-form-item-row"
   >
-    <Field
-      fieldContext={
-        Object {
-          "__INTERNAL__": Object {
-            "itemRef": [Function],
-            "name": undefined,
-          },
-          "getFieldError": [Function],
-          "getFieldInstance": [Function],
-          "getFieldValue": [Function],
-          "getFieldWarning": [Function],
-          "getFieldsError": [Function],
-          "getFieldsValue": [Function],
-          "getInternalHooks": [Function],
-          "isFieldTouched": [Function],
-          "isFieldValidating": [Function],
-          "isFieldsTouched": [Function],
-          "isFieldsValidating": [Function],
-          "resetFields": [Function],
-          "scrollToField": [Function],
-          "setFields": [Function],
-          "setFieldsValue": [Function],
-          "submit": [Function],
-          "validateFields": [Function],
-          "validateTrigger": "onChange",
-        }
-      }
-      id="type"
-      key="_type"
-      label="Select Commodity Type"
-      messageVariables={
-        Object {
-          "label": "Select Commodity Type",
-        }
-      }
-      name={
-        Array [
-          "type",
-        ]
-      }
-      onMetaChange={[Function]}
-      rules={
-        Array [
-          Object {
-            "enum": Array [
-              "medication",
-              "device",
-            ],
-            "required": true,
-            "type": "enum",
-          },
-        ]
-      }
-      trigger="onChange"
-      validateTrigger="onChange"
-      valuePropName="value"
+    <Empty />
+    <div
+      className="ant-row ant-form-item-row css-dev-only-do-not-override-k7429z"
+      style={Object {}}
     >
-      <Row
-        className="ant-form-item"
-        key="row"
+      <FormItemLabel
+        className="type css-dev-only-do-not-override-k7429z"
+        errors={Array []}
+        fieldId="type"
+        htmlFor="type"
+        id="type"
+        isRequired={true}
+        label="Select Commodity Type"
+        meta={
+          Object {
+            "errors": Array [],
+            "name": Array [],
+            "touched": false,
+            "validated": false,
+            "validating": false,
+            "warnings": Array [],
+          }
+        }
+        name="type"
+        onSubItemMetaChange={[Function]}
+        prefixCls="ant-form"
+        required={true}
+        requiredMark={false}
+        rules={
+          Array [
+            Object {
+              "enum": Array [
+                "medication",
+                "device",
+              ],
+              "required": true,
+              "type": "enum",
+            },
+          ]
+        }
+        warnings={Array []}
       >
-        <div
-          className="ant-row ant-form-item"
-          style={Object {}}
+        <Col
+          className="ant-form-item-label"
+          lg={
+            Object {
+              "span": 6,
+            }
+          }
+          md={
+            Object {
+              "span": 4,
+            }
+          }
+          sm={
+            Object {
+              "span": 4,
+            }
+          }
+          xs={
+            Object {
+              "span": 24,
+            }
+          }
         >
-          <FormItemLabel
-            htmlFor="type"
-            id="type"
-            label="Select Commodity Type"
-            name="type"
-            prefixCls="ant-form"
-            required={true}
-            requiredMark={false}
-            rules={
-              Array [
-                Object {
-                  "enum": Array [
-                    "medication",
-                    "device",
-                  ],
-                  "required": true,
-                  "type": "enum",
-                },
-              ]
-            }
+          <Empty />
+          <div
+            className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-4 ant-col-md-4 ant-col-lg-6 css-dev-only-do-not-override-k7429z"
+            style={Object {}}
           >
-            <Col
-              className="ant-form-item-label"
-              lg={
-                Object {
-                  "span": 6,
-                }
-              }
-              md={
-                Object {
-                  "span": 4,
-                }
-              }
-              sm={
-                Object {
-                  "span": 4,
-                }
-              }
-              xs={
-                Object {
-                  "span": 24,
-                }
-              }
+            <label
+              className="ant-form-item-required"
+              htmlFor="type"
+              title="Select Commodity Type"
+            >
+              Select Commodity Type
+            </label>
+          </div>
+        </Col>
+      </FormItemLabel>
+      <FormItemInput
+        className="type css-dev-only-do-not-override-k7429z"
+        errors={Array []}
+        fieldId="type"
+        id="type"
+        isRequired={true}
+        label="Select Commodity Type"
+        marginBottom={null}
+        meta={
+          Object {
+            "errors": Array [],
+            "name": Array [],
+            "touched": false,
+            "validated": false,
+            "validating": false,
+            "warnings": Array [],
+          }
+        }
+        name={Array []}
+        onErrorVisibleChanged={[Function]}
+        onSubItemMetaChange={[Function]}
+        prefixCls="ant-form"
+        rules={
+          Array [
+            Object {
+              "enum": Array [
+                "medication",
+                "device",
+              ],
+              "required": true,
+              "type": "enum",
+            },
+          ]
+        }
+        status=""
+        touched={false}
+        validated={false}
+        validating={false}
+        warnings={Array []}
+      >
+        <Col
+          className="ant-form-item-control"
+          lg={
+            Object {
+              "span": 14,
+            }
+          }
+          md={
+            Object {
+              "span": 16,
+            }
+          }
+          sm={
+            Object {
+              "span": 18,
+            }
+          }
+          xs={
+            Object {
+              "span": 24,
+            }
+          }
+        >
+          <Empty />
+          <div
+            className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-18 ant-col-md-16 ant-col-lg-14 css-dev-only-do-not-override-k7429z"
+            style={Object {}}
+          >
+            <div
+              className="ant-form-item-control-input"
             >
               <div
-                className="ant-col ant-form-item-label ant-col-xs-24 ant-col-sm-4 ant-col-md-4 ant-col-lg-6"
-                style={Object {}}
+                className="ant-form-item-control-input-content"
               >
-                <label
-                  className="ant-form-item-required"
-                  htmlFor="type"
-                  title="Select Commodity Type"
+                <Component
+                  childProps={
+                    Array [
+                      "true",
+                      undefined,
+                      undefined,
+                    ]
+                  }
+                  update={
+                    <ForwardRef(Select)
+                      disabled={false}
+                      filterOption={[Function]}
+                      options={
+                        Array [
+                          Object {
+                            "label": "Medication",
+                            "value": "medication",
+                          },
+                          Object {
+                            "label": "Device",
+                            "value": "device",
+                          },
+                        ]
+                      }
+                      placeholder="Select Commodity type"
+                      showSearch={true}
+                    />
+                  }
                 >
-                  Select Commodity Type
-                </label>
-              </div>
-            </Col>
-          </FormItemLabel>
-          <FormItemInput
-            errors={Array []}
-            id="type"
-            label="Select Commodity Type"
-            name={Array []}
-            prefixCls="ant-form"
-            rules={
-              Array [
-                Object {
-                  "enum": Array [
-                    "medication",
-                    "device",
-                  ],
-                  "required": true,
-                  "type": "enum",
-                },
-              ]
-            }
-            status=""
-            touched={false}
-            validateStatus=""
-            validating={false}
-            warnings={Array []}
-          >
-            <Col
-              className="ant-form-item-control"
-              lg={
-                Object {
-                  "span": 14,
-                }
-              }
-              md={
-                Object {
-                  "span": 16,
-                }
-              }
-              sm={
-                Object {
-                  "span": 18,
-                }
-              }
-              xs={
-                Object {
-                  "span": 24,
-                }
-              }
-            >
-              <div
-                className="ant-col ant-form-item-control ant-col-xs-24 ant-col-sm-18 ant-col-md-16 ant-col-lg-14"
-                style={Object {}}
-              >
-                <div
-                  className="ant-form-item-control-input"
-                >
-                  <div
-                    className="ant-form-item-control-input-content"
+                  <ForwardRef(Select)
+                    aria-required="true"
+                    disabled={false}
+                    filterOption={[Function]}
+                    id="type"
+                    onChange={[Function]}
+                    options={
+                      Array [
+                        Object {
+                          "label": "Medication",
+                          "value": "medication",
+                        },
+                        Object {
+                          "label": "Device",
+                          "value": "device",
+                        },
+                      ]
+                    }
+                    placeholder="Select Commodity type"
+                    showSearch={true}
                   >
-                    <Component
-                      update={
-                        <ForwardRef(InternalSelect)
-                          disabled={false}
-                          filterOption={[Function]}
-                          options={
-                            Array [
-                              Object {
-                                "label": "Medication",
-                                "value": "medication",
-                              },
-                              Object {
-                                "label": "Device",
-                                "value": "device",
-                              },
-                            ]
-                          }
-                          placeholder="Select Commodity type"
-                          showSearch={true}
+                    <Empty />
+                    <Select
+                      aria-required="true"
+                      builtinPlacements={
+                        Object {
+                          "bottomLeft": Object {
+                            "htmlRegion": "visible",
+                            "offset": Array [
+                              0,
+                              4,
+                            ],
+                            "overflow": Object {
+                              "adjustX": true,
+                              "adjustY": true,
+                              "shiftY": true,
+                            },
+                            "points": Array [
+                              "tl",
+                              "bl",
+                            ],
+                          },
+                          "bottomRight": Object {
+                            "htmlRegion": "visible",
+                            "offset": Array [
+                              0,
+                              4,
+                            ],
+                            "overflow": Object {
+                              "adjustX": true,
+                              "adjustY": true,
+                              "shiftY": true,
+                            },
+                            "points": Array [
+                              "tr",
+                              "br",
+                            ],
+                          },
+                          "topLeft": Object {
+                            "htmlRegion": "visible",
+                            "offset": Array [
+                              0,
+                              -4,
+                            ],
+                            "overflow": Object {
+                              "adjustX": true,
+                              "adjustY": true,
+                              "shiftY": true,
+                            },
+                            "points": Array [
+                              "bl",
+                              "tl",
+                            ],
+                          },
+                          "topRight": Object {
+                            "htmlRegion": "visible",
+                            "offset": Array [
+                              0,
+                              -4,
+                            ],
+                            "overflow": Object {
+                              "adjustX": true,
+                              "adjustY": true,
+                              "shiftY": true,
+                            },
+                            "points": Array [
+                              "br",
+                              "tr",
+                            ],
+                          },
+                        }
+                      }
+                      className="ant-select-in-form-item css-dev-only-do-not-override-k7429z"
+                      clearIcon={<ForwardRef(CloseCircleFilled) />}
+                      disabled={false}
+                      dropdownClassName="css-dev-only-do-not-override-k7429z"
+                      filterOption={[Function]}
+                      id="type"
+                      inputIcon={[Function]}
+                      listHeight={256}
+                      listItemHeight={24}
+                      menuItemSelectedIcon={null}
+                      notFoundContent={
+                        <DefaultRenderEmpty
+                          componentName="Select"
                         />
                       }
+                      onChange={[Function]}
+                      options={
+                        Array [
+                          Object {
+                            "label": "Medication",
+                            "value": "medication",
+                          },
+                          Object {
+                            "label": "Device",
+                            "value": "device",
+                          },
+                        ]
+                      }
+                      placeholder="Select Commodity type"
+                      placement="bottomLeft"
+                      prefixCls="ant-select"
+                      removeIcon={<ForwardRef(CloseOutlined) />}
+                      showArrow={true}
+                      showSearch={true}
+                      transitionName="ant-slide-up"
                     >
-                      <ForwardRef(InternalSelect)
+                      <BaseSelect
+                        OptionList={
+                          Object {
+                            "$$typeof": Symbol(react.forward_ref),
+                            "render": [Function],
+                          }
+                        }
+                        activeDescendantId="type_list_0"
+                        activeValue={null}
+                        aria-required="true"
+                        autoClearSearchValue={true}
+                        builtinPlacements={
+                          Object {
+                            "bottomLeft": Object {
+                              "htmlRegion": "visible",
+                              "offset": Array [
+                                0,
+                                4,
+                              ],
+                              "overflow": Object {
+                                "adjustX": true,
+                                "adjustY": true,
+                                "shiftY": true,
+                              },
+                              "points": Array [
+                                "tl",
+                                "bl",
+                              ],
+                            },
+                            "bottomRight": Object {
+                              "htmlRegion": "visible",
+                              "offset": Array [
+                                0,
+                                4,
+                              ],
+                              "overflow": Object {
+                                "adjustX": true,
+                                "adjustY": true,
+                                "shiftY": true,
+                              },
+                              "points": Array [
+                                "tr",
+                                "br",
+                              ],
+                            },
+                            "topLeft": Object {
+                              "htmlRegion": "visible",
+                              "offset": Array [
+                                0,
+                                -4,
+                              ],
+                              "overflow": Object {
+                                "adjustX": true,
+                                "adjustY": true,
+                                "shiftY": true,
+                              },
+                              "points": Array [
+                                "bl",
+                                "tl",
+                              ],
+                            },
+                            "topRight": Object {
+                              "htmlRegion": "visible",
+                              "offset": Array [
+                                0,
+                                -4,
+                              ],
+                              "overflow": Object {
+                                "adjustX": true,
+                                "adjustY": true,
+                                "shiftY": true,
+                              },
+                              "points": Array [
+                                "br",
+                                "tr",
+                              ],
+                            },
+                          }
+                        }
+                        className="ant-select-in-form-item css-dev-only-do-not-override-k7429z"
+                        clearIcon={<ForwardRef(CloseCircleFilled) />}
                         disabled={false}
-                        filterOption={[Function]}
+                        displayValues={Array []}
+                        dropdownClassName="css-dev-only-do-not-override-k7429z"
+                        dropdownMatchSelectWidth={true}
+                        emptyOptions={false}
                         id="type"
-                        onChange={[Function]}
-                        options={
+                        inputIcon={[Function]}
+                        notFoundContent={
+                          <DefaultRenderEmpty
+                            componentName="Select"
+                          />
+                        }
+                        omitDomProps={
                           Array [
-                            Object {
-                              "label": "Medication",
-                              "value": "medication",
-                            },
-                            Object {
-                              "label": "Device",
-                              "value": "device",
-                            },
+                            "inputValue",
                           ]
                         }
+                        onDisplayValuesChange={[Function]}
+                        onSearch={[Function]}
+                        onSearchSplit={[Function]}
                         placeholder="Select Commodity type"
+                        placement="bottomLeft"
+                        prefixCls="ant-select"
+                        removeIcon={<ForwardRef(CloseOutlined) />}
+                        searchValue=""
+                        showArrow={true}
                         showSearch={true}
+                        transitionName="ant-slide-up"
                       >
-                        <Select
-                          className=""
-                          clearIcon={<ForwardRef(CloseCircleFilled) />}
-                          disabled={false}
-                          dropdownClassName=""
-                          filterOption={[Function]}
-                          id="type"
-                          inputIcon={[Function]}
-                          listHeight={256}
-                          listItemHeight={24}
-                          menuItemSelectedIcon={null}
-                          notFoundContent={
-                            <Context.Consumer>
-                              [Function]
-                            </Context.Consumer>
-                          }
-                          onChange={[Function]}
-                          options={
-                            Array [
-                              Object {
-                                "label": "Medication",
-                                "value": "medication",
-                              },
-                              Object {
-                                "label": "Device",
-                                "value": "device",
-                              },
-                            ]
-                          }
-                          placeholder="Select Commodity type"
-                          prefixCls="ant-select"
-                          removeIcon={<ForwardRef(CloseOutlined) />}
-                          showSearch={true}
-                          transitionName="ant-slide-up"
+                        <div
+                          aria-required="true"
+                          className="ant-select ant-select-in-form-item css-dev-only-do-not-override-k7429z ant-select-single ant-select-show-arrow ant-select-open ant-select-show-search"
+                          onBlur={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          onKeyUp={[Function]}
+                          onMouseDown={[Function]}
                         >
-                          <BaseSelect
-                            OptionList={
+                          <SelectTrigger
+                            builtinPlacements={
                               Object {
-                                "$$typeof": Symbol(react.forward_ref),
-                                "render": [Function],
+                                "bottomLeft": Object {
+                                  "htmlRegion": "visible",
+                                  "offset": Array [
+                                    0,
+                                    4,
+                                  ],
+                                  "overflow": Object {
+                                    "adjustX": true,
+                                    "adjustY": true,
+                                    "shiftY": true,
+                                  },
+                                  "points": Array [
+                                    "tl",
+                                    "bl",
+                                  ],
+                                },
+                                "bottomRight": Object {
+                                  "htmlRegion": "visible",
+                                  "offset": Array [
+                                    0,
+                                    4,
+                                  ],
+                                  "overflow": Object {
+                                    "adjustX": true,
+                                    "adjustY": true,
+                                    "shiftY": true,
+                                  },
+                                  "points": Array [
+                                    "tr",
+                                    "br",
+                                  ],
+                                },
+                                "topLeft": Object {
+                                  "htmlRegion": "visible",
+                                  "offset": Array [
+                                    0,
+                                    -4,
+                                  ],
+                                  "overflow": Object {
+                                    "adjustX": true,
+                                    "adjustY": true,
+                                    "shiftY": true,
+                                  },
+                                  "points": Array [
+                                    "bl",
+                                    "tl",
+                                  ],
+                                },
+                                "topRight": Object {
+                                  "htmlRegion": "visible",
+                                  "offset": Array [
+                                    0,
+                                    -4,
+                                  ],
+                                  "overflow": Object {
+                                    "adjustX": true,
+                                    "adjustY": true,
+                                    "shiftY": true,
+                                  },
+                                  "points": Array [
+                                    "br",
+                                    "tr",
+                                  ],
+                                },
                               }
                             }
-                            activeDescendantId="type_list_0"
-                            activeValue={null}
-                            className=""
-                            clearIcon={<ForwardRef(CloseCircleFilled) />}
+                            containerWidth={0}
                             disabled={false}
-                            displayValues={Array []}
-                            dropdownClassName=""
+                            dropdownClassName="css-dev-only-do-not-override-k7429z"
                             dropdownMatchSelectWidth={true}
-                            emptyOptions={false}
-                            id="type"
-                            inputIcon={[Function]}
-                            notFoundContent={
-                              <Context.Consumer>
-                                [Function]
-                              </Context.Consumer>
-                            }
-                            omitDomProps={
-                              Array [
-                                "inputValue",
-                              ]
-                            }
-                            onDisplayValuesChange={[Function]}
-                            onSearch={[Function]}
-                            onSearchSplit={[Function]}
-                            placeholder="Select Commodity type"
+                            empty={false}
+                            getTriggerDOMNode={[Function]}
+                            onPopupMouseEnter={[Function]}
+                            placement="bottomLeft"
+                            popupElement={<OptionList />}
                             prefixCls="ant-select"
-                            removeIcon={<ForwardRef(CloseOutlined) />}
-                            searchValue=""
-                            showSearch={true}
                             transitionName="ant-slide-up"
+                            visible={true}
                           >
-                            <div
-                              className="ant-select ant-select-single ant-select-show-arrow ant-select-open ant-select-show-search"
-                              onBlur={[Function]}
-                              onFocus={[Function]}
-                              onKeyDown={[Function]}
-                              onKeyUp={[Function]}
-                              onMouseDown={[Function]}
-                            >
-                              <SelectTrigger
-                                containerWidth={0}
-                                disabled={false}
-                                dropdownClassName=""
-                                dropdownMatchSelectWidth={true}
-                                empty={false}
-                                getTriggerDOMNode={[Function]}
-                                onPopupMouseEnter={[Function]}
-                                popupElement={<OptionList />}
-                                prefixCls="ant-select"
-                                transitionName="ant-slide-up"
-                                visible={true}
-                              >
-                                <Trigger
-                                  action={Array []}
-                                  afterPopupVisibleChange={[Function]}
-                                  autoDestroy={false}
-                                  blurDelay={0.15}
-                                  builtinPlacements={
-                                    Object {
-                                      "bottomLeft": Object {
-                                        "offset": Array [
-                                          0,
-                                          4,
-                                        ],
-                                        "overflow": Object {
-                                          "adjustX": 0,
-                                          "adjustY": 1,
-                                        },
-                                        "points": Array [
-                                          "tl",
-                                          "bl",
-                                        ],
-                                      },
-                                      "bottomRight": Object {
-                                        "offset": Array [
-                                          0,
-                                          4,
-                                        ],
-                                        "overflow": Object {
-                                          "adjustX": 0,
-                                          "adjustY": 1,
-                                        },
-                                        "points": Array [
-                                          "tr",
-                                          "br",
-                                        ],
-                                      },
-                                      "topLeft": Object {
-                                        "offset": Array [
-                                          0,
-                                          -4,
-                                        ],
-                                        "overflow": Object {
-                                          "adjustX": 0,
-                                          "adjustY": 1,
-                                        },
-                                        "points": Array [
-                                          "bl",
-                                          "tl",
-                                        ],
-                                      },
-                                      "topRight": Object {
-                                        "offset": Array [
-                                          0,
-                                          -4,
-                                        ],
-                                        "overflow": Object {
-                                          "adjustX": 0,
-                                          "adjustY": 1,
-                                        },
-                                        "points": Array [
-                                          "br",
-                                          "tr",
-                                        ],
-                                      },
-                                    }
-                                  }
-                                  defaultPopupVisible={false}
-                                  destroyPopupOnHide={false}
-                                  focusDelay={0}
-                                  getDocument={[Function]}
-                                  getPopupClassNameFromAlign={[Function]}
-                                  getTriggerDOMNode={[Function]}
-                                  hideAction={Array []}
-                                  mask={false}
-                                  maskClosable={true}
-                                  mouseEnterDelay={0}
-                                  mouseLeaveDelay={0.1}
-                                  onPopupAlign={[Function]}
-                                  onPopupVisibleChange={[Function]}
-                                  popup={
-                                    <div
-                                      onMouseEnter={[Function]}
-                                    >
-                                      <OptionList />
-                                    </div>
-                                  }
-                                  popupAlign={Object {}}
-                                  popupClassName=""
-                                  popupPlacement="bottomLeft"
-                                  popupStyle={
-                                    Object {
-                                      "minWidth": 0,
-                                      "width": 0,
-                                    }
-                                  }
-                                  popupTransitionName="ant-slide-up"
-                                  popupVisible={true}
-                                  prefixCls="ant-select-dropdown"
-                                  showAction={Array []}
+                            <Trigger
+                              builtinPlacements={
+                                Object {
+                                  "bottomLeft": Object {
+                                    "htmlRegion": "visible",
+                                    "offset": Array [
+                                      0,
+                                      4,
+                                    ],
+                                    "overflow": Object {
+                                      "adjustX": true,
+                                      "adjustY": true,
+                                      "shiftY": true,
+                                    },
+                                    "points": Array [
+                                      "tl",
+                                      "bl",
+                                    ],
+                                  },
+                                  "bottomRight": Object {
+                                    "htmlRegion": "visible",
+                                    "offset": Array [
+                                      0,
+                                      4,
+                                    ],
+                                    "overflow": Object {
+                                      "adjustX": true,
+                                      "adjustY": true,
+                                      "shiftY": true,
+                                    },
+                                    "points": Array [
+                                      "tr",
+                                      "br",
+                                    ],
+                                  },
+                                  "topLeft": Object {
+                                    "htmlRegion": "visible",
+                                    "offset": Array [
+                                      0,
+                                      -4,
+                                    ],
+                                    "overflow": Object {
+                                      "adjustX": true,
+                                      "adjustY": true,
+                                      "shiftY": true,
+                                    },
+                                    "points": Array [
+                                      "bl",
+                                      "tl",
+                                    ],
+                                  },
+                                  "topRight": Object {
+                                    "htmlRegion": "visible",
+                                    "offset": Array [
+                                      0,
+                                      -4,
+                                    ],
+                                    "overflow": Object {
+                                      "adjustX": true,
+                                      "adjustY": true,
+                                      "shiftY": true,
+                                    },
+                                    "points": Array [
+                                      "br",
+                                      "tr",
+                                    ],
+                                  },
+                                }
+                              }
+                              getTriggerDOMNode={[Function]}
+                              hideAction={Array []}
+                              popup={
+                                <div
+                                  onMouseEnter={[Function]}
                                 >
-                                  <Selector
-                                    OptionList={
-                                      Object {
-                                        "$$typeof": Symbol(react.forward_ref),
-                                        "render": [Function],
-                                      }
-                                    }
-                                    activeDescendantId="type_list_0"
-                                    activeValue={null}
-                                    className=""
-                                    clearIcon={<ForwardRef(CloseCircleFilled) />}
-                                    disabled={false}
-                                    displayValues={Array []}
-                                    domRef={
-                                      Object {
-                                        "current": <div
-                                          class="ant-select-selector"
-                                        >
-                                          <span
-                                            class="ant-select-selection-search"
-                                          >
-                                            <input
-                                              aria-activedescendant="type_list_0"
-                                              aria-autocomplete="list"
-                                              aria-controls="type_list"
-                                              aria-expanded="true"
-                                              aria-haspopup="listbox"
-                                              aria-owns="type_list"
-                                              autocomplete="off"
-                                              class="ant-select-selection-search-input"
-                                              id="type"
-                                              role="combobox"
-                                              type="search"
-                                              value=""
-                                            />
-                                          </span>
-                                          <span
-                                            class="ant-select-selection-placeholder"
-                                          >
-                                            Select Commodity type
-                                          </span>
-                                        </div>,
-                                      }
-                                    }
-                                    dropdownClassName=""
-                                    dropdownMatchSelectWidth={true}
-                                    emptyOptions={false}
-                                    id="type"
-                                    inputElement={null}
-                                    inputIcon={[Function]}
-                                    key="trigger"
-                                    notFoundContent={
-                                      <Context.Consumer>
-                                        [Function]
-                                      </Context.Consumer>
-                                    }
-                                    omitDomProps={
-                                      Array [
-                                        "inputValue",
-                                      ]
-                                    }
-                                    onDisplayValuesChange={[Function]}
-                                    onRemove={[Function]}
-                                    onSearch={[Function]}
-                                    onSearchSplit={[Function]}
-                                    onSearchSubmit={[Function]}
-                                    onToggleOpen={[Function]}
-                                    open={true}
-                                    placeholder="Select Commodity type"
-                                    prefixCls="ant-select"
-                                    removeIcon={<ForwardRef(CloseOutlined) />}
-                                    searchValue=""
-                                    showSearch={true}
-                                    tokenWithEnter={false}
-                                    transitionName="ant-slide-up"
-                                    values={Array []}
-                                  >
-                                    <div
-                                      className="ant-select-selector"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
+                                  <OptionList />
+                                </div>
+                              }
+                              popupClassName="css-dev-only-do-not-override-k7429z"
+                              popupPlacement="bottomLeft"
+                              popupStyle={
+                                Object {
+                                  "minWidth": 0,
+                                  "width": 0,
+                                }
+                              }
+                              popupTransitionName="ant-slide-up"
+                              popupVisible={true}
+                              prefixCls="ant-select-dropdown"
+                              showAction={Array []}
+                            >
+                              <ResizeObserver
+                                disabled={false}
+                                onResize={[Function]}
+                              >
+                                <SingleObserver
+                                  disabled={false}
+                                  key="rc-observer-key-0"
+                                  onResize={[Function]}
+                                >
+                                  <DomWrapper>
+                                    <TriggerWrapper
+                                      getTriggerDOMNode={[Function]}
                                     >
-                                      <SingleSelector
+                                      <Selector
                                         OptionList={
                                           Object {
                                             "$$typeof": Symbol(react.forward_ref),
@@ -814,7 +896,77 @@ exports[`Health care form submits new group: asd 1`] = `
                                         }
                                         activeDescendantId="type_list_0"
                                         activeValue={null}
-                                        className=""
+                                        aria-required="true"
+                                        autoClearSearchValue={true}
+                                        builtinPlacements={
+                                          Object {
+                                            "bottomLeft": Object {
+                                              "htmlRegion": "visible",
+                                              "offset": Array [
+                                                0,
+                                                4,
+                                              ],
+                                              "overflow": Object {
+                                                "adjustX": true,
+                                                "adjustY": true,
+                                                "shiftY": true,
+                                              },
+                                              "points": Array [
+                                                "tl",
+                                                "bl",
+                                              ],
+                                            },
+                                            "bottomRight": Object {
+                                              "htmlRegion": "visible",
+                                              "offset": Array [
+                                                0,
+                                                4,
+                                              ],
+                                              "overflow": Object {
+                                                "adjustX": true,
+                                                "adjustY": true,
+                                                "shiftY": true,
+                                              },
+                                              "points": Array [
+                                                "tr",
+                                                "br",
+                                              ],
+                                            },
+                                            "topLeft": Object {
+                                              "htmlRegion": "visible",
+                                              "offset": Array [
+                                                0,
+                                                -4,
+                                              ],
+                                              "overflow": Object {
+                                                "adjustX": true,
+                                                "adjustY": true,
+                                                "shiftY": true,
+                                              },
+                                              "points": Array [
+                                                "bl",
+                                                "tl",
+                                              ],
+                                            },
+                                            "topRight": Object {
+                                              "htmlRegion": "visible",
+                                              "offset": Array [
+                                                0,
+                                                -4,
+                                              ],
+                                              "overflow": Object {
+                                                "adjustX": true,
+                                                "adjustY": true,
+                                                "shiftY": true,
+                                              },
+                                              "points": Array [
+                                                "br",
+                                                "tr",
+                                              ],
+                                            },
+                                          }
+                                        }
+                                        className="ant-select-in-form-item css-dev-only-do-not-override-k7429z"
                                         clearIcon={<ForwardRef(CloseCircleFilled) />}
                                         disabled={false}
                                         displayValues={Array []}
@@ -833,6 +985,7 @@ exports[`Health care form submits new group: asd 1`] = `
                                                   aria-expanded="true"
                                                   aria-haspopup="listbox"
                                                   aria-owns="type_list"
+                                                  aria-required="true"
                                                   autocomplete="off"
                                                   class="ant-select-selection-search-input"
                                                   id="type"
@@ -849,34 +1002,16 @@ exports[`Health care form submits new group: asd 1`] = `
                                             </div>,
                                           }
                                         }
-                                        dropdownClassName=""
+                                        dropdownClassName="css-dev-only-do-not-override-k7429z"
                                         dropdownMatchSelectWidth={true}
                                         emptyOptions={false}
                                         id="type"
                                         inputElement={null}
                                         inputIcon={[Function]}
-                                        inputRef={
-                                          Object {
-                                            "current": <input
-                                              aria-activedescendant="type_list_0"
-                                              aria-autocomplete="list"
-                                              aria-controls="type_list"
-                                              aria-expanded="true"
-                                              aria-haspopup="listbox"
-                                              aria-owns="type_list"
-                                              autocomplete="off"
-                                              class="ant-select-selection-search-input"
-                                              id="type"
-                                              role="combobox"
-                                              type="search"
-                                              value=""
-                                            />,
-                                          }
-                                        }
                                         notFoundContent={
-                                          <Context.Consumer>
-                                            [Function]
-                                          </Context.Consumer>
+                                          <DefaultRenderEmpty
+                                            componentName="Select"
+                                          />
                                         }
                                         omitDomProps={
                                           Array [
@@ -884,12 +1019,6 @@ exports[`Health care form submits new group: asd 1`] = `
                                           ]
                                         }
                                         onDisplayValuesChange={[Function]}
-                                        onInputChange={[Function]}
-                                        onInputCompositionEnd={[Function]}
-                                        onInputCompositionStart={[Function]}
-                                        onInputKeyDown={[Function]}
-                                        onInputMouseDown={[Function]}
-                                        onInputPaste={[Function]}
                                         onRemove={[Function]}
                                         onSearch={[Function]}
                                         onSearchSplit={[Function]}
@@ -897,618 +1026,820 @@ exports[`Health care form submits new group: asd 1`] = `
                                         onToggleOpen={[Function]}
                                         open={true}
                                         placeholder="Select Commodity type"
+                                        placement="bottomLeft"
                                         prefixCls="ant-select"
                                         removeIcon={<ForwardRef(CloseOutlined) />}
                                         searchValue=""
+                                        showArrow={true}
                                         showSearch={true}
                                         tokenWithEnter={false}
                                         transitionName="ant-slide-up"
                                         values={Array []}
                                       >
-                                        <span
-                                          className="ant-select-selection-search"
+                                        <div
+                                          className="ant-select-selector"
+                                          onClick={[Function]}
+                                          onMouseDown={[Function]}
                                         >
-                                          <Input
+                                          <SingleSelector
+                                            OptionList={
+                                              Object {
+                                                "$$typeof": Symbol(react.forward_ref),
+                                                "render": [Function],
+                                              }
+                                            }
                                             activeDescendantId="type_list_0"
-                                            attrs={Object {}}
+                                            activeValue={null}
+                                            aria-required="true"
+                                            autoClearSearchValue={true}
+                                            builtinPlacements={
+                                              Object {
+                                                "bottomLeft": Object {
+                                                  "htmlRegion": "visible",
+                                                  "offset": Array [
+                                                    0,
+                                                    4,
+                                                  ],
+                                                  "overflow": Object {
+                                                    "adjustX": true,
+                                                    "adjustY": true,
+                                                    "shiftY": true,
+                                                  },
+                                                  "points": Array [
+                                                    "tl",
+                                                    "bl",
+                                                  ],
+                                                },
+                                                "bottomRight": Object {
+                                                  "htmlRegion": "visible",
+                                                  "offset": Array [
+                                                    0,
+                                                    4,
+                                                  ],
+                                                  "overflow": Object {
+                                                    "adjustX": true,
+                                                    "adjustY": true,
+                                                    "shiftY": true,
+                                                  },
+                                                  "points": Array [
+                                                    "tr",
+                                                    "br",
+                                                  ],
+                                                },
+                                                "topLeft": Object {
+                                                  "htmlRegion": "visible",
+                                                  "offset": Array [
+                                                    0,
+                                                    -4,
+                                                  ],
+                                                  "overflow": Object {
+                                                    "adjustX": true,
+                                                    "adjustY": true,
+                                                    "shiftY": true,
+                                                  },
+                                                  "points": Array [
+                                                    "bl",
+                                                    "tl",
+                                                  ],
+                                                },
+                                                "topRight": Object {
+                                                  "htmlRegion": "visible",
+                                                  "offset": Array [
+                                                    0,
+                                                    -4,
+                                                  ],
+                                                  "overflow": Object {
+                                                    "adjustX": true,
+                                                    "adjustY": true,
+                                                    "shiftY": true,
+                                                  },
+                                                  "points": Array [
+                                                    "br",
+                                                    "tr",
+                                                  ],
+                                                },
+                                              }
+                                            }
+                                            className="ant-select-in-form-item css-dev-only-do-not-override-k7429z"
+                                            clearIcon={<ForwardRef(CloseCircleFilled) />}
                                             disabled={false}
-                                            editable={true}
+                                            displayValues={Array []}
+                                            domRef={
+                                              Object {
+                                                "current": <div
+                                                  class="ant-select-selector"
+                                                >
+                                                  <span
+                                                    class="ant-select-selection-search"
+                                                  >
+                                                    <input
+                                                      aria-activedescendant="type_list_0"
+                                                      aria-autocomplete="list"
+                                                      aria-controls="type_list"
+                                                      aria-expanded="true"
+                                                      aria-haspopup="listbox"
+                                                      aria-owns="type_list"
+                                                      aria-required="true"
+                                                      autocomplete="off"
+                                                      class="ant-select-selection-search-input"
+                                                      id="type"
+                                                      role="combobox"
+                                                      type="search"
+                                                      value=""
+                                                    />
+                                                  </span>
+                                                  <span
+                                                    class="ant-select-selection-placeholder"
+                                                  >
+                                                    Select Commodity type
+                                                  </span>
+                                                </div>,
+                                              }
+                                            }
+                                            dropdownClassName="css-dev-only-do-not-override-k7429z"
+                                            dropdownMatchSelectWidth={true}
+                                            emptyOptions={false}
                                             id="type"
                                             inputElement={null}
-                                            onChange={[Function]}
-                                            onCompositionEnd={[Function]}
-                                            onCompositionStart={[Function]}
-                                            onKeyDown={[Function]}
-                                            onMouseDown={[Function]}
-                                            onPaste={[Function]}
-                                            open={true}
-                                            prefixCls="ant-select"
-                                            value=""
-                                          >
-                                            <input
-                                              aria-activedescendant="type_list_0"
-                                              aria-autocomplete="list"
-                                              aria-controls="type_list"
-                                              aria-expanded={true}
-                                              aria-haspopup="listbox"
-                                              aria-owns="type_list"
-                                              autoComplete="off"
-                                              className="ant-select-selection-search-input"
-                                              disabled={false}
-                                              id="type"
-                                              onChange={[Function]}
-                                              onCompositionEnd={[Function]}
-                                              onCompositionStart={[Function]}
-                                              onKeyDown={[Function]}
-                                              onMouseDown={[Function]}
-                                              onPaste={[Function]}
-                                              readOnly={false}
-                                              role="combobox"
-                                              style={
-                                                Object {
-                                                  "opacity": null,
-                                                }
+                                            inputIcon={[Function]}
+                                            inputRef={
+                                              Object {
+                                                "current": <input
+                                                  aria-activedescendant="type_list_0"
+                                                  aria-autocomplete="list"
+                                                  aria-controls="type_list"
+                                                  aria-expanded="true"
+                                                  aria-haspopup="listbox"
+                                                  aria-owns="type_list"
+                                                  aria-required="true"
+                                                  autocomplete="off"
+                                                  class="ant-select-selection-search-input"
+                                                  id="type"
+                                                  role="combobox"
+                                                  type="search"
+                                                  value=""
+                                                />,
                                               }
-                                              type="search"
-                                              unselectable={null}
-                                              value=""
-                                            />
-                                          </Input>
-                                        </span>
-                                        <span
-                                          className="ant-select-selection-placeholder"
-                                        >
-                                          Select Commodity type
-                                        </span>
-                                      </SingleSelector>
-                                    </div>
-                                  </Selector>
-                                  <ForwardRef
-                                    didUpdate={[Function]}
-                                    getContainer={[Function]}
-                                    key="portal"
+                                            }
+                                            notFoundContent={
+                                              <DefaultRenderEmpty
+                                                componentName="Select"
+                                              />
+                                            }
+                                            omitDomProps={
+                                              Array [
+                                                "inputValue",
+                                              ]
+                                            }
+                                            onDisplayValuesChange={[Function]}
+                                            onInputChange={[Function]}
+                                            onInputCompositionEnd={[Function]}
+                                            onInputCompositionStart={[Function]}
+                                            onInputKeyDown={[Function]}
+                                            onInputMouseDown={[Function]}
+                                            onInputPaste={[Function]}
+                                            onRemove={[Function]}
+                                            onSearch={[Function]}
+                                            onSearchSplit={[Function]}
+                                            onSearchSubmit={[Function]}
+                                            onToggleOpen={[Function]}
+                                            open={true}
+                                            placeholder="Select Commodity type"
+                                            placement="bottomLeft"
+                                            prefixCls="ant-select"
+                                            removeIcon={<ForwardRef(CloseOutlined) />}
+                                            searchValue=""
+                                            showArrow={true}
+                                            showSearch={true}
+                                            tokenWithEnter={false}
+                                            transitionName="ant-slide-up"
+                                            values={Array []}
+                                          >
+                                            <span
+                                              className="ant-select-selection-search"
+                                            >
+                                              <Input
+                                                activeDescendantId="type_list_0"
+                                                attrs={
+                                                  Object {
+                                                    "aria-required": "true",
+                                                  }
+                                                }
+                                                disabled={false}
+                                                editable={true}
+                                                id="type"
+                                                inputElement={null}
+                                                onChange={[Function]}
+                                                onCompositionEnd={[Function]}
+                                                onCompositionStart={[Function]}
+                                                onKeyDown={[Function]}
+                                                onMouseDown={[Function]}
+                                                onPaste={[Function]}
+                                                open={true}
+                                                prefixCls="ant-select"
+                                                value=""
+                                              >
+                                                <input
+                                                  aria-activedescendant="type_list_0"
+                                                  aria-autocomplete="list"
+                                                  aria-controls="type_list"
+                                                  aria-expanded={true}
+                                                  aria-haspopup="listbox"
+                                                  aria-owns="type_list"
+                                                  aria-required="true"
+                                                  autoComplete="off"
+                                                  className="ant-select-selection-search-input"
+                                                  disabled={false}
+                                                  id="type"
+                                                  onChange={[Function]}
+                                                  onCompositionEnd={[Function]}
+                                                  onCompositionStart={[Function]}
+                                                  onKeyDown={[Function]}
+                                                  onMouseDown={[Function]}
+                                                  onPaste={[Function]}
+                                                  readOnly={false}
+                                                  role="combobox"
+                                                  style={
+                                                    Object {
+                                                      "opacity": null,
+                                                    }
+                                                  }
+                                                  type="search"
+                                                  unselectable={null}
+                                                  value=""
+                                                />
+                                              </Input>
+                                            </span>
+                                            <span
+                                              className="ant-select-selection-placeholder"
+                                            >
+                                              Select Commodity type
+                                            </span>
+                                          </SingleSelector>
+                                        </div>
+                                      </Selector>
+                                    </TriggerWrapper>
+                                  </DomWrapper>
+                                </SingleObserver>
+                              </ResizeObserver>
+                              <Popup
+                                align={
+                                  Object {
+                                    "htmlRegion": "visible",
+                                    "offset": Array [
+                                      0,
+                                      4,
+                                    ],
+                                    "overflow": Object {
+                                      "adjustX": true,
+                                      "adjustY": true,
+                                      "shiftY": true,
+                                    },
+                                    "points": Array [
+                                      "tl",
+                                      "bl",
+                                    ],
+                                  }
+                                }
+                                arrow={null}
+                                arrowPos={
+                                  Object {
+                                    "x": 0,
+                                    "y": 0,
+                                  }
+                                }
+                                autoDestroy={false}
+                                className="css-dev-only-do-not-override-k7429z ant-select-dropdown-placement-bottomLeft"
+                                keepDom={false}
+                                maskMotion={null}
+                                motion={
+                                  Object {
+                                    "motionName": "ant-slide-up",
+                                  }
+                                }
+                                offsetX={0}
+                                offsetY={0}
+                                onAlign={[Function]}
+                                onPrepare={[Function]}
+                                onVisibleChanged={[Function]}
+                                open={true}
+                                popup={
+                                  <div
+                                    onMouseEnter={[Function]}
                                   >
-                                    <Portal
-                                      containerInfo={
+                                    <OptionList />
+                                  </div>
+                                }
+                                portal={
+                                  Object {
+                                    "$$typeof": Symbol(react.forward_ref),
+                                    "render": [Function],
+                                  }
+                                }
+                                prefixCls="ant-select-dropdown"
+                                ready={false}
+                                style={
+                                  Object {
+                                    "minWidth": 0,
+                                    "width": 0,
+                                  }
+                                }
+                                target={
+                                  <div
+                                    class="ant-select-selector"
+                                  >
+                                    <span
+                                      class="ant-select-selection-search"
+                                    >
+                                      <input
+                                        aria-activedescendant="type_list_0"
+                                        aria-autocomplete="list"
+                                        aria-controls="type_list"
+                                        aria-expanded="true"
+                                        aria-haspopup="listbox"
+                                        aria-owns="type_list"
+                                        aria-required="true"
+                                        autocomplete="off"
+                                        class="ant-select-selection-search-input"
+                                        id="type"
+                                        role="combobox"
+                                        type="search"
+                                        value=""
+                                      />
+                                    </span>
+                                    <span
+                                      class="ant-select-selection-placeholder"
+                                    >
+                                      Select Commodity type
+                                    </span>
+                                  </div>
+                                }
+                                targetHeight={0}
+                                targetWidth={0}
+                              >
+                                <Portal
+                                  autoDestroy={false}
+                                  open={true}
+                                >
+                                  <Portal
+                                    containerInfo={
+                                      <div>
                                         <div
-                                          style="position: absolute; top: 0px; left: 0px; width: 100%;"
+                                          class="ant-select-dropdown css-dev-only-do-not-override-k7429z ant-select-dropdown-placement-bottomLeft"
+                                          style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0; width: 0px;"
                                         >
                                           <div>
                                             <div
-                                              class="ant-select-dropdown"
-                                              style="opacity: 0; pointer-events: none; min-width: 0; width: 0px;"
+                                              id="type_list"
+                                              role="listbox"
+                                              style="height: 0px; width: 0px; overflow: hidden;"
                                             >
-                                              <div>
-                                                <div
-                                                  id="type_list"
-                                                  role="listbox"
-                                                  style="height: 0px; width: 0px; overflow: hidden;"
-                                                >
+                                              <div
+                                                aria-label="Medication"
+                                                aria-selected="false"
+                                                id="type_list_0"
+                                                role="option"
+                                              >
+                                                medication
+                                              </div>
+                                              <div
+                                                aria-label="Device"
+                                                aria-selected="false"
+                                                id="type_list_1"
+                                                role="option"
+                                              >
+                                                device
+                                              </div>
+                                            </div>
+                                            <div
+                                              class="rc-virtual-list"
+                                              style="position: relative;"
+                                            >
+                                              <div
+                                                class="rc-virtual-list-holder"
+                                                style="max-height: 256px; overflow-y: hidden;"
+                                              >
+                                                <div>
                                                   <div
-                                                    aria-label="Medication"
-                                                    aria-selected="false"
-                                                    id="type_list_0"
-                                                    role="option"
-                                                  >
-                                                    medication
-                                                  </div>
-                                                  <div
-                                                    aria-label="Device"
-                                                    aria-selected="false"
-                                                    id="type_list_1"
-                                                    role="option"
-                                                  >
-                                                    device
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  class="rc-virtual-list"
-                                                  style="position: relative;"
-                                                >
-                                                  <div
-                                                    class="rc-virtual-list-holder"
-                                                    style="max-height: 256px; overflow-y: hidden;"
-                                                  >
-                                                    <div>
-                                                      <div
-                                                        class="rc-virtual-list-holder-inner"
-                                                        style="display: flex; flex-direction: column;"
-                                                      >
-                                                        <div
-                                                          aria-selected="false"
-                                                          class="ant-select-item ant-select-item-option ant-select-item-option-active"
-                                                          title="Medication"
-                                                        >
-                                                          <div
-                                                            class="ant-select-item-option-content"
-                                                          >
-                                                            Medication
-                                                          </div>
-                                                          <span
-                                                            aria-hidden="true"
-                                                            class="ant-select-item-option-state"
-                                                            style="user-select: none;"
-                                                            unselectable="on"
-                                                          />
-                                                        </div>
-                                                        <div
-                                                          aria-selected="false"
-                                                          class="ant-select-item ant-select-item-option"
-                                                          title="Device"
-                                                        >
-                                                          <div
-                                                            class="ant-select-item-option-content"
-                                                          >
-                                                            Device
-                                                          </div>
-                                                          <span
-                                                            aria-hidden="true"
-                                                            class="ant-select-item-option-state"
-                                                            style="user-select: none;"
-                                                            unselectable="on"
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    class="rc-virtual-list-scrollbar"
-                                                    style="width: 8px; top: 0px; bottom: 0px; right: 0px; position: absolute; display: none;"
+                                                    class="rc-virtual-list-holder-inner"
+                                                    style="display: flex; flex-direction: column;"
                                                   >
                                                     <div
-                                                      class="rc-virtual-list-scrollbar-thumb"
-                                                      style="width: 100%; height: 128px; top: 0px; left: 0px; position: absolute; background: rgba(0, 0, 0, 0.5); border-radius: 99px; cursor: pointer; user-select: none;"
-                                                    />
+                                                      aria-selected="false"
+                                                      class="ant-select-item ant-select-item-option ant-select-item-option-active"
+                                                      title="Medication"
+                                                    >
+                                                      <div
+                                                        class="ant-select-item-option-content"
+                                                      >
+                                                        Medication
+                                                      </div>
+                                                      <span
+                                                        aria-hidden="true"
+                                                        class="ant-select-item-option-state"
+                                                        style="user-select: none;"
+                                                        unselectable="on"
+                                                      />
+                                                    </div>
+                                                    <div
+                                                      aria-selected="false"
+                                                      class="ant-select-item ant-select-item-option"
+                                                      title="Device"
+                                                    >
+                                                      <div
+                                                        class="ant-select-item-option-content"
+                                                      >
+                                                        Device
+                                                      </div>
+                                                      <span
+                                                        aria-hidden="true"
+                                                        class="ant-select-item-option-state"
+                                                        style="user-select: none;"
+                                                        unselectable="on"
+                                                      />
+                                                    </div>
                                                   </div>
                                                 </div>
+                                              </div>
+                                              <div
+                                                class="rc-virtual-list-scrollbar"
+                                                style="width: 8px; top: 0px; bottom: 0px; right: 0px; position: absolute; display: none;"
+                                              >
+                                                <div
+                                                  class="rc-virtual-list-scrollbar-thumb"
+                                                  style="width: 100%; height: 128px; top: 0px; left: 0px; position: absolute; background: rgba(0, 0, 0, 0.5); border-radius: 99px; cursor: pointer; user-select: none;"
+                                                />
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      }
+                                      </div>
+                                    }
+                                  >
+                                    <Mask
+                                      motion={null}
+                                      open={true}
+                                      prefixCls="ant-select-dropdown"
+                                    />
+                                    <ResizeObserver
+                                      disabled={false}
+                                      onResize={[Function]}
                                     >
-                                      <Popup
-                                        align={
-                                          Object {
-                                            "offset": Array [
-                                              0,
-                                              4,
-                                            ],
-                                            "overflow": Object {
-                                              "adjustX": 0,
-                                              "adjustY": 1,
-                                            },
-                                            "points": Array [
-                                              "tl",
-                                              "bl",
-                                            ],
-                                          }
-                                        }
-                                        className=""
-                                        destroyPopupOnHide={false}
-                                        getClassNameFromAlign={[Function]}
-                                        getRootDomNode={[Function]}
-                                        mask={false}
-                                        onAlign={[Function]}
-                                        onMouseDown={[Function]}
-                                        onTouchStart={[Function]}
-                                        prefixCls="ant-select-dropdown"
-                                        style={
-                                          Object {
-                                            "minWidth": 0,
-                                            "width": 0,
-                                          }
-                                        }
-                                        transitionName="ant-slide-up"
-                                        visible={true}
+                                      <SingleObserver
+                                        disabled={false}
+                                        key="rc-observer-key-0"
+                                        onResize={[Function]}
                                       >
-                                        <div>
-                                          <Mask
-                                            align={
-                                              Object {
-                                                "offset": Array [
-                                                  0,
-                                                  4,
-                                                ],
-                                                "overflow": Object {
-                                                  "adjustX": 0,
-                                                  "adjustY": 1,
-                                                },
-                                                "points": Array [
-                                                  "tl",
-                                                  "bl",
-                                                ],
-                                              }
-                                            }
-                                            className=""
-                                            destroyPopupOnHide={false}
-                                            getClassNameFromAlign={[Function]}
-                                            getRootDomNode={[Function]}
-                                            mask={false}
-                                            onAlign={[Function]}
-                                            onMouseDown={[Function]}
-                                            onTouchStart={[Function]}
-                                            prefixCls="ant-select-dropdown"
-                                            style={
-                                              Object {
-                                                "minWidth": 0,
-                                                "width": 0,
-                                              }
-                                            }
-                                            transitionName="ant-slide-up"
-                                            visible={true}
-                                          />
-                                          <PopupInner
-                                            align={
-                                              Object {
-                                                "offset": Array [
-                                                  0,
-                                                  4,
-                                                ],
-                                                "overflow": Object {
-                                                  "adjustX": 0,
-                                                  "adjustY": 1,
-                                                },
-                                                "points": Array [
-                                                  "tl",
-                                                  "bl",
-                                                ],
-                                              }
-                                            }
-                                            className=""
-                                            destroyPopupOnHide={false}
-                                            getClassNameFromAlign={[Function]}
-                                            getRootDomNode={[Function]}
-                                            mask={false}
-                                            onAlign={[Function]}
-                                            onMouseDown={[Function]}
-                                            onTouchStart={[Function]}
-                                            prefixCls="ant-select-dropdown"
-                                            style={
-                                              Object {
-                                                "minWidth": 0,
-                                                "width": 0,
-                                              }
-                                            }
-                                            transitionName="ant-slide-up"
+                                        <DomWrapper>
+                                          <CSSMotion
+                                            leavedClassName="ant-select-dropdown-hidden"
+                                            motionAppear={true}
+                                            motionEnter={true}
+                                            motionLeave={true}
+                                            motionName="ant-slide-up"
+                                            onAppearPrepare={[Function]}
+                                            onEnterPrepare={[Function]}
+                                            onVisibleChanged={[Function]}
+                                            removeOnLeave={false}
                                             visible={true}
                                           >
-                                            <CSSMotion
-                                              leavedClassName="ant-select-dropdown-hidden"
-                                              motionName="ant-slide-up"
-                                              onAppearEnd={[Function]}
-                                              onAppearPrepare={[Function]}
-                                              onEnterEnd={[Function]}
-                                              onEnterPrepare={[Function]}
-                                              onLeaveEnd={[Function]}
-                                              removeOnLeave={false}
-                                              visible={true}
-                                            >
-                                              <DomWrapper>
-                                                <Align
-                                                  align={
-                                                    Object {
-                                                      "offset": Array [
-                                                        0,
-                                                        4,
-                                                      ],
-                                                      "overflow": Object {
-                                                        "adjustX": 0,
-                                                        "adjustY": 1,
-                                                      },
-                                                      "points": Array [
-                                                        "tl",
-                                                        "bl",
-                                                      ],
-                                                    }
+                                            <DomWrapper>
+                                              <div
+                                                className="ant-select-dropdown css-dev-only-do-not-override-k7429z ant-select-dropdown-placement-bottomLeft"
+                                                style={
+                                                  Object {
+                                                    "--arrow-x": "0px",
+                                                    "--arrow-y": "0px",
+                                                    "boxSizing": "border-box",
+                                                    "left": "-1000vw",
+                                                    "minWidth": 0,
+                                                    "top": "-1000vh",
+                                                    "width": 0,
+                                                    "zIndex": undefined,
                                                   }
-                                                  disabled={true}
-                                                  key="popup"
-                                                  monitorWindowResize={true}
-                                                  onAlign={[Function]}
-                                                  target={[Function]}
+                                                }
+                                              >
+                                                <PopupContent
+                                                  cache={false}
                                                 >
                                                   <div
-                                                    className="ant-select-dropdown"
-                                                    onMouseDownCapture={[Function]}
-                                                    onTouchStartCapture={[Function]}
-                                                    style={
-                                                      Object {
-                                                        "minWidth": 0,
-                                                        "opacity": 0,
-                                                        "pointerEvents": "none",
-                                                        "width": 0,
-                                                        "zIndex": undefined,
-                                                      }
-                                                    }
+                                                    onMouseEnter={[Function]}
                                                   >
-                                                    <div
-                                                      onMouseEnter={[Function]}
-                                                    >
-                                                      <OptionList>
-                                                        <div
-                                                          id="type_list"
-                                                          role="listbox"
-                                                          style={
-                                                            Object {
-                                                              "height": 0,
-                                                              "overflow": "hidden",
-                                                              "width": 0,
-                                                            }
+                                                    <OptionList>
+                                                      <div
+                                                        id="type_list"
+                                                        role="listbox"
+                                                        style={
+                                                          Object {
+                                                            "height": 0,
+                                                            "overflow": "hidden",
+                                                            "width": 0,
                                                           }
+                                                        }
+                                                      >
+                                                        <div
+                                                          aria-label="Medication"
+                                                          aria-selected={false}
+                                                          id="type_list_0"
+                                                          key="0"
+                                                          role="option"
                                                         >
-                                                          <div
-                                                            aria-label="Medication"
-                                                            aria-selected={false}
-                                                            id="type_list_0"
-                                                            key="0"
-                                                            role="option"
-                                                          >
-                                                            medication
-                                                          </div>
-                                                          <div
-                                                            aria-label="Device"
-                                                            aria-selected={false}
-                                                            id="type_list_1"
-                                                            key="1"
-                                                            role="option"
-                                                          >
-                                                            device
-                                                          </div>
+                                                          medication
                                                         </div>
-                                                        <List
-                                                          data={
-                                                            Array [
-                                                              Object {
-                                                                "data": Object {
-                                                                  "label": "Medication",
-                                                                  "value": "medication",
-                                                                },
-                                                                "groupOption": false,
-                                                                "key": "medication",
+                                                        <div
+                                                          aria-label="Device"
+                                                          aria-selected={false}
+                                                          id="type_list_1"
+                                                          key="1"
+                                                          role="option"
+                                                        >
+                                                          device
+                                                        </div>
+                                                      </div>
+                                                      <List
+                                                        data={
+                                                          Array [
+                                                            Object {
+                                                              "data": Object {
                                                                 "label": "Medication",
                                                                 "value": "medication",
                                                               },
-                                                              Object {
-                                                                "data": Object {
-                                                                  "label": "Device",
-                                                                  "value": "device",
-                                                                },
-                                                                "groupOption": false,
-                                                                "key": "device",
+                                                              "groupOption": false,
+                                                              "key": "medication",
+                                                              "label": "Medication",
+                                                              "value": "medication",
+                                                            },
+                                                            Object {
+                                                              "data": Object {
                                                                 "label": "Device",
                                                                 "value": "device",
                                                               },
-                                                            ]
-                                                          }
-                                                          fullHeight={false}
-                                                          height={256}
-                                                          itemHeight={24}
-                                                          itemKey="key"
+                                                              "groupOption": false,
+                                                              "key": "device",
+                                                              "label": "Device",
+                                                              "value": "device",
+                                                            },
+                                                          ]
+                                                        }
+                                                        fullHeight={false}
+                                                        height={256}
+                                                        innerProps={null}
+                                                        itemHeight={24}
+                                                        itemKey="key"
+                                                        onMouseDown={[Function]}
+                                                        virtual={true}
+                                                      >
+                                                        <div
+                                                          className="rc-virtual-list"
                                                           onMouseDown={[Function]}
-                                                          virtual={true}
+                                                          style={
+                                                            Object {
+                                                              "position": "relative",
+                                                            }
+                                                          }
                                                         >
                                                           <div
-                                                            className="rc-virtual-list"
-                                                            onMouseDown={[Function]}
+                                                            className="rc-virtual-list-holder"
+                                                            onScroll={[Function]}
                                                             style={
                                                               Object {
-                                                                "position": "relative",
+                                                                "maxHeight": 256,
+                                                                "overflowAnchor": "none",
+                                                                "overflowY": "hidden",
                                                               }
                                                             }
                                                           >
+                                                            <Filler
+                                                              height={0}
+                                                              innerProps={null}
+                                                              onInnerResize={[Function]}
+                                                              prefixCls="rc-virtual-list"
+                                                            >
+                                                              <div
+                                                                style={Object {}}
+                                                              >
+                                                                <ResizeObserver
+                                                                  onResize={[Function]}
+                                                                >
+                                                                  <SingleObserver
+                                                                    key="rc-observer-key-0"
+                                                                    onResize={[Function]}
+                                                                  >
+                                                                    <DomWrapper>
+                                                                      <div
+                                                                        className="rc-virtual-list-holder-inner"
+                                                                        style={
+                                                                          Object {
+                                                                            "display": "flex",
+                                                                            "flexDirection": "column",
+                                                                          }
+                                                                        }
+                                                                      >
+                                                                        <Item
+                                                                          key="medication"
+                                                                          setRef={[Function]}
+                                                                        >
+                                                                          <div
+                                                                            aria-selected={false}
+                                                                            className="ant-select-item ant-select-item-option ant-select-item-option-active"
+                                                                            onClick={[Function]}
+                                                                            onMouseMove={[Function]}
+                                                                            title="Medication"
+                                                                          >
+                                                                            <div
+                                                                              className="ant-select-item-option-content"
+                                                                            >
+                                                                              Medication
+                                                                            </div>
+                                                                            <TransBtn
+                                                                              className="ant-select-item-option-state"
+                                                                              customizeIcon={null}
+                                                                              customizeIconProps={
+                                                                                Object {
+                                                                                  "isSelected": false,
+                                                                                }
+                                                                              }
+                                                                            >
+                                                                              <span
+                                                                                aria-hidden={true}
+                                                                                className="ant-select-item-option-state"
+                                                                                onMouseDown={[Function]}
+                                                                                style={
+                                                                                  Object {
+                                                                                    "WebkitUserSelect": "none",
+                                                                                    "userSelect": "none",
+                                                                                  }
+                                                                                }
+                                                                                unselectable="on"
+                                                                              />
+                                                                            </TransBtn>
+                                                                          </div>
+                                                                        </Item>
+                                                                        <Item
+                                                                          key="device"
+                                                                          setRef={[Function]}
+                                                                        >
+                                                                          <div
+                                                                            aria-selected={false}
+                                                                            className="ant-select-item ant-select-item-option"
+                                                                            onClick={[Function]}
+                                                                            onMouseMove={[Function]}
+                                                                            title="Device"
+                                                                          >
+                                                                            <div
+                                                                              className="ant-select-item-option-content"
+                                                                            >
+                                                                              Device
+                                                                            </div>
+                                                                            <TransBtn
+                                                                              className="ant-select-item-option-state"
+                                                                              customizeIcon={null}
+                                                                              customizeIconProps={
+                                                                                Object {
+                                                                                  "isSelected": false,
+                                                                                }
+                                                                              }
+                                                                            >
+                                                                              <span
+                                                                                aria-hidden={true}
+                                                                                className="ant-select-item-option-state"
+                                                                                onMouseDown={[Function]}
+                                                                                style={
+                                                                                  Object {
+                                                                                    "WebkitUserSelect": "none",
+                                                                                    "userSelect": "none",
+                                                                                  }
+                                                                                }
+                                                                                unselectable="on"
+                                                                              />
+                                                                            </TransBtn>
+                                                                          </div>
+                                                                        </Item>
+                                                                      </div>
+                                                                    </DomWrapper>
+                                                                  </SingleObserver>
+                                                                </ResizeObserver>
+                                                              </div>
+                                                            </Filler>
+                                                          </div>
+                                                          <ScrollBar
+                                                            count={2}
+                                                            height={256}
+                                                            onScroll={[Function]}
+                                                            onStartMove={[Function]}
+                                                            onStopMove={[Function]}
+                                                            prefixCls="rc-virtual-list"
+                                                            scrollHeight={0}
+                                                            scrollTop={0}
+                                                          >
                                                             <div
-                                                              className="rc-virtual-list-holder"
-                                                              onScroll={[Function]}
+                                                              className="rc-virtual-list-scrollbar"
+                                                              onMouseDown={[Function]}
+                                                              onMouseMove={[Function]}
                                                               style={
                                                                 Object {
-                                                                  "maxHeight": 256,
-                                                                  "overflowAnchor": "none",
-                                                                  "overflowY": "hidden",
+                                                                  "bottom": 0,
+                                                                  "display": "none",
+                                                                  "position": "absolute",
+                                                                  "right": 0,
+                                                                  "top": 0,
+                                                                  "width": 8,
                                                                 }
                                                               }
                                                             >
-                                                              <Filler
-                                                                height={0}
-                                                                onInnerResize={[Function]}
-                                                                prefixCls="rc-virtual-list"
-                                                              >
-                                                                <div
-                                                                  style={Object {}}
-                                                                >
-                                                                  <ResizeObserver
-                                                                    onResize={[Function]}
-                                                                  >
-                                                                    <SingleObserver
-                                                                      key="rc-observer-key-0"
-                                                                      onResize={[Function]}
-                                                                    >
-                                                                      <DomWrapper>
-                                                                        <div
-                                                                          className="rc-virtual-list-holder-inner"
-                                                                          style={
-                                                                            Object {
-                                                                              "display": "flex",
-                                                                              "flexDirection": "column",
-                                                                            }
-                                                                          }
-                                                                        >
-                                                                          <Item
-                                                                            key="medication"
-                                                                            setRef={[Function]}
-                                                                          >
-                                                                            <div
-                                                                              aria-selected={false}
-                                                                              className="ant-select-item ant-select-item-option ant-select-item-option-active"
-                                                                              onClick={[Function]}
-                                                                              onMouseMove={[Function]}
-                                                                              title="Medication"
-                                                                            >
-                                                                              <div
-                                                                                className="ant-select-item-option-content"
-                                                                              >
-                                                                                Medication
-                                                                              </div>
-                                                                              <TransBtn
-                                                                                className="ant-select-item-option-state"
-                                                                                customizeIcon={null}
-                                                                                customizeIconProps={
-                                                                                  Object {
-                                                                                    "isSelected": false,
-                                                                                  }
-                                                                                }
-                                                                              >
-                                                                                <span
-                                                                                  aria-hidden={true}
-                                                                                  className="ant-select-item-option-state"
-                                                                                  onMouseDown={[Function]}
-                                                                                  style={
-                                                                                    Object {
-                                                                                      "WebkitUserSelect": "none",
-                                                                                      "userSelect": "none",
-                                                                                    }
-                                                                                  }
-                                                                                  unselectable="on"
-                                                                                />
-                                                                              </TransBtn>
-                                                                            </div>
-                                                                          </Item>
-                                                                          <Item
-                                                                            key="device"
-                                                                            setRef={[Function]}
-                                                                          >
-                                                                            <div
-                                                                              aria-selected={false}
-                                                                              className="ant-select-item ant-select-item-option"
-                                                                              onClick={[Function]}
-                                                                              onMouseMove={[Function]}
-                                                                              title="Device"
-                                                                            >
-                                                                              <div
-                                                                                className="ant-select-item-option-content"
-                                                                              >
-                                                                                Device
-                                                                              </div>
-                                                                              <TransBtn
-                                                                                className="ant-select-item-option-state"
-                                                                                customizeIcon={null}
-                                                                                customizeIconProps={
-                                                                                  Object {
-                                                                                    "isSelected": false,
-                                                                                  }
-                                                                                }
-                                                                              >
-                                                                                <span
-                                                                                  aria-hidden={true}
-                                                                                  className="ant-select-item-option-state"
-                                                                                  onMouseDown={[Function]}
-                                                                                  style={
-                                                                                    Object {
-                                                                                      "WebkitUserSelect": "none",
-                                                                                      "userSelect": "none",
-                                                                                    }
-                                                                                  }
-                                                                                  unselectable="on"
-                                                                                />
-                                                                              </TransBtn>
-                                                                            </div>
-                                                                          </Item>
-                                                                        </div>
-                                                                      </DomWrapper>
-                                                                    </SingleObserver>
-                                                                  </ResizeObserver>
-                                                                </div>
-                                                              </Filler>
-                                                            </div>
-                                                            <ScrollBar
-                                                              count={2}
-                                                              height={256}
-                                                              onScroll={[Function]}
-                                                              onStartMove={[Function]}
-                                                              onStopMove={[Function]}
-                                                              prefixCls="rc-virtual-list"
-                                                              scrollHeight={0}
-                                                              scrollTop={0}
-                                                            >
                                                               <div
-                                                                className="rc-virtual-list-scrollbar"
+                                                                className="rc-virtual-list-scrollbar-thumb"
                                                                 onMouseDown={[Function]}
-                                                                onMouseMove={[Function]}
                                                                 style={
                                                                   Object {
-                                                                    "bottom": 0,
-                                                                    "display": "none",
+                                                                    "background": "rgba(0, 0, 0, 0.5)",
+                                                                    "borderRadius": 99,
+                                                                    "cursor": "pointer",
+                                                                    "height": 128,
+                                                                    "left": 0,
                                                                     "position": "absolute",
-                                                                    "right": 0,
                                                                     "top": 0,
-                                                                    "width": 8,
+                                                                    "userSelect": "none",
+                                                                    "width": "100%",
                                                                   }
                                                                 }
-                                                              >
-                                                                <div
-                                                                  className="rc-virtual-list-scrollbar-thumb"
-                                                                  onMouseDown={[Function]}
-                                                                  style={
-                                                                    Object {
-                                                                      "background": "rgba(0, 0, 0, 0.5)",
-                                                                      "borderRadius": 99,
-                                                                      "cursor": "pointer",
-                                                                      "height": 128,
-                                                                      "left": 0,
-                                                                      "position": "absolute",
-                                                                      "top": 0,
-                                                                      "userSelect": "none",
-                                                                      "width": "100%",
-                                                                    }
-                                                                  }
-                                                                />
-                                                              </div>
-                                                            </ScrollBar>
-                                                          </div>
-                                                        </List>
-                                                      </OptionList>
-                                                    </div>
+                                                              />
+                                                            </div>
+                                                          </ScrollBar>
+                                                        </div>
+                                                      </List>
+                                                    </OptionList>
                                                   </div>
-                                                </Align>
-                                              </DomWrapper>
-                                            </CSSMotion>
-                                          </PopupInner>
-                                        </div>
-                                      </Popup>
-                                    </Portal>
-                                  </ForwardRef>
-                                </Trigger>
-                              </SelectTrigger>
-                              <TransBtn
-                                className="ant-select-arrow"
-                                customizeIcon={[Function]}
-                                customizeIconProps={
-                                  Object {
-                                    "focused": false,
-                                    "loading": undefined,
-                                    "open": true,
-                                    "searchValue": "",
-                                    "showSearch": true,
-                                  }
+                                                </PopupContent>
+                                              </div>
+                                            </DomWrapper>
+                                          </CSSMotion>
+                                        </DomWrapper>
+                                      </SingleObserver>
+                                    </ResizeObserver>
+                                  </Portal>
+                                </Portal>
+                              </Popup>
+                            </Trigger>
+                          </SelectTrigger>
+                          <TransBtn
+                            className="ant-select-arrow"
+                            customizeIcon={[Function]}
+                            customizeIconProps={
+                              Object {
+                                "focused": false,
+                                "loading": undefined,
+                                "open": true,
+                                "searchValue": "",
+                                "showSearch": true,
+                              }
+                            }
+                          >
+                            <span
+                              aria-hidden={true}
+                              className="ant-select-arrow"
+                              onMouseDown={[Function]}
+                              style={
+                                Object {
+                                  "WebkitUserSelect": "none",
+                                  "userSelect": "none",
                                 }
+                              }
+                              unselectable="on"
+                            >
+                              <ForwardRef(SearchOutlined)
+                                className="ant-select-suffix"
                               >
-                                <span
-                                  aria-hidden={true}
-                                  className="ant-select-arrow"
-                                  onMouseDown={[Function]}
-                                  style={
+                                <AntdIcon
+                                  className="ant-select-suffix"
+                                  icon={
                                     Object {
-                                      "WebkitUserSelect": "none",
-                                      "userSelect": "none",
+                                      "icon": Object {
+                                        "attrs": Object {
+                                          "focusable": "false",
+                                          "viewBox": "64 64 896 896",
+                                        },
+                                        "children": Array [
+                                          Object {
+                                            "attrs": Object {
+                                              "d": "M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z",
+                                            },
+                                            "tag": "path",
+                                          },
+                                        ],
+                                        "tag": "svg",
+                                      },
+                                      "name": "search",
+                                      "theme": "outlined",
                                     }
                                   }
-                                  unselectable="on"
                                 >
-                                  <ForwardRef(SearchOutlined)
-                                    className="ant-select-suffix"
+                                  <span
+                                    aria-label="search"
+                                    className="anticon anticon-search ant-select-suffix"
+                                    role="img"
                                   >
-                                    <AntdIcon
-                                      className="ant-select-suffix"
+                                    <IconReact
                                       icon={
                                         Object {
                                           "icon": Object {
@@ -1531,93 +1862,38 @@ exports[`Health care form submits new group: asd 1`] = `
                                         }
                                       }
                                     >
-                                      <span
-                                        aria-label="search"
-                                        className="anticon anticon-search ant-select-suffix"
-                                        role="img"
+                                      <svg
+                                        aria-hidden="true"
+                                        data-icon="search"
+                                        fill="currentColor"
+                                        focusable="false"
+                                        height="1em"
+                                        key="svg-search"
+                                        viewBox="64 64 896 896"
+                                        width="1em"
                                       >
-                                        <IconReact
-                                          icon={
-                                            Object {
-                                              "icon": Object {
-                                                "attrs": Object {
-                                                  "focusable": "false",
-                                                  "viewBox": "64 64 896 896",
-                                                },
-                                                "children": Array [
-                                                  Object {
-                                                    "attrs": Object {
-                                                      "d": "M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z",
-                                                    },
-                                                    "tag": "path",
-                                                  },
-                                                ],
-                                                "tag": "svg",
-                                              },
-                                              "name": "search",
-                                              "theme": "outlined",
-                                            }
-                                          }
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            data-icon="search"
-                                            fill="currentColor"
-                                            focusable="false"
-                                            height="1em"
-                                            key="svg-search"
-                                            viewBox="64 64 896 896"
-                                            width="1em"
-                                          >
-                                            <path
-                                              d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
-                                              key="svg-search-svg-0"
-                                            />
-                                          </svg>
-                                        </IconReact>
-                                      </span>
-                                    </AntdIcon>
-                                  </ForwardRef(SearchOutlined)>
-                                </span>
-                              </TransBtn>
-                            </div>
-                          </BaseSelect>
-                        </Select>
-                      </ForwardRef(InternalSelect)>
-                    </Component>
-                  </div>
-                </div>
-                <ErrorList
-                  className="ant-form-item-explain-connected"
-                  errors={Array []}
-                  helpStatus=""
-                  warnings={Array []}
-                >
-                  <CSSMotion
-                    motionAppear={false}
-                    motionDeadline={500}
-                    motionEnter={false}
-                    motionName="ant-show-help"
-                    onAppearActive={[Function]}
-                    onAppearEnd={[Function]}
-                    onAppearStart={[Function]}
-                    onEnterActive={[Function]}
-                    onEnterEnd={[Function]}
-                    onEnterStart={[Function]}
-                    onLeaveActive={[Function]}
-                    onLeaveEnd={[Function]}
-                    onLeaveStart={[Function]}
-                    visible={false}
-                  >
-                    <DomWrapper />
-                  </CSSMotion>
-                </ErrorList>
+                                        <path
+                                          d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"
+                                          key="svg-search-svg-0"
+                                        />
+                                      </svg>
+                                    </IconReact>
+                                  </span>
+                                </AntdIcon>
+                              </ForwardRef(SearchOutlined)>
+                            </span>
+                          </TransBtn>
+                        </div>
+                      </BaseSelect>
+                    </Select>
+                  </ForwardRef(Select)>
+                </Component>
               </div>
-            </Col>
-          </FormItemInput>
-        </div>
-      </Row>
-    </Field>
-  </WrapperField>
-</FormItem>
+            </div>
+          </div>
+        </Col>
+      </FormItemInput>
+    </div>
+  </Row>
+</div>
 `;

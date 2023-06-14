@@ -2,7 +2,7 @@
 
 exports[`renders correctly in list view: Header title 1`] = `
 <span
-  class="ant-page-header-heading-title"
+  class="ant-page-header-heading-title "
   title="Patients"
 >
   Patients
@@ -33,7 +33,7 @@ exports[`renders correctly in list view: table row 1 page 1 3`] = `
   class="ant-table-cell"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Inactive
   </span>
@@ -59,7 +59,7 @@ exports[`renders correctly in list view: table row 1 page 1 5`] = `
       href="/fhir/Patient/52"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -95,7 +95,7 @@ exports[`renders correctly in list view: table row 2 page 1 3`] = `
   class="ant-table-cell"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Inactive
   </span>
@@ -121,7 +121,7 @@ exports[`renders correctly in list view: table row 2 page 1 5`] = `
       href="/fhir/Patient/2"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -157,7 +157,7 @@ exports[`renders correctly in list view: table row 3 page 1 3`] = `
   class="ant-table-cell"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Inactive
   </span>
@@ -183,7 +183,7 @@ exports[`renders correctly in list view: table row 3 page 1 5`] = `
       href="/fhir/Patient/1"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -203,7 +203,7 @@ exports[`renders correctly in list view: table row 4 page 1 1`] = `
     Albert Einstein
      
     <span
-      class="ant-tag ant-tag-red"
+      class="ant-tag ant-tag-red css-dev-only-do-not-override-k7429z"
     >
       Deceased
     </span>
@@ -224,7 +224,7 @@ exports[`renders correctly in list view: table row 4 page 1 3`] = `
   class="ant-table-cell"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Inactive
   </span>
@@ -250,7 +250,7 @@ exports[`renders correctly in list view: table row 4 page 1 5`] = `
       href="/fhir/Patient/3"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>

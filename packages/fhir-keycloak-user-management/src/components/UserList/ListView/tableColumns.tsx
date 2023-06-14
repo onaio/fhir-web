@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
@@ -67,7 +68,7 @@ export const getTableColumns = (
             placement="bottomRight"
             arrow
             trigger={['click']}
-            overlay={
+            menu={(
               <Menu>
                 <Menu.Item key="view-details" className="view-details">
                   <Button type="link">
@@ -109,7 +110,7 @@ export const getTableColumns = (
                   </Link>
                 </Menu.Item>
               </Menu>
-            }
+            ) as MenuProps}
           >
             <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
           </Dropdown>

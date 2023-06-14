@@ -118,7 +118,7 @@ describe('Health care form', () => {
     expect(toJson(wrapper.find('.ant-form-item.unitOfMeasure label').first())).toMatchSnapshot(
       'unit of measure label'
     );
-    expect(toJson(wrapper.find('.ant-form-item.unitOfMeasure input.unitOfMeasure'))).toMatchSnapshot(
+    expect(toJson(wrapper.find('.ant-form-item.unitOfMeasure input'))).toMatchSnapshot(
       'unit of measure field'
     );
 
@@ -153,22 +153,22 @@ describe('Health care form', () => {
     });
 
     // name is required and has no default
-    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(
       `"Enter Commodity nameRequired"`
     );
 
     // status has no
-    expect(wrapper.find('FormItem#active').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('.ant-form-item.active').text()).toMatchInlineSnapshot(
       `"Select Commodity statusActiveDisabled"`
     );
 
     // required
-    expect(wrapper.find('FormItem#type').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('.ant-form-item.type').text()).toMatchInlineSnapshot(
       `"Select Commodity TypeSelect Commodity type'type' is required"`
     );
 
     // required
-    expect(wrapper.find('FormItem#unitOfMeasure').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('.ant-form-item.unitOfMeasure').text()).toMatchInlineSnapshot(
       `"Select the unit of measureSelect the unit of measure'unitOfMeasure' is required"`
     );
 
@@ -199,7 +199,7 @@ describe('Health care form', () => {
 
     // simulate active change
     wrapper
-      .find('FormItem#active input')
+      .find('.ant-form-item.active input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -207,7 +207,7 @@ describe('Health care form', () => {
 
     // simulate name change
     wrapper
-      .find('FormItem#name input')
+      .find('.ant-form-item.name input')
       .simulate('change', { target: { name: 'name', value: 'Dettol' } });
 
     // simulate value selection for type
@@ -221,7 +221,7 @@ describe('Health care form', () => {
       return option.textContent;
     });
 
-    expect(toJson(wrapper.find('FormItem#type'))).toMatchSnapshot('asd');
+    expect(toJson(wrapper.find('.ant-form-item.type'))).toMatchSnapshot('asd');
 
     expect(optionTexts).toHaveLength(2);
     expect(optionTexts).toEqual(['Medication', 'Device']);
@@ -337,19 +337,19 @@ describe('Health care form', () => {
 
     // simulate name change
     wrapper
-      .find('FormItem#name input')
+      .find('.ant-form-item.name input')
       .simulate('change', { target: { name: 'name', value: 'Dettol Strips' } });
 
     // simulate active check to be disabled
     wrapper
-      .find('FormItem#active input')
+      .find('.ant-form-item.active input')
       .last()
       .simulate('change', {
         target: { checked: true },
       });
 
     // simulate value selection for members
-    wrapper.find('input#unitOfMeasure').simulate('mousedown');
+    wrapper.find('input.unitOfMeasure').simulate('mousedown');
     // check options
     document
       .querySelectorAll('#unitOfMeasure .ant-select-item ant-select-item-option')

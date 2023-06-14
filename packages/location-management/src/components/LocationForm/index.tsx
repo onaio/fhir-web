@@ -197,26 +197,29 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.instance}
             hidden
             id="instance"
+            className="instance"
           >
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem name="id" label={t('Id')} rules={validationRules.id} hidden id="id">
+          <FormItem name="id" label={t('Id')} rules={validationRules.id} hidden className='id' id="id">
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem name="username" label={t('username')} hidden id="username">
+          <FormItem className='username' name="username" label={t('username')} hidden id="username">
             <Input disabled></Input>
           </FormItem>
 
           <FormItem
             id="parentId"
+            className="parentId"
             hidden={isHidden('parentId')}
             label={t('Parent')}
             name="parentId"
             rules={validationRules.parentId}
           >
             <CustomTreeSelect
+              className='tree'
               baseURL={opensrpBaseURL}
               filterByParentId={filterByParentId}
               disabled={disabled.includes('parentId')}
@@ -229,6 +232,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="name"
+            className="name"
             rules={validationRules.name}
             hidden={isHidden('name')}
             name="name"
@@ -243,6 +247,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="status"
+            className="status"
             rules={validationRules.status}
             hidden={isHidden('status')}
             label={t('Status')}
@@ -256,6 +261,7 @@ const LocationForm = (props: LocationFormProps) => {
             label={t('Location category')}
             name="isJurisdiction"
             id="isJurisdiction"
+            className="isJurisdiction"
             rules={validationRules.isJurisdiction}
           >
             <Radio.Group
@@ -268,10 +274,12 @@ const LocationForm = (props: LocationFormProps) => {
             hidden={isHidden('serviceType')}
             name="serviceType"
             id="serviceType"
+            className="serviceType"
             label={t('Type')}
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<ServiceTypeSetting>
+              className='select'
               placeholder={t('Select the service point type')}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {
@@ -283,6 +291,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="externalId"
+            className="externalId"
             hidden={isHidden('externalId')}
             name="externalId"
             label={t('External ID')}
@@ -293,6 +302,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="geometry"
+            className="geometry"
             rules={validationRules.geometry}
             hidden={isHidden('geometry')}
             name="geometry"
@@ -307,6 +317,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="latitude"
+            className="latitude"
             hidden={isHidden('latitude')}
             name="latitude"
             label={t('Latitude')}
@@ -317,6 +328,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="longitude"
+            className="longitude"
             hidden={isHidden('longitude')}
             name="longitude"
             label={t('Longitude')}
@@ -327,6 +339,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem
             id="locationTags"
+            className="locationTags"
             hidden={isHidden('locationTags')}
             label={t('Unit group')}
             name="locationTags"
