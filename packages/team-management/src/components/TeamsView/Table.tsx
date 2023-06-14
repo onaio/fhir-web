@@ -56,7 +56,7 @@ const Table: React.FC<Props> = (props: Props) => {
       label: (
         <Button 
           type='link' 
-          data-testId='view-details'
+          data-testid='view-details'
           onClick={() => {
           if (onViewDetails) {
             onViewDetails(
@@ -108,8 +108,9 @@ const Table: React.FC<Props> = (props: Props) => {
                 <Dropdown
                   menu={{items: getItems(record)}}
                   placement="bottomRight"
+                  trigger={['click']}
                 >
-                  <MoreOutlined className="more-options" rev={undefined} />
+                  <MoreOutlined className="more-options"  />
                 </Dropdown>
               </span>
             ),
