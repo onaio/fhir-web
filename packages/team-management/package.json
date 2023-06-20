@@ -38,7 +38,6 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.16",
-    "antd": "^5.5.1",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
