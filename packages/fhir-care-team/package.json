@@ -39,7 +39,6 @@
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-service": "^0.0.17",
     "@smile-cdr/fhirts": "^1.2.5",
-    "antd": "^5.5.2",
     "fhirclient": "^2.4.0",
     "lodash": "^4.17.21",
     "uuid": "^8.3.1"
@@ -50,6 +49,7 @@
   },
   "peerDependencies": {
     "@opensrp/i18n": "^0.0.1",
+    "antd": "^5.5.2",
     "@opensrp/store": "^0.0.10",
     "react": "^16.13.1",
     "react-query": "^3.15.1",

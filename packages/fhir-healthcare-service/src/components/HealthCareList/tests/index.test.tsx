@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import {
   healthCareServicePage1,
   healthCareServicePage2,
@@ -16,7 +16,6 @@ import {
 } from './fixtures';
 import userEvents from '@testing-library/user-event';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../../constants';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -132,7 +131,7 @@ test('renders correctly when listing resources', async () => {
     </Router>
   );
 
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
 
@@ -142,11 +141,10 @@ test('renders correctly when listing resources', async () => {
     });
   });
 
-  userEvent.click(screen.getByTitle('2'));
+  fireEvent.click(screen.getByTitle('2'));
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  console.log(prettyDOM(document))
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

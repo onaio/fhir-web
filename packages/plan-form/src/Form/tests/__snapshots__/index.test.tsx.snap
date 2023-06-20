@@ -22,15 +22,6 @@ Array [
   },
   Object {
     "errors": Array [
-      "'date' is required",
-    ],
-    "name": Array [
-      "date",
-    ],
-    "warnings": Array [],
-  },
-  Object {
-    "errors": Array [
       "'description' is required",
     ],
     "name": Array [
@@ -43,11 +34,7 @@ Array [
 
 exports[`containers/forms/PlanForm Form validation works: Initial Errors, no errors shown initially 1`] = `Array []`;
 
-exports[`containers/forms/PlanForm Form validation works: date error 1`] = `
-Array [
-  "'date' is required",
-]
-`;
+exports[`containers/forms/PlanForm Form validation works: date error 1`] = `Array []`;
 
 exports[`containers/forms/PlanForm Form validation works: dateRange required error 1`] = `Array []`;
 
@@ -87,15 +74,6 @@ Array [
     ],
     "name": Array [
       "dateRange",
-    ],
-    "warnings": Array [],
-  },
-  Object {
-    "errors": Array [
-      "'date' is required",
-    ],
-    "name": Array [
-      "date",
     ],
     "warnings": Array [],
   },
@@ -146,15 +124,6 @@ Array [
     ],
     "name": Array [
       "dateRange",
-    ],
-    "warnings": Array [],
-  },
-  Object {
-    "errors": Array [
-      "'date' is required",
-    ],
-    "name": Array [
-      "date",
     ],
     "warnings": Array [],
   },
@@ -219,8 +188,8 @@ exports[`containers/forms/PlanForm renders correctly: date field 1`] = `
   placeholder="Select date"
   readOnly={true}
   size={12}
-  title=""
-  value=""
+  title="2017-07-13"
+  value="2017-07-13"
 />
 `;
 
