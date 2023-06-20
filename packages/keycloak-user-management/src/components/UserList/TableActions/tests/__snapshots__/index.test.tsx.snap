@@ -1,43 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`components/UserList/TableActions hides delete element if entry is logged in user: dots menu 1`] = `
-<Menu>
-  <MenuItem>
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
-      okText="Yes"
-      okType="primary"
-      onConfirm={[Function]}
-      placement="top"
-      title="Are you sure you want to delete this user?"
-      trigger="click"
-    />
-  </MenuItem>
-  <MenuItem>
-    <Link
-      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-    >
-      <Button
+Object {
+  "items": Array [
+    Object {
+      "key": "1",
+      "label": <Popconfirm
+        cancelText="No"
+        okText="Yes"
+        onConfirm={[Function]}
+        title="Are you sure you want to delete this user?"
+      />,
+    },
+    Object {
+      "key": "2",
+      "label": <Link
+        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      >
+        <Button
+          data-testid="credentials"
+          type="link"
+        >
+          Credentials
+        </Button>
+      </Link>,
+    },
+    Object {
+      "key": "3",
+      "label": <Button
+        className="viewDetails"
+        data-testid="viewDetails"
+        onClick={[Function]}
         type="link"
       >
-        Credentials
-      </Button>
-    </Link>
-  </MenuItem>
-  <MenuItem
-    className="viewDetails"
-    onClick={[Function]}
-    style={
-      Object {
-        "textAlign": "center",
-      }
-    }
-  >
-    View Details
-  </MenuItem>
-</Menu>
+        View Details
+      </Button>,
+    },
+  ],
+}
 `;
 
 exports[`components/UserList/TableActions renders correctly: divider 1`] = `
@@ -70,58 +70,56 @@ Object {
       }
     />
   </Button>,
-  "mouseEnterDelay": 0.15,
-  "mouseLeaveDelay": 0.1,
-  "overlay": <Menu>
-    <MenuItem>
-      <ForwardRef
-        cancelText="No"
-        disabled={false}
-        icon={<ForwardRef(ExclamationCircleFilled) />}
-        okText="Yes"
-        okType="primary"
-        onConfirm={[Function]}
-        placement="top"
-        title="Are you sure you want to delete this user?"
-        trigger="click"
-      >
-        <Button
-          danger={true}
-          data-testid="delete-user"
-          style={
-            Object {
-              "color": "#",
+  "menu": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "label": <Popconfirm
+          cancelText="No"
+          okText="Yes"
+          onConfirm={[Function]}
+          title="Are you sure you want to delete this user?"
+        >
+          <Button
+            danger={true}
+            data-testid="delete-user"
+            style={
+              Object {
+                "color": "#",
+              }
             }
-          }
+            type="link"
+          >
+            Delete
+          </Button>
+        </Popconfirm>,
+      },
+      Object {
+        "key": "2",
+        "label": <Link
+          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+        >
+          <Button
+            data-testid="credentials"
+            type="link"
+          >
+            Credentials
+          </Button>
+        </Link>,
+      },
+      Object {
+        "key": "3",
+        "label": <Button
+          className="viewDetails"
+          data-testid="viewDetails"
+          onClick={[Function]}
           type="link"
         >
-          Delete
-        </Button>
-      </ForwardRef>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-      >
-        <Button
-          type="link"
-        >
-          Credentials
-        </Button>
-      </Link>
-    </MenuItem>
-    <MenuItem
-      className="viewDetails"
-      onClick={[Function]}
-      style={
-        Object {
-          "textAlign": "center",
-        }
-      }
-    >
-      View Details
-    </MenuItem>
-  </Menu>,
+          View Details
+        </Button>,
+      },
+    ],
+  },
   "placement": "bottomRight",
   "trigger": Array [
     "click",
@@ -137,61 +135,61 @@ Object {
 `;
 
 exports[`components/UserList/TableActions shows delete element if entry is not logged in user: dots menu 1`] = `
-<Menu>
-  <MenuItem>
-    <ForwardRef
-      cancelText="No"
-      disabled={false}
-      icon={<ForwardRef(ExclamationCircleFilled) />}
-      okText="Yes"
-      okType="primary"
-      onConfirm={[Function]}
-      placement="top"
-      title="Are you sure you want to delete this user?"
-      trigger="click"
-    >
-      <Button
-        danger={true}
-        data-testid="delete-user"
-        style={
-          Object {
-            "color": "#",
+Object {
+  "items": Array [
+    Object {
+      "key": "1",
+      "label": <Popconfirm
+        cancelText="No"
+        okText="Yes"
+        onConfirm={[Function]}
+        title="Are you sure you want to delete this user?"
+      >
+        <Button
+          danger={true}
+          data-testid="delete-user"
+          style={
+            Object {
+              "color": "#",
+            }
           }
-        }
+          type="link"
+        >
+          Delete
+        </Button>
+      </Popconfirm>,
+    },
+    Object {
+      "key": "2",
+      "label": <Link
+        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      >
+        <Button
+          data-testid="credentials"
+          type="link"
+        >
+          Credentials
+        </Button>
+      </Link>,
+    },
+    Object {
+      "key": "3",
+      "label": <Button
+        className="viewDetails"
+        data-testid="viewDetails"
+        onClick={[Function]}
         type="link"
       >
-        Delete
-      </Button>
-    </ForwardRef>
-  </MenuItem>
-  <MenuItem>
-    <Link
-      to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-    >
-      <Button
-        type="link"
-      >
-        Credentials
-      </Button>
-    </Link>
-  </MenuItem>
-  <MenuItem
-    className="viewDetails"
-    onClick={[Function]}
-    style={
-      Object {
-        "textAlign": "center",
-      }
-    }
-  >
-    View Details
-  </MenuItem>
-</Menu>
+        View Details
+      </Button>,
+    },
+  ],
+}
 `;
 
 exports[`components/UserList/TableActions shows delete element if entry is not logged in user: yes button 1`] = `
 <button
-  class="ant-btn ant-btn-primary ant-btn-sm"
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-sm"
   type="button"
 >
   <span>

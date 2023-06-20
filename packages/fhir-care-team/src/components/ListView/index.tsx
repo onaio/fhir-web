@@ -82,6 +82,36 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   });
   type TableData = typeof tableData[0];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Popconfirm
+          title={t('Are you sure you want to delete this Care Team?')}
+          okText={t('Yes')}
+          className='delCareteam'
+          cancelText={t('No')}
+          onConfirm={async () => {
+            await deleteCareTeam(fhirBaseURL, record.id, t);
+            await refetch();
+          }}
+        >
+          <Button danger data-testid='deleteBtn' type="link" style={{ color: '#' }}>
+            {t('Delete')}
+          </Button>
+        </Popconfirm>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Link to={`${URL_CARE_TEAM}/${record.id}`}>
+          {t('View Details')}
+        </Link>
+      )
+    }
+  ]
+
   const columns = [
     {
       title: t('Name'),
@@ -102,28 +132,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            menu={(
-              <Menu className="menu">
-                <Menu.Item key="delete">
-                  <Popconfirm
-                    title={t('Are you sure you want to delete this Care Team?')}
-                    okText={t('Yes')}
-                    cancelText={t('No')}
-                    onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id, t);
-                      await refetch();
-                    }}
-                  >
-                    <Button danger type="link" style={{ color: '#' }}>
-                      {t('Delete')}
-                    </Button>
-                  </Popconfirm>
-                </Menu.Item>
-                <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${URL_CARE_TEAM}/${record.id}`}>View Details</Link>
-                </Menu.Item>
-              </Menu>
-            ) as MenuProps}
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}

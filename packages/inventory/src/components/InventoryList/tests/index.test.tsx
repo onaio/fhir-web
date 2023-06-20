@@ -85,7 +85,7 @@ describe('Inventory list Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo data"`
     );
     wrapper.unmount();
   });
@@ -121,7 +121,7 @@ describe('Inventory list Page', () => {
     wrapper.update();
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo data"`
     );
 
     wrapper.unmount();

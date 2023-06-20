@@ -2,7 +2,7 @@
 
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
-  class="ant-page-header-heading-title "
+  class="ant-page-header-heading-title"
   title="User Management"
 >
   User Management
@@ -599,4 +599,13 @@ exports[`renders correctly when listing resources: user details 6`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources: yes button 1`] = `undefined`;
+exports[`renders correctly when listing resources: yes button 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-sm"
+  type="button"
+>
+  <span>
+    Yes
+  </span>
+</button>
+`;

@@ -2,7 +2,7 @@
 import { MoreOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, Dropdown, Menu } from 'antd';
+import { Row, Col, Spin, Dropdown, Button } from 'antd';
 import { PageHeader } from '@ant-design/pro-layout';
 import type { MenuProps } from 'antd';
 import {
@@ -140,6 +140,52 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     }
   );
 
+  const getItems = (row: Setting): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          type='link'
+          data-testid='yesBtn'
+          onClick={async () => {
+            await updateSettings(row, currentLocation?.id ?? '', true);
+          }}>{t('Yes')}</Button>
+      )
+    },
+    {
+      key: '1',
+      label: (
+        <Button
+          type='link'
+          data-testid='sayNo'
+          onClick={async () => {
+            await updateSettings(row, currentLocation?.id ?? '', false);
+          }}>{t('No')}</Button>
+      )
+    },
+    {
+      key: '1',
+      label: (
+        <Button
+          type='link'
+          data-testid='inherited'
+          // for inherit
+          // delete existing setting and inherit from the parent location instead
+          // server returns inherited parent value instead by default
+          onClick={async () => {
+            await settingsServe(row.settingMetadataId)
+              .delete()
+              .catch(() => sendErrorNotification(t('An error occurred')))
+              .then(async () => {
+                await invalidateSettingsQueries();
+              })
+              .then(() => sendSuccessNotification(t('Successfully Updated')));
+          }}>{t('Inherit')}</Button >
+      )
+    }
+  ]
+
+
   const {
     isError: isServerSettingsError,
     isLoading: isServerSettingsLoading,
@@ -196,40 +242,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                 render: (_, row: Setting) => {
                   return (
                     <Dropdown
-                      menu={(
-                        <Menu className="menu">
-                          <Menu.Item
-                            onClick={async () => {
-                              await updateSettings(row, currentLocation?.id ?? '', true);
-                            }}
-                          >
-                            {t('Yes')}
-                          </Menu.Item>
-                          <Menu.Item
-                            onClick={async () => {
-                              await updateSettings(row, currentLocation?.id ?? '', false);
-                            }}
-                          >
-                            {t('No')}
-                          </Menu.Item>
-                          <Menu.Item
-                            // for inherit
-                            // delete existing setting and inherit from the parent location instead
-                            // server returns inherited parent value instead by default
-                            onClick={async () => {
-                              await settingsServe(row.settingMetadataId)
-                                .delete()
-                                .catch(() => sendErrorNotification(t('An error occurred')))
-                                .then(async () => {
-                                  await invalidateSettingsQueries();
-                                })
-                                .then(() => sendSuccessNotification(t('Successfully Updated')));
-                            }}
-                          >
-                            {t('Inherit')}
-                          </Menu.Item>
-                        </Menu>
-                      ) as MenuProps}
+                      menu={{ items: getItems(row) }}
                       className='drop'
                       placement="bottomLeft"
                       arrow

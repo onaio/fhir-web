@@ -2,7 +2,8 @@
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Menu, Layout, Avatar, Button, Dropdown } from 'antd';
+import { Layout, Avatar, Button, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import { URL_LOGOUT, URL_USER_EDIT } from '../../../constants';
@@ -65,21 +66,41 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
     allLanguageOptions: languageOptions,
     supportedLanguages: SUPPORTED_LANGUAGES as LanguageCode[],
   };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <Link to={URL_LOGOUT}>
+          <Button
+            type='link'
+            data-testid="logout"
+          >
+          {t('Logout')}
+          </Button>
+        </Link>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Link to={`${URL_USER_EDIT}/${user_id}`}>
+          <Button 
+            type='link'
+            data-testid="manageaccount"
+          >{t('Manage account')}</Button>
+        </Link>
+      )
+    }
+  ]
+
   return (
     <Layout.Header className="app-header txt-white align-items-center justify-content-end px-1 layout-header">
       {authenticated ? (
         <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key={URL_LOGOUT}>
-                <Link to={URL_LOGOUT}>{t('Logout')}</Link>
-              </Menu.Item>
-              <Menu.Item key={`${URL_USER_EDIT}/${user_id}`}>
-                <Link to={`${URL_USER_EDIT}/${user_id}`}>{t('Manage account')}</Link>
-              </Menu.Item>
-            </Menu>
-          }
+          menu={{ items }}
           placement="bottomRight"
+          trigger={['click']}
         >
           <Button
             shape="circle"

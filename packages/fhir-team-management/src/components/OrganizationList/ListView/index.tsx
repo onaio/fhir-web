@@ -60,6 +60,17 @@ export const OrganizationList = (props: OrganizationListProps) => {
 
   type TableData = typeof tableData[0];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      )
+    }
+  ]
+
   const columns = [
     {
       title: t('Team name'),
@@ -79,15 +90,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            menu={(
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
-                    {t('View Details')}
-                  </Button>
-                </Menu.Item>
-              </Menu>
-      ) as MenuProps }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}

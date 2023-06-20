@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@ant-design/pro-layout": "^7.14.8",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/loaders": "^0.0.1",
     "@onaio/redux-reducer-registry": "^0.0.9",
@@ -50,6 +51,7 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
     "@opensrp/team-management": "^0.0.9",
+    "antd": "^5.5.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "bootstrap": "^4.5.2",
     "connected-react-router": "^6.8.0",

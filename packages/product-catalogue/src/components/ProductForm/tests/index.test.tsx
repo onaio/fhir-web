@@ -119,32 +119,32 @@ describe('productForm', () => {
       wrapper.update();
     });
 
-    expect((wrapper.find('.ant-form-item.productName').props() as any).validateStatus).toEqual('error');
+    expect((wrapper.find('.ant-form-item.productName FormItemInput').props() as any).validateStatus).toEqual('error');
     expect(toJson((wrapper.find('.ant-form-item.productName').props() as any).help)).toMatchSnapshot(
       `"Product name"`
     );
     console.log(wrapper.find('.ant-form-item.productName').props());
 
-    // expect((wrapper.find('.ant-form-item.materialNumber').props() as any).validateStatus).toEqual(
-    //   'error'
-    // );
+    expect((wrapper.find('.ant-form-item.materialNumber FormItemInput').props() as any).validateStatus).toEqual(
+      'error'
+    );
     expect(toJson((wrapper.find('.ant-form-item.materialNumber').props() as any).help)).toMatchSnapshot(
       `material number`
     );
 
-    // expect((wrapper.find('.ant-form-item.isAttractiveItem').props() as any).validateStatus).toEqual(
-    //   'error'
-    // );
+    expect((wrapper.find('.ant-form-item.isAttractiveItem FormItemInput').props() as any).validateStatus).toEqual(
+      'error'
+    );
     expect(toJson((wrapper.find('.ant-form-item.isAttractiveItem').props() as any).help)).toMatchSnapshot(
       `isAttractive`
     );
 
-    // expect((wrapper.find('.ant-form-item.availability').props() as any).validateStatus).toEqual('error');
+    expect((wrapper.find('.ant-form-item.availability FormItemInput').props() as any).validateStatus).toEqual('error');
     expect(toJson((wrapper.find('.ant-form-item.availability').props() as any).help)).toMatchSnapshot(
       `availability`
     );
 
-    // expect((wrapper.find('.ant-form-item.availability').props() as any).validateStatus).toEqual('error');
+    expect((wrapper.find('.ant-form-item.availability FormItemInput').props() as any).validateStatus).toEqual('error');
     expect(toJson((wrapper.find('.ant-form-item.availability').props() as any).help)).toMatchSnapshot(
       `availability`
     );
@@ -161,9 +161,9 @@ describe('productForm', () => {
       `appropriateUsage`
     );
 
-    // expect((wrapper.find('.ant-form-item.accountabilityPeriod').props() as any).validateStatus).toEqual(
-    //   'error'
-    // );
+    expect((wrapper.find('.ant-form-item.accountabilityPeriod FormItemInput').props() as any).validateStatus).toEqual(
+      'error'
+    );
     expect(
       toJson((wrapper.find('.ant-form-item.accountabilityPeriod').props() as any).help)
     ).toMatchSnapshot(`accountability period`);

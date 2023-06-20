@@ -18,8 +18,15 @@ import {
   teamMember,
   practitioners,
 } from '../../../ducks/tests/fixtures';
-import { notification } from 'antd';
+import * as notifications from '@opensrp/notifications';
 import { QueryClient, QueryClientProvider } from 'react-query';
+
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
 
 describe('components/TeamsView', () => {
   const teamViewProps = {
@@ -133,7 +140,7 @@ describe('components/TeamsView', () => {
 
   it('test error thrown if API is down', async () => {
     const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(new Error('API is down'));
     populateTeamDetails(
       {
@@ -162,10 +169,7 @@ describe('components/TeamsView', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
 
@@ -251,7 +255,6 @@ describe('components/TeamsView', () => {
     expect(wrapper.find('[data-testid="view-details"]')).toHaveLength(0)
     
     // collapse menu items
-    console.log(toJson(firstRow.find('.more-options')))
     firstRow.find('.more-options').last().simulate('click');
     wrapper.update()
 

@@ -82,6 +82,8 @@ const EditPlanView = (props: EditViewTypes) => {
     if (!planId) {
       return;
     }
+    console.log({loading})
+    
     loadSinglePlan(baseURL, planId, serviceClass, fetchPlan)
       .finally(() => setLoading(false))
       .catch((err: Error) => handleBrokenPage(err));
@@ -124,7 +126,7 @@ const EditPlanView = (props: EditViewTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
+      <PageHeader title={pageTitle} className="pageHeader"/>
 
       <PlanForm {...productFormProps} />
     </Layout>

@@ -102,7 +102,7 @@ exports[`renders correctly when listing resources 6`] = `
 
 exports[`renders correctly when listing resources: Header title 1`] = `
 <span
-  class="ant-page-header-heading-title "
+  class="ant-page-header-heading-title"
   title="Groups List"
 >
   Groups List

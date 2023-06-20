@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader } from 'antd';
+import { Row, Col } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';

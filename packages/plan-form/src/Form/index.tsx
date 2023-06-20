@@ -57,7 +57,7 @@ import {
   title,
   jurisdictions,
 } from '@opensrp/plan-form-core';
-import moment, { Moment } from 'moment';
+import dayjs from 'dayjs';
 import { Select, Input, DatePicker } from 'antd';
 import { CloseOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Collapse, Modal } from 'antd';
@@ -95,8 +95,8 @@ export const defaultInitialValues: PlanFormFields = {
   activities: processActivitiesDates(defaultPlanActivitiesMap[defaultInterventionType]),
   caseNum: '',
   // this is an example of a situation where we do not have a proper way to pass configuration to the package.
-  dateRange: [moment(), moment().add(defaultEnvs.defaultPlanDurationDays, 'days')],
-  date: moment(),
+  dateRange: [dayjs(), dayjs().add(defaultEnvs.defaultPlanDurationDays, 'days')],
+  date: dayjs(),
   fiReason: defaultFiReasonRoutine,
   fiStatus: undefined,
   identifier: '',
@@ -140,11 +140,11 @@ export interface PlanFormProps extends CommonProps {
  * Plan Form Date range picker
  * Function checks end date to be greater than start date and today date
  *
- * @param {Moment} current - current selected/hovered date (date picker)
- * @param {Moment[]} dates - start and end date
+ * @param {dayjs.Dayjs} current - current selected/hovered date (date picker)
+ * @param {dayjs.Dayjs[]} dates - start and end date
  * @returns {boolean} - returns true if disabled and viseversa
  */
-export const disableDate = (current: Moment, dates: Moment[]) => {
+export const disableDate = (current: dayjs.Dayjs, dates: dayjs.Dayjs[]) => {
   if (!dates || dates.length === 0) {
     return false;
   }
@@ -169,7 +169,7 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const [dates, setDates] = useState<Moment[]>([]);
+  const [dates, setDates] = useState<dayjs.Dayjs[]>([]);
   const { t } = useTranslation();
   const {
     allFormActivities,
@@ -203,8 +203,7 @@ const PlanForm = (props: PlanFormProps) => {
     setActionConditions(conditions);
     setActionTriggers(triggers);
     setActionDynamicValue(dynamicValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabledFields, initialValues.activities, envConfigs]);
+  }, [disabledFields, initialValues.activities, envConfigs]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isEditMode: boolean = initialValues.identifier !== '';
 
@@ -263,6 +262,7 @@ const PlanForm = (props: PlanFormProps) => {
 
   const { Option } = Select;
   const values = form.getFieldValue([]);
+  
 
   /** responsive layout for the form labels and columns */
   const formItemLayout = {
@@ -310,7 +310,6 @@ const PlanForm = (props: PlanFormProps) => {
         {...formItemLayout}
         form={form}
         name="planForm"
-        className='form'
         scrollToFirstError
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
@@ -376,6 +375,7 @@ const PlanForm = (props: PlanFormProps) => {
             name={title}
             rules={validationRules.title}
             id={title}
+            className='title'
           >
             <Input
               onChange={(value) => {
@@ -389,7 +389,7 @@ const PlanForm = (props: PlanFormProps) => {
               disabled={disabledFields.includes(title)}
             />
           </FormItem>
-          <FormItem name={name} id="name" hidden rules={validationRules.name}>
+          <FormItem name={name} className='name' id="name" hidden rules={validationRules.name}>
             <Input type="hidden" disabled={disabledFields.includes(name)} />
           </FormItem>
           <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
@@ -435,12 +435,13 @@ const PlanForm = (props: PlanFormProps) => {
             required={true}
             hidden={isHidden('dateRange')}
             id="dateRange"
+            className="dateRange"
           >
             <DatePicker.RangePicker
               onCalendarChange={
-                ((val: Moment[]) => {
+                ((val: dayjs.Dayjs[]) => {
                   setDates(val);
-                }) as RangePickerSharedProps<Moment>['onCalendarChange']
+                }) as RangePickerSharedProps<dayjs.Dayjs>['onCalendarChange']
               }
               onOpenChange={(open: boolean) => {
                 if (open) {
@@ -455,13 +456,13 @@ const PlanForm = (props: PlanFormProps) => {
                   }
                 }
               }}
-              disabledDate={(current: Moment) => disableDate(current, dates)}
+              disabledDate={(current: dayjs.Dayjs) => disableDate(current, dates)}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
           </FormItem>
 
-          <FormItem hidden rules={validationRules.date} name={date} id="date">
+          <FormItem hidden rules={validationRules.date} name={date} id="date" className='date'>
             <DatePicker format={configs.dateFormat} />
           </FormItem>
 
@@ -472,6 +473,7 @@ const PlanForm = (props: PlanFormProps) => {
             required={true}
             hidden={isHidden(description)}
             id="description"
+            className="description"
           >
             <TextArea
               rows={4}
@@ -500,7 +502,8 @@ const PlanForm = (props: PlanFormProps) => {
                     {fields.length > 1 ? (
                       <MinusCircleOutlined
                         className="jurisdiction-fields__delete dynamic-delete-button"
-                        onClick={() => remove(field.name)} rev={undefined}                      />
+                        onClick={() => remove(field.name)}
+                      />
                     ) : null}
                   </Form.Item>
                 ))}
@@ -509,7 +512,7 @@ const PlanForm = (props: PlanFormProps) => {
                     className="jurisdiction-fields__add"
                     type="dashed"
                     onClick={() => add()}
-                    icon={<PlusOutlined rev={undefined} />}
+                    icon={<PlusOutlined />}
                   >
                     {t('Add Jurisdiction')}
                   </Button>
@@ -532,7 +535,7 @@ const PlanForm = (props: PlanFormProps) => {
                         form.getFieldValue(activities);
                       const allValues = form.getFieldValue([]);
 
-                      const conditionsDisabledDates = (current: Moment) => {
+                      const conditionsDisabledDates = (current: dayjs.Dayjs) => {
                         // Can not select days before the set plan date range
                         return current && allValues.start < current && current < allValues.end;
                       };
@@ -550,7 +553,7 @@ const PlanForm = (props: PlanFormProps) => {
                                   <Button
                                     className="removeActivity"
                                     aria-label="Close"
-                                    icon={<CloseOutlined rev={undefined} />}
+                                    icon={<CloseOutlined />}
                                     onClick={() => {
                                       /**
                                        * when we remove an item, we want to also remove its value from
@@ -815,7 +818,7 @@ const PlanForm = (props: PlanFormProps) => {
                                 </Button>
 
                                 <Modal
-                                  visible={activityModal}
+                                  open={activityModal}
                                   className="activity-modal"
                                   title={t('Add Activity')}
                                   onCancel={toggleActivityModal}

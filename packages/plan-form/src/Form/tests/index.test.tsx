@@ -11,10 +11,11 @@ import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import flushPromises from 'flush-promises';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import { isEqual } from 'lodash';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -192,17 +193,17 @@ describe('containers/forms/PlanForm', () => {
 
     // name is required
     expect(
-      (wrapper.find('FormItem[name="name"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.name FormItemInput').props() as any).errors
     ).toMatchSnapshot('name error');
 
     // title is required
     expect(
-      (wrapper.find('FormItem[name="title"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.title FormItemInput').props() as any).errors
     ).toMatchSnapshot('title error');
 
     // description is required
     expect(
-      (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.description FormItemInput').props() as any).errors
     ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
@@ -232,22 +233,22 @@ describe('containers/forms/PlanForm', () => {
 
     // date is required
     expect(
-      (wrapper.find('FormItem[name="date"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.date FormItemInput').props() as any).errors
     ).toMatchSnapshot('date error');
 
     // interventionType is required
     expect(
-      (wrapper.find('FormItem[name="interventionType"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.interventionType FormItemInput').props() as any).errors
     ).toMatchSnapshot('interventionType error');
 
     // dateRange is required
     expect(
-      (wrapper.find('FormItem[name="dateRange"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.dateRange FormItemInput').props() as any).errors
     ).toMatchSnapshot('dateRange required error');
 
     // description is required
     expect(
-      (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
+      (wrapper.find('.ant-form-item.description FormItemInput').props() as any).errors
     ).toMatchSnapshot('description required error');
 
     // next we set wrong values for fields that expect specific values
@@ -297,20 +298,20 @@ describe('containers/forms/PlanForm', () => {
 
   it('disableDate should return false if no value selected', async () => {
     const dates = [];
-    const current = moment('2017-07-13');
+    const current = dayjs('2017-07-13');
     expect(disableDate(current, dates)).toBeFalsy();
   });
 
   it('disableDate should return true if end date is less than todays date', async () => {
-    const dates = [moment('2017-07-10'), moment('2017-07-11')];
-    const current = moment('2017-07-13');
+    const dates = [dayjs('2017-07-10'), dayjs('2017-07-11')];
+    const current = dayjs('2017-07-13');
     // date today is 2017-07-13
     expect(disableDate(current, dates)).toBeTruthy();
   });
 
   it('disableDate should return true if start and end date is same', async () => {
-    const dates = [moment('2017-07-10'), moment('2017-07-10')];
-    const current = moment('2017-07-13');
+    const dates = [dayjs('2017-07-10'), dayjs('2017-07-10')];
+    const current = dayjs('2017-07-13');
     // date today is 2017-07-13
     expect(disableDate(current, dates)).toBeTruthy();
   });
@@ -325,11 +326,11 @@ describe('containers/forms/PlanForm', () => {
     const instance = wrapper.find('#dateRange RangePicker').at(0).props();
     instance.onCalendarChange(['2022-07-13', '2022-07-14']);
     instance.onOpenChange(true);
-    expect(instance.disabledDate(moment('2017-07-13'))).toBeFalsy();
+    expect(instance.disabledDate(dayjs('2017-07-13'))).toBeFalsy();
     wrapper.unmount();
   });
 
-  it('Form submission for new plans works', async () => {
+it('Form submission for new plans works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
 
     const wrapper = mount(
@@ -836,7 +837,7 @@ describe('containers/forms/PlanForm', () => {
     const props = {
       initialValues: {
         ...initialValues,
-        dateRange: [moment('2020-11-23T21:00:00.000Z'), undefined],
+        dateRange: [dayjs('2020-11-23T21:00:00.000Z'), undefined],
       },
     };
 

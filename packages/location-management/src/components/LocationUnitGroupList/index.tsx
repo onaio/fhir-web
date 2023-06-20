@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { PageHeader } from '@ant-design/pro-layout';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Input, Spin, PageHeader } from 'antd';
+import { Row, Col, Button, Input, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';

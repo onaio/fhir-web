@@ -3,24 +3,29 @@ import { LanguageCode } from '@opensrp/pkg-config';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { LanguageOptions, LanguageSwitcher } from '..';
-import renderer from 'react-test-renderer';
-import { wrap } from 'module';
+// // import renderer from 'react-test-renderer';
+// import { wrap } from 'module';
+// import { drop } from 'lodash';
 
-jest.mock('antd', () => {
-  const actual = jest.requireActual('antd');
-  const CustomDropDown = (props: any) => {
-    return (
-      <>
-        {props.overlay}
-        {props.children}
-      </>
-    );
-  };
-  return {
-    ...actual,
-    Dropdown: CustomDropDown,
-  };
-});
+// jest.mock('antd', () => {
+//   const actual = jest.requireActual('antd');
+//   //   const CustomDropDown = (props: any) => {
+//   // console.log(props)
+
+//   //     return (
+//   //       <>
+
+//   //         {[props.menu]}
+//   //         {[props.children]}
+//   //       </>
+//   //     );
+//   //   };
+
+//   return {
+//     ...actual,
+//     // Dropdown: CustomDropDown,
+//   };
+// });
 
 describe('components/pages/languageSwitcher', () => {
   afterEach(() => {
@@ -46,18 +51,21 @@ describe('components/pages/languageSwitcher', () => {
       supportedLanguages: ['en', 'fr'] as LanguageCode[],
     };
 
+    console.log(props);
+
     const wrapper = mount(<LanguageSwitcher {...props} />);
-    expect(wrapper.find('button')).toHaveLength(1);
 
-    console.log(wrapper.debug())
-
+    const moreOptions = wrapper.find('.more-options [data-testid="more-options"]').last();
+    expect(moreOptions).toHaveLength(1);
+    moreOptions.simulate('click');
+  
     expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançais"`);
 
     // choose language change to french
-    wrapper.find('MenuItem').at(1).simulate('click');
+    wrapper.find('button').at(0).simulate('click');
     expect(languageHandlerMock.mock.calls).toEqual([['en']]);
 
-    wrapper.find('MenuItem').at(2).simulate('click');
+    wrapper.find('button').at(1).simulate('click');
     expect(languageHandlerMock.mock.calls).toEqual([['en'], ['fr']]);
     wrapper.update();
   });
@@ -75,7 +83,7 @@ describe('components/pages/languageSwitcher', () => {
     };
 
     const wrapper = mount(<LanguageSwitcher {...props} />);
-    expect(wrapper.find('button')).toHaveLength(1);
+    expect(wrapper.find('.more-options [data-testid="more-options"]').last()).toHaveLength(1);
 
     expect(wrapper.text()).toMatchInlineSnapshot(`""`);
   });

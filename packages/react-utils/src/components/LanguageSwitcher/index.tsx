@@ -1,10 +1,9 @@
 /** globe icon with a dropdown where users can select language */
 import React from 'react';
-import { Menu, Dropdown, Button } from 'antd';
+import { Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import { LanguageCode } from '@opensrp/pkg-config';
-import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 /** describes object representation of language options */
 export type LanguageOptions = {
@@ -59,31 +58,28 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
     supportedLanguages
   );
 
-  const languageChangeHandler: MenuClickEventHandler = ({ key }) => {
-    onLanguageChange?.(key);
-  };
+  const languageChangeHandler: MenuProps['onClick'] = ({ key }) => {
+    onLanguageChange?.(key)
+  }
 
-  const LangMenu = (
-    <Menu onClick={languageChangeHandler}>
-      {Object.entries(supportedLanguageOptions).map(([languageCode, label]) => {
-        return <Menu.Item key={languageCode}>{label}</Menu.Item>;
-      })}
-    </Menu>
-  );
+  const dropdownItems: MenuProps['items'] = []
+
+  for (const [languageCode, label] of Object.entries(supportedLanguageOptions)) {
+    dropdownItems.push(
+      {
+        key: languageCode,
+        label: (<Button type='link'>{label}</Button>)
+      }
+    )
+  }
 
   return (
-    <Dropdown menu={LangMenu} placement="bottomRight">
-      <Button
-        className='button'
-        onClick={(e) => e.preventDefault()}
-        shape="circle"
-        icon={<GlobalOutlined rev={undefined} />}
-        style={{
-          background: 'transparent',
-          border: 0,
-        }}
-        type="primary"
-      />
+    <Dropdown 
+      menu={{ items: dropdownItems, onClick: languageChangeHandler }} 
+      placement="bottomRight"
+      trigger={['click']}
+    >
+      <GlobalOutlined className='more-options' data-testid='more-options' />
     </Dropdown>
   );
 };

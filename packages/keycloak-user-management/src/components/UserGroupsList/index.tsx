@@ -38,6 +38,7 @@ import {
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
+import { UserGroup } from 'keycloak-user-management/src/ducks/user';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -145,6 +146,24 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
 
   if (isUserGroupsError) return <Resource404 />;
 
+  console.log("Confirm record type")
+  const getItems = (record: any): MenuProps['items'] => [
+    {
+      key: record.id,
+      label: (
+        <Button
+          type='link'
+          data-testid='view-details'
+          onClick={() => {
+            setGroupId(record.id);
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      )
+    }
+  ]
+
   return (
     <div className="content-section">
       <Helmet>
@@ -180,24 +199,12 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown
-                    menu={
-                      <Menu className="menu">
-                        <Menu.Item
-                          key={record.id}
-                          className="viewdetails"
-                          onClick={() => {
-                            setGroupId(record.id);
-                          }}
-                        >
-                          {t('View Details')}
-                        </Menu.Item>
-                      </Menu>
-                    }
+                    menu={{ items: getItems(record) }}
                     placement="bottomLeft"
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" rev={undefined} />
+                    <MoreOutlined className="more-options" data-testid='more-options' rev={undefined} />
                   </Dropdown>
                 </span>
               ),

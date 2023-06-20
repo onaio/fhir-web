@@ -44,11 +44,13 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
     props;
   const { t } = useTranslation();
 
-  const menu = (
-    <Menu>
-      <Menu.Item>
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
         <Button
           type="link"
+          data-testid="download"
           onClick={() =>
             onDownloadClick(
               file,
@@ -63,9 +65,9 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         >
           {t('Download')}
         </Button>
-      </Menu.Item>
-    </Menu>
-  );
+      )
+    }
+  ]
 
   return (
     <>
@@ -73,11 +75,12 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         {t('Edit')}
       </Link>
       <Divider type="vertical" />
-      <Dropdown menu={(menu) as MenuProps}>
+      <Dropdown menu={{ items }} arrow trigger={['click']}>
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }} rev={undefined}          />
+            data-testid="menu-options"
+            style={{ fontSize: '16px', padding: 0, margin: 0 }} rev={undefined} />
         </Button>
       </Dropdown>
     </>

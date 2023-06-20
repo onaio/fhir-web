@@ -10,6 +10,7 @@ import flushPromises from 'flush-promises';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import { wrap } from 'module';
 
 jest.mock('@opensrp/form-config-core', () => ({
   __esModule: true,
@@ -76,10 +77,14 @@ describe('components/Antd/FileList/TableActions', () => {
       </BrowserRouter>
     );
 
-    const dropdown = wrapper.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
+    const dropdown = wrapper.find('.more-options [data-testid="menu-options"]').last();
+    expect(dropdown).toHaveLength(1);
+    dropdown.simulate('click')
+    wrapper.update();
 
-    submenu.find('Button').simulate('click');
+    const dropdownItems = wrapper.find('button[data-testid="download"]');
+    expect(dropdownItems).toHaveLength(1);
+    dropdownItems.simulate('click')
 
     await act(async () => {
       await flushPromises();

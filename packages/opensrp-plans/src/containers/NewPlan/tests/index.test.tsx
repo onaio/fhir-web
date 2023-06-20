@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
 import flushPromises from 'flush-promises';
+import { wrap } from 'module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -76,39 +77,43 @@ describe('Create Plan Page', () => {
 
     // testing implementation details at its best.
     // date range field has not initial value
-    expect(wrapper.find('FormItem#dateRange RangePicker').first().props().value).toEqual([
-      undefined,
-      undefined,
-    ]);
+
+    console.log("Question! does this work")
+    // expect(wrapper.find('.ant-form-item #dateRange').props().value).toEqual([
+    //   undefined,
+    //   undefined,
+    // ]); 
+    expect(wrapper.find('.ant-form-item #dateRange').first().props().value).toEqual(undefined);
+    expect(wrapper.find('.ant-form-item #dateRange').last().props().value).toEqual(undefined);
 
     // check interventionType hidden
-    expect(wrapper.find('FormItem#interventionType').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #interventionType').first().props().hidden).toBeTruthy();
 
     // check title are hidden
-    expect(wrapper.find('FormItem#title').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #title').first().props().hidden).toBeTruthy();
 
     // name is hidden by default
-    expect(wrapper.find('FormItem#name').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #name').first().props().hidden).toBeTruthy();
 
     // identifier is hidden by default
-    expect(wrapper.find('FormItem#identifier').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #identifier').first().props().hidden).toBeTruthy();
 
     // version is hidden by default
-    expect(wrapper.find('FormItem#version').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #version').first().props().hidden).toBeTruthy();
 
     // taskGenerationStatus is hidden by default
-    expect(wrapper.find('FormItem#taskGenerationStatus').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #taskGenerationStatus').first().props().hidden).toBeTruthy();
 
     // status is not hidden
-    expect(wrapper.find('FormItem#status').props().hidden).toBeFalsy();
+    expect(wrapper.find('.ant-form-item #status').first().props().hidden).toBeFalsy();
 
     // dateRange is not hidden
-    expect(wrapper.find('FormItem#dateRange').props().hidden).toBeFalsy();
+    expect(wrapper.find('.ant-form-item #dateRange').first().props().hidden).toBeFalsy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#date').props().hidden).toBeTruthy();
+    expect(wrapper.find('.ant-form-item #date').first().props().hidden).toBeTruthy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#description').props().hidden).toBeFalsy();
+    expect(wrapper.find('.ant-form-item #description').first().props().hidden).toBeFalsy();
   });
 });

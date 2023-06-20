@@ -349,7 +349,7 @@ describe('Health care form', () => {
       });
 
     // simulate value selection for members
-    wrapper.find('input.unitOfMeasure').simulate('mousedown');
+    wrapper.find('.ant-form-item.unitOfMeasure input').simulate('mousedown');
     // check options
     document
       .querySelectorAll('#unitOfMeasure .ant-select-item ant-select-item-option')

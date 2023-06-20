@@ -2,7 +2,7 @@
 
 exports[`renders correctly in list view: Header title 1`] = `
 <span
-  class="ant-page-header-heading-title "
+  class="ant-page-header-heading-title"
   title="Patients"
 >
   Patients

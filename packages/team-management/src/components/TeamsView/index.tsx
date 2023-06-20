@@ -85,12 +85,16 @@ export const populateTeamDetails = (
         .then((locations) => {
           setAssignedLocations(locations);
         })
-        .catch(() => {
+        .catch((err) => {
           sendErrorNotification(t('An error occurred'));
+          console.log("first")
+          console.log({err})
         });
     })
-    .catch(() => {
+    .catch((err) => {
       sendErrorNotification(t('An error occurred'));
+      console.log("Second")
+      console.log({err})
     })
     .finally(() => setDetail(row));
 };

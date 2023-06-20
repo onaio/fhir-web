@@ -235,14 +235,13 @@ const LocationForm = (props: LocationFormProps) => {
             className="name"
             rules={validationRules.name}
             hidden={isHidden('name')}
-            name="name"
             label={t('Name')}
+            name="name"
             hasFeedback
           >
             <Input
               disabled={disabled.includes('name')}
-              placeholder={t('Enter a location name')}
-            ></Input>
+              placeholder={t('Enter a location name')} />
           </FormItem>
 
           <FormItem

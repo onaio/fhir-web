@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { PageHeader } from '@ant-design/pro-layout';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
@@ -52,6 +53,17 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
 
   type TableData = typeof tableData[0];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      )
+    }
+  ]
+
   const columns = [
     {
       title: t('Name'),
@@ -83,15 +95,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
-                    {t('View Details')}
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}
@@ -110,6 +114,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
     pagination: tablePaginationProps,
   };
 
+  console.log(tableProps)
   const pageTitle = t('HealthCare service list');
 
   return (

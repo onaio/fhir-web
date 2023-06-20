@@ -149,31 +149,31 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('.ant-form-item.instance').text()).toMatchInlineSnapshot(`"Instance"`);
+    expect(wrapper.find('#instance .ant-form-item').text()).toMatchInlineSnapshot(`"Instance"`);
 
-    expect(wrapper.find('.ant-form-item.parentId').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#parentId .ant-form-item').text()).toMatchInlineSnapshot(
       `"ParentSelect the parent location"`
     );
 
-    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
-    expect(wrapper.find('.ant-form-item.isJurisdiction').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
       `"Location categoryService pointJurisdiction"`
     );
 
     // name is required for core
-    expect(wrapper.find('.ant-form-item.name input').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // not required for core
-    expect(wrapper.find('.ant-form-item.serviceType').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#serviceType .ant-form-item').text()).toMatchInlineSnapshot(
       `"TypeSelect the service point type"`
     );
 
-    expect(wrapper.find('.ant-form-item.externalId').text()).toMatchInlineSnapshot(`"External ID"`);
+    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(`"External ID"`);
 
-    expect(wrapper.find('.ant-form-item.geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
+    expect(wrapper.find('#geometry .ant-form-item').text()).toMatchInlineSnapshot(`"Geometry"`);
 
-    expect(wrapper.find('.ant-form-item.locationTags').text()).toMatchSnapshot(
+    expect(wrapper.find('#locationTags .ant-form-item').text()).toMatchSnapshot(
       'location Tags does not have error message'
     );
 
@@ -234,31 +234,32 @@ describe('LocationForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('.ant-form-item.instance').text()).toMatchInlineSnapshot(`"Instance"`);
+    expect(wrapper.find('#instance .ant-form-item').text()).toMatchInlineSnapshot(`"Instance"`);
 
-    expect(wrapper.find('.ant-form-item.parentId').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('InternalFormItem #parentId .ant-form-item').text()).toMatchInlineSnapshot(
       `"ParentSelect the parent location'parentId' is required"`
     );
 
-    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
-    expect(wrapper.find('.ant-form-item.isJurisdiction').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
       `"Location categoryService pointJurisdiction"`
     );
 
+    console.log(toJson(wrapper.find('#name').at(5)))
     // name is required for core
-    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // service types is required for eusm
-    expect(wrapper.find('.ant-form-item.serviceType').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#serviceType .ant-form-item').text()).toMatchInlineSnapshot(
       `"TypeSelect the service point typeService types is required"`
     );
 
-    expect(wrapper.find('.ant-form-item.externalId').text()).toMatchInlineSnapshot(`"External ID"`);
+    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(`"External ID"`);
 
-    expect(wrapper.find('.ant-form-item.geometry').text()).toMatchInlineSnapshot(`"Geometry"`);
+    expect(wrapper.find('#geometry .ant-form-item').text()).toMatchInlineSnapshot(`"Geometry"`);
 
-    expect(wrapper.find('.ant-form-item.locationTags').text()).toMatchSnapshot(
+    expect(wrapper.find('#locationTags .ant-form-item').text()).toMatchSnapshot(
       'location Tags does not have error message'
     );
     wrapper.unmount();
@@ -292,7 +293,7 @@ describe('LocationForm', () => {
 
     // simulate active check to be inactive
     wrapper
-      .find('.ant-form-item.status input')
+      .find('#status .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -300,7 +301,7 @@ describe('LocationForm', () => {
 
     // set isJurisdiction to false
     wrapper
-      .find('.ant-form-item.isJurisdiction input')
+      .find('#isJurisdiction .ant-form-item input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -308,7 +309,7 @@ describe('LocationForm', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'area51' } });
 
     // simulate service type change
@@ -318,10 +319,10 @@ describe('LocationForm', () => {
     });
 
     wrapper
-      .find('.ant-form-item.externalId input')
+      .find('#externalId .ant-form-item input')
       .simulate('change', { target: { name: 'externalId', value: 'secret' } });
 
-    wrapper.find('.ant-form-item.geometry textarea').simulate('change', {
+    wrapper.find('#geometry textarea').simulate('change', {
       target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
     });
 
@@ -385,7 +386,7 @@ describe('LocationForm', () => {
 
     // simulate active check to be inactive
     wrapper
-      .find('.ant-form-item.status input')
+      .find('#status .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -393,7 +394,7 @@ describe('LocationForm', () => {
 
     // set isJurisdiction to false
     wrapper
-      .find('.ant-form-item.isJurisdiction input')
+      .find('#isJurisdiction .ant-form-item input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -401,7 +402,7 @@ describe('LocationForm', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'area51' } });
 
     // simulate service type change
@@ -411,10 +412,10 @@ describe('LocationForm', () => {
     });
 
     wrapper
-      .find('.ant-form-item.externalId input')
+      .find('#externalId .ant-form-item input')
       .simulate('change', { target: { name: 'externalId', value: 'secret' } });
 
-    wrapper.find('.ant-form-item.geometry textarea').simulate('change', {
+    wrapper.find('#geometry .ant-form-item textarea').simulate('change', {
       target: { value: JSON.stringify([19.92919921875, 30.135626231134587]) },
     });
 
@@ -503,7 +504,7 @@ describe('LocationForm', () => {
 
     // simulate active check to be inactive
     wrapper
-      .find('.ant-form-item.status input')
+      .find('FormItem#status input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -511,7 +512,7 @@ describe('LocationForm', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('FormItem#name input')
       .simulate('change', { target: { name: 'name', value: 'Mars' } });
 
     // simulate service type change
@@ -521,7 +522,7 @@ describe('LocationForm', () => {
     });
 
     wrapper
-      .find('.ant-form-item.externalId input')
+      .find('FormItem#externalId input')
       .simulate('change', { target: { name: 'externalId', value: 'alien' } });
 
     const geometry = {
@@ -529,13 +530,13 @@ describe('LocationForm', () => {
       coordinates: [19.92919921875, 30.135626231134587],
     };
 
-    wrapper.find('.ant-form-item.geometry textarea').simulate('change', {
+    wrapper.find('FormItem#geometry textarea').simulate('change', {
       target: { value: JSON.stringify(geometry) },
     });
 
     // extra fields
-    expect(wrapper.find('.ant-form-item.extra-fields')).toHaveLength(4);
-    wrapper.find('.ant-form-item.extra-fields').forEach((field) => {
+    expect(wrapper.find('FormItem.extra-fields')).toHaveLength(4);
+    wrapper.find('FormItem.extra-fields').forEach((field) => {
       // snapshot of label
       expect(toJson(field.find('label'))).toMatchSnapshot('field label');
       expect(toJson(field.find('input'))).toMatchSnapshot('field input');
@@ -614,11 +615,11 @@ describe('LocationForm', () => {
       serviceType: 'School',
     });
 
-    wrapper.find('.ant-form-item.latitude input').simulate('change', {
+    wrapper.find('FormItem#latitude input').simulate('change', {
       target: { value: '34.56' },
     });
 
-    wrapper.find('.ant-form-item.longitude input').simulate('change', {
+    wrapper.find('FormItem#longitude input').simulate('change', {
       target: { value: '19.56' },
     });
 
@@ -759,11 +760,11 @@ describe('LocationForm', () => {
     expect(formValues.latitude).toBeUndefined();
     expect(formValues.longitude).toBeUndefined();
 
-    wrapper.find('.ant-form-item.latitude input').simulate('change', {
+    wrapper.find('FormItem#latitude input').simulate('change', {
       target: { value: '34.56' },
     });
 
-    wrapper.find('.ant-form-item.longitude input').simulate('change', {
+    wrapper.find('FormItem#longitude input').simulate('change', {
       target: { value: '19.56' },
     });
 

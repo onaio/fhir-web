@@ -8,7 +8,7 @@ exports[`1157 - view details errors out for careTeam 3500 1`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       CareTeam ID
     </span>
@@ -17,7 +17,7 @@ exports[`1157 - view details errors out for careTeam 3500 1`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       3500
     </span>
@@ -33,7 +33,7 @@ exports[`1157 - view details errors out for careTeam 3500 2`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Name
     </span>
@@ -42,7 +42,7 @@ exports[`1157 - view details errors out for careTeam 3500 2`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       Peter James Charlmers Care team
     </span>
@@ -58,7 +58,7 @@ exports[`1157 - view details errors out for careTeam 3500 3`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       status
     </span>
@@ -67,7 +67,7 @@ exports[`1157 - view details errors out for careTeam 3500 3`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       active
     </span>
@@ -83,7 +83,7 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Participants
     </span>
@@ -92,7 +92,7 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul>
         <li>
@@ -109,7 +109,7 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
                   class="singleKeyValue-pair__label"
                 >
                   <span
-                    class="ant-typography ant-typography-secondary"
+                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
                   >
                     Patient
                   </span>
@@ -118,7 +118,7 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
                   class="singleKeyValue-pair__value"
                 >
                   <span
-                    class="ant-typography"
+                    class="ant-typography css-dev-only-do-not-override-k7429z"
                   >
                     <ul
                       id="care-team-participants"
@@ -147,7 +147,7 @@ exports[`1157 - view details errors out for careTeam 3500 5`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Patient
     </span>
@@ -156,7 +156,7 @@ exports[`1157 - view details errors out for careTeam 3500 5`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul
         id="care-team-participants"
@@ -178,7 +178,7 @@ exports[`1157 - view details errors out for careTeam 3500 6`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Managing organizations
     </span>
@@ -187,10 +187,10 @@ exports[`1157 - view details errors out for careTeam 3500 6`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
         data-show="true"
         role="alert"
       >
@@ -217,7 +217,7 @@ exports[`Closes on clicking cancel (X)  1`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       CareTeam ID
     </span>
@@ -226,7 +226,7 @@ exports[`Closes on clicking cancel (X)  1`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       142534
     </span>
@@ -242,7 +242,7 @@ exports[`Closes on clicking cancel (X)  2`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Identifier
     </span>
@@ -251,7 +251,7 @@ exports[`Closes on clicking cancel (X)  2`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       99c4dde5-3aca-4a4b-8b33-b50142e05da6
     </span>
@@ -267,7 +267,7 @@ exports[`Closes on clicking cancel (X)  3`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Name
     </span>
@@ -276,7 +276,7 @@ exports[`Closes on clicking cancel (X)  3`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       Brown Bag
     </span>
@@ -292,7 +292,7 @@ exports[`Closes on clicking cancel (X)  4`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       status
     </span>
@@ -301,7 +301,7 @@ exports[`Closes on clicking cancel (X)  4`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       active
     </span>
@@ -317,7 +317,7 @@ exports[`Closes on clicking cancel (X)  5`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Participants
     </span>
@@ -326,7 +326,7 @@ exports[`Closes on clicking cancel (X)  5`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul>
         <li>
@@ -343,7 +343,7 @@ exports[`Closes on clicking cancel (X)  5`] = `
                   class="singleKeyValue-pair__label"
                 >
                   <span
-                    class="ant-typography ant-typography-secondary"
+                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
                   >
                     Practitioner
                   </span>
@@ -352,7 +352,7 @@ exports[`Closes on clicking cancel (X)  5`] = `
                   class="singleKeyValue-pair__value"
                 >
                   <span
-                    class="ant-typography"
+                    class="ant-typography css-dev-only-do-not-override-k7429z"
                   >
                     <ul
                       id="care-team-participants"
@@ -381,7 +381,7 @@ exports[`Closes on clicking cancel (X)  6`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Practitioner
     </span>
@@ -390,7 +390,7 @@ exports[`Closes on clicking cancel (X)  6`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul
         id="care-team-participants"
@@ -412,7 +412,7 @@ exports[`Closes on clicking cancel (X)  7`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Managing organizations
     </span>
@@ -421,10 +421,10 @@ exports[`Closes on clicking cancel (X)  7`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
         data-show="true"
         role="alert"
       >
@@ -451,7 +451,7 @@ exports[`works correctly 1`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       CareTeam ID
     </span>
@@ -460,7 +460,7 @@ exports[`works correctly 1`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       131411
     </span>
@@ -476,7 +476,7 @@ exports[`works correctly 2`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Identifier
     </span>
@@ -485,7 +485,7 @@ exports[`works correctly 2`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       93bc9c3d-6321-41b0-9b93-1275d7114e22
     </span>
@@ -501,7 +501,7 @@ exports[`works correctly 3`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Name
     </span>
@@ -510,7 +510,7 @@ exports[`works correctly 3`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       Care Team One
     </span>
@@ -526,7 +526,7 @@ exports[`works correctly 4`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       status
     </span>
@@ -535,7 +535,7 @@ exports[`works correctly 4`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       active
     </span>
@@ -551,7 +551,7 @@ exports[`works correctly 5`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Participants
     </span>
@@ -560,7 +560,7 @@ exports[`works correctly 5`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul>
         <li>
@@ -577,7 +577,7 @@ exports[`works correctly 5`] = `
                   class="singleKeyValue-pair__label"
                 >
                   <span
-                    class="ant-typography ant-typography-secondary"
+                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
                   >
                     Practitioner
                   </span>
@@ -586,7 +586,7 @@ exports[`works correctly 5`] = `
                   class="singleKeyValue-pair__value"
                 >
                   <span
-                    class="ant-typography"
+                    class="ant-typography css-dev-only-do-not-override-k7429z"
                   >
                     <ul
                       id="care-team-participants"
@@ -618,7 +618,7 @@ exports[`works correctly 6`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Practitioner
     </span>
@@ -627,7 +627,7 @@ exports[`works correctly 6`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul
         id="care-team-participants"
@@ -652,7 +652,7 @@ exports[`works correctly 7`] = `
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Managing organizations
     </span>
@@ -661,10 +661,10 @@ exports[`works correctly 7`] = `
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon"
+        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
         data-show="true"
         role="alert"
       >

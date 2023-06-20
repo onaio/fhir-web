@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { URL_USER } from '@opensrp/user-management';
 import { careTeams, practitioner, userFixtures, group } from './fixtures';
@@ -242,9 +242,8 @@ test('renders correctly when listing resources', async () => {
   fireEvent.click(deleteBtn);
 
   // confirm
-  const yesBtn = document.querySelectorAll('.ant-popover-buttons button')[1];
-  // const yasBtn = 
-  // const yesBtn = 
+  const yesBtn = document.querySelectorAll('.ant-popconfirm-buttons button')[1];
+
   expect(yesBtn).toMatchSnapshot('yes button');
   fireEvent.click(yesBtn);
 
@@ -253,7 +252,7 @@ test('renders correctly when listing resources', async () => {
   });
 
   await waitFor(async () => {
-    expect(screen.queryByText(/Practitioner deactivated/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Practitioner role deactivated/i)).toBeInTheDocument();
     expect(screen.queryByText(/Group deactivated/i)).toBeInTheDocument();
   });
 

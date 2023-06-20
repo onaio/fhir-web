@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
-import { Row, Col, Button, Spin, Alert, PageHeader } from 'antd';
+import { Row, Col, Button, Spin, Alert } from 'antd';
+import { PageHeader } from '@ant-design/pro-layout';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';

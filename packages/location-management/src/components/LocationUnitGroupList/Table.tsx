@@ -48,6 +48,33 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
+  const getItems = (record: LocationUnitGroup): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          className="viewdetails"
+          data-testid="viewdetails"
+          onClick={() => (onViewDetails ? onViewDetails(record) : {})}
+        >
+          {t('View Details')}
+        </Button>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Button
+          className="delete"
+          data-testid="delete"
+          onClick={() => onDelete(record, opensrpBaseURL, t)}
+        >
+          {t('Deactivate')}
+        </Button>
+      )
+    }
+  ]
+
   return (
     <TableLayout
       id="LocationUnitGroupList"
@@ -67,19 +94,7 @@ const Table: React.FC<Props> = (props: Props) => {
             </Link>
             <Divider type="vertical" />
             <Dropdown
-              menu={(
-                <Menu className="menu">
-                  <Menu.Item
-                    className="viewdetails"
-                    onClick={() => (onViewDetails ? onViewDetails(record) : {})}
-                  >
-                    {t('View Details')}
-                  </Menu.Item>
-                  <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL, t)}>
-                    {t('Deactivate')}
-                  </Menu.Item>
-                </Menu>
-        ) as MenuProps}
+              menu={{ items: getItems(record) }}
               placement="bottomLeft"
               arrow
               trigger={['click']}

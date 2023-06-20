@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Button, Divider, Dropdown, Menu } from 'antd';
+import { Space, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
@@ -53,6 +53,20 @@ export const GroupList = (props: GroupListProps) => {
   const { t } = useTranslation();
   const { addParam } = useSearchParams();
 
+  const getItems = (record: TableData): MenuProps['items']  => [
+    {
+      key: '1',
+      label: (
+        <Button 
+          type='link' 
+          data-testid='view-details'
+          onClick={() => {
+            addParam(viewDetailsQuery, record.id)
+        }}>{t('View Details')}</Button>
+      )
+    }
+  ]
+
   const getColumns = (t: TFunction) => [
     {
       title: t('Name'),
@@ -84,15 +98,7 @@ export const GroupList = (props: GroupListProps) => {
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            menu={(
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
-                    {t('View Details')}
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            ) as MenuProps}
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}

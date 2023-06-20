@@ -68,7 +68,7 @@ const Table: React.FC<Props> = (props: Props) => {
               t
             );
           }
-        }}>t('View Details')</Button>
+        }}>{t('View Details')}</Button>
       )
     }
   ]
@@ -97,7 +97,7 @@ const Table: React.FC<Props> = (props: Props) => {
             title: t('Actions'),
             width: '10%',
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            render: (_: unknown, record: Organization, index) => (
+            render: (_: unknown, record: Organization) => (
               <span>
                 <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
                   <Button type="link" className="m-0 p-1">
@@ -106,7 +106,7 @@ const Table: React.FC<Props> = (props: Props) => {
                 </Link>
                 <Divider type="vertical" />
                 <Dropdown
-                  menu={{items: getItems(record)}}
+                  menu={{ items: getItems(record) }}
                   placement="bottomRight"
                   trigger={['click']}
                 >

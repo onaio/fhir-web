@@ -16,7 +16,7 @@ exports[`location-management/src/components/LocationTree works correctly: langat
 
 exports[`location-management/src/components/LocationTree works correctly: search input 1`] = `
 <input
-  class="ant-input ant-input-lg"
+  class="ant-input ant-input-lg css-dev-only-do-not-override-12jzuas"
   placeholder="Search"
   type="text"
   value=""

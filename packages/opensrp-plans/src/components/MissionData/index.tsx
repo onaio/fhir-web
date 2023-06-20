@@ -71,9 +71,8 @@ const MissionData = (props: MissionDataProps) => {
     promises.push(flaggedPromisesPromise);
     Promise.all(promises)
       .catch((e) => handleBrokenPage(e))
-      .finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plan]);
+      .finally(() => setLoading(false));  
+  }, [plan]);// eslint-disable-line react-hooks/exhaustive-deps
   return plan.status !== PlanStatus.DRAFT && plan.status !== PlanStatus.RETIRED ? (
     <Card
       className="mission-data"

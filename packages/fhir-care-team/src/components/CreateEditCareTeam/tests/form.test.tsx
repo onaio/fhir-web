@@ -64,7 +64,6 @@ describe('components/forms/CreateTeamForm', () => {
     });
 
     wrapper.update();
-    console.log(wrapper.debug());
     // name is required and has no default
     expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(
       `"NameName is Required"`

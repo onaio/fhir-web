@@ -20,7 +20,6 @@ import {
 } from '../../tests/fixtures';
 import userEvents from '@testing-library/user-event';
 import _ from 'lodash';
-import { wait } from '@testing-library/user-event/dist/utils';
 
 const actualDebounce = _.debounce;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,26 +129,20 @@ test('pagination events work correctly', async () => {
     </Router>
   );
 
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  await waitFor(() => {
-    const spinner = document.querySelector('.ant-spin');
-    expect(spinner).toBeNull();
-  }).then(() => {
-      expect(screen.getByTitle(/Questionnaire list view/)).toBeInTheDocument();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-      expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();
-      document.querySelectorAll('tr').forEach((tr, idx) => {
-        tr.querySelectorAll('td').forEach((td) => {
-          expect(td).toMatchSnapshot(`table row ${idx} page 1`);
-        });
-      });
+  expect(screen.getByTitle(/Questionnaire list view/)).toBeInTheDocument();
 
-      fireEvent.click(screen.getByTitle('2'));
+  expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();
+  document.querySelectorAll('tr').forEach((tr, idx) => {
+    tr.querySelectorAll('td').forEach((td) => {
+      expect(td).toMatchSnapshot(`table row ${idx} page 1`);
+    });
+  });
 
-      expect(history.location.search).toEqual('?pageSize=20&page=2');
-  })
+  fireEvent.click(screen.getByTitle('2'));
 
-
+  expect(history.location.search).toEqual('?pageSize=20&page=2');
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   expect(screen.getByText(/426/)).toBeInTheDocument();

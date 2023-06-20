@@ -19,7 +19,7 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
       href="/admin/CareTeam/edit/308"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -28,7 +28,7 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -75,7 +75,7 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
       href="/admin/CareTeam/edit/325"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -84,7 +84,7 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -131,7 +131,7 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
       href="/admin/CareTeam/edit/327"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -140,7 +140,7 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -187,7 +187,7 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
       href="/admin/CareTeam/edit/330"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -196,7 +196,7 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -243,7 +243,7 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
       href="/admin/CareTeam/edit/328"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -252,7 +252,7 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -299,7 +299,7 @@ exports[`Care Teams list view renders correctly: Search 6 page 1 2`] = `
       href="/admin/CareTeam/edit/326"
     >
       <button
-        class="ant-btn ant-btn-link m-0 p-1"
+        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
         type="button"
       >
         <span>
@@ -308,7 +308,7 @@ exports[`Care Teams list view renders correctly: Search 6 page 1 2`] = `
       </button>
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span

@@ -110,8 +110,10 @@ describe('Care Teams list view', () => {
     wrapper.update();
     wrapper.find('[data-testid="action-dropdown"]').at(0).simulate('click');
     wrapper.update();
-    wrapper.find('.ant-btn').at(2).simulate('click');
-    expect(wrapper.find('.ant-btn').at(2).text()).toEqual('Delete');
+    // wrapper.find('.ant-btn').at(2).simulate('click');
+    const dropdown = wrapper.find('button[data-testid="deleteBtn"]')
+    expect(dropdown).toHaveLength(1)
+    dropdown.simulate('click')
     wrapper.update();
     // check pop up text
     expect(wrapper.find('.ant-popover-content').at(0).text()).toMatchInlineSnapshot(

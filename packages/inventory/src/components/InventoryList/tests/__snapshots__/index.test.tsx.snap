@@ -9,11 +9,13 @@ exports[`Inventory list Page renders when data is present: link to add new inven
     size="large"
     type="primary"
   >
+    <Empty />
     <Wave
       disabled={false}
     >
       <button
-        className="ant-btn ant-btn-primary ant-btn-lg"
+        className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-lg"
+        disabled={false}
         onClick={[Function]}
         type="button"
       >

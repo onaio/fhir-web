@@ -3,7 +3,6 @@ import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Router } from 'react-router';
-import { notification } from 'antd';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
@@ -14,6 +13,13 @@ import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { baseURL } from '../../../constants';
 import LocationUnitGroupAddEdit from '..';
+import * as notifications from '@opensrp/notifications';
+
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 Form.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -178,7 +184,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
 
   it('Handles errors on fetching single tag', async () => {
     fetch.mockRejectOnce(new Error('An error occurred'));
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
@@ -192,17 +198,14 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
 
     wrapper.unmount();
   });
 
   it('Handles errors on creating tag', async () => {
     fetch.mockRejectOnce(new Error('An error occurred'));
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     const wrapper = mount(
       <MemoryRouter initialEntries={[`/1`]}>
         <Provider store={store}>
@@ -226,17 +229,14 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
 
     wrapper.unmount();
   });
 
   it('Handles errors on editing tag', async () => {
     fetch.mockRejectOnce(new Error('An error occurred'));
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     onSubmit(
       fixtures.sampleLocationUnitGroupPayload,
       baseURL,
@@ -249,10 +249,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('render correct location unit group name in header', async () => {

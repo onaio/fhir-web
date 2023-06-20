@@ -21,8 +21,6 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
-import { prettyDOM } from '@testing-library/react';
-
 
 const history = createBrowserHistory();
 
@@ -118,13 +116,22 @@ describe('activate mission', () => {
       wrapper.update();
     });
     
-    const dropdown = wrapper.find('.ant-dropdown Dropdown.Button').at(0);
+    // const dropdown = wrapper.find('.ant-dropdown Dropdown.Button').at(0);
+    // dropdown.simulate('click');
+    // const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    // const yesBtn = subMenu.find('MenuItem').at(0);
+    const firstRow = wrapper.find('table tbody tr').first()
+    firstRow.simulate('click');
+    firstRow.find('.more-options').last().simulate('click');
+    wrapper.update()
+
+    expect(wrapper.find('button[data-testid="sayYes"]')).toHaveLength(0)
+
+    const dropdown = wrapper.find('button[data-testid="yesBtn"]')
     dropdown.simulate('click');
-    const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
-    const yesBtn = subMenu.find('MenuItem').at(0);
 
     // click yes button
-    yesBtn.simulate('click');
+    // yesBtn.simulate('click');
 
     await act(async () => {
       await flushPromises();
@@ -178,13 +185,20 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-    const dropdown = wrapper.find('Dropdown').at(0);
+
+    const firstRow = wrapper.find('table tbody tr').first();
+    // firstRow.simulate('click');
+    firstRow.find('.more-options').last().simulate('click');
+    wrapper.update()
+
+    expect(wrapper.find('button[data-testid="sayNo"]')).toHaveLength(1)
+  
+    const dropdown = wrapper.find('button[data-testid="sayNo"]')
     dropdown.simulate('click');
-    const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
-    const yesBtn = subMenu.find('MenuItem').at(1);
+    wrapper.update();
 
     // click yes button
-    yesBtn.simulate('click');
+    // yesBtn.simulate('click');
 
     await act(async () => {
       await flushPromises();
@@ -238,22 +252,28 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-    // expect(toJson(wrapper.find('.content-section'))).toMatchSnapshot();
-    
-    // const content = document.querySelector('.content-section')
-    console.log(wrapper.debug())
-  console.log(prettyDOM(document))
-    const dropdown = wrapper.find('.ant-dropdown').at(0);
+  
+    // const dropdown = wrapper.find('.ant-dropdown').at(0);
+    const firstRow = wrapper.find('table tbody tr').first();
+    // expect(firstRow.text()).toEqual('');
+    firstRow.find('.more-options').last().simulate('click');
+    wrapper.update()
+    expect(wrapper.find('button[data-testid="inherited"]')).toHaveLength(1)
+    wrapper.update()
+    const dropdown = wrapper.find('button[data-testid="inherited"]')
     dropdown.simulate('click');
-    const subMenu = shallow(<div>{dropdown.prop('menu')}</div>);
-    const yesBtn = subMenu.find('MenuItem').at(2);
+    wrapper.update();
+    // dropdown.simulate('click');
+    // const subMenu = shallow(<div>{dropdown.prop('menu')}</div>);
+    // const yesBtn = subMenu.find('MenuItem').at(2);
 
     // click yes button
-    yesBtn.simulate('click');
+    // yesBtn.simulate('click');
 
     await act(async () => {
       await flushPromises();
     });
+
     wrapper.update();
 
     expect(fetch.mock.calls).toEqual([

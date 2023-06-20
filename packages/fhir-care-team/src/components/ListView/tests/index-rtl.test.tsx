@@ -6,11 +6,12 @@ import { Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
 import * as reactQuery from 'react-query';
-import { waitForElementToBeRemoved, fireEvent, render, cleanup } from '@testing-library/react';
+import { waitForElementToBeRemoved, fireEvent, render, cleanup, prettyDOM } from '@testing-library/react';
 import { store } from '@opensrp/store';
 import { careTeam4214, careTeams } from './fixtures';
 import { careTeamResourceType, URL_CARE_TEAM } from '../../../constants';
 import { createMemoryHistory } from 'history';
+import { drop } from 'lodash';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -139,7 +140,7 @@ describe('Care Teams list view', () => {
       </Router>
     );
 
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin')); 
 
     document.querySelectorAll('tr').forEach((tr, idx) => {
       tr.querySelectorAll('td').forEach((td) => {
@@ -175,5 +176,6 @@ describe('Care Teams list view', () => {
     document
       .querySelectorAll('.display-block')
       .forEach((block) => expect(block).toMatchSnapshot('view details display block'));
+
   });
 });

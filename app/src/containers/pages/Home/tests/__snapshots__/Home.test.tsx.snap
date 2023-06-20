@@ -6,7 +6,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/card-support/download-client-data"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -23,7 +23,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/admin/form-config/releases"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -40,7 +40,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/inventory"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -57,7 +57,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/admin/location/unit"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -74,7 +74,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/missions/active"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -91,7 +91,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/admin/product-catalogue"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >
@@ -108,7 +108,7 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
   href="/admin/teams"
 >
   <button
-    class="ant-btn ant-btn-default btn-links"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default btn-links"
     color="outline"
     type="button"
   >

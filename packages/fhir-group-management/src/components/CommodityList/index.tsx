@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import { Space, Button, Divider, Dropdown, Menu, Popconfirm, MenuProps } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL, groupResourceType, listResourceType } from '../../constants';
@@ -75,6 +75,45 @@ export const CommodityList = (props: GroupListProps) => {
   const queryClient = useQueryClient();
   const { addParam } = useSearchParams();
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button data-testid="view-details" onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      )
+    },
+    {
+      key: '2',
+      label: (
+        <Popconfirm
+          title={t('Are you sure you want to delete this Commodity?')}
+          okText={t('Yes')}
+          cancelText={t('No')}
+          onConfirm={async () => {
+            deleteCommodity(fhirBaseURL, record.obj, listId)
+              .then(() => {
+                queryClient.invalidateQueries([groupResourceType]).catch(() => {
+                  sendInfoNotification(
+                    t('Unable to refresh data at the moment, please refresh the page')
+                  );
+                });
+                sendSuccessNotification(t('Successfully deleted commodity'));
+              })
+              .catch(() => {
+                sendErrorNotification(t('Deletion of commodity failed'));
+              });
+          }}
+        >
+          <Button danger type="link" style={{ color: '#' }}>
+            {t('Delete')}
+          </Button>
+        </Popconfirm>
+      )
+    }
+  ]
+
   const getColumns = (t: TFunction) => [
     {
       title: t('Name'),
@@ -105,40 +144,7 @@ export const CommodityList = (props: GroupListProps) => {
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
-                    {t('View Details')}
-                  </Button>
-                </Menu.Item>
-                <Menu.Item key="delete">
-                  <Popconfirm
-                    title={t('Are you sure you want to delete this Commodity?')}
-                    okText={t('Yes')}
-                    cancelText={t('No')}
-                    onConfirm={async () => {
-                      deleteCommodity(fhirBaseURL, record.obj, listId)
-                        .then(() => {
-                          queryClient.invalidateQueries([groupResourceType]).catch(() => {
-                            sendInfoNotification(
-                              t('Unable to refresh data at the moment, please refresh the page')
-                            );
-                          });
-                          sendSuccessNotification(t('Successfully deleted commodity'));
-                        })
-                        .catch(() => {
-                          sendErrorNotification(t('Deletion of commodity failed'));
-                        });
-                    }}
-                  >
-                    <Button danger type="link" style={{ color: '#' }}>
-                      {t('Delete')}
-                    </Button>
-                  </Popconfirm>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Divider, Dropdown, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
@@ -43,6 +44,23 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          type='link'
+          data-testid="view-location"
+          onClick={() => {
+            onViewDetails?.(record);
+          }}
+        >
+          {t('View details')}
+        </Button>
+      )
+    }
+  ]
+
   return (
     <TableLayout
       id="LocationUnitList"
@@ -62,18 +80,7 @@ const Table: React.FC<Props> = (props: Props) => {
             </Link>
             <Divider type="vertical" />
             <Dropdown
-              overlay={
-                <Menu className="menu">
-                  <Menu.Item
-                    className="view-details"
-                    onClick={() => {
-                      onViewDetails?.(record);
-                    }}
-                  >
-                    {t('View details')}
-                  </Menu.Item>
-                </Menu>
-              }
+              menu={{ items: getItems(record) }}
               placement="bottomRight"
               arrow
               trigger={['click']}
