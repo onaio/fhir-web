@@ -59,27 +59,25 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
   );
 
   const languageChangeHandler: MenuProps['onClick'] = ({ key }) => {
-    onLanguageChange?.(key)
-  }
+    onLanguageChange?.(key);
+  };
 
-  const dropdownItems: MenuProps['items'] = []
+  const dropdownItems: MenuProps['items'] = [];
 
   for (const [languageCode, label] of Object.entries(supportedLanguageOptions)) {
-    dropdownItems.push(
-      {
-        key: languageCode,
-        label: (<Button type='link'>{label}</Button>)
-      }
-    )
+    dropdownItems.push({
+      key: languageCode,
+      label: <Button type="link">{label}</Button>,
+    });
   }
 
   return (
-    <Dropdown 
-      menu={{ items: dropdownItems, onClick: languageChangeHandler }} 
+    <Dropdown
+      menu={{ items: dropdownItems, onClick: languageChangeHandler }}
       placement="bottomRight"
       trigger={['click']}
     >
-      <GlobalOutlined className='more-options' data-testid='more-options' />
+      <GlobalOutlined className="more-options" data-testid="more-options" />
     </Dropdown>
   );
 };
