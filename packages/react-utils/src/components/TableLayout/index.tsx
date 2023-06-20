@@ -44,15 +44,15 @@ interface NoPersistState {
 
 export type TableProps<T> = Props<T> & (PersistState | NoPersistState);
 
+export type GenericWithKey = object & { key?: string | number };
+
 /**
  * Table Layout Component used to render the table with default Settings
  *
  * @param props - Table settings
  * @returns - the component
  */
-export function TableLayout<T extends object & { key?: string | number } = Dictionary>(
-  props: TableProps<T>
-) {
+export function TableLayout<T extends GenericWithKey = Dictionary>(props: TableProps<T>) {
   const {
     id,
     columns,

@@ -7,8 +7,7 @@ import { useTranslation } from '../../mls';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { redirectMapping } from '../../helpers/common';
-import { BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
-import { Route } from 'react-router-dom';
+import { BreadcrumbProps } from 'antd';
 
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
@@ -30,7 +29,7 @@ const PlanInfo = (props: PlanInfoProps) => {
     return last || !hasPath ? (
       <span>{route.breadcrumbName}</span>
     ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
+      <Link to={route.path as string}>{route.breadcrumbName}</Link>
     );
   };
 
@@ -61,7 +60,7 @@ const PlanInfo = (props: PlanInfoProps) => {
             <span className="avatar-section">
               <Avatar
                 /**Find the right icon */
-                icon={<FileDoneOutlined  />}
+                icon={<FileDoneOutlined />}
                 className=""
                 style={{
                   width: 80,
