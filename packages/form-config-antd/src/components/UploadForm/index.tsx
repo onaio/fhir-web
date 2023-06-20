@@ -180,7 +180,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
             rules={[{ required: true, message: t('Form is required') }]}
           >
             <Upload {...uploadProps}>
-              <Button icon={<UploadOutlined rev={undefined} />}>{t('Click to upload')}</Button>
+              <Button icon={<UploadOutlined  />}>{t('Click to upload')}</Button>
             </Upload>
           </Form.Item>
           <Form.Item {...tailLayout}>

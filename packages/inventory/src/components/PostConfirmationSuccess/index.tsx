@@ -28,7 +28,7 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
 
   const cardTitle = (
     <CardTitle
-      IconRender={<CheckCircleOutlined className="card-title__icon" rev={undefined} />}
+      IconRender={<CheckCircleOutlined className="card-title__icon"  />}
       text={t('“{{filename}}” inventory items successfully added', { filename })}
     />
   );

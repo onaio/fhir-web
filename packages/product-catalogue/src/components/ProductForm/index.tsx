@@ -132,7 +132,7 @@ const ProductForm = (props: ProductFormProps) => {
   /** component used by antd Upload, to upload the product photo */
   const uploadButton = (
     <div className="upload-button">
-      <PlusOutlined rev={undefined} />
+      <PlusOutlined  />
       <div style={{ marginTop: 8 }}>{t('Upload')}</div>
     </div>
   );

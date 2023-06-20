@@ -95,7 +95,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
+            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
           </Dropdown>
         </span>
       ),
@@ -122,7 +122,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_ADD_ORGANIZATION}>
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Add Organization')}
               </Button>
             </Link>

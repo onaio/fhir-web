@@ -129,7 +129,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
               to={`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`}
             >
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Fill form')}
               </Button>
             </Link>

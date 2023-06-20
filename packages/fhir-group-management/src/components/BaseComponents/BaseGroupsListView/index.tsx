@@ -90,7 +90,7 @@ export const BaseListView = (props: BaseListViewProps) => {
             {createButtonUrl && (
               <Link to={createButtonUrl}>
                 <Button type="primary">
-                  <PlusOutlined rev={undefined} />
+                  <PlusOutlined  />
                   {createButtonLabel}
                 </Button>
               </Link>

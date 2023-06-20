@@ -220,7 +220,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
                 htmlType="submit"
                 disabled={!cardOrderDate[0] || !cardOrderDate[1]}
               >
-                <DownloadOutlined rev={undefined} />
+                <DownloadOutlined  />
                 {isSubmitting ? t('Downloading...') : t('Download CSV')}
               </Button>
             </Tooltip>

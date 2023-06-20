@@ -18,7 +18,7 @@ const LocationUnitDetail: React.FC<Props> = (props: Props) => {
         onClick={() => (props.onClose ? props.onClose() : '')}
         className="float-right"
         type="text"
-        icon={<CloseOutlined rev={undefined} />}
+        icon={<CloseOutlined  />}
       />
       <div className="mb-4 small mt-4">
         <p className="mb-0 font-weight-bold">{t('Name')}</p>

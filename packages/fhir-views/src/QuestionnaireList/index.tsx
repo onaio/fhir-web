@@ -131,7 +131,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
             <SearchForm {...searchFormProps} data-testid="search-form" />
             <Link to={'#'}>
               <Button type="primary" disabled={true}>
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Create questionnaire')}
               </Button>
             </Link>

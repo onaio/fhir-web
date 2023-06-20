@@ -137,7 +137,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" data-testid="action-dropdown" rev={undefined} />
+            <MoreOutlined className="more-options" data-testid="action-dropdown"  />
           </Dropdown>
         </span>
       ),
@@ -163,7 +163,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Create Care Team')}
               </Button>
             </Link>

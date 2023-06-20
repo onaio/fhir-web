@@ -61,7 +61,7 @@ const PlanInfo = (props: PlanInfoProps) => {
             <span className="avatar-section">
               <Avatar
                 /**Find the right icon */
-                icon={<FileDoneOutlined rev={undefined} />}
+                icon={<FileDoneOutlined  />}
                 className=""
                 style={{
                   width: 80,

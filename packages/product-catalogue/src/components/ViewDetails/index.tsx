@@ -59,7 +59,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
     <Col className="view-details-content">
       <div className="flex-right">
         <Button
-          icon={<CloseOutlined rev={undefined} />}
+          icon={<CloseOutlined  />}
           className="display-block"
           onClick={() => history.push(CATALOGUE_LIST_VIEW_URL)}
         />

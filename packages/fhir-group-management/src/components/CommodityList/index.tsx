@@ -149,7 +149,7 @@ export const CommodityList = (props: GroupListProps) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
+            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
           </Dropdown>
         </span>
       ),
