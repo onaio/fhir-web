@@ -33,7 +33,7 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "^4.0.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",

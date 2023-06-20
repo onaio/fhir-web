@@ -41,7 +41,7 @@
     "react-router-dom": "^5.2.1"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^7.14.3",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.13",
