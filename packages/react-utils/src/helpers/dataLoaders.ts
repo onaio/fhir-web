@@ -52,7 +52,7 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
  *
  * **To delete a resource entry**: service.delete(<id>)
  */
-export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
+export class FHIRServiceClass<T extends fhirclient.FHIR.Resource> {
   public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public resourceType: string;
