@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Table as AntTable } from 'antd';
-import { TableProps as AntTableProps } from 'antd/lib/table';
+import type { TableProps as AntTableProps } from 'antd';
 import {
   ColumnType,
   SorterResult,
@@ -140,7 +140,7 @@ export function TableLayout<T extends object & { key?: string | number } = Dicti
   }
 
   return (
-    <AntTable<T>
+    <AntTable
       {...{ ...options, ...tablesState }}
       onChange={onChange}
       dataSource={data}
