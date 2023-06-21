@@ -15,7 +15,7 @@ import {
   practitionerResourceType,
   practitionerRoleResourceType,
 } from '../../../constants';
-import { allPractitioners, org105, org105Practitioners } from '../tests/fixtures';
+import { allPractitioners, org105 } from '../tests/fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -111,11 +111,11 @@ test('renders correctly for edit locations', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerRoleResourceType}/_search`)
-    .query({ _summary: 'count', organization: '105' })
+    .query({ _summary: 'count' })
     .reply(200, { total: 1000 })
     .get(`/${practitionerRoleResourceType}/_search`)
-    .query({ _count: 1000, organization: '105' })
-    .reply(200, org105Practitioners);
+    .query({ _count: 1000 })
+    .reply(200, allPractitioners);
 
   render(
     <Router history={history}>
