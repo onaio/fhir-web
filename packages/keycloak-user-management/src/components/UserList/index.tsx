@@ -195,7 +195,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
                 className="create-user"
                 onClick={() => history.push(URL_USER_CREATE)}
               >
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Add User')}
               </Button>
             </Space>

@@ -161,26 +161,27 @@ describe('LocationForm', () => {
       expect(atLeastOneError).toBeInTheDocument();
     });
 
+    console.log(wrapper.debug())
     // not required
-    expect(wrapper.find('.ant-form-item.parentId').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#parentId .ant-form-item').text()).toMatchInlineSnapshot(
       `"Part OfSelect the parent location"`
     );
 
     // name is required and has not default
-    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
 
     // status has default value
-    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
 
     // has default value
-    expect(wrapper.find('.ant-form-item.isJurisdiction').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
       `"Physical typeJurisdictionBuilding"`
     );
 
-    expect(wrapper.find('.ant-form-item.alias').text()).toMatchInlineSnapshot(`"Alias"`);
+    expect(wrapper.find('#alias .ant-form-item').text()).toMatchInlineSnapshot(`"Alias"`);
 
     // not required
-    expect(wrapper.find('.ant-form-item.description').text()).toMatchInlineSnapshot(`"Description"`);
+    expect(wrapper.find('#description .ant-form-item').text()).toMatchInlineSnapshot(`"Description"`);
 
     wrapper.unmount();
   });
@@ -327,7 +328,7 @@ describe('LocationForm', () => {
 
     // simulate active check to be active
     wrapper
-      .find('.ant-form-item.status input')
+      .find('#status .ant-form-item input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -335,7 +336,7 @@ describe('LocationForm', () => {
 
     // set isJurisdiction to structure
     wrapper
-      .find('.ant-form-item.isJurisdiction input')
+      .find('#isJurisdiction .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -343,11 +344,11 @@ describe('LocationForm', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'Yosemite' } });
 
     wrapper
-      .find('.ant-form-item.alias input')
+      .find('#alias .ant-form-item input')
       .simulate('change', { target: { name: 'alias', value: 'world wonder' } });
 
     wrapper.find('form').simulate('submit');

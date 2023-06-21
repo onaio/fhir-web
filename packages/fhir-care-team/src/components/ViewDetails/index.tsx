@@ -152,7 +152,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
       <div className="flex-right">
         <Button
           data-test-id="cancel"
-          icon={<CloseOutlined rev={undefined} />}
+          icon={<CloseOutlined  />}
           shape="circle"
           type="text"
           onClick={() => history.push(URL_CARE_TEAM)}
@@ -167,7 +167,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
               description={t('Fetching Care team')}
               type="info"
               showIcon
-              icon={<SyncOutlined spin rev={undefined} />}
+              icon={<SyncOutlined spin  />}
             ></Alert>
           ) : careTeam ? (
             renderObjectAsKeyvalue(careTeamKeyValues)

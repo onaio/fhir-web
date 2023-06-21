@@ -28,7 +28,7 @@ const PreConfirmationSuccess = (props: PreConfirmationSuccessProps) => {
 
   const cardTitle = (
     <CardTitle
-      IconRender={<RightCircleOutlined className="card-title__icon" rev={undefined} />}
+      IconRender={<RightCircleOutlined className="card-title__icon"  />}
       text={t('“{{filename}}” ready', { filename })}
     />
   );

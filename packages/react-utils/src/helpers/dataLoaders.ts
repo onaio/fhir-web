@@ -15,6 +15,7 @@ import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
+import type { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 
 const configs = getAllConfigs();
 
@@ -52,7 +53,7 @@ export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSR
  *
  * **To delete a resource entry**: service.delete(<id>)
  */
-export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
+export class FHIRServiceClass<T extends IResource> {
   public accessTokenOrCallBack: GetAccessTokenType | string;
   public baseURL: string;
   public resourceType: string;
@@ -100,13 +101,15 @@ export class FHIRServiceClass<T = fhirclient.FHIR.Resource> {
   public async create(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.create<T>(payload, { signal: this.signal });
+    // TODO - using to clashing libraries to supply fhir resource typings, we should choose one.
+    return serve.create<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
   }
 
   public async update(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.update<T>(payload, { signal: this.signal });
+    // TODO - using to clashin libraries to supply fhir resource typings, we should choose one.
+    return serve.update<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
   }
 
   public async list(params: URLParams | null = null) {

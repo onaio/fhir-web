@@ -196,7 +196,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
             <div>
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
-                  <PlusOutlined rev={undefined} />
+                  <PlusOutlined  />
                   {t('Create Team')}
                 </Button>
               </Link>

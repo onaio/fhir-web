@@ -23,7 +23,7 @@ const TeamsDetail = (props: TeamsDetailProps) => {
         onClick={() => (props.onClose ? props.onClose() : '')}
         className="float-right close-btn"
         type="text"
-        icon={<CloseOutlined rev={undefined} />}
+        icon={<CloseOutlined  />}
       />
       <div className="mb-4 small mt-4">
         <p className="mb-0 font-weight-bold">{t('Team Name')}</p>

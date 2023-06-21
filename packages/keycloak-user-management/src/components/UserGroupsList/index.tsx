@@ -176,7 +176,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('New User Group')}
               </Button>
             </Link>
@@ -204,7 +204,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" data-testid='more-options' rev={undefined} />
+                    <MoreOutlined className="more-options" data-testid='more-options'  />
                   </Dropdown>
                 </span>
               ),

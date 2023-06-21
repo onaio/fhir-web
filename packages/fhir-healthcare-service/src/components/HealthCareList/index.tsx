@@ -100,7 +100,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
+            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
           </Dropdown>
         </span>
       ),
@@ -129,7 +129,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Create Care Service')}
               </Button>
             </Link>

@@ -63,7 +63,7 @@ export const QuestionnaireDetails = (props: QuestionnaireDetailsProps) => {
       <div className="resourceDetails-avatar">
         <Avatar
           /**Find the right icon */
-          icon={<FormOutlined rev={undefined} />}
+          icon={<FormOutlined  />}
           className="resourceDetails-avatar__icon"
         />
       </div>

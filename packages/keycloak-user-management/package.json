@@ -38,7 +38,7 @@
     "redux-thunk": "^2.3.0"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^7.14.8",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/loaders": "^0.0.1",

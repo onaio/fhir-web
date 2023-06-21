@@ -248,7 +248,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                       arrow
                       trigger={['click']}
                     >
-                      <MoreOutlined className="more-options" rev={undefined} />
+                      <MoreOutlined className="more-options"  />
                     </Dropdown>
                   );
                 },

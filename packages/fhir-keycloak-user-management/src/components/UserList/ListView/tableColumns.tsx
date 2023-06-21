@@ -111,7 +111,7 @@ export const getTableColumns = (
             trigger={['click']}
             menu={{ items: getItems(record) }}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options" rev={undefined} />
+            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
           </Dropdown>
         </>
       );

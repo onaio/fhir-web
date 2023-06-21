@@ -13,6 +13,7 @@ import { useQuery } from 'react-query';
 import type { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useTranslation } from './mls';
 import { v4 } from 'uuid';
+import { IQuestionnaireResponse } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaireResponse';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const store: Store<Record<string, any>> = createStore(rootReducer, applyMiddleware(thunk));
@@ -53,7 +54,11 @@ export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
     error: questRespError,
   } = useQuery(
     [questionnaireResponseResourceType, resourceId],
-    () => new FHIRServiceClass(fhirBaseURL, questionnaireResponseResourceType).read(resourceId),
+    () =>
+      new FHIRServiceClass<IQuestionnaireResponse>(
+        fhirBaseURL,
+        questionnaireResponseResourceType
+      ).read(resourceId),
     {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -73,7 +78,7 @@ export const BaseQuestRForm = (props: BaseQuestRFormProps) => {
   const { isLoading, data, error } = useQuery(
     [questionnaireResourceType, questId],
     () => {
-      return new FHIRServiceClass(fhirBaseURL, '').read(questId);
+      return new FHIRServiceClass(fhirBaseURL, '').read(questId as string);
     },
     {
       refetchOnMount: false,

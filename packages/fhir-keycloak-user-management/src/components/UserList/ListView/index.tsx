@@ -124,7 +124,7 @@ export const UserList = (props: OrganizationListProps) => {
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_USER_CREATE}>
               <Button type="primary">
-                <PlusOutlined rev={undefined} />
+                <PlusOutlined  />
                 {t('Add User')}
               </Button>
             </Link>

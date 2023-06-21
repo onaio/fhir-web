@@ -8,7 +8,11 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
+<<<<<<< HEAD
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+=======
+import { cleanup, fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
+>>>>>>> 70adb9bd256f3d215a5693a2ecc34b5521d655de
 import {
   healthCareServicePage1,
   healthCareServicePage2,
@@ -143,9 +147,19 @@ test('renders correctly when listing resources', async () => {
 
   fireEvent.click(screen.getByTitle('2'));
 
+  const waitForSpinner = async () => {
+    await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
+    })
+  }
+
+  await waitForSpinner()
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+<<<<<<< HEAD
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+=======
+>>>>>>> 70adb9bd256f3d215a5693a2ecc34b5521d655de
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -154,10 +168,11 @@ test('renders correctly when listing resources', async () => {
 
   // works with search as well.
   const searchForm = document.querySelector('[data-testid="search-form"]');
-  await userEvents.type(searchForm, 'testing');
+  userEvents.type(searchForm as Element, 'testing');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=testing');
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForSpinner()
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -165,7 +180,7 @@ test('renders correctly when listing resources', async () => {
   });
 
   // remove search.
-  userEvents.clear(searchForm);
+  userEvents.clear(searchForm as Element);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
 
   // view details
@@ -175,7 +190,7 @@ test('renders correctly when listing resources', async () => {
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
-  fireEvent.click(dropdown);
+  fireEvent.click(dropdown as Element);
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
@@ -187,11 +202,11 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.pathname).toEqual('/healthcare/list');
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=323');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForSpinner()
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
-  fireEvent.click(closeButton);
+  fireEvent.click(closeButton as Element);
 
   expect(history.location.pathname).toEqual('/healthcare/list');
 

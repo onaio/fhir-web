@@ -196,7 +196,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                 title={
                   <>
                     <span style={{ color: '#1890ff' }}>
-                      <IdcardOutlined rev={undefined} /> {resourceType}
+                      <IdcardOutlined  /> {resourceType}
                     </span>
                   </>
                 }

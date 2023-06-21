@@ -13,7 +13,7 @@ export interface SearchFormProps extends InputProps {
   onChangeHandler: OnChangeType;
 }
 
-const defaultPrefix = <SearchOutlined style={{ fontSize: '16px', fontWeight: 'bold' }} rev={undefined} />;
+const defaultPrefix = <SearchOutlined style={{ fontSize: '16px', fontWeight: 'bold' }} />;
 /**
  * default props for SearchForm component
  */

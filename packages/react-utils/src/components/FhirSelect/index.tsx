@@ -155,7 +155,7 @@ export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<R
             )}
             <Button
               type="text"
-              icon={<VerticalAlignBottomOutlined rev={undefined} />}
+              icon={<VerticalAlignBottomOutlined />}
               disabled={!hasNextPage || isFetchingNextPage || isFetching}
               loading={isFetchingNextPage}
               onClick={() => fetchNextPage()}

@@ -40,7 +40,7 @@
     "@ant-design/pro-layout": "^7.14.3"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.1.4",
+    "@ant-design/icons": "^4.0.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@opensrp/fhir-team-management": "^0.0.5",

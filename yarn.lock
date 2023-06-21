@@ -72,7 +72,7 @@
     classnames "^2.2.6"
     rc-util "^5.9.4"
 
-"@ant-design/icons@^5.0.0", "@ant-design/icons@^5.1.0", "@ant-design/icons@^5.1.4":
+"@ant-design/icons@^5.0.0", "@ant-design/icons@^5.1.0":
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/@ant-design/icons/-/icons-5.1.4.tgz#614e29e26d092c2c1c1a2acbc0d84434d8d1474e"
   integrity sha512-YHKL7Jx3bM12OxvtiYDon04BsBT/6LGitYEqar3GljzWaAyMOAD8i/uF1Rsi5Us/YNdWWXBGSvZV2OZWMpJlcA==
@@ -3212,9 +3212,9 @@
     rc-util "^5.33.0"
 
 "@rc-component/trigger@^1.6.2":
-  version "1.13.5"
-  resolved "https://registry.yarnpkg.com/@rc-component/trigger/-/trigger-1.13.5.tgz#5de39c642f59d505153c4b9407f7d0fa96da525c"
-  integrity sha512-1CCh0Ne38mpI2hR6h2SbvP+t6RZk1m56CR9c1me0e1bjzTiG6jSDNA2wr1GWQolSKjF0zZuxaTRUOAtDxZe3RQ==
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/@rc-component/trigger/-/trigger-1.13.6.tgz#1375303018d16ccdf88e31c6bcd131421e1fa3e7"
+  integrity sha512-13aF9SrR5XAd+tyV/zja0A2pbrA/zdTCXRBNIsoLp8OmhVOnqiwjP7XZYPulLsH0ioEfvtXR1yI0anJD0/J7PQ==
   dependencies:
     "@babel/runtime" "^7.18.3"
     "@rc-component/portal" "^1.1.0"
