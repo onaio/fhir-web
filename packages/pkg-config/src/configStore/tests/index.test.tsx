@@ -16,6 +16,7 @@ describe('pkg-configs/configStore', () => {
       keycloakBaseURL: undefined,
       languageCode: 'en',
       opensrpBaseURL: undefined,
+      practToOrgAssignmentStrategy: 'MANY_TO_ONE',
       fhirBaseURL: undefined,
       projectCode: 'core',
       defaultTablesPageSize: 5,

@@ -25,10 +25,16 @@ export interface ConfigState {
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
   defaultTablesPageSize?: number; // static value of the default number of rows per page
+  practToOrgAssignmentStrategy?: PractToOrgAssignmentStratey;
 }
 
 export interface UserPreference {
   tablespref?: Record<string, TableState>;
+}
+
+export enum PractToOrgAssignmentStratey {
+  ONE_TO_ONE = 'ONE_TO_ONE',
+  MANY_TO_ONE = 'MANY_TO_ONE',
 }
 
 const defaultConfigs: GlobalState = {
@@ -40,6 +46,7 @@ const defaultConfigs: GlobalState = {
   tablespref: undefined,
   defaultTablesPageSize: 5,
   projectCode: 'core',
+  practToOrgAssignmentStrategy: PractToOrgAssignmentStratey.MANY_TO_ONE,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
