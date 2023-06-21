@@ -32,6 +32,11 @@ export interface UserPreference {
   tablespref?: Record<string, TableState>;
 }
 
+/**
+ * This strategy only applies unilaterally, i.e. form practitioner to organization.
+ * It does not imply any relations in the opposite direction i.e. from organization
+ * to practitioner.
+ */
 export enum PractToOrgAssignmentStratey {
   ONE_TO_ONE = 'ONE_TO_ONE',
   MANY_TO_ONE = 'MANY_TO_ONE',
