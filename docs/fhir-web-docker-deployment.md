@@ -176,7 +176,7 @@ We use different technologies to deploy OpenSRP FHIR Web. This documentation wil
       REACT_APP_OPENSRP_LOGOUT_URL: 'null',
       REACT_APP_OPENSRP_ROLES:
         '{"USERS":"ROLE_EDIT_KEYCLOAK_USERS","LOCATIONS":"ROLE_VIEW_KEYCLOAK_USERS","TEAMS":"ROLE_VIEW_KEYCLOAK_USERS","CARE_TEAM":"ROLE_VIEW_KEYCLOAK_USERS","QUEST":"ROLE_VIEW_KEYCLOAK_USERS","HEALTHCARE_SERVICE":"ROLE_VIEW_KEYCLOAK_USERS","GROUP":"ROLE_VIEW_KEYCLOAK_USERS","COMMODITY":"ROLE_VIEW_KEYCLOAK_USERS",}',
-      REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY: 'MANY_TO_MANY',
+      REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY: 'MANY_TO_ONE',
 
       // optional sentry config
       // REACT_APP_SENTRY_CONFIG_JSON: "{\"dsn\":\"<sentry-dsn>\",\"environment\":\"<sentry-environment>\",\"release\":\"<app-release-version>\",\"release-name\":\"<app-release-name>\",\"release-namespace\":\"<app-release-namespace>\",\"tags\":{}}",
