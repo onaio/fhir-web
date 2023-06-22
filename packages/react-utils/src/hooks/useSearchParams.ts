@@ -16,6 +16,9 @@ export function useSearchParams() {
     if (!value) {
       return;
     }
+    if (sParams.has(queryKey)) {
+      sParams.delete(queryKey);
+    }
     sParams.append(queryKey, value);
     const newParams = sParams.toString();
     nextUrl = ''.concat(nextUrl, '?').concat(newParams.toString());
