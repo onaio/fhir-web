@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Card, Spin, Space, Button, Divider, Input } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { getAccessToken } from '@onaio/session-reducer';
 import { SettingOutlined, UploadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
@@ -106,7 +106,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
 
   return (
     <div className="content-section">
-      <PageHeader className="page-header" title={t('Draft Files')} />
+      <PageHeader title={t('Draft Files')} />
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input

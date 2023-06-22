@@ -2,11 +2,10 @@
 
 exports[`LocationForm renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn css-dev-only-do-not-override-12jzuas ant-btn-default"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default"
   disabled={false}
   id="location-form-cancel-button"
   onClick={[Function]}
-  style={Object {}}
   type="button"
 >
   <LoadingIcon
@@ -38,7 +37,7 @@ exports[`LocationForm renders correctly: cancel button 1`] = `
 
 exports[`LocationForm renders correctly: description field 1`] = `
 <textarea
-  className="ant-input css-dev-only-do-not-override-12jzuas"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   hidden={null}
   id="location-form_description"
@@ -103,7 +102,7 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 exports[`LocationForm renders correctly: name field 1`] = `
 <input
   aria-required="true"
-  className="ant-input css-dev-only-do-not-override-12jzuas"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   hidden={null}
   id="location-form_name"
@@ -174,11 +173,10 @@ exports[`LocationForm renders correctly: status label 1`] = `
 
 exports[`LocationForm renders correctly: submit button 1`] = `
 <button
-  className="ant-btn css-dev-only-do-not-override-12jzuas ant-btn-primary"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
   disabled={false}
   id="location-form-submit-button"
   onClick={[Function]}
-  style={Object {}}
   type="submit"
 >
   <LoadingIcon

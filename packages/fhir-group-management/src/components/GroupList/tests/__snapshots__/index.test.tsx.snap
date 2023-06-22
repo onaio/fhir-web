@@ -101,12 +101,11 @@ exports[`renders correctly when listing resources 6`] = `
 `;
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<span
-  class="ant-page-header-heading-title"
-  title="Groups List"
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
 >
   Groups List
-</span>
+</h4>
 `;
 
 exports[`renders correctly when listing resources: Search 1 page 1 1`] = `

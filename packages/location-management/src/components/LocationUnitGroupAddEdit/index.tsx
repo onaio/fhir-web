@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';
@@ -28,7 +28,6 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
             ? t('Edit Location Unit Group | {{title}}', { title })
             : t('Add Location Unit Group')
         }
-        className="page-header"
       />
 
       <Col className="bg-white p-4" span={24}>

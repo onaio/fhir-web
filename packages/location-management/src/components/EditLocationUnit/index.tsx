@@ -14,7 +14,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { getUser } from '@onaio/session-reducer';
 import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
@@ -227,7 +227,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>

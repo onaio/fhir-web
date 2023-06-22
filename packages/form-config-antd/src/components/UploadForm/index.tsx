@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Form, Button, Input, Upload, Card } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import {
@@ -135,7 +135,7 @@ const UploadForm = (props: UploadFilePropTypes): JSX.Element => {
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Upload Form')} className="page-header" />
+      <PageHeader title={t('Upload Form')} />
       <Card>
         <Form
           {...layout}

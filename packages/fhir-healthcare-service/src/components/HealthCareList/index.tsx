@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
 import { Link } from 'react-router-dom';
@@ -114,7 +114,6 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
     pagination: tablePaginationProps,
   };
 
-  console.log(tableProps)
   const pageTitle = t('HealthCare service list');
 
   return (
@@ -122,7 +121,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

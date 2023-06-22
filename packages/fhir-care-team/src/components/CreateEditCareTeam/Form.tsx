@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   FormFields,
@@ -60,8 +60,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             ? t('Edit Care Team | {{name}}', { name: initialValues.name })
             : t('Create Care Team')
         }
-        className="page-header"
       />
+      
       <Col className="bg-white p-3" span={24}>
         <Form
           {...formItemLayout}

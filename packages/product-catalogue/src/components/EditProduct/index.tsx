@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { ProductForm } from '../ProductForm';
 import { Layout, Spin } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import {
   fetchProducts,
   getProductById,
@@ -93,7 +93,7 @@ const EditProductView = (props: EditProductViewTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
+      <PageHeader title={pageTitle} />
 
       <ProductForm {...productFormProps} />
     </Layout>

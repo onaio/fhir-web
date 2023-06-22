@@ -163,6 +163,12 @@ test('pagination and search work correctly', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).toBeInTheDocument();
+    })
+  }
+
   await waitFor(() => {
     expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();
   });
@@ -177,9 +183,9 @@ test('pagination and search work correctly', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  console.log(prettyDOM(document))
-
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   expect(screen.getByText(/426 - title/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -192,7 +198,10 @@ test('pagination and search work correctly', async () => {
   userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
+
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);

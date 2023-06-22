@@ -286,7 +286,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('PageHeader').text()).toEqual(`Edit Team | ${team.name}`);
+    expect(wrapper.find('.page-header').last().text()).toEqual(`Edit Team | ${team.name}`);
     wrapper.unmount();
   });
 

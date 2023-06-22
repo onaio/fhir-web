@@ -9,7 +9,7 @@ import {
 import { Column } from '@opensrp/react-utils';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useSimpleTabularView } from '@opensrp/react-utils';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
@@ -123,7 +123,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">

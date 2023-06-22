@@ -5,7 +5,7 @@ import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Layout } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import {
   plansReducer,
   fetchPlanDefinitions,
@@ -82,8 +82,6 @@ const EditPlanView = (props: EditViewTypes) => {
     if (!planId) {
       return;
     }
-    console.log({loading})
-    
     loadSinglePlan(baseURL, planId, serviceClass, fetchPlan)
       .finally(() => setLoading(false))
       .catch((err: Error) => handleBrokenPage(err));
@@ -126,7 +124,7 @@ const EditPlanView = (props: EditViewTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"/>
+      <PageHeader title={pageTitle} />
 
       <PlanForm {...productFormProps} />
     </Layout>

@@ -76,12 +76,11 @@ exports[`renders correctly when listing resources 5`] = `
 `;
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<span
-  class="ant-page-header-heading-title"
-  title="Commodity List"
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
 >
   Commodity List
-</span>
+</h4>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `

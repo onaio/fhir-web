@@ -3,7 +3,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Spin, Dropdown, Button } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import type { MenuProps } from 'antd';
 import {
   Tree,
@@ -218,7 +218,6 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
         <title>{t('Settings')}</title>
       </Helmet>
       <PageHeader
-        className="page-header"
         title={
           currentLocation?.label
             ? t('Settings | {{currentLocation}}', { currentLocation: currentLocation.label })

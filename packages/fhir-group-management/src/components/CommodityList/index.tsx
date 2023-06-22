@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Button, Divider, Dropdown, Menu, Popconfirm, MenuProps } from 'antd';
+import { Space, Button, Divider, Dropdown, Popconfirm, MenuProps } from 'antd';
 import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL, groupResourceType, listResourceType } from '../../constants';

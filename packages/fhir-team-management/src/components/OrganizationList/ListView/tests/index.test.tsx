@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { waitForElementToBeRemoved, waitFor } from '@testing-library/dom';
+import { cleanup, fireEvent, render, screen, prettyDOM } from '@testing-library/react';
 import {
   organizationResourceType,
   ORGANIZATION_LIST_URL,
@@ -138,13 +138,19 @@ test('renders correctly when listing organizations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).toBeInTheDocument();
+    })
+  }
+
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
       Organization list
     </title>
   `);
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -156,7 +162,9 @@ test('renders correctly when listing organizations', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForSpinner();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'))
+  
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -168,7 +176,10 @@ test('renders correctly when listing organizations', async () => {
   await userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  await waitForSpinner();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'))
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -204,7 +215,8 @@ test('renders correctly when listing organizations', async () => {
   fireEvent.click(viewDetailsLink);
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=205');
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForSpinner();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'))
 
   // see details in viewDetails
   document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {

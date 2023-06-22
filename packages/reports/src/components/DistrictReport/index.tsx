@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Card, Form, TreeSelect, DatePicker, Tooltip, Spin, Alert } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
   locationHierachyDucks,
@@ -111,7 +111,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Download District Report')} className="page-header" />
+      <PageHeader title={t('Download District Report')} />
       <Card>
         <Form
           {...layout}

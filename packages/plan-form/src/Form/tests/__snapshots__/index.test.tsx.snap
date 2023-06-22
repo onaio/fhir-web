@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`containers/forms/PlanForm Form submission for new plans works: invalid data type Errors, we should have some errors 1`] = `
+Array [
+  Object {
+    "errors": Array [
+      "'interventionType' must be one of [Dynamic-FI, Dynamic-IRS, Dynamic-MDA, FI, IRS, IRS-Lite, MDA, MDA-Point, SM]",
+    ],
+    "name": Array [
+      "interventionType",
+    ],
+    "warnings": Array [],
+  },
+  Object {
+    "errors": Array [
+      "Plan name cannot contain '/'",
+    ],
+    "name": Array [
+      "title",
+    ],
+    "warnings": Array [],
+  },
+  Object {
+    "errors": Array [
+      "'dateRange' is required",
+    ],
+    "name": Array [
+      "dateRange",
+    ],
+    "warnings": Array [],
+  },
+  Object {
+    "errors": Array [
+      "'description' is required",
+    ],
+    "name": Array [
+      "description",
+    ],
+    "warnings": Array [],
+  },
+]
+`;
+
 exports[`containers/forms/PlanForm Form validation works: Errors 1`] = `
 Array [
   Object {

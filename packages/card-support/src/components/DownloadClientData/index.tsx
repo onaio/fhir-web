@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import  dayjs from 'dayjs';
 import { Button, Card, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/react-utils';
@@ -156,7 +156,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Download Client Data')} className="page-header" />
+      <PageHeader title={t('Download Client Data')} />
       <Card>
         <Form
           {...layout}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Spin } from 'antd';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
@@ -86,7 +86,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree

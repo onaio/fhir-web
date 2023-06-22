@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
 import { organizationResourceType } from '@opensrp/fhir-team-management';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import {
@@ -71,7 +71,7 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <HealthCareForm
           fhirBaseUrl={fhirBaseUrl}

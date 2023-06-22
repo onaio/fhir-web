@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
 import {
   healthCareServicePage1,
   healthCareServicePage2,
@@ -133,7 +133,7 @@ test('renders correctly when listing resources', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -144,7 +144,7 @@ test('renders correctly when listing resources', async () => {
   fireEvent.click(screen.getByTitle('2'));
 
   const waitForSpinner = async () => {
-    await waitFor(() => {
+    return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
     })
   }
@@ -152,8 +152,6 @@ test('renders correctly when listing resources', async () => {
   await waitForSpinner()
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
-  console.log(prettyDOM(document))
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -165,8 +163,8 @@ test('renders correctly when listing resources', async () => {
   userEvents.type(searchForm as Element, 'testing');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=testing');
+
   await waitForSpinner()
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);

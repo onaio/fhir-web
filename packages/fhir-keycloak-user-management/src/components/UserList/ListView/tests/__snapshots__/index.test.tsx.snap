@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<span
-  class="ant-page-header-heading-title"
-  title="User Management"
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
 >
   User Management
-</span>
+</h4>
 `;
 
 exports[`renders correctly when listing resources: Search 1 page 1 1`] = `

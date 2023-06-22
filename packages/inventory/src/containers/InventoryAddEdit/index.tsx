@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -239,7 +239,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <PageHeader title={heading} className="page-header" />
+      <PageHeader title={heading} />
       <InventoryItemForm {...inventoryItemFormProps} />
     </div>
   );

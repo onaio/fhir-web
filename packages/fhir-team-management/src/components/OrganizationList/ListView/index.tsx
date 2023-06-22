@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Divider, Dropdown, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -46,6 +46,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
   const { searchFormProps, tablePaginationProps, queryValues } =
     useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
   const { data, isFetching, isLoading, error } = queryValues;
+
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
@@ -109,13 +110,16 @@ export const OrganizationList = (props: OrganizationListProps) => {
     pagination: tablePaginationProps,
   };
 
+  console.log({ queryValues, tableProps })
+
   const pageTitle = t('Organization list');
   return (
     <div className="content-section">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
+      
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

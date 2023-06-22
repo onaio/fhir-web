@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly in list view: Header title 1`] = `
-<span
-  class="ant-page-header-heading-title"
-  title="Patients"
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
 >
   Patients
-</span>
+</h4>
 `;
 
 exports[`renders correctly in list view: table row 1 page 1 1`] = `

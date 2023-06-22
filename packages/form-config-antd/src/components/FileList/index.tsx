@@ -3,7 +3,7 @@ import { getFetchOptions } from '@opensrp/server-service';
 import { getAccessToken } from '@onaio/session-reducer';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Card, Spin, Space, Button, Divider, Input } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 import {
   filesReducer,
@@ -131,7 +131,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
 
   return (
     <div className="content-section">
-      <PageHeader className="page-header" title={title} />
+      <PageHeader title={title} />
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input

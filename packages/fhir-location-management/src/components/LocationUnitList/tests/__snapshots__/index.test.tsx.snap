@@ -40,7 +40,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
     href="/admin/location/unit/edit/303"
   >
     <button
-      class="ant-btn css-dev-only-do-not-override-12jzuas ant-btn-link m-0 p-1"
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
       type="button"
     >
       <span>
@@ -49,7 +49,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
     </button>
   </a>
   <div
-    class="ant-divider css-dev-only-do-not-override-12jzuas ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span

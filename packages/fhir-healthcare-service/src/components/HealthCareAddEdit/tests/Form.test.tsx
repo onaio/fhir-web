@@ -199,7 +199,7 @@ describe('Health care form', () => {
 
     // simulate active change
     wrapper
-      .find('.ant-form-item.active input')
+      .find('#active .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -207,14 +207,14 @@ describe('Health care form', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'Good doctor' } });
 
     wrapper
-      .find('.ant-form-item.comment textarea')
+      .find('#comment .ant-form-item textarea')
       .simulate('change', { target: { name: 'alias', value: 'Best services ever' } });
 
-    wrapper.find('.ant-form-item.extraDetails textarea').simulate('change', {
+    wrapper.find('#extraDetails .ant-form-item textarea').simulate('change', {
       target: { name: 'alias', value: 'Treatment using cutting-edge stuff' },
     });
 

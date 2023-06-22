@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Row, Col, Button, Modal, Form, Select, Spin } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { columnsFactory, getPayload, ActionsColumnCustomRender } from './utils';
 import { RouteComponentProps } from 'react-router-dom';
 import { OpenSRPService, TableLayout, BrokenPage } from '@opensrp/react-utils';
@@ -285,7 +285,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
       <Helmet>
         <title>{t('Team Assignment')}</title>
       </Helmet>
-      <PageHeader title={t('Team Assignment')} className="page-header"></PageHeader>
+      <PageHeader title={t('Team Assignment')} />
       <Modal
         destroyOnClose={true}
         title={t('Assign/Unassign Teams | {{locationName}}', {

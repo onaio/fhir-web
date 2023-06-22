@@ -153,22 +153,22 @@ describe('Health care form', () => {
     });
 
     // name is required and has no default
-    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
       `"Enter Commodity nameRequired"`
     );
 
     // status has no
-    expect(wrapper.find('.ant-form-item.active').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#active .ant-form-item').text()).toMatchInlineSnapshot(
       `"Select Commodity statusActiveDisabled"`
     );
 
     // required
-    expect(wrapper.find('.ant-form-item.type').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#type .ant-form-item').text()).toMatchInlineSnapshot(
       `"Select Commodity TypeSelect Commodity type'type' is required"`
     );
 
     // required
-    expect(wrapper.find('.ant-form-item.unitOfMeasure').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#unitOfMeasure .ant-form-item').text()).toMatchInlineSnapshot(
       `"Select the unit of measureSelect the unit of measure'unitOfMeasure' is required"`
     );
 
@@ -221,7 +221,7 @@ describe('Health care form', () => {
       return option.textContent;
     });
 
-    expect(toJson(wrapper.find('.ant-form-item.type'))).toMatchSnapshot('asd');
+    expect(toJson(wrapper.find('#type .ant-form-item'))).toMatchSnapshot('asd');
 
     expect(optionTexts).toHaveLength(2);
     expect(optionTexts).toEqual(['Medication', 'Device']);
@@ -337,19 +337,19 @@ describe('Health care form', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'Dettol Strips' } });
 
     // simulate active check to be disabled
     wrapper
-      .find('.ant-form-item.active input')
+      .find('#active .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
       });
 
     // simulate value selection for members
-    wrapper.find('.ant-form-item.unitOfMeasure input').simulate('mousedown');
+    wrapper.find('#unitOfMeasure .ant-form-item input').simulate('mousedown');
     // check options
     document
       .querySelectorAll('#unitOfMeasure .ant-select-item ant-select-item-option')

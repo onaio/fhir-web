@@ -161,7 +161,6 @@ describe('LocationForm', () => {
       expect(atLeastOneError).toBeInTheDocument();
     });
 
-    console.log(wrapper.debug())
     // not required
     expect(wrapper.find('#parentId .ant-form-item').text()).toMatchInlineSnapshot(
       `"Part OfSelect the parent location"`
@@ -223,7 +222,7 @@ describe('LocationForm', () => {
 
     // simulate active check to be suspended
     wrapper
-      .find('.ant-form-item.status input')
+      .find('#status .ant-form-item input')
       .last()
       .simulate('change', {
         target: { checked: true },
@@ -231,7 +230,7 @@ describe('LocationForm', () => {
 
     // set isJurisdiction to structure
     wrapper
-      .find('.ant-form-item.isJurisdiction input')
+      .find('#isJurisdiction .ant-form-item input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -239,14 +238,14 @@ describe('LocationForm', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'area51' } });
 
     wrapper
-      .find('.ant-form-item.alias input')
+      .find('#alias .ant-form-item input')
       .simulate('change', { target: { name: 'alias', value: 'creepTown' } });
 
-    wrapper.find('.ant-form-item.description textarea').simulate('change', {
+    wrapper.find('#description .ant-form-item textarea').simulate('change', {
       target: {
         value:
           'The secret Nevada base, known as Area 51, is often the subject of alien conspiracy theories.',

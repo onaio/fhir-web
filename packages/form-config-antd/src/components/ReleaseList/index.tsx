@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Card, Spin, Space, Button, Divider, Input } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { getTableColumns } from './utils';
 import { TableLayout } from '@opensrp/react-utils';
@@ -97,7 +97,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Releases')} className="page-header" />
+      <PageHeader title={t('Releases')} />
       <Card>
         <Space style={{ marginBottom: 16, float: 'left' }}>
           <Input

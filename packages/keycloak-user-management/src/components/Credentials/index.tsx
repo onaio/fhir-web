@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Col, Row, Input } from 'antd';
-import { PageHeader } from '@ant-design/pro-layout';
+import { PageHeader } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -130,7 +130,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   const heading = `${t('User Credentials')} | ${keycloakUser ? keycloakUser.username : ''}`;
   return (
     <Row className="content-section">
-      <PageHeader className="page-header" title={heading} />
+      <PageHeader title={heading} />
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form
