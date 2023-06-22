@@ -146,36 +146,36 @@ describe('Update plan Page', () => {
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
-
+    
     // check interventionType hidden
-    expect(wrapper.find('FormItem#interventionType').props().hidden).toBeTruthy();
+    expect(wrapper.find('#interventionType FormItemInput').props().hidden).toBeTruthy();
 
     // check title is shown
-    expect(wrapper.find('FormItem#title').props().hidden).toBeFalsy();
+    expect(wrapper.find('#title FormItemInput').props().hidden).toBeFalsy();
 
     // name is hidden by default
-    expect(wrapper.find('FormItem#name').props().hidden).toBeTruthy();
+    expect(wrapper.find('#name FormItemInput').props().hidden).toBeTruthy();
 
     // identifier is hidden by default
-    expect(wrapper.find('FormItem#identifier').props().hidden).toBeTruthy();
+    expect(wrapper.find('#identifier FormItemInput').props().hidden).toBeTruthy();
 
     // version is hidden by default
-    expect(wrapper.find('FormItem#version').props().hidden).toBeTruthy();
+    expect(wrapper.find('#version FormItemInput').props().hidden).toBeTruthy();
 
     // taskGenerationStatus is hidden by default
-    expect(wrapper.find('FormItem#taskGenerationStatus').props().hidden).toBeTruthy();
+    expect(wrapper.find('#taskGenerationStatus FormItemInput').props().hidden).toBeTruthy();
 
     // status is not hidden
-    expect(wrapper.find('FormItem#status').props().hidden).toBeFalsy();
+    expect(wrapper.find('#status FormItemInput').props().hidden).toBeFalsy();
 
     // dateRange is not hidden
-    expect(wrapper.find('FormItem#dateRange').props().hidden).toBeFalsy();
+    expect(wrapper.find('#dateRange FormItemInput').props().hidden).toBeFalsy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#date').props().hidden).toBeTruthy();
+    expect(wrapper.find('#date FormItemInput').props().hidden).toBeTruthy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#description').props().hidden).toBeFalsy();
+    expect(wrapper.find('#description FormItemInput').props().hidden).toBeFalsy();
   });
 
   it('shows broken page', async () => {
