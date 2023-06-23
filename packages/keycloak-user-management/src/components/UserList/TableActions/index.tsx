@@ -80,12 +80,14 @@ const TableActions = (props: Props): JSX.Element => {
     {
       key: '2',
       label: (
-        <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-          <Button
-            type="link"
-            data-testid="credentials"
-          >{t('Credentials')}</Button>
-        </Link>
+        <Button
+          type="link"
+          data-testid="credentials"
+        >
+          <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
+            {t('Credentials')}
+          </Link>
+        </Button>
       )
     },
     {
@@ -105,16 +107,18 @@ const TableActions = (props: Props): JSX.Element => {
 
   return (
     <>
-      <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-        {t('Edit')}
-      </Link>
+      <Button type='link'>
+        <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+          {t('Edit')}
+        </Link>
+      </Button>
       <Divider type="vertical" />
       <Dropdown menu={{ items: getItems(record) }} placement="bottomRight" arrow trigger={['click']}>
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             data-testid="action-dropdown"
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }}  />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }} />
         </Button>
       </Dropdown>
     </>

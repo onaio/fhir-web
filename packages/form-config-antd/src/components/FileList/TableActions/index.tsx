@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, Button, Dropdown, Menu } from 'antd';
+import { Divider, Button, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import {
   ManifestFilesTypes,

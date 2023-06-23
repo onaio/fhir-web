@@ -5,7 +5,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { PageHeader } from '@opensrp/react-utils';
-import { Row, Col, Button, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';

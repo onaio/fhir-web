@@ -71,25 +71,27 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
     {
       key: '1',
       label: (
-        <Link to={URL_LOGOUT}>
-          <Button
-            type='link'
-            data-testid="logout"
-          >
-          {t('Logout')}
-          </Button>
-        </Link>
+        <Button
+          type='link'
+          data-testid="logout"
+        >
+          <Link to={URL_LOGOUT}>
+            {t('Logout')}
+          </Link>
+        </Button>
       )
     },
     {
       key: '2',
       label: (
-        <Link to={`${URL_USER_EDIT}/${user_id}`}>
-          <Button 
-            type='link'
-            data-testid="manageaccount"
-          >{t('Manage account')}</Button>
-        </Link>
+        <Button
+          type='link'
+          data-testid="manageaccount"
+        >
+          <Link to={`${URL_USER_EDIT}/${user_id}`}>
+            {t('Manage account')}
+          </Link>
+        </Button>
       )
     }
   ]
@@ -100,7 +102,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
         <Dropdown
           menu={{ items }}
           placement="bottomRight"
-          trigger={['click']}
+          trigger={['click', 'hover']}
         >
           <Button
             shape="circle"

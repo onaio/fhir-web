@@ -88,11 +88,12 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
+          <Button type="link" className="m-0 p-1">
+            <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
               {t('Edit')}
-            </Button>
-          </Link>
+            </Link>
+          </Button>
+
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
@@ -100,7 +101,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>
         </span>
       ),
@@ -128,7 +129,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
               <Button type="primary">
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('Create Care Service')}
               </Button>
             </Link>

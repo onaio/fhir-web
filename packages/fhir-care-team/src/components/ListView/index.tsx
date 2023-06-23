@@ -105,9 +105,11 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     {
       key: '2',
       label: (
-        <Link to={`${URL_CARE_TEAM}/${record.id}`}>
-          {t('View Details')}
-        </Link>
+        <Button type='link'>
+          <Link to={`${URL_CARE_TEAM}/${record.id}`}>
+            {t('View Details')}
+          </Link>
+        </Button>
       )
     }
   ]
@@ -125,11 +127,11 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
-            <Button type="link" className="m-0 p-1">
+          <Button type="link" className="m-0 p-1">
+            <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
               {t('Edit')}
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
@@ -137,7 +139,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             arrow
             trigger={['click']}
           >
-            <MoreOutlined className="more-options" data-testid="action-dropdown"  />
+            <MoreOutlined className="more-options" data-testid="action-dropdown" />
           </Dropdown>
         </span>
       ),
@@ -163,7 +165,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
               <Button type="primary">
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('Create Care Team')}
               </Button>
             </Link>

@@ -73,11 +73,11 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: boolean, record) => (
           <>
-            <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>
-              <Button type="link" className="m-0 p-1">
+            <Button type="link" className="m-0 p-1">
+              <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>
                 {t('Edit')}
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             <Divider type="vertical" />
             <Dropdown
               menu={{ items: getItems(record) }}
@@ -85,7 +85,7 @@ const Table: React.FC<Props> = (props: Props) => {
               arrow
               trigger={['click']}
             >
-              <MoreOutlined className="more-options"  />
+              <MoreOutlined className="more-options" />
             </Dropdown>
           </>
         ),

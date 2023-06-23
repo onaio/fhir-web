@@ -101,9 +101,11 @@ export const getTableColumns = (
     render: (_, record) => {
       return (
         <>
-          <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-            {t('Edit')}
-          </Link>
+          <Button type='link'>
+            <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+              {t('Edit')}
+            </Link>
+          </Button>
           <Divider type="vertical" />
           <Dropdown
             placement="bottomRight"
@@ -111,7 +113,7 @@ export const getTableColumns = (
             trigger={['click']}
             menu={{ items: getItems(record) }}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>
         </>
       );

@@ -53,16 +53,16 @@ export const GroupList = (props: GroupListProps) => {
   const { t } = useTranslation();
   const { addParam } = useSearchParams();
 
-  const getItems = (record: TableData): MenuProps['items']  => [
+  const getItems = (record: TableData): MenuProps['items'] => [
     {
       key: '1',
       label: (
-        <Button 
-          type='link' 
+        <Button
+          type='link'
           data-testid='view-details'
           onClick={() => {
             addParam(viewDetailsQuery, record.id)
-        }}>{t('View Details')}</Button>
+          }}>{t('View Details')}</Button>
       )
     }
   ]
@@ -91,11 +91,11 @@ export const GroupList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`#`}>
-            <Button disabled type="link" className="m-0 p-1">
+          <Button disabled type="link" className="m-0 p-1">
+            <Link to={`#`}>
               {t('Edit')}
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
@@ -103,7 +103,7 @@ export const GroupList = (props: GroupListProps) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>
         </span>
       ),

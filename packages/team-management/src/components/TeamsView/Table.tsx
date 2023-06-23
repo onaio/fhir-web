@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Dropdown, Menu, message } from 'antd';
+import { Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -49,30 +49,30 @@ const Table: React.FC<Props> = (props: Props) => {
       sorter: (a: Organization, b: Organization) => a.name.localeCompare(b.name),
     },
   ];
-  
-  const getItems = (record: Organization): MenuProps['items']  => [
+
+  const getItems = (record: Organization): MenuProps['items'] => [
     {
       key: '1',
       label: (
-        <Button 
-          type='link' 
+        <Button
+          type='link'
           data-testid='view-details'
           onClick={() => {
-          if (onViewDetails) {
-            onViewDetails(
-              record,
-              opensrpBaseURL,
-              setDetail,
-              setPractitionersList,
-              setAssignedLocations,
-              t
-            );
-          }
-        }}>{t('View Details')}</Button>
+            if (onViewDetails) {
+              onViewDetails(
+                record,
+                opensrpBaseURL,
+                setDetail,
+                setPractitionersList,
+                setAssignedLocations,
+                t
+              );
+            }
+          }}>{t('View Details')}</Button>
       )
     }
   ]
- 
+
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
@@ -99,18 +99,18 @@ const Table: React.FC<Props> = (props: Props) => {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             render: (_: unknown, record: Organization) => (
               <span>
-                <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
-                  <Button type="link" className="m-0 p-1">
+                <Button type="link" className="m-0 p-1">
+                  <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
                     {t('Edit')}
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <Divider type="vertical" />
                 <Dropdown
                   menu={{ items: getItems(record) }}
                   placement="bottomRight"
                   trigger={['click']}
                 >
-                  <MoreOutlined className="more-options"  />
+                  <MoreOutlined className="more-options" />
                 </Dropdown>
               </span>
             ),
