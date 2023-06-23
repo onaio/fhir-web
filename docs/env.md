@@ -350,5 +350,5 @@ Below is a list of currently supported environment variables:
 
 - **REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY=ONE_TO_ONE**
   - define the assignment relationship between practitioners to organizations for fhir deployments. This strategy only applies unilaterally, i.e. form practitioner to organization. It does not imply any relations in the opposite direction i.e. from organization to practitioner.
-  - **Optional**(`ONE_TO_ONE, MANY_TO_ONE`)
-  - default: `MANY_TO_ONE`
+  - **Optional**(`ONE_TO_ONE, ONE_TO_MANY`)
+  - default: `ONE_TO_MANY`

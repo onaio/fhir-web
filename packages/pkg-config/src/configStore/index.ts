@@ -33,13 +33,13 @@ export interface UserPreference {
 }
 
 /**
- * This strategy only applies unilaterally, i.e. form practitioner to organization.
+ * This strategy only applies unilaterally, i.e. from practitioner to organization.
  * It does not imply any relations in the opposite direction i.e. from organization
  * to practitioner.
  */
 export enum PractToOrgAssignmentStratey {
-  ONE_TO_ONE = 'ONE_TO_ONE',
-  MANY_TO_ONE = 'MANY_TO_ONE',
+  ONE_TO_ONE = 'ONE_TO_ONE', // one practitioner assignable to one organization
+  ONE_TO_MANY = 'ONE_TO_MANY', // one practitioner assignable to multiple organizations
 }
 
 const defaultConfigs: GlobalState = {
@@ -51,7 +51,7 @@ const defaultConfigs: GlobalState = {
   tablespref: undefined,
   defaultTablesPageSize: 5,
   projectCode: 'core',
-  practToOrgAssignmentStrategy: PractToOrgAssignmentStratey.MANY_TO_ONE,
+  practToOrgAssignmentStrategy: PractToOrgAssignmentStratey.ONE_TO_MANY,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
