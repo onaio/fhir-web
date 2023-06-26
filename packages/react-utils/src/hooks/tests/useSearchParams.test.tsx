@@ -29,24 +29,23 @@ test('useSimpleSearch works correctly', () => {
   current.addParam('key', 'value');
   current.addParam('key1', 'value1');
   current.addParam('key2', 'value2');
-  expect(current.sParams.toString()).toEqual('key=value&key1=value1&key2=value2');
+  expect(current.sParams.toString()).toEqual('key2=value2');
 
   expect(history.location).toMatchObject({
     hash: '',
     key: expect.any(String),
     pathname: '/qr',
-    search: '?key=value?key=value&key1=value1?key=value&key1=value1&key2=value2',
+    search: '?key=value?key1=value1?key2=value2',
     state: undefined,
   });
 
   current.removeParam('key1');
-  expect(current.sParams.toString()).toEqual('key=value&key2=value2');
+  expect(current.sParams.toString()).toEqual('key2=value2');
   expect(history.location).toMatchObject({
     hash: '',
     key: expect.any(String),
     pathname: '/qr',
-    search:
-      '?key=value?key=value&key1=value1?key=value&key1=value1&key2=value2?key=value&key2=value2',
+    search: '?key=value?key1=value1?key2=value2?key2=value2',
     state: undefined,
   });
 });

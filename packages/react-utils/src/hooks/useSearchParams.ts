@@ -16,9 +16,14 @@ export function useSearchParams() {
     if (!value) {
       return;
     }
-    if (queryKey) {
-      sParams.delete(queryKey);
+
+    const keys = sParams.keys();
+    const keysArray = Array.from(keys);
+
+    if (keysArray.length > 2 || keysArray.length < 2) {
+      sParams.delete(keysArray[keysArray.length - 1]);
     }
+
     sParams.append(queryKey, value);
     const newParams = sParams.toString();
     nextUrl = ''.concat(nextUrl, '?').concat(newParams.toString());
