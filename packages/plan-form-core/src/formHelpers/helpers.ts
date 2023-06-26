@@ -90,7 +90,6 @@ import {
   PlanActivityDynamicValue,
 } from './types';
 import { v5 as uuidv5 } from 'uuid';
-import moment from 'moment';
 
 /**
  * Generate a namespaced uuid using uuidv5
@@ -469,9 +468,9 @@ export function extractActivitiesFromPlanForm(
                 configs.actionUuidNamespace
               )
             : generateNameSpacedUUID(
-              `${dayjs().toString()}-${planIdentifier}-${thisAction.goalId}`,
-              configs.actionUuidNamespace
-            )
+                `${dayjs().toString()}-${planIdentifier}-${thisAction.goalId}`,
+                configs.actionUuidNamespace
+              )
           : element.actionIdentifier;
 
       // next put in values from the form
