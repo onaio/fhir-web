@@ -179,10 +179,10 @@ describe('Inventory list Page', () => {
     );
     expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Scale');
 
-    expect(toJson(wrapper.find('th'))).toMatchSnapshot('without children')
-    expect(toJson(wrapper.find('th').at(0).children())).toMatchSnapshot('with children')
+    expect(toJson(wrapper.find('th'))).toMatchSnapshot('without children');
+    expect(toJson(wrapper.find('th').at(0).children())).toMatchSnapshot('with children');
     // Cancel sorting
-    heading.find('th').at(0).children().simulate('click');
+    heading.find('th').at(0).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
@@ -192,7 +192,7 @@ describe('Inventory list Page', () => {
       'Empty product test'
     );
     // descending
-    heading.find('th').at(0).children().simulate('click');
+    heading.find('th').at(0).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
