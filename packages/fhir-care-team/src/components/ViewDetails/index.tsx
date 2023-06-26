@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { Col, Button, Alert } from 'antd';
 import { CloseOutlined, SyncOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import {
   BrokenPage,
@@ -10,8 +9,10 @@ import {
   IdentifierUseCodes,
   getResourcesFromBundle,
   parseFhirHumanName,
+  viewDetailsQuery,
+  useSearchParams,
 } from '@opensrp/react-utils';
-import { careTeamResourceType, URL_CARE_TEAM } from '../../constants';
+import { careTeamResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
 import { renderObjectAsKeyvalue } from '@opensrp/react-utils';
 import { get, groupBy, keyBy } from 'lodash';
@@ -70,7 +71,7 @@ function categorizeIncludedResources(resources: Resource[], careTeamId: string) 
 const ViewDetails = (props: ViewDetailsProps) => {
   const { careTeamId, fhirBaseURL } = props;
   const { t } = useTranslation();
-  const history = useHistory();
+  const { removeParam } = useSearchParams();
 
   // fetch this careTeam and include all its referenced resources.
   const { data, isLoading, error } = useQuery({
@@ -155,7 +156,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(URL_CARE_TEAM)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       {error && !data ? (
