@@ -152,7 +152,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
     <Col className="view-details-content">
       <div className="flex-right">
         <Button
-          data-test-id="cancel"
+          data-testid="cancel"
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
