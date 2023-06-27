@@ -11,7 +11,6 @@ import { act } from 'react-dom/test-utils';
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
 import flushPromises from 'flush-promises';
-import { wrap } from 'module';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');

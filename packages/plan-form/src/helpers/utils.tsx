@@ -12,7 +12,8 @@ import {
   PlanDefinition,
 } from '@opensrp/plan-form-core';
 import { Rule } from 'rc-field-form/lib/interface';
-import dayjs, {  } from 'dayjs';
+import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';

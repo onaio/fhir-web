@@ -75,7 +75,7 @@ const TableActions = (props: Props): JSX.Element => {
               </Button>
             ))}
         </Popconfirm>
-      )
+      ),
     },
     {
       key: '2',
@@ -94,15 +94,15 @@ const TableActions = (props: Props): JSX.Element => {
       key: '3',
       label: (
         <Button
-          type='link'
+          type="link"
           className="viewDetails"
           data-testid="viewDetails"
           onClick={() => setDetailsCallback(record)}
         >
           {t('View Details')}
         </Button>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -113,12 +113,17 @@ const TableActions = (props: Props): JSX.Element => {
         </Link>
       </Button>
       <Divider type="vertical" />
-      <Dropdown menu={{ items: getItems(record) }} placement="bottomRight" arrow trigger={['click']}>
+      <Dropdown
+        menu={{ items: getItems(record) }}
+        placement="bottomRight"
+        arrow
+        trigger={['click']}
+      >
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             data-testid="action-dropdown"
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }} />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }}  />
         </Button>
       </Dropdown>
     </>

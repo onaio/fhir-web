@@ -11,8 +11,6 @@ exports[`/components/PlanInfo renders and passes props correctly): avatar props 
 Object {
   "className": "",
   "icon": <ForwardRef(FileDoneOutlined) />,
-  "shape": "circle",
-  "size": "default",
   "style": Object {
     "color": "#1CABE2",
     "fontSize": 50,
@@ -28,46 +26,4 @@ Object {
   "children": "Active",
   "to": "/missions/active",
 }
-`;
-
-exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 0 1`] = `
-<span
-  className="ant-breadcrumb-link"
->
-  <span>
-    Missions
-  </span>
-</span>
-`;
-
-exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 1 1`] = `
-<span
-  className="ant-breadcrumb-link"
->
-  <Link
-    to="/missions/active"
-  >
-    <LinkAnchor
-      href="/missions/active"
-      navigate={[Function]}
-    >
-      <a
-        href="/missions/active"
-        onClick={[Function]}
-      >
-        Active
-      </a>
-    </LinkAnchor>
-  </Link>
-</span>
-`;
-
-exports[`/components/PlanInfo renders and passes props correctly): links in breadcrumb 2 1`] = `
-<span
-  className="ant-breadcrumb-link"
->
-  <span>
-    EUSM Mission 2020-11-17
-  </span>
-</span>
 `;
