@@ -144,7 +144,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         ))}
       </ul>
     ) : (
-      <Alert description={t('No managing organizaions found')} type="warning"></Alert>
+      <Alert description={t('No managing organizations found')} type="warning"></Alert>
     ),
   };
 
