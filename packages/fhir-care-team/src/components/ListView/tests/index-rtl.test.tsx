@@ -173,6 +173,7 @@ describe('Care Teams list view', () => {
       </span>
     `);
     fireEvent.click(viewDetailsLink);
+    expect(history.location.pathname).toEqual('/admin/CareTeams');
     expect(history.location.search).toEqual('?viewDetails=308');
 
     await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
