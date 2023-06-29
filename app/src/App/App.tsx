@@ -100,7 +100,6 @@ import {
   CreateEditCareTeam,
   URL_CREATE_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
-  URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
 import {
   CreateEditUser as FHIRConnectedCreateEditUser,
@@ -348,14 +347,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_FHIR_CARE_TEAM}
-              component={CareTeamList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-              exact
-              path={`${URL_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
               component={CareTeamList}
             />
             <PrivateComponent
