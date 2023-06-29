@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Care Teams list view renders correctly: Search 1 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -8,7 +8,7 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 1 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -56,7 +56,7 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 2 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 2 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -64,7 +64,7 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 2 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -112,7 +112,7 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 3 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 3 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -120,7 +120,7 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -168,7 +168,7 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 4 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 4 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -176,7 +176,7 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 4 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -224,7 +224,7 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 5 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 5 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -232,7 +232,7 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 5 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
@@ -280,7 +280,7 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 6 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 6 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -288,7 +288,7 @@ exports[`Care Teams list view renders correctly: Search 6 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 6 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 6 page 1 2`] = `
 <td
   class="ant-table-cell"
 >

@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps, useParams } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
@@ -11,11 +11,12 @@ import {
   BrokenPage,
   SearchForm,
   TableLayout,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import {
   FHIR_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
-  URL_CARE_TEAM,
   URL_CREATE_CARE_TEAM,
   careTeamResourceType,
 } from '../../constants';
@@ -59,7 +60,9 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
-  const { careTeamId: resourceId } = useParams<RouteParams>();
+
+  const { addParam, sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const {
     queryValues: { data, isFetching, isLoading, error, refetch },
@@ -118,7 +121,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
                   </Popconfirm>
                 </Menu.Item>
                 <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${URL_CARE_TEAM}/${record.id}`}>View Details</Link>
+                  <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
+                    View Details
+                  </Button>
                 </Menu.Item>
               </Menu>
             }
