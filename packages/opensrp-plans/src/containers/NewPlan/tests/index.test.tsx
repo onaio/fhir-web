@@ -6,7 +6,7 @@ import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
@@ -51,6 +51,8 @@ describe('Create Plan Page', () => {
     expect((wrapper.find('Router').props() as any).history.location.pathname).toEqual(
       DRAFT_PLANS_LIST_VIEW_URL
     );
+
+    wrapper.unmount();
   });
 
   it('planForm gets configured', async () => {
@@ -110,5 +112,7 @@ describe('Create Plan Page', () => {
 
     // date is  hidden by default
     expect(wrapper.find('FormItem#description').props().hidden).toBeFalsy();
+
+    wrapper.unmount();
   });
 });
