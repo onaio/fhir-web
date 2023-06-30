@@ -9,7 +9,8 @@ import { createBrowserHistory } from 'history';
 import { createTestQueryClient } from '../../ListView/tests/utils';
 import nock from 'nock';
 import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
-import { careTeamResourceType } from '../../../constants';
+import { createMemoryHistory } from 'history';
+import { URL_CARE_TEAM, careTeamResourceType } from '../../../constants';
 
 const history = createBrowserHistory();
 
@@ -86,6 +87,9 @@ test('works correctly', async () => {
 });
 
 test('Closes on clicking cancel (X) ', async () => {
+  const history = createMemoryHistory();
+  history.push(URL_CARE_TEAM);
+
   const localProps = {
     ...props,
     careTeamId: '142534',
