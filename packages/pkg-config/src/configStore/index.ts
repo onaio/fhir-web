@@ -25,7 +25,7 @@ export interface ConfigState {
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
   defaultTablesPageSize?: number; // static value of the default number of rows per page
-  practToOrgAssignmentStrategy?: PractToOrgAssignmentStratey;
+  practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
 }
 
 export interface UserPreference {
@@ -37,7 +37,7 @@ export interface UserPreference {
  * It does not imply any relations in the opposite direction i.e. from organization
  * to practitioner.
  */
-export enum PractToOrgAssignmentStratey {
+export enum PractToOrgAssignmentStrategy {
   ONE_TO_ONE = 'ONE_TO_ONE', // one practitioner assignable to one organization
   ONE_TO_MANY = 'ONE_TO_MANY', // one practitioner assignable to multiple organizations
 }
@@ -51,7 +51,7 @@ const defaultConfigs: GlobalState = {
   tablespref: undefined,
   defaultTablesPageSize: 5,
   projectCode: 'core',
-  practToOrgAssignmentStrategy: PractToOrgAssignmentStratey.ONE_TO_MANY,
+  practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)

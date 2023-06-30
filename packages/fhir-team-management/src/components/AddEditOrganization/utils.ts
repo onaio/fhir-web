@@ -15,7 +15,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
-import { PractToOrgAssignmentStratey } from '@opensrp/pkg-config';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 export interface OrganizationFormFields {
   id?: string;
@@ -181,7 +181,7 @@ export const getPractitionerOptions = (
   practitioners: IPractitioner[],
   existingPractitionerRoles: IPractitionerRole[],
   allPractitionerRoles: IPractitionerRole[],
-  assignmentStrategy?: PractToOrgAssignmentStratey
+  assignmentStrategy?: PractToOrgAssignmentStrategy
 ) => {
   let allowedPractitioners = practitioners;
   const rolesWithOrganizations = allPractitionerRoles.filter(
@@ -190,7 +190,7 @@ export const getPractitionerOptions = (
   // group allPractitionerRoles by practitioner references
   const rolesByPractReference = groupBy(rolesWithOrganizations, 'practitioner.reference');
 
-  if (assignmentStrategy && assignmentStrategy === PractToOrgAssignmentStratey.ONE_TO_ONE) {
+  if (assignmentStrategy && assignmentStrategy === PractToOrgAssignmentStrategy.ONE_TO_ONE) {
     allowedPractitioners = allowedPractitioners.filter((pract) => {
       const practReference = `${pract.resourceType}/${pract.id}`;
       return !rolesByPractReference[practReference] as boolean;

@@ -29,7 +29,7 @@ import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPr
 import { getOrgFormFields } from '../utils';
 import * as notifications from '@opensrp/notifications';
 import userEvents from '@testing-library/user-event';
-import { PractToOrgAssignmentStratey } from '@opensrp/pkg-config';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -418,7 +418,7 @@ describe('OrganizationForm', () => {
 
     const props = {
       ...formProps,
-      configuredPractAssignmentStrategy: PractToOrgAssignmentStratey.ONE_TO_ONE,
+      configuredPractAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_ONE,
       allPractitionerRoles: getResourcesFromBundle(org105Practitioners),
       existingPractitionerRoles: [],
     };

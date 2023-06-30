@@ -35,7 +35,7 @@ import {
   validationRulesFactory,
 } from './utils';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
-import { PractToOrgAssignmentStratey } from '@opensrp/pkg-config';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 const { Item: FormItem } = Form;
 interface OrganizationFormProps {
@@ -47,7 +47,7 @@ interface OrganizationFormProps {
   practitioners: IPractitioner[];
   existingPractitionerRoles: IPractitionerRole[];
   allPractitionerRoles: IPractitionerRole[];
-  configuredPractAssignmentStrategy?: PractToOrgAssignmentStratey;
+  configuredPractAssignmentStrategy?: PractToOrgAssignmentStrategy;
 }
 
 const defaultProps = {
