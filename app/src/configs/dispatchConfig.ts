@@ -13,6 +13,7 @@ import {
   PROJECT_CODE,
   FHIR_API_BASE_URL,
   DEFAULTS_TABLE_PAGE_SIZE,
+  PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
 } from './env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from '../constants';
 
@@ -29,6 +30,7 @@ const configObject: ConfigState = {
   opensrpBaseURL: OPENSRP_API_BASE_URL,
   fhirBaseURL: FHIR_API_BASE_URL,
   defaultTablesPageSize: DEFAULTS_TABLE_PAGE_SIZE,
+  practToOrgAssignmentStrategy: PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
 };
 
 setAllConfigs(configObject);
