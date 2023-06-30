@@ -32,7 +32,7 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.0.0",
+    "@ant-design/icons": "^4.7.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/utils": "^0.0.1",
     "@opensrp/location-management": "^0.0.15",

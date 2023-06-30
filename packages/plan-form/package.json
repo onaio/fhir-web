@@ -43,7 +43,7 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^4.0.0",
+    "@ant-design/icons": "^4.7.0",
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",

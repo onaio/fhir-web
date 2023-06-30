@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@2fd/ant-design-icons": "^2.6.0",
-    "@ant-design/icons": "^4.0.0",
+    "@ant-design/icons": "^4.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
     "@fortawesome/free-regular-svg-icons": "^5.14.0",
