@@ -22,6 +22,7 @@ import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interface
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { getOrgFormFields } from './utils';
 import { useTranslation } from '../../mls';
+import { getConfig } from '@opensrp/pkg-config';
 
 export interface AddEditOrganizationProps {
   fhirBaseURL: string;
@@ -36,6 +37,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
 
   const { id: orgId } = useParams<RouteParams>();
   const { t } = useTranslation();
+  const configuredPractAssignmentStrategy = getConfig('practToOrgAssignmentStrategy');
 
   const organization = useQuery(
     [organizationResourceType, orgId],
@@ -58,12 +60,9 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   );
 
   // practitioners already assigned to this organization
-  const assignedPractitioners = useQuery(
+  const allPractitionerRoles = useQuery(
     [practitionerResourceType, organizationResourceType, orgId],
-    () =>
-      loadAllResources(fhirBaseUrl, practitionerRoleResourceType, {
-        organization: orgId as string,
-      }),
+    () => loadAllResources(fhirBaseUrl, practitionerRoleResourceType),
     {
       onError: () => sendErrorNotification(t('An Error occurred')),
       select: (res) => {
@@ -76,7 +75,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   if (
     (!organization.isIdle && organization.isLoading) ||
     (!practitioners.isIdle && practitioners.isLoading) ||
-    (!assignedPractitioners.isIdle && assignedPractitioners.isLoading)
+    (!allPractitionerRoles.isIdle && allPractitionerRoles.isLoading)
   ) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
@@ -85,7 +84,13 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     return <BrokenPage errorMessage={(organization.error as Error).message} />;
   }
 
-  const initialValues = getOrgFormFields(organization.data, assignedPractitioners.data);
+  const assignedPractitionerRoles = (allPractitionerRoles.data ?? []).filter(
+    (practitionerRole) =>
+      practitionerRole.organization?.reference ===
+      `${organizationResourceType}/${(organization.data as IOrganization).id}`
+  );
+
+  const initialValues = getOrgFormFields(organization.data, assignedPractitionerRoles);
 
   const pageTitle = organization.data
     ? t('Edit team | {{teamName}}', { teamName: organization.data.name ?? '' })
@@ -102,9 +107,11 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
           practitioners={practitioners.data ?? []}
-          existingPractitionerRoles={assignedPractitioners.data ?? []}
+          existingPractitionerRoles={assignedPractitionerRoles}
+          allPractitionerRoles={allPractitionerRoles.data ?? []}
           cancelUrl={ORGANIZATION_LIST_URL}
           successUrl={ORGANIZATION_LIST_URL}
+          configuredPractAssignmentStrategy={configuredPractAssignmentStrategy}
         />
       </div>
     </section>

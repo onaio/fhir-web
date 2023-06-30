@@ -29,6 +29,7 @@ import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPr
 import { getOrgFormFields } from '../utils';
 import * as notifications from '@opensrp/notifications';
 import userEvents from '@testing-library/user-event';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -72,6 +73,7 @@ describe('OrganizationForm', () => {
     practitioners: getResourcesFromBundle<IPractitioner>(allPractitioners),
     existingPractitionerRoles: [],
     initialValues: getOrgFormFields(),
+    allPractitionerRoles: [],
   };
 
   beforeAll(() => {
@@ -416,6 +418,44 @@ describe('OrganizationForm', () => {
     });
 
     expect(nock.isDone()).toBeTruthy();
+
+    wrapper.unmount();
+  });
+
+  it('#1210 - assigns practitioners to organizations using a 1-1 assignment strategy', () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    const someMockURL = '/someURL';
+
+    const props = {
+      ...formProps,
+      configuredPractAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_ONE,
+      allPractitionerRoles: getResourcesFromBundle(org105Practitioners),
+      existingPractitionerRoles: [],
+    };
+
+    const wrapper = mount(
+      <AppWrapper>
+        <OrganizationForm successUrl={someMockURL} {...props} />
+      </AppWrapper>,
+      { attachTo: container }
+    );
+
+    // simulate value selection for members
+    wrapper.find('input#members').simulate('mousedown');
+
+    const optionTexts = [
+      ...document.querySelectorAll(
+        '#members_list+div.rc-virtual-list .ant-select-item-option-content'
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    // three options instead of 5
+    expect(optionTexts).toHaveLength(3);
+    expect(optionTexts).toEqual(['Ward N Williams MD', 'Allay Allan', 'test fhir']);
 
     wrapper.unmount();
   });

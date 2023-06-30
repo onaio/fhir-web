@@ -35,6 +35,7 @@ import {
   validationRulesFactory,
 } from './utils';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 const { Item: FormItem } = Form;
 interface OrganizationFormProps {
@@ -45,6 +46,8 @@ interface OrganizationFormProps {
   successUrl?: string;
   practitioners: IPractitioner[];
   existingPractitionerRoles: IPractitionerRole[];
+  allPractitionerRoles: IPractitionerRole[];
+  configuredPractAssignmentStrategy?: PractToOrgAssignmentStrategy;
 }
 
 const defaultProps = {
@@ -61,6 +64,8 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     successUrl,
     practitioners,
     existingPractitionerRoles,
+    allPractitionerRoles,
+    configuredPractAssignmentStrategy,
   } = props;
 
   const queryClient = useQueryClient();
@@ -117,7 +122,12 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     { label: t('Inactive'), value: false },
   ];
 
-  const practitionersSelectOptions = getPractitionerOptions(practitioners);
+  const practitionersSelectOptions = getPractitionerOptions(
+    practitioners,
+    existingPractitionerRoles,
+    allPractitionerRoles,
+    configuredPractAssignmentStrategy
+  );
   const validationRules = validationRulesFactory(t);
 
   return (

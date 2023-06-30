@@ -343,6 +343,12 @@ Below is a list of currently supported environment variables:
   - default: 'false'
 
 - **REACT_APP_COMMODITIES_LIST_RESOURCE_ID**
+
   - scopes down what commodities are shown on the fhir commidities module.
   - **Conditionally Optional**(`string`) - required when `REACT_APP_ENABLE_FHIR_COMMODITY` is set to `"true"`
   - default: ''
+
+- **REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY=ONE_TO_ONE**
+  - define the assignment relationship between practitioners to organizations for fhir deployments. This strategy only applies unilaterally, i.e. form practitioner to organization. It does not imply any relations in the opposite direction i.e. from organization to practitioner.
+  - **Optional**(`ONE_TO_ONE, ONE_TO_MANY`)
+  - default: `ONE_TO_MANY`
