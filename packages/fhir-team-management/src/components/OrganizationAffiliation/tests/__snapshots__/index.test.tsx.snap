@@ -37,7 +37,7 @@ exports[`Edits organization affiliation correctly: first row containing ona offi
   class="ant-table-cell"
 >
   <button
-    class="ant-btn ant-btn-link action-button"
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link action-button"
     type="button"
   >
     <span>

@@ -1,5 +1,5 @@
 import MockDate from 'mockdate';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
@@ -212,15 +212,15 @@ describe('components/InventoryItemForm/utils/isDatePastOrToday', () => {
   });
 
   it('returns true for todays date', () => {
-    expect(isDatePastOrToday(moment(today))).toEqual(true);
+    expect(isDatePastOrToday(dayjs(today))).toEqual(true);
   });
 
   it('returns true for yesterdays date', () => {
-    expect(isDatePastOrToday(moment('2020-08-09'))).toEqual(true);
+    expect(isDatePastOrToday(dayjs('2020-08-09'))).toEqual(true);
   });
 
   it('returns false for tomorrows date', () => {
-    expect(isDatePastOrToday(moment('2020-08-11'))).toEqual(false);
+    expect(isDatePastOrToday(dayjs('2020-08-11'))).toEqual(false);
   });
 });
 
@@ -241,14 +241,14 @@ describe('components/InventoryItemForm/utils/isDateFuture', () => {
   });
 
   it('returns false for todays date', () => {
-    expect(isDateFuture(moment(today))).toEqual(false);
+    expect(isDateFuture(dayjs(today))).toEqual(false);
   });
 
   it('returns false for yesterdays date', () => {
-    expect(isDateFuture(moment('2020-08-09'))).toEqual(false);
+    expect(isDateFuture(dayjs('2020-08-09'))).toEqual(false);
   });
 
   it('returns true for tomorrows date', () => {
-    expect(isDateFuture(moment('2020-08-11'))).toEqual(true);
+    expect(isDateFuture(dayjs('2020-08-11'))).toEqual(true);
   });
 });

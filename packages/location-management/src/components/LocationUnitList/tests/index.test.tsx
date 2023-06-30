@@ -5,7 +5,6 @@ import fetch from 'jest-fetch-mock';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { notification } from 'antd';
 import { Router } from 'react-router';
 import LocationUnitList, { loadSingleLocation } from '..';
 import flushPromises from 'flush-promises';
@@ -35,6 +34,12 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -301,7 +306,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   it('test fail loadSingleLocation', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockRejectOnce(new Error('API is down'));
 
     const row: TableData = {
@@ -316,10 +321,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     fetch.resetMocks();
   });
 
@@ -369,7 +371,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   it('fail loading location ', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetch.mockRejectOnce();
     const queryClient = new QueryClient();
@@ -389,15 +391,12 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
 
   it('fail loading location hierarchy', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockRejectOnce();
@@ -418,10 +417,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
     wrapper.unmount();
   });
 
@@ -463,9 +459,9 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table says no data
     const tableText = wrapper.find('table').text();
-    expect(tableText).toContain('No Data');
-    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
-    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
+    expect(tableText).toContain('NameLevelActionsNo data');
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
     wrapper.unmount();
   });
 });

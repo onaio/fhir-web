@@ -32,9 +32,9 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
     "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.6.3",
+    "@opensrp/store": "^0.0.10",
+    "antd": "^5.5.1",
     "lodash": "^4.17.21",
     "react": "^16.18.1",
     "react-redux": "^7.2.2",
@@ -50,7 +50,7 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/plan-form": "^0.0.4",
+    "@opensrp/plan-form": "^0.0.5",
     "@opensrp/plan-form-core": "^0.0.4",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",

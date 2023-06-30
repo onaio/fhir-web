@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Form, Button, Input, DatePicker, Select, Card } from 'antd';
 import { Redirect, useHistory } from 'react-router';
 import { getFetchOptions } from '@opensrp/server-service';
@@ -29,8 +29,8 @@ export interface Setting {
 export interface InventoryItemFormFields {
   productName: string | undefined;
   quantity: number | string;
-  deliveryDate: moment.Moment | null;
-  accountabilityEndDate: moment.Moment | null;
+  deliveryDate: dayjs.Dayjs | null;
+  accountabilityEndDate: dayjs.Dayjs | null;
   unicefSection: string | undefined;
   donor: string | undefined;
   poNumber: number | string;
@@ -108,9 +108,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | undefined>(
     undefined
   );
-  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<moment.Moment | null>(
-    null
-  );
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<dayjs.Dayjs | null>(null);
   const [ifDoneHere, setIfDoneHere] = React.useState<boolean>(false);
   const [isProductChanged, setProductChanged] = React.useState<boolean>(false);
   const [isDeliveryDateChanged, setDeliveryDateChanged] = React.useState<boolean>(false);
@@ -129,7 +127,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
        * Auto-calculate accountability end date by adding the product
        * accountability period (in months) to the entered delivery date
        */
-      const accEndDate = moment(selectedDeliveryDate.format('YYYY-MM-DD')).add(
+      const accEndDate = dayjs(selectedDeliveryDate.format('YYYY-MM-DD')).add(
         selectedProduct.accountabilityPeriod,
         'months'
       );
@@ -165,7 +163,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
     setSelectedProduct(selected);
   };
 
-  const handleDeliveryDateChange = (date: moment.Moment | null, _: string) => {
+  const handleDeliveryDateChange = (date: dayjs.Dayjs | null, _: string) => {
     if (!isDeliveryDateChanged) setDeliveryDateChanged(true);
     setSelectedDeliveryDate(date);
   };

@@ -6,13 +6,14 @@ exports[`LocationForm form validation works for eusm instance: location Tags doe
 
 exports[`LocationForm is able to edit a location unit: field input 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_extraFields_0_Sample Key"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -20,13 +21,14 @@ exports[`LocationForm is able to edit a location unit: field input 1`] = `
 
 exports[`LocationForm is able to edit a location unit: field input 2`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_extraFields_1_Area Nick name"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -34,13 +36,14 @@ exports[`LocationForm is able to edit a location unit: field input 2`] = `
 
 exports[`LocationForm is able to edit a location unit: field input 3`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_extraFields_2_Sample Key Two"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -48,13 +51,14 @@ exports[`LocationForm is able to edit a location unit: field input 3`] = `
 
 exports[`LocationForm is able to edit a location unit: field input 4`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_extraFields_3_Area code"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -102,7 +106,8 @@ exports[`LocationForm is able to edit a location unit: field label 4`] = `
 
 exports[`LocationForm renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn ant-btn-default"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default"
+  disabled={false}
   id="location-form-cancel-button"
   onClick={[Function]}
   type="button"
@@ -136,7 +141,7 @@ exports[`LocationForm renders correctly: cancel button 1`] = `
 
 exports[`LocationForm renders correctly: externalId field 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_externalId"
   onBlur={[Function]}
@@ -144,6 +149,7 @@ exports[`LocationForm renders correctly: externalId field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Select status"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -161,16 +167,22 @@ exports[`LocationForm renders correctly: externalId label 1`] = `
 
 exports[`LocationForm renders correctly: geometry field 1`] = `
 <textarea
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_geometry"
+  onBlur={[Function]}
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
+  onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="</> JSON"
   rows={4}
-  style={Object {}}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
   value=""
 />
 `;
@@ -187,13 +199,15 @@ exports[`LocationForm renders correctly: geometry label 1`] = `
 
 exports[`LocationForm renders correctly: instance field 1`] = `
 <input
-  className="ant-input ant-input-disabled"
+  aria-required="true"
+  className="ant-input ant-input-disabled css-dev-only-do-not-override-k7429z"
   disabled={true}
   id="location-form_instance"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value="core"
 />
@@ -215,12 +229,7 @@ Array [
     checked={false}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -228,12 +237,7 @@ Array [
     checked={true}
     className="ant-radio-input"
     disabled={false}
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
@@ -252,7 +256,7 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 
 exports[`LocationForm renders correctly: latitude field 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_latitude"
   onBlur={[Function]}
@@ -260,6 +264,7 @@ exports[`LocationForm renders correctly: latitude field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="E.g. -16.08306"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -280,6 +285,7 @@ exports[`LocationForm renders correctly: locationTags field 1`] = `
   aria-activedescendant="location-form_locationTags_list_0"
   aria-autocomplete="list"
   aria-controls="location-form_locationTags_list"
+  aria-expanded={false}
   aria-haspopup="listbox"
   aria-owns="location-form_locationTags_list"
   autoComplete="off"
@@ -317,7 +323,7 @@ exports[`LocationForm renders correctly: locationTags label 1`] = `
 
 exports[`LocationForm renders correctly: longitude field 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="location-form_longitude"
   onBlur={[Function]}
@@ -325,6 +331,7 @@ exports[`LocationForm renders correctly: longitude field 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="E.g. 49.54933"
+  style={Object {}}
   type="text"
   value=""
 />
@@ -342,8 +349,10 @@ exports[`LocationForm renders correctly: longitude label 1`] = `
 
 exports[`LocationForm renders correctly: name field 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
+  hidden={null}
   id="location-form_name"
   onBlur={[Function]}
   onChange={[Function]}
@@ -382,6 +391,7 @@ exports[`LocationForm renders correctly: serviceType field 1`] = `
   aria-activedescendant="location-form_serviceType_list_0"
   aria-autocomplete="list"
   aria-controls="location-form_serviceType_list"
+  aria-expanded={false}
   aria-haspopup="listbox"
   aria-owns="location-form_serviceType_list"
   autoComplete="off"
@@ -422,24 +432,16 @@ Array [
   <input
     checked={true}
     className="ant-radio-input"
-    onBlur={[Function]}
+    disabled={false}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value="Active"
   />,
   <input
     checked={false}
     className="ant-radio-input"
-    onBlur={[Function]}
+    disabled={false}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value="InActive"
   />,
@@ -458,7 +460,7 @@ exports[`LocationForm renders correctly: status label 1`] = `
 
 exports[`LocationForm renders correctly: submit button 1`] = `
 <button
-  className="ant-btn ant-btn-primary"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
   disabled={false}
   id="location-form-submit-button"
   onClick={[Function]}

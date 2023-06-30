@@ -36,20 +36,18 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  <a
-    href="/admin/location/unit/edit/303"
+  <button
+    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+    type="button"
   >
-    <button
-      class="ant-btn ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      href="/admin/location/unit/edit/303"
     >
-      <span>
-        Edit
-      </span>
-    </button>
-  </a>
+      Edit
+    </a>
+  </button>
   <div
-    class="ant-divider ant-divider-vertical"
+    class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
   />
   <span
@@ -90,7 +88,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Location id
         </span>
@@ -99,7 +97,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           303
         </span>
@@ -124,7 +122,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           identifier
         </span>
@@ -133,7 +131,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           93bc9c3d-6321-41b0-9b93-1275d7114e22
         </span>
@@ -158,7 +156,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Name
         </span>
@@ -167,7 +165,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           Ona Office Sub Location
         </span>
@@ -192,7 +190,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           alias
         </span>
@@ -201,7 +199,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           ona office
         </span>
@@ -226,7 +224,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Status
         </span>
@@ -235,7 +233,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           active
         </span>
@@ -260,7 +258,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Physical type
         </span>
@@ -269,7 +267,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           Jurisdiction
         </span>
@@ -294,7 +292,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__label"
       >
         <span
-          class="ant-typography ant-typography-secondary"
+          class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
         >
           Description
         </span>
@@ -303,7 +301,7 @@ exports[`location-management/src/components/LocationUnitList works correctly: ke
         class="singleKeyValue-pair__value"
       >
         <span
-          class="ant-typography"
+          class="ant-typography css-dev-only-do-not-override-k7429z"
         >
           The Sub location
         </span>

@@ -125,18 +125,18 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   data-testid="linkId-/G1"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Facility MetaData
   </span>
    
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     linkId: /G1
   </span>
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     type: group
   </span>
@@ -149,18 +149,18 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   data-testid="linkId-/G1/Q1"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Facility ID
   </span>
    
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     linkId: /G1/Q1
   </span>
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     type: string
   </span>
@@ -173,18 +173,18 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   data-testid="linkId-/G1/Q2"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Summary Census #ID
   </span>
    
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     linkId: /G1/Q2
   </span>
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     type: string
   </span>
@@ -197,18 +197,18 @@ exports[`Questionnaire profile view renders correctly: questionnaire single item
   data-testid="linkId-/G1/Q3"
 >
   <span
-    class="ant-typography"
+    class="ant-typography css-dev-only-do-not-override-k7429z"
   >
     Effective Date
   </span>
    
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     linkId: /G1/Q3
   </span>
   <span
-    class="ant-tag ant-tag-default"
+    class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
   >
     type: date
   </span>
@@ -377,18 +377,18 @@ exports[`view details show when available: questionnaire items preview 1`] = `
     data-testid="linkId-/G1/Q4"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       What pizza toppings would you like?
     </span>
      
     <span
-      class="ant-tag ant-tag-default"
+      class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
     >
       linkId: /G1/Q4
     </span>
     <span
-      class="ant-tag ant-tag-default"
+      class="ant-tag ant-tag-default css-dev-only-do-not-override-k7429z"
     >
       type: choice
     </span>

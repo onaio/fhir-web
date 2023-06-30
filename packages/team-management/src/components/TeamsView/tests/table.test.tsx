@@ -81,14 +81,17 @@ describe('components/TeamsView/table', () => {
       wrapper.update();
     });
 
-    const dropdown = wrapper.find('Dropdown').at(0);
-    dropdown.simulate('click');
+    const firstRow = wrapper.find('table tbody tr').first();
+    firstRow.simulate('click');
     wrapper.update();
 
     fetch.mockResponseOnce(JSON.stringify(org1Assignment));
     fetch.mockResponseOnce(JSON.stringify([]));
 
-    wrapper.find('.viewdetails').at(0).simulate('click');
+    firstRow.find('.more-options').last().simulate('click');
+    wrapper.update();
+    const dropdown = wrapper.find('button[data-testid="view-details"]');
+    dropdown.simulate('click');
     wrapper.update();
     expect(onViewDetails).toBeCalled();
     wrapper.unmount();

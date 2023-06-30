@@ -1,7 +1,7 @@
 import React from 'react';
 import { get, keyBy } from 'lodash';
 import { Button } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Assignment } from '../../ducks/assignments';
 import type { TFunction } from '@opensrp/i18n';
 import { TableData } from '.';
@@ -89,7 +89,7 @@ export const getPayload = (
   initialOrgs: string[] = [],
   existingAssignments: Assignment[] = []
 ): Assignment[] => {
-  const now = moment(new Date());
+  const now = dayjs(new Date());
   let startDate = now.format();
   const endDate = now.add(10, 'year').format();
 
@@ -117,7 +117,7 @@ export const getPayload = (
   }
 
   // turns out if you put it in the loop it keeps subtracting a day for every iteration
-  const retireDate = moment(new Date()).format();
+  const retireDate = dayjs(new Date()).format();
 
   for (const retiredOrgId of initialOrgs.filter((orgId) => !selectedOrgs.includes(orgId))) {
     if (!payload.map((obj) => obj.organization).includes(retiredOrgId)) {

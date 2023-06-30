@@ -32,14 +32,14 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "antd": "^4.6.3",
-    "react": "^16.18.1",
-    "@opensrp/i18n": "^0.0.1"
+    "@opensrp/i18n": "^0.0.1",
+    "antd": "^5.5.1",
+    "react": "^16.18.1"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^4.2.2",
+    "@ant-design/icons": "^4.7.0",
     "@opensrp/fhir-resources": "^0.0.0",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",

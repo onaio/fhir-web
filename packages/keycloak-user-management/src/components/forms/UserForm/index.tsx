@@ -1,6 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Select, Input, Radio, PageHeader } from 'antd';
+import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
@@ -110,7 +111,6 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             ? t('Edit User | {{username}}', { username: initialValues.username })
             : t('Add User')
         }
-        className="page-header"
       />
       <Col className="bg-white p-3" span={24}>
         <Form

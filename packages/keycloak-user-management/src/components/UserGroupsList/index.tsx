@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -143,12 +145,29 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
 
   if (isUserGroupsError) return <Resource404 />;
 
+  const getItems = (record: KeycloakUserGroup): MenuProps['items'] => [
+    {
+      key: record.id,
+      label: (
+        <Button
+          type="link"
+          data-testid="view-details"
+          onClick={() => {
+            setGroupId(record.id);
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <div className="content-section">
       <Helmet>
         <title>{t('User Groups')}</title>
       </Helmet>
-      <PageHeader title={t('User Groups')} className="page-header" />
+      <PageHeader title={t('User Groups')} />
       <Row className="list-view">
         <Col className={'main-content'}>
           <div className="main-content__header">
@@ -169,7 +188,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               title: t('Actions'),
               width: '10%',
               // eslint-disable-next-line react/display-name
-              render: (record) => (
+              render: (record: KeycloakUserGroup) => (
                 <span>
                   <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
                     <Button type="link" className="m-0 p-1">
@@ -178,24 +197,12 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown
-                    overlay={
-                      <Menu className="menu">
-                        <Menu.Item
-                          key={record.id}
-                          className="viewdetails"
-                          onClick={() => {
-                            setGroupId(record.id);
-                          }}
-                        >
-                          {t('View Details')}
-                        </Menu.Item>
-                      </Menu>
-                    }
+                    menu={{ items: getItems(record) }}
                     placement="bottomLeft"
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" />
+                    <MoreOutlined className="more-options" data-testid="more-options" />
                   </Dropdown>
                 </span>
               ),

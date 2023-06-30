@@ -1,14 +1,10 @@
 import * as React from 'react';
-import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
+import { Popconfirm, Divider, Dropdown, Button } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
-import {
-  KeycloakUser,
-  URL_USER_CREDENTIALS,
-  URL_USER_EDIT,
-  KEYCLOAK_URL_USERS,
-} from '@opensrp/user-management';
+import { KeycloakUser, URL_USER_EDIT, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -53,63 +49,61 @@ export const getTableColumns = (
     });
   });
 
+  const getItems = (record: KeycloakUser): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button onClick={() => onViewDetails(record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Popconfirm
+          title={t('Are you sure you want to delete this user?')}
+          okText={t('Yes')}
+          cancelText={t('No')}
+          onConfirm={async () => {
+            await deleteUser(keycloakBaseUrl, baseUrl, record.id, t);
+            try {
+              return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
+            } catch {
+              return sendErrorNotification(
+                t('Failed to update data, please refresh the page to see the most recent changes')
+              );
+            }
+          }}
+        >
+          {user_id &&
+            (record.id === user_id ? null : (
+              <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
+                {t('Delete')}
+              </Button>
+            ))}
+        </Popconfirm>
+      ),
+    },
+  ];
+
   dataElements.push({
     title: t('Actions'),
     // eslint-disable-next-line react/display-name
     render: (_, record) => {
       return (
         <>
-          <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-            {t('Edit')}
-          </Link>
+          <Button type="link">
+            <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+              {t('Edit')}
+            </Link>
+          </Button>
           <Divider type="vertical" />
           <Dropdown
             placement="bottomRight"
             arrow
             trigger={['click']}
-            overlay={
-              <Menu>
-                <Menu.Item key="view-details" className="view-details">
-                  <Button type="link">
-                    <Button onClick={() => onViewDetails(record.id)} type="link">
-                      {t('View Details')}
-                    </Button>
-                  </Button>
-                </Menu.Item>
-                <Menu.Item key="delete-user">
-                  <Popconfirm
-                    title={t('Are you sure you want to delete this user?')}
-                    okText={t('Yes')}
-                    cancelText={t('No')}
-                    onConfirm={() => {
-                      return deleteUser(keycloakBaseUrl, baseUrl, record.id, t).then(() => {
-                        return queryClient
-                          .invalidateQueries([KEYCLOAK_URL_USERS])
-                          .catch(() =>
-                            sendErrorNotification(
-                              t(
-                                'Failed to update data, please refresh the page to see the most recent changes'
-                              )
-                            )
-                          );
-                      });
-                    }}
-                  >
-                    {user_id &&
-                      (record.id === user_id ? null : (
-                        <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
-                          {t('Delete')}
-                        </Button>
-                      ))}
-                  </Popconfirm>
-                </Menu.Item>
-                <Menu.Item key="credentials">
-                  <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-                    <Button type="link">{t('Credentials')}</Button>
-                  </Link>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
           >
             <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>

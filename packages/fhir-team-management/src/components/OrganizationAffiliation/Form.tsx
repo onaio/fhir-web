@@ -90,7 +90,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
     <Modal
       destroyOnClose={true}
       title={t(`Assign/Unassign Teams | {{locationName}}`, { locationName })}
-      visible={visible}
+      open={visible}
       okText="Save"
       onCancel={handleCancel}
       cancelText="Cancel"

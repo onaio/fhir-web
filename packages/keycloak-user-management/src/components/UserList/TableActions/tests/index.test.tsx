@@ -49,7 +49,7 @@ describe('components/UserList/TableActions', () => {
     props.extraData = {
       user_id: 'e8b07278-c75b-4dc7-b1f4-bcbf01b7d353',
     };
-    const queryInvalidatorMock = jest.fn().mockImplementation(() => {
+    const queryInvalidatorMock = jest.fn().mockImplementation(async () => {
       throw new Error('some error');
     });
     jest.spyOn(reactQuery, 'useQueryClient').mockImplementation(() => {
@@ -68,7 +68,7 @@ describe('components/UserList/TableActions', () => {
       { attachTo: div }
     );
     const tableActions = wrapper.find('TableActions');
-    expect(tableActions.find('Dropdown').prop('overlay')).toMatchSnapshot('dots menu');
+    expect(tableActions.find('Dropdown').prop('menu')).toMatchSnapshot('dots menu');
 
     // target the initial row view details
     const dropdown = document.querySelector('[data-testid="action-dropdown"]');
@@ -79,7 +79,7 @@ describe('components/UserList/TableActions', () => {
     fireEvent.click(deleteBtn);
 
     // confirm
-    const yesBtn = document.querySelectorAll('.ant-popover-buttons button')[1];
+    const yesBtn = document.querySelectorAll('.ant-popconfirm-buttons button')[1];
     expect(yesBtn).toMatchSnapshot('yes button');
     fireEvent.click(yesBtn);
 
@@ -102,6 +102,6 @@ describe('components/UserList/TableActions', () => {
       </BrowserRouter>
     );
     const tableActions = wrapper.find('TableActions');
-    expect(tableActions.find('Dropdown').prop('overlay')).toMatchSnapshot('dots menu');
+    expect(tableActions.find('Dropdown').prop('menu')).toMatchSnapshot('dots menu');
   });
 });

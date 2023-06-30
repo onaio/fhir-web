@@ -127,14 +127,18 @@ test('renders correctly when listing resources', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  });
 
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?max=15',
   ]);
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -238,7 +242,8 @@ test('renders correctly when listing resources', async () => {
   fireEvent.click(deleteBtn);
 
   // confirm
-  const yesBtn = document.querySelectorAll('.ant-popover-buttons button')[1];
+  const yesBtn = document.querySelectorAll('.ant-popconfirm-buttons button')[1];
+
   expect(yesBtn).toMatchSnapshot('yes button');
   fireEvent.click(yesBtn);
 
@@ -247,7 +252,7 @@ test('renders correctly when listing resources', async () => {
   });
 
   await waitFor(async () => {
-    expect(screen.queryByText(/Practitioner deactivated/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Practitioner role deactivated/i)).toBeInTheDocument();
     expect(screen.queryByText(/Group deactivated/i)).toBeInTheDocument();
   });
 

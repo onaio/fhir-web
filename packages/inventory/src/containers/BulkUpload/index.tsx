@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { getQueryParams } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -60,7 +60,7 @@ const BulkUpload = (props: CSVUploadTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
       {(() => {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();

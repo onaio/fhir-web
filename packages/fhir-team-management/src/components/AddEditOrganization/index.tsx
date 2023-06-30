@@ -9,7 +9,8 @@ import {
   ORGANIZATION_LIST_URL,
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader, Spin } from 'antd';
+import { Spin } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
@@ -100,7 +101,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <OrganizationForm
           fhirBaseUrl={fhirBaseUrl}

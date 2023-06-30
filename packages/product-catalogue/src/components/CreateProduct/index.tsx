@@ -4,7 +4,8 @@
  */
 import React from 'react';
 import { ProductForm } from '../ProductForm';
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import Helmet from 'react-helmet';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { useTranslation } from '../../mls';
@@ -32,7 +33,7 @@ const CreateProductView = (props: CreateProductViewProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
+      <PageHeader title={pageTitle} />
 
       <ProductForm baseURL={baseURL} />
     </Layout>

@@ -197,7 +197,7 @@ describe('components/UserRolesList', () => {
     });
 
     const userList = wrapper.find('UserRolesList');
-    expect(userList.find('Table').first().text()).toEqual('NameCompositeDescriptionNo Data');
+    expect(userList.find('Table').first().text()).toEqual('NameCompositeDescriptionNo data');
   });
 
   it('sorts by role name', async () => {

@@ -1,7 +1,8 @@
 /** Assignments redux module */
 import { Dictionary } from '@onaio/utils';
 import { get, uniqWith } from 'lodash';
-import moment from 'moment';
+// import moment from 'moment';
+import dayjs from 'dayjs';
 import { createSelector } from 'reselect';
 import { Store } from 'redux';
 import { AnyAction } from 'redux';
@@ -222,7 +223,7 @@ export const getAssignmentsArrayByPlanId = () => {
     }
     // handle null and non-date entries in Assignment.toDate field
     const filteredAssignments = assignments.filter((obj) =>
-      moment(obj.toDate).isValid() ? moment(obj.toDate) >= moment() : true
+      dayjs(obj.toDate).isValid() ? dayjs(obj.toDate) >= dayjs() : true
     );
     return filteredAssignments;
   });

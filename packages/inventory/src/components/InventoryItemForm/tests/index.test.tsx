@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { createBrowserHistory } from 'history';
 import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
@@ -158,10 +158,10 @@ describe('components/InventoryItemForm', () => {
     expect(wrapper.find('select#productName').get(0).props.disabled).toEqual(false);
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -221,13 +221,13 @@ describe('components/InventoryItemForm', () => {
     wrapper.find('select#productName').simulate('change', {
       target: { value: fixtures.products[0].productName },
     });
-    const deliveryDate = moment('2021-02-09');
+    const deliveryDate = dayjs('2021-02-09');
     wrapper.find('select#deliveryDate').simulate('change', {
       target: { value: deliveryDate },
     });
 
     wrapper.update();
-    const expected = moment(deliveryDate.format('YYYY-MM-DD')).add(
+    const expected = dayjs(deliveryDate.format('YYYY-MM-DD')).add(
       fixtures.products[0].accountabilityPeriod,
       'months'
     );
@@ -251,10 +251,10 @@ describe('components/InventoryItemForm', () => {
     wrapper.find('input#serialNumber').simulate('change', { target: { value: '12345' } });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -313,10 +313,10 @@ describe('components/InventoryItemForm', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -342,8 +342,8 @@ describe('components/InventoryItemForm', () => {
       initialValues: {
         productName: fixtures.products[0].productName,
         quantity: 78,
-        deliveryDate: moment('2021-02-02'),
-        accountabilityEndDate: moment('2022-02-02'),
+        deliveryDate: dayjs('2021-02-02'),
+        accountabilityEndDate: dayjs('2022-02-02'),
         unicefSection: fixtures.unicefSections[0].value,
         donor: fixtures.donors[0].value,
         poNumber: 90,
@@ -363,9 +363,9 @@ describe('components/InventoryItemForm', () => {
       fixtures.products[0].productName
     );
     expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"78"`);
-    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-02'));
+    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(dayjs('2021-02-02'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
-      moment('2022-02-02')
+      dayjs('2022-02-02')
     );
     expect(wrapper.find('select#unicefSection').get(0).props.value).toEqual(
       fixtures.unicefSections[0].value
@@ -379,10 +379,10 @@ describe('components/InventoryItemForm', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[1].value },
@@ -438,8 +438,8 @@ describe('components/InventoryItemForm', () => {
       initialValues: {
         productName: fixtures.products[0].productName,
         quantity: 78,
-        deliveryDate: moment('2021-02-02'),
-        accountabilityEndDate: moment('2022-02-02'),
+        deliveryDate: dayjs('2021-02-02'),
+        accountabilityEndDate: dayjs('2022-02-02'),
         unicefSection: fixtures.unicefSections[0].value,
         donor: fixtures.donors[0].value,
         poNumber: 90,
@@ -457,10 +457,10 @@ describe('components/InventoryItemForm', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -517,10 +517,10 @@ describe('components/InventoryItemForm', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: '' } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -578,10 +578,10 @@ describe('components/InventoryItemForm', () => {
     });
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[0].value },
@@ -621,8 +621,8 @@ describe('components/InventoryItemForm', () => {
       initialValues: {
         productName: fixtures.product4.productName,
         quantity: 78,
-        deliveryDate: moment('2021-02-16'),
-        accountabilityEndDate: moment('2022-02-17'),
+        deliveryDate: dayjs('2021-02-16'),
+        accountabilityEndDate: dayjs('2022-02-17'),
         unicefSection: fixtures.unicefSections[0].value,
         donor: fixtures.donors[0].value,
         poNumber: 90,
@@ -643,9 +643,9 @@ describe('components/InventoryItemForm', () => {
       fixtures.product4.productName
     );
     expect(wrapper.find('input#quantity').get(0).props.value).toMatchInlineSnapshot(`"78"`);
-    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(moment('2021-02-16'));
+    expect(wrapper.find('select#deliveryDate').get(0).props.value).toEqual(dayjs('2021-02-16'));
     expect(wrapper.find('select#accountabilityEndDate').get(0).props.value).toEqual(
-      moment('2022-02-17')
+      dayjs('2022-02-17')
     );
     expect(wrapper.find('select#unicefSection').get(0).props.value).toEqual(
       fixtures.unicefSections[0].value
@@ -655,13 +655,13 @@ describe('components/InventoryItemForm', () => {
     expect(wrapper.find('input#serialNumber').get(0).props.value).toEqual('1245');
 
     // It autocalculates accountability end date if delivery date is touched
-    const deliveryDate = moment('2021-02-14');
+    const deliveryDate = dayjs('2021-02-14');
     wrapper.find('select#deliveryDate').simulate('change', {
       target: { value: deliveryDate },
     });
 
     wrapper.update();
-    const expected = moment(deliveryDate.format('YYYY-MM-DD')).add(
+    const expected = dayjs(deliveryDate.format('YYYY-MM-DD')).add(
       fixtures.product4.accountabilityPeriod,
       'months'
     );
@@ -670,10 +670,10 @@ describe('components/InventoryItemForm', () => {
     // Make edits
     wrapper.find('input#quantity').simulate('change', { target: { value: 10 } });
     wrapper.find('select#deliveryDate').simulate('change', {
-      target: { value: moment('2021-02-08') },
+      target: { value: dayjs('2021-02-08') },
     });
     wrapper.find('select#accountabilityEndDate').simulate('change', {
-      target: { value: moment('2021-04-08') },
+      target: { value: dayjs('2021-04-08') },
     });
     wrapper.find('select#unicefSection').simulate('change', {
       target: { value: fixtures.unicefSections[1].value },

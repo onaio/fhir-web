@@ -1,6 +1,6 @@
 {
   "name": "@opensrp/plan-form",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Form component for creating OpenSRP pages",
   "main": "dist/index.js",
   "types": "dist/types",
@@ -32,9 +32,9 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.7",
     "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.6.3",
+    "@opensrp/store": "^0.0.7",
+    "antd": "^5.5.1",
     "react": "^16.18.1",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",
@@ -43,9 +43,9 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
-    "@ant-design/icons": "^4.3.0",
+    "@ant-design/icons": "^4.7.0",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/plan-form-core": "^0.0.4",
     "@opensrp/react-utils": "^0.0.12",

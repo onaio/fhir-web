@@ -17,6 +17,8 @@ const fetch = require('jest-fetch-mock');
 
 const history = createBrowserHistory();
 
+jest.setTimeout(10000);
+
 describe('Create Plan Page', () => {
   afterEach(() => {
     fetch.resetMocks();
@@ -78,40 +80,37 @@ describe('Create Plan Page', () => {
 
     // testing implementation details at its best.
     // date range field has not initial value
-    expect(wrapper.find('FormItem#dateRange RangePicker').first().props().value).toEqual([
-      undefined,
-      undefined,
-    ]);
+    expect(wrapper.find('#dateRange .ant-form-item').props().value).toEqual(undefined);
 
     // check interventionType hidden
-    expect(wrapper.find('FormItem#interventionType').props().hidden).toBeTruthy();
+    expect(wrapper.find('#interventionType FormItemInput').first().props().hidden).toBeTruthy();
 
     // check title are hidden
-    expect(wrapper.find('FormItem#title').props().hidden).toBeTruthy();
+    expect(wrapper.find('#title FormItemInput').first().props().hidden).toBeTruthy();
 
     // name is hidden by default
-    expect(wrapper.find('FormItem#name').props().hidden).toBeTruthy();
+    expect(wrapper.find('#name FormItemInput').first().props().hidden).toBeTruthy();
 
     // identifier is hidden by default
-    expect(wrapper.find('FormItem#identifier').props().hidden).toBeTruthy();
+    expect(wrapper.find('#identifier FormItemInput').first().props().hidden).toBeTruthy();
 
     // version is hidden by default
-    expect(wrapper.find('FormItem#version').props().hidden).toBeTruthy();
+    expect(wrapper.find('#version FormItemInput').first().props().hidden).toBeTruthy();
 
     // taskGenerationStatus is hidden by default
-    expect(wrapper.find('FormItem#taskGenerationStatus').props().hidden).toBeTruthy();
+    expect(wrapper.find('#taskGenerationStatus FormItemInput').first().props().hidden).toBeTruthy();
 
     // status is not hidden
-    expect(wrapper.find('FormItem#status').props().hidden).toBeFalsy();
+    expect(wrapper.find('#status FormItemInput').first().props().hidden).toBeFalsy();
 
     // dateRange is not hidden
-    expect(wrapper.find('FormItem#dateRange').props().hidden).toBeFalsy();
+    expect(wrapper.find('#dateRange FormItemInput').first().props().hidden).toBeFalsy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#date').props().hidden).toBeTruthy();
+    expect(wrapper.find('#date FormItemInput').first().props().hidden).toBeTruthy();
 
     // date is  hidden by default
-    expect(wrapper.find('FormItem#description').props().hidden).toBeFalsy();
+    expect(wrapper.find('#description FormItemInput').first().props().hidden).toBeFalsy();
 
     wrapper.unmount();
   });

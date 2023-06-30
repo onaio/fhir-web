@@ -36,7 +36,7 @@
     "@ant-design/icons": "^4.7.0",
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
-    "@opensrp/notifications": "^0.0.4",
+    "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
@@ -54,9 +54,9 @@
     "i18next-parser": "^3.5.0"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
     "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.8.2",
+    "@opensrp/store": "^0.0.10",
+    "antd": "^5.5.1",
     "formik-antd": "^2.0.1",
     "react": "^16.13.1",
     "react-query": "^3.15.1",

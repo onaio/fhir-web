@@ -43,14 +43,13 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
-    "@smile-cdr/fhirts": "1.2.5",
-    "@types/antd": "^1.0.0",
     "@opensrp/store": "^0.0.10",
+    "@smile-cdr/fhirts": "1.2.5",
     "@types/uuid": "8.3.1"
   },
   "peerDependencies": {
-    "antd": "^4.6.3",
     "@opensrp/i18n": "^0.0.1",
+    "antd": "^5.5.1",
     "lodash": "4.17.21",
     "react": "^16.13.1",
     "react-query": "^3.15.1",

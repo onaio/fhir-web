@@ -96,56 +96,54 @@ export const healthCareServicePage2 = {
   ],
   entry: [
     {
-      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/HealthcareService/323',
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/HealthcareService/322',
       resource: {
         resourceType: 'HealthcareService',
-        id: '323',
+        id: '322',
         meta: {
-          versionId: '7',
-          lastUpdated: '2022-01-27T12:01:49.392+00:00',
-          source: '#c723e5c4096511bb',
+          versionId: '3',
+          lastUpdated: '2021-06-16T20:29:39.980+00:00',
+          source: '#433a680e361de8a1',
         },
         identifier: [
           {
             use: 'official',
-            value: '323',
-          },
-        ],
-        active: true,
-        providedBy: {
-          reference: 'Organization/366',
-        },
-        name: 'testing  Healthcare Jan27',
-        comment: 'test',
-        extraDetails: 'test',
-      },
-      search: {
-        mode: 'match',
-      },
-    },
-    {
-      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/HealthcareService/313',
-      resource: {
-        resourceType: 'HealthcareService',
-        id: '313',
-        meta: {
-          versionId: '5',
-          lastUpdated: '2021-06-16T20:30:54.480+00:00',
-          source: '#555f2c7540f52c91',
-        },
-        identifier: [
-          {
-            use: 'official',
-            value: '313',
+            value: '322',
           },
         ],
         active: true,
         providedBy: {
           reference: 'Organization/319',
         },
-        name: 'ANC Service',
-        comment: 'ANC Service',
-        extraDetails: 'ANC Service',
+        name: 'test healthcare',
+        comment: 'Ashfahan',
+        extraDetails: 'testing',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/HealthcareService/360',
+      resource: {
+        resourceType: 'HealthcareService',
+        id: '360',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-06-22T12:20:39.521+00:00',
+          source: '#1177a592b6dd4ac6',
+        },
+        identifier: [
+          {
+            use: 'official',
+            value: 'aade5ee4-07d0-4155-a678-537607dfcb9f',
+          },
+        ],
+        active: true,
+        providedBy: {
+          reference: 'Organization/319',
+        },
+        name: 'Test Health One',
       },
       search: {
         mode: 'match',

@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
+import type { MenuProps } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -83,6 +85,36 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   });
   type TableData = typeof tableData[0];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Popconfirm
+          title={t('Are you sure you want to delete this Care Team?')}
+          okText={t('Yes')}
+          className="delCareteam"
+          cancelText={t('No')}
+          onConfirm={async () => {
+            await deleteCareTeam(fhirBaseURL, record.id, t);
+            await refetch();
+          }}
+        >
+          <Button danger data-testid="deleteBtn" type="link" style={{ color: '#' }}>
+            {t('Delete')}
+          </Button>
+        </Popconfirm>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
+          View Details
+        </Button>
+      ),
+    },
+  ];
+
   const columns = [
     {
       title: t('Name'),
@@ -96,37 +128,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
-            <Button type="link" className="m-0 p-1">
-              {t('Edit')}
-            </Button>
-          </Link>
+          <Button type="link" className="m-0 p-1">
+            <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>{t('Edit')}</Link>
+          </Button>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="delete">
-                  <Popconfirm
-                    title={t('Are you sure you want to delete this Care Team?')}
-                    okText={t('Yes')}
-                    cancelText={t('No')}
-                    onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id, t);
-                      await refetch();
-                    }}
-                  >
-                    <Button danger type="link" style={{ color: '#' }}>
-                      {t('Delete')}
-                    </Button>
-                  </Popconfirm>
-                </Menu.Item>
-                <Menu.Item key="view-details" className="view-details">
-                  <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
-                    View Details
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}
@@ -150,7 +157,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       <Helmet>
         <title>{t('FHIR Care Team')}</title>
       </Helmet>
-      <PageHeader title={t('FHIR Care Team')} className="page-header" />
+      <PageHeader title={t('FHIR Care Team')} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
