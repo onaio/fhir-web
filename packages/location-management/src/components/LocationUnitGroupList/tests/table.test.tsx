@@ -15,7 +15,6 @@ import flushPromises from 'flush-promises';
 import { baseURL } from '../../../constants';
 import * as notifications from '@opensrp/notifications';
 
-
 Table.defaultProps = { opensrpBaseURL: baseURL };
 
 jest.mock('@opensrp/notifications', () => ({
@@ -75,13 +74,13 @@ describe('location-management/src/components/LocationTagView', () => {
       </Provider>
     );
 
-    const dropdown = wrapper.find('.more-options').first()
+    const dropdown = wrapper.find('.more-options').first();
     dropdown.simulate('click');
-    wrapper.update()
+    wrapper.update();
     const dropdownItems = wrapper.find('button[data-testid="viewdetails"]');
-    expect(dropdownItems).toHaveLength(1)
+    expect(dropdownItems).toHaveLength(1);
     dropdownItems.simulate('click');
-    
+
     expect(onViewDetails).toBeCalled();
   });
 
@@ -96,11 +95,11 @@ describe('location-management/src/components/LocationTagView', () => {
 
     // wrapper.find('.more-options').first().simulate('click');
     // wrapper.find('.viewdetails').first().simulate('click');
-    const dropdown = wrapper.find('.more-options').first()
+    const dropdown = wrapper.find('.more-options').first();
     dropdown.simulate('click');
-    wrapper.update()
+    wrapper.update();
     const dropdownItems = wrapper.find('button[data-testid="viewdetails"]');
-    expect(dropdownItems).toHaveLength(1)
+    expect(dropdownItems).toHaveLength(1);
     dropdownItems.simulate('click');
 
     expect(wrapper).toHaveLength(1);
@@ -116,12 +115,11 @@ describe('location-management/src/components/LocationTagView', () => {
       </Provider>
     );
 
-
-    const dropdown = wrapper.find('.more-options').first()
+    const dropdown = wrapper.find('.more-options').first();
     dropdown.simulate('click');
-    wrapper.update()
+    wrapper.update();
     const dropdownItems = wrapper.find('button[data-testid="delete"]');
-    expect(dropdownItems).toHaveLength(1)
+    expect(dropdownItems).toHaveLength(1);
     dropdownItems.simulate('click');
 
     await act(async () => {

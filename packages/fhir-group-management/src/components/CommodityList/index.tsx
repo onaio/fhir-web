@@ -79,10 +79,14 @@ export const CommodityList = (props: GroupListProps) => {
     {
       key: '1',
       label: (
-        <Button data-testid="view-details" onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+        <Button
+          data-testid="view-details"
+          onClick={() => addParam(viewDetailsQuery, record.id)}
+          type="link"
+        >
           {t('View Details')}
         </Button>
-      )
+      ),
     },
     {
       key: '2',
@@ -110,9 +114,9 @@ export const CommodityList = (props: GroupListProps) => {
             {t('Delete')}
           </Button>
         </Popconfirm>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   const getColumns = (t: TFunction) => [
     {
@@ -138,9 +142,7 @@ export const CommodityList = (props: GroupListProps) => {
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Button type="link" className="m-0 p-1">
-            <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`}>
-              {t('Edit')}
-            </Link>
+            <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`}>{t('Edit')}</Link>
           </Button>
           <Divider type="vertical" />
           <Dropdown

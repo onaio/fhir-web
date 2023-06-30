@@ -4,7 +4,6 @@ import { authenticateUser } from '@onaio/session-reducer';
 import {
   cleanup,
   fireEvent,
-  prettyDOM,
   render,
   screen,
   waitFor,
@@ -166,8 +165,8 @@ test('pagination and search work correctly', async () => {
   const waitForSpinner = async () => {
     return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).toBeInTheDocument();
-    })
-  }
+    });
+  };
 
   await waitFor(() => {
     expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();

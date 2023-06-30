@@ -85,16 +85,12 @@ export const populateTeamDetails = (
         .then((locations) => {
           setAssignedLocations(locations);
         })
-        .catch((err) => {
+        .catch(() => {
           sendErrorNotification(t('An error occurred'));
-          console.log("first")
-          console.log({err})
         });
     })
-    .catch((err) => {
+    .catch(() => {
       sendErrorNotification(t('An error occurred'));
-      console.log("Second")
-      console.log({err})
     })
     .finally(() => setDetail(row));
 };
@@ -196,7 +192,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
             <div>
               <Link to={URL_ADD_TEAM}>
                 <Button type="primary">
-                  <PlusOutlined  />
+                  <PlusOutlined />
                   {t('Create Team')}
                 </Button>
               </Link>

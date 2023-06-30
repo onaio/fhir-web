@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { PageHeader } from '@opensrp/react-utils';
-import { Row, Col, Button, Spin, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
@@ -38,7 +38,6 @@ import {
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
-import { UserGroup } from 'keycloak-user-management/src/ducks/user';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -146,23 +145,22 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
 
   if (isUserGroupsError) return <Resource404 />;
 
-  console.log("Confirm record type")
-  const getItems = (record: any): MenuProps['items'] => [
+  const getItems = (record: KeycloakUserGroup): MenuProps['items'] => [
     {
       key: record.id,
       label: (
         <Button
-          type='link'
-          data-testid='view-details'
+          type="link"
+          data-testid="view-details"
           onClick={() => {
             setGroupId(record.id);
           }}
         >
           {t('View Details')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <div className="content-section">
@@ -176,7 +174,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
             <SearchForm {...searchFormProps} />
             <Link to={URL_USER_GROUP_CREATE}>
               <Button type="primary">
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('New User Group')}
               </Button>
             </Link>
@@ -190,7 +188,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               title: t('Actions'),
               width: '10%',
               // eslint-disable-next-line react/display-name
-              render: (record) => (
+              render: (record: KeycloakUserGroup) => (
                 <span>
                   <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
                     <Button type="link" className="m-0 p-1">
@@ -204,7 +202,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" data-testid='more-options'  />
+                    <MoreOutlined className="more-options" data-testid="more-options" />
                   </Dropdown>
                 </span>
               ),

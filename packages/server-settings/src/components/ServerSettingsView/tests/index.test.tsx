@@ -1,8 +1,8 @@
 import { createBrowserHistory } from 'history';
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as notifications from '@opensrp/notifications';
-import { ServerSettingsView } from '..'; 
+import { ServerSettingsView } from '..';
 import {
   serverSettings,
   serverSettingsLevel1,
@@ -20,7 +20,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-
 
 const history = createBrowserHistory();
 
@@ -115,19 +114,19 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-    
+
     // const dropdown = wrapper.find('.ant-dropdown Dropdown.Button').at(0);
     // dropdown.simulate('click');
     // const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
     // const yesBtn = subMenu.find('MenuItem').at(0);
-    const firstRow = wrapper.find('table tbody tr').first()
+    const firstRow = wrapper.find('table tbody tr').first();
     firstRow.simulate('click');
     firstRow.find('.more-options').last().simulate('click');
-    wrapper.update()
+    wrapper.update();
 
-    expect(wrapper.find('button[data-testid="sayYes"]')).toHaveLength(0)
+    expect(wrapper.find('button[data-testid="sayYes"]')).toHaveLength(0);
 
-    const dropdown = wrapper.find('button[data-testid="yesBtn"]')
+    const dropdown = wrapper.find('button[data-testid="yesBtn"]');
     dropdown.simulate('click');
 
     // click yes button
@@ -189,11 +188,11 @@ describe('activate mission', () => {
     const firstRow = wrapper.find('table tbody tr').first();
     // firstRow.simulate('click');
     firstRow.find('.more-options').last().simulate('click');
-    wrapper.update()
+    wrapper.update();
 
-    expect(wrapper.find('button[data-testid="sayNo"]')).toHaveLength(1)
-  
-    const dropdown = wrapper.find('button[data-testid="sayNo"]')
+    expect(wrapper.find('button[data-testid="sayNo"]')).toHaveLength(1);
+
+    const dropdown = wrapper.find('button[data-testid="sayNo"]');
     dropdown.simulate('click');
     wrapper.update();
 
@@ -252,15 +251,15 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-  
+
     // const dropdown = wrapper.find('.ant-dropdown').at(0);
     const firstRow = wrapper.find('table tbody tr').first();
     // expect(firstRow.text()).toEqual('');
     firstRow.find('.more-options').last().simulate('click');
-    wrapper.update()
-    expect(wrapper.find('button[data-testid="inherited"]')).toHaveLength(1)
-    wrapper.update()
-    const dropdown = wrapper.find('button[data-testid="inherited"]')
+    wrapper.update();
+    expect(wrapper.find('button[data-testid="inherited"]')).toHaveLength(1);
+    wrapper.update();
+    const dropdown = wrapper.find('button[data-testid="inherited"]');
     dropdown.simulate('click');
     wrapper.update();
     // dropdown.simulate('click');
@@ -410,4 +409,4 @@ describe('activate mission', () => {
     // broken page as well
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);
   });
-}); 
+});

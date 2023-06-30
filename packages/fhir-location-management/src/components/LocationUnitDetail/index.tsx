@@ -68,7 +68,7 @@ export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
           onClick={onClose}
           className="float-right"
           type="text"
-          icon={<CloseOutlined  />}
+          icon={<CloseOutlined />}
         />
 
         {Object.entries(detailsMap).map(([key, value]) => {

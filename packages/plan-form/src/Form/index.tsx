@@ -262,7 +262,6 @@ const PlanForm = (props: PlanFormProps) => {
 
   const { Option } = Select;
   const values = form.getFieldValue([]);
-  
 
   /** responsive layout for the form labels and columns */
   const formItemLayout = {
@@ -345,7 +344,7 @@ const PlanForm = (props: PlanFormProps) => {
             rules={validationRules.interventionType}
             hidden={isHidden(interventionType)}
             id={interventionType}
-            className='interventionType'
+            className="interventionType"
           >
             <Select
               disabled={disabledFields.includes(interventionType)}
@@ -375,7 +374,7 @@ const PlanForm = (props: PlanFormProps) => {
             name={title}
             rules={validationRules.title}
             id={title}
-            className='title'
+            className="title"
           >
             <Input
               onChange={(value) => {
@@ -389,7 +388,7 @@ const PlanForm = (props: PlanFormProps) => {
               disabled={disabledFields.includes(title)}
             />
           </FormItem>
-          <FormItem name={name} className='name' id="name" hidden rules={validationRules.name}>
+          <FormItem name={name} className="name" id="name" hidden rules={validationRules.name}>
             <Input type="hidden" disabled={disabledFields.includes(name)} />
           </FormItem>
           <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
@@ -462,7 +461,7 @@ const PlanForm = (props: PlanFormProps) => {
             />
           </FormItem>
 
-          <FormItem hidden rules={validationRules.date} name={date} id="date" className='date'>
+          <FormItem hidden rules={validationRules.date} name={date} id="date" className="date">
             <DatePicker format={configs.dateFormat} />
           </FormItem>
 

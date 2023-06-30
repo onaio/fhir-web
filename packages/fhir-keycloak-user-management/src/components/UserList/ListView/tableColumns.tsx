@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
+import { Popconfirm, Divider, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
-import {
-  KeycloakUser,
-  URL_USER_CREDENTIALS,
-  URL_USER_EDIT,
-  KEYCLOAK_URL_USERS,
-} from '@opensrp/user-management';
+import { KeycloakUser, URL_USER_EDIT, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -61,7 +56,7 @@ export const getTableColumns = (
         <Button onClick={() => onViewDetails(record.id)} type="link">
           {t('View Details')}
         </Button>
-      )
+      ),
     },
     {
       key: '2',
@@ -73,13 +68,10 @@ export const getTableColumns = (
           onConfirm={async () => {
             await deleteUser(keycloakBaseUrl, baseUrl, record.id, t);
             try {
-              return await queryClient
-                .invalidateQueries([KEYCLOAK_URL_USERS]);
+              return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
             } catch {
               return sendErrorNotification(
-                t(
-                  'Failed to update data, please refresh the page to see the most recent changes'
-                )
+                t('Failed to update data, please refresh the page to see the most recent changes')
               );
             }
           }}
@@ -91,9 +83,9 @@ export const getTableColumns = (
               </Button>
             ))}
         </Popconfirm>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   dataElements.push({
     title: t('Actions'),
@@ -101,7 +93,7 @@ export const getTableColumns = (
     render: (_, record) => {
       return (
         <>
-          <Button type='link'>
+          <Button type="link">
             <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
               {t('Edit')}
             </Link>

@@ -47,7 +47,6 @@ export const OrganizationList = (props: OrganizationListProps) => {
     useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
   const { data, isFetching, isLoading, error } = queryValues;
 
-
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
@@ -68,9 +67,9 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
           {t('View Details')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   const columns = [
     {
@@ -96,7 +95,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
             arrow
             trigger={['click']}
           >
-            <MoreOutlined data-testid="action-dropdown" className="more-options"  />
+            <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>
         </span>
       ),
@@ -110,8 +109,6 @@ export const OrganizationList = (props: OrganizationListProps) => {
     pagination: tablePaginationProps,
   };
 
-  console.log({ queryValues, tableProps })
-
   const pageTitle = t('Organization list');
   return (
     <div className="content-section">
@@ -119,14 +116,14 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <title>{pageTitle}</title>
       </Helmet>
       <PageHeader title={pageTitle} />
-      
+
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_ADD_ORGANIZATION}>
               <Button type="primary">
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('Add Organization')}
               </Button>
             </Link>

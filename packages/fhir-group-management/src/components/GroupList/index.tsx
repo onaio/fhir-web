@@ -58,14 +58,17 @@ export const GroupList = (props: GroupListProps) => {
       key: '1',
       label: (
         <Button
-          type='link'
-          data-testid='view-details'
+          type="link"
+          data-testid="view-details"
           onClick={() => {
-            addParam(viewDetailsQuery, record.id)
-          }}>{t('View Details')}</Button>
-      )
-    }
-  ]
+            addParam(viewDetailsQuery, record.id);
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
 
   const getColumns = (t: TFunction) => [
     {
@@ -92,9 +95,7 @@ export const GroupList = (props: GroupListProps) => {
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Button disabled type="link" className="m-0 p-1">
-            <Link to={`#`}>
-              {t('Edit')}
-            </Link>
+            <Link to={`#`}>{t('Edit')}</Link>
           </Button>
           <Divider type="vertical" />
           <Dropdown

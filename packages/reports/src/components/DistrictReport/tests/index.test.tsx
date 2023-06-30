@@ -156,7 +156,7 @@ describe('DistrictReport', () => {
     expect(wrapper.find('Button[htmlType="submit"]').prop('disabled')).toEqual(false);
 
     await act(async () => {
-      const button = wrapper.find('.ant-btn-primary.button-submit')
+      const button = wrapper.find('.ant-btn-primary.button-submit');
       button.simulate('submit');
       await flushPromises();
       wrapper.update();

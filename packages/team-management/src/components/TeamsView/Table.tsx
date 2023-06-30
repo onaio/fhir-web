@@ -55,8 +55,8 @@ const Table: React.FC<Props> = (props: Props) => {
       key: '1',
       label: (
         <Button
-          type='link'
-          data-testid='view-details'
+          type="link"
+          data-testid="view-details"
           onClick={() => {
             if (onViewDetails) {
               onViewDetails(
@@ -68,10 +68,13 @@ const Table: React.FC<Props> = (props: Props) => {
                 t
               );
             }
-          }}>{t('View Details')}</Button>
-      )
-    }
-  ]
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <PaginateData<Organization>
@@ -100,9 +103,7 @@ const Table: React.FC<Props> = (props: Props) => {
             render: (_: unknown, record: Organization) => (
               <span>
                 <Button type="link" className="m-0 p-1">
-                  <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
-                    {t('Edit')}
-                  </Link>
+                  <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>{t('Edit')}</Link>
                 </Button>
                 <Divider type="vertical" />
                 <Dropdown

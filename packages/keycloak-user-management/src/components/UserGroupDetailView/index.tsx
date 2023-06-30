@@ -35,7 +35,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
         onClick={() => onClose()}
         className="float-right close-btn"
         type="text"
-        icon={<CloseOutlined  />}
+        icon={<CloseOutlined />}
       />
       {loading ? (
         <Spin size="large" className="inline-spinner" />

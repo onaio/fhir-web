@@ -5,7 +5,7 @@ import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
 import type { MenuProps } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps, useParams } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
@@ -13,11 +13,12 @@ import {
   BrokenPage,
   SearchForm,
   TableLayout,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import {
   FHIR_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
-  URL_CARE_TEAM,
   URL_CREATE_CARE_TEAM,
   careTeamResourceType,
 } from '../../constants';
@@ -61,7 +62,9 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
-  const { careTeamId: resourceId } = useParams<RouteParams>();
+
+  const { addParam, sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const {
     queryValues: { data, isFetching, isLoading, error, refetch },
@@ -89,30 +92,28 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <Popconfirm
           title={t('Are you sure you want to delete this Care Team?')}
           okText={t('Yes')}
-          className='delCareteam'
+          className="delCareteam"
           cancelText={t('No')}
           onConfirm={async () => {
             await deleteCareTeam(fhirBaseURL, record.id, t);
             await refetch();
           }}
         >
-          <Button danger data-testid='deleteBtn' type="link" style={{ color: '#' }}>
+          <Button danger data-testid="deleteBtn" type="link" style={{ color: '#' }}>
             {t('Delete')}
           </Button>
         </Popconfirm>
-      )
+      ),
     },
     {
       key: '2',
       label: (
-        <Button type='link'>
-          <Link to={`${URL_CARE_TEAM}/${record.id}`}>
-            {t('View Details')}
-          </Link>
+        <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
+          View Details
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   const columns = [
     {
@@ -128,9 +129,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Button type="link" className="m-0 p-1">
-            <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
-              {t('Edit')}
-            </Link>
+            <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>{t('Edit')}</Link>
           </Button>
           <Divider type="vertical" />
           <Dropdown

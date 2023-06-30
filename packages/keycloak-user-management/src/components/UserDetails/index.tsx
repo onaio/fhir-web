@@ -30,7 +30,7 @@ export const UserDetails = (props: Partial<UserDetailProps>) => {
         onClick={() => onClose && onClose()}
         className="float-right close-btn"
         type="text"
-        icon={<CloseOutlined  />}
+        icon={<CloseOutlined />}
       />
       <div className="mb-4 small mt-4">
         <p className="mb-0 font-weight-bold">{t('Username')}</p>

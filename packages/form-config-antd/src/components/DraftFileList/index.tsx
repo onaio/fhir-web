@@ -114,17 +114,17 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
             placeholder={t('Search')}
             size="large"
             value={value}
-            prefix={<SearchOutlined  />}
+            prefix={<SearchOutlined />}
             onChange={onChange}
           />
         </Space>
         <Space style={{ marginBottom: 16, float: 'right' }}>
           <Button type="primary" id="uploadNewFile" onClick={() => history.push(uploadFileURL)}>
-            <UploadOutlined  />
+            <UploadOutlined />
             {t('Upload New File')}
           </Button>
           <Divider type="vertical" />
-          <SettingOutlined  />
+          <SettingOutlined />
         </Space>
         <TableLayout
           id="FormDraftFileList"

@@ -132,7 +132,7 @@ const ProductForm = (props: ProductFormProps) => {
   /** component used by antd Upload, to upload the product photo */
   const uploadButton = (
     <div className="upload-button">
-      <PlusOutlined  />
+      <PlusOutlined />
       <div style={{ marginTop: 8 }}>{t('Upload')}</div>
     </div>
   );
@@ -242,7 +242,7 @@ const ProductForm = (props: ProductFormProps) => {
               <Form {...formItemLayout} colon={true} requiredMark={false}>
                 <Form.Item
                   id="productName"
-                  className='productName'
+                  className="productName"
                   name="productName"
                   label={t('Product name')}
                   required={true}
@@ -259,7 +259,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem
                   id="materialNumber"
-                  className='materialNumber'
+                  className="materialNumber"
                   name="materialNumber"
                   label={t('Material number')}
                   required={true}
@@ -272,7 +272,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem
                   id="isAttractiveItem"
-                  className='isAttractiveItem'
+                  className="isAttractiveItem"
                   name="isAttractiveItem"
                   label={t('Attractive item?')}
                   required={true}
@@ -282,7 +282,7 @@ const ProductForm = (props: ProductFormProps) => {
 
                 <FormItem
                   id="availability"
-                  className='availability'
+                  className="availability"
                   name="availability"
                   label={t('Is it there?')}
                   required={true}
@@ -296,7 +296,7 @@ const ProductForm = (props: ProductFormProps) => {
                   />
                 </FormItem>
                 <FormItem
-                  className='condition'
+                  className="condition"
                   id="condition"
                   name="condition"
                   label={t('Is it in good condition? (optional)')}
@@ -310,7 +310,7 @@ const ProductForm = (props: ProductFormProps) => {
                   />
                 </FormItem>
                 <FormItem
-                  className='appropriateUsage'
+                  className="appropriateUsage"
                   id="appropriateUsage"
                   name="appropriateUsage"
                   label={t('Is it being used appropriately? (optional)')}
@@ -322,7 +322,7 @@ const ProductForm = (props: ProductFormProps) => {
                   />
                 </FormItem>
                 <FormItem
-                  className='accountabilityPeriod'
+                  className="accountabilityPeriod"
                   id="accountabilityPeriod"
                   name="accountabilityPeriod"
                   label={t('Accountability period (in months)')}
@@ -332,7 +332,7 @@ const ProductForm = (props: ProductFormProps) => {
                 </FormItem>
 
                 <FormItem
-                  className='photoURL'
+                  className="photoURL"
                   id="photoURL"
                   name="photoURL"
                   label={t('Photo of the product (optional)')}

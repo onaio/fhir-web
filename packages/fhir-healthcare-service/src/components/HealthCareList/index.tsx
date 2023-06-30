@@ -60,9 +60,9 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
         <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
           {t('View Details')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   const columns = [
     {
@@ -89,9 +89,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
           <Button type="link" className="m-0 p-1">
-            <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
-              {t('Edit')}
-            </Link>
+            <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>{t('Edit')}</Link>
           </Button>
 
           <Divider type="vertical" />

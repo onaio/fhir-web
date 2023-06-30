@@ -21,12 +21,10 @@ import {
 import * as notifications from '@opensrp/notifications';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 describe('components/TeamsView', () => {
   const teamViewProps = {
@@ -250,17 +248,17 @@ describe('components/TeamsView', () => {
     });
 
     // find view details button
-    const firstRow = wrapper.find('table tbody tr').first()
-    expect(firstRow.text()).toEqual("The LuangEdit")
-    expect(wrapper.find('[data-testid="view-details"]')).toHaveLength(0)
-    
+    const firstRow = wrapper.find('table tbody tr').first();
+    expect(firstRow.text()).toEqual('The LuangEdit');
+    expect(wrapper.find('[data-testid="view-details"]')).toHaveLength(0);
+
     // collapse menu items
     firstRow.find('.more-options').last().simulate('click');
-    wrapper.update()
+    wrapper.update();
 
-    expect(wrapper.find('button[data-testid="view-details"]')).toHaveLength(1)
+    expect(wrapper.find('button[data-testid="view-details"]')).toHaveLength(1);
 
-    const dropdown = wrapper.find('button[data-testid="view-details"]')
+    const dropdown = wrapper.find('button[data-testid="view-details"]');
     dropdown.simulate('click');
     wrapper.update();
 

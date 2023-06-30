@@ -14,16 +14,16 @@ Object {
     },
     Object {
       "key": "2",
-      "label": <Link
-        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      "label": <Button
+        data-testid="credentials"
+        type="link"
       >
-        <Button
-          data-testid="credentials"
-          type="link"
+        <Link
+          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
         >
           Credentials
-        </Button>
-      </Link>,
+        </Link>
+      </Button>,
     },
     Object {
       "key": "3",
@@ -96,16 +96,16 @@ Object {
       },
       Object {
         "key": "2",
-        "label": <Link
-          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+        "label": <Button
+          data-testid="credentials"
+          type="link"
         >
-          <Button
-            data-testid="credentials"
-            type="link"
+          <Link
+            to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
           >
             Credentials
-          </Button>
-        </Link>,
+          </Link>
+        </Button>,
       },
       Object {
         "key": "3",
@@ -161,16 +161,16 @@ Object {
     },
     Object {
       "key": "2",
-      "label": <Link
-        to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
+      "label": <Button
+        data-testid="credentials"
+        type="link"
       >
-        <Button
-          data-testid="credentials"
-          type="link"
+        <Link
+          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
         >
           Credentials
-        </Button>
-      </Link>,
+        </Link>
+      </Button>,
     },
     Object {
       "key": "3",

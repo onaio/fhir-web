@@ -37,7 +37,7 @@ interface OrganizationListProps {
  */
 export const UserList = (props: OrganizationListProps) => {
   const { fhirBaseURL, keycloakBaseURL } = props;
-  const location = useLocation();                                       
+  const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
   const extraData = useSelector(getExtraData);
@@ -124,7 +124,7 @@ export const UserList = (props: OrganizationListProps) => {
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Link to={URL_USER_CREATE}>
               <Button type="primary">
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('Add User')}
               </Button>
             </Link>

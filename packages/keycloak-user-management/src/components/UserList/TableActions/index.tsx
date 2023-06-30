@@ -80,15 +80,12 @@ const TableActions = (props: Props): JSX.Element => {
     {
       key: '2',
       label: (
-        <Button
-          type="link"
-          data-testid="credentials"
-        >
+        <Button type="link" data-testid="credentials">
           <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
             {t('Credentials')}
           </Link>
         </Button>
-      )
+      ),
     },
     {
       key: '3',
@@ -107,7 +104,7 @@ const TableActions = (props: Props): JSX.Element => {
 
   return (
     <>
-      <Button type='link'>
+      <Button type="link">
         <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
           {t('Edit')}
         </Link>
@@ -123,7 +120,8 @@ const TableActions = (props: Props): JSX.Element => {
           <MoreOutlined
             data-testid="action-dropdown"
             className="more-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }}  />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }}
+          />
         </Button>
       </Dropdown>
     </>

@@ -105,11 +105,17 @@ describe('Health care form', () => {
     expect(toJson(wrapper.find('.ant-form-item.name label'))).toMatchSnapshot('name label');
     expect(toJson(wrapper.find('.ant-form-item.name input'))).toMatchSnapshot('name field');
 
-    expect(toJson(wrapper.find('.ant-form-item.active label').first())).toMatchSnapshot('active label');
+    expect(toJson(wrapper.find('.ant-form-item.active label').first())).toMatchSnapshot(
+      'active label'
+    );
     expect(toJson(wrapper.find('.ant-form-item.active input'))).toMatchSnapshot('active field');
 
-    expect(toJson(wrapper.find('.ant-form-item.comment label').first())).toMatchSnapshot('comment label');
-    expect(toJson(wrapper.find('.ant-form-item.comment textarea'))).toMatchSnapshot('comment field');
+    expect(toJson(wrapper.find('.ant-form-item.comment label').first())).toMatchSnapshot(
+      'comment label'
+    );
+    expect(toJson(wrapper.find('.ant-form-item.comment textarea'))).toMatchSnapshot(
+      'comment field'
+    );
 
     expect(toJson(wrapper.find('.ant-form-item.extra-details label').first())).toMatchSnapshot(
       'extraDetails label'

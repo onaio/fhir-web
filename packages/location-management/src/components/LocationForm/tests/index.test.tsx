@@ -160,21 +160,27 @@ describe('LocationForm', () => {
       `"ParentSelect the parent location"`
     );
 
-    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(
+      `"StatusActiveInactive"`
+    );
 
     expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
       `"Location categoryService pointJurisdiction"`
     );
 
     // name is required for core
-    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
+      `"NameName is required"`
+    );
 
     // not required for core
     expect(wrapper.find('#serviceType .ant-form-item').text()).toMatchInlineSnapshot(
       `"TypeSelect the service point type"`
     );
 
-    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(`"External ID"`);
+    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(
+      `"External ID"`
+    );
 
     expect(wrapper.find('#geometry .ant-form-item').text()).toMatchInlineSnapshot(`"Geometry"`);
 
@@ -250,22 +256,27 @@ describe('LocationForm', () => {
       `"ParentSelect the parent location'parentId' is required"`
     );
 
-    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(
+      `"StatusActiveInactive"`
+    );
 
     expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
       `"Location categoryService pointJurisdiction"`
     );
 
-    console.log(toJson(wrapper.find('#name').at(5)))
     // name is required for core
-    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
+      `"NameName is required"`
+    );
 
     // service types is required for eusm
     expect(wrapper.find('#serviceType .ant-form-item').text()).toMatchInlineSnapshot(
       `"TypeSelect the service point typeService types is required"`
     );
 
-    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(`"External ID"`);
+    expect(wrapper.find('#externalId .ant-form-item').text()).toMatchInlineSnapshot(
+      `"External ID"`
+    );
 
     expect(wrapper.find('#geometry .ant-form-item').text()).toMatchInlineSnapshot(`"Geometry"`);
 

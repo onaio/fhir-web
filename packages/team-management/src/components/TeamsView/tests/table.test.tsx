@@ -81,7 +81,7 @@ describe('components/TeamsView/table', () => {
       wrapper.update();
     });
 
-    const firstRow = wrapper.find('table tbody tr').first()
+    const firstRow = wrapper.find('table tbody tr').first();
     firstRow.simulate('click');
     wrapper.update();
 
@@ -89,8 +89,8 @@ describe('components/TeamsView/table', () => {
     fetch.mockResponseOnce(JSON.stringify([]));
 
     firstRow.find('.more-options').last().simulate('click');
-    wrapper.update()
-    const dropdown = wrapper.find('button[data-testid="view-details"]')
+    wrapper.update();
+    const dropdown = wrapper.find('button[data-testid="view-details"]');
     dropdown.simulate('click');
     wrapper.update();
     expect(onViewDetails).toBeCalled();

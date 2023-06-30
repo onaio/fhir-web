@@ -118,8 +118,12 @@ describe('OrganizationForm', () => {
     expect(toJson(wrapper.find('.ant-form-item.id label'))).toMatchSnapshot('id label');
     expect(toJson(wrapper.find('.ant-form-item.id input'))).toMatchSnapshot('id field');
 
-    expect(toJson(wrapper.find('.ant-form-item.identifier label'))).toMatchSnapshot('identifier label');
-    expect(toJson(wrapper.find('.ant-form-item.identifier input'))).toMatchSnapshot('identifier field');
+    expect(toJson(wrapper.find('.ant-form-item.identifier label'))).toMatchSnapshot(
+      'identifier label'
+    );
+    expect(toJson(wrapper.find('.ant-form-item.identifier input'))).toMatchSnapshot(
+      'identifier field'
+    );
 
     expect(toJson(wrapper.find('.ant-form-item.name label'))).toMatchSnapshot('name label');
     expect(toJson(wrapper.find('.ant-form-item.name input'))).toMatchSnapshot('name field');
@@ -127,7 +131,9 @@ describe('OrganizationForm', () => {
     expect(toJson(wrapper.find('.ant-form-item.alias label'))).toMatchSnapshot('alias label');
     expect(toJson(wrapper.find('.ant-form-item.alias input'))).toMatchSnapshot('alias field');
 
-    expect(toJson(wrapper.find('.ant-form-item.status label').first())).toMatchSnapshot('status label');
+    expect(toJson(wrapper.find('.ant-form-item.status label').first())).toMatchSnapshot(
+      'status label'
+    );
     expect(toJson(wrapper.find('.ant-form-item.status input'))).toMatchSnapshot('status field');
 
     expect(toJson(wrapper.find('.ant-form-item.type label').first())).toMatchSnapshot('type label');
@@ -176,10 +182,14 @@ describe('OrganizationForm', () => {
     expect(wrapper.find('.ant-form-item.alias').text()).toMatchInlineSnapshot(`"Alias"`);
 
     // status has no
-    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(`"StatusactiveInactive"`);
+    expect(wrapper.find('.ant-form-item.status').text()).toMatchInlineSnapshot(
+      `"StatusactiveInactive"`
+    );
 
     // has default value
-    expect(wrapper.find('.ant-form-item.type').text()).toMatchInlineSnapshot(`"TypeOrganizational team"`);
+    expect(wrapper.find('.ant-form-item.type').text()).toMatchInlineSnapshot(
+      `"TypeOrganizational team"`
+    );
 
     // not required
     expect(wrapper.find('.ant-form-item.members').text()).toMatchSnapshot(

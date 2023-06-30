@@ -65,9 +65,9 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         >
           {t('Download')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <>
@@ -80,7 +80,8 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
           <MoreOutlined
             className="more-options"
             data-testid="menu-options"
-            style={{ fontSize: '16px', padding: 0, margin: 0 }}  />
+            style={{ fontSize: '16px', padding: 0, margin: 0 }}
+          />
         </Button>
       </Dropdown>
     </>

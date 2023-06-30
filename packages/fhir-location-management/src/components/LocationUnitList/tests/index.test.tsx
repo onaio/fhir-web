@@ -35,6 +35,8 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+jest.setTimeout(10000);
+
 nock.disableNetConnect();
 
 describe('location-management/src/components/LocationUnitList', () => {

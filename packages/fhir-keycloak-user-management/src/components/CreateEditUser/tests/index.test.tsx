@@ -184,11 +184,11 @@ test('renders correctly for edit user', async () => {
     .persist();
 
   const successStub = jest
-    .spyOn(notifications, 'sendSuccessNotification')  
+    .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(jest.fn);
 
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
-    
+
   const { getByTestId, getByText, queryByTitle } = render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
@@ -246,7 +246,7 @@ test('renders correctly for edit user', async () => {
   await waitFor(() => {
     const spin = appIdSection.querySelector('.anticon-spin');
     expect(spin).toBeNull();
-  })
+  });
 
   fireEvent.click(queryByTitle('Device configurations(cha)') as Element);
 

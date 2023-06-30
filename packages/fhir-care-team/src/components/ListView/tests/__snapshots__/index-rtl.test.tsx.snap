@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Care Teams list view renders correctly: Search 1 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -8,25 +8,23 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 1 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/308"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/308"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -56,7 +54,7 @@ exports[`Care Teams list view renders correctly: Search 1 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 2 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 2 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -64,25 +62,23 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 2 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/325"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/325"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -112,7 +108,7 @@ exports[`Care Teams list view renders correctly: Search 2 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 3 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 3 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -120,25 +116,23 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 3 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/327"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/327"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -168,7 +162,7 @@ exports[`Care Teams list view renders correctly: Search 3 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 4 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 4 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -176,25 +170,23 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 4 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/330"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/330"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -224,7 +216,7 @@ exports[`Care Teams list view renders correctly: Search 4 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 5 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 5 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -232,25 +224,23 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 5 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/328"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/328"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -280,7 +270,7 @@ exports[`Care Teams list view renders correctly: Search 5 page 1 2`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 6 page 1 1`] = `
+exports[`Care Teams list view renders correctly: table row 6 page 1 1`] = `
 <td
   class="ant-table-cell"
 >
@@ -288,25 +278,23 @@ exports[`Care Teams list view renders correctly: Search 6 page 1 1`] = `
 </td>
 `;
 
-exports[`Care Teams list view renders correctly: Search 6 page 1 2`] = `
+exports[`Care Teams list view renders correctly: table row 6 page 1 2`] = `
 <td
   class="ant-table-cell"
 >
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/admin/CareTeam/edit/326"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/admin/CareTeam/edit/326"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"

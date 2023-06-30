@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
-import { cleanup, fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   healthCareServicePage1,
   healthCareServicePage2,
@@ -146,10 +146,10 @@ test('renders correctly when listing resources', async () => {
   const waitForSpinner = async () => {
     return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
-    })
-  }
+    });
+  };
 
-  await waitForSpinner()
+  await waitForSpinner();
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
@@ -164,7 +164,7 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=testing');
 
-  await waitForSpinner()
+  await waitForSpinner();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -194,7 +194,7 @@ test('renders correctly when listing resources', async () => {
   expect(history.location.pathname).toEqual('/healthcare/list');
   expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=323');
 
-  await waitForSpinner()
+  await waitForSpinner();
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');

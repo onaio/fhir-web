@@ -27,7 +27,6 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import toJson from 'enzyme-to-json';
 import { authenticateUser } from '@onaio/session-reducer';
-import { wrap } from 'module';
 /* eslint-disable react/prop-types */
 
 const history = createBrowserHistory();
@@ -132,7 +131,6 @@ describe('containers/InventoryAddEdit', () => {
       </Provider>
     );
     // Spinner is displayed before we get the service point
-    console.log(wrapper.debug())
     expect(wrapper.find('Spin').first().prop('size')).toEqual('large');
 
     await act(async () => {

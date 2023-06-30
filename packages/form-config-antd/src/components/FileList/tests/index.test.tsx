@@ -255,7 +255,7 @@ describe('components/Antd/FileList', () => {
 
     const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadCell.find('Dropdown');
-    
+
     const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
     expect(dropdownItem).toHaveLength(1);
     dropdownItem.simulate('click');
@@ -335,14 +335,13 @@ describe('components/Antd/FileList', () => {
 
     const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
     expect(dropdownItem).toHaveLength(1);
-    dropdownItem.simulate('click')
+    dropdownItem.simulate('click');
     wrapper.update();
 
     // click download button
     const menuItem = wrapper.find('button[data-testid="download"]');
     expect(menuItem).toHaveLength(1);
     menuItem.simulate('click');
-
 
     await act(async () => {
       await flushPromises();
@@ -427,7 +426,7 @@ describe('components/Antd/FileList', () => {
 
     const downloadFiledCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadFiledCell.find('Dropdown');
-    
+
     // const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
     const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
     expect(dropdownItem).toHaveLength(1);

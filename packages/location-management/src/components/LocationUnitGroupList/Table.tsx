@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Dropdown, Button, Divider } from 'antd';
+import { Dropdown, Button, Divider } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
@@ -59,7 +59,7 @@ const Table: React.FC<Props> = (props: Props) => {
         >
           {t('View Details')}
         </Button>
-      )
+      ),
     },
     {
       key: '2',
@@ -71,9 +71,9 @@ const Table: React.FC<Props> = (props: Props) => {
         >
           {t('Deactivate')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <TableLayout

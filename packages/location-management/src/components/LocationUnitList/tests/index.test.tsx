@@ -36,12 +36,10 @@ import {
 } from '@testing-library/react';
 import * as notifications from '@opensrp/notifications';
 
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -462,7 +460,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     // table says no data
     const tableText = wrapper.find('table').text();
     // expect(tableText).toContain('No Data');
-    expect(tableText).toContain("NameLevelActionsNo data")
+    expect(tableText).toContain('NameLevelActionsNo data');
     expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
     expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
     wrapper.unmount();

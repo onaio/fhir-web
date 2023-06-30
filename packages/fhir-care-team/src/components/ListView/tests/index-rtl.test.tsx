@@ -6,12 +6,11 @@ import { Route, Router, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
 import * as reactQuery from 'react-query';
-import { waitForElementToBeRemoved, fireEvent, render, cleanup, prettyDOM } from '@testing-library/react';
+import { waitForElementToBeRemoved, fireEvent, render, cleanup } from '@testing-library/react';
 import { store } from '@opensrp/store';
 import { careTeam4214, careTeams } from './fixtures';
 import { careTeamResourceType, URL_CARE_TEAM } from '../../../constants';
 import { createMemoryHistory } from 'history';
-import { drop } from 'lodash';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -140,11 +139,17 @@ describe('Care Teams list view', () => {
       </Router>
     );
 
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin')); 
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+    expect(document.querySelector('title')).toMatchInlineSnapshot(`
+      <title>
+        FHIR Care Team
+      </title>
+    `);
 
     document.querySelectorAll('tr').forEach((tr, idx) => {
       tr.querySelectorAll('td').forEach((td) => {
-        expect(td).toMatchSnapshot(`Search ${idx} page 1`);
+        expect(td).toMatchSnapshot(`table row ${idx} page 1`);
       });
     });
 
@@ -163,19 +168,21 @@ describe('Care Teams list view', () => {
 
     const viewDetailsLink = getByText(/View Details/);
     expect(viewDetailsLink).toMatchInlineSnapshot(`
-      <a
-        href="/admin/CareTeams/308"
-      >
+      <span>
         View Details
-      </a>
+      </span>
     `);
     fireEvent.click(viewDetailsLink);
-    expect(history.location.pathname).toEqual('/admin/CareTeams/308');
+    expect(history.location.pathname).toEqual('/admin/CareTeams');
+    expect(history.location.search).toEqual('?viewDetails=308');
 
     await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
-    document
-      .querySelectorAll('.display-block')
-      .forEach((block) => expect(block).toMatchSnapshot('view details display block'));
+    document.querySelectorAll('.display-block').forEach((block) => {
+      expect(block).toMatchSnapshot('view details display block');
+    });
 
+    // close view details
+    const closeButton = document.querySelector('[data-testid="cancel"]');
+    fireEvent.click(closeButton);
   });
 });

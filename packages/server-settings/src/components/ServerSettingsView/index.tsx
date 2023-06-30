@@ -145,30 +145,36 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       key: '1',
       label: (
         <Button
-          type='link'
-          data-testid='yesBtn'
+          type="link"
+          data-testid="yesBtn"
           onClick={async () => {
             await updateSettings(row, currentLocation?.id ?? '', true);
-          }}>{t('Yes')}</Button>
-      )
+          }}
+        >
+          {t('Yes')}
+        </Button>
+      ),
     },
     {
       key: '1',
       label: (
         <Button
-          type='link'
-          data-testid='sayNo'
+          type="link"
+          data-testid="sayNo"
           onClick={async () => {
             await updateSettings(row, currentLocation?.id ?? '', false);
-          }}>{t('No')}</Button>
-      )
+          }}
+        >
+          {t('No')}
+        </Button>
+      ),
     },
     {
       key: '1',
       label: (
         <Button
-          type='link'
-          data-testid='inherited'
+          type="link"
+          data-testid="inherited"
           // for inherit
           // delete existing setting and inherit from the parent location instead
           // server returns inherited parent value instead by default
@@ -180,11 +186,13 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                 await invalidateSettingsQueries();
               })
               .then(() => sendSuccessNotification(t('Successfully Updated')));
-          }}>{t('Inherit')}</Button >
-      )
-    }
-  ]
-
+          }}
+        >
+          {t('Inherit')}
+        </Button>
+      ),
+    },
+  ];
 
   const {
     isError: isServerSettingsError,
@@ -242,12 +250,12 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                   return (
                     <Dropdown
                       menu={{ items: getItems(row) }}
-                      className='drop'
+                      className="drop"
                       placement="bottomLeft"
                       arrow
                       trigger={['click']}
                     >
-                      <MoreOutlined className="more-options"  />
+                      <MoreOutlined className="more-options" />
                     </Dropdown>
                   );
                 },

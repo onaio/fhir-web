@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
-import { act, cleanup, fireEvent, prettyDOM, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { URL_USER } from '@opensrp/user-management';
 import { careTeams, practitioner, userFixtures, group } from './fixtures';
@@ -131,7 +131,7 @@ test('renders correctly when listing resources', async () => {
   await waitFor(async () => {
     const spin = document.querySelector('.ant-spin');
     expect(spin).toBeNull();
-  })
+  });
 
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
     'http://test-keycloak.server.org/users/count',
@@ -282,11 +282,7 @@ test('responds as expected to errors', async () => {
     </Router>
   );
 
-  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  await waitFor(() => {
-    const spin = document.querySelector('.ant-spin');
-    expect(spin).toBeNull();
-  })
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
 });

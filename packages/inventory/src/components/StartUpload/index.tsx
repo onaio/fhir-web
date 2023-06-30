@@ -27,7 +27,7 @@ const StartUpload = (props: StartUploadProps) => {
 
   const cardTitle = (
     <CardTitle
-      IconRender={<CloudUploadOutlined className="card-title__icon"  />}
+      IconRender={<CloudUploadOutlined className="card-title__icon" />}
       text={t('Use a CSV file to add service point inventory')}
     />
   );
@@ -55,7 +55,7 @@ const StartUpload = (props: StartUploadProps) => {
           onSuccess && onSuccess(file);
         }}
       >
-        <Button icon={<UploadOutlined  />} type="primary" className="round-button">
+        <Button icon={<UploadOutlined />} type="primary" className="round-button">
           {t('Select CSV file')}
         </Button>
       </Upload>

@@ -109,7 +109,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
       <div className="flex-right">
         <Button
           data-testid="close-button"
-          icon={<CloseOutlined  />}
+          icon={<CloseOutlined />}
           shape="circle"
           type="text"
           onClick={() => removeParam(viewDetailsQuery)}

@@ -119,8 +119,8 @@ test('renders correctly in list view', async () => {
   const waitForSpinner = async () => {
     return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
-    })
-  }
+    });
+  };
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

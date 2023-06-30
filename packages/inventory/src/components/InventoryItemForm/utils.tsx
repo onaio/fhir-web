@@ -105,6 +105,6 @@ export const isDatePastOrToday: RangePickerProps['disabledDate'] = (current) => 
  *
  * @param current date
  */
-export const isDateFuture: RangePickerProps['disabledDate']  = (current) => {
+export const isDateFuture: RangePickerProps['disabledDate'] = (current) => {
   return current > dayjs().endOf('day');
 };

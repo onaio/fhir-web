@@ -7,7 +7,7 @@ import {
   render,
   screen,
   waitForElementToBeRemoved,
-  waitFor
+  waitFor,
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { QuestionnaireList } from '..';
@@ -133,8 +133,8 @@ test('pagination events work correctly', async () => {
   const waitForSpinner = async () => {
     return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
-    })
-  }
+    });
+  };
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

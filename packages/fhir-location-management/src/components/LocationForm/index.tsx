@@ -212,7 +212,14 @@ const LocationForm = (props: LocationFormProps) => {
           ></Input>
         </FormItem>
 
-        <FormItem className='alias' id="alias" hidden={isHidden('alias')} name="alias" label={t('Alias')} hasFeedback>
+        <FormItem
+          className="alias"
+          id="alias"
+          hidden={isHidden('alias')}
+          name="alias"
+          label={t('Alias')}
+          hasFeedback
+        >
           <Input disabled={disabled.includes('description')} placeholder={t('Alias')}></Input>
         </FormItem>
 

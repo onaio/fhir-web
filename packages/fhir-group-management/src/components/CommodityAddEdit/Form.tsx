@@ -97,17 +97,23 @@ const CommodityForm = (props: GroupFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem hidden={true} className='id' id="id" name={id} label={t('Commodity Id')}>
+      <FormItem hidden={true} className="id" id="id" name={id} label={t('Commodity Id')}>
         <Input placeholder={t('(Auto generated)')} disabled={true} />
       </FormItem>
 
-      <FormItem hidden={true} className='identifier' id="identifier" name={identifier} label={t('Identifier')}>
+      <FormItem
+        hidden={true}
+        className="identifier"
+        id="identifier"
+        name={identifier}
+        label={t('Identifier')}
+      >
         <Input placeholder={t('(Auto generated)')} disabled={true} />
       </FormItem>
 
       <FormItem
         id={name}
-        className='name'
+        className="name"
         name={name}
         rules={validationRules[name]}
         label={t('Enter Commodity name')}
@@ -117,7 +123,7 @@ const CommodityForm = (props: GroupFormProps) => {
 
       <FormItem
         id={active}
-        className='active'
+        className="active"
         rules={validationRules[active]}
         name={active}
         label={t('Select Commodity status')}
@@ -127,7 +133,7 @@ const CommodityForm = (props: GroupFormProps) => {
 
       <FormItem
         id={type}
-        className='type'
+        className="type"
         name={type}
         rules={validationRules[type]}
         label={t('Select Commodity Type')}
@@ -142,7 +148,7 @@ const CommodityForm = (props: GroupFormProps) => {
       </FormItem>
 
       <FormItem
-        className='unitOfMeasure'
+        className="unitOfMeasure"
         id={unitOfMeasure}
         name={unitOfMeasure}
         rules={validationRules[unitOfMeasure]}
@@ -159,11 +165,17 @@ const CommodityForm = (props: GroupFormProps) => {
 
       <FormItem {...tailLayout}>
         <Space>
-          <Button type="primary" id="submit-button" className='submit-button' disabled={isLoading} htmlType="submit">
+          <Button
+            type="primary"
+            id="submit-button"
+            className="submit-button"
+            disabled={isLoading}
+            htmlType="submit"
+          >
             {isLoading ? t('Saving') : t('save')}
           </Button>
           <Button
-            className='cancel-button'
+            className="cancel-button"
             id="cancel-button"
             onClick={() => {
               goTo(cancelUrl);

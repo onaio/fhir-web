@@ -13,7 +13,6 @@ import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/t
 import { baseURL } from '../../../constants';
 import * as notifications from '@opensrp/notifications';
 
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),

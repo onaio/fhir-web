@@ -153,8 +153,13 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Tooltip placement="bottom" title={!reportDate ? t('Date Required') : null}>
-              <Button className='button-submit new' type="primary" htmlType="submit" disabled={!reportDate || !locationId}>
-                <DownloadOutlined  />
+              <Button
+                className="button-submit new"
+                type="primary"
+                htmlType="submit"
+                disabled={!reportDate || !locationId}
+              >
+                <DownloadOutlined />
                 {isSubmitting ? t(`Downloading....`) : t('Download Report')}
               </Button>
             </Tooltip>

@@ -40,7 +40,7 @@ export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
  *
  * @param t - translator function
  */
-export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {Date
+export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
   const columns: Column<ParsedQuestionnaire>[] = [
     {
       title: t('Name/Id'),
@@ -131,7 +131,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
             <SearchForm {...searchFormProps} data-testid="search-form" />
             <Link to={'#'}>
               <Button type="primary" disabled={true}>
-                <PlusOutlined  />
+                <PlusOutlined />
                 {t('Create questionnaire')}
               </Button>
             </Link>

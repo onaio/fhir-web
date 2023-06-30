@@ -202,11 +202,18 @@ const LocationForm = (props: LocationFormProps) => {
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem name="id" label={t('Id')} rules={validationRules.id} hidden className='id' id="id">
+          <FormItem
+            name="id"
+            label={t('Id')}
+            rules={validationRules.id}
+            hidden
+            className="id"
+            id="id"
+          >
             <Input disabled></Input>
           </FormItem>
 
-          <FormItem className='username' name="username" label={t('username')} hidden id="username">
+          <FormItem className="username" name="username" label={t('username')} hidden id="username">
             <Input disabled></Input>
           </FormItem>
 
@@ -219,7 +226,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.parentId}
           >
             <CustomTreeSelect
-              className='tree'
+              className="tree"
               baseURL={opensrpBaseURL}
               filterByParentId={filterByParentId}
               disabled={disabled.includes('parentId')}
@@ -239,9 +246,7 @@ const LocationForm = (props: LocationFormProps) => {
             name="name"
             hasFeedback
           >
-            <Input
-              disabled={disabled.includes('name')}
-              placeholder={t('Enter a location name')} />
+            <Input disabled={disabled.includes('name')} placeholder={t('Enter a location name')} />
           </FormItem>
 
           <FormItem
@@ -278,7 +283,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<ServiceTypeSetting>
-              className='select'
+              className="select"
               placeholder={t('Select the service point type')}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {

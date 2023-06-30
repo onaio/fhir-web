@@ -3,29 +3,6 @@ import { LanguageCode } from '@opensrp/pkg-config';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { LanguageOptions, LanguageSwitcher } from '..';
-// // import renderer from 'react-test-renderer';
-// import { wrap } from 'module';
-// import { drop } from 'lodash';
-
-// jest.mock('antd', () => {
-//   const actual = jest.requireActual('antd');
-//   //   const CustomDropDown = (props: any) => {
-//   // console.log(props)
-
-//   //     return (
-//   //       <>
-
-//   //         {[props.menu]}
-//   //         {[props.children]}
-//   //       </>
-//   //     );
-//   //   };
-
-//   return {
-//     ...actual,
-//     // Dropdown: CustomDropDown,
-//   };
-// });
 
 describe('components/pages/languageSwitcher', () => {
   afterEach(() => {
@@ -51,14 +28,12 @@ describe('components/pages/languageSwitcher', () => {
       supportedLanguages: ['en', 'fr'] as LanguageCode[],
     };
 
-    console.log(props);
-
     const wrapper = mount(<LanguageSwitcher {...props} />);
 
     const moreOptions = wrapper.find('.more-options [data-testid="more-options"]').last();
     expect(moreOptions).toHaveLength(1);
     moreOptions.simulate('click');
-  
+
     expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançais"`);
 
     // choose language change to french

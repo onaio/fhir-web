@@ -15,7 +15,6 @@ import dayjs from 'dayjs';
 import flushPromises from 'flush-promises';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { isEqual } from 'lodash';
 
 jest.mock('@opensrp/notifications', () => {
   return { sendSuccessNotification: jest.fn(), sendErrorNotification: jest.fn() };
@@ -330,7 +329,7 @@ describe('containers/forms/PlanForm', () => {
     wrapper.unmount();
   });
 
-it('Form submission for new plans works', async () => {
+  it('Form submission for new plans works', async () => {
     fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
 
     const wrapper = mount(

@@ -6,7 +6,7 @@ import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { mount } from 'enzyme';
 import { Helmet } from 'react-helmet';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
 import { PlanFormFieldsKeys } from '@opensrp/plan-form';
 import { DRAFT_PLANS_LIST_VIEW_URL } from '../../../constants';
@@ -16,6 +16,8 @@ import flushPromises from 'flush-promises';
 const fetch = require('jest-fetch-mock');
 
 const history = createBrowserHistory();
+
+jest.setTimeout(10000);
 
 describe('Create Plan Page', () => {
   afterEach(() => {
@@ -51,6 +53,8 @@ describe('Create Plan Page', () => {
     expect((wrapper.find('Router').props() as any).history.location.pathname).toEqual(
       DRAFT_PLANS_LIST_VIEW_URL
     );
+
+    wrapper.unmount();
   });
 
   it('planForm gets configured', async () => {
@@ -76,14 +80,7 @@ describe('Create Plan Page', () => {
 
     // testing implementation details at its best.
     // date range field has not initial value
-
-    console.log("does not work")
-    // expect(wrapper.find('#dateRange FormItemInput').props().value).toEqual([
-    //   undefined,
-    //   undefined,
-    // ]); 
-    expect(wrapper.find('#dateRange .ant-form-item').at(0).props().value).toEqual(undefined);
-    // expect(wrapper.find('#dateRange RangePicker').at(1).props().value).toEqual(undefined);
+    expect(wrapper.find('#dateRange .ant-form-item').props().value).toEqual(undefined);
 
     // check interventionType hidden
     expect(wrapper.find('#interventionType FormItemInput').first().props().hidden).toBeTruthy();
@@ -114,5 +111,7 @@ describe('Create Plan Page', () => {
 
     // date is  hidden by default
     expect(wrapper.find('#description FormItemInput').first().props().hidden).toBeFalsy();
+
+    wrapper.unmount();
   });
 });

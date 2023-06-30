@@ -41,18 +41,16 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/healthcare/add-edit/323"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/healthcare/add-edit/323"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -115,18 +113,16 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/healthcare/add-edit/323"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/healthcare/add-edit/323"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -189,18 +185,16 @@ exports[`renders correctly when listing resources: table row 1 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/healthcare/add-edit/323"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/healthcare/add-edit/323"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -263,18 +257,16 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/healthcare/add-edit/313"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/healthcare/add-edit/313"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -337,18 +329,16 @@ exports[`renders correctly when listing resources: table row 2 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/healthcare/add-edit/313"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/healthcare/add-edit/313"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"

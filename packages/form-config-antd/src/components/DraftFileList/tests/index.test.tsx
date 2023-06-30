@@ -451,7 +451,6 @@ describe('components/Antd/DraftFileList', () => {
     heading.find('th').at(1).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(1).text()).toEqual('foo');
-    console.log("Pending,,, why it works")
     // Descending
     heading.find('th').at(1).simulate('click');
     wrapper.update();

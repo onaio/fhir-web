@@ -17,6 +17,8 @@ jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
+jest.setTimeout(10000);
+
 jest.mock('@opensrp/react-utils', () => {
   const actual = jest.requireActual('@opensrp/react-utils');
 

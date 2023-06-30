@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Dropdown, Menu } from 'antd';
+import { Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -49,7 +49,7 @@ const Table: React.FC<Props> = (props: Props) => {
       key: '1',
       label: (
         <Button
-          type='link'
+          type="link"
           data-testid="view-location"
           onClick={() => {
             onViewDetails?.(record);
@@ -57,9 +57,9 @@ const Table: React.FC<Props> = (props: Props) => {
         >
           {t('View details')}
         </Button>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   return (
     <TableLayout
@@ -74,9 +74,7 @@ const Table: React.FC<Props> = (props: Props) => {
         render: (_: boolean, record) => (
           <>
             <Button type="link" className="m-0 p-1">
-              <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>
-                {t('Edit')}
-              </Link>
+              <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`}>{t('Edit')}</Link>
             </Button>
             <Divider type="vertical" />
             <Dropdown

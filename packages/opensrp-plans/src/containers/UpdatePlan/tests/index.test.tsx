@@ -146,7 +146,7 @@ describe('Update plan Page', () => {
 
     // check if form is rendered on the page
     expect(wrapper.find('form')).toHaveLength(1);
-    
+
     // check interventionType hidden
     expect(wrapper.find('#interventionType FormItemInput').props().hidden).toBeTruthy();
 

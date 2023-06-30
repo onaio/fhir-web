@@ -167,10 +167,14 @@ describe('LocationForm', () => {
     );
 
     // name is required and has not default
-    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameName is required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
+      `"NameName is required"`
+    );
 
     // status has default value
-    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(`"StatusActiveInactive"`);
+    expect(wrapper.find('#status .ant-form-item').text()).toMatchInlineSnapshot(
+      `"StatusActiveInactive"`
+    );
 
     // has default value
     expect(wrapper.find('#isJurisdiction .ant-form-item').text()).toMatchInlineSnapshot(
@@ -180,7 +184,9 @@ describe('LocationForm', () => {
     expect(wrapper.find('#alias .ant-form-item').text()).toMatchInlineSnapshot(`"Alias"`);
 
     // not required
-    expect(wrapper.find('#description .ant-form-item').text()).toMatchInlineSnapshot(`"Description"`);
+    expect(wrapper.find('#description .ant-form-item').text()).toMatchInlineSnapshot(
+      `"Description"`
+    );
 
     wrapper.unmount();
   });

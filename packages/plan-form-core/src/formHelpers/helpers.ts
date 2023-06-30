@@ -100,7 +100,6 @@ import { v5 as uuidv5 } from 'uuid';
  * @returns {string} - the uuid
  */
 export function generateNameSpacedUUID(seedString: string, namespace: string) {
-  // console.log({seedString, namespace});
   return uuidv5(seedString, namespace);
 }
 
@@ -640,8 +639,6 @@ export function generatePlanDefinition(
     ...defaultEnvConfig,
     ...envConfigs,
   };
-
-  // console.log(formValue)
 
   const planIdentifier = formValue?.identifier // is this an existing plan?
     ? formValue.identifier

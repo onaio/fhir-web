@@ -114,18 +114,16 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/6f3980e0-d1d6-4a7a-a950-939f3ca7b301"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/6f3980e0-d1d6-4a7a-a950-939f3ca7b301"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -186,18 +184,16 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/e50eb835-7827-4001-b233-e1dda721d4e8"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/e50eb835-7827-4001-b233-e1dda721d4e8"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -258,18 +254,16 @@ exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/90b10fdb-592c-47b6-a265-c8806a15d77c"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/90b10fdb-592c-47b6-a265-c8806a15d77c"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -330,18 +324,16 @@ exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/dde1cd4f-bef4-4d2b-ad1b-f63b639ed254"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/dde1cd4f-bef4-4d2b-ad1b-f63b639ed254"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -402,18 +394,16 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/592181bc-0a68-47bc-8275-ac853bba1b09"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/592181bc-0a68-47bc-8275-ac853bba1b09"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -474,18 +464,16 @@ exports[`renders correctly when listing resources: table row 6 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/b339a63b-84db-45e8-b357-7fcce3bddc34"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/b339a63b-84db-45e8-b357-7fcce3bddc34"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -546,18 +534,16 @@ exports[`renders correctly when listing resources: table row 7 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/7c5c3eb6-0382-4c7b-8c2d-3abfb31d29f4"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/7c5c3eb6-0382-4c7b-8c2d-3abfb31d29f4"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -618,18 +604,16 @@ exports[`renders correctly when listing resources: table row 8 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/9aa4d38c-1c8c-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/9aa4d38c-1c8c-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -690,18 +674,16 @@ exports[`renders correctly when listing resources: table row 9 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/3e5529c8-1c8d-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/3e5529c8-1c8d-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -762,18 +744,16 @@ exports[`renders correctly when listing resources: table row 10 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/1a06dc73-575f-4cff-9424-c95605ba7c30"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/1a06dc73-575f-4cff-9424-c95605ba7c30"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -834,18 +814,16 @@ exports[`renders correctly when listing resources: table row 11 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/961eb18c-1c8e-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/961eb18c-1c8e-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -906,18 +884,16 @@ exports[`renders correctly when listing resources: table row 12 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/23c0fed8-1c8e-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/23c0fed8-1c8e-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -978,18 +954,16 @@ exports[`renders correctly when listing resources: table row 13 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/8e6fc3e6-1c8d-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/8e6fc3e6-1c8d-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1050,18 +1024,16 @@ exports[`renders correctly when listing resources: table row 14 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/75a7f6ec-1c8f-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/75a7f6ec-1c8f-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1122,18 +1094,16 @@ exports[`renders correctly when listing resources: table row 15 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/3b603f72-22b1-40f9-b2e0-5e9c3df7003f"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/3b603f72-22b1-40f9-b2e0-5e9c3df7003f"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1194,18 +1164,16 @@ exports[`renders correctly when listing resources: table row 16 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/3af23539-850a-44ed-8fb1-d4999e2145ff"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/3af23539-850a-44ed-8fb1-d4999e2145ff"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1266,18 +1234,16 @@ exports[`renders correctly when listing resources: table row 17 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/21fc9958-1c8f-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/21fc9958-1c8f-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1338,18 +1304,16 @@ exports[`renders correctly when listing resources: table row 18 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/6e7d2b70-1c90-11ed-861d-0242ac120002"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/6e7d2b70-1c90-11ed-861d-0242ac120002"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1410,18 +1374,16 @@ exports[`renders correctly when listing resources: table row 19 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/951da426-1506-4cab-b03e-5583bdf0ca76"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/951da426-1506-4cab-b03e-5583bdf0ca76"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1482,18 +1444,16 @@ exports[`renders correctly when listing resources: table row 20 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <a
-      href="/commodity/add-edit/f2734756-a6bb-4e90-bbc6-1c34f51d3d5c"
+    <button
+      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
+      type="button"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
+      <a
+        href="/commodity/add-edit/f2734756-a6bb-4e90-bbc6-1c34f51d3d5c"
       >
-        <span>
-          Edit
-        </span>
-      </button>
-    </a>
+        Edit
+      </a>
+    </button>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"

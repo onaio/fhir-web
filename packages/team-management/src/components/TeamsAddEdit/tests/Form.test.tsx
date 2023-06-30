@@ -26,12 +26,10 @@ jest.mock('uuid', () => {
   };
 });
 
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 // mock out antd (multi)select
 jest.mock('antd', () => {
@@ -206,7 +204,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
 
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
-  
+
   it('Create Team', async () => {
     onSubmit(
       opensrpBaseURL,

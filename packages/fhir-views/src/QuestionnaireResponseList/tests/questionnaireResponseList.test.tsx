@@ -99,8 +99,8 @@ test('pagination events work correctly', async () => {
   const waitForSpinner = async () => {
     return await waitFor(() => {
       expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
-    })
-  }
+    });
+  };
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -120,7 +120,7 @@ test('pagination events work correctly', async () => {
 
   await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  
+
   expect(screen.getByText(/8d8d0c07-c2bf-4e5a-9cb3-6c264c3e58dd/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

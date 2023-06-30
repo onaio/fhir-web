@@ -108,9 +108,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
   const [selectedProduct, setSelectedProduct] = React.useState<ProductCatalogue | undefined>(
     undefined
   );
-  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<dayjs.Dayjs | null>(
-    null
-  );
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<dayjs.Dayjs | null>(null);
   const [ifDoneHere, setIfDoneHere] = React.useState<boolean>(false);
   const [isProductChanged, setProductChanged] = React.useState<boolean>(false);
   const [isDeliveryDateChanged, setDeliveryDateChanged] = React.useState<boolean>(false);

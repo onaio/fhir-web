@@ -200,7 +200,7 @@ exports[`1157 - view details errors out for careTeam 3500 6`] = `
           <div
             class="ant-alert-description"
           >
-            No managing organizaions found
+            No managing organizations found
           </div>
         </div>
       </div>
@@ -434,7 +434,7 @@ exports[`Closes on clicking cancel (X)  7`] = `
           <div
             class="ant-alert-description"
           >
-            No managing organizaions found
+            No managing organizations found
           </div>
         </div>
       </div>
@@ -674,7 +674,7 @@ exports[`works correctly 7`] = `
           <div
             class="ant-alert-description"
           >
-            No managing organizaions found
+            No managing organizations found
           </div>
         </div>
       </div>

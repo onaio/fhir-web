@@ -134,7 +134,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
         renderObjectAsKeyvalue(practitionerKeyValues)
       ) : (
         <Alert
-          description={t('Organiation does not have any assigned practitioners')}
+          description={t('Organization does not have any assigned practitioners')}
           type="warning"
         ></Alert>
       )}

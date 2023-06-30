@@ -41,7 +41,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
 
   const cardTitle = (
     <CardTitle
-      IconRender={<FileExcelOutlined className="card-title__icon"  />}
+      IconRender={<FileExcelOutlined className="card-title__icon" />}
       text={t('Use a CSV file to add service point inventory')}
     />
   );

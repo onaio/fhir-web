@@ -30,8 +30,6 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { prettyDOM } from '@testing-library/react';
-import { drop } from 'lodash';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -407,21 +405,8 @@ describe('components/UserList', () => {
       wrapper.update();
     });
 
-      // // find view details button
-      // const dropdown = wrapper.find('Dropdown').at(0);
-      // const dropdownItems = dropdown.find('.more-options [data-testid="action-dropdown"]').last();
-      // console.log(wrapper.debug())
-      // dropdownItems.simulate('click');
-      // wrapper.update();const dropdownItems = dropdown.find('.more-options [data-testid="action-dropdown"]').last();
-      // console.log(wrapper.debug())
-      // dropdownItems.simulat
-  
-      // const viewDetails = wrapper.find('[data-testid="viewdetails"]');
-  
-
     // find view details button
     const table = wrapper.find('TableActions');
-    // expect(table).toHaveLength(1)
     const dropdown = table.find('Dropdown').first();
     const options = dropdown.find('.more-options [data-testid="action-dropdown"]').first();
 
@@ -429,18 +414,12 @@ describe('components/UserList', () => {
     options.simulate('click');
 
     const items = wrapper.find('[data-testid="viewDetails"]').last();
-      // const dropdownItems = dropdown.find('.more-options [data-testid="action-dropdown"]').last();
-    // const subMenu = shallow(<div>{dropdown.prop('menu')}</div>);
-    // const viewDetails = subMenu.find('[data-testid="viewDetails"]');
-    // console.log(wrapper.debug())
 
     fetch.mockResponseOnce(JSON.stringify(practitioner1));
     fetch.mockResponseOnce(JSON.stringify(organization));
 
     // click view details
-    // viewDetails.simulate('click');
     items.simulate('click');
-
 
     await act(async () => {
       await flushPromises();

@@ -155,7 +155,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle}/>
+      <PageHeader title={pageTitle} />
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header">

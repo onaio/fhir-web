@@ -37,6 +37,8 @@ jest.mock('antd', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),

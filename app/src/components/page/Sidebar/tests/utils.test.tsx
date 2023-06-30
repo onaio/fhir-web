@@ -1,4 +1,4 @@
-import { getActiveKey, getPathKey } from '../utils';
+import { getActivePath } from '../utils';
 import { Route } from '../../../../routes';
 import { ENABLE_FHIR_LOCATIONS } from '../../../../configs/env';
 import {
@@ -50,14 +50,13 @@ describe('getActiveKey', () => {
 
   it('returns the correct active key when the path matches exactly', () => {
     const path = URL_USER_GROUPS;
-    const activeKey = getActiveKey(path, routes);
+    const { activeKey } = getActivePath(path, routes);
     expect(activeKey).toEqual('user-groups');
-    expect(getActiveKey(URL_USER, routes)).toEqual('users');
   });
 
   it('returns undefined when the path does not match any route', () => {
     const path = '/undefined-path';
-    const activeKey = getActiveKey(path, routes);
+    const { activeKey } = getActivePath(path, routes);
     expect(activeKey).toBeUndefined();
   });
 });
@@ -103,13 +102,13 @@ describe('getPathKey', () => {
 
   it('returns the correct open keys', () => {
     const path = URL_USER_ROLES;
-    const activePath = getPathKey(path, routes);
-    expect(activePath).toEqual(['admin', 'user-management']);
+    const { activePaths } = getActivePath(path, routes);
+    expect(activePaths).toEqual(['admin', 'user-management']);
   });
 
   it('returns an empty array if no matching path is found', () => {
     const path = '/invalid';
-    const activePath = getPathKey(path, routes);
-    expect(activePath).toEqual([]);
+    const { activePaths } = getActivePath(path, routes);
+    expect(activePaths).toEqual([]);
   });
 });

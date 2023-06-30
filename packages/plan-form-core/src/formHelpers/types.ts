@@ -11,7 +11,7 @@ import {
   InterventionType,
   PlanStatus,
 } from './constants/enumsAndCodeConstants';
-import dayjs  from 'dayjs';
+import dayjs from 'dayjs';
 import {
   actionCode,
   name,

@@ -67,7 +67,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
   for (const [languageCode, label] of Object.entries(supportedLanguageOptions)) {
     dropdownItems.push({
       key: languageCode,
-      label: (<Button type="link">{label}</Button>),
+      label: <Button type="link">{label}</Button>,
     });
   }
 
@@ -77,7 +77,11 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
       placement="bottomRight"
       trigger={['click', 'hover']}
     >
-      <GlobalOutlined style={{ fontSize: '17px', color: 'white', margin: '10px' }} className="more-options" data-testid="more-options" />
+      <GlobalOutlined
+        style={{ fontSize: '17px', color: 'white', margin: '10px' }}
+        className="more-options"
+        data-testid="more-options"
+      />
     </Dropdown>
   );
 };
@@ -85,4 +89,3 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
 LanguageSwitcher.defaultProps = defaultProps;
 
 export { LanguageSwitcher };
-  

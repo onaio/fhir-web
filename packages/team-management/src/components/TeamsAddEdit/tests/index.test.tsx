@@ -13,12 +13,10 @@ import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
 import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
 
-
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   const props = {
