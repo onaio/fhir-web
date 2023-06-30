@@ -12,7 +12,7 @@ import {
   PlanDefinition,
 } from '@opensrp/plan-form-core';
 import { Rule } from 'rc-field-form/lib/interface';
-import moment, { Moment } from 'moment';
+import dayjs from 'dayjs';
 import { PlanFormFields } from './types';
 import { Dictionary } from '@onaio/utils';
 import { cloneDeep } from 'lodash';
@@ -83,8 +83,8 @@ export const validationRulesFactory = (t: TFunction) => ({
 export const processActivitiesDates = (planActivities: PlanActivityFormFields[]) => {
   const values = cloneDeep(planActivities);
   planActivities.forEach((activity, ind) => {
-    values[ind].timingPeriodStart = moment(activity.timingPeriodStart);
-    values[ind].timingPeriodEnd = moment(activity.timingPeriodEnd);
+    values[ind].timingPeriodStart = dayjs(activity.timingPeriodStart);
+    values[ind].timingPeriodEnd = dayjs(activity.timingPeriodEnd);
   });
   return values;
 };
@@ -98,9 +98,9 @@ export const processActivitiesDates = (planActivities: PlanActivityFormFields[])
 export const processToBasePlanForm = (formValues: PlanFormFields): BasePlanFormFields => {
   const baseFormValues = {
     ...formValues,
-    start: (formValues.dateRange[0] as Moment).toDate(),
-    end: (formValues.dateRange[1] as Moment).toDate(),
-    date: (formValues.date as Moment).toDate(),
+    start: dayjs(formValues.dateRange[0]).toDate(),
+    end: dayjs(formValues.dateRange[1]).toDate(),
+    date: dayjs(formValues.date).toDate(),
   };
   delete (baseFormValues as Dictionary).dateRange;
   return baseFormValues;
@@ -115,10 +115,10 @@ export const processToBasePlanForm = (formValues: PlanFormFields): BasePlanFormF
 export const parseBasePlanFormValues = (baseFormValues: BasePlanFormFields): PlanFormFields => {
   const formValues = {
     ...baseFormValues,
-    date: moment(baseFormValues.date),
+    date: dayjs(baseFormValues.date),
     dateRange: [
-      moment(baseFormValues.start),
-      moment(baseFormValues.end).isValid() ? moment(baseFormValues.end) : undefined,
+      dayjs(baseFormValues.start),
+      dayjs(baseFormValues.end).isValid() ? dayjs(baseFormValues.end) : undefined,
     ],
   };
   delete (formValues as Dictionary).start;

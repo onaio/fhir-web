@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields, LocationFormFields } from '../LocationForm/utils';
-import { Spin, Row, Col, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import { Spin, Row, Col } from 'antd';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from '../../mls';
 import { fetchAllHierarchies } from '../../ducks/location-hierarchy';
@@ -147,7 +148,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>

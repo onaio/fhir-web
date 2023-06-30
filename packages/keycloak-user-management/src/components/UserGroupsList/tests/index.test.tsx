@@ -218,7 +218,7 @@ describe('components/UserGroupsList', () => {
     });
 
     const userList = wrapper.find('UserGroupsList');
-    expect(userList.find('Table').first().text()).toEqual('NameActionsNo Data');
+    expect(userList.find('Table').first().text()).toEqual('NameActionsNo data');
     wrapper.unmount();
   });
 
@@ -301,11 +301,15 @@ describe('components/UserGroupsList', () => {
     wrapper.update();
 
     await act(async () => {
-      wrapper.find('Dropdown').at(0).simulate('click');
+      const dropdown = wrapper.find('Dropdown');
+      const dropdownItem = dropdown.find('.more-options [data-testid="more-options"]').last();
+      dropdownItem.simulate('click');
     });
     wrapper.update();
     await act(async () => {
-      wrapper.find('.viewdetails').at(0).simulate('click');
+      const viewButton = wrapper.find('button[data-testid="view-details"]');
+      expect(viewButton).toHaveLength(1);
+      viewButton.simulate('click');
     });
     wrapper.update();
     // Redirect to user group detail view

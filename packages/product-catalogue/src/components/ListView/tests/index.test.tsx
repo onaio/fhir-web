@@ -77,7 +77,7 @@ describe('List view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Product Catalogue (0) + Add product to catalogueProduct NameIDActionsNo Data"`
+      `"Product Catalogue (0) + Add product to catalogueProduct NameIDActionsNo data"`
     );
 
     // details view is not displayed

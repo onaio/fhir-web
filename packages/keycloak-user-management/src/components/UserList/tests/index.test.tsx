@@ -289,7 +289,7 @@ describe('components/UserList', () => {
       wrapper.update();
     });
     // expect(toJson(wrapper.find('.create-user').at(1))).toEqual('');
-    wrapper.find('.create-user').at(0).simulate('click');
+    wrapper.find('.create-user button').at(0).simulate('click');
     expect(historyPushMock).toHaveBeenCalledWith('/admin/users/new');
   });
 
@@ -330,7 +330,7 @@ describe('components/UserList', () => {
     expect(toJson(wrapper.find('div.lds-ripple'))).toBeFalsy();
     // check that table has No Data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"User ManagementAdd UserFirst NameLast NameUsernameActionsNo Data"`
+      `"User ManagementAdd UserFirst NameLast NameUsernameActionsNo data"`
     );
     expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
@@ -406,15 +406,20 @@ describe('components/UserList', () => {
     });
 
     // find view details button
-    const dropdown = wrapper.find('TableActions').find('Dropdown').at(0);
-    const subMenu = shallow(<div>{dropdown.prop('overlay')}</div>);
-    const viewDetails = subMenu.find('MenuItem.viewDetails');
+    const table = wrapper.find('TableActions');
+    const dropdown = table.find('Dropdown').first();
+    const options = dropdown.find('.more-options [data-testid="action-dropdown"]').first();
+
+    expect(options).toHaveLength(1);
+    options.simulate('click');
+
+    const items = wrapper.find('[data-testid="viewDetails"]').last();
 
     fetch.mockResponseOnce(JSON.stringify(practitioner1));
     fetch.mockResponseOnce(JSON.stringify(organization));
 
     // click view details
-    viewDetails.simulate('click');
+    items.simulate('click');
 
     await act(async () => {
       await flushPromises();

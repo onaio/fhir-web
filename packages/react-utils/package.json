@@ -41,14 +41,13 @@
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/server-service": "^0.0.17",
-    "antd": "^4.6.3",
     "fhirclient": "^2.4.0",
     "react-query": "^3.15.1"
   },
   "peerDependencies": {
     "@onaio/gatekeeper": "^0.4.0",
     "@opensrp/store": "^0.0.10",
-    "antd": "^4.6.3",
+    "antd": "^5.5.1",
     "lodash": "^4.17.21",
     "react": "^16.18.1",
     "react-i18next": "^11.14.2",

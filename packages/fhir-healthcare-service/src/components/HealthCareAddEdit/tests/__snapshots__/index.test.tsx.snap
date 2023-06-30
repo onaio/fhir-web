@@ -2,7 +2,7 @@
 
 exports[`renders correctly for edit resource: comment field 1`] = `
 <textarea
-  class="ant-input"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="comment"
   placeholder="Enter comment"
   rows="2"
@@ -13,7 +13,8 @@ exports[`renders correctly for edit resource: comment field 1`] = `
 
 exports[`renders correctly for edit resource: name field 1`] = `
 <input
-  class="ant-input"
+  aria-required="true"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="name"
   placeholder="Name"
   type="text"
@@ -23,7 +24,7 @@ exports[`renders correctly for edit resource: name field 1`] = `
 
 exports[`renders correctly for new resource: comment field 1`] = `
 <textarea
-  class="ant-input"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="comment"
   placeholder="Enter comment"
   rows="2"
@@ -32,7 +33,8 @@ exports[`renders correctly for new resource: comment field 1`] = `
 
 exports[`renders correctly for new resource: name field 1`] = `
 <input
-  class="ant-input"
+  aria-required="true"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="name"
   placeholder="Name"
   type="text"

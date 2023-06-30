@@ -34,9 +34,6 @@
   "dependencies": {
     "react-hooks-global-state": "^1.0.1"
   },
-  "devDependencies": {
-    "antd": "^4.6.3"
-  },
   "peerDependencies": {
     "react": "^16.18.1"
   },

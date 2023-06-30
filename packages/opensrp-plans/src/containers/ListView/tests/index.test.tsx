@@ -82,7 +82,7 @@ describe('List view Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Active Missions + New MissionNameDate createdEnd DateActionsNo Data"`
+      `"Active Missions + New MissionNameDate createdEnd DateActionsNo data"`
     );
   });
   it('renders Draft Missions Title', async () => {

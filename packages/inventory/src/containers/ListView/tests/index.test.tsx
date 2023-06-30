@@ -90,7 +90,7 @@ describe('List view Page', () => {
 
     // no data
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Service point inventory (0)+ Add service pointService pointtypeLocationService point IDActionsNo Data"`
+      `"Service point inventory (0)+ Add service pointService pointtypeLocationService point IDActionsNo data"`
     );
 
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([

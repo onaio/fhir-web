@@ -20,7 +20,7 @@ import {
   processRawAssignments,
 } from '@opensrp/team-management';
 import { PlanDefinition } from '@opensrp/plan-form-core';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {
   fetchOrganizationsAction as fetchOrganizations,
   Organization,
@@ -167,9 +167,9 @@ export const getSingleJurisdictionPayload = (
   initialOrgs: string[] = [],
   existingAssignments: Assignment[] = []
 ): Assignment[] => {
-  const now = moment(new Date());
+  const now = dayjs(new Date());
   let startDate = now.format();
-  const endDate = moment(selectedPlan.effectivePeriod.end).format();
+  const endDate = dayjs(selectedPlan.effectivePeriod.end).format();
 
   const payload: Assignment[] = [];
   const assignmentsByOrgId = keyBy(existingAssignments, 'organization');
@@ -237,7 +237,7 @@ export const retireAssignmentsByJur = (
   selectedOrgs: string[] = [],
   planId: string | undefined = undefined
 ) => {
-  const now = moment(new Date());
+  const now = dayjs(new Date());
   const retireDate = now.format();
 
   const removedJurisdictions = initialJurisdictions.filter(

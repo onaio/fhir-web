@@ -2,7 +2,7 @@
 
 exports[`Profile view Page renders correctly when data is present: contains button to edit service point 1`] = `
 <div
-  className="ant-col flex-center-right ant-col-md-6"
+  className="ant-col flex-center-right ant-col-md-6 css-dev-only-do-not-override-k7429z"
   style={Object {}}
 >
   <Link
@@ -20,11 +20,13 @@ exports[`Profile view Page renders correctly when data is present: contains butt
           size="large"
           type="primary"
         >
+          <Empty />
           <Wave
             disabled={false}
           >
             <button
-              className="ant-btn ant-btn-primary ant-btn-lg"
+              className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-lg"
+              disabled={false}
               onClick={[Function]}
               type="button"
             >
@@ -70,8 +72,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p
@@ -100,8 +103,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p
@@ -130,8 +134,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p
@@ -160,8 +165,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p
@@ -190,8 +196,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p
@@ -220,8 +227,9 @@ exports[`Profile view Page renders correctly when data is present: geographic it
     className="geography-item"
     md={24}
   >
+    <Empty />
     <div
-      className="ant-col geography-item ant-col-md-24"
+      className="ant-col geography-item ant-col-md-24 css-dev-only-do-not-override-k7429z"
       style={Object {}}
     >
       <p

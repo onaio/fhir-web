@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Card, Form, TreeSelect, DatePicker, Tooltip, Spin, Alert, PageHeader } from 'antd';
+import { Button, Card, Form, TreeSelect, DatePicker, Tooltip, Spin, Alert } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
   locationHierachyDucks,
@@ -8,7 +9,8 @@ import {
   ParsedHierarchyNode,
 } from '@opensrp/location-management';
 import { useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
+// import moment from 'moment';
+import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -109,7 +111,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Download District Report')} className="page-header" />
+      <PageHeader title={t('Download District Report')} />
       <Card>
         <Form
           {...layout}
@@ -144,14 +146,19 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
             rules={[{ required: true, message: t('Date Required') }]}
           >
             <DatePicker
-              disabledDate={(current) => current > moment().endOf('month')}
+              disabledDate={(current) => current > dayjs().endOf('month')}
               picker="month"
               onChange={(_, dateString) => setReportDate(dateString)}
             />
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Tooltip placement="bottom" title={!reportDate ? t('Date Required') : null}>
-              <Button type="primary" htmlType="submit" disabled={!reportDate || !locationId}>
+              <Button
+                className="button-submit new"
+                type="primary"
+                htmlType="submit"
+                disabled={!reportDate || !locationId}
+              >
                 <DownloadOutlined />
                 {isSubmitting ? t(`Downloading....`) : t('Download Report')}
               </Button>

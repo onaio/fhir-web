@@ -6,7 +6,7 @@ import { store } from '@opensrp/store';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router';
-import { notification } from 'antd';
+import * as notifications from '@opensrp/notifications';
 import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 
@@ -25,6 +25,11 @@ jest.mock('uuid', () => {
     v4,
   };
 });
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 // mock out antd (multi)select
 jest.mock('antd', () => {
@@ -174,7 +179,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
   });
 
   it('fail and test call onsubmit', async () => {
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(new Error('An error occurred'));
 
     const wrapper = mount(
@@ -197,10 +202,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
   });
 
   it('Create Team', async () => {

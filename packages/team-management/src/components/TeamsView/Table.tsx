@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Divider, Dropdown, Menu } from 'antd';
+import { Button, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Organization } from '../../ducks/organizations';
@@ -49,6 +50,32 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
+  const getItems = (record: Organization): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          type="link"
+          data-testid="view-details"
+          onClick={() => {
+            if (onViewDetails) {
+              onViewDetails(
+                record,
+                opensrpBaseURL,
+                setDetail,
+                setPractitionersList,
+                setAssignedLocations,
+                t
+              );
+            }
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
@@ -73,39 +100,15 @@ const Table: React.FC<Props> = (props: Props) => {
             title: t('Actions'),
             width: '10%',
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            render: (_: unknown, record: Organization, index) => (
+            render: (_: unknown, record: Organization) => (
               <span>
-                <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>
-                  <Button type="link" className="m-0 p-1">
-                    {t('Edit')}
-                  </Button>
-                </Link>
+                <Button type="link" className="m-0 p-1">
+                  <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`}>{t('Edit')}</Link>
+                </Button>
                 <Divider type="vertical" />
                 <Dropdown
-                  overlay={
-                    <Menu className="menu">
-                      <Menu.Item
-                        className="viewdetails"
-                        key={index}
-                        onClick={() => {
-                          if (onViewDetails) {
-                            onViewDetails(
-                              record,
-                              opensrpBaseURL,
-                              setDetail,
-                              setPractitionersList,
-                              setAssignedLocations,
-                              t
-                            );
-                          }
-                        }}
-                      >
-                        {t('View details')}
-                      </Menu.Item>
-                    </Menu>
-                  }
+                  menu={{ items: getItems(record) }}
                   placement="bottomRight"
-                  arrow
                   trigger={['click']}
                 >
                   <MoreOutlined className="more-options" />

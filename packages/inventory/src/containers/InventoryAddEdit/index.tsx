@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 import { Store } from 'redux';
-import { Spin, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -38,6 +38,7 @@ import {
 import { InventoryItemForm, defaultInitialValues } from '../../components/InventoryItemForm';
 import { ProductCatalogue } from '@opensrp/product-catalogue';
 import { useTranslation } from '../../mls';
+import { Spin } from 'antd';
 
 /** register reducers */
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
@@ -191,8 +192,8 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
   if (inventory) {
     initialValues = {
       ...initialValues,
-      deliveryDate: moment(inventory.deliveryDate),
-      accountabilityEndDate: moment(inventory.accountabilityEndDate),
+      deliveryDate: dayjs(inventory.deliveryDate),
+      accountabilityEndDate: dayjs(inventory.accountabilityEndDate),
       unicefSection: inventory.customProperties['UNICEF section'],
       donor: inventory.donor,
       poNumber: inventory.customProperties['PO Number'],
@@ -238,7 +239,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <PageHeader title={heading} className="page-header" />
+      <PageHeader title={heading} />
       <InventoryItemForm {...inventoryItemFormProps} />
     </div>
   );

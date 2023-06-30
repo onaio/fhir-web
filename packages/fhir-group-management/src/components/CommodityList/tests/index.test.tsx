@@ -17,6 +17,8 @@ jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
+jest.setTimeout(10000);
+
 jest.mock('@opensrp/react-utils', () => {
   const actual = jest.requireActual('@opensrp/react-utils');
 
@@ -130,7 +132,7 @@ test('renders correctly when listing resources', async () => {
     </title>
   `);
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

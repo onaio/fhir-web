@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, PageHeader } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { Dictionary } from '@onaio/utils';
@@ -179,7 +180,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
       <Helmet>
         <title>{t('Teams')}</title>
       </Helmet>
-      <PageHeader title={t('Teams')} className="page-header" />
+      <PageHeader title={t('Teams')} />
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">

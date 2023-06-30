@@ -76,10 +76,14 @@ describe('components/Antd/FileList/TableActions', () => {
       </BrowserRouter>
     );
 
-    const dropdown = wrapper.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    const dropdown = wrapper.find('.more-options [data-testid="menu-options"]').last();
+    expect(dropdown).toHaveLength(1);
+    dropdown.simulate('click');
+    wrapper.update();
 
-    submenu.find('Button').simulate('click');
+    const dropdownItems = wrapper.find('button[data-testid="download"]');
+    expect(dropdownItems).toHaveLength(1);
+    dropdownItems.simulate('click');
 
     await act(async () => {
       await flushPromises();

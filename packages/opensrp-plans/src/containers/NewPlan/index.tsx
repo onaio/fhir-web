@@ -3,7 +3,8 @@
  */
 import React from 'react';
 import { defaultInitialValues, PlanForm, processActivitiesDates } from '@opensrp/plan-form';
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import Helmet from 'react-helmet';
 import {
   CommonProps,
@@ -74,7 +75,7 @@ const CreatePlanView = (props: CreatePlanViewProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
+      <PageHeader title={pageTitle} />
 
       <PlanForm {...planFormProps} />
     </Layout>

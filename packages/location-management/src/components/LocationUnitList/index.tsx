@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Spin, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
 import { Link } from 'react-router-dom';
@@ -135,7 +136,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{t('Location Unit')}</title>
       </Helmet>
-      <PageHeader className="page-header" title={t('Location Unit Management')} />
+      <PageHeader title={t('Location Unit Management')} />
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree

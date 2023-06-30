@@ -2,7 +2,7 @@ import React from 'react';
 import { TableColumnsNamespace, URL_MISSIONS } from '../../constants';
 import { Link } from 'react-router-dom';
 import { PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
@@ -50,7 +50,7 @@ export const getColumns = (t: TFunction): Column<PlanDefinition>[] => {
       title: t('Date created'),
       dataIndex: 'date',
       key: `${TableColumnsNamespace}-date` as keyof PlanDefinition,
-      sorter: (a, b) => moment(a.date).unix() - moment(b.date).unix(),
+      sorter: (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
     },
     {
       title: t('End Date'),

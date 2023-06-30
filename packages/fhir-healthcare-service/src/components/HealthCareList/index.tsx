@@ -1,6 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
 import { Link } from 'react-router-dom';
@@ -51,6 +53,17 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
 
   type TableData = typeof tableData[0];
 
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
+
   const columns = [
     {
       title: t('Name'),
@@ -75,22 +88,13 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              {t('Edit')}
-            </Button>
-          </Link>
+          <Button type="link" className="m-0 p-1">
+            <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>{t('Edit')}</Link>
+          </Button>
+
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
-                    {t('View Details')}
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}
@@ -116,7 +120,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

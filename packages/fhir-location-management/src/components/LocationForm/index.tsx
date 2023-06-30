@@ -233,7 +233,6 @@ const LocationForm = (props: LocationFormProps) => {
         <FormItem
           hidden={isHidden('isJurisdiction')}
           label={t('Physical type')}
-          name="isJurisdiction"
           id="isJurisdiction"
           rules={validationRules.isJurisdiction}
         >
