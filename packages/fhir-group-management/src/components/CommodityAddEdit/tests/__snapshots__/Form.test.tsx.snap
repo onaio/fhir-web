@@ -33,7 +33,7 @@ exports[`Health care form renders correctly: active label 1`] = `
 
 exports[`Health care form renders correctly: cancel button 1`] = `
 <button
-  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default cancel-button"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default"
   disabled={false}
   id="cancel-button"
   onClick={[Function]}
@@ -147,7 +147,7 @@ exports[`Health care form renders correctly: name label 1`] = `
 
 exports[`Health care form renders correctly: submit button 1`] = `
 <button
-  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary submit-button"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
   disabled={false}
   id="submit-button"
   onClick={[Function]}
@@ -266,7 +266,7 @@ exports[`Health care form renders correctly: unit of measure label 1`] = `
 
 exports[`Health care form submits new group: asd 1`] = `
 <div
-  className="ant-form-item type css-dev-only-do-not-override-k7429z"
+  className="ant-form-item css-dev-only-do-not-override-k7429z"
 >
   <Row
     className="ant-form-item-row"
@@ -277,7 +277,7 @@ exports[`Health care form submits new group: asd 1`] = `
       style={Object {}}
     >
       <FormItemLabel
-        className="type css-dev-only-do-not-override-k7429z"
+        className="css-dev-only-do-not-override-k7429z"
         errors={Array []}
         fieldId="type"
         htmlFor="type"
@@ -352,7 +352,7 @@ exports[`Health care form submits new group: asd 1`] = `
         </Col>
       </FormItemLabel>
       <FormItemInput
-        className="type css-dev-only-do-not-override-k7429z"
+        className="css-dev-only-do-not-override-k7429z"
         errors={Array []}
         fieldId="type"
         id="type"

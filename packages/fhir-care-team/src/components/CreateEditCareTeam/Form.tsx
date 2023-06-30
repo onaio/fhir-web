@@ -85,14 +85,13 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           <Form.Item
             name={name}
             id="name"
-            className="name"
             label={t('Name')}
             rules={[{ required: true, message: t('Name is Required') }]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item id="status" className="status" name={status} label={t('Status')}>
+          <Form.Item id="status" name={status} label={t('Status')}>
             <Radio.Group name="status">
               {statusOptions.map((e) => (
                 <Radio name="status" key={e.label} value={e.value}>

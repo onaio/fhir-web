@@ -71,7 +71,7 @@ exports[`LocationForm renders correctly: description label 1`] = `
 exports[`LocationForm renders correctly: isJurisdiction field 1`] = `
 Array [
   <input
-    checked={true}
+    checked={false}
     className="ant-radio-input"
     disabled={false}
     onChange={[Function]}
@@ -92,7 +92,6 @@ Array [
 exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
   className=""
-  htmlFor="location-form_isJurisdiction"
   title="Physical type"
 >
   Physical type

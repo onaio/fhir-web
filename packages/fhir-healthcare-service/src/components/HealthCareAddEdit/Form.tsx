@@ -99,33 +99,15 @@ const HealthCareForm = (props: HealthCareFormProps) => {
         <Input disabled={true} />
       </FormItem>
 
-      <FormItem
-        id="name"
-        name={name}
-        className="name"
-        rules={validationRules.name}
-        label={t('Name')}
-      >
+      <FormItem id="name" name={name} rules={validationRules.name} label={t('Name')}>
         <Input disabled={disabled.includes(name)} placeholder={t('Name')} />
       </FormItem>
 
-      <FormItem
-        id="active"
-        className="active"
-        rules={validationRules.active}
-        name={active}
-        label={t('Status')}
-      >
+      <FormItem id="active" rules={validationRules.active} name={active} label={t('Status')}>
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem
-        id="comment"
-        className="comment"
-        rules={validationRules.comment}
-        name={comment}
-        label={t('Comment')}
-      >
+      <FormItem id="comment" rules={validationRules.comment} name={comment} label={t('Comment')}>
         <Input.TextArea
           disabled={disabled.includes(comment)}
           rows={2}
@@ -134,7 +116,6 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       </FormItem>
 
       <FormItem
-        className="extraDetails"
         id="extraDetails"
         rules={validationRules.extraDetails}
         name={extraDetails}
@@ -148,7 +129,6 @@ const HealthCareForm = (props: HealthCareFormProps) => {
       </FormItem>
 
       <FormItem
-        className="providedBy"
         id="providedBy"
         name={providedBy}
         rules={validationRules.providedBy}

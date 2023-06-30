@@ -92,7 +92,7 @@ test('filter select by text able to create new careteam', async () => {
 
   // simulate active change
   wrapper
-    .find('.ant-form-item.status input')
+    .find('#status .ant-form-item input')
     .first()
     .simulate('change', {
       target: { checked: true },
@@ -100,7 +100,7 @@ test('filter select by text able to create new careteam', async () => {
 
   // simulate name change
   wrapper
-    .find('.ant-form-item.name input')
+    .find('#name .ant-form-item input')
     .simulate('change', { target: { name: 'name', value: 'Care team 1' } });
 
   // simulate value selection for type

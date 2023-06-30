@@ -120,66 +120,66 @@ describe('productForm', () => {
     });
 
     expect(
-      (wrapper.find('.ant-form-item.productName FormItemInput').props() as any).validateStatus
+      (wrapper.find('#productName .ant-form-item FormItemInput').props() as any).validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.productName').props() as any).help)
+      toJson((wrapper.find('#productName .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`"Product name"`);
 
     expect(
-      (wrapper.find('.ant-form-item.materialNumber FormItemInput').props() as any).validateStatus
+      (wrapper.find('#materialNumber .ant-form-item FormItemInput').props() as any).validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.materialNumber').props() as any).help)
+      toJson((wrapper.find('#materialNumber .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`material number`);
 
     expect(
-      (wrapper.find('.ant-form-item.isAttractiveItem FormItemInput').props() as any).validateStatus
+      (wrapper.find('#isAttractiveItem .ant-form-item FormItemInput').props() as any).validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.isAttractiveItem').props() as any).help)
+      toJson((wrapper.find('#isAttractiveItem .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`isAttractive`);
 
     expect(
-      (wrapper.find('.ant-form-item.availability FormItemInput').props() as any).validateStatus
+      (wrapper.find('#availability .ant-form-item FormItemInput').props() as any).validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.availability').props() as any).help)
+      toJson((wrapper.find('#availability .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`availability`);
 
     expect(
-      (wrapper.find('.ant-form-item.availability FormItemInput').props() as any).validateStatus
+      (wrapper.find('#availability .ant-form-item FormItemInput').props() as any).validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.availability').props() as any).help)
+      toJson((wrapper.find('#availability .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`availability`);
 
-    expect((wrapper.find('.ant-form-item.condition').props() as any).validateStatus).toEqual(
+    expect((wrapper.find('#condition .ant-form-item').props() as any).validateStatus).toEqual(
       undefined
     );
-    expect(toJson((wrapper.find('.ant-form-item.condition').props() as any).help)).toMatchSnapshot(
+    expect(toJson((wrapper.find('#condition .ant-form-item').props() as any).help)).toMatchSnapshot(
       `condition`
     );
 
-    expect((wrapper.find('.ant-form-item.appropriateUsage').props() as any).validateStatus).toEqual(
-      undefined
-    );
     expect(
-      toJson((wrapper.find('.ant-form-item.appropriateUsage').props() as any).help)
+      (wrapper.find('#appropriateUsage .ant-form-item').props() as any).validateStatus
+    ).toEqual(undefined);
+    expect(
+      toJson((wrapper.find('#appropriateUsage .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`appropriateUsage`);
 
     expect(
-      (wrapper.find('.ant-form-item.accountabilityPeriod FormItemInput').props() as any)
+      (wrapper.find('#accountabilityPeriod .ant-form-item FormItemInput').props() as any)
         .validateStatus
     ).toEqual('error');
     expect(
-      toJson((wrapper.find('.ant-form-item.accountabilityPeriod').props() as any).help)
+      toJson((wrapper.find('#accountabilityPeriod .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`accountability period`);
 
-    expect((wrapper.find('.ant-form-item.photoURL').props() as any).validateStatus).toEqual(
+    expect((wrapper.find('#photoURL .ant-form-item').props() as any).validateStatus).toEqual(
       undefined
     );
-    expect(toJson((wrapper.find('.ant-form-item.photoURL').props() as any).help)).toMatchSnapshot(
+    expect(toJson((wrapper.find('#photoURL .ant-form-item').props() as any).help)).toMatchSnapshot(
       `"photoURL"`
     );
 

@@ -101,14 +101,14 @@ export class FHIRServiceClass<T extends IResource> {
   public async create(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using to clashing libraries to supply fhir resource typings, we should choose one.
+    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
     return serve.create<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
   }
 
   public async update(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using to clashin libraries to supply fhir resource typings, we should choose one.
+    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
     return serve.update<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
   }
 

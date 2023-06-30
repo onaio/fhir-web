@@ -128,64 +128,32 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem className="id" name={id} label={t('Id')} id="id" hidden={true}>
+      <FormItem name={id} label={t('Id')} id="id" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem
-        className="identifier"
-        name={identifier}
-        label={t('Identifier')}
-        id="identifier"
-        hidden={true}
-      >
+      <FormItem name={identifier} label={t('Identifier')} id="identifier" hidden={true}>
         <Input />
       </FormItem>
 
-      <FormItem
-        className="name"
-        name={name}
-        rules={validationRules.name}
-        id="name"
-        label={t('Name')}
-      >
+      <FormItem name={name} rules={validationRules.name} id="name" label={t('Name')}>
         <Input placeholder={t('Enter team name')} />
       </FormItem>
 
-      <FormItem
-        name={alias}
-        className="alias"
-        rules={validationRules.alias}
-        id="alias"
-        label={t('Alias')}
-      >
+      <FormItem name={alias} rules={validationRules.alias} id="alias" label={t('Alias')}>
         <Input placeholder={t('Enter team alias')} />
       </FormItem>
 
-      <FormItem
-        id="status"
-        className="status"
-        name={active}
-        label="Status"
-        rules={validationRules.status}
-      >
+      <FormItem id="status" name={active} label="Status" rules={validationRules.status}>
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
 
-      <FormItem
-        hidden
-        id="type"
-        className="type"
-        name={type}
-        label="Type"
-        rules={validationRules.type}
-      >
+      <FormItem hidden id="type" name={type} label="Type" rules={validationRules.type}>
         <Select disabled={disabled.includes(type)} options={getOrgTypeSelectOptions()}></Select>
       </FormItem>
 
       <FormItem
         id="members"
-        className="members"
         name={members}
         label={t('Practitioners')}
         rules={validationRules.members}
@@ -202,13 +170,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
 
       <FormItem {...tailLayout}>
         <Space>
-          <Button
-            type="primary"
-            id="submit-button"
-            className="submit-button"
-            disabled={isLoading}
-            htmlType="submit"
-          >
+          <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
             {isLoading ? t('Saving') : t('save')}
           </Button>
           <Button

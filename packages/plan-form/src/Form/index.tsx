@@ -388,7 +388,7 @@ const PlanForm = (props: PlanFormProps) => {
               disabled={disabledFields.includes(title)}
             />
           </FormItem>
-          <FormItem name={name} className="name" id="name" hidden rules={validationRules.name}>
+          <FormItem name={name} id="name" hidden rules={validationRules.name}>
             <Input type="hidden" disabled={disabledFields.includes(name)} />
           </FormItem>
           <FormItem name={identifier} id="identifier" hidden rules={validationRules.identifier}>
@@ -434,7 +434,6 @@ const PlanForm = (props: PlanFormProps) => {
             required={true}
             hidden={isHidden('dateRange')}
             id="dateRange"
-            className="dateRange"
           >
             <DatePicker.RangePicker
               onCalendarChange={
@@ -461,7 +460,7 @@ const PlanForm = (props: PlanFormProps) => {
             />
           </FormItem>
 
-          <FormItem hidden rules={validationRules.date} name={date} id="date" className="date">
+          <FormItem hidden rules={validationRules.date} name={date} id="date">
             <DatePicker format={configs.dateFormat} />
           </FormItem>
 
@@ -472,7 +471,6 @@ const PlanForm = (props: PlanFormProps) => {
             required={true}
             hidden={isHidden(description)}
             id="description"
-            className="description"
           >
             <TextArea
               rows={4}

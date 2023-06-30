@@ -181,7 +181,6 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem
           id="parentId"
-          className="parentId"
           hidden={isHidden('parentId')}
           label={t('Part Of')}
           name="parentId"
@@ -199,7 +198,6 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem
           id="name"
-          className="name"
           rules={validationRules.name}
           hidden={isHidden('name')}
           name="name"
@@ -212,20 +210,12 @@ const LocationForm = (props: LocationFormProps) => {
           ></Input>
         </FormItem>
 
-        <FormItem
-          className="alias"
-          id="alias"
-          hidden={isHidden('alias')}
-          name="alias"
-          label={t('Alias')}
-          hasFeedback
-        >
+        <FormItem id="alias" hidden={isHidden('alias')} name="alias" label={t('Alias')} hasFeedback>
           <Input disabled={disabled.includes('description')} placeholder={t('Alias')}></Input>
         </FormItem>
 
         <FormItem
           id="status"
-          className="status"
           rules={validationRules.status}
           hidden={isHidden('status')}
           label={t('Status')}
@@ -243,9 +233,7 @@ const LocationForm = (props: LocationFormProps) => {
         <FormItem
           hidden={isHidden('isJurisdiction')}
           label={t('Physical type')}
-          name="isJurisdiction"
           id="isJurisdiction"
-          className="isJurisdiction"
           rules={validationRules.isJurisdiction}
         >
           <Radio.Group
@@ -256,7 +244,6 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem
           id="description"
-          className="description"
           rules={validationRules.description}
           hidden={isHidden('description')}
           name="description"

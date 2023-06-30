@@ -102,25 +102,25 @@ describe('Health care form', () => {
       wrapper.update();
     });
 
-    expect(toJson(wrapper.find('.ant-form-item.name label'))).toMatchSnapshot('name label');
-    expect(toJson(wrapper.find('.ant-form-item.name input'))).toMatchSnapshot('name field');
+    expect(toJson(wrapper.find('#name .ant-form-item label'))).toMatchSnapshot('name label');
+    expect(toJson(wrapper.find('#name .ant-form-item input'))).toMatchSnapshot('name field');
 
-    expect(toJson(wrapper.find('.ant-form-item.active label').first())).toMatchSnapshot(
+    expect(toJson(wrapper.find('#active .ant-form-item label').first())).toMatchSnapshot(
       'active label'
     );
-    expect(toJson(wrapper.find('.ant-form-item.active input'))).toMatchSnapshot('active field');
+    expect(toJson(wrapper.find('#active .ant-form-item input'))).toMatchSnapshot('active field');
 
-    expect(toJson(wrapper.find('.ant-form-item.comment label').first())).toMatchSnapshot(
+    expect(toJson(wrapper.find('#comment .ant-form-item label').first())).toMatchSnapshot(
       'comment label'
     );
-    expect(toJson(wrapper.find('.ant-form-item.comment textarea'))).toMatchSnapshot(
+    expect(toJson(wrapper.find('#comment .ant-form-item textarea'))).toMatchSnapshot(
       'comment field'
     );
 
-    expect(toJson(wrapper.find('.ant-form-item.extra-details label').first())).toMatchSnapshot(
+    expect(toJson(wrapper.find('#extra-details .ant-form-item label').first())).toMatchSnapshot(
       'extraDetails label'
     );
-    expect(toJson(wrapper.find('.ant-form-item.extra-details textarea'))).toMatchSnapshot(
+    expect(toJson(wrapper.find('#extra-details .ant-form-item textarea'))).toMatchSnapshot(
       'extraDetails field'
     );
 
@@ -155,23 +155,23 @@ describe('Health care form', () => {
     });
 
     // name is required and has no default
-    expect(wrapper.find('.ant-form-item.name').text()).toMatchInlineSnapshot(`"NameRequired"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(`"NameRequired"`);
 
     // comment is not required required and has no default
-    expect(wrapper.find('.ant-form-item.comment').text()).toMatchInlineSnapshot(`"Comment"`);
+    expect(wrapper.find('#comment .ant-form-item').text()).toMatchInlineSnapshot(`"Comment"`);
 
     // status has no
-    expect(wrapper.find('.ant-form-item.active').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#active .ant-form-item').text()).toMatchInlineSnapshot(
       `"StatusInactiveactiveRequired"`
     );
 
     // not required
-    expect(wrapper.find('.ant-form-item.extraDetails').text()).toMatchInlineSnapshot(
+    expect(wrapper.find('#extraDetails .ant-form-item').text()).toMatchInlineSnapshot(
       `"Extra details"`
     );
 
     // not required?
-    expect(wrapper.find('.ant-form-item.providedBy').text()).toMatchSnapshot(
+    expect(wrapper.find('#providedBy .ant-form-item').text()).toMatchSnapshot(
       `"Practitioners Select user (practitioners only)"`
     );
 
@@ -329,12 +329,12 @@ describe('Health care form', () => {
 
     // simulate name change
     wrapper
-      .find('.ant-form-item.name input')
+      .find('#name .ant-form-item input')
       .simulate('change', { target: { name: 'name', value: 'Medieval healers' } });
 
     // simulate active check to be active
     wrapper
-      .find('.ant-form-item.active input')
+      .find('#active .ant-form-item input')
       .first()
       .simulate('change', {
         target: { checked: true },
@@ -352,7 +352,7 @@ describe('Health care form', () => {
     fireEvent.click(document.querySelector('[title="Test Team 4"]'));
 
     wrapper
-      .find('.ant-form-item.comment textarea')
+      .find('#comment .ant-form-item textarea')
       .simulate('change', { target: { name: 'alias', value: 'Eat shrubs' } });
 
     await flushPromises();

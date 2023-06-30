@@ -185,7 +185,7 @@ exports[`OrganizationForm renders correctly: status label 1`] = `
 
 exports[`OrganizationForm renders correctly: submit button 1`] = `
 <button
-  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary submit-button"
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
   disabled={false}
   id="submit-button"
   onClick={[Function]}

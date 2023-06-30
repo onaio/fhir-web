@@ -192,17 +192,17 @@ describe('containers/forms/PlanForm', () => {
 
     // name is required
     expect(
-      (wrapper.find('.ant-form-item.name FormItemInput').props() as any).errors
+      (wrapper.find('#name .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('name error');
 
     // title is required
     expect(
-      (wrapper.find('.ant-form-item.title FormItemInput').props() as any).errors
+      (wrapper.find('#title .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('title error');
 
     // description is required
     expect(
-      (wrapper.find('.ant-form-item.description FormItemInput').props() as any).errors
+      (wrapper.find('#description .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
@@ -232,22 +232,22 @@ describe('containers/forms/PlanForm', () => {
 
     // date is required
     expect(
-      (wrapper.find('.ant-form-item.date FormItemInput').props() as any).errors
+      (wrapper.find('#date .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('date error');
 
     // interventionType is required
     expect(
-      (wrapper.find('.ant-form-item.interventionType FormItemInput').props() as any).errors
+      (wrapper.find('#interventionType .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('interventionType error');
 
     // dateRange is required
     expect(
-      (wrapper.find('.ant-form-item.dateRange FormItemInput').props() as any).errors
+      (wrapper.find('#dateRange .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('dateRange required error');
 
     // description is required
     expect(
-      (wrapper.find('.ant-form-item.description FormItemInput').props() as any).errors
+      (wrapper.find('#description .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('description required error');
 
     // next we set wrong values for fields that expect specific values
