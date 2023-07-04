@@ -106,7 +106,7 @@ describe('LocationForm', () => {
     });
 
     expect(toJson(wrapper.find('#parentId label'))).toMatchSnapshot('parentId label');
-    expect(toJson(wrapper.find('#parentId select'))).toMatchSnapshot('parentId field');
+    expect(toJson(wrapper.find('#parentId input'))).toMatchSnapshot('parentId field');
 
     expect(toJson(wrapper.find('#name label'))).toMatchSnapshot('name label');
     expect(toJson(wrapper.find('#name input'))).toMatchSnapshot('name field');
