@@ -12,6 +12,9 @@ export function getActivePath(path: string, routes: Route[]) {
   let openKey: string | undefined;
 
   function mapPaths(menu: Route) {
+    // Check for matching url
+    if (menu.url && path.includes(menu.url)) activeKey = menu.key;
+    // Exact match
     if (path === menu.url) activeKey = menu.key;
     // Check if the menu has children
     if (menu.children) {
