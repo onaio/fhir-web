@@ -71,7 +71,7 @@ exports[`LocationForm renders correctly: description label 1`] = `
 exports[`LocationForm renders correctly: isJurisdiction field 1`] = `
 Array [
   <input
-    checked={false}
+    checked={true}
     className="ant-radio-input"
     disabled={false}
     onChange={[Function]}
@@ -92,6 +92,7 @@ Array [
 exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
   className=""
+  htmlFor="location-form_isJurisdiction"
   title="Physical type"
 >
   Physical type
@@ -125,7 +126,35 @@ exports[`LocationForm renders correctly: name label 1`] = `
 </label>
 `;
 
-exports[`LocationForm renders correctly: parentId field 1`] = `null`;
+exports[`LocationForm renders correctly: parentId field 1`] = `
+<input
+  aria-autocomplete="list"
+  aria-controls="location-form_parentId_list"
+  aria-expanded={false}
+  aria-haspopup="listbox"
+  aria-owns="location-form_parentId_list"
+  autoComplete="off"
+  className="ant-select-selection-search-input"
+  disabled={false}
+  id="location-form_parentId"
+  onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
+  onKeyDown={[Function]}
+  onMouseDown={[Function]}
+  onPaste={[Function]}
+  readOnly={true}
+  role="combobox"
+  style={
+    Object {
+      "opacity": 0,
+    }
+  }
+  type="search"
+  unselectable="on"
+  value=""
+/>
+`;
 
 exports[`LocationForm renders correctly: parentId label 1`] = `
 <label
