@@ -141,9 +141,7 @@ export const CommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Button type="link" className="m-0 p-1">
-            <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`}>{t('Edit')}</Link>
-          </Button>
+          <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">{t('Edit')}</Link>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}

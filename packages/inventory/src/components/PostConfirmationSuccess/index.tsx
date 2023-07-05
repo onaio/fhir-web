@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Space, Button } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { INVENTORY_BULK_UPLOAD_URL, INVENTORY_SERVICE_POINT_LIST_VIEW } from '../../constants';
 import { CardTitle } from '../../helpers/utils';
 import { useTranslation } from '../../mls';
@@ -26,6 +26,8 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
   const { rowsProcessed, filename } = props;
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   const cardTitle = (
     <CardTitle
       IconRender={<CheckCircleOutlined className="card-title__icon" />}
@@ -43,9 +45,9 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
         </p>
       </Trans>
       <Space>
-        <Link to={INVENTORY_BULK_UPLOAD_URL}>
-          <Button className="round-button">{t('Upload another file')}</Button>
-        </Link>
+        <Button className="round-button" onClick={() => {history.push(INVENTORY_BULK_UPLOAD_URL)}}>
+          {t('Upload another file')}
+        </Button>
       </Space>
     </Card>
   );

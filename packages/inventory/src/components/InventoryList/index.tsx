@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { getTableColumns } from './utils';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
@@ -23,6 +23,7 @@ import '../../index.css';
 import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from '../../mls';
+import { PlusOutlined } from '@ant-design/icons';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -64,6 +65,8 @@ const InventoryList = (props: InventoryListProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   useEffect(() => {
     // api call to get inventory by id
     setLoading(true);
@@ -102,11 +105,10 @@ const InventoryList = (props: InventoryListProps) => {
         <Col className={'main-content'}>
           <div className="inventory-profile">
             <h6>{t('Inventory items')}</h6>
-            <Link to={`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`}>
-              <Button type="primary" size="large">
-                {t(' + Add new inventory item')}
+              <Button type="primary" size="large" onClick={() => history.push(`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`)}>
+                <PlusOutlined />
+                {t('Add new inventory item')}
               </Button>
-            </Link>
           </div>
           <TableLayout
             dataKeyAccessor="_id"

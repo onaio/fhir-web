@@ -15,7 +15,6 @@ import { loadKeycloakResources } from './utils';
 import { getTableColumns } from './tableColumns';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PageHeader } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
@@ -122,12 +121,10 @@ export const UserList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Link to={URL_USER_CREATE}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('Add User')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
+              <PlusOutlined />
+              {t('Add User')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>

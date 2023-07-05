@@ -11,6 +11,7 @@ import { Dictionary } from '@onaio/utils';
 import { useQueryClient } from 'react-query';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useTranslation } from '../../../mls';
+import { ButtonLink } from '@opensrp/react-utils';
 
 export interface Props {
   removeKeycloakUsersCreator: typeof removeKeycloakUsers;
@@ -80,11 +81,12 @@ const TableActions = (props: Props): JSX.Element => {
     {
       key: '2',
       label: (
-        <Button type="link" data-testid="credentials">
-          <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-            {t('Credentials')}
-          </Link>
-        </Button>
+        <ButtonLink name={t('Credentials')} data-testid="credentials" route={`${URL_USER_CREDENTIALS}/${record.id}`} />
+        // <Button type="link" data-testid="credentials">
+        //   <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
+        //     {t('Credentials')}
+        //   </Link>
+        // </Button>
       ),
     },
     {
@@ -104,11 +106,9 @@ const TableActions = (props: Props): JSX.Element => {
 
   return (
     <>
-      <Button type="link">
-        <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-          {t('Edit')}
-        </Link>
-      </Button>
+      <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+        {t('Edit')}
+      </Link>
       <Divider type="vertical" />
       <Dropdown
         menu={{ items: getItems(record) }}

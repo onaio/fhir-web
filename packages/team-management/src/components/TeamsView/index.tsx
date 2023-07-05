@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { Dictionary } from '@onaio/utils';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import {
   OpenSRPService,
@@ -149,6 +149,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
   const { t } = useTranslation();
   const { opensrpBaseURL } = props;
+  const history = useHistory();
 
   /**
    * Function to fetch organizations
@@ -190,12 +191,10 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
               size={'middle'}
             />
             <div>
-              <Link to={URL_ADD_TEAM}>
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Create Team')}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={() => history.push(URL_ADD_TEAM)}>
+                <PlusOutlined />
+                {t('Create Team')}
+              </Button>
             </div>
           </div>
           <div className="bg-white">

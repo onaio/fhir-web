@@ -129,12 +129,10 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} data-testid="search-form" />
-            <Link to={'#'}>
-              <Button type="primary" disabled={true}>
-                <PlusOutlined />
-                {t('Create questionnaire')}
-              </Button>
-            </Link>
+            <Button type="primary" disabled={true}>
+              <PlusOutlined />
+              {t('Create questionnaire')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>

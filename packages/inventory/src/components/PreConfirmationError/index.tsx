@@ -9,6 +9,7 @@ import { CardTitle } from '../../helpers/utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { Trans } from '@opensrp/i18n';
+import { ButtonLink } from '@opensrp/react-utils';
 
 type TableData = BadRequestError['errors'][0];
 
@@ -63,9 +64,7 @@ const PreConfirmationError = (props: PreConfirmationErrorProps) => {
         columns={columns}
         datasource={datasource}
       />
-      <Link to={INVENTORY_BULK_UPLOAD_URL}>
-        <Button className="round-button">{t('Retry')}</Button>
-      </Link>
+      <ButtonLink route={INVENTORY_BULK_UPLOAD_URL} name={t('Retry')} />
     </Card>
   );
 };
