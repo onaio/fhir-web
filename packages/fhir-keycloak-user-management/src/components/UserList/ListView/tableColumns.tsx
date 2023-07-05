@@ -93,11 +93,9 @@ export const getTableColumns = (
     render: (_, record) => {
       return (
         <>
-          <Button type="link">
-            <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-              {t('Edit')}
-            </Link>
-          </Button>
+          <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+            {t('Edit')}
+          </Link>
           <Divider type="vertical" />
           <Dropdown
             placement="bottomRight"

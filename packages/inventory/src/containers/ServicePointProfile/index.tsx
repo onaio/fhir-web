@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCords, GeographicLocationInterface } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { Link, RouteComponentProps, useParams } from 'react-router-dom';
+import { Link, RouteComponentProps, useHistory, useParams } from 'react-router-dom';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Helmet } from 'react-helmet';
 import {
@@ -102,6 +102,8 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
   const { t } = useTranslation();
   const params = useParams<{ [INVENTORY_SERVICE_POINT_PROFILE_PARAM]: string }>();
   const spId = params[INVENTORY_SERVICE_POINT_PROFILE_PARAM];
+
+  const history = useHistory();
 
   const filters = {
     isJurisdiction: false,
@@ -216,11 +218,9 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             </Row>
           </Col>
           <Col md={6} className="flex-center-right">
-            <Link to={`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`}>
-              <Button type="primary" size="large">
-                {t('Edit service point')}
-              </Button>
-            </Link>
+            <Button type="primary" size="large" onClick={() => history.push(`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`)}>
+              {t('Edit service point')}
+            </Button>
           </Col>
         </Row>
       </div>

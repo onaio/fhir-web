@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { BrokenPage, Resource404, TableLayout } from '@opensrp/react-utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import {
@@ -78,6 +78,8 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { id: questId } = useParams<RouteProps>();
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   const {
     isLoading: QuestLoading,
     data: questData,
@@ -125,14 +127,10 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header flex-right">
-            <Link
-              to={`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`}
-            >
-              <Button type="primary">
-                <PlusOutlined />
-                {t('Fill form')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`)}>
+              <PlusOutlined />
+              {t('Fill form')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>
