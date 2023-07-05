@@ -1,10 +1,9 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { Layout, Avatar, Button, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { Link } from 'react-router-dom';
 import './Header.css';
 import { URL_LOGOUT, URL_USER_EDIT } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
@@ -14,6 +13,7 @@ import { ENABLE_LANGUAGE_SWITCHER, SUPPORTED_LANGUAGES } from '../../../configs/
 import { useTranslation } from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
 import { APP_LOGIN_URL } from '../../../configs/dispatchConfig';
+import { ButtonLink } from '@opensrp/react-utils';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -56,6 +56,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
   /** default enum of all possible language options */
 
@@ -70,40 +71,18 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: (
-        <Button
-          type='link'
-          data-testid="logout"
-        >
-          <Link to={URL_LOGOUT}>
-            {t('Logout')}
-          </Link>
-        </Button>
-      )
+      label: <ButtonLink name={t('Logout')} route={URL_LOGOUT} />,
     },
     {
       key: '2',
-      label: (
-        <Button
-          type='link'
-          data-testid="manageaccount"
-        >
-          <Link to={`${URL_USER_EDIT}/${user_id}`}>
-            {t('Manage account')}
-          </Link>
-        </Button>
-      )
-    }
-  ]
+      label: <ButtonLink name={t('Manage account')} route={`${URL_USER_EDIT}/${user_id}`} />,
+    },
+  ];
 
   return (
     <Layout.Header className="app-header txt-white align-items-center justify-content-end px-1 layout-header">
       {authenticated ? (
-        <Dropdown
-          menu={{ items }}
-          placement="bottomRight"
-          trigger={['click', 'hover']}
-        >
+        <Dropdown menu={{ items }} placement="bottomRight" trigger={['click', 'hover']}>
           <Button
             shape="circle"
             icon={
@@ -124,10 +103,11 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           icon={<BellOutlined />}
           className="bg-transparent border-0"
           type="primary"
+          onClick={() => history.push(APP_LOGIN_URL)}
         >
-          <Link data-index="login-link" to={APP_LOGIN_URL}>
-            {t('Login')}
-          </Link>
+          {/* <Link data-index="login-link" to={APP_LOGIN_URL}> */}
+          {t('Login')}
+          {/* </Link> */}
         </Button>
       )}
       {ENABLE_LANGUAGE_SWITCHER && <LanguageSwitcher {...languageSwitcherProps} />}
