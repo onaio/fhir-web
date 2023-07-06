@@ -9,7 +9,7 @@ import {
 } from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
 import { getColumns, pageTitleBuilder } from './utils';
-import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';

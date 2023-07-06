@@ -1,6 +1,6 @@
 /** shown during inventory csv bulk upload when validation fails and returns a csv error */
 import React from 'react';
-import { Card, Button } from 'antd';
+import { Card } from 'antd';
 import { FileExcelOutlined } from '@ant-design/icons';
 import { INVENTORY_BULK_UPLOAD_URL } from '../../constants';
 import { Link } from 'react-router-dom';

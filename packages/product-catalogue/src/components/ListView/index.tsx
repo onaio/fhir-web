@@ -11,7 +11,7 @@ import {
 } from '../../ducks/productCatalogue';
 import { connect } from 'react-redux';
 import { ActionsColumnCustomRender, columnsFactory } from './utils';
-import { Link, RouteComponentProps, useHistory } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
