@@ -93,9 +93,9 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     if (currentClickedNode) query += `parentId=${currentClickedNode.id}`;
     history.push({
       pathname: URL_LOCATION_UNIT_ADD,
-      search: query
-    })
-  }
+      search: query,
+    });
+  };
 
   const treeDataQuery = useQueries(
     (locationUnits.data ?? []).map((location) => {

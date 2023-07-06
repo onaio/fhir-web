@@ -90,7 +90,9 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`} className="m-0 p-1">{t('Edit')}</Link>
+          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`} className="m-0 p-1">
+            {t('Edit')}
+          </Link>
 
           <Divider type="vertical" />
           <Dropdown

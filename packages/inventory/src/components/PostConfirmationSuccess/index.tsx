@@ -45,7 +45,12 @@ const PostConfirmationSuccess = (props: PostConfirmationSuccessProps) => {
         </p>
       </Trans>
       <Space>
-        <Button className="round-button" onClick={() => {history.push(INVENTORY_BULK_UPLOAD_URL)}}>
+        <Button
+          className="round-button"
+          onClick={() => {
+            history.push(INVENTORY_BULK_UPLOAD_URL);
+          }}
+        >
           {t('Upload another file')}
         </Button>
       </Space>

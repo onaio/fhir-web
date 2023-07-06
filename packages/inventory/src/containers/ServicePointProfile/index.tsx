@@ -218,7 +218,11 @@ const ServicePointProfile = (props: ServicePointsProfileTypes) => {
             </Row>
           </Col>
           <Col md={6} className="flex-center-right">
-            <Button type="primary" size="large" onClick={() => history.push(`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`)}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => history.push(`${INVENTORY_EDIT_SERVICE_POINT}/${spId}`)}
+            >
               {t('Edit service point')}
             </Button>
           </Col>

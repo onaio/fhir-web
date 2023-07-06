@@ -87,7 +87,10 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: unknown, record) => (
           <span>
-            <Link to={`${URL_LOCATION_UNIT_GROUP_EDIT}/${record.id.toString()}`} className="m-0 p-1">
+            <Link
+              to={`${URL_LOCATION_UNIT_GROUP_EDIT}/${record.id.toString()}`}
+              className="m-0 p-1"
+            >
               {t('Edit')}
             </Link>
             <Divider type="vertical" />

@@ -105,10 +105,16 @@ const InventoryList = (props: InventoryListProps) => {
         <Col className={'main-content'}>
           <div className="inventory-profile">
             <h6>{t('Inventory items')}</h6>
-              <Button type="primary" size="large" onClick={() => history.push(`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`)}>
-                <PlusOutlined />
-                {t('Add new inventory item')}
-              </Button>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() =>
+                history.push(`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`)
+              }
+            >
+              <PlusOutlined />
+              {t('Add new inventory item')}
+            </Button>
           </div>
           <TableLayout
             dataKeyAccessor="_id"
