@@ -102,7 +102,9 @@ const Table: React.FC<Props> = (props: Props) => {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             render: (_: unknown, record: Organization) => (
               <span>
-                <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`} className="m-0 p-1">{t('Edit')}</Link>
+                <Link to={`${URL_EDIT_TEAM}/${record.identifier.toString()}`} className="m-0 p-1">
+                  {t('Edit')}
+                </Link>
                 <Divider type="vertical" />
                 <Dropdown
                   menu={{ items: getItems(record) }}

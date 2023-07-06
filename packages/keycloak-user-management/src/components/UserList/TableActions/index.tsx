@@ -81,7 +81,11 @@ const TableActions = (props: Props): JSX.Element => {
     {
       key: '2',
       label: (
-        <Button type="link" data-testid="credentials" onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}>
+        <Button
+          type="link"
+          data-testid="credentials"
+          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+        >
           {t('Credentials')}
         </Button>
       ),

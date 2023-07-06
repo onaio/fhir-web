@@ -127,7 +127,14 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header flex-right">
-            <Button type="primary" onClick={() => history.push(`${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`)}>
+            <Button
+              type="primary"
+              onClick={() =>
+                history.push(
+                  `${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`
+                )
+              }
+            >
               <PlusOutlined />
               {t('Fill form')}
             </Button>

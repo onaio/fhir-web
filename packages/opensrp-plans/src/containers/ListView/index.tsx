@@ -84,7 +84,11 @@ const PlansList = (props: PlansListTypes) => {
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header flex-right">
-            <Button type="primary" className="mr-0" onClick={() => history.push(PLANS_CREATE_VIEW_URL)}>
+            <Button
+              type="primary"
+              className="mr-0"
+              onClick={() => history.push(PLANS_CREATE_VIEW_URL)}
+            >
               {t(' + New Mission')}
             </Button>
           </div>
