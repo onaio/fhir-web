@@ -36,16 +36,12 @@ exports[`location-management/src/components/LocationUnitList works correctly: fi
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-    type="button"
+  <a
+    class="m-0 p-1"
+    href="/admin/location/unit/edit/303"
   >
-    <a
-      href="/admin/location/unit/edit/303"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"

@@ -141,17 +141,12 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -214,17 +209,12 @@ exports[`renders correctly when listing resources: Search 2 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -287,17 +277,12 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -360,17 +345,12 @@ exports[`renders correctly when listing resources: table row 1 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -433,17 +413,12 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -506,17 +481,12 @@ exports[`renders correctly when listing resources: table row 2 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -579,17 +549,12 @@ exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -652,17 +617,12 @@ exports[`renders correctly when listing resources: table row 3 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -725,17 +685,12 @@ exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -798,17 +753,12 @@ exports[`renders correctly when listing resources: table row 4 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -871,17 +821,12 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -944,17 +889,12 @@ exports[`renders correctly when listing resources: table row 5 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1017,17 +957,12 @@ exports[`renders correctly when listing resources: table row 6 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1090,17 +1025,12 @@ exports[`renders correctly when listing resources: table row 6 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1163,17 +1093,12 @@ exports[`renders correctly when listing resources: table row 7 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1236,17 +1161,12 @@ exports[`renders correctly when listing resources: table row 7 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1309,17 +1229,12 @@ exports[`renders correctly when listing resources: table row 8 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1382,17 +1297,12 @@ exports[`renders correctly when listing resources: table row 8 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1455,17 +1365,12 @@ exports[`renders correctly when listing resources: table row 9 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1528,17 +1433,12 @@ exports[`renders correctly when listing resources: table row 9 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1601,17 +1501,12 @@ exports[`renders correctly when listing resources: table row 10 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1674,17 +1569,12 @@ exports[`renders correctly when listing resources: table row 10 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1747,17 +1637,12 @@ exports[`renders correctly when listing resources: table row 11 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1820,17 +1705,12 @@ exports[`renders correctly when listing resources: table row 11 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1893,17 +1773,12 @@ exports[`renders correctly when listing resources: table row 12 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -1966,17 +1841,12 @@ exports[`renders correctly when listing resources: table row 12 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2039,17 +1909,12 @@ exports[`renders correctly when listing resources: table row 13 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2112,17 +1977,12 @@ exports[`renders correctly when listing resources: table row 13 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2185,17 +2045,12 @@ exports[`renders correctly when listing resources: table row 14 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2258,17 +2113,12 @@ exports[`renders correctly when listing resources: table row 14 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2331,17 +2181,12 @@ exports[`renders correctly when listing resources: table row 15 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2404,17 +2249,12 @@ exports[`renders correctly when listing resources: table row 15 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2477,17 +2317,12 @@ exports[`renders correctly when listing resources: table row 16 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2550,17 +2385,12 @@ exports[`renders correctly when listing resources: table row 16 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2623,17 +2453,12 @@ exports[`renders correctly when listing resources: table row 17 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2696,17 +2521,12 @@ exports[`renders correctly when listing resources: table row 17 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2769,17 +2589,12 @@ exports[`renders correctly when listing resources: table row 18 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2842,17 +2657,12 @@ exports[`renders correctly when listing resources: table row 18 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2915,17 +2725,12 @@ exports[`renders correctly when listing resources: table row 19 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -2988,17 +2793,12 @@ exports[`renders correctly when listing resources: table row 19 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -3061,17 +2861,12 @@ exports[`renders correctly when listing resources: table row 20 page 1 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -3134,17 +2929,12 @@ exports[`renders correctly when listing resources: table row 20 page 2 4`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      disabled=""
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/groups/list"
     >
-      <a
-        href="/groups/list"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
