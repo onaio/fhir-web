@@ -32,7 +32,6 @@ import {
 } from '../../constants';
 import Table from './Table';
 import './TeamsView.css';
-import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { useTranslation } from '../../mls';

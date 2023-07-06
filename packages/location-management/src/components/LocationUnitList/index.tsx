@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LocationUnit,
