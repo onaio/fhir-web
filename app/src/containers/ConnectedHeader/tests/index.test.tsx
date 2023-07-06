@@ -32,15 +32,7 @@ describe('components/ConnectedHeader', () => {
     expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
     expect(wrapper.find('Header').props().children).toHaveLength(2);
     expect(wrapper.text()).toMatchInlineSnapshot(`"Login"`);
-    expect(toJson(wrapper.find('a[data-index="login-link"]'))).toMatchInlineSnapshot(`
-      <a
-        data-index="login-link"
-        href="/login"
-        onClick={[Function]}
-      >
-        Login
-      </a>
-    `);
+    expect(toJson(wrapper.find('button[data-index="login-button"]'))).toMatchSnapshot('login button');
     (wrapper.find('Header').props().children as any).forEach((child: any) => {
       expect(child).toMatchSnapshot('child');
     });

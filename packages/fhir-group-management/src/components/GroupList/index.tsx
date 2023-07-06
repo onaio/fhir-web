@@ -94,7 +94,7 @@ export const GroupList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`#`} className="m-0 p-1" style={{ pointerEvents: "none" }}>{t('Edit')}</Link>
+          <Link to={`#`} className="m-0 p-1" onClick={(e) => e.preventDefault()}>{t('Edit')}</Link>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
