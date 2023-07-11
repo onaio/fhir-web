@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -91,6 +91,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   const [groupId, setGroupId] = useState<string | null>(null);
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   const { isLoading: isUserGroupsLoading, isError: isUserGroupsError } = useQuery(
     ['fetchKeycloakUserGroups', KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL],
     () => new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL).list(),
@@ -172,12 +174,10 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={URL_USER_GROUP_CREATE}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('New User Group')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(URL_USER_GROUP_CREATE)}>
+              <PlusOutlined />
+              {t('New User Group')}
+            </Button>
           </div>
           <TableLayout
             id="UserGroupsList"
@@ -190,10 +190,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               // eslint-disable-next-line react/display-name
               render: (record: KeycloakUserGroup) => (
                 <span>
-                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
-                    <Button type="link" className="m-0 p-1">
-                      {t('Edit')}
-                    </Button>
+                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`} className="m-0 p-1">
+                    {t('Edit')}
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown

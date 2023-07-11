@@ -3,7 +3,7 @@ import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { sorterFn } from '../../../helpers/utils';
 import { getPatientName } from '../../PatientsList/utils';
 import { LIST_PATIENTS_URL } from '../../../constants';
-import { Tag, Button, Typography } from 'antd';
+import { Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { Column } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
@@ -73,10 +73,8 @@ export const columns = (t: TFunction) =>
       // eslint-disable-next-line react/display-name
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              {t('View')}
-            </Button>
+          <Link to={`${LIST_PATIENTS_URL}/${record.id}`} className="m-0 p-1">
+            {t('View')}
           </Link>
         </span>
       ),

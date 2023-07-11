@@ -5,7 +5,7 @@ import type { MenuProps } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
 import {
   SearchForm,
@@ -33,6 +33,8 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
 
   const { sParams, addParam } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+
+  const history = useHistory();
 
   const { t } = useTranslation();
 
@@ -88,9 +90,9 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Button type="link" className="m-0 p-1">
-            <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>{t('Edit')}</Link>
-          </Button>
+          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`} className="m-0 p-1">
+            {t('Edit')}
+          </Link>
 
           <Divider type="vertical" />
           <Dropdown
@@ -125,12 +127,10 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('Create Care Service')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(ADD_EDIT_HEALTHCARE_SERVICE_URL)}>
+              <PlusOutlined />
+              {t('Create Care Service')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>
