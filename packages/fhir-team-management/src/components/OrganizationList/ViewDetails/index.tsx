@@ -89,7 +89,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     isLoading: affiliationsLoading,
     error: affiliationsError,
   } = useQuery(
-    [organizationAffiliationResourceType],
+    [organizationAffiliationResourceType, resourceId],
     () => loadAllResources(fhirBaseURL, organizationAffiliationResourceType),
     {
       select: (res) => {
@@ -120,7 +120,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   if ((orgError && !organization) || (affiliationsError && !affiliationsData)) {
-    return <Alert type="error" message={`${orgError}`} />;
+    return <Alert type="error" message={orgError || affiliationsError} />;
   }
 
   const org = organization as IOrganization;
