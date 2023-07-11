@@ -16,6 +16,8 @@ import { v4 } from 'uuid';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
 import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
+import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
+import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
 export interface OrganizationFormFields {
   id?: string;
@@ -214,4 +216,33 @@ export const getPractitionerOptions = (
     };
   });
   return [...newPractitionerOptions, ...existingPractitionerOptions];
+};
+
+/**
+ * Find locations assigned to a particular organization
+ *
+ * @param orgAffiliations - Affiliations
+ * @param id - Id of the affiliated organization
+ */
+export const FindAssignedLocations = (
+  orgAffiliations: IOrganizationAffiliation[],
+  id: string | undefined
+) => {
+  const locations: Reference[] = [];
+
+  orgAffiliations.forEach((affiliation) => {
+    const { organization, location } = affiliation;
+    const orgReference = organization?.reference;
+
+    if (!orgReference) {
+      return;
+    }
+
+    if (`${organizationResourceType}/${id}` === orgReference) {
+      location?.forEach((loc) => {
+        locations.push(loc);
+      });
+    }
+  });
+  return locations;
 };
