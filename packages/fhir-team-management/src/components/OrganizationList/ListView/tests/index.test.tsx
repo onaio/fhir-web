@@ -13,6 +13,7 @@ import {
   organizationResourceType,
   ORGANIZATION_LIST_URL,
   practitionerRoleResourceType,
+  organizationAffiliationResourceType,
 } from '../../../../constants';
 import {
   assignedPractitionerRole,
@@ -21,6 +22,7 @@ import {
   organizationsPage2,
 } from './fixtures';
 import userEvents from '@testing-library/user-event';
+import { allAffiliations } from '../../../OrganizationAffiliation/tests/fixures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -201,6 +203,15 @@ test('renders correctly when listing organizations', async () => {
       organization: `205`,
     })
     .reply(200, assignedPractitionerRole);
+
+  // affiliations
+  nock(props.fhirBaseURL)
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, allAffiliations);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
