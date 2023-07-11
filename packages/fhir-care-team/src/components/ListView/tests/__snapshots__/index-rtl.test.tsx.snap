@@ -15,16 +15,12 @@ exports[`Care Teams list view renders correctly: table row 1 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/308"
     >
-      <a
-        href="/admin/CareTeam/edit/308"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -69,16 +65,12 @@ exports[`Care Teams list view renders correctly: table row 2 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/325"
     >
-      <a
-        href="/admin/CareTeam/edit/325"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -123,16 +115,12 @@ exports[`Care Teams list view renders correctly: table row 3 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/327"
     >
-      <a
-        href="/admin/CareTeam/edit/327"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -177,16 +165,12 @@ exports[`Care Teams list view renders correctly: table row 4 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/330"
     >
-      <a
-        href="/admin/CareTeam/edit/330"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -231,16 +215,12 @@ exports[`Care Teams list view renders correctly: table row 5 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/328"
     >
-      <a
-        href="/admin/CareTeam/edit/328"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
@@ -285,16 +265,12 @@ exports[`Care Teams list view renders correctly: table row 6 page 1 2`] = `
   <span
     class="d-flex align-items-center"
   >
-    <button
-      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-      type="button"
+    <a
+      class="m-0 p-1"
+      href="/admin/CareTeam/edit/326"
     >
-      <a
-        href="/admin/CareTeam/edit/326"
-      >
-        Edit
-      </a>
-    </button>
+      Edit
+    </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"

@@ -39,16 +39,11 @@ exports[`renders correctly when listing resources: Search 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0"
   >
-    <a
-      href="/admin/users/edit/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
@@ -108,16 +103,11 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0"
   >
-    <a
-      href="/admin/users/edit/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
@@ -177,16 +167,11 @@ exports[`renders correctly when listing resources: table row 2 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/7f5d1800-e1c2-4c31-b01d-d084b8c96bb0"
   >
-    <a
-      href="/admin/users/edit/7f5d1800-e1c2-4c31-b01d-d084b8c96bb0"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
@@ -246,16 +231,11 @@ exports[`renders correctly when listing resources: table row 3 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/40fe3724-95e3-48cb-b90a-f67aebcf4120"
   >
-    <a
-      href="/admin/users/edit/40fe3724-95e3-48cb-b90a-f67aebcf4120"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
@@ -315,16 +295,11 @@ exports[`renders correctly when listing resources: table row 4 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/46bccd72-0505-487b-a208-9a4d2c4e033c"
   >
-    <a
-      href="/admin/users/edit/46bccd72-0505-487b-a208-9a4d2c4e033c"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"
@@ -384,16 +359,11 @@ exports[`renders correctly when listing resources: table row 5 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  <button
-    class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
-    type="button"
+  <a
+    href="/admin/users/edit/718d900b-74ee-43ed-b075-3acc4e344fea"
   >
-    <a
-      href="/admin/users/edit/718d900b-74ee-43ed-b075-3acc4e344fea"
-    >
-      Edit
-    </a>
-  </button>
+    Edit
+  </a>
   <div
     class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
     role="separator"

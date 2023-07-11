@@ -24,16 +24,10 @@ exports[`renders correctly when listing organizations: Search 1 page 1 2`] = `
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/205"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -186,16 +180,10 @@ exports[`renders correctly when listing organizations: table row 1 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/205"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -242,16 +230,10 @@ exports[`renders correctly when listing organizations: table row 1 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/363"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -298,16 +280,10 @@ exports[`renders correctly when listing organizations: table row 2 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/361"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -354,16 +330,10 @@ exports[`renders correctly when listing organizations: table row 2 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/364"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -410,16 +380,10 @@ exports[`renders correctly when listing organizations: table row 3 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/362"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
@@ -466,16 +430,10 @@ exports[`renders correctly when listing organizations: table row 3 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/365"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"

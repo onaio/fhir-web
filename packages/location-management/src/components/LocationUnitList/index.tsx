@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitDetail, { Props as LocationDetailData } from '../LocationUnitDetail';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
   LocationUnit,
@@ -77,6 +77,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   const [detail, setDetail] = useState<LocationDetailData | 'loading' | null>(null);
   const [currentClickedNode, setCurrentClickedNode] = useState<TreeNode>();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const locationUnits = useQuery(
     LOCATION_UNIT_FIND_BY_PROPERTIES,
@@ -86,6 +87,15 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       select: (res: LocationUnit[]) => res,
     }
   );
+
+  const handleAddLocation = () => {
+    let query = '?';
+    if (currentClickedNode) query += `parentId=${currentClickedNode.id}`;
+    history.push({
+      pathname: URL_LOCATION_UNIT_ADD,
+      search: query,
+    });
+  };
 
   const treeDataQuery = useQueries(
     (locationUnits.data ?? []).map((location) => {
@@ -131,6 +141,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
   ) {
     return <Spin size="large" className="custom-spinner" />;
   }
+
   return (
     <section className="content-section">
       <Helmet>
@@ -149,18 +160,10 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
           <div className="mb-3 d-flex justify-content-between p-3">
             <h6 className="mt-4">{currentClickedNode ? tableData[0].label : t('Location Unit')}</h6>
             <div>
-              <Link
-                to={(location) => {
-                  let query = '?';
-                  if (currentClickedNode) query += `parentId=${currentClickedNode.id}`;
-                  return { ...location, pathname: URL_LOCATION_UNIT_ADD, search: query };
-                }}
-              >
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Add Location Unit')}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={handleAddLocation}>
+                <PlusOutlined />
+                {t('Add Location Unit')}
+              </Button>
             </div>
           </div>
           <div className="bg-white p-3">
