@@ -120,7 +120,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   if ((orgError && !organization) || (affiliationsError && !affiliationsData)) {
-    return <Alert type="error" message={orgError || affiliationsError} />;
+    return <Alert type="error" message={`${orgError || affiliationsError}`} />;
   }
 
   const org = organization as IOrganization;
