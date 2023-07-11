@@ -229,10 +229,21 @@ test('renders correctly when listing organizations', async () => {
   await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  // wait for affiliations to finish loading
+  await waitFor(() => {
+    const fetchingLocations = screen.queryByText(/Fetching assigned locations/);
+    expect(fetchingLocations).not.toBeInTheDocument();
+  });
+
   // see details in viewDetails
   document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
     expect(pair).toMatchSnapshot('single key value pairs detail section');
   });
+
+  // As organization 205 has no assigned locations
+  expect(
+    screen.queryByText(/Organization does not have any assigned locations/)
+  ).toBeInTheDocument();
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
