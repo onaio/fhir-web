@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, useHistory, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { Route, getRoutes } from '../../../routes';
 import { getActivePath } from './utils';
 import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
+import type { MenuProps } from 'antd';
 import './Sidebar.css';
 
 /** interface for SidebarProps */
@@ -21,38 +22,90 @@ const defaultSidebarProps: Partial<SidebarProps> = {
   authenticated: false,
 };
 
+type MenuItem = Required<MenuProps>['items'][number];
+
+/**
+ * @param label - Menu label
+ * @param Key - Unique ID of the menu item
+ * @param icon - The icon of the menu item
+ * @param children - Sub-menus or sub-menu items
+ */
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[]
+): MenuItem {
+  return {
+    key,
+    icon,
+    label,
+    children,
+  } as MenuItem;
+}
+
 /** The Sidebar component */
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
   const { t } = useTranslation();
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
+  const history = useHistory();
 
   const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
 
-  const sidebaritems: JSX.Element[] = React.useMemo(() => {
-    function mapChildren(route: Route) {
-      if (route.children) {
-        return (
-          <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
-            {route.children.map(mapChildren)}
-          </Menu.SubMenu>
-        );
-      } else if (route.url) {
-        return (
-          <Menu.Item key={route.key} icon={route.otherProps?.icon}>
-            <Link className="admin-link" to={route.url}>
-              {route.title}
-            </Link>
-          </Menu.Item>
-        );
-      } else {
-        return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+  const menuItems: MenuProps['items'] = [];
+
+  /**
+   *
+   * @param route - All routes
+   * @param targetKey - Item key whose url we want
+   */
+  const findRoute = (route: Route[], targetKey: string): string | undefined => {
+    for (const item of route) {
+      if (item.key === targetKey) {
+        return item.url;
+      }
+      if (item.children) {
+        const childRoute = findRoute(item.children, targetKey);
+        if (childRoute) {
+          return childRoute;
+        }
       }
     }
+    return undefined;
+  };
 
+  const onClick: MenuProps['onClick'] = ({ key }) => {
+    const route = findRoute(routes, key);
+    if (route) {
+      history.push(route);
+    }
+  };
+
+  const setItems = (routes: Route[]) => {
+    function mapChildren(route: Route) {
+      if (route.children) {
+        menuItems?.push(
+          getItem(route.title, route.key, route.otherProps?.icon, [
+            ...route.children?.map((child) => {
+              if (child.children) {
+                return getItem(child.title, child.key, null, [
+                  ...child.children.map((kid) => getItem(kid.title, kid.key)),
+                ]);
+              }
+              return getItem(child.title, child.key);
+            }),
+          ])
+        );
+      } else {
+        menuItems?.push(getItem(route.title, route.key, route.otherProps?.icon));
+      }
+    }
     return routes.map(mapChildren);
-  }, [routes]);
+  };
+
+  setItems(routes);
 
   const { activeKey, activePaths } = getActivePath(location.pathname, routes);
 
@@ -84,9 +137,9 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         onOpenChange={(openKeys) => setCollapsedKeys(openKeys)}
         mode="inline"
         className="menu-dark"
-      >
-        {sidebaritems}
-      </Menu>
+        items={menuItems}
+        onClick={onClick}
+      />
     </Layout.Sider>
   );
 };

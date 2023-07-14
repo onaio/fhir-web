@@ -49,23 +49,24 @@ export const defaultEditPatientProps: PatientDetailProps = {
 type MenuItem = Required<MenuProps>['items'][number];
 
 /**
+ * Function to get the menu and submenu items
+ *
  * @param label - Menu label
- * @param Key - Unique ID of the menu item
- * @param id - 
+ * @param key - Unique ID of the menu item
+ * @param id - Id for the menu item
  * @param icon - The icon of the menu item
  */
-
 function getItem(
   label: React.ReactNode,
   key: React.Key,
   id: string,
-  icon?: React.ReactNode,
+  icon?: React.ReactNode
 ): MenuItem {
   return {
     key,
     icon,
     label,
-    id
+    id,
   } as MenuItem;
 }
 
@@ -131,16 +132,16 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
 
   const items: MenuProps['items'] = [];
   const onClick: MenuProps['onClick'] = (e) => {
-    setResourceType(e.key as string)
-  }
+    setResourceType(e.key);
+  };
 
   Object.keys(resourceTypeMap).map((type: string) => {
-    items.push(
+    return items.push(
       getItem(
         type,
         type,
         type,
-        <Space align='end'>
+        <Space align="end">
           <Badge
             count={resourceTypeMap[type].count}
             overflowCount={500}
@@ -148,8 +149,8 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
           />
         </Space>
       )
-    )
-  })
+    );
+  });
 
   return (
     <Row id="patient-details">

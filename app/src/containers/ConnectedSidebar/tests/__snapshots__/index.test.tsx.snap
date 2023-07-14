@@ -2,204 +2,186 @@
 
 exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
 Array [
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "users",
+            "label": "Users",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-groups",
+            "label": "User Groups",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-roles",
+            "label": "User Roles",
+          },
+        ],
+        "icon": null,
+        "key": "user-management",
+        "label": "User Management",
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
 
 exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
 Array [
-  <SubMenu
-    icon={
-      <MapMarkerOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Plans"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/active"
-      >
-        Active
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/draft"
-      >
-        Draft
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/complete"
-      >
-        Complete
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/retired"
-      >
-        Retired
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ArchiveOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/upload"
-      >
-        Add inventory via CSV
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="Location Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Location Units
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location Unit Group
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/product-catalogue"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
-    <SubMenu
-      title="Team Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams"
-        >
-          Teams
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams/team-assignment"
-        >
-          Team Assignment
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Form Configuration"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/releases"
-        >
-          Manifest Releases
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/drafts"
-        >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "missions-active",
+        "label": "Active",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "missions-draft",
+        "label": "Draft",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "missions-complete",
+        "label": "Complete",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "missions-retired",
+        "label": "Retired",
+      },
+    ],
+    "icon": <MapMarkerOutlineIcon
+      className="sidebar-icons"
+    />,
+    "key": "plans",
+    "label": "Plans",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "download-client-data",
+        "label": "Download Client Data",
+      },
+    ],
+    "icon": <ForwardRef(IdcardOutlined) />,
+    "key": "card-support",
+    "label": "Card Support",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "inventory-list",
+        "label": "Service point inventory",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "inventory-upload",
+        "label": "Add inventory via CSV",
+      },
+    ],
+    "icon": <ArchiveOutlineIcon
+      className="sidebar-icons"
+    />,
+    "key": "inventory",
+    "label": "Inventory",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "location-unit",
+            "label": "Location Units",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "location-group",
+            "label": "Location Unit Group",
+          },
+        ],
+        "icon": null,
+        "key": "location-management",
+        "label": "Location Management",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "product-catalogue",
+        "label": "Product Catalogue",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "TEAMS",
+            "label": "Teams",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "team-assignment",
+            "label": "Team Assignment",
+          },
+        ],
+        "icon": null,
+        "key": "team-management",
+        "label": "Team Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "form-config-releases",
+            "label": "Manifest Releases",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "form-config-draft",
+            "label": "Draft Files",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "form-config-validators",
+            "label": "JSON Validators",
+          },
+        ],
+        "icon": null,
+        "key": "form-config",
+        "label": "Form Configuration",
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
 
@@ -229,7 +211,18 @@ Object {
             "",
           ]
         }
+        items={
+          Array [
+            Object {
+              "children": Array [],
+              "icon": <ForwardRef(DashboardOutlined) />,
+              "key": "admin",
+              "label": "Administration",
+            },
+          ]
+        }
         mode="inline"
+        onClick={[Function]}
         onOpenChange={[Function]}
         openKeys={Array []}
         selectedKeys={
@@ -238,12 +231,7 @@ Object {
           ]
         }
         theme="dark"
-      >
-        <SubMenu
-          icon={<ForwardRef(DashboardOutlined) />}
-          title="Administration"
-        />
-      </Menu>
+      />
     </div>,
     null,
   ],
@@ -259,39 +247,38 @@ Object {
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "users",
+            "label": "Users",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-groups",
+            "label": "User Groups",
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-roles",
+            "label": "User Roles",
+          },
+        ],
+        "icon": null,
+        "key": "user-management",
+        "label": "User Management",
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
 
