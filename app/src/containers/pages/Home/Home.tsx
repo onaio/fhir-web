@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet';
-import { Col, Row, Button, Alert } from 'antd';
-import { Link } from 'react-router-dom';
+import { Col, Row, Alert } from 'antd';
 import './Home.css';
 import { useTranslation } from '../../../mls';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getExtraData } from '@onaio/session-reducer';
 import { getRoutesForHomepage } from '../../../routes';
+import { ButtonLink } from '@opensrp/react-utils';
 
 export const Home = () => {
   const { t } = useTranslation();
@@ -63,11 +63,11 @@ export const Home = () => {
               md={8}
               sm={12}
             >
-              <Link to={route.url as string} className="admin-link">
-                <Button color="outline" className="btn-links">
-                  {route.title}
-                </Button>
-              </Link>
+              <ButtonLink
+                route={route.url as string}
+                name={route.title}
+                className="admin-link btn-links"
+              />
             </Col>
           );
         })}

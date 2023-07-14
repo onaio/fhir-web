@@ -73,8 +73,8 @@ describe('containers/pages/Home', () => {
 
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual('OpenSRP Web');
-    const links = [...screen.queryAllByRole('link')];
-    expect(links.map((x) => x.textContent)).toEqual([
+    const links = document.querySelectorAll('.admin-link');
+    expect(Array.from(links).map((x) => x.textContent)).toEqual([
       'Plans',
       'Card Support',
       'Inventory',

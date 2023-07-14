@@ -16,13 +16,10 @@ Object {
       "key": "2",
       "label": <Button
         data-testid="credentials"
+        onClick={[Function]}
         type="link"
       >
-        <Link
-          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-        >
-          Credentials
-        </Link>
+        Credentials
       </Button>,
     },
     Object {
@@ -98,13 +95,10 @@ Object {
         "key": "2",
         "label": <Button
           data-testid="credentials"
+          onClick={[Function]}
           type="link"
         >
-          <Link
-            to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-          >
-            Credentials
-          </Link>
+          Credentials
         </Button>,
       },
       Object {
@@ -163,13 +157,10 @@ Object {
       "key": "2",
       "label": <Button
         data-testid="credentials"
+        onClick={[Function]}
         type="link"
       >
-        <Link
-          to="/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b"
-        >
-          Credentials
-        </Link>
+        Credentials
       </Button>,
     },
     Object {

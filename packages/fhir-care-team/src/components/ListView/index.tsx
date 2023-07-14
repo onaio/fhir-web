@@ -6,7 +6,7 @@ import type { MenuProps } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
   useTabularViewWithLocalSearch,
@@ -62,6 +62,7 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
+  const history = useHistory();
 
   const { addParam, sParams } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -128,9 +129,9 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Button type="link" className="m-0 p-1">
-            <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>{t('Edit')}</Link>
-          </Button>
+          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
+            {t('Edit')}
+          </Link>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
@@ -163,7 +164,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
-              <Button type="primary">
+              <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
                 <PlusOutlined />
                 {t('Create Care Team')}
               </Button>

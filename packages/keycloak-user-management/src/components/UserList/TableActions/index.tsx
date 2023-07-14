@@ -4,7 +4,7 @@ import { Popconfirm, Divider, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT, UserQueryId } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
@@ -39,6 +39,7 @@ const TableActions = (props: Props): JSX.Element => {
   const { t } = useTranslation();
   const { user_id } = extraData;
   const query = useQueryClient();
+  const history = useHistory();
 
   const getItems = (record: KeycloakUser): MenuProps['items'] => [
     {
@@ -80,10 +81,12 @@ const TableActions = (props: Props): JSX.Element => {
     {
       key: '2',
       label: (
-        <Button type="link" data-testid="credentials">
-          <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-            {t('Credentials')}
-          </Link>
+        <Button
+          type="link"
+          data-testid="credentials"
+          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+        >
+          {t('Credentials')}
         </Button>
       ),
     },
@@ -104,11 +107,9 @@ const TableActions = (props: Props): JSX.Element => {
 
   return (
     <>
-      <Button type="link">
-        <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-          {t('Edit')}
-        </Link>
-      </Button>
+      <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+        {t('Edit')}
+      </Link>
       <Divider type="vertical" />
       <Dropdown
         menu={{ items: getItems(record) }}

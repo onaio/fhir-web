@@ -55,16 +55,10 @@ exports[`renders correctly in list view: table row 1 page 1 5`] = `
     class="d-flex justify-content-start align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/fhir/Patient/52"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          View
-        </span>
-      </button>
+      View
     </a>
   </span>
 </td>
@@ -117,16 +111,10 @@ exports[`renders correctly in list view: table row 2 page 1 5`] = `
     class="d-flex justify-content-start align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/fhir/Patient/2"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          View
-        </span>
-      </button>
+      View
     </a>
   </span>
 </td>
@@ -179,16 +167,10 @@ exports[`renders correctly in list view: table row 3 page 1 5`] = `
     class="d-flex justify-content-start align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/fhir/Patient/1"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          View
-        </span>
-      </button>
+      View
     </a>
   </span>
 </td>
@@ -246,16 +228,10 @@ exports[`renders correctly in list view: table row 4 page 1 5`] = `
     class="d-flex justify-content-start align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/fhir/Patient/3"
     >
-      <button
-        class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          View
-        </span>
-      </button>
+      View
     </a>
   </span>
 </td>

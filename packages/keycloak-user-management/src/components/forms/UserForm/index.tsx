@@ -276,6 +276,7 @@ export const defaultUserFormInitialValues: FormFields = {
   practitioner: undefined,
   contact: undefined,
   enabled: true,
+  fhirCoreAppId: undefined,
 };
 
 UserForm.defaultProps = {

@@ -19,7 +19,7 @@ import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../cons
 import { useTranslation } from '../../mls';
 import Table from './Table';
 import './LocationUnitGroupList.css';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Props } from '../../helpers/common';
 
@@ -34,6 +34,8 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const [filter, setfilterData] = useState<LocationUnitGroup[] | null>(null);
   const { opensrpBaseURL } = props;
   const { t } = useTranslation();
+
+  const history = useHistory();
 
   useEffect(() => {
     if (isLoading) {
@@ -79,12 +81,10 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
               onChange={onChange}
             />
             <div>
-              <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Add Location Unit Group')}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_GROUP_ADD)}>
+                <PlusOutlined />
+                {t('Add Location Unit Group')}
+              </Button>
             </div>
           </div>
           <div className="bg-white p-3">

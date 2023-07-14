@@ -272,7 +272,7 @@ export const getFormValues = (
     userGroups: userGroups?.map((tag) => tag.id),
     keycloakUser,
     practitionerRole,
-    fhirCoreAppId,
+    fhirCoreAppId: fhirCoreAppId?.[0],
   };
 };
 

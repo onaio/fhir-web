@@ -12,6 +12,7 @@ Object {
           "active": true,
           "contact": undefined,
           "enabled": true,
+          "fhirCoreAppId": undefined,
           "firstName": "",
           "id": "",
           "lastName": "",
