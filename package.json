@@ -100,7 +100,7 @@
     "jest-fetch-mock": "^3.0.3",
     "jest-haste-map": "^27.4.6",
     "jest-resolve": "^27.4.6",
-    "lerna": "^4.0.0",
+    "lerna": "^7.1.4",
     "lint-staged": "^12.2.1",
     "mockdate": "^3.0.5",
     "node-fetch": "2.6.7",
