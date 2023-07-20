@@ -63,7 +63,7 @@ export const submitForm = async (
         setIfDoneHere(true);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem creating inventory'));
       })
       .finally(() => {
         setSubmitting(false);
@@ -83,7 +83,7 @@ export const submitForm = async (
         setIfDoneHere(true);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem updating inventory'));
       })
       .finally(() => {
         setSubmitting(false);

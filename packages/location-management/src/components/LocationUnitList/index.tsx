@@ -69,7 +69,7 @@ export async function loadSingleLocation(
     .then((res: LocationUnit) => {
       setDetail(res);
     })
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem fetching Location Unit details')));
 }
 
 export const LocationUnitList: React.FC<Props> = (props: Props) => {
@@ -83,7 +83,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Location Units')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -102,7 +102,7 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       return {
         queryKey: [LOCATION_HIERARCHY, location.id],
         queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-        onError: () => sendErrorNotification(t('An error occurred')),
+        onError: () => sendErrorNotification(t('There was a problem fetching location hierachy')),
         select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res),
       };
     })

@@ -132,7 +132,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () =>
+        sendErrorNotification(
+          t('There was a problem fetching the location hierachy for the assigned location')
+        ),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
@@ -175,7 +178,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               locationHierarchies,
               setSubmitting,
               t
-            ).catch(() => sendErrorNotification(t('An error occurred')));
+            ).catch(() => sendErrorNotification(t('There was a problem submitting the form')));
           }}
         >
           <Form.Item name="clientLocation" label={t('Client Location')}>

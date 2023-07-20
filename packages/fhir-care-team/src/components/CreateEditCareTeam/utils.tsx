@@ -154,7 +154,7 @@ export const submitForm = async (
     // TODO - possible place to use translation plurals
     .then(() => sendSuccessNotification(successNotificationMessage))
     .catch(() => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching Care Team'));
     })
     .finally(() => history.push(URL_CARE_TEAM));
 };

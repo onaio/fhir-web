@@ -55,10 +55,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     () => loadAllResources(fhirBaseUrl, practitionerResourceType),
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
-      onError: (err: Error) => {
-        // sendErrorNotification(t('An Error occurred'))
-        console.log(err.message)
-      },
+      onError: () => sendErrorNotification(t('There was a problem fetching practitioners')),
     }
   );
 
@@ -67,10 +64,8 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     [practitionerResourceType, organizationResourceType, orgId],
     () => loadAllResources(fhirBaseUrl, practitionerRoleResourceType),
     {
-      onError: (err: Error) => {
-        // sendErrorNotification(t('An Error occurred'))
-        console.log(err)
-      },
+      onError: () =>
+        sendErrorNotification(t('There was a problem fetching assigned practitioners')),
       select: (res) => {
         return getResourcesFromBundle(res) as IPractitionerRole[];
       },

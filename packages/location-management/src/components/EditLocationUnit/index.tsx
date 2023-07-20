@@ -151,7 +151,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Location Units')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -162,7 +162,8 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(t('An error occurred')),
+            onError: () =>
+              sendErrorNotification(t('There was a problem fetching location hierachy')),
             select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
@@ -213,8 +214,10 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
         if (grandparenthierarchy && grandparenthierarchy.id)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])
-            .catch(() => sendErrorNotification(t('An error occurred')));
-        else sendErrorNotification(t('An error occurred'));
+            .catch(() =>
+              sendErrorNotification(t('There was a problem fetching location hierachy'))
+            );
+        else sendErrorNotification(t('There was a problem getting the hierachy node'));
       }
       dispatch(fetchAllHierarchies([]));
     },

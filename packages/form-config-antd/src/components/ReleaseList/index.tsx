@@ -73,7 +73,7 @@ const ReleaseList = (props: ReleaseListProps): JSX.Element => {
       dispatch,
       customFetchOptions
     )
-      .catch(() => sendErrorNotification(t('An error occurred')))
+      .catch(() => sendErrorNotification(t('There was a problem fetching release files')))
       .finally(() => {
         setLoading(false);
       });

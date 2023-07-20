@@ -12,7 +12,6 @@ export * from './components/TableLayout';
 export * from './components/PaginateData';
 export * from './components/KeyValuePairs';
 export * from './helpers/fhir-utils';
-export * from './helpers/CustomError';
 export * from './hooks/useSimpleTabularView';
 export * from './hooks/useTabularViewWithLocalSearch';
 export * from './hooks/useSearchParams';

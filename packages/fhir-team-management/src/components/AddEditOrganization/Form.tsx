@@ -34,7 +34,7 @@ import {
   OrganizationFormFields,
   validationRulesFactory,
 } from './utils';
-import { formItemLayout, getErrorMessages, tailLayout } from '@opensrp/react-utils';
+import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 
 const { Item: FormItem } = Form;
@@ -99,18 +99,8 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       });
     },
     {
-      onError: (err: Error) => {
-        const getObj: number = err.message.indexOf('{');
-        const sliceObj: string = err.message.slice(getObj);
-
-        const parsed = JSON.parse(sliceObj);
-
-        const errMsg = getErrorMessages(parsed)
-
-        errMsg.forEach((error: string) => {
-          console.log({ error })
-          sendErrorNotification(t(error))
-        })
+      onError: () => {
+        sendErrorNotification(t('There was a problem updating organization'));
       },
       onSuccess: () => {
         queryClient.invalidateQueries([organizationResourceType]).catch(() => {

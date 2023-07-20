@@ -165,7 +165,7 @@ const DrafFileList = (props: DraftFileListProps): JSX.Element => {
                   OPENSRP_MANIFEST_ENDPOINT,
                   dispatch,
                   customFetchOptions
-                ).catch(() => sendErrorNotification(t('An error occurred')))
+                ).catch(() => sendErrorNotification(t('There was a problem when making release')))
               }
             >
               {t('Make Release')}

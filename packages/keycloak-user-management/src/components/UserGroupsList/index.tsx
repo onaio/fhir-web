@@ -97,7 +97,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     ['fetchKeycloakUserGroups', KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL],
     () => new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL).list(),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching User Groups')),
       onSuccess: (response: KeycloakUserGroup[]) => dispatch(fetchKeycloakUserGroups(response)),
     }
   );
@@ -111,7 +111,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     () => loadGroupDetails(groupId as string, keycloakBaseURL),
     {
       enabled: groupId !== null,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Group Details')),
     }
   );
 
@@ -124,7 +124,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     () => loadGroupMembers(groupId as string, keycloakBaseURL),
     {
       enabled: groupId !== null,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Group Members')),
     }
   );
 

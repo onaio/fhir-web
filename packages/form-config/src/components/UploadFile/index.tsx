@@ -99,7 +99,11 @@ const UploadConfigFile = (props: UploadConfigFileProps & UploadDefaultProps) => 
           displayAlertError,
           endpoint
         ).catch(() => {
-          displayAlertError(t('An error occurred'));
+          if (isEditMode) {
+            displayAlertError(t('There was a problem updating file'));
+          } else {
+            displayAlertError(t('There was a problem when creating file'));
+          }
         });
       }}
     >

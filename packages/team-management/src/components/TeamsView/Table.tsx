@@ -79,7 +79,7 @@ const Table: React.FC<Props> = (props: Props) => {
   return (
     <PaginateData<Organization>
       queryFn={fetchOrgs}
-      onError={() => sendErrorNotification(t('An error occurred'))}
+      onError={() => sendErrorNotification(t('There was a problem fetching Organizations'))}
       queryPram={{ searchParam }}
       pageSize={5}
       queryid="Teams"

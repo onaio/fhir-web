@@ -128,7 +128,10 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               t
             )
               .catch((_: Error) => {
-                sendErrorNotification(t('An error occurred'));
+                if (props.initialValues.id) {
+                  sendErrorNotification(t('There was a problem updating user details'));
+                }
+                sendErrorNotification(t('There was a problem creating User'));
               })
               .finally(() => setSubmitting(false));
           }}

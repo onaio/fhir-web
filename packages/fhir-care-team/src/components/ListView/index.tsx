@@ -50,7 +50,7 @@ export const deleteCareTeam = async (
   return serve
     .delete(id)
     .then(() => sendSuccessNotification(t('Successfully Deleted Care Team')))
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem deleting the Care Team')));
 };
 
 /**

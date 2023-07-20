@@ -64,7 +64,13 @@ export const createOrEditPractitioners = async (
 
   // update or create new practitioner
   await practitionersService[requestType](payload)
-    .catch((_: Error) => sendErrorNotification(t('An error occurred')))
+    .catch((_: Error) => {
+      if (isEditMode) {
+        sendErrorNotification(t('There was a problem updating practitioner'));
+      } else {
+        sendErrorNotification(t('There was a problem creating practitioner'));
+      }
+    })
     .then(() => sendSuccessNotification(successMessage));
 
   if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.userId}`);
@@ -96,7 +102,7 @@ const createEditKeycloakUser = async (
       .then(() => {
         sendSuccessNotification(t('User edited successfully'));
         updateGroupsAndPractitionerCallback(keycloakUserPayload.id).catch(() =>
-          sendErrorNotification(t('An error occurred'))
+          sendErrorNotification(t('There was a problem updating groups and practitioners'))
         );
       })
       .catch((error) => {
@@ -111,7 +117,7 @@ const createEditKeycloakUser = async (
         sendSuccessNotification(t('User created successfully'));
         const keycloakUserId = getUserId(res);
         updateGroupsAndPractitionerCallback(keycloakUserId).catch(() =>
-          sendErrorNotification(t('An error occurred'))
+          sendErrorNotification(t('There was a problem updating groups and practitioners'))
         );
       })
       .catch((error) => {
@@ -192,7 +198,11 @@ export const submitForm = async (
     updateGroupsAndPractitioner,
     t
   ).catch(() => {
-    sendErrorNotification(t('An error occurred'));
+    if (isEditMode) {
+      sendErrorNotification(t('There was a problem updating user'));
+    } else {
+      sendErrorNotification(t('There was a problem creating user '));
+    }
   });
 
   if (isEditMode) {

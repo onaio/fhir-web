@@ -102,7 +102,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     if (settingIsSimilarToParent) {
       await settingsServe(row.settingMetadataId)
         .delete()
-        .catch(() => sendErrorNotification(t('An error occurred')))
+        .catch(() => sendErrorNotification(t('There was a problem deleting settings')))
         .then(async () => {
           await invalidateSettingsQueries();
         })
@@ -118,7 +118,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       };
       await settingsServe(rest.settingMetadataId)
         .update(payload)
-        .catch(() => sendErrorNotification(t('An error occurred')))
+        .catch(() => sendErrorNotification(t('There was a problem updating settings')))
         .then(async () => {
           await invalidateSettingsQueries();
         })
@@ -130,7 +130,8 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () =>
+        sendErrorNotification(t('There was a problem authenticating User Location settings')),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
       onSuccess: (userLocSettings) => {
         const processedHierarchy = generateJurisdictionTree(userLocSettings);
@@ -181,7 +182,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
           onClick={async () => {
             await settingsServe(row.settingMetadataId)
               .delete()
-              .catch(() => sendErrorNotification(t('An error occurred')))
+              .catch(() => sendErrorNotification(t('There was a problem deleting settings')))
               .then(async () => {
                 await invalidateSettingsQueries();
               })
@@ -202,7 +203,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     [SETTINGS_ENDPOINT, currentLocation?.id ?? ''],
     async () => await getServerSettings(currentLocation?.id ?? ''),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Server Settings')),
       select: (res: Setting[]) => res,
       enabled: !!currentLocation?.id,
     }
