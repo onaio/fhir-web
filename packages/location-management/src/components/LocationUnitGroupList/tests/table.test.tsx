@@ -161,7 +161,7 @@ describe('location-management/src/components/LocationTagView', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem deleting group');
   });
 
   it('Should show table pagination options', () => {

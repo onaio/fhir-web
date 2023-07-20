@@ -233,7 +233,7 @@ describe('components/UploadFile', () => {
       await flushPromises();
     });
     expect(fetch).not.toHaveBeenCalled();
-    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', {
+    expect(props.customAlert).toHaveBeenCalledWith('There was a problem when creating file', {
       type: 'error',
     });
     wrapper.unmount();

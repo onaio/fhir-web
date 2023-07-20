@@ -404,7 +404,9 @@ describe('activate mission', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem authenticating User Location settings'
+    );
 
     // broken page as well
     expect(wrapper.text()).toMatchInlineSnapshot(`"ErrorSomething went wrongGo backGo home"`);

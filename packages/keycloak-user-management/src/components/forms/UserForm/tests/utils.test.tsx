@@ -363,7 +363,7 @@ describe('forms/utils/submitForm', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem creating user');
     expect(historyPushMock).not.toHaveBeenCalled();
   });
 
@@ -384,7 +384,7 @@ describe('forms/utils/submitForm', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem updating user');
   });
 
   it('marks user as practitioner successfully', async () => {
@@ -518,7 +518,7 @@ describe('forms/utils/submitForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem creating practitioner');
   });
 
   it('updates practitioner values when user values update', async () => {

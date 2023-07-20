@@ -176,6 +176,6 @@ describe('Patients list view', () => {
 
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    expect(screen.getByText(/An error occurred/)).toBeInTheDocument();
+    expect(screen.getByText(/There was a problem fetching the patient/)).toBeInTheDocument();
   });
 });

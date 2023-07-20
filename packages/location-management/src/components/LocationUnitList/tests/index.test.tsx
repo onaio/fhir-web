@@ -321,7 +321,9 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     fetch.resetMocks();
   });
 
@@ -391,7 +393,9 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     wrapper.unmount();
   });
 
@@ -417,7 +421,9 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     wrapper.unmount();
   });
 

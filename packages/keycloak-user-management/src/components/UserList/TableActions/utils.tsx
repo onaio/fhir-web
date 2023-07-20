@@ -34,7 +34,7 @@ export const deleteUser = async (
     userId,
     opensrpBaseURL
   ).catch(() => {
-    sendErrorNotification(t('There was a problem deleting the user'));
+    sendErrorNotification(t('There was a problem fetching practitioner'));
     // stop loader
     return undefined;
   });
@@ -62,7 +62,7 @@ export const deleteUser = async (
       sendSuccessNotification(t('Practitioner deactivated successfully'));
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('There was a problem deleting User'));
+      sendErrorNotification(t('There was a problem deleting User and Practitioner'));
     });
 };
 

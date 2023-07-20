@@ -330,7 +330,7 @@ describe('components/InventoryItemForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem creating inventory');
     wrapper.unmount();
   });
 
@@ -501,7 +501,7 @@ describe('components/InventoryItemForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem updating inventory');
     wrapper.unmount();
   });
 
@@ -597,7 +597,9 @@ describe('components/InventoryItemForm', () => {
     });
 
     expect(fetch.mock.calls).toHaveLength(0);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem when submitting this form'
+    );
     wrapper.unmount();
   });
 

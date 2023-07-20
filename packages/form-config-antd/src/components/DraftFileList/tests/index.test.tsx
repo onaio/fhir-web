@@ -354,7 +354,7 @@ describe('components/Antd/DraftFileList', () => {
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem downloading this file');
     wrapper.unmount();
   });
 
@@ -382,7 +382,7 @@ describe('components/Antd/DraftFileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem when making release');
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

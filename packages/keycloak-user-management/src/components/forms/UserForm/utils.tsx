@@ -201,7 +201,7 @@ export const submitForm = async (
     if (isEditMode) {
       sendErrorNotification(t('There was a problem updating user'));
     } else {
-      sendErrorNotification(t('There was a problem creating user '));
+      sendErrorNotification(t('There was a problem creating user'));
     }
   });
 

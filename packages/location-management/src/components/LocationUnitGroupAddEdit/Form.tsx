@@ -116,7 +116,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification(t('There was a problem submitting ')));
+          .catch(() => sendErrorNotification(t('There was a problem submitting the form')));
       } else setIsLoading(false);
     }
   }, [isLoading, props.id, opensrpBaseURL, setEditTitle, t]);

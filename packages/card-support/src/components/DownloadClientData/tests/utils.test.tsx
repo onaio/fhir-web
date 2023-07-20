@@ -237,7 +237,9 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem submitting download client data form'
+    );
   });
 
   it('handles error if submit form fails', async () => {
@@ -290,7 +292,9 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     ]);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem submitting download client data form'
+    );
   });
 
   it('calls API correctly if card status is empty', async () => {
