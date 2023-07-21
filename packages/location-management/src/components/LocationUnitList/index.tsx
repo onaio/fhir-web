@@ -102,7 +102,8 @@ export const LocationUnitList: React.FC<Props> = (props: Props) => {
       return {
         queryKey: [LOCATION_HIERARCHY, location.id],
         queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-        onError: () => sendErrorNotification(t('There was a problem fetching location hierachy')),
+        onError: () =>
+          sendErrorNotification(t('There was a problem fetching the location hierachy')),
         select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res),
       };
     })

@@ -198,7 +198,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
-          sendErrorNotification(t('There waes a problem fetching Plans|Assignments|Organizations'));
+          sendErrorNotification(t('There was a problem fetching Plans|Assignments|Organizations'));
           setApiError(true);
         })
         .finally(() => {

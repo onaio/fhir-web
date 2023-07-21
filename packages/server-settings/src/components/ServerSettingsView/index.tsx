@@ -130,8 +130,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
-      onError: () =>
-        sendErrorNotification(t('There was a problem authenticating User Location settings')),
+      onError: () => sendErrorNotification(t('There was a problem fetching user assignment data')),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
       onSuccess: (userLocSettings) => {
         const processedHierarchy = generateJurisdictionTree(userLocSettings);

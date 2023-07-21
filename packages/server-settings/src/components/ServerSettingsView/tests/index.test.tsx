@@ -405,7 +405,7 @@ describe('activate mission', () => {
       wrapper.update();
     });
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      'There was a problem authenticating User Location settings'
+      'There was a problem fetching user assignment data'
     );
 
     // broken page as well

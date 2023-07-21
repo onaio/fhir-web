@@ -307,7 +307,7 @@ describe('List view Page', () => {
     });
     expect(notificationErrorMock).toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      'There waes a problem fetching Plans|Assignments|Organizations'
+      'There was a problem fetching Plans|Assignments|Organizations'
     );
     wrapper.unmount();
   });

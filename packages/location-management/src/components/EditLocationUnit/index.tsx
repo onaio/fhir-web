@@ -163,7 +163,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
             onError: () =>
-              sendErrorNotification(t('There was a problem fetching location hierachy')),
+              sendErrorNotification(t('There was a problem fetching the location hierachy')),
             select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
@@ -215,7 +215,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])
             .catch(() =>
-              sendErrorNotification(t('There was a problem fetching location hierachy'))
+              sendErrorNotification(t('There was a problem fetching the location hierachy'))
             );
         else sendErrorNotification(t('There was a problem getting the hierachy node'));
       }
