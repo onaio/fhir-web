@@ -117,7 +117,7 @@ const createEditKeycloakUser = async (
         sendSuccessNotification(t('User created successfully'));
         const keycloakUserId = getUserId(res);
         updateGroupsAndPractitionerCallback(keycloakUserId).catch(() =>
-          sendErrorNotification(t('There was a problem creating groups and practitioners'))
+          sendErrorNotification(t('There was a problem creating group and practitioner'))
         );
       })
       .catch((error) => {
