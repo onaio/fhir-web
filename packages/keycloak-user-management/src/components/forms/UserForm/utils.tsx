@@ -199,9 +199,9 @@ export const submitForm = async (
     t
   ).catch(() => {
     if (isEditMode) {
-      sendErrorNotification(t('There was a problem updating user'));
+      sendErrorNotification(t('There was a problem updating the user profile'));
     } else {
-      sendErrorNotification(t('There was a problem creating user'));
+      sendErrorNotification(t('There was a problem creating the user'));
     }
   });
 

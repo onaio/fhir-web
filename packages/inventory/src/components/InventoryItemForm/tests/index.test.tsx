@@ -598,7 +598,7 @@ describe('components/InventoryItemForm', () => {
 
     expect(fetch.mock.calls).toHaveLength(0);
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      'There was a problem when submitting this form'
+      'There was a problem while submitting this form'
     );
     wrapper.unmount();
   });

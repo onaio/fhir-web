@@ -72,9 +72,9 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             submitForm(values, initialValues, fhirBaseURL, organizations, practitioners, t)
               .catch(() => {
                 if (initialValues.id) {
-                  sendErrorNotification(t('There was a problem updating Care Team'));
+                  sendErrorNotification(t('There was a problem updating the Care Team'));
                 } else {
-                  sendErrorNotification(t('There was a problem creating Care Team'));
+                  sendErrorNotification(t('There was a problem creating the Care Team'));
                 }
               })
               .finally(() => setIsSubmitting(false));

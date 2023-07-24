@@ -133,7 +133,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         setProducts(response);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(t('There was a problem fetching Product Catalogue'));
+        sendErrorNotification(t('There was a problem fetching the Product Catalogue'));
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

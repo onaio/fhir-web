@@ -269,7 +269,7 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('There was a problem when making release', {
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred while uploading the file', {
       type: 'error',
     });
   });

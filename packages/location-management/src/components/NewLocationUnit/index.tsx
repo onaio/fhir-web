@@ -136,9 +136,9 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy])
             .catch(() =>
-              sendErrorNotification(t('There was a problem fetching the location hierachy'))
+              sendErrorNotification(t('An error occurred while refreshing the location data.'))
             );
-        else sendErrorNotification(t('There was a problem getting hierachy node'));
+        else sendErrorNotification(t('There was a problem finding the location'));
       }
       dispatch(fetchAllHierarchies([]));
     },

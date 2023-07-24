@@ -238,7 +238,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      'There was a problem submitting download client data form'
+      'There was a problem submitting the data form'
     );
   });
 
@@ -293,7 +293,7 @@ describe('components/DownloadClientData/utils/submitForm', () => {
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
     expect(papaparseMock).not.toHaveBeenCalled();
     expect(notificationErrorMock).toHaveBeenCalledWith(
-      'There was a problem submitting download client data form'
+      'There was a problem submitting the data form'
     );
   });
 

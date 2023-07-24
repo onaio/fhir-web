@@ -164,7 +164,7 @@ export const submitForm = async (
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      sendErrorNotification(t('There was a problem submitting download client data form'));
+      sendErrorNotification(t('There was a problem submitting the data form'));
     });
 };
 

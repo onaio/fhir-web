@@ -382,7 +382,9 @@ describe('components/Antd/DraftFileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem when making release');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'An error occurred while uploading the file'
+    );
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

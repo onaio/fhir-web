@@ -109,7 +109,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         assignedRolesPromise,
         effectiveRolesPromise,
       ])
-        .catch(() => sendErrorNotification(t('There was a problem fetching group')))
+        .catch(() => sendErrorNotification(t('There was a problem fetching user groups')))
         .finally(() => setIsLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

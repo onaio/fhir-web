@@ -52,7 +52,7 @@ const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEdit
     [FHIR_CARE_TEAM, careTeamId],
     async () => await new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM).read(careTeamId as string),
     {
-      onError: () => sendErrorNotification(t('There was a problem fetching Care Team')),
+      onError: () => sendErrorNotification(t('There was a problem fetching the Care Team')),
       select: (res) => res,
       enabled: !!careTeamId,
       cacheTime: 0,
