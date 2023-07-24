@@ -147,7 +147,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'POST',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem creating inventory');
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);
@@ -187,7 +187,7 @@ describe('components/InventoryItemForm/utils/submitForm', () => {
         method: 'PUT',
       },
     ]);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem updating inventory');
     expect(setSubmittingMock.mock.calls).toHaveLength(2);
     expect(setSubmittingMock.mock.calls[0][0]).toEqual(true);
     expect(setSubmittingMock.mock.calls[1][0]).toEqual(false);

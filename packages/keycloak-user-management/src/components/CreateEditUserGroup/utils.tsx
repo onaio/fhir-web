@@ -40,7 +40,7 @@ export const fetchRoleMappings = async (
       setRolesAction(response);
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching role mappings'));
     });
 };
 
@@ -76,7 +76,7 @@ export const removeAssignedRoles = async (
       sendSuccessNotification(t('Role Mappings Updated Successfully'));
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem removing assigned roles'));
     });
 };
 
@@ -112,7 +112,7 @@ export const assignRoles = async (
       sendSuccessNotification(t('Role Mappings Updated Successfully'));
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem assigning roles'));
     });
 };
 
@@ -138,7 +138,7 @@ export const fetchSingleGroup = async (
       dispatch(fetchKeycloakUserGroups([response]));
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching User Group'));
     });
 };
 
@@ -153,7 +153,7 @@ export const submitForm = async (
     serve
       .update(values)
       .then(() => sendSuccessNotification(t('User Group edited successfully')))
-      .catch((_: Error) => sendErrorNotification(t('An error occurred')))
+      .catch((_: Error) => sendErrorNotification(t('There was a problem editing User Group')))
       .finally(() => {
         history.push(URL_USER_GROUPS);
         setSubmittingCallback(false);
@@ -168,7 +168,7 @@ export const submitForm = async (
         newUUID = locationStr[locationStr.length - 1];
         sendSuccessNotification(t('User Group created successfully'));
       })
-      .catch((_: Error) => sendErrorNotification(t('An error occurred')))
+      .catch((_: Error) => sendErrorNotification(t('There was a problem creating User Group')))
       .finally(() => {
         setSubmittingCallback(false);
         if (newUUID) {

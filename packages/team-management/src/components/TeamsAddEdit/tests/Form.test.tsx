@@ -202,7 +202,7 @@ describe('Team-management/TeamsAddEdit/Form', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem updating teams');
   });
 
   it('Create Team', async () => {

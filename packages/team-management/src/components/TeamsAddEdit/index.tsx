@@ -80,7 +80,7 @@ function setupInitialValue(
         practitionersList: response.practitioners,
       });
     })
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem fetching the team details')));
 }
 
 export interface Props {
@@ -120,7 +120,7 @@ async function fetchPractitioners(
     const practitioners: Practitioner[] = await serve.list(paginationParams);
     return practitioners;
   } catch (_) {
-    sendErrorNotification(t('An error occurred'));
+    sendErrorNotification(t('There was a problem fetching practitioners'));
     return [];
   }
 }
@@ -195,7 +195,9 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
           const filteredResponse = response.filter((practitioner) => practitioner.active);
           setPractitionersRole(filteredResponse);
         })
-        .catch(() => sendErrorNotification(t('An error occurred')));
+        .catch(() =>
+          sendErrorNotification(t('There was a problem fetching assigned practitioners'))
+        );
     }
   }, [disableTeamMemberReassignment, opensrpBaseURL, t]);
 
@@ -245,7 +247,7 @@ export const TeamsAddEdit: React.FC<Props> = (props: Props) => {
 
           setPractitioners(filteredResponse);
         })
-        .catch(() => sendErrorNotification(t('An error occurred')));
+        .catch(() => sendErrorNotification(t('There was a problem fetching practitioners')));
     }
   }, [disableTeamMemberReassignment, opensrpBaseURL, paginationSize, practitionersRole, t]);
 

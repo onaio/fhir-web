@@ -142,7 +142,9 @@ describe('components/Releases', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('There was a problem fetching release files', {
+      type: 'error',
+    });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

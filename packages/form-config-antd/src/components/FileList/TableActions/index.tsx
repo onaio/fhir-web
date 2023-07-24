@@ -59,7 +59,7 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
               isJsonValidator,
               customFetchOptions
             ).catch(() => {
-              sendErrorNotification(t('An error occurred'));
+              sendErrorNotification(t('There was a problem downloading this file'));
             })
           }
         >

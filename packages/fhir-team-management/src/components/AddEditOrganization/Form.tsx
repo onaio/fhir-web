@@ -99,8 +99,8 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       });
     },
     {
-      onError: (err: Error) => {
-        sendErrorNotification(err.message);
+      onError: () => {
+        sendErrorNotification(t('There was a problem updating organization'));
       },
       onSuccess: () => {
         queryClient.invalidateQueries([organizationResourceType]).catch(() => {

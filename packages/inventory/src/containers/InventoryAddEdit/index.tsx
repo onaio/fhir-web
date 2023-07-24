@@ -106,7 +106,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
           fetchLocationUnitsCreator([response]);
         })
         .catch((_: HTTPError) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching Location Unit'));
         })
         .finally(() => {
           setIsLoading(false);
@@ -133,7 +133,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
         setProducts(response);
       })
       .catch((_: HTTPError) => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem fetching the Product Catalogue'));
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -165,7 +165,7 @@ const InventoryAddEdit: React.FC<InventoryAddEditProps> = (props: InventoryAddEd
           fetchInventoriesCreator(response);
         })
         .catch((_: HTTPError) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching inventories'));
         });
     }
   }, [

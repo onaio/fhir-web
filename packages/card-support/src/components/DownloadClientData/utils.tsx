@@ -94,7 +94,7 @@ export const submitForm = async (
         flatNestedLocationIdsWithClientLocationId.join(',');
       return stringifiedFlatNestedLocationIdsWithClientLocationId;
     } catch (_) {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t("There was a problem fetching nested location Id's"));
       return '';
     }
   };
@@ -164,7 +164,7 @@ export const submitForm = async (
     })
     .catch((_: Error) => {
       setSubmitting(false);
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem submitting the data form'));
     });
 };
 

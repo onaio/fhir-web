@@ -86,6 +86,8 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit Groups'
+    );
   });
 });

@@ -146,7 +146,9 @@ describe('Care Teams list view', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorsMock.mock.calls).toEqual([['An error occurred']]);
+    expect(notificationErrorsMock.mock.calls).toEqual([
+      ['There was a problem deleting the Care Team'],
+    ]);
   });
 });
 

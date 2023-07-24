@@ -66,7 +66,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch, t)
         .catch(() => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching roles'));
         })
         .finally(() => setIsLoading(false));
     }

@@ -233,6 +233,8 @@ describe('DistrictReport', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching the location hierachy'
+    );
   });
 });

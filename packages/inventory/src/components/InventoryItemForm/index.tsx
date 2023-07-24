@@ -215,7 +215,7 @@ const InventoryItemForm: React.FC<InventoryItemFormProps> = (props: InventoryIte
 
           submitForm(payload, openSRPBaseURL, setSubmitting, setIfDoneHere, t, inventoryID).catch(
             (_: Error) => {
-              sendErrorNotification(t('An error occurred'));
+              sendErrorNotification(t('There was a problem while submitting this form'));
             }
           );
         }}

@@ -114,7 +114,7 @@ describe('components/UserList/utils/deleteUser', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem fetching practitioner');
   });
 
   it('handles API error when calling the fetch endpoints', async () => {
@@ -143,6 +143,6 @@ describe('components/UserList/utils/deleteUser', () => {
     ]);
 
     expect(removeUsersMock).not.toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem fetching practitioner');
   });
 });

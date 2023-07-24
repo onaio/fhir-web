@@ -68,19 +68,19 @@ export const onSubmit = (
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem updating Location Unit Group'));
         setSubmitting(false);
       });
   } else {
     serve
       .create(payload)
       .then(() => {
-        sendSuccessNotification('Location Unit Group successfully');
+        sendSuccessNotification('Location Unit Group created successfully');
         setSubmitting(false);
         history.goBack();
       })
       .catch(() => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem creating Location Unit Group'));
         setSubmitting(false);
       });
   }
@@ -116,7 +116,7 @@ export const Form: React.FC<Props> = (props: Props) => {
             setEditTitle(response.name);
             setIsLoading(false);
           })
-          .catch(() => sendErrorNotification(t('An error occurred')));
+          .catch(() => sendErrorNotification(t('There was a problem submitting the form')));
       } else setIsLoading(false);
     }
   }, [isLoading, props.id, opensrpBaseURL, setEditTitle, t]);

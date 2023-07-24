@@ -398,7 +398,7 @@ describe('components/Antd/FileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching manifests');
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();
@@ -442,7 +442,7 @@ describe('components/Antd/FileList', () => {
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem downloading this file');
     expect(downloadSpy).not.toHaveBeenCalled();
     wrapper.unmount();
   });
