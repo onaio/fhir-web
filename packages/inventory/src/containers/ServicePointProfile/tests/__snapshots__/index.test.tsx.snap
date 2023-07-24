@@ -5,61 +5,48 @@ exports[`Profile view Page renders correctly when data is present: contains butt
   className="ant-col flex-center-right ant-col-md-6 css-dev-only-do-not-override-k7429z"
   style={Object {}}
 >
-  <Link
-    to="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
+  <Button
+    onClick={[Function]}
+    size="large"
+    type="primary"
   >
-    <LinkAnchor
-      href="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
-      navigate={[Function]}
+    <Empty />
+    <Wave
+      disabled={false}
     >
-      <a
-        href="/inventory/servicePoint/edit/b8a7998c-5df6-49eb-98e6-f0675db71848"
+      <button
+        className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-lg"
+        disabled={false}
         onClick={[Function]}
+        type="button"
       >
-        <Button
-          size="large"
-          type="primary"
+        <LoadingIcon
+          existIcon={false}
+          loading={false}
+          prefixCls="ant-btn"
         >
-          <Empty />
-          <Wave
-            disabled={false}
+          <CSSMotion
+            motionName="ant-btn-loading-icon-motion"
+            onAppearActive={[Function]}
+            onAppearStart={[Function]}
+            onEnterActive={[Function]}
+            onEnterStart={[Function]}
+            onLeaveActive={[Function]}
+            onLeaveStart={[Function]}
+            removeOnLeave={true}
+            visible={false}
           >
-            <button
-              className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-lg"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              <LoadingIcon
-                existIcon={false}
-                loading={false}
-                prefixCls="ant-btn"
-              >
-                <CSSMotion
-                  motionName="ant-btn-loading-icon-motion"
-                  onAppearActive={[Function]}
-                  onAppearStart={[Function]}
-                  onEnterActive={[Function]}
-                  onEnterStart={[Function]}
-                  onLeaveActive={[Function]}
-                  onLeaveStart={[Function]}
-                  removeOnLeave={true}
-                  visible={false}
-                >
-                  <DomWrapper />
-                </CSSMotion>
-              </LoadingIcon>
-              <span
-                key=".0"
-              >
-                Edit service point
-              </span>
-            </button>
-          </Wave>
-        </Button>
-      </a>
-    </LinkAnchor>
-  </Link>
+            <DomWrapper />
+          </CSSMotion>
+        </LoadingIcon>
+        <span
+          key=".0"
+        >
+          Edit service point
+        </span>
+      </button>
+    </Wave>
+  </Button>
 </div>
 `;
 

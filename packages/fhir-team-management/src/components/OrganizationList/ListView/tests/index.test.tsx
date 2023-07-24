@@ -13,6 +13,7 @@ import {
   organizationResourceType,
   ORGANIZATION_LIST_URL,
   practitionerRoleResourceType,
+  organizationAffiliationResourceType,
 } from '../../../../constants';
 import {
   assignedPractitionerRole,
@@ -21,6 +22,7 @@ import {
   organizationsPage2,
 } from './fixtures';
 import userEvents from '@testing-library/user-event';
+import { allAffiliations } from '../../../OrganizationAffiliation/tests/fixures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -202,6 +204,15 @@ test('renders correctly when listing organizations', async () => {
     })
     .reply(200, assignedPractitionerRole);
 
+  // affiliations
+  nock(props.fhirBaseURL)
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, allAffiliations);
+
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
   fireEvent.click(dropdown);
@@ -218,10 +229,21 @@ test('renders correctly when listing organizations', async () => {
   await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  // wait for affiliations to finish loading
+  await waitFor(() => {
+    const fetchingLocations = screen.queryByText(/Fetching assigned locations/);
+    expect(fetchingLocations).not.toBeInTheDocument();
+  });
+
   // see details in viewDetails
   document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
     expect(pair).toMatchSnapshot('single key value pairs detail section');
   });
+
+  // As organization 205 has no assigned locations
+  expect(
+    screen.queryByText(/Organization does not have any assigned locations/)
+  ).toBeInTheDocument();
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');
