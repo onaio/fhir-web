@@ -86,7 +86,7 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Location Units')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -97,7 +97,8 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(t('An error occurred')),
+            onError: () =>
+              sendErrorNotification(t('There was a problem fetching the location hierachy')),
             // Todo : useQueries doesn't support select or types yet https://github.com/tannerlinsley/react-query/pull/1527
             select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
@@ -134,8 +135,10 @@ const NewLocationUnit = (props: NewLocationUnitProps) => {
         if (grandparenthierarchy)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy])
-            .catch(() => sendErrorNotification(t('An error occurred')));
-        else sendErrorNotification(t('An error occurred'));
+            .catch(() =>
+              sendErrorNotification(t('An error occurred while refreshing the location data.'))
+            );
+        else sendErrorNotification(t('There was a problem finding the location'));
       }
       dispatch(fetchAllHierarchies([]));
     },

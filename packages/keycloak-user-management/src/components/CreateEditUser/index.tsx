@@ -106,7 +106,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
         .list()
         .then((response: UserGroup[]) => setUserGroups(response))
         .catch((_: Error) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching User Group'));
         })
         .finally(() => setUserGroupsLoading(false));
     }
@@ -125,7 +125,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           if (response) fetchKeycloakUsersCreator([response]);
         })
         .catch((_: Error) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching User'));
         })
         .finally(() => setKeyCloakUserLoading(false));
     }
@@ -147,7 +147,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           setAssignedUserGroups(response);
         })
         .catch((_: Error) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching User Group'));
         })
         .finally(() => setUserGroupLoading(false));
     }
@@ -165,7 +165,7 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           setPractitioner(res);
         })
         .catch((_: Error) => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching Practitioner details'));
         })
         .finally(() => setPractitionerLoading(false));
     }

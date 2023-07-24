@@ -85,11 +85,11 @@ export const populateTeamDetails = (
           setAssignedLocations(locations);
         })
         .catch(() => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem getting jurisdictions'));
         });
     })
     .catch(() => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem populating the teams details'));
     })
     .finally(() => setDetail(row));
 };

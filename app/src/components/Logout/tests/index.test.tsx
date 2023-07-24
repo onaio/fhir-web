@@ -94,6 +94,8 @@ describe('components/Logout', () => {
     await act(async () => {
       await flushPromises();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem logging out. Please try again.'
+    );
   });
 });

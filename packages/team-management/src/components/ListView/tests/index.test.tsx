@@ -306,7 +306,9 @@ describe('List view Page', () => {
       wrapper.update();
     });
     expect(notificationErrorMock).toHaveBeenCalled();
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Plans|Assignments|Organizations'
+    );
     wrapper.unmount();
   });
 

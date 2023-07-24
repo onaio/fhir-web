@@ -236,7 +236,7 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching User Group');
     wrapper.unmount();
   });
 

@@ -32,7 +32,7 @@ export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string, t: T
   clientService
     .delete()
     .then(() => sendSuccessNotification('Successfully Deleted!'))
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem deleting group')));
 };
 
 const Table: React.FC<Props> = (props: Props) => {

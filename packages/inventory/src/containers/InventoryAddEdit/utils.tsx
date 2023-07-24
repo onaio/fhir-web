@@ -27,5 +27,5 @@ export const fetchSettings = (
   service
     .list(params)
     .then((response: Setting[]) => setSettings(response))
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem fetching settings')));
 };

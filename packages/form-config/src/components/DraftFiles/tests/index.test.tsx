@@ -269,7 +269,9 @@ describe('components/DraftFiles', () => {
       await flushPromises();
     });
     wrapper.update();
-    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('An error occurred while uploading the file', {
+      type: 'error',
+    });
   });
 
   it('renders correctly if manifest fetch is empty', async () => {

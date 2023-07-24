@@ -167,7 +167,9 @@ describe('components/TeamsView', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem fetching Organizations'
+    );
     wrapper.unmount();
   });
 

@@ -182,7 +182,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             delete values.roles;
             setIsSubmitting(true);
             submitForm({ ...initialValues, ...values }, keycloakBaseURL, setIsSubmitting, t).catch(
-              () => sendErrorNotification(t('An error occurred'))
+              () => sendErrorNotification(t('There was a problem submitting the form'))
             );
           }}
         >

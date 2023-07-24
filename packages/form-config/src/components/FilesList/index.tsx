@@ -112,7 +112,7 @@ const ManifestFilesList = (props: ManifestFilesListProps): JSX.Element => {
         undefined,
         getPayload
       )
-        .catch(() => displayAlertError(t('An error occurred')))
+        .catch(() => displayAlertError(t('There was a problem fetching manifest files')))
         .finally(() => setLoading(false));
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseURL, customAlert, endpoint, removeFiles, fetchFiles, formVersion, getPayload, accessToken]

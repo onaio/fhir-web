@@ -82,7 +82,7 @@ const ManifestReleases = (props: ManifestReleasesProps & ReleasesDefaultProps) =
     if (data.length < 1) {
       setLoading(true);
       fetchReleaseFiles(accessToken, baseURL, fetchReleases, endpoint, undefined, getPayload)
-        .catch(() => displayAlertError(t('An error occurred')))
+        .catch(() => displayAlertError(t('There was a problem fetching release files')))
         .finally(() => setLoading(false));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

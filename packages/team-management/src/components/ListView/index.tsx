@@ -104,7 +104,7 @@ async function fetchOrgs(
     const getOrgs = await organizationsService.list(paginationParams);
     return getOrgs;
   } catch (_) {
-    sendErrorNotification(t('An error occurred'));
+    sendErrorNotification(t('There was a problem fetching organizations'));
     return [];
   }
 }
@@ -198,7 +198,7 @@ const TeamAssignmentView = (props: TeamAssignmentViewProps) => {
 
       Promise.all([plansPromise, assignmentsPromise, organizationsPromise])
         .catch(() => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching Plans|Assignments|Organizations'));
           setApiError(true);
         })
         .finally(() => {

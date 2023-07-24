@@ -99,7 +99,7 @@ const FileList = (props: FileListPropTypes): JSX.Element => {
         dispatch,
         customFetchOptions
       )
-        .catch(() => sendErrorNotification('An error occurred'))
+        .catch(() => sendErrorNotification('There was a problem fetching manifests'))
         .finally(() => setLoading(false));
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [

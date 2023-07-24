@@ -87,7 +87,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching the location hierachy')),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
@@ -118,7 +118,7 @@ export const DistrictReport = ({ opensrpBaseURL }: DistrictReportProps) => {
           onFinish={() => {
             setSubmitting(true);
             submitForm(locationId, reportDate, opensrpBaseURL)
-              .catch(() => sendErrorNotification(t('An error occurred')))
+              .catch(() => sendErrorNotification(t('There was a problem submitting the form')))
               .finally(() => setSubmitting(false));
           }}
         >
