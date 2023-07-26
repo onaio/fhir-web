@@ -5,7 +5,7 @@
   "scripts": {
     "start": "cd ./app && yarn start",
     "build": "cd ./app && yarn build",
-    "lerna:prepublish": "lerna bootstrap && lerna run build --include-dependencies --stream",
+    "lerna:prepublish": "lerna run build --include-dependencies --stream",
     "lerna:version": "lerna version --include-merged-tags --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "jest",
@@ -128,6 +128,5 @@
     "app",
     "packages/*"
   ],
-  "packageManager": "yarn@1.18.0",
-  "dependencies": {}
+  "packageManager": "yarn@3.6.1"
 }
