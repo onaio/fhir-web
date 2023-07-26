@@ -5,14 +5,12 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test packages/fhir-keycloak-user-management --verbose --collectCoverage=true && cd packages/fhir-keycloak-user-management",
-    "test:watch": "cd ../../ && yarn test packages/fhir-keycloak-user-management --verbose --watch && cd packages/fhir-keycloak-user-management",
-    "tsc": "tsc",
-    "lint": "eslint './**/*.{js,jsx,ts,tsx}'",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "license": "Apache-2.0",
   "publishConfig": {
@@ -24,9 +22,6 @@
   "files": [
     "dist"
   ],
-  "config": {
-    "folderName": "fhir-keycloak-user-management"
-  },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "antd": "^5.5.1",

@@ -12,14 +12,12 @@
   },
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "test": "cd ../../ && yarn test packages/fhir-team-management --verbose --collectCoverage=true -u && cd packages/fhir-team-management",
-    "test:watch": "cd ../../ && yarn test packages/fhir-team-management --verbose --watch && cd packages/fhir-team-management",
-    "tsc": "tsc",
-    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
