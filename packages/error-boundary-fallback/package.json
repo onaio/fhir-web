@@ -25,9 +25,9 @@
     ]
   },
   "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
     "antd": "^5.5.1",
-    "react": "^16.13.1",
-    "@opensrp/i18n": "^0.0.1"
+    "react": "^16.13.1"
   },
   "dependencies": {
     "@onaio/utils": "^0.0.1",
