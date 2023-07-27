@@ -89,7 +89,7 @@ const filterValidPackageFolders = (packageFolders, allValidPackages) => {
   return validPaths;
 };
 
-const supportedProjectCodes = ['eusm', 'core'];
+const supportedProjectCodes = ['eusm', 'core', 'echis'];
 
 const extractionRunner = (argvConfigs, packageSemiPaths) => {
   const { locales, projectCode, verbose, useKeysAsDefaultValue, createOldCatalogs } = argvConfigs;
