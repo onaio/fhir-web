@@ -4,7 +4,7 @@ import { USER_PREFERENCE_KEY } from '../constants';
 import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
 export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
-export const supportedProjectCode = ['eusm', 'core'] as const;
+export const supportedProjectCode = ['eusm', 'core', 'echis'] as const;
 
 export type LanguageCode = typeof supportedLanguageCodes[number];
 export type ProjectCode = typeof supportedProjectCode[number];
