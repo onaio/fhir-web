@@ -3558,7 +3558,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-query: ^3.15.1
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -3575,7 +3575,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
-    react: ^16.13.1
+    react: 17.0.0
   languageName: unknown
   linkType: soft
 
@@ -3600,7 +3600,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.2
-    react: ^16.13.1
+    react: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.1.22
     react-router: ^5.2.1
@@ -3621,8 +3621,8 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.13.1
-    react-dom: ^16.13.1
+    react: 17.0.0
+    react-dom: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.2.1
     react-router: ^5.2.0
@@ -3646,7 +3646,7 @@ __metadata:
     uuid: ^8.3.1
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
-    react: ^16.13.1
+    react: 17.0.0
   languageName: unknown
   linkType: soft
 
@@ -3668,7 +3668,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
     lodash: 4.17.21
-    react: ^16.13.1
+    react: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.1.22
     react-router: ^5.2.1
@@ -3699,7 +3699,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
-    react: ^16.13.1
+    react: 17.0.0
     react-i18next: ^11.8.10
     react-query: ^3.15.1
     react-redux: ^7.2.1
@@ -3728,7 +3728,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-query: ^3.34.8
     react-redux: ^7.2.1
     react-router: ^5.2.0
@@ -3747,7 +3747,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -3768,8 +3768,8 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.13.1
-    react-dom: ^16.13.1
+    react: 17.0.0
+    react-dom: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.2.1
     react-router: ^5.2.1
@@ -3798,8 +3798,8 @@ __metadata:
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
     i18next: ^19.8.4
-    react: ^16.13.1
-    react-dom: ^16.13.1
+    react: 17.0.0
+    react-dom: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.2.1
     react-router: ^5.2.0
@@ -3823,7 +3823,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -3844,7 +3844,7 @@ __metadata:
     antd: ^5.5.2
   peerDependencies:
     "@opensrp/store": ^0.0.10
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -3860,7 +3860,7 @@ __metadata:
     date-fns: ^2.17.0
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-redux: ^7.2.1
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -3913,7 +3913,7 @@ __metadata:
     react-i18next: ^11.16.6
     rollup: ^2.70.2
   peerDependencies:
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -3937,8 +3937,8 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.18.1
-    react-dom: ^16.13.1
+    react: "^17.0.0 "
+    react-dom: 17.0.0
     react-i18next: ^11.14.2
     react-query: ^3.15.1
     react-redux: ^7.2.1
@@ -3983,7 +3983,7 @@ __metadata:
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
     formik-antd: ^2.0.1
-    react: ^16.13.1
+    react: 17.0.0
     react-query: ^3.15.1
     react-redux: ^7.2.2
     react-router: ^5.2.1
@@ -3997,7 +3997,7 @@ __metadata:
   resolution: "@opensrp/notifications@workspace:packages/opensrp-notifications"
   peerDependencies:
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -4007,7 +4007,7 @@ __metadata:
   dependencies:
     react-hooks-global-state: ^1.0.1
   peerDependencies:
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -4022,7 +4022,7 @@ __metadata:
     moment: ^2.29.2
     uuid: ^8.3.1
   peerDependencies:
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -4044,7 +4044,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.7
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-redux: ^7.2.1
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -4076,7 +4076,7 @@ __metadata:
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
     lodash: ^4.17.21
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-redux: ^7.2.2
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -4105,7 +4105,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-redux: ^7.2.2
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -4133,7 +4133,7 @@ __metadata:
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
     lodash: ^4.17.21
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-i18next: ^11.14.2
     react-redux: ^7.2.1
     react-router: ^5.2.1
@@ -4167,7 +4167,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-query: ^3.34.19
     react-redux: ^7.2.8
   languageName: unknown
@@ -4218,7 +4218,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.9
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-query: ^3.15.1
     react-redux: ^7.2.2
     react-router: ^5.2.1
@@ -4268,7 +4268,7 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@testing-library/react": ^12.1.2
     antd: ^5.5.1
-    react: ^16.18.1
+    react: "^17.0.0 "
     react-query: ^3.15.1
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -4280,7 +4280,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@opensrp/template@workspace:packages/template"
   peerDependencies:
-    react: ^16.18.1
+    react: "^17.0.0 "
   languageName: unknown
   linkType: soft
 
@@ -4319,8 +4319,8 @@ __metadata:
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
-    react: ^16.13.1
-    react-dom: ^16.13.1
+    react: 17.0.0
+    react-dom: 17.0.0
     react-redux: ^7.2.1
     react-router: ^5.2.1
     react-router-dom: ^5.2.1
@@ -28645,8 +28645,8 @@ typescript@^4.2.4:
     yarn: ^1.22.10
     yup: ^0.29.3
   peerDependencies:
-    react: ^16.13.1
-    react-dom: ^16.13.1
+    react: 17.0.0
+    react-dom: 17.0.0
     react-helmet: ^6.1.0
     react-redux: ^7.2.1
     react-router: ^5.2.1

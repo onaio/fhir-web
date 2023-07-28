@@ -30,7 +30,7 @@
   },
   "peerDependencies": {
     "antd": "^5.5.1",
-    "react": "^16.18.1"
+    "react": "^17.0.0 "
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0"

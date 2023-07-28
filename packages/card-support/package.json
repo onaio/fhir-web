@@ -32,7 +32,7 @@
     "@opensrp/i18n": "^0.0.1",
     "@opensrp/store": "^0.0.10",
     "antd": "^5.5.1",
-    "react": "^16.18.1",
+    "react": "^17.0.0 ",
     "react-query": "^3.15.1",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1"

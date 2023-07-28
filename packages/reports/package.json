@@ -25,7 +25,7 @@
   "peerDependencies": {
     "@opensrp/i18n": "^0.0.1",
     "antd": "^5.5.1",
-    "react": "^16.18.1",
+    "react": "^17.0.0 ",
     "react-query": "^3.34.19",
     "react-redux": "^7.2.8"
   },

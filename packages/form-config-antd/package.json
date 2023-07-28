@@ -32,7 +32,7 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
-    "react": "^16.18.1"
+    "react": "^17.0.0 "
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
