@@ -19,7 +19,7 @@ RUN cp /project/app/.env.sample /project/app/.env \
 USER root
 RUN chown -R node .
 USER node
-RUN yarn lerna:prepublish
+RUN yarn lerna run build
 
 
 FROM node:16.18-alpine as nodejsbuild
