@@ -12,6 +12,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import * as notifications from '@opensrp/notifications';
 import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -24,7 +25,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     disableTeamMemberReassignment: false,
     paginationSize: 1000,
   };
-  beforeAll(() => {
+  beforeAll(async () => {
+    await opensrpI18nInstance.init();
     store.dispatch(
       authenticateUser(
         true,
