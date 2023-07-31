@@ -410,11 +410,7 @@ describe('OrganizationForm', () => {
 
     await waitFor(() => {
       expect(successNoticeMock.mock.calls).toEqual([['Organization updated successfully']]);
-      expect(errorNoticeMock.mock.calls).toEqual([
-        [
-          'request to http://test.server.org/PractitionerRole/9b782015-8392-4847-b48c-50c11638656b failed, reason: Failed operation outcome',
-        ],
-      ]);
+      expect(errorNoticeMock.mock.calls).toEqual([['There was a problem updating organization']]);
     });
 
     expect(nock.isDone()).toBeTruthy();

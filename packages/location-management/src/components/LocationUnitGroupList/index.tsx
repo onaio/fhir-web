@@ -46,7 +46,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(t('An error occurred')));
+        .catch(() => sendErrorNotification(t('There was a problem fetching Location Unit Groups')));
     }
   });
 

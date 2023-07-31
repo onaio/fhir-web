@@ -197,7 +197,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem submitting the form');
 
     wrapper.unmount();
   });
@@ -228,7 +228,9 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem creating Location Unit Group'
+    );
 
     wrapper.unmount();
   });
@@ -248,7 +250,9 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem updating Location Unit Group'
+    );
   });
 
   it('render correct location unit group name in header', async () => {

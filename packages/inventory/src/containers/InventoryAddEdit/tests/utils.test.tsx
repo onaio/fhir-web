@@ -74,7 +74,7 @@ describe('containers/InventoryAddEdit/utils/fetchSettings', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem fetching settings');
     expect(setSettingsMock).not.toHaveBeenCalled();
   });
 });

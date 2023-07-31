@@ -118,7 +118,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const practitioner: Practitioner | undefined = await serve.read(userId);
       return practitioner;
     } catch (error) {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching Practitioner tied to this User'));
       return undefined;
     }
   };
@@ -130,7 +130,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const organizations: Organization[] = await serve.read(practitionerId);
       return organizations;
     } catch (error) {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching teams assigned to Practitioner'));
       return [];
     }
   };
@@ -157,7 +157,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               });
             })
             .catch(() => {
-              sendErrorNotification(t('An error occurred'));
+              sendErrorNotification(t('There was a problem fetching assigned teams'));
             });
         } else {
           setUserDetails({
@@ -168,7 +168,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
         }
       })
       .catch(() => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem fetching practitioner'));
       });
   };
 
@@ -203,7 +203,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           <Space>
             <PaginateData<KeycloakUser>
               queryFn={FetchData}
-              onError={() => sendErrorNotification(t('An error occurred'))}
+              onError={() => sendErrorNotification(t('There was a problem fetching Users'))}
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
               queryid={UserQueryId}

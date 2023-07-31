@@ -179,7 +179,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem fetching the team details'
+    );
   });
 
   it('test getPractitionerDetail', async () => {

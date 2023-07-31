@@ -188,7 +188,7 @@ describe('components/UserGroupsList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching User Groups');
   });
 
   it('shows table with no data if user groups list from api is empty', async () => {

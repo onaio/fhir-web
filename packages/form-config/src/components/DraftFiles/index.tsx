@@ -233,7 +233,7 @@ const ManifestDraftFiles = (props: ManifestDraftFilesProps): JSX.Element => {
               manifestEndPoint,
               undefined,
               getPayload
-            ).catch(() => displayAlertError('An error occurred'))
+            ).catch(() => displayAlertError('An error occurred while uploading the file'))
           }
         >
           {makeReleaseLabel}
