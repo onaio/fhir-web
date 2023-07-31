@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@opensrp/web",
   "version": "0.1.10",
   "private": true,
   "dependencies": {
