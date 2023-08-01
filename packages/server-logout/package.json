@@ -11,11 +11,12 @@
     "url": "https://github.com/opensrp/opensrp-web/issues"
   },
   "scripts": {
-    "jest": "jest --coverage --verbose --color",
-    "tsc": "tsc",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx  --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy"
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "files": [
     "dist"

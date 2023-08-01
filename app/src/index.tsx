@@ -1,5 +1,5 @@
 import './configs/dispatchConfig'; // this needs to be imported before anything else
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
@@ -18,6 +18,7 @@ import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
+import { Spin } from 'antd';
 // tslint:disable-next-line: ordered-imports
 const queryClient = new QueryClient();
 
@@ -34,17 +35,19 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 ReactDOM.render(
-  <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <QueryClientProvider client={queryClient}>
-          <OpensrpWebI18nProvider>
-            <App />
-          </OpensrpWebI18nProvider>
-        </QueryClientProvider>
-      </ConnectedRouter>
-    </Provider>
-  </Sentry.ErrorBoundary>,
+  <Suspense fallback={() => <Spin className="custom-spinner" />}>
+    <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <QueryClientProvider client={queryClient}>
+            <OpensrpWebI18nProvider>
+              <App />
+            </OpensrpWebI18nProvider>
+          </QueryClientProvider>
+        </ConnectedRouter>
+      </Provider>
+    </Sentry.ErrorBoundary>
+  </Suspense>,
   document.getElementById('opensrp-root')
 );
 

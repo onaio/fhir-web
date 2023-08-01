@@ -1,0 +1,35 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "test",
+          "test:watch",
+          "lint",
+          "lint-snap",
+          "tsc",
+          "copy",
+          "transpile",
+          "jest"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["{projectRoot}/build"]
+    },
+    "tsc": {
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "copy": {
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "transpile": {
+      "outputs": ["{projectRoot}/dist/types"]
+    }
+  }
+}

@@ -34,6 +34,7 @@ import * as notifications from '@opensrp/notifications';
 import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -110,7 +111,8 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-beforeAll(() => {
+beforeAll(async () => {
+  await opensrpI18nInstance.init();
   nock.disableNetConnect();
   store.dispatch(
     authenticateUser(

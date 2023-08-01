@@ -10,17 +10,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "config": {
-    "folderName": "fhir-group-management"
-  },
   "repository": "https://github.com/OpenSRP/web/",
   "scripts": {
-    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
-    "tsc": "tsc",
-    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -33,7 +30,6 @@
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
-  "private": false,
   "dependencies": {
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
@@ -48,7 +44,7 @@
     "@types/uuid": "8.3.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "@opensrp/i18n": "^0.0.1"
+    "@opensrp/i18n": "^0.0.1",
+    "react": "17.0.0"
   }
 }

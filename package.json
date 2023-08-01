@@ -3,16 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "cd ./app && yarn start",
-    "build": "cd ./app && yarn build",
-    "lerna:prepublish": "lerna bootstrap && lerna run build --include-dependencies --stream",
+    "start": "lerna run start --scope=@opensrp/web",
+    "build": "lerna run build --scope=@opensrp/web",
+    "lerna:prepublish": "lerna run build --include-dependencies --stream --no-private",
     "lerna:version": "lerna version --include-merged-tags --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
     "lerna:publish": "yarn install && yarn run lerna:prepublish && lerna publish from-package --ignore-scripts --ignore-prepublish",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint {packages,app}/**/*.{js,ts,tsx} --max-warnings 0",
+    "lint": "eslint '{packages,app}/**/*.{js,ts,tsx}' --max-warnings 0",
     "postinstall": "patch-package",
-    "extractTranslations": "lerna run extractTranslations",
+    "i18n:extract": "node ${PROJECT_CWD}/scripts/i18nExtraction.js",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -45,6 +44,7 @@
     "@onaio/connected-private-route": "^0.1.0",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@reduxjs/toolkit": "^1.7.1",
+    "@smile-cdr/fhirts": "1.2.5",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^8.0.1",
@@ -100,9 +100,10 @@
     "jest-fetch-mock": "^3.0.3",
     "jest-haste-map": "^27.4.6",
     "jest-resolve": "^27.4.6",
-    "lerna": "^4.0.0",
+    "lerna": "^7.1.4",
     "lint-staged": "^12.2.1",
     "mockdate": "^3.0.5",
+    "nock": "^13.0.6",
     "node-fetch": "2.6.7",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
@@ -128,6 +129,5 @@
     "app",
     "packages/*"
   ],
-  "packageManager": "yarn@1.18.0",
-  "dependencies": {}
+  "packageManager": "yarn@3.6.1"
 }

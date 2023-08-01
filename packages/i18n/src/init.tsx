@@ -37,6 +37,9 @@ newInstance
     nsSeparator: '::',
     keySeparator: false,
     debug: false,
+    react: {
+      useSuspense: process.env.NODE_ENV === 'test' ? false : true,
+    },
   })
   .catch((_) => {
     // TODO: do something with error
