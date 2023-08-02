@@ -12,18 +12,18 @@ export class LoginPage {
     readonly signInBtn: Locator;
     readonly invalidLoginText: Locator;
   
-    constructor(page: Page, url: string) {
+    constructor(page: Page) {
       this.page = page;
       this.usernameInput = page.locator('id=username');
       this.passwordInput = page.locator('id=password');
-      this.signInBtn = page.get_by_text('Sign In');
-      this.invalidLoginText = page.get_by_text('Invalid username or password.')
+      this.signInBtn =  page.getByRole('button', { name: 'Sign In' })
+      this.invalidLoginText = page.getByText('Invalid username or password.')
     }
 
     async login(username:string, password: string){
-        this.usernameInput.fill(username);
-        this.passwordInput.fill(password);
-        this.signInBtn.click()
+        await this.usernameInput.fill(username);
+        await this.passwordInput.fill(password);
+        await this.signInBtn.click()
     }
 
   }
