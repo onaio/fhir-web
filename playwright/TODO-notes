@@ -1,0 +1,10 @@
+- Make playwright project aware, i.e. it can run tests for fhir-web for ecbis and also accomodate running the same for echis.
+- Where the projects have differences in logic, we need to have a way that accounts for that as well.
+- Any side effects should be cleaned up.
+  - remove resources that were created as a result of running script.
+
+
+
+How to write testss.
+- Add a pom that corresponds to a module.
+    - the pom shoudl only contain locators and actions. no assertions.
