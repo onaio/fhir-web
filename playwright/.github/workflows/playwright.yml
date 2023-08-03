@@ -10,15 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     - uses: actions/setup-node@v3
       with:
-        node-version: 16
+        node-version: 18
+
     - name: Install dependencies
       run: yarn
+
     - name: Install Playwright Browsers
       run: yarn playwright install --with-deps
+
     - name: Run Playwright tests
-      run: yarn playwright test
+      run: yarn test
+
     - uses: actions/upload-artifact@v3
       if: always()
       with:
