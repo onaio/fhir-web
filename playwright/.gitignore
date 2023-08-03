@@ -4,4 +4,6 @@ node_modules/
 /playwright/.cache/
 
 *auth.json
-
+/test-results/
+/playwright-report/
+/playwright/.cache/
