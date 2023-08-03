@@ -8,3 +8,13 @@
 How to write testss.
 - Add a pom that corresponds to a module.
     - the pom shoudl only contain locators and actions. no assertions.
+
+How to setup test environment
+
+
+What to test in e2e
+
+End-to-end testing is a type of testing that verifies the entire software application from start to finish, including all the systems, components, and integrations involved in the application’s workflow. It aims to ensure that the application functions correctly and meets the user requirements
+
+Tests that check that the whole system meets set user requirements. To do so, each test file should simulate a user story workflow. It is important that the each test exercise a real life scenario. THese tests can also cover performance
+aspects, i.e questions like how long did a certain page take to load.
