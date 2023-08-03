@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test"
+  },
   "dependencies": {
     "@playwright/test": "^1.36.2",
     "dotenv": "^16.3.1"
