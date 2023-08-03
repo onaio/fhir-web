@@ -23,13 +23,13 @@ test('logs in and then out', async ({ page }) => {
   const homePage = new HomePage(page)
   await homePage.goto()
 
-  await expect(homePage.welcomeMsg).not.toBeVisible()
+  await expect(homePage.dashboard.welcomeMsg).not.toBeVisible()
 
   const loginPage = new LoginPage(page)
   await loginPage.login(PLAYWRIGHT_USERNAME, PLAYWRIGHT_PASSWORD)
 
   // expect login attempt to fail
-  await expect(homePage.welcomeMsg).toBeVisible()
+  await expect(homePage.dashboard.welcomeMsg).toBeVisible()
   await homePage.logout(PLAYWRIGHT_USERNAME)
 
   await page.waitForSelector("input[name='login']")
