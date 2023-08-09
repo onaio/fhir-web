@@ -27,10 +27,10 @@ export class UserCreate{
     readonly lastNameField: Locator
     readonly emailField: Locator
     readonly usernameField: Locator
-    readonly userTypeSupervisor: Locator
-    readonly userTypePractitioner: Locator
-    readonly enableUserYes: Locator
-    readonly enableUserNo: Locator
+    readonly userTypeSupervisorRadio: Locator
+    readonly userTypePractitionerRadio: Locator
+    readonly enableUserYesRadio: Locator
+    readonly enableUserNoRadio: Locator
     readonly keycloakUserGroup: Locator
     readonly applicationId :Locator
     readonly submitBtn: Locator
@@ -46,29 +46,41 @@ export class UserCreate{
         this.applicationId = page.getByLabel(/Application ID/i)
         this.submitBtn = page.getByRole('button', {name: /save/i})
         this.cancelBtn = page.getByRole('button', {name: /cancel/i})
+        this.userTypeSupervisorRadio =  page.getByText('Supervisor');
+        this.userTypePractitionerRadio = page.getByText('Practitioner');
+        this.enableUserYesRadio = page.getByText('Yes');
+        this.enableUserNoRadio = page.getByText('No');
     }
 
     async fillForm(formFields: UserFormFields){
         const {firstName, lastName, email, username, userType, enableUser, keycloakUserGroup, applicationID} = formFields
-        firstName && await this.firstNameField.fill(firstName)
-        lastName && await this.lastNameField.fill(lastName)
+        await this.firstNameField.fill(firstName)
+        await this.lastNameField.fill(lastName)
         email && await this.emailField.fill(email)
-        username && await this.usernameField.fill(email!)
+        await this.usernameField.fill(username)
         switch(userType){
             case 'practitioner':
-                await this.userTypePractitioner.check()
+                await this.userTypePractitionerRadio.click()
                 break
             case 'supervisor':
-                await this.userTypeSupervisor.check()
+                await this.userTypeSupervisorRadio.click()
                 break
         }
         if(enableUser){
-            await this.enableUserYes.check()
+            await this.enableUserYesRadio.click()
         }else if (enableUser == false){
-            await this.enableUserNo.check()
+            await this.enableUserYesRadio.click()
         }
-        keycloakUserGroup && await this.keycloakUserGroup.selectOption({label: keycloakUserGroup})
-        applicationID && await this.applicationId.selectOption({label: applicationID})
-        await this.submitBtn.click()
+
+        if(keycloakUserGroup){
+            await this.keycloakUserGroup.click()
+            await this.keycloakUserGroup.fill(keycloakUserGroup)
+            await this.page.getByTitle(new RegExp(keycloakUserGroup, "i")).getByText(new RegExp(keycloakUserGroup, "i")).click()
+        }
+        if(applicationID){
+            await this.applicationId.click()
+            await this.applicationId.fill(applicationID)
+            await this.page.getByTitle(new RegExp(applicationID, "i")).getByText(new RegExp(applicationID, "i")).click()
+        }
     }
 }
