@@ -20,6 +20,9 @@ Tests that check that the whole system meets set user requirements. To do so, ea
 aspects, i.e questions like how long did a certain page take to load.
 
 
+- Issue reporting generating a report that includes image and video
+
 helpful links and tools
  - vs code extension for debugging.
  - inspector for debugging
+ 
