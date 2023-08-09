@@ -1,6 +1,6 @@
 import { chromium, type FullConfig } from '@playwright/test';
 import { PLAYWRIGHT_PASSWORD, PLAYWRIGHT_USERNAME } from './env';
-import { LoginPage } from './tests/app/poms/keycloakLogin';
+import { LoginPage } from './tests/poms/app/keycloakLogin';
 
 async function globalSetup(config: FullConfig) {
   const { baseURL, storageState } = config.projects[0].use;
