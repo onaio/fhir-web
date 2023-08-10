@@ -21,7 +21,7 @@ export class TeamForm{
         this.page = page
         this.nameField = page.getByLabel(/Name/i)
         this.aliasField = page.getByLabel(/Alias/i)
-        this.statusActiveRadio = page.getByText(/active/i)
+        this.statusActiveRadio = page.getByText(/^active/i, {exact: true})
         this.statusInactiveRadio = page.getByText(/Inactive/i)
         this.practitionersField = page.getByLabel(/Practitioners/i)
         this.submitBtn = page.getByRole('button', {name: /save/i})
@@ -42,10 +42,12 @@ export class TeamForm{
         }
         if(practitioners){
             await this.practitionersField.click()
-            for (const practitioner in practitioners){
+            for (const practitioner of practitioners){
                 await this.practitionersField.fill(practitioner)
                 await this.page.getByTitle(new RegExp(practitioner, "i")).getByText(new RegExp(practitioner, "i")).click()
             }
+            // TODO - alternatives to de-focussing the dropdown. maybe https://playwright.dev/docs/api/class-locator#locator-bounding-box
+            await this.practitionersField.press("Escape")
         }
         await this.submitBtn.click()
     }

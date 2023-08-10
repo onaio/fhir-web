@@ -22,6 +22,9 @@ const teamFormPayload = {
     practitioners: ["Play Test"]
 }
 
+
+test.describe.configure({ mode: 'serial' });
+
 test.describe("User modification", () => {
     // TODO - Duplicated in user creation
     test('Can create user', async ({ page }) => {
