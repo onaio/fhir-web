@@ -162,6 +162,12 @@ test('pagination and search work correctly', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).toBeInTheDocument();
+    });
+  };
+
   await waitFor(() => {
     expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();
   });
@@ -176,7 +182,9 @@ test('pagination and search work correctly', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   expect(screen.getByText(/426 - title/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -185,11 +193,14 @@ test('pagination and search work correctly', async () => {
   });
 
   // works with search as well.
-  const searchForm = document.querySelector('[data-testid="search-form"]');
-  await userEvents.type(searchForm, '345');
+  const searchForm = document.querySelector('[data-testid="search-form"]') as Element;
+  userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
+
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -199,4 +210,6 @@ test('pagination and search work correctly', async () => {
   // remove search.
   userEvents.clear(searchForm);
   expect(history.location.search).toEqual('?pageSize=20&page=1');
+
+  expect(nock.pendingMocks()).toEqual([]);
 });

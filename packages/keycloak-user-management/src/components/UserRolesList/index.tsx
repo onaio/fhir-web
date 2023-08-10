@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, PageHeader } from 'antd';
+import { Row, Col, Spin } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -65,7 +66,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
     if (isLoading) {
       fetchAllRoles(keycloakBaseURL, dispatch, t)
         .catch(() => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem fetching roles'));
         })
         .finally(() => setIsLoading(false));
     }
@@ -101,7 +102,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

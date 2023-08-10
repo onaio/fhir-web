@@ -1,165 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page: Home page rendered 1`] = `
-<Home>
-  <div
-    className="text-center home"
-  >
-    <HelmetWrapper
-      defer={true}
-      encodeSpecialCharacters={true}
-    >
-      <SideEffect(NullComponent)
-        defer={true}
-        encodeSpecialCharacters={true}
-        title="OpenSRP Web"
-        titleAttributes={Object {}}
-      >
-        <NullComponent
-          defer={true}
-          encodeSpecialCharacters={true}
-          title="OpenSRP Web"
-          titleAttributes={Object {}}
-        />
-      </SideEffect(NullComponent)>
-    </HelmetWrapper>
-    <Row
-      className="weclome-box"
-      justify="center"
-    >
-      <div
-        className="ant-row ant-row-center weclome-box"
-        style={Object {}}
-      >
-        <Col
-          span={6}
-        >
-          <div
-            className="ant-col ant-col-6"
-            style={Object {}}
-          >
-            <h3>
-              Welcome to OpenSRP
-            </h3>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      >
-        <Col
-          className="gutter-row"
-          span={12}
-        >
-          <div
-            className="ant-col ant-col-12 gutter-row"
-            style={
-              Object {
-                "paddingLeft": 8,
-                "paddingRight": 8,
-              }
-            }
-          >
-            <Link
-              className="admin-link"
-              to="/admin/users"
-            >
-              <LinkAnchor
-                className="admin-link"
-                href="/admin/users"
-                navigate={[Function]}
-              >
-                <a
-                  className="admin-link"
-                  href="/admin/users"
-                  onClick={[Function]}
-                >
-                  <Button
-                    className="btn-links"
-                    color="outline"
-                  >
-                    <Wave
-                      disabled={false}
-                    >
-                      <button
-                        className="ant-btn ant-btn-default btn-links"
-                        color="outline"
-                        onClick={[Function]}
-                        type="button"
-                      >
-                        <LoadingIcon
-                          existIcon={false}
-                          loading={false}
-                          prefixCls="ant-btn"
-                        >
-                          <CSSMotion
-                            motionName="ant-btn-loading-icon-motion"
-                            onAppearActive={[Function]}
-                            onAppearStart={[Function]}
-                            onEnterActive={[Function]}
-                            onEnterStart={[Function]}
-                            onLeaveActive={[Function]}
-                            onLeaveStart={[Function]}
-                            removeOnLeave={true}
-                            visible={false}
-                          >
-                            <DomWrapper />
-                          </CSSMotion>
-                        </LoadingIcon>
-                        <span
-                          key=".0"
-                        >
-                          User Management
-                        </span>
-                      </button>
-                    </Wave>
-                  </Button>
-                </a>
-              </LinkAnchor>
-            </Link>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      />
-    </Row>
-    <Row
-      className="links-box"
-      gutter={16}
-    >
-      <div
-        className="ant-row links-box"
-        style={
-          Object {
-            "marginLeft": -8,
-            "marginRight": -8,
-          }
-        }
-      />
-    </Row>
-  </div>
-</Home>
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Card Support 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Card Support
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Form Configuration 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Form Configuration
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Inventory 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Inventory
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Location Management 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Location Management
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Plans 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Plans
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Product Catalogue 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Product Catalogue
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Team Management
+  </span>
+</button>
 `;

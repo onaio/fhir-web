@@ -7,6 +7,7 @@ import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
 import ArchiveOutlineIcon from '@2fd/ant-design-icons/lib/ArchiveOutline';
 
 jest.mock('../../configs/env');
+jest.mock('../../configs/settings');
 
 describe('routes', () => {
   it('Test routes only return enabled values', () => {
@@ -53,7 +54,6 @@ describe('routes', () => {
         enabled: true,
         key: 'admin',
         title: 'Administration',
-        url: '/admin',
       },
     ]);
 
@@ -81,7 +81,6 @@ describe('routes', () => {
         enabled: true,
         key: 'admin',
         title: 'Administration',
-        url: '/admin',
       },
     ]);
   });
@@ -103,7 +102,7 @@ describe('routes', () => {
       )
     );
 
-    const envModule = require('../../configs/env');
+    let envModule = require('../../configs/env');
     envModule.ENABLE_LOCATIONS = true;
     envModule.ENABLE_TEAMS = true;
     envModule.ENABLE_INVENTORY = true;
@@ -128,7 +127,7 @@ describe('routes', () => {
       QUEST: 'ROLE_VIEW_KEYCLOAK_USERS',
     };
 
-    const routes = getRoutes(
+    let routes = getRoutes(
       ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
       (t: string) => t
     );
@@ -299,12 +298,37 @@ describe('routes', () => {
           icon: <DashboardOutlined />,
         },
         title: 'Administration',
-        url: '/admin',
       },
     ]);
     // check inventory bulk upload title in routes as second item under inventory sub menu
     expect((routes.find((r) => r.key === 'inventory')?.children as any)[1].title).toEqual(
       'Add inventory via CSV'
     );
+  });
+
+  it('#1135 Enable envs are not coupled', () => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        {
+          roles: ['ROLE_VIEW_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
+    );
+    const routes = getRoutes(
+      ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
+      (t: string) => t
+    );
+    const parentKeys = routes.flatMap((x) => x.children).map((x) => x.key);
+    expect(parentKeys).toContain('team-management');
+    expect(parentKeys).toContain('user-management');
+    expect(parentKeys).toContain('location-management');
   });
 });

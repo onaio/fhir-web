@@ -1,50 +1,1763 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Inventory list Page renders when data is present: link to add new inventory item 1`] = `
-<a
-  href="/inventory/profile/b8a7998c-5df6-49eb-98e6-f0675db71848/item/add"
+<button
+  className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary ant-btn-lg"
+  disabled={false}
   onClick={[Function]}
+  type="button"
 >
-  <Button
-    size="large"
-    type="primary"
+  <LoadingIcon
+    existIcon={false}
+    loading={false}
+    prefixCls="ant-btn"
   >
-    <Wave
-      disabled={false}
+    <CSSMotion
+      motionName="ant-btn-loading-icon-motion"
+      onAppearActive={[Function]}
+      onAppearStart={[Function]}
+      onEnterActive={[Function]}
+      onEnterStart={[Function]}
+      onLeaveActive={[Function]}
+      onLeaveStart={[Function]}
+      removeOnLeave={true}
+      visible={false}
     >
-      <button
-        className="ant-btn ant-btn-primary ant-btn-lg"
-        onClick={[Function]}
-        type="button"
+      <DomWrapper />
+    </CSSMotion>
+  </LoadingIcon>
+  <ForwardRef(PlusOutlined)
+    key=".0"
+  >
+    <AntdIcon
+      icon={
+        Object {
+          "icon": Object {
+            "attrs": Object {
+              "focusable": "false",
+              "viewBox": "64 64 896 896",
+            },
+            "children": Array [
+              Object {
+                "attrs": Object {},
+                "children": Array [
+                  Object {
+                    "attrs": Object {},
+                    "tag": "style",
+                  },
+                ],
+                "tag": "defs",
+              },
+              Object {
+                "attrs": Object {
+                  "d": "M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z",
+                },
+                "tag": "path",
+              },
+              Object {
+                "attrs": Object {
+                  "d": "M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z",
+                },
+                "tag": "path",
+              },
+            ],
+            "tag": "svg",
+          },
+          "name": "plus",
+          "theme": "outlined",
+        }
+      }
+    >
+      <span
+        aria-label="plus"
+        className="anticon anticon-plus"
+        role="img"
       >
-        <LoadingIcon
-          existIcon={false}
-          loading={false}
-          prefixCls="ant-btn"
+        <IconReact
+          icon={
+            Object {
+              "icon": Object {
+                "attrs": Object {
+                  "focusable": "false",
+                  "viewBox": "64 64 896 896",
+                },
+                "children": Array [
+                  Object {
+                    "attrs": Object {},
+                    "children": Array [
+                      Object {
+                        "attrs": Object {},
+                        "tag": "style",
+                      },
+                    ],
+                    "tag": "defs",
+                  },
+                  Object {
+                    "attrs": Object {
+                      "d": "M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z",
+                    },
+                    "tag": "path",
+                  },
+                  Object {
+                    "attrs": Object {
+                      "d": "M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z",
+                    },
+                    "tag": "path",
+                  },
+                ],
+                "tag": "svg",
+              },
+              "name": "plus",
+              "theme": "outlined",
+            }
+          }
         >
-          <CSSMotion
-            motionName="ant-btn-loading-icon-motion"
-            onAppearActive={[Function]}
-            onAppearStart={[Function]}
-            onEnterActive={[Function]}
-            onEnterStart={[Function]}
-            onLeaveActive={[Function]}
-            onLeaveStart={[Function]}
-            removeOnLeave={true}
-            visible={false}
+          <svg
+            aria-hidden="true"
+            data-icon="plus"
+            fill="currentColor"
+            focusable="false"
+            height="1em"
+            key="svg-plus"
+            viewBox="64 64 896 896"
+            width="1em"
           >
-            <DomWrapper />
-          </CSSMotion>
-        </LoadingIcon>
-        <span
-          key=".0"
-        >
-           + Add new inventory item
-        </span>
-      </button>
-    </Wave>
-  </Button>
-</a>
+            <defs
+              key="svg-plus-svg-0"
+            >
+              <style
+                key="svg-plus-svg-0-defs-0"
+              />
+            </defs>
+            <path
+              d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"
+              key="svg-plus-svg-1"
+            />
+            <path
+              d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"
+              key="svg-plus-svg-2"
+            />
+          </svg>
+        </IconReact>
+      </span>
+    </AntdIcon>
+  </ForwardRef(PlusOutlined)>
+  <span
+    key=".1"
+  >
+    Add new inventory item
+  </span>
+</button>
 `;
 
 exports[`Inventory list Page shows broken page: error broken page 1`] = `"Unable to fetch inventories for service point"`;
+
+exports[`Inventory list Page sorts by file product name: with children 1`] = `
+<Tooltip
+  title="Click to cancel sorting"
+>
+  <Empty />
+  <ForwardRef(Tooltip)
+    arrowContent={
+      <span
+        className="ant-tooltip-arrow-content"
+      />
+    }
+    builtinPlacements={
+      Object {
+        "bottom": Object {
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            12,
+          ],
+          "overflow": Object {
+            "adjustY": true,
+            "shiftX": 40,
+          },
+          "points": Array [
+            "tc",
+            "bc",
+          ],
+        },
+        "bottomLeft": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            12,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "tl",
+            "bl",
+          ],
+        },
+        "bottomRight": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            12,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "tr",
+            "br",
+          ],
+        },
+        "left": Object {
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            -12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "shiftY": 32,
+          },
+          "points": Array [
+            "cr",
+            "cl",
+          ],
+        },
+        "leftBottom": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            -12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "br",
+            "bl",
+          ],
+        },
+        "leftTop": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            -12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "tr",
+            "tl",
+          ],
+        },
+        "right": Object {
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "shiftY": 32,
+          },
+          "points": Array [
+            "cl",
+            "cr",
+          ],
+        },
+        "rightBottom": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "bl",
+            "br",
+          ],
+        },
+        "rightTop": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            12,
+            0,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "tl",
+            "tr",
+          ],
+        },
+        "top": Object {
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            -12,
+          ],
+          "overflow": Object {
+            "adjustY": true,
+            "shiftX": 40,
+          },
+          "points": Array [
+            "bc",
+            "tc",
+          ],
+        },
+        "topLeft": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            -12,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "bl",
+            "tl",
+          ],
+        },
+        "topRight": Object {
+          "autoArrow": false,
+          "htmlRegion": "visibleFirst",
+          "offset": Array [
+            0,
+            -12,
+          ],
+          "overflow": Object {
+            "adjustX": true,
+            "adjustY": true,
+          },
+          "points": Array [
+            "br",
+            "tr",
+          ],
+        },
+      }
+    }
+    destroyTooltipOnHide={false}
+    motion={
+      Object {
+        "motionDeadline": 1000,
+        "motionName": "ant-zoom-big-fast",
+      }
+    }
+    mouseEnterDelay={0.1}
+    mouseLeaveDelay={0.1}
+    onVisibleChange={[Function]}
+    overlay={
+      <NoCompactStyle>
+        Click to cancel sorting
+      </NoCompactStyle>
+    }
+    overlayClassName="css-dev-only-do-not-override-k7429z"
+    overlayInnerStyle={Object {}}
+    overlayStyle={Object {}}
+    placement="top"
+    prefixCls="ant-tooltip"
+    showArrow={true}
+    title="Click to cancel sorting"
+    visible={false}
+  >
+    <Trigger
+      action={
+        Array [
+          "hover",
+        ]
+      }
+      arrow={true}
+      autoDestroy={false}
+      builtinPlacements={
+        Object {
+          "bottom": Object {
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              12,
+            ],
+            "overflow": Object {
+              "adjustY": true,
+              "shiftX": 40,
+            },
+            "points": Array [
+              "tc",
+              "bc",
+            ],
+          },
+          "bottomLeft": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              12,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "tl",
+              "bl",
+            ],
+          },
+          "bottomRight": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              12,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "tr",
+              "br",
+            ],
+          },
+          "left": Object {
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              -12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "shiftY": 32,
+            },
+            "points": Array [
+              "cr",
+              "cl",
+            ],
+          },
+          "leftBottom": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              -12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "br",
+              "bl",
+            ],
+          },
+          "leftTop": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              -12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "tr",
+              "tl",
+            ],
+          },
+          "right": Object {
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "shiftY": 32,
+            },
+            "points": Array [
+              "cl",
+              "cr",
+            ],
+          },
+          "rightBottom": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "bl",
+              "br",
+            ],
+          },
+          "rightTop": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              12,
+              0,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "tl",
+              "tr",
+            ],
+          },
+          "top": Object {
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              -12,
+            ],
+            "overflow": Object {
+              "adjustY": true,
+              "shiftX": 40,
+            },
+            "points": Array [
+              "bc",
+              "tc",
+            ],
+          },
+          "topLeft": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              -12,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "bl",
+              "tl",
+            ],
+          },
+          "topRight": Object {
+            "autoArrow": false,
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              -12,
+            ],
+            "overflow": Object {
+              "adjustX": true,
+              "adjustY": true,
+            },
+            "points": Array [
+              "br",
+              "tr",
+            ],
+          },
+        }
+      }
+      mouseEnterDelay={0.1}
+      mouseLeaveDelay={0.1}
+      onPopupVisibleChange={[Function]}
+      popup={[Function]}
+      popupAlign={Object {}}
+      popupClassName="css-dev-only-do-not-override-k7429z"
+      popupMotion={
+        Object {
+          "motionDeadline": 1000,
+          "motionName": "ant-zoom-big-fast",
+        }
+      }
+      popupPlacement="top"
+      popupStyle={Object {}}
+      popupVisible={false}
+      prefixCls="ant-tooltip"
+      title="Click to cancel sorting"
+      visible={false}
+    >
+      <ResizeObserver
+        disabled={true}
+        onResize={[Function]}
+      >
+        <SingleObserver
+          disabled={true}
+          key="rc-observer-key-0"
+          onResize={[Function]}
+        >
+          <DomWrapper>
+            <TriggerWrapper>
+              <div
+                className="ant-table-column-sorters"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <span
+                  className="ant-table-column-title"
+                >
+                  Product name
+                </span>
+                <span
+                  className="ant-table-column-sorter ant-table-column-sorter-full"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="ant-table-column-sorter-inner"
+                  >
+                    <ForwardRef(CaretUpOutlined)
+                      className="ant-table-column-sorter-up"
+                    >
+                      <AntdIcon
+                        className="ant-table-column-sorter-up"
+                        icon={
+                          Object {
+                            "icon": Object {
+                              "attrs": Object {
+                                "focusable": "false",
+                                "viewBox": "0 0 1024 1024",
+                              },
+                              "children": Array [
+                                Object {
+                                  "attrs": Object {
+                                    "d": "M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z",
+                                  },
+                                  "tag": "path",
+                                },
+                              ],
+                              "tag": "svg",
+                            },
+                            "name": "caret-up",
+                            "theme": "outlined",
+                          }
+                        }
+                      >
+                        <span
+                          aria-label="caret-up"
+                          className="anticon anticon-caret-up ant-table-column-sorter-up"
+                          role="img"
+                        >
+                          <IconReact
+                            icon={
+                              Object {
+                                "icon": Object {
+                                  "attrs": Object {
+                                    "focusable": "false",
+                                    "viewBox": "0 0 1024 1024",
+                                  },
+                                  "children": Array [
+                                    Object {
+                                      "attrs": Object {
+                                        "d": "M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z",
+                                      },
+                                      "tag": "path",
+                                    },
+                                  ],
+                                  "tag": "svg",
+                                },
+                                "name": "caret-up",
+                                "theme": "outlined",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-up"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              key="svg-caret-up"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                key="svg-caret-up-svg-0"
+                              />
+                            </svg>
+                          </IconReact>
+                        </span>
+                      </AntdIcon>
+                    </ForwardRef(CaretUpOutlined)>
+                    <ForwardRef(CaretDownOutlined)
+                      className="ant-table-column-sorter-down active"
+                    >
+                      <AntdIcon
+                        className="ant-table-column-sorter-down active"
+                        icon={
+                          Object {
+                            "icon": Object {
+                              "attrs": Object {
+                                "focusable": "false",
+                                "viewBox": "0 0 1024 1024",
+                              },
+                              "children": Array [
+                                Object {
+                                  "attrs": Object {
+                                    "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                                  },
+                                  "tag": "path",
+                                },
+                              ],
+                              "tag": "svg",
+                            },
+                            "name": "caret-down",
+                            "theme": "outlined",
+                          }
+                        }
+                      >
+                        <span
+                          aria-label="caret-down"
+                          className="anticon anticon-caret-down ant-table-column-sorter-down active"
+                          role="img"
+                        >
+                          <IconReact
+                            icon={
+                              Object {
+                                "icon": Object {
+                                  "attrs": Object {
+                                    "focusable": "false",
+                                    "viewBox": "0 0 1024 1024",
+                                  },
+                                  "children": Array [
+                                    Object {
+                                      "attrs": Object {
+                                        "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                                      },
+                                      "tag": "path",
+                                    },
+                                  ],
+                                  "tag": "svg",
+                                },
+                                "name": "caret-down",
+                                "theme": "outlined",
+                              }
+                            }
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="caret-down"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              key="svg-caret-down"
+                              viewBox="0 0 1024 1024"
+                              width="1em"
+                            >
+                              <path
+                                d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                key="svg-caret-down-svg-0"
+                              />
+                            </svg>
+                          </IconReact>
+                        </span>
+                      </AntdIcon>
+                    </ForwardRef(CaretDownOutlined)>
+                  </span>
+                </span>
+              </div>
+            </TriggerWrapper>
+          </DomWrapper>
+        </SingleObserver>
+      </ResizeObserver>
+      <Popup
+        align={
+          Object {
+            "htmlRegion": "visibleFirst",
+            "offset": Array [
+              0,
+              -12,
+            ],
+            "overflow": Object {
+              "adjustY": true,
+              "shiftX": 40,
+            },
+            "points": Array [
+              "bc",
+              "tc",
+            ],
+          }
+        }
+        arrow={Object {}}
+        arrowPos={
+          Object {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        autoDestroy={false}
+        className="css-dev-only-do-not-override-k7429z ant-tooltip-placement-top"
+        keepDom={false}
+        maskMotion={null}
+        motion={
+          Object {
+            "motionDeadline": 1000,
+            "motionName": "ant-zoom-big-fast",
+          }
+        }
+        offsetX={0}
+        offsetY={0}
+        onAlign={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
+        onPrepare={[Function]}
+        onVisibleChanged={[Function]}
+        open={false}
+        popup={[Function]}
+        portal={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "render": [Function],
+          }
+        }
+        prefixCls="ant-tooltip"
+        ready={false}
+        style={Object {}}
+        target={
+          <div
+            class="ant-table-column-sorters"
+          >
+            <span
+              class="ant-table-column-title"
+            >
+              Product name
+            </span>
+            <span
+              class="ant-table-column-sorter ant-table-column-sorter-full"
+            >
+              <span
+                aria-hidden="true"
+                class="ant-table-column-sorter-inner"
+              >
+                <span
+                  aria-label="caret-up"
+                  class="anticon anticon-caret-up ant-table-column-sorter-up"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="caret-up"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="0 0 1024 1024"
+                    width="1em"
+                  >
+                    <path
+                      d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  aria-label="caret-down"
+                  class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                  role="img"
+                >
+                  <svg
+                    aria-hidden="true"
+                    data-icon="caret-down"
+                    fill="currentColor"
+                    focusable="false"
+                    height="1em"
+                    viewBox="0 0 1024 1024"
+                    width="1em"
+                  >
+                    <path
+                      d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </span>
+          </div>
+        }
+        targetHeight={0}
+        targetWidth={0}
+      >
+        <Portal
+          autoDestroy={false}
+          open={false}
+        />
+      </Popup>
+    </Trigger>
+  </ForwardRef(Tooltip)>
+</Tooltip>
+`;
+
+exports[`Inventory list Page sorts by file product name: without children 1`] = `
+Array [
+  <th
+    aria-sort="descending"
+    className="ant-table-cell ant-table-column-sort ant-table-column-has-sorters"
+    colSpan={null}
+    onClick={[Function]}
+    onKeyDown={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+    tabIndex={0}
+  >
+    <Tooltip
+      title="Click to cancel sorting"
+    >
+      <Empty />
+      <ForwardRef(Tooltip)
+        arrowContent={
+          <span
+            className="ant-tooltip-arrow-content"
+          />
+        }
+        builtinPlacements={
+          Object {
+            "bottom": Object {
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                12,
+              ],
+              "overflow": Object {
+                "adjustY": true,
+                "shiftX": 40,
+              },
+              "points": Array [
+                "tc",
+                "bc",
+              ],
+            },
+            "bottomLeft": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                12,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "tl",
+                "bl",
+              ],
+            },
+            "bottomRight": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                12,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "tr",
+                "br",
+              ],
+            },
+            "left": Object {
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                -12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "shiftY": 32,
+              },
+              "points": Array [
+                "cr",
+                "cl",
+              ],
+            },
+            "leftBottom": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                -12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "br",
+                "bl",
+              ],
+            },
+            "leftTop": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                -12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "tr",
+                "tl",
+              ],
+            },
+            "right": Object {
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "shiftY": 32,
+              },
+              "points": Array [
+                "cl",
+                "cr",
+              ],
+            },
+            "rightBottom": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "bl",
+                "br",
+              ],
+            },
+            "rightTop": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                12,
+                0,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "tl",
+                "tr",
+              ],
+            },
+            "top": Object {
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                -12,
+              ],
+              "overflow": Object {
+                "adjustY": true,
+                "shiftX": 40,
+              },
+              "points": Array [
+                "bc",
+                "tc",
+              ],
+            },
+            "topLeft": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                -12,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "bl",
+                "tl",
+              ],
+            },
+            "topRight": Object {
+              "autoArrow": false,
+              "htmlRegion": "visibleFirst",
+              "offset": Array [
+                0,
+                -12,
+              ],
+              "overflow": Object {
+                "adjustX": true,
+                "adjustY": true,
+              },
+              "points": Array [
+                "br",
+                "tr",
+              ],
+            },
+          }
+        }
+        destroyTooltipOnHide={false}
+        motion={
+          Object {
+            "motionDeadline": 1000,
+            "motionName": "ant-zoom-big-fast",
+          }
+        }
+        mouseEnterDelay={0.1}
+        mouseLeaveDelay={0.1}
+        onVisibleChange={[Function]}
+        overlay={
+          <NoCompactStyle>
+            Click to cancel sorting
+          </NoCompactStyle>
+        }
+        overlayClassName="css-dev-only-do-not-override-k7429z"
+        overlayInnerStyle={Object {}}
+        overlayStyle={Object {}}
+        placement="top"
+        prefixCls="ant-tooltip"
+        showArrow={true}
+        title="Click to cancel sorting"
+        visible={false}
+      >
+        <Trigger
+          action={
+            Array [
+              "hover",
+            ]
+          }
+          arrow={true}
+          autoDestroy={false}
+          builtinPlacements={
+            Object {
+              "bottom": Object {
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  12,
+                ],
+                "overflow": Object {
+                  "adjustY": true,
+                  "shiftX": 40,
+                },
+                "points": Array [
+                  "tc",
+                  "bc",
+                ],
+              },
+              "bottomLeft": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  12,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "tl",
+                  "bl",
+                ],
+              },
+              "bottomRight": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  12,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "tr",
+                  "br",
+                ],
+              },
+              "left": Object {
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  -12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "shiftY": 32,
+                },
+                "points": Array [
+                  "cr",
+                  "cl",
+                ],
+              },
+              "leftBottom": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  -12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "br",
+                  "bl",
+                ],
+              },
+              "leftTop": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  -12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "tr",
+                  "tl",
+                ],
+              },
+              "right": Object {
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "shiftY": 32,
+                },
+                "points": Array [
+                  "cl",
+                  "cr",
+                ],
+              },
+              "rightBottom": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "bl",
+                  "br",
+                ],
+              },
+              "rightTop": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  12,
+                  0,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "tl",
+                  "tr",
+                ],
+              },
+              "top": Object {
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  -12,
+                ],
+                "overflow": Object {
+                  "adjustY": true,
+                  "shiftX": 40,
+                },
+                "points": Array [
+                  "bc",
+                  "tc",
+                ],
+              },
+              "topLeft": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  -12,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "bl",
+                  "tl",
+                ],
+              },
+              "topRight": Object {
+                "autoArrow": false,
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  -12,
+                ],
+                "overflow": Object {
+                  "adjustX": true,
+                  "adjustY": true,
+                },
+                "points": Array [
+                  "br",
+                  "tr",
+                ],
+              },
+            }
+          }
+          mouseEnterDelay={0.1}
+          mouseLeaveDelay={0.1}
+          onPopupVisibleChange={[Function]}
+          popup={[Function]}
+          popupAlign={Object {}}
+          popupClassName="css-dev-only-do-not-override-k7429z"
+          popupMotion={
+            Object {
+              "motionDeadline": 1000,
+              "motionName": "ant-zoom-big-fast",
+            }
+          }
+          popupPlacement="top"
+          popupStyle={Object {}}
+          popupVisible={false}
+          prefixCls="ant-tooltip"
+          title="Click to cancel sorting"
+          visible={false}
+        >
+          <ResizeObserver
+            disabled={true}
+            onResize={[Function]}
+          >
+            <SingleObserver
+              disabled={true}
+              key="rc-observer-key-0"
+              onResize={[Function]}
+            >
+              <DomWrapper>
+                <TriggerWrapper>
+                  <div
+                    className="ant-table-column-sorters"
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <span
+                      className="ant-table-column-title"
+                    >
+                      Product name
+                    </span>
+                    <span
+                      className="ant-table-column-sorter ant-table-column-sorter-full"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="ant-table-column-sorter-inner"
+                      >
+                        <ForwardRef(CaretUpOutlined)
+                          className="ant-table-column-sorter-up"
+                        >
+                          <AntdIcon
+                            className="ant-table-column-sorter-up"
+                            icon={
+                              Object {
+                                "icon": Object {
+                                  "attrs": Object {
+                                    "focusable": "false",
+                                    "viewBox": "0 0 1024 1024",
+                                  },
+                                  "children": Array [
+                                    Object {
+                                      "attrs": Object {
+                                        "d": "M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z",
+                                      },
+                                      "tag": "path",
+                                    },
+                                  ],
+                                  "tag": "svg",
+                                },
+                                "name": "caret-up",
+                                "theme": "outlined",
+                              }
+                            }
+                          >
+                            <span
+                              aria-label="caret-up"
+                              className="anticon anticon-caret-up ant-table-column-sorter-up"
+                              role="img"
+                            >
+                              <IconReact
+                                icon={
+                                  Object {
+                                    "icon": Object {
+                                      "attrs": Object {
+                                        "focusable": "false",
+                                        "viewBox": "0 0 1024 1024",
+                                      },
+                                      "children": Array [
+                                        Object {
+                                          "attrs": Object {
+                                            "d": "M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z",
+                                          },
+                                          "tag": "path",
+                                        },
+                                      ],
+                                      "tag": "svg",
+                                    },
+                                    "name": "caret-up",
+                                    "theme": "outlined",
+                                  }
+                                }
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-up"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  key="svg-caret-up"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                                    key="svg-caret-up-svg-0"
+                                  />
+                                </svg>
+                              </IconReact>
+                            </span>
+                          </AntdIcon>
+                        </ForwardRef(CaretUpOutlined)>
+                        <ForwardRef(CaretDownOutlined)
+                          className="ant-table-column-sorter-down active"
+                        >
+                          <AntdIcon
+                            className="ant-table-column-sorter-down active"
+                            icon={
+                              Object {
+                                "icon": Object {
+                                  "attrs": Object {
+                                    "focusable": "false",
+                                    "viewBox": "0 0 1024 1024",
+                                  },
+                                  "children": Array [
+                                    Object {
+                                      "attrs": Object {
+                                        "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                                      },
+                                      "tag": "path",
+                                    },
+                                  ],
+                                  "tag": "svg",
+                                },
+                                "name": "caret-down",
+                                "theme": "outlined",
+                              }
+                            }
+                          >
+                            <span
+                              aria-label="caret-down"
+                              className="anticon anticon-caret-down ant-table-column-sorter-down active"
+                              role="img"
+                            >
+                              <IconReact
+                                icon={
+                                  Object {
+                                    "icon": Object {
+                                      "attrs": Object {
+                                        "focusable": "false",
+                                        "viewBox": "0 0 1024 1024",
+                                      },
+                                      "children": Array [
+                                        Object {
+                                          "attrs": Object {
+                                            "d": "M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z",
+                                          },
+                                          "tag": "path",
+                                        },
+                                      ],
+                                      "tag": "svg",
+                                    },
+                                    "name": "caret-down",
+                                    "theme": "outlined",
+                                  }
+                                }
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="caret-down"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  key="svg-caret-down"
+                                  viewBox="0 0 1024 1024"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                                    key="svg-caret-down-svg-0"
+                                  />
+                                </svg>
+                              </IconReact>
+                            </span>
+                          </AntdIcon>
+                        </ForwardRef(CaretDownOutlined)>
+                      </span>
+                    </span>
+                  </div>
+                </TriggerWrapper>
+              </DomWrapper>
+            </SingleObserver>
+          </ResizeObserver>
+          <Popup
+            align={
+              Object {
+                "htmlRegion": "visibleFirst",
+                "offset": Array [
+                  0,
+                  -12,
+                ],
+                "overflow": Object {
+                  "adjustY": true,
+                  "shiftX": 40,
+                },
+                "points": Array [
+                  "bc",
+                  "tc",
+                ],
+              }
+            }
+            arrow={Object {}}
+            arrowPos={
+              Object {
+                "x": 0,
+                "y": 0,
+              }
+            }
+            autoDestroy={false}
+            className="css-dev-only-do-not-override-k7429z ant-tooltip-placement-top"
+            keepDom={false}
+            maskMotion={null}
+            motion={
+              Object {
+                "motionDeadline": 1000,
+                "motionName": "ant-zoom-big-fast",
+              }
+            }
+            offsetX={0}
+            offsetY={0}
+            onAlign={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+            onPrepare={[Function]}
+            onVisibleChanged={[Function]}
+            open={false}
+            popup={[Function]}
+            portal={
+              Object {
+                "$$typeof": Symbol(react.forward_ref),
+                "render": [Function],
+              }
+            }
+            prefixCls="ant-tooltip"
+            ready={false}
+            style={Object {}}
+            target={
+              <div
+                class="ant-table-column-sorters"
+              >
+                <span
+                  class="ant-table-column-title"
+                >
+                  Product name
+                </span>
+                <span
+                  class="ant-table-column-sorter ant-table-column-sorter-full"
+                >
+                  <span
+                    aria-hidden="true"
+                    class="ant-table-column-sorter-inner"
+                  >
+                    <span
+                      aria-label="caret-up"
+                      class="anticon anticon-caret-up ant-table-column-sorter-up"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="caret-up"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="0 0 1024 1024"
+                        width="1em"
+                      >
+                        <path
+                          d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z"
+                        />
+                      </svg>
+                    </span>
+                    <span
+                      aria-label="caret-down"
+                      class="anticon anticon-caret-down ant-table-column-sorter-down active"
+                      role="img"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        data-icon="caret-down"
+                        fill="currentColor"
+                        focusable="false"
+                        height="1em"
+                        viewBox="0 0 1024 1024"
+                        width="1em"
+                      >
+                        <path
+                          d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z"
+                        />
+                      </svg>
+                    </span>
+                  </span>
+                </span>
+              </div>
+            }
+            targetHeight={0}
+            targetWidth={0}
+          >
+            <Portal
+              autoDestroy={false}
+              open={false}
+            />
+          </Popup>
+        </Trigger>
+      </ForwardRef(Tooltip)>
+    </Tooltip>
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Qty
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    PO no.
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Serial no.
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Delivery dt.
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Acct. end dt.
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Unicef section
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Donor
+  </th>,
+  <th
+    className="ant-table-cell"
+    colSpan={null}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    rowSpan={null}
+    scope="col"
+    style={Object {}}
+  >
+    Actions
+  </th>,
+]
+`;

@@ -10,8 +10,13 @@ import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { sampleLocationUnitGroupPayload } from '../../LocationUnitGroupAddEdit/tests/fixtures';
-import { notification } from 'antd';
 import { baseURL } from '../../../constants';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 LocationUnitGroupList.defaultProps = { opensrpBaseURL: baseURL };
 
@@ -67,7 +72,7 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
   });
 
   it('test error thrown if An error occurred', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockReject(new Error('An error occurred'));
     mount(
       <Provider store={store}>
@@ -81,9 +86,8 @@ describe('location-management/src/components/LocationUnitGroupList', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit Groups'
+    );
   });
 });

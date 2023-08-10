@@ -4,22 +4,6 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import { LanguageOptions, LanguageSwitcher } from '..';
 
-jest.mock('antd', () => {
-  const actual = jest.requireActual('antd');
-  const CustomDropDown = (props: any) => {
-    return (
-      <>
-        {props.overlay}
-        {props.children}
-      </>
-    );
-  };
-  return {
-    ...actual,
-    Dropdown: CustomDropDown,
-  };
-});
-
 describe('components/pages/languageSwitcher', () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -45,15 +29,18 @@ describe('components/pages/languageSwitcher', () => {
     };
 
     const wrapper = mount(<LanguageSwitcher {...props} />);
-    expect(wrapper.find('button')).toHaveLength(1);
+
+    const moreOptions = wrapper.find('.more-options [data-testid="more-options"]').last();
+    expect(moreOptions).toHaveLength(1);
+    moreOptions.simulate('click');
 
     expect(wrapper.text()).toMatchInlineSnapshot(`"EnglishFrançais"`);
 
     // choose language change to french
-    wrapper.find('MenuItem').at(1).simulate('click');
+    wrapper.find('button').at(0).simulate('click');
     expect(languageHandlerMock.mock.calls).toEqual([['en']]);
 
-    wrapper.find('MenuItem').at(2).simulate('click');
+    wrapper.find('button').at(1).simulate('click');
     expect(languageHandlerMock.mock.calls).toEqual([['en'], ['fr']]);
     wrapper.update();
   });
@@ -71,7 +58,7 @@ describe('components/pages/languageSwitcher', () => {
     };
 
     const wrapper = mount(<LanguageSwitcher {...props} />);
-    expect(wrapper.find('button')).toHaveLength(1);
+    expect(wrapper.find('.more-options [data-testid="more-options"]').last()).toHaveLength(1);
 
     expect(wrapper.text()).toMatchInlineSnapshot(`""`);
   });

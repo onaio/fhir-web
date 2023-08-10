@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { PageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Input, Spin, PageHeader } from 'antd';
+import { Row, Col, Button, Input, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import LocationUnitGroupDetail, { LocationUnitGroupDetailProps } from '../LocationUnitGroupDetail';
 import { SearchOutlined } from '@ant-design/icons';
@@ -18,7 +19,7 @@ import { LOCATION_UNIT_GROUP_ALL, URL_LOCATION_UNIT_GROUP_ADD } from '../../cons
 import { useTranslation } from '../../mls';
 import Table from './Table';
 import './LocationUnitGroupList.css';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Props } from '../../helpers/common';
 
@@ -34,6 +35,8 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
   const { opensrpBaseURL } = props;
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   useEffect(() => {
     if (isLoading) {
       const serve = new OpenSRPService(LOCATION_UNIT_GROUP_ALL, opensrpBaseURL);
@@ -43,7 +46,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
           dispatch(fetchLocationUnitGroups(response));
           setIsLoading(false);
         })
-        .catch(() => sendErrorNotification(t('An error occurred')));
+        .catch(() => sendErrorNotification(t('There was a problem fetching Location Unit Groups')));
     }
   });
 
@@ -65,7 +68,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{t('Location Unit Group')}</title>
       </Helmet>
-      <PageHeader title={t('Location Unit Group Management')} className="page-header" />
+      <PageHeader title={t('Location Unit Group Management')} />
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">
@@ -78,12 +81,10 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
               onChange={onChange}
             />
             <div>
-              <Link to={URL_LOCATION_UNIT_GROUP_ADD}>
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Add Location Unit Group')}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_GROUP_ADD)}>
+                <PlusOutlined />
+                {t('Add Location Unit Group')}
+              </Button>
             </div>
           </div>
           <div className="bg-white p-3">

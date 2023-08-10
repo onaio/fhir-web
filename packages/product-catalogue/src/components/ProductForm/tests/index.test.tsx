@@ -119,56 +119,67 @@ describe('productForm', () => {
       wrapper.update();
     });
 
-    expect((wrapper.find('FormItem#productName').props() as any).validateStatus).toEqual('error');
-    expect(toJson((wrapper.find('FormItem#productName').props() as any).help)).toMatchSnapshot(
-      `"Product name"`
-    );
+    expect(
+      (wrapper.find('#productName .ant-form-item FormItemInput').props() as any).validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#productName .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`"Product name"`);
 
-    expect((wrapper.find('FormItem#materialNumber').props() as any).validateStatus).toEqual(
-      'error'
-    );
-    expect(toJson((wrapper.find('FormItem#materialNumber').props() as any).help)).toMatchSnapshot(
-      `material number`
-    );
+    expect(
+      (wrapper.find('#materialNumber .ant-form-item FormItemInput').props() as any).validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#materialNumber .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`material number`);
 
-    expect((wrapper.find('FormItem#isAttractiveItem').props() as any).validateStatus).toEqual(
-      'error'
-    );
-    expect(toJson((wrapper.find('FormItem#isAttractiveItem').props() as any).help)).toMatchSnapshot(
-      `isAttractive`
-    );
+    expect(
+      (wrapper.find('#isAttractiveItem .ant-form-item FormItemInput').props() as any).validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#isAttractiveItem .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`isAttractive`);
 
-    expect((wrapper.find('FormItem#availability').props() as any).validateStatus).toEqual('error');
-    expect(toJson((wrapper.find('FormItem#availability').props() as any).help)).toMatchSnapshot(
-      `availability`
-    );
+    expect(
+      (wrapper.find('#availability .ant-form-item FormItemInput').props() as any).validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#availability .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`availability`);
 
-    expect((wrapper.find('FormItem#availability').props() as any).validateStatus).toEqual('error');
-    expect(toJson((wrapper.find('FormItem#availability').props() as any).help)).toMatchSnapshot(
-      `availability`
-    );
+    expect(
+      (wrapper.find('#availability .ant-form-item FormItemInput').props() as any).validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#availability .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`availability`);
 
-    expect((wrapper.find('FormItem#condition').props() as any).validateStatus).toEqual(undefined);
-    expect(toJson((wrapper.find('FormItem#condition').props() as any).help)).toMatchSnapshot(
+    expect((wrapper.find('#condition .ant-form-item').props() as any).validateStatus).toEqual(
+      undefined
+    );
+    expect(toJson((wrapper.find('#condition .ant-form-item').props() as any).help)).toMatchSnapshot(
       `condition`
     );
 
-    expect((wrapper.find('FormItem#appropriateUsage').props() as any).validateStatus).toEqual(
-      undefined
-    );
-    expect(toJson((wrapper.find('FormItem#appropriateUsage').props() as any).help)).toMatchSnapshot(
-      `appropriateUsage`
-    );
-
-    expect((wrapper.find('FormItem#accountabilityPeriod').props() as any).validateStatus).toEqual(
-      'error'
-    );
     expect(
-      toJson((wrapper.find('FormItem#accountabilityPeriod').props() as any).help)
+      (wrapper.find('#appropriateUsage .ant-form-item').props() as any).validateStatus
+    ).toEqual(undefined);
+    expect(
+      toJson((wrapper.find('#appropriateUsage .ant-form-item').props() as any).help)
+    ).toMatchSnapshot(`appropriateUsage`);
+
+    expect(
+      (wrapper.find('#accountabilityPeriod .ant-form-item FormItemInput').props() as any)
+        .validateStatus
+    ).toEqual('error');
+    expect(
+      toJson((wrapper.find('#accountabilityPeriod .ant-form-item').props() as any).help)
     ).toMatchSnapshot(`accountability period`);
 
-    expect((wrapper.find('FormItem#photoURL').props() as any).validateStatus).toEqual(undefined);
-    expect(toJson((wrapper.find('FormItem#photoURL').props() as any).help)).toMatchSnapshot(
+    expect((wrapper.find('#photoURL .ant-form-item').props() as any).validateStatus).toEqual(
+      undefined
+    );
+    expect(toJson((wrapper.find('#photoURL .ant-form-item').props() as any).help)).toMatchSnapshot(
       `"photoURL"`
     );
 

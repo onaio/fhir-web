@@ -156,7 +156,8 @@ describe('DistrictReport', () => {
     expect(wrapper.find('Button[htmlType="submit"]').prop('disabled')).toEqual(false);
 
     await act(async () => {
-      wrapper.find('Button[htmlType="submit"]').simulate('submit');
+      const button = wrapper.find('.ant-btn-primary.button-submit');
+      button.simulate('submit');
       await flushPromises();
       wrapper.update();
     });
@@ -232,6 +233,8 @@ describe('DistrictReport', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching the location hierachy'
+    );
   });
 });

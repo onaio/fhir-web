@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Space, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
@@ -117,7 +118,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const practitioner: Practitioner | undefined = await serve.read(userId);
       return practitioner;
     } catch (error) {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching Practitioner tied to this User'));
       return undefined;
     }
   };
@@ -129,7 +130,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const organizations: Organization[] = await serve.read(practitionerId);
       return organizations;
     } catch (error) {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching teams assigned to Practitioner'));
       return [];
     }
   };
@@ -156,7 +157,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               });
             })
             .catch(() => {
-              sendErrorNotification(t('An error occurred'));
+              sendErrorNotification(t('There was a problem fetching assigned teams'));
             });
         } else {
           setUserDetails({
@@ -167,7 +168,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
         }
       })
       .catch(() => {
-        sendErrorNotification(t('An error occurred'));
+        sendErrorNotification(t('There was a problem fetching practitioner'));
       });
   };
 
@@ -179,7 +180,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
 
   return (
     <section className="content-section">
-      <PageHeader className="page-header" title={t('User Management')} />
+      <PageHeader title={t('User Management')} />
       <Row className="list-view">
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
@@ -202,7 +203,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           <Space>
             <PaginateData<KeycloakUser>
               queryFn={FetchData}
-              onError={() => sendErrorNotification(t('An error occurred'))}
+              onError={() => sendErrorNotification(t('There was a problem fetching Users'))}
               queryPram={{ searchParam }}
               pageSize={usersPageSize}
               queryid={UserQueryId}

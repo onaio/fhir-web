@@ -2,7 +2,7 @@
 import { Dictionary } from '@onaio/utils';
 import { parseISO } from 'date-fns';
 import { findKey, pick } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FormEvent } from 'react';
 import { planActivities } from './activitiesLookup';
 import {
@@ -61,6 +61,7 @@ import {
   COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
   WAREHOUSE_CHECK_ACTVITY_CODE,
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
+  FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE,
 } from './constants/stringConstants';
 import {
   FIStatusType,
@@ -176,7 +177,7 @@ export function extractActivityForForm(
     goalDescription: activityObj.goal.description || '',
     goalDue: activityObj.goal.target?.[0]?.due
       ? parseISO(`${activityObj.goal.target[0].due}`)
-      : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
+      : dayjs().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     goalPriority: activityObj.goal.priority || goalPriorities[1],
     goalValue:
       activityObj.goal.target?.[0]?.detail.detailQuantity.value ||
@@ -185,10 +186,10 @@ export function extractActivityForForm(
       1,
     timingPeriodEnd: activityObj.action.timingPeriod?.end
       ? parseISO(`${activityObj.action.timingPeriod.end}`)
-      : moment().add(configs.defaultActivityDurationDays, DAYS).toDate(),
+      : dayjs().add(configs.defaultActivityDurationDays, DAYS).toDate(),
     timingPeriodStart: activityObj.action.timingPeriod?.start
       ? parseISO(`${activityObj.action.timingPeriod.start}`)
-      : moment().toDate(),
+      : dayjs().toDate(),
   };
 }
 
@@ -238,6 +239,7 @@ export const SMActivities = pick(planActivities, [
   WAREHOUSE_CHECK_ACTVITY_CODE,
   COMPLETE_WAREHOUSE_CHECK_ACTIVITY_CODE,
   FIX_PRODUCT_PROBLEM_ACTIVITY_CODE,
+  FIX_PROBLEM_CONSULT_BENEFICIARIES_ACTIVITY_CODE,
 ]);
 
 export type FormActivity =
@@ -461,11 +463,11 @@ export function extractActivitiesFromPlanForm(
         !element.actionIdentifier || element.actionIdentifier === ''
           ? planIdentifier === ''
             ? generateNameSpacedUUID(
-                `${moment().toString()}-${thisAction.goalId}`,
+                `${dayjs().toString()}-${thisAction.goalId}`,
                 configs.actionUuidNamespace
               )
             : generateNameSpacedUUID(
-                `${moment().toString()}-${planIdentifier}-${thisAction.goalId}`,
+                `${dayjs().toString()}-${planIdentifier}-${thisAction.goalId}`,
                 configs.actionUuidNamespace
               )
           : element.actionIdentifier;
@@ -480,8 +482,8 @@ export function extractActivitiesFromPlanForm(
         prefix,
         reason: element.actionReason as ActionReasonType,
         timingPeriod: {
-          end: moment(element.timingPeriodEnd).format(configs.dateFormat.toUpperCase()),
-          start: moment(element.timingPeriodStart).format(configs.dateFormat.toUpperCase()),
+          end: dayjs(element.timingPeriodEnd).format(configs.dateFormat.toUpperCase()),
+          start: dayjs(element.timingPeriodStart).format(configs.dateFormat.toUpperCase()),
         },
         title: element.actionTitle,
       };
@@ -499,7 +501,7 @@ export function extractActivitiesFromPlanForm(
 
         const goalTarget: PlanGoalTarget = Object.assign(thisGoal.target[0], {
           detail: goalDetail,
-          due: moment(element.goalDue).format(configs.dateFormat.toUpperCase()),
+          due: dayjs(element.goalDue).format(configs.dateFormat.toUpperCase()),
         });
 
         const goalFields: Partial<PlanGoal> = {
@@ -557,7 +559,7 @@ export const getNameTitle = (
     const result = [
       currentFiStatus,
       currentJurisdiction,
-      moment(currentDate).format(configs.dateFormat.toUpperCase()),
+      dayjs(currentDate).format(configs.dateFormat.toUpperCase()),
     ].map((e) => {
       if (e) {
         return e;
@@ -567,7 +569,7 @@ export const getNameTitle = (
     name = result.join('-');
     title = result.join(' ');
   } else {
-    const result = [name, moment(currentDate).format(configs.dateFormat.toUpperCase())].map((e) => {
+    const result = [name, dayjs(currentDate).format(configs.dateFormat.toUpperCase())].map((e) => {
       if (e) {
         return e;
       }
@@ -637,9 +639,10 @@ export function generatePlanDefinition(
     ...defaultEnvConfig,
     ...envConfigs,
   };
+
   const planIdentifier = formValue?.identifier // is this an existing plan?
     ? formValue.identifier
-    : generateNameSpacedUUID(moment().toString(), configs.planUuidNamespace);
+    : generateNameSpacedUUID(dayjs().toString(), configs.planUuidNamespace);
 
   const planVersion = formValue?.identifier // is this an existing plan?
     ? isNaN(parseInt(formValue.version, 10)) // is the existing version valid?
@@ -703,10 +706,10 @@ export function generatePlanDefinition(
 
   return {
     ...actionAndGoals, // action and goal
-    date: moment(formValue.date).format(configs.dateFormat.toUpperCase()),
+    date: dayjs(formValue.date).format(configs.dateFormat.toUpperCase()),
     effectivePeriod: {
-      end: moment(formValue.end).format(configs.dateFormat.toUpperCase()),
-      start: moment(formValue.start).format(configs.dateFormat.toUpperCase()),
+      end: dayjs(formValue.end).format(configs.dateFormat.toUpperCase()),
+      start: dayjs(formValue.start).format(configs.dateFormat.toUpperCase()),
     },
     experimental: false,
     identifier: planIdentifier,

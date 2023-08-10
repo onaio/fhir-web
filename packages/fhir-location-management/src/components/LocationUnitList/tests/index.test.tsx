@@ -35,6 +35,8 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+jest.setTimeout(10000);
+
 nock.disableNetConnect();
 
 describe('location-management/src/components/LocationUnitList', () => {
@@ -143,8 +145,8 @@ describe('location-management/src/components/LocationUnitList', () => {
     const hamburger = document.querySelector('.more-options');
     fireEvent.click(hamburger);
     // should see the popup with view details
-    expect(document.querySelector('.view-details')).toBeInTheDocument();
-    fireEvent.click(document.querySelector('.view-details'));
+    expect(document.querySelector('[data-testid="view-location"]')).toBeInTheDocument();
+    fireEvent.click(document.querySelector('[data-testid="view-location"]'));
 
     // should load single location
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));

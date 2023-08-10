@@ -12,6 +12,8 @@ import {
   SUPERVISOR,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
+  SNOMED_CODEABLE_SYSTEM,
+  DEVICE_SETTING_CODEABLE_CODE,
 } from '../../../constants';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
@@ -21,6 +23,7 @@ import { pickBy, some } from 'lodash';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
+import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -61,7 +64,13 @@ export const createOrEditPractitioners = async (
 
   // update or create new practitioner
   await practitionersService[requestType](payload)
-    .catch((_: Error) => sendErrorNotification(t('An error occurred')))
+    .catch((_: Error) => {
+      if (isEditMode) {
+        sendErrorNotification(t('There was a problem updating practitioner'));
+      } else {
+        sendErrorNotification(t('There was a problem creating practitioner'));
+      }
+    })
     .then(() => sendSuccessNotification(successMessage));
 
   if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.userId}`);
@@ -93,7 +102,7 @@ const createEditKeycloakUser = async (
       .then(() => {
         sendSuccessNotification(t('User edited successfully'));
         updateGroupsAndPractitionerCallback(keycloakUserPayload.id).catch(() =>
-          sendErrorNotification(t('An error occurred'))
+          sendErrorNotification(t('There was a problem updating groups and practitioners'))
         );
       })
       .catch((error) => {
@@ -108,7 +117,7 @@ const createEditKeycloakUser = async (
         sendSuccessNotification(t('User created successfully'));
         const keycloakUserId = getUserId(res);
         updateGroupsAndPractitionerCallback(keycloakUserId).catch(() =>
-          sendErrorNotification(t('An error occurred'))
+          sendErrorNotification(t('There was a problem creating group and practitioner'))
         );
       })
       .catch((error) => {
@@ -189,7 +198,11 @@ export const submitForm = async (
     updateGroupsAndPractitioner,
     t
   ).catch(() => {
-    sendErrorNotification(t('An error occurred'));
+    if (isEditMode) {
+      sendErrorNotification(t('There was a problem updating the user profile'));
+    } else {
+      sendErrorNotification(t('There was a problem creating the user'));
+    }
   });
 
   if (isEditMode) {
@@ -237,7 +250,7 @@ export const getFormValues = (
     return defaultUserFormInitialValues;
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
-  const { contact: contacts } = keycloakUser.attributes ?? {};
+  const { contact: contacts, fhir_core_app_id: fhirCoreAppId } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
 
   let userType: FormFields['userType'] = 'practitioner';
@@ -269,6 +282,7 @@ export const getFormValues = (
     userGroups: userGroups?.map((tag) => tag.id),
     keycloakUser,
     practitionerRole,
+    fhirCoreAppId: fhirCoreAppId?.[0],
   };
 };
 
@@ -282,9 +296,10 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
   const isEditMode = !!values.id;
   // possibility of creating a practitioner for an existing user if one was not created before
 
-  const { id, username, firstName, lastName, email, enabled, contact } = values;
+  const { id, username, firstName, lastName, email, enabled, contact, fhirCoreAppId } = values;
   const preUserAttributes = {
     ...(contact ? { contact: [contact] } : {}),
+    ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
   };
 
   const cleanedAttributes = pickBy(
@@ -362,3 +377,16 @@ export const postPutPractitioner =
 
     return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode, t);
   };
+
+export const getCompositionOptions = (composition: IComposition) => {
+  const { title, identifier } = composition;
+  if (!identifier) return;
+  const value = identifier.value as string;
+  return { label: `${title}(${value})`, value, ref: composition };
+};
+
+/** search param for filter to get composition resources of the type device setting */
+export const compositionUrlFilter = {
+  type: `${SNOMED_CODEABLE_SYSTEM}|${DEVICE_SETTING_CODEABLE_CODE}`,
+  _elements: 'identifier,title',
+};

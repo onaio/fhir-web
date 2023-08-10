@@ -307,3 +307,171 @@ export const organization: Organization[] = [
     },
   },
 ];
+
+export const compositionPage1 = {
+  resourceType: 'Bundle',
+  id: 'a1b1aca5-d381-4296-a612-0fca2fc0a50c',
+  meta: {
+    lastUpdated: '2023-01-31T14:52:13.171+00:00',
+  },
+  type: 'searchset',
+  total: 22,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org:443/fhir/Composition/_search?_count=5&_elements=identifier%2Ctitle&_getpagesoffset=0&type=http%3A%2F%2Fsnomed.info%2Fsct%7C1156600005',
+    },
+    {
+      relation: 'next',
+      url: 'https://fhir.labs.smartregister.org:443/fhir?_getpages=a1b1aca5-d381-4296-a612-0fca2fc0a50c&_getpagesoffset=5&_count=5&_pretty=true&_bundletype=searchset&_elements=identifier,title',
+    },
+  ],
+  entry: [
+    {
+      fullUrl:
+        'https://fhir.labs.smartregister.org:443/fhir/Composition/4a5e4d98-9bac-41de-9775-7ca795c3de12',
+      resource: {
+        resourceType: 'Composition',
+        id: '4a5e4d98-9bac-41de-9775-7ca795c3de12',
+        meta: {
+          versionId: '12',
+          lastUpdated: '2022-10-31T15:26:18.785+00:00',
+          source: '#49475fbba4633d3c',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'cha',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Composition/145752',
+      resource: {
+        resourceType: 'Composition',
+        id: '145752',
+        meta: {
+          versionId: '5',
+          lastUpdated: '2022-10-14T10:37:30.790+00:00',
+          source: '#c2e14bf14f0d03b3',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'notice-f',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Composition/145753',
+      resource: {
+        resourceType: 'Composition',
+        id: '145753',
+        meta: {
+          versionId: '2',
+          lastUpdated: '2022-10-19T12:25:22.888+00:00',
+          source: '#864b4da9e94ed6b7',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'map',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Composition/138190',
+      resource: {
+        resourceType: 'Composition',
+        id: '138190',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2022-08-19T08:08:18.875+00:00',
+          source: '#97457935f2b2b5b2',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'ecbis_sc',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org:443/fhir/Composition/141060',
+      resource: {
+        resourceType: 'Composition',
+        id: '141060',
+        meta: {
+          versionId: '7',
+          lastUpdated: '2022-09-06T14:28:14.715+00:00',
+          source: '#fd2cab40d76ebddc',
+          tag: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+              code: 'SUBSETTED',
+              display: 'Resource encoded in summary mode',
+            },
+          ],
+        },
+        identifier: {
+          use: 'official',
+          value: 'ay',
+        },
+        title: 'Device configurations',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
+export const createdUser = {
+  firstName: 'Test',
+  id: '',
+  lastName: 'One',
+  username: 'TestOne',
+  email: 'testone@gmail.com',
+  enabled: true,
+  attributes: { fhir_core_app_id: ['cha'] },
+};

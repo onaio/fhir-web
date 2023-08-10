@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { createChangeHandler, getQueryParams, SearchForm, TableLayout } from '@opensrp/react-utils';
 import {
   TreeNode,
@@ -154,7 +155,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header">

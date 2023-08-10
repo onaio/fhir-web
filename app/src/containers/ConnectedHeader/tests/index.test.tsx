@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router';
 import ConnectedHeader from '..';
 import { store } from '@opensrp/store';
 import toJson from 'enzyme-to-json';
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('../../../configs/env');
 
@@ -20,6 +21,10 @@ jest.mock('@opensrp/pkg-config', () => {
 });
 
 describe('components/ConnectedHeader', () => {
+  beforeAll(async () => {
+    await opensrpI18nInstance.init();
+  });
+
   it('renders the ConnectedHeader component', () => {
     const wrapper = mount(
       <Provider store={store}>
@@ -32,15 +37,9 @@ describe('components/ConnectedHeader', () => {
     expect(wrapper.find('LanguageSwitcher')).toHaveLength(1);
     expect(wrapper.find('Header').props().children).toHaveLength(2);
     expect(wrapper.text()).toMatchInlineSnapshot(`"Login"`);
-    expect(toJson(wrapper.find('a[data-index="login-link"]'))).toMatchInlineSnapshot(`
-      <a
-        data-index="login-link"
-        href="/login"
-        onClick={[Function]}
-      >
-        Login
-      </a>
-    `);
+    expect(toJson(wrapper.find('button[data-index="login-button"]'))).toMatchSnapshot(
+      'login button'
+    );
     (wrapper.find('Header').props().children as any).forEach((child: any) => {
       expect(child).toMatchSnapshot('child');
     });

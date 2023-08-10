@@ -2,6 +2,7 @@ import { Typography, Tooltip } from 'antd';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Column, TableLayout } from '@opensrp/react-utils';
+import type { GenericWithKey } from '@opensrp/react-utils';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 import React from 'react';
 import { useTranslation } from '../mls';
@@ -91,7 +92,9 @@ interface PatientDetailsTableProps<T, ParsedType> {
  *
  * @param props - component props
  */
-export function PatientDetailsTable<T, ParsedType>(props: PatientDetailsTableProps<T, ParsedType>) {
+export function PatientDetailsTable<T, ParsedType extends GenericWithKey>(
+  props: PatientDetailsTableProps<T, ParsedType>
+) {
   const { resources, parseResource, columns } = props;
   const tableProps = {
     datasource: resources.map(parseResource),

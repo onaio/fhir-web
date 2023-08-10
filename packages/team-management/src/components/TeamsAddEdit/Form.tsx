@@ -79,7 +79,7 @@ export function onSubmit(
       await SetPractitioners(opensrpBaseURL, practitioner, toAdd, toRem, Teamid, t);
       history.goBack();
     })
-    .catch(() => sendErrorNotification(t('An error occurred')))
+    .catch(() => sendErrorNotification(t('There was a problem updating teams')))
     .finally(() => setIsSubmitting(false));
 }
 
@@ -108,7 +108,7 @@ async function SetPractitioners(
     const serve = new OpenSRPService(PRACTITIONER_DEL, opensrpBaseURL);
     serve
       .delete({ practitioner: `${prac}`, organization: id })
-      .catch(() => sendErrorNotification(t('An error occurred')));
+      .catch(() => sendErrorNotification(t('There was a problem deleting practitioner')));
   });
 
   // Api Call to add practitioners
@@ -124,7 +124,9 @@ async function SetPractitioners(
   });
   if (toAdd.length) {
     const serve = new OpenSRPService(PRACTITIONER_POST, opensrpBaseURL);
-    await serve.create(payload).catch(() => sendErrorNotification(t('An error occurred')));
+    await serve
+      .create(payload)
+      .catch(() => sendErrorNotification(t('There was a problem adding practitioner')));
   }
 
   sendSuccessNotification(t('Successfully Assigned Practitioners'));

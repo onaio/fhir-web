@@ -255,12 +255,17 @@ describe('components/Antd/FileList', () => {
 
     const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
 
-    expect(submenu.find('Button').text()).toEqual('Download');
+    const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
+    expect(dropdownItem).toHaveLength(1);
+    dropdownItem.simulate('click');
+    wrapper.update();
 
     // click download button
-    submenu.find('Button').simulate('click');
+    const downloadBtn = wrapper.find('button[data-testid="download"]');
+    expect(downloadBtn).toHaveLength(1);
+    downloadBtn.simulate('click');
+
     await act(async () => {
       await flushPromises();
     });
@@ -326,12 +331,18 @@ describe('components/Antd/FileList', () => {
 
     const downloadCell = wrapper.find('tbody').find('tr').at(0).find('td').at(5);
     const dropdown = downloadCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
+    expect(dropdown).toHaveLength(1);
 
-    expect(submenu.find('Button').text()).toEqual('Download');
+    const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
+    expect(dropdownItem).toHaveLength(1);
+    dropdownItem.simulate('click');
+    wrapper.update();
 
     // click download button
-    submenu.find('Button').simulate('click');
+    const menuItem = wrapper.find('button[data-testid="download"]');
+    expect(menuItem).toHaveLength(1);
+    menuItem.simulate('click');
+
     await act(async () => {
       await flushPromises();
     });
@@ -387,7 +398,7 @@ describe('components/Antd/FileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching manifests');
     expect(wrapper.find('tbody').find('tr').find('td').find('div.ant-empty-image')).toHaveLength(1);
 
     wrapper.unmount();
@@ -415,16 +426,23 @@ describe('components/Antd/FileList', () => {
 
     const downloadFiledCell = wrapper.find('tbody').find('tr').at(0).find('td').at(4);
     const dropdown = downloadFiledCell.find('Dropdown');
-    const submenu = shallow(<div>{dropdown.prop('overlay')}</div>);
 
-    submenu.find('Button').simulate('click');
+    // const submenu = shallow(<div>{dropdown.prop('menu')}</div>);
+    const dropdownItem = dropdown.find('.more-options [data-testid="menu-options"]').last();
+    expect(dropdownItem).toHaveLength(1);
+    dropdownItem.simulate('click');
+
+    // submenu.find('Button').simulate('click');
+    const downloadBtn = wrapper.find('button[data-testid="download"]');
+    expect(downloadBtn).toHaveLength(1);
+    downloadBtn.simulate('click');
 
     await act(async () => {
       await flushPromises();
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem downloading this file');
     expect(downloadSpy).not.toHaveBeenCalled();
     wrapper.unmount();
   });

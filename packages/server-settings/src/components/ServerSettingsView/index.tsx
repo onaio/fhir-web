@@ -2,13 +2,14 @@
 import { MoreOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Spin, Dropdown, Menu, PageHeader } from 'antd';
+import { Row, Col, Spin, Dropdown, Button } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import type { MenuProps } from 'antd';
 import {
   Tree,
   generateJurisdictionTree,
-  ParsedHierarchyNode,
   RawOpenSRPHierarchy,
-  RawHierarchyNode,
+  TreeNode,
 } from '@opensrp/location-management';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { BrokenPage, OpenSRPService } from '@opensrp/react-utils';
@@ -30,9 +31,11 @@ export interface Props {
 
 export const ServerSettingsView: React.FC<Props> = (props: Props) => {
   const { baseURL, v2BaseURL } = props;
-  const [currentLocation, setCurrentLocation] = useState<RawHierarchyNode | ParsedHierarchyNode>();
-  const [treeData, setTreeData] = useState<ParsedHierarchyNode[]>([]);
+  const [currentLocationNode, setCurrentLocationNode] = useState<TreeNode>();
+  const [treeData, setTreeData] = useState<TreeNode[]>([]);
   const { t } = useTranslation();
+
+  const currentLocation = currentLocationNode?.model;
 
   const queryClient = useQueryClient();
 
@@ -99,7 +102,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     if (settingIsSimilarToParent) {
       await settingsServe(row.settingMetadataId)
         .delete()
-        .catch(() => sendErrorNotification(t('An error occurred')))
+        .catch(() => sendErrorNotification(t('There was a problem deleting settings')))
         .then(async () => {
           await invalidateSettingsQueries();
         })
@@ -115,7 +118,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       };
       await settingsServe(rest.settingMetadataId)
         .update(payload)
-        .catch(() => sendErrorNotification(t('An error occurred')))
+        .catch(() => sendErrorNotification(t('There was a problem updating settings')))
         .then(async () => {
           await invalidateSettingsQueries();
         })
@@ -127,16 +130,69 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     SECURITY_AUTHENTICATE_ENDPOINT,
     () => new OpenSRPService(SECURITY_AUTHENTICATE_ENDPOINT, baseURL).list(),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching user assignment data')),
       select: (res: { locations: RawOpenSRPHierarchy }) => res.locations,
       onSuccess: (userLocSettings) => {
-        const processedHierarchy = generateJurisdictionTree(userLocSettings).model;
+        const processedHierarchy = generateJurisdictionTree(userLocSettings);
         setTreeData([processedHierarchy]);
-        const { map: userLocMap } = userLocSettings.locationsHierarchy;
-        setCurrentLocation(Object.values(userLocMap)[0]);
+        setCurrentLocationNode(currentLocationNode ?? processedHierarchy);
       },
     }
   );
+
+  const getItems = (row: Setting): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          type="link"
+          data-testid="yesBtn"
+          onClick={async () => {
+            await updateSettings(row, currentLocation?.id ?? '', true);
+          }}
+        >
+          {t('Yes')}
+        </Button>
+      ),
+    },
+    {
+      key: '1',
+      label: (
+        <Button
+          type="link"
+          data-testid="sayNo"
+          onClick={async () => {
+            await updateSettings(row, currentLocation?.id ?? '', false);
+          }}
+        >
+          {t('No')}
+        </Button>
+      ),
+    },
+    {
+      key: '1',
+      label: (
+        <Button
+          type="link"
+          data-testid="inherited"
+          // for inherit
+          // delete existing setting and inherit from the parent location instead
+          // server returns inherited parent value instead by default
+          onClick={async () => {
+            await settingsServe(row.settingMetadataId)
+              .delete()
+              .catch(() => sendErrorNotification(t('There was a problem deleting settings')))
+              .then(async () => {
+                await invalidateSettingsQueries();
+              })
+              .then(() => sendSuccessNotification(t('Successfully Updated')));
+          }}
+        >
+          {t('Inherit')}
+        </Button>
+      ),
+    },
+  ];
 
   const {
     isError: isServerSettingsError,
@@ -146,7 +202,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     [SETTINGS_ENDPOINT, currentLocation?.id ?? ''],
     async () => await getServerSettings(currentLocation?.id ?? ''),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Server Settings')),
       select: (res: Setting[]) => res,
       enabled: !!currentLocation?.id,
     }
@@ -156,9 +212,13 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
     return <BrokenPage />;
   }
 
-  if (isServerSettingsLoading || isUserLocSettingsLoading) {
+  if (isUserLocSettingsLoading) {
     return <Spin size="large" className="custom-spinner" />;
   }
+
+  const handleTreeSelect = (node?: TreeNode) => {
+    setCurrentLocationNode(node);
+  };
 
   return (
     <section className="content-section">
@@ -166,7 +226,6 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
         <title>{t('Settings')}</title>
       </Helmet>
       <PageHeader
-        className="page-header"
         title={
           currentLocation?.label
             ? t('Settings | {{currentLocation}}', { currentLocation: currentLocation.label })
@@ -175,13 +234,14 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       />
       <Row>
         <Col className="bg-white p-3" span={6}>
-          <Tree data={treeData} OnItemClick={(node) => setCurrentLocation(node)} />
+          <Tree data={treeData} onSelect={handleTreeSelect} selectedNode={currentLocationNode} />
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
             <Table
+              loading={isServerSettingsLoading}
               data={serverSettingsData ?? []}
-              tree={treeData}
+              tree={treeData.map((treeNode) => treeNode.model)}
               actioncolumn={{
                 title: t('Actions'),
                 key: `actions`,
@@ -189,40 +249,8 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
                 render: (_, row: Setting) => {
                   return (
                     <Dropdown
-                      overlay={
-                        <Menu className="menu">
-                          <Menu.Item
-                            onClick={async () => {
-                              await updateSettings(row, currentLocation?.id ?? '', true);
-                            }}
-                          >
-                            {t('Yes')}
-                          </Menu.Item>
-                          <Menu.Item
-                            onClick={async () => {
-                              await updateSettings(row, currentLocation?.id ?? '', false);
-                            }}
-                          >
-                            {t('No')}
-                          </Menu.Item>
-                          <Menu.Item
-                            // for inherit
-                            // delete existing setting and inherit from the parent location instead
-                            // server returns inherited parent value instead by default
-                            onClick={async () => {
-                              await settingsServe(row.settingMetadataId)
-                                .delete()
-                                .catch(() => sendErrorNotification(t('An error occurred')))
-                                .then(async () => {
-                                  await invalidateSettingsQueries();
-                                })
-                                .then(() => sendSuccessNotification(t('Successfully Updated')));
-                            }}
-                          >
-                            {t('Inherit')}
-                          </Menu.Item>
-                        </Menu>
-                      }
+                      menu={{ items: getItems(row) }}
+                      className="drop"
                       placement="bottomLeft"
                       arrow
                       trigger={['click']}

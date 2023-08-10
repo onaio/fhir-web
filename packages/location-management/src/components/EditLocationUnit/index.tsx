@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
-import { Spin, Row, Col, PageHeader } from 'antd';
+import { Spin, Row, Col } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { getUser } from '@onaio/session-reducer';
 import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
@@ -150,7 +151,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     LOCATION_UNIT_FIND_BY_PROPERTIES,
     () => getBaseTreeNode(opensrpBaseURL, filterByParentId),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Location Units')),
       select: (res: LocationUnit[]) => res,
     }
   );
@@ -161,7 +162,8 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
           return {
             queryKey: [LOCATION_HIERARCHY, location.id],
             queryFn: () => new OpenSRPService(LOCATION_HIERARCHY, opensrpBaseURL).read(location.id),
-            onError: () => sendErrorNotification(t('An error occurred')),
+            onError: () =>
+              sendErrorNotification(t('There was a problem fetching the location hierachy')),
             select: (res: RawOpenSRPHierarchy) => generateJurisdictionTree(res).model,
           };
         })
@@ -212,8 +214,10 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
         if (grandparenthierarchy && grandparenthierarchy.id)
           queryClient
             .invalidateQueries([LOCATION_HIERARCHY, grandparenthierarchy.id])
-            .catch(() => sendErrorNotification(t('An error occurred')));
-        else sendErrorNotification(t('An error occurred'));
+            .catch(() =>
+              sendErrorNotification(t('There was a problem fetching the location hierachy'))
+            );
+        else sendErrorNotification(t('There was a problem getting the hierachy node'));
       }
       dispatch(fetchAllHierarchies([]));
     },
@@ -226,7 +230,7 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>

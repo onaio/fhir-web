@@ -231,14 +231,11 @@ const LocationForm = (props: LocationFormProps) => {
             id="name"
             rules={validationRules.name}
             hidden={isHidden('name')}
-            name="name"
             label={t('Name')}
+            name="name"
             hasFeedback
           >
-            <Input
-              disabled={disabled.includes('name')}
-              placeholder={t('Enter a location name')}
-            ></Input>
+            <Input disabled={disabled.includes('name')} placeholder={t('Enter a location name')} />
           </FormItem>
 
           <FormItem
@@ -272,6 +269,7 @@ const LocationForm = (props: LocationFormProps) => {
             rules={validationRules.serviceTypes}
           >
             <CustomSelect<ServiceTypeSetting>
+              className="select"
               placeholder={t('Select the service point type')}
               disabled={disabled.includes('serviceType')}
               loadData={(setData) => {

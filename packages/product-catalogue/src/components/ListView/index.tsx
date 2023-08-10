@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { loadProductCatalogue } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -10,7 +11,7 @@ import {
 } from '../../ducks/productCatalogue';
 import { connect } from 'react-redux';
 import { ActionsColumnCustomRender, columnsFactory } from './utils';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -23,6 +24,7 @@ import { CATALOGUE_CREATE_VIEW_URL, RouteParams } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { CommonProps, defaultCommonProps } from '../../helpers/common';
 import { useTranslation } from '../../mls';
+import { PlusOutlined } from '@ant-design/icons';
 
 /** make sure product catalogue reducer is registered */
 reducerRegistry.register(ProductCatalogueReducerName, ProductCatalogueReducer);
@@ -52,6 +54,7 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
   const [loading, setLoading] = useState<boolean>(data.length === 0);
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const columns = columnsFactory(t);
 
@@ -80,13 +83,14 @@ const ProductCatalogueList = (props: ProductCatalogueListTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header flex-right">
-            <Link to={CATALOGUE_CREATE_VIEW_URL}>
-              <Button type="primary">{t(' + Add product to catalogue')}</Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(CATALOGUE_CREATE_VIEW_URL)}>
+              <PlusOutlined />
+              {t('Add product to catalogue')}
+            </Button>
           </div>
           <TableLayout
             id="ProductCatalogueList"

@@ -1,5 +1,5 @@
 {
-  "Actions": "",
+  "Actions": "Actions",
   "Active": "",
   "Add Location Unit": "",
   "alias": "",
@@ -12,8 +12,10 @@
   "Edit > {{name}}": "",
   "Enter a location name": "",
   "Id": "",
+  "identifier": "identifier",
   "Inactive": "",
   "Jurisdiction": "",
+  "Location id": "Location id",
   "Location resource not found": "",
   "Location Unit": "",
   "Location Unit Management": "",
@@ -35,7 +37,6 @@
   "Select the parent location": "",
   "Status": "",
   "Status is required": "",
-  "Suspended": "",
   "Unable to load the location or location hierarchy": "",
   "View details": ""
 }

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import moment from 'moment';
-import { Button, Card, Form, Select, TreeSelect, DatePicker, Tooltip, PageHeader } from 'antd';
+import dayjs from 'dayjs';
+import { Button, Card, Form, Select, TreeSelect, DatePicker, Tooltip } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import { DownloadOutlined } from '@ant-design/icons';
 import { OpenSRPService } from '@opensrp/react-utils';
 import {
@@ -87,9 +89,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     },
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const disabledDate = (current: moment.Moment) => {
+  // const disabledDate = (current: moment.Moment) => {
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     // Can not select days after
-    return current > moment().startOf('day');
+    return current > dayjs().startOf('day');
   };
 
   interface DefaultLocation {
@@ -129,7 +132,10 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
     {
       // start fetching when userLocSettings hook succeeds
       enabled: userLocSettings.isSuccess && userLocSettings.data.uuid.length > 0,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () =>
+        sendErrorNotification(
+          t('There was a problem fetching the location hierachy for the assigned location')
+        ),
       onSuccess: (res: RawOpenSRPHierarchy) => {
         const hierarchy = generateJurisdictionTree(res);
         dispatch(fetchAllHierarchiesActionCreator([hierarchy.model]));
@@ -153,7 +159,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
 
   return (
     <div className="content-section">
-      <PageHeader title={t('Download Client Data')} className="page-header" />
+      <PageHeader title={t('Download Client Data')} />
       <Card>
         <Form
           {...layout}
@@ -172,7 +178,7 @@ const DownloadClientData: React.FC<DownloadClientDataProps> = (props: DownloadCl
               locationHierarchies,
               setSubmitting,
               t
-            ).catch(() => sendErrorNotification(t('An error occurred')));
+            ).catch(() => sendErrorNotification(t('There was a problem submitting the form')));
           }}
         >
           <Form.Item name="clientLocation" label={t('Client Location')}>

@@ -10,9 +10,14 @@ import { MemoryRouter, Route, Router } from 'react-router';
 import { id, intialValue, opensrpBaseURL, practitioners, team, practitionerRole } from './fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
-import { notification } from 'antd';
-
+import * as notifications from '@opensrp/notifications';
 import TeamsAddEdit, { getPractitionerDetail, getTeamDetail } from '..';
+import { opensrpI18nInstance } from '@opensrp/i18n';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   const props = {
@@ -20,7 +25,8 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
     disableTeamMemberReassignment: false,
     paginationSize: 1000,
   };
-  beforeAll(() => {
+  beforeAll(async () => {
+    await opensrpI18nInstance.init();
     store.dispatch(
       authenticateUser(
         true,
@@ -157,7 +163,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
   });
 
   it('Fail setupInitialValue', async () => {
-    const mockNotificationError = jest.spyOn(notification, 'error');
+    const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetch.mockReject();
 
@@ -173,10 +179,9 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith({
-      description: undefined,
-      message: 'An error occurred',
-    });
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem fetching the team details'
+    );
   });
 
   it('test getPractitionerDetail', async () => {
@@ -283,7 +288,7 @@ describe('Team-management/TeamsAddEdit/TeamsAddEdit', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(wrapper.find('PageHeader').text()).toEqual(`Edit Team | ${team.name}`);
+    expect(wrapper.find('.page-header').last().text()).toEqual(`Edit Team | ${team.name}`);
     wrapper.unmount();
   });
 

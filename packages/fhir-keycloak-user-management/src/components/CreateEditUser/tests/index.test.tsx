@@ -27,12 +27,14 @@ import {
   updatedGroup,
   practitionerRoleBundle,
   updatedPractitionerRole,
+  compositionResource,
 } from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -109,7 +111,8 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-beforeAll(() => {
+beforeAll(async () => {
+  await opensrpI18nInstance.init();
   nock.disableNetConnect();
   store.dispatch(
     authenticateUser(
@@ -171,13 +174,24 @@ test('renders correctly for edit user', async () => {
     .put('/Group/acb9d47e-7247-448f-be93-7a193a5312da', updatedGroup)
     .reply(200, {});
 
+  nock(props.baseUrl)
+    .get(`/Composition/_search`)
+    .query({
+      _getpagesoffset: '0',
+      _count: '20',
+      type: `http://snomed.info/sct|1156600005`,
+      _elements: 'identifier,title',
+    })
+    .reply(200, compositionResource)
+    .persist();
+
   const successStub = jest
     .spyOn(notifications, 'sendSuccessNotification')
     .mockImplementation(jest.fn);
 
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
 
-  const { getByTestId, getByText } = render(
+  const { getByTestId, getByText, queryByTitle } = render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
@@ -220,6 +234,24 @@ test('renders correctly for edit user', async () => {
   userEvent.click(markSupervisor);
 
   const submitButton = document.querySelector('button[type="submit"]');
+
+  // find antd Select with id 'fhirCoreAppId' in the 'Form' component
+  const appIdSection = document.querySelector('[data-testid="fhirCoreAppId"]') as Element;
+
+  // click on input. - should see the first 5 records by default
+  const appIdInput = appIdSection.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(appIdInput);
+
+  // await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+  await waitFor(() => {
+    const spin = appIdSection.querySelector('.anticon-spin');
+    expect(spin).toBeNull();
+  });
+
+  fireEvent.click(queryByTitle('Device configurations(cha)') as Element);
+
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   fireEvent.click(submitButton!);
 

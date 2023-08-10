@@ -2,7 +2,8 @@
 
 exports[`renders correctly for create care team: name field 1`] = `
 <input
-  class="ant-input"
+  aria-required="true"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="name"
   type="text"
   value=""
@@ -11,7 +12,7 @@ exports[`renders correctly for create care team: name field 1`] = `
 
 exports[`renders correctly for create care team: uuid field 1`] = `
 <input
-  class="ant-input"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="uuid"
   type="text"
   value=""
@@ -20,7 +21,8 @@ exports[`renders correctly for create care team: uuid field 1`] = `
 
 exports[`renders correctly for edit care team: name field 1`] = `
 <input
-  class="ant-input"
+  aria-required="true"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="name"
   type="text"
   value="Care Team One"
@@ -29,7 +31,7 @@ exports[`renders correctly for edit care team: name field 1`] = `
 
 exports[`renders correctly for edit care team: uuid field 1`] = `
 <input
-  class="ant-input"
+  class="ant-input css-dev-only-do-not-override-k7429z"
   id="uuid"
   type="text"
   value="93bc9c3d-6321-41b0-9b93-1275d7114e22"

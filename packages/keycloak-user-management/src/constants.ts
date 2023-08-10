@@ -27,6 +27,7 @@ export const KEYCLOAK_URL_REQUIRED_USER_ACTIONS = '/authentication/required-acti
 
 // OpenSRP API strings
 export const PRACTITIONER = 'practitioner';
+export const compositionResourceType = 'Composition';
 export const OPENSRP_CREATE_PRACTITIONER_ENDPOINT = `${PRACTITIONER}/user`;
 
 // practitioner role
@@ -40,3 +41,5 @@ export const UserQueryId = 'User';
 export const SUPERVISOR = 'supervisor';
 export const SUPERVISOR_USER_TYPE_CODE = '236321002';
 export const PRACTITIONER_USER_TYPE_CODE = '405623001';
+export const SNOMED_CODEABLE_SYSTEM = 'http://snomed.info/sct';
+export const DEVICE_SETTING_CODEABLE_CODE = '1156600005';

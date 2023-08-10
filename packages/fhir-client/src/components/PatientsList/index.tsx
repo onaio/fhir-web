@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader } from 'antd';
+import { Row, Col } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
@@ -87,7 +88,7 @@ export const PatientsList = (props: PatientListProps) => {
       <Helmet>
         <title>{t('Patients')}</title>
       </Helmet>
-      <PageHeader title={t('Patients')} className="page-header" />
+      <PageHeader title={t('Patients')} />
       <Row className="list-view">
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">

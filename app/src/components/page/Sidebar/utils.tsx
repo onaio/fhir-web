@@ -1,23 +1,52 @@
 import { Route } from '../../../routes';
 
-/** Gets Active key for menu based on path from routes
+/** Gets the Active key and Active paths for menu based on path from routes
  *
  * @param routes - The routes to get search the active route from
  * @param path - an array of menu location path
  */
-export function getActiveKey(path: string, routes: Route[]) {
+
+export function getActivePath(path: string, routes: Route[]) {
+  let activePaths: string[] = [];
   let activeKey: string | undefined;
+  let openKey: string | undefined;
 
-  function mapMenus(menu: Route) {
-    // Matching Url
+  function mapPaths(menu: Route) {
+    // Check for matching url
     if (menu.url && path.includes(menu.url)) activeKey = menu.key;
-
-    // Exact Match
+    // Exact match
     if (path === menu.url) activeKey = menu.key;
-    // Trying to Match with Children
-    else if (menu.children && path !== menu.url) menu.children.forEach(mapMenus);
+    // Check if the menu has children
+    if (menu.children) {
+      // Recursively call mapMenus on each child
+      for (const child of menu.children) {
+        // Exact Match
+        if (path === child.url) {
+          openKey = menu.key;
+          activeKey = child.key;
+        }
+        mapPaths(child);
+        if (openKey) {
+          break;
+        }
+      }
+      if (openKey) {
+        activePaths.push(menu.key);
+      }
+    }
   }
-  routes.forEach(mapMenus);
 
-  return activeKey;
+  for (const route of routes) {
+    if (activeKey === undefined) {
+      mapPaths(route);
+    }
+    if (activeKey) break;
+  }
+
+  activePaths = activePaths.reverse();
+
+  return {
+    activeKey,
+    activePaths,
+  };
 }

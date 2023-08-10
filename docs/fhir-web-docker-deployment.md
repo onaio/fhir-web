@@ -1,23 +1,16 @@
 # FHIR WEB DOCKER DEPLOYMENT
 
-[OpenSRP FHIR Web](https://github.com/opensrp/web) is the default frontend for [OpenSRP HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
-
 We use different technologies to deploy OpenSRP FHIR Web. This documentation will focus on [Docker](https://www.docker.com/)
-
-## What is OpenSRP FHIR Core?
-
-OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations
-from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
 
 ## Prerequisites
 
 ---
 
 - A basic knowledge of containerization technologies with focus on Docker.
-- A deployed and well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak).
+- A well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak) deployment.
   - We currently support version `18.0.0-legacy`
   - This should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configurations.
-- A deployed and well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter)
+- A well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter) deployment.
 
 ## Background
 
@@ -51,6 +44,7 @@ from local community to national and international scale using FHIR and the WHO 
 
   ```docker
   docker run \
+  --detach \
   --volume $(pwd)/config.js.tpl:/etc/confd/templates/config.js.tmpl \
   --publish 3000:3000 \
   --env EXPRESS_OPENSRP_CLIENT_ID=example-keycloak-client-id \
@@ -166,12 +160,6 @@ from local community to national and international scale using FHIR and the WHO 
       REACT_APP_ENABLE_FHIR_COMMODITY: 'false',
       REACT_APP_ENABLE_QUEST: 'false',
 
-      // composite fhir-web modules
-      REACT_APP_ENABLE_USER_MANAGEMENT: 'false',
-      REACT_APP_ENABLE_LOCATIONS: 'false',
-      REACT_APP_ENABLE_TEAMS: 'false',
-      REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE: 'false',
-
       // optional overrides
       SKIP_PREFLIGHT_CHECK: 'true',
       GENERATE_SOURCEMAP: 'false',
@@ -188,6 +176,7 @@ from local community to national and international scale using FHIR and the WHO 
       REACT_APP_OPENSRP_LOGOUT_URL: 'null',
       REACT_APP_OPENSRP_ROLES:
         '{"USERS":"ROLE_EDIT_KEYCLOAK_USERS","LOCATIONS":"ROLE_VIEW_KEYCLOAK_USERS","TEAMS":"ROLE_VIEW_KEYCLOAK_USERS","CARE_TEAM":"ROLE_VIEW_KEYCLOAK_USERS","QUEST":"ROLE_VIEW_KEYCLOAK_USERS","HEALTHCARE_SERVICE":"ROLE_VIEW_KEYCLOAK_USERS","GROUP":"ROLE_VIEW_KEYCLOAK_USERS","COMMODITY":"ROLE_VIEW_KEYCLOAK_USERS",}',
+      REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY: 'ONE_TO_MANY',
 
       // optional sentry config
       // REACT_APP_SENTRY_CONFIG_JSON: "{\"dsn\":\"<sentry-dsn>\",\"environment\":\"<sentry-environment>\",\"release\":\"<app-release-version>\",\"release-name\":\"<app-release-name>\",\"release-namespace\":\"<app-release-namespace>\",\"tags\":{}}",
@@ -197,14 +186,12 @@ from local community to national and international scale using FHIR and the WHO 
   - run with
 
     ```bash
-    docker compose up
+    docker compose up --detach
     ```
 
 ### Notes
 
 - Running a docker deployment exposes the FHIR Web application on `port 3000`. To expose it to the internet, point a reverse proxy, e.g [nginx](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), to `localhost:3000`
-
-- Use the detached flag (`-d`) to run the container in the background. Both for `docker run -d` and `docker compose up -d`
 
 - To enforce a react config override (in `config.js.tpl`), run `docker compose down` first before re-running the deployment. This stops, and remove containers, networks, images, and volumes, allowing them to be created again on `docker compose up`
 

@@ -77,7 +77,7 @@ import {
   PLANS_CREATE_VIEW_URL,
   ConnectedPlanAssignment,
 } from '@opensrp/plans';
-import { TeamAssignmentView } from '@opensrp/team-assignment';
+import { TeamAssignmentView } from '@opensrp/team-management';
 import {
   ConnectedUserList,
   ConnectedCreateEditUser,
@@ -100,7 +100,6 @@ import {
   CreateEditCareTeam,
   URL_CREATE_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
-  URL_CARE_TEAM,
 } from '@opensrp/fhir-care-team';
 import {
   CreateEditUser as FHIRConnectedCreateEditUser,
@@ -211,7 +210,6 @@ import {
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/plans/dist/index.css';
-import '@opensrp/team-assignment/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
 import '@opensrp/product-catalogue/dist/index.css';
 import '@opensrp/inventory/dist/index.css';
@@ -349,14 +347,6 @@ const App: React.FC = () => {
               activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
               exact
               path={URL_FHIR_CARE_TEAM}
-              component={CareTeamList}
-            />
-            <PrivateComponent
-              redirectPath={APP_CALLBACK_URL}
-              disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-              activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-              exact
-              path={`${URL_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
               component={CareTeamList}
             />
             <PrivateComponent

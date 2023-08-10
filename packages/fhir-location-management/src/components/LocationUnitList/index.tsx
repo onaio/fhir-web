@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
-import { Row, Col, Button, Spin, Alert, PageHeader } from 'antd';
+import { Row, Col, Button, Spin, Alert } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
@@ -67,6 +68,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
@@ -137,7 +139,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <PageHeader className="page-header" title={pageTitle} />
+        <PageHeader title={pageTitle} />
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree
@@ -155,21 +157,20 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
                 {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
               </h6>
               <div>
-                <Link
-                  to={() => {
+                <Button
+                  type="primary"
+                  onClick={() => {
                     if (selectedNode) {
                       const queryParams = { parentId: selectedNode.model.nodeId };
                       const searchString = new URLSearchParams(queryParams).toString();
-                      return `${URL_LOCATION_UNIT_ADD}?${searchString}`;
+                      history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
                     }
-                    return URL_LOCATION_UNIT_ADD;
+                    history.push(URL_LOCATION_UNIT_ADD);
                   }}
                 >
-                  <Button type="primary">
-                    <PlusOutlined />
-                    {t('Add Location Unit')}
-                  </Button>
-                </Link>
+                  <PlusOutlined />
+                  {t('Add Location Unit')}
+                </Button>
               </div>
             </div>
             <div className="bg-white p-3">

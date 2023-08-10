@@ -4,7 +4,8 @@
 import { RouteParams } from '../../helpers/types';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, useHistory } from 'react-router';
-import { Layout, PageHeader } from 'antd';
+import { Layout } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import {
   plansReducer,
   fetchPlanDefinitions,
@@ -123,7 +124,7 @@ const EditPlanView = (props: EditViewTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="pageHeader"></PageHeader>
+      <PageHeader title={pageTitle} />
 
       <PlanForm {...productFormProps} />
     </Layout>

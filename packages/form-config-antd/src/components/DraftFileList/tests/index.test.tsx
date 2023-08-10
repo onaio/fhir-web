@@ -354,7 +354,7 @@ describe('components/Antd/DraftFileList', () => {
     });
 
     wrapper.update();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem downloading this file');
     wrapper.unmount();
   });
 
@@ -382,7 +382,9 @@ describe('components/Antd/DraftFileList', () => {
     });
     wrapper.update();
 
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'An error occurred while uploading the file'
+    );
   });
 
   it('renders correctly if manifest fetch is empty', async () => {
@@ -448,11 +450,11 @@ describe('components/Antd/DraftFileList', () => {
     const heading = wrapper.find('thead');
 
     // Ascending
-    heading.find('th').at(1).children().simulate('click');
+    heading.find('th').at(1).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(1).text()).toEqual('foo');
     // Descending
-    heading.find('th').at(1).children().simulate('click');
+    heading.find('th').at(1).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(1).text()).toEqual('test publish');
   });

@@ -11,7 +11,6 @@ import flushPromises from 'flush-promises';
 import { KeycloakUserGroup } from '../../../ducks/userGroups';
 import { UserGroupMembers } from '../../UserGroupsList';
 import { Resource404 } from '@opensrp/react-utils';
-import { Button } from 'antd';
 
 const history = createMemoryHistory();
 history.push(URL_USER_GROUPS);
@@ -106,7 +105,7 @@ describe('View User Group Details', () => {
 
     // simulate clicking on close button
     act(() => {
-      wrapper.find(Button).simulate('click');
+      wrapper.find('.close-btn button').simulate('click');
     });
 
     expect(props.onClose).toHaveBeenCalledTimes(1);

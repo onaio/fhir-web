@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { getTableColumns } from './utils';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 import {
   GET_INVENTORY_BY_SERVICE_POINT,
@@ -23,6 +23,7 @@ import '../../index.css';
 import { OpenSRPService, TableLayout, useHandleBrokenPage } from '@opensrp/react-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from '../../mls';
+import { PlusOutlined } from '@ant-design/icons';
 
 reducerRegistry.register(inventoryReducerName, inventoryReducer);
 /** props for the InventoryList view */
@@ -60,11 +61,15 @@ const InventoryList = (props: InventoryListProps) => {
     getInventoriesByExpiry(state, { servicePointIds: [servicePointId], expired: false })
   ) as Inventory[];
   const { broken, handleBrokenPage } = useHandleBrokenPage();
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   useEffect(() => {
     // api call to get inventory by id
+    setLoading(true);
     const serve = new OpenSRPService(
       `${GET_INVENTORY_BY_SERVICE_POINT}${servicePointId}`,
       opensrpBaseURL
@@ -72,12 +77,12 @@ const InventoryList = (props: InventoryListProps) => {
     serve
       .list({ returnProduct: true })
       .then((res: Inventory[]) => {
-        dispatch(fetchInventories(res));
+        dispatch(fetchInventories(res, true));
       })
-      .catch((err: Error) => handleBrokenPage(err));
-
+      .catch((err: Error) => handleBrokenPage(err))
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [opensrpBaseURL, servicePointId]);
 
   if (broken) {
     return <Alert message={t('Unable to fetch inventories for service point')} type="error" />;
@@ -100,11 +105,16 @@ const InventoryList = (props: InventoryListProps) => {
         <Col className={'main-content'}>
           <div className="inventory-profile">
             <h6>{t('Inventory items')}</h6>
-            <Link to={`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`}>
-              <Button type="primary" size="large">
-                {t(' + Add new inventory item')}
-              </Button>
-            </Link>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() =>
+                history.push(`${servicePointProfileURL}/${servicePointId}${addInventoryURL}`)
+              }
+            >
+              <PlusOutlined />
+              {t('Add new inventory item')}
+            </Button>
           </div>
           <TableLayout
             dataKeyAccessor="_id"
@@ -113,6 +123,7 @@ const InventoryList = (props: InventoryListProps) => {
             className="custom-table"
             pagination={false}
             datasource={datasource}
+            loading={loading}
             columns={getTableColumns(t)}
             actions={{
               title: t('Actions'),

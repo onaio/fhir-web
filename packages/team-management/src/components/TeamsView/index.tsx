@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, PageHeader } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import TeamsDetail from '../TeamsDetail';
 import { Dictionary } from '@onaio/utils';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import {
   OpenSRPService,
@@ -31,21 +32,11 @@ import {
 } from '../../constants';
 import Table from './Table';
 import './TeamsView.css';
-import { Link } from 'react-router-dom';
 import { Practitioner } from '../../ducks/practitioners';
 import { OpenSRPJurisdiction } from '@opensrp/location-management';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
-
-// TODO - duplicate Raw assignment type from @opensrp/team-assignment - issue https://github.com/opensrp/web/issues/869
-/** the raw assignment object as received from openSRP API */
-export interface RawAssignment {
-  jurisdictionId: string;
-  organizationId: string;
-  planId: string;
-  fromDate: number;
-  toDate: number;
-}
+import { RawAssignment } from '../../ducks/assignments';
 
 /** Register reducer */
 reducerRegistry.register(reducerName, reducer);
@@ -94,11 +85,11 @@ export const populateTeamDetails = (
           setAssignedLocations(locations);
         })
         .catch(() => {
-          sendErrorNotification(t('An error occurred'));
+          sendErrorNotification(t('There was a problem getting jurisdictions'));
         });
     })
     .catch(() => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem populating the teams details'));
     })
     .finally(() => setDetail(row));
 };
@@ -157,6 +148,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
   const [assignedLocations, setAssignedLocations] = useState<OpenSRPJurisdiction[]>([]);
   const { t } = useTranslation();
   const { opensrpBaseURL } = props;
+  const history = useHistory();
 
   /**
    * Function to fetch organizations
@@ -188,7 +180,7 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
       <Helmet>
         <title>{t('Teams')}</title>
       </Helmet>
-      <PageHeader title={t('Teams')} className="page-header" />
+      <PageHeader title={t('Teams')} />
       <Row>
         <Col className="bg-white p-3" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between">
@@ -198,12 +190,10 @@ export const TeamsView: React.FC<TeamsViewTypes> = (props: TeamsViewTypes) => {
               size={'middle'}
             />
             <div>
-              <Link to={URL_ADD_TEAM}>
-                <Button type="primary">
-                  <PlusOutlined />
-                  {t('Create Team')}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={() => history.push(URL_ADD_TEAM)}>
+                <PlusOutlined />
+                {t('Create Team')}
+              </Button>
             </div>
           </div>
           <div className="bg-white">

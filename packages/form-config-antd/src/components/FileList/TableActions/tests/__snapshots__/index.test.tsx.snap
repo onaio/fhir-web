@@ -8,6 +8,7 @@ Object {
 
 exports[`components/Antd/FileList/TableActions renders correctly: dots menu 1`] = `
 Object {
+  "arrow": true,
   "children": <Button
     style={
       Object {
@@ -19,6 +20,7 @@ Object {
   >
     <ForwardRef(MoreOutlined)
       className="more-options"
+      data-testid="menu-options"
       style={
         Object {
           "fontSize": "16px",
@@ -28,18 +30,23 @@ Object {
       }
     />
   </Button>,
-  "mouseEnterDelay": 0.15,
-  "mouseLeaveDelay": 0.1,
-  "overlay": <Menu>
-    <MenuItem>
-      <Button
-        onClick={[Function]}
-        type="link"
-      >
-        Download
-      </Button>
-    </MenuItem>
-  </Menu>,
+  "menu": Object {
+    "items": Array [
+      Object {
+        "key": "1",
+        "label": <Button
+          data-testid="download"
+          onClick={[Function]}
+          type="link"
+        >
+          Download
+        </Button>,
+      },
+    ],
+  },
+  "trigger": Array [
+    "click",
+  ],
 }
 `;
 

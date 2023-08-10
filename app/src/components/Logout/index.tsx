@@ -33,7 +33,7 @@ export const CustomLogout: React.FC = (): JSX.Element => {
   const history = useHistory();
   logout(payload, KEYCLOAK_LOGOUT_URL, redirectUri, OPENSRP_LOGOUT_URL, idTokenHint).catch(
     (_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem logging out. Please try again.'));
       history.push('/');
     }
   );

@@ -11,7 +11,7 @@ import { act } from 'react-dom/test-utils';
 import { InterventionType, PlanStatus } from '@opensrp/plan-form-core';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Dictionary } from '@onaio/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import flushPromises from 'flush-promises';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -101,7 +101,7 @@ describe('containers/forms/PlanForm', () => {
     expect(toJson(wrapper.find('#planform-submit-button button'))).toMatchSnapshot('submit button');
 
     // should have triggers or conditions
-    expect(wrapper.find('.triggers-conditions')).toHaveLength(45);
+    expect(wrapper.find('.triggers-conditions')).toHaveLength(48);
 
     wrapper.unmount();
   });
@@ -192,17 +192,17 @@ describe('containers/forms/PlanForm', () => {
 
     // name is required
     expect(
-      (wrapper.find('FormItem[name="name"] FormItemInput').props() as any).errors
+      (wrapper.find('#name .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('name error');
 
     // title is required
     expect(
-      (wrapper.find('FormItem[name="title"] FormItemInput').props() as any).errors
+      (wrapper.find('#title .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('title error');
 
     // description is required
     expect(
-      (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
+      (wrapper.find('#description .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('description error');
 
     // let us cause errors for other required fields and ascertain that they are indeed validated
@@ -232,22 +232,22 @@ describe('containers/forms/PlanForm', () => {
 
     // date is required
     expect(
-      (wrapper.find('FormItem[name="date"] FormItemInput').props() as any).errors
+      (wrapper.find('#date .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('date error');
 
     // interventionType is required
     expect(
-      (wrapper.find('FormItem[name="interventionType"] FormItemInput').props() as any).errors
+      (wrapper.find('#interventionType .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('interventionType error');
 
     // dateRange is required
     expect(
-      (wrapper.find('FormItem[name="dateRange"] FormItemInput').props() as any).errors
+      (wrapper.find('#dateRange .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('dateRange required error');
 
     // description is required
     expect(
-      (wrapper.find('FormItem[name="description"] FormItemInput').props() as any).errors
+      (wrapper.find('#description .ant-form-item FormItemInput').props() as any).errors
     ).toMatchSnapshot('description required error');
 
     // next we set wrong values for fields that expect specific values
@@ -297,20 +297,20 @@ describe('containers/forms/PlanForm', () => {
 
   it('disableDate should return false if no value selected', async () => {
     const dates = [];
-    const current = moment('2017-07-13');
+    const current = dayjs('2017-07-13');
     expect(disableDate(current, dates)).toBeFalsy();
   });
 
   it('disableDate should return true if end date is less than todays date', async () => {
-    const dates = [moment('2017-07-10'), moment('2017-07-11')];
-    const current = moment('2017-07-13');
+    const dates = [dayjs('2017-07-10'), dayjs('2017-07-11')];
+    const current = dayjs('2017-07-13');
     // date today is 2017-07-13
     expect(disableDate(current, dates)).toBeTruthy();
   });
 
   it('disableDate should return true if start and end date is same', async () => {
-    const dates = [moment('2017-07-10'), moment('2017-07-10')];
-    const current = moment('2017-07-13');
+    const dates = [dayjs('2017-07-10'), dayjs('2017-07-10')];
+    const current = dayjs('2017-07-13');
     // date today is 2017-07-13
     expect(disableDate(current, dates)).toBeTruthy();
   });
@@ -325,7 +325,7 @@ describe('containers/forms/PlanForm', () => {
     const instance = wrapper.find('#dateRange RangePicker').at(0).props();
     instance.onCalendarChange(['2022-07-13', '2022-07-14']);
     instance.onOpenChange(true);
-    expect(instance.disabledDate(moment('2017-07-13'))).toBeFalsy();
+    expect(instance.disabledDate(dayjs('2017-07-13'))).toBeFalsy();
     wrapper.unmount();
   });
 
@@ -646,7 +646,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // there are initially 4 activities
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(16);
     // lets get the form input values of the triggers
     const expectedTriggerInputValues = wrapper
       .find('.triggers-fieldset input')
@@ -682,7 +682,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // 1 less activity
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(14);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
     // the slice values are determined by the type of activity that was removed
     // the meaning is that we should be left with ALL the triggers excluding the ones removed
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(
@@ -732,7 +732,7 @@ describe('containers/forms/PlanForm', () => {
       wrapper.update();
     });
     // we should have 6 activities again
-    expect(wrapper.find(`button.removeActivity`)).toHaveLength(15);
+    expect(wrapper.find(`button.removeActivity`)).toHaveLength(16);
     // and now we come full circle.  The inputs should be what we had on initial load,
     // with those of the first activity moved to the end of the arrays
     expect(wrapper.find(`.triggers-fieldset input`).map((e) => e.props().value)).toEqual(
@@ -836,7 +836,7 @@ describe('containers/forms/PlanForm', () => {
     const props = {
       initialValues: {
         ...initialValues,
-        dateRange: [moment('2020-11-23T21:00:00.000Z'), undefined],
+        dateRange: [dayjs('2020-11-23T21:00:00.000Z'), undefined],
       },
     };
 

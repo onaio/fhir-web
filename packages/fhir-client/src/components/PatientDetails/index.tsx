@@ -72,7 +72,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   }
 
   if (error) {
-    return <BrokenPage errorMessage={t('An error occurred')} />;
+    return <BrokenPage errorMessage={t('There was a problem fetching the patient')} />;
   }
 
   const resourceTypeMap: ResourceTypeMap = {};

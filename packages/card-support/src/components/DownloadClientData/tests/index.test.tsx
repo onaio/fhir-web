@@ -191,7 +191,9 @@ describe('components/DownloadClientData', () => {
       'https://unicef-tunisia-stage.smartregister.org/opensrp/rest/location/hierarchy/e2b4a441-21b5-4d03-816b-09d45b17cad7?is_jurisdiction=true',
     ]);
 
-    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Download Client Data"`);
+    expect(wrapper.find('.page-header').last().text()).toMatchInlineSnapshot(
+      `"Download Client Data"`
+    );
     // bug in toBeInTheDocument() assertion - https://github.com/testing-library/jest-dom/issues/313
     expect(wrapper.find('Form')).toBeTruthy();
     wrapper.unmount();
@@ -463,6 +465,8 @@ describe('components/DownloadClientData', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching the location hierachy for the assigned location'
+    );
   });
 });

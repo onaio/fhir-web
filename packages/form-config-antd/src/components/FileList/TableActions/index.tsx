@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, Button, Dropdown, Menu } from 'antd';
+import { Divider, Button, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import {
   ManifestFilesTypes,
   OPENSRP_FORMS_ENDPOINT,
@@ -43,11 +44,13 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
     props;
   const { t } = useTranslation();
 
-  const menu = (
-    <Menu>
-      <Menu.Item>
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
         <Button
           type="link"
+          data-testid="download"
           onClick={() =>
             onDownloadClick(
               file,
@@ -56,15 +59,15 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
               isJsonValidator,
               customFetchOptions
             ).catch(() => {
-              sendErrorNotification(t('An error occurred'));
+              sendErrorNotification(t('There was a problem downloading this file'));
             })
           }
         >
           {t('Download')}
         </Button>
-      </Menu.Item>
-    </Menu>
-  );
+      ),
+    },
+  ];
 
   return (
     <>
@@ -72,10 +75,11 @@ const TableActions = (props: TableActionsProps): JSX.Element => {
         {t('Edit')}
       </Link>
       <Divider type="vertical" />
-      <Dropdown overlay={menu}>
+      <Dropdown menu={{ items }} arrow trigger={['click']}>
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             className="more-options"
+            data-testid="menu-options"
             style={{ fontSize: '16px', padding: 0, margin: 0 }}
           />
         </Button>

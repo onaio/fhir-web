@@ -1,24 +1,25 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu } from 'antd';
+import { Row, Col, Button, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import {
-  healthCareServiceResourceType,
-  ADD_EDIT_HEALTHCARE_SERVICE_URL,
-  LIST_HEALTHCARE_URL,
-} from '../../constants';
-import { Link, useParams } from 'react-router-dom';
+import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
+import { Link, useHistory } from 'react-router-dom';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
-import { SearchForm, BrokenPage, TableLayout, useSimpleTabularView } from '@opensrp/react-utils';
+import {
+  SearchForm,
+  BrokenPage,
+  TableLayout,
+  useSimpleTabularView,
+  viewDetailsQuery,
+  useSearchParams,
+} from '@opensrp/react-utils';
 import { parseHealthCare, ViewDetailsWrapper } from '../HealthCareDetail';
 import { useTranslation } from '../../mls';
 
 interface HealthCareListProps {
   fhirBaseURL: string;
-}
-
-interface RouteParams {
-  id?: string;
 }
 
 /**
@@ -29,7 +30,12 @@ interface RouteParams {
  */
 export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareListProps) => {
   const { fhirBaseURL } = props;
-  const { id: resourceId } = useParams<RouteParams>();
+
+  const { sParams, addParam } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+
+  const history = useHistory();
+
   const { t } = useTranslation();
 
   const { searchFormProps, tablePaginationProps, queryValues } =
@@ -48,6 +54,17 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
   });
 
   type TableData = typeof tableData[0];
+
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button onClick={() => addParam(viewDetailsQuery, record.id)} type="link">
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
 
   const columns = [
     {
@@ -73,20 +90,13 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`}>
-            <Button type="link" className="m-0 p-1">
-              {t('Edit')}
-            </Button>
+          <Link to={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/${record.id}`} className="m-0 p-1">
+            {t('Edit')}
           </Link>
+
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${LIST_HEALTHCARE_URL}/${record.id}`}>{t('View Details')}</Link>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}
@@ -112,17 +122,15 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Link to={ADD_EDIT_HEALTHCARE_SERVICE_URL}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('Create Care Service')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(ADD_EDIT_HEALTHCARE_SERVICE_URL)}>
+              <PlusOutlined />
+              {t('Create Care Service')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>

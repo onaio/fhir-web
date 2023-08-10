@@ -5,7 +5,6 @@ import fetch from 'jest-fetch-mock';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
 import reducerRegistry from '@onaio/redux-reducer-registry';
-import { notification } from 'antd';
 import { Router } from 'react-router';
 import LocationUnitList, { loadSingleLocation } from '..';
 import flushPromises from 'flush-promises';
@@ -13,7 +12,6 @@ import { act } from 'react-dom/test-utils';
 import { authenticateUser } from '@onaio/session-reducer';
 import { baseLocationUnits, rawHierarchy, parsedHierarchy } from './fixtures';
 import { baseURL } from '../../../constants';
-
 import { generateJurisdictionTree, getBaseTreeNode } from '../../../ducks/locationHierarchy/utils';
 import {
   fetchAllHierarchies,
@@ -29,7 +27,19 @@ import { ParsedHierarchyNode } from '../../../ducks/locationHierarchy/types';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { TableData } from '../Table';
 import toJson from 'enzyme-to-json';
-import { waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from '@testing-library/react';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 reducerRegistry.register(locationUnitsReducerName, locationUnitsReducer);
 reducerRegistry.register(locationHierarchyReducerName, locationHierarchyReducer);
@@ -190,6 +200,46 @@ describe('location-management/src/components/LocationUnitList', () => {
     expect(wrapper.find('tbody BodyRow').last().prop('record')).not.toMatchObject(tablelastrow); // table changed
   });
 
+  it('1122 - highlights the correct tree node', async () => {
+    fetch.mockResponseOnce(JSON.stringify([baseLocationUnits[1]]));
+    fetch.mockResponseOnce(JSON.stringify(rawHierarchy[1]));
+    const queryClient = new QueryClient();
+
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <QueryClientProvider client={queryClient}>
+            <LocationUnitList opensrpBaseURL={baseURL} />
+          </QueryClientProvider>
+        </Router>
+      </Provider>
+    );
+
+    const Kenya = generateJurisdictionTree(rawHierarchy[1]).model as ParsedHierarchyNode;
+    store.dispatch(fetchAllHierarchies([Kenya]));
+
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+    const tree = document.querySelector('.ant-tree');
+    const caretsDown = tree?.querySelectorAll('.anticon-caret-down') as NodeList;
+    expect(caretsDown).toHaveLength(1);
+    const withinTree = within(tree as HTMLElement);
+    const topLevelKenyanNode = withinTree.getByText(/Kenya/i);
+    fireEvent.click(topLevelKenyanNode);
+
+    const nairobiNode = withinTree.getByText(/Nairobi/i);
+    fireEvent.click(nairobiNode);
+
+    const nairobiWestNode = withinTree.getByText(/Nairobi West/i);
+    fireEvent.click(nairobiWestNode);
+
+    // reclick nairobi Node
+    fireEvent.click(nairobiNode);
+
+    // which node is selected
+    const selectedNode = document.querySelector('.ant-tree-node-selected');
+    expect(selectedNode?.textContent).toEqual('Nairobi');
+  });
+
   it('test Open and close view details', async () => {
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockResponseOnce(JSON.stringify(rawHierarchy[0]));
@@ -256,7 +306,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   it('test fail loadSingleLocation', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
     fetch.mockRejectOnce(new Error('API is down'));
 
     const row: TableData = {
@@ -271,10 +321,9 @@ describe('location-management/src/components/LocationUnitList', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     fetch.resetMocks();
   });
 
@@ -324,7 +373,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   });
 
   it('fail loading location ', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetch.mockRejectOnce();
     const queryClient = new QueryClient();
@@ -344,15 +393,14 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     wrapper.unmount();
   });
 
   it('fail loading location hierarchy', async () => {
-    const notificationErrorMock = jest.spyOn(notification, 'error');
+    const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
     fetch.mockResponseOnce(JSON.stringify(baseLocationUnits));
     fetch.mockRejectOnce();
@@ -373,10 +421,9 @@ describe('location-management/src/components/LocationUnitList', () => {
       wrapper.update();
     });
 
-    expect(notificationErrorMock).toHaveBeenCalledWith({
-      message: 'An error occurred',
-      description: undefined,
-    });
+    expect(notificationErrorMock).toHaveBeenCalledWith(
+      'There was a problem fetching Location Unit details'
+    );
     wrapper.unmount();
   });
 
@@ -418,9 +465,9 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table says no data
     const tableText = wrapper.find('table').text();
-    expect(tableText).toContain('No Data');
-    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
-    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo Data"`);
+    expect(tableText).toContain('NameLevelActionsNo data');
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
+    expect(tableText).toMatchInlineSnapshot(`"NameLevelActionsNo data"`);
     wrapper.unmount();
   });
 });

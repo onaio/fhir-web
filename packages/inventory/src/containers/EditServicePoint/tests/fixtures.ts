@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { LocationUnit, LocationUnitStatus } from '@opensrp/location-management';
+import {
+  LocationUnit,
+  LocationUnitStatus,
+  RawOpenSRPHierarchy,
+} from '@opensrp/location-management';
 
 export const location1: LocationUnit = {
   type: 'Feature',

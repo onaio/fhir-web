@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, PageHeader, Col, Button, Spin } from 'antd';
+import { Row, Col, Button, Spin } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { loadPlans } from '../../helpers/dataLoaders';
 import { OpenSRPService } from '../../helpers/dataLoaders';
 import {
@@ -8,7 +9,7 @@ import {
 } from '../../ducks/planDefinitions';
 import { connect } from 'react-redux';
 import { getColumns, pageTitleBuilder } from './utils';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { Store } from 'redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { plansReducer, plansReducerName as PlansReducerName } from '../../ducks/planDefinitions';
@@ -53,6 +54,8 @@ const PlansList = (props: PlansListTypes) => {
   const { broken, errorMessage, handleBrokenPage } = useHandleBrokenPage();
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   useEffect(() => {
     loadPlans(baseURL, service, fetchPlansCreator, allowedPlanStatus)
       .catch((err: Error) => handleBrokenPage(err))
@@ -77,15 +80,17 @@ const PlansList = (props: PlansListTypes) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header"></PageHeader>
+      <PageHeader title={pageTitle} />
       <Row className={'list-view pt-0'}>
         <Col className={'main-content'}>
           <div className="main-content__header flex-right">
-            <Link to={PLANS_CREATE_VIEW_URL}>
-              <Button type="primary" className="mr-0">
-                {t(' + New Mission')}
-              </Button>
-            </Link>
+            <Button
+              type="primary"
+              className="mr-0"
+              onClick={() => history.push(PLANS_CREATE_VIEW_URL)}
+            >
+              {t(' + New Mission')}
+            </Button>
           </div>
           <TableLayout id="PlansList" persistState={true} datasource={data} columns={columns} />
         </Col>

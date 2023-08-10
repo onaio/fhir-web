@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as React from 'react';
-import { Popconfirm, Divider, Dropdown, Menu, Button } from 'antd';
+import { Popconfirm, Divider, Dropdown, Button } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT, UserQueryId } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
@@ -38,9 +39,12 @@ const TableActions = (props: Props): JSX.Element => {
   const { t } = useTranslation();
   const { user_id } = extraData;
   const query = useQueryClient();
-  const menu = (
-    <Menu>
-      <Menu.Item>
+  const history = useHistory();
+
+  const getItems = (record: KeycloakUser): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
         <Popconfirm
           title={t('Are you sure you want to delete this user?')}
           okText={t('Yes')}
@@ -72,32 +76,47 @@ const TableActions = (props: Props): JSX.Element => {
               </Button>
             ))}
         </Popconfirm>
-      </Menu.Item>
-      <Menu.Item>
-        {
-          <Link to={`${URL_USER_CREDENTIALS}/${record.id}`} key="actions">
-            <Button type="link">{t('Credentials')}</Button>
-          </Link>
-        }
-      </Menu.Item>
-      <Menu.Item
-        className="viewDetails"
-        style={{
-          textAlign: 'center',
-        }}
-        onClick={() => setDetailsCallback(record)}
-      >
-        {t('View Details')}
-      </Menu.Item>
-    </Menu>
-  );
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button
+          type="link"
+          data-testid="credentials"
+          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+        >
+          {t('Credentials')}
+        </Button>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <Button
+          type="link"
+          className="viewDetails"
+          data-testid="viewDetails"
+          onClick={() => setDetailsCallback(record)}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <>
       <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
         {t('Edit')}
       </Link>
       <Divider type="vertical" />
-      <Dropdown overlay={menu} placement="bottomRight" arrow trigger={['click']}>
+      <Dropdown
+        menu={{ items: getItems(record) }}
+        placement="bottomRight"
+        arrow
+        trigger={['click']}
+      >
         <Button type="link" style={{ padding: 0, margin: 0 }}>
           <MoreOutlined
             data-testid="action-dropdown"

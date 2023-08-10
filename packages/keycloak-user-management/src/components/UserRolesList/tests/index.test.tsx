@@ -170,7 +170,7 @@ describe('components/UserRolesList', () => {
       await flushPromises();
       wrapper.update();
     });
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching realm roles');
   });
 
   it('shows table with no data if user roles list from api is empty', async () => {
@@ -197,7 +197,7 @@ describe('components/UserRolesList', () => {
     });
 
     const userList = wrapper.find('UserRolesList');
-    expect(userList.find('Table').first().text()).toEqual('NameCompositeDescriptionNo Data');
+    expect(userList.find('Table').first().text()).toEqual('NameCompositeDescriptionNo data');
   });
 
   it('sorts by role name', async () => {

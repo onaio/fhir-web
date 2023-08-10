@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Dictionary } from '@onaio/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FormEvent } from 'react';
 import { PlanActivityFormFields, PlanFormFields } from '../types';
 import { GoalUnit, InterventionType, PlanStatus } from '../constants/enumsAndCodeConstants';
@@ -11,13 +11,13 @@ import { defaultEnvConfig } from '../settings';
 
 const DEFAULT_ACTIVITY_DURATION_DAYS = defaultEnvConfig.defaultActivityDurationDays;
 
-const goalDue = moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
+const goalDue = dayjs().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
 goalDue.setMilliseconds(0);
 
-const timingPeriodEnd = moment().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
+const timingPeriodEnd = dayjs().add(DEFAULT_ACTIVITY_DURATION_DAYS, 'days').toDate();
 timingPeriodEnd.setMilliseconds(0);
 
-const timingPeriodStart = moment().toDate();
+const timingPeriodStart = dayjs().toDate();
 timingPeriodStart.setMilliseconds(0);
 
 export const activities: PlanActivityFormFields[] = [
@@ -672,7 +672,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Case Confirmation',
       description: 'Confirm the index case',
       goalId: 'Case_Confirmation',
-      identifier: '5728cbf8-0e95-5b1b-863a-d03769a785c9',
+      identifier: '57aa17b0-536a-5902-a82e-a41bdf07fd6a',
       prefix: 1,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -690,7 +690,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Register all families & family members in all residential structures enumerated (100%) within the operational area',
       goalId: 'RACD_register_families',
-      identifier: '541258e7-4bd0-5699-89ba-7e832e5452b3',
+      identifier: 'dc6f89eb-62e3-5fde-ab33-2fc3c060276b',
       prefix: 2,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -708,7 +708,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Visit all residential structures (100%) within a 1 km radius of a confirmed index case and test each registered person',
       goalId: 'RACD_Blood_Screening',
-      identifier: 'a73a487d-b93a-5a06-84eb-19ccf9785045',
+      identifier: 'b63406d5-0085-570f-a7d6-8cf2f51bb817',
       prefix: 3,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -725,7 +725,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Bednet Distribution',
       description: 'Visit 100% of residential structures in the operational area and provide nets',
       goalId: 'RACD_bednet_distribution',
-      identifier: '2439129c-3d1f-5d16-99b0-a0f02db4dd83',
+      identifier: 'e09d6a1f-89c1-5f55-91f4-e8fea703ca0c',
       prefix: 4,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -742,7 +742,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'Larval Dipping',
       description: 'Perform a minimum of three larval dipping activities in the operational area',
       goalId: 'Larval_Dipping',
-      identifier: 'c1054dec-2c11-5cf8-83fe-c31b1f5de660',
+      identifier: '3d3980fd-5e6f-55a0-aad0-43862d64bb6f',
       prefix: 5,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -760,7 +760,7 @@ export const expectedExtractActivityFromPlanformResult = {
       description:
         'Set a minimum of three mosquito collection traps and complete the mosquito collection process',
       goalId: 'Mosquito_Collection',
-      identifier: '28633053-4c6a-5332-8f6e-fa26d5ccb2f6',
+      identifier: '9c1d2ac8-4f91-5c5e-bd86-4cb2e83de73f',
       prefix: 6,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -777,7 +777,7 @@ export const expectedExtractActivityFromPlanformResult = {
       code: 'BCC',
       description: 'Conduct BCC activity',
       goalId: 'BCC_Focus',
-      identifier: '089522a3-bd02-5de3-b2d5-95234b1a5d01',
+      identifier: '4ed72240-ca68-5333-a548-d566bdf0146d',
       prefix: 7,
       reason: 'Investigation',
       subjectCodableConcept: {
@@ -930,7 +930,7 @@ export const expectedPlanDefinition = {
       code: 'IRS',
       description: 'Visit each structure in the operational area and attempt to spray',
       goalId: 'IRS',
-      identifier: 'f3ef25d3-c417-5f87-b876-f05bc2b0d093',
+      identifier: 'fea29bf3-3335-5275-ad9b-41ccbbdaf79e',
       prefix: 1,
       reason: 'Routine',
       subjectCodableConcept: {
@@ -971,7 +971,7 @@ export const expectedPlanDefinition = {
       ],
     },
   ],
-  identifier: '8f507b70-1f50-5616-805d-db5b8ae4280e',
+  identifier: '0277e16b-40d2-585b-8f2f-9564839d251d',
   jurisdiction: [
     {
       code: '3952',
@@ -1280,11 +1280,11 @@ export const planFormValues2 = {
       actionReason: 'Investigation',
       actionTitle: 'Case Confirmation',
       goalDescription: 'Confirm the index case',
-      goalDue: moment('2019-05-21T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-21T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 1,
-      timingPeriodEnd: moment('2019-05-24T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-24T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'RACD Register Family',
@@ -1296,11 +1296,11 @@ export const planFormValues2 = {
       actionTitle: 'Family Registration',
       goalDescription:
         'Register all families and family members in all residential structures enumerated or added (100%) within operational area',
-      goalDue: moment('2019-08-30T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-08-30T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-08-30T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-08-30T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Bednet Distribution',
@@ -1312,11 +1312,11 @@ export const planFormValues2 = {
       actionTitle: 'Bednet Distribution',
       goalDescription:
         'Visit 100% of residential structures in the operational area and provide nets',
-      goalDue: moment('2019-08-30T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-08-30T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-08-30T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-08-30T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Blood Screening',
@@ -1328,11 +1328,11 @@ export const planFormValues2 = {
       actionTitle: 'RACD Blood screening',
       goalDescription:
         'Visit all residential structures (100%) within a 1 km radius of a confirmed index case and test each registered person',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 100,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Larval Dipping',
@@ -1344,11 +1344,11 @@ export const planFormValues2 = {
       actionTitle: 'Larval Dipping',
       goalDescription:
         'Perform a minimum of three larval dipping activities in the operational area',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 3,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'Mosquito Collection',
@@ -1360,11 +1360,11 @@ export const planFormValues2 = {
       actionTitle: 'Mosquito Collection',
       goalDescription:
         'Set a minimum of three mosquito collection traps and complete the mosquito collection process',
-      goalDue: moment('2019-05-28T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-05-28T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 3,
-      timingPeriodEnd: moment('2019-05-28T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-05-28T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
     {
       actionCode: 'BCC',
@@ -1374,16 +1374,16 @@ export const planFormValues2 = {
       actionReason: 'Investigation',
       actionTitle: 'Behaviour Change Communication',
       goalDescription: 'Complete at least 1 BCC activity for the operational area',
-      goalDue: moment('2019-06-21T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2019-06-21T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 1,
-      timingPeriodEnd: moment('2019-06-21T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2019-05-21T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2019-06-21T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2019-05-21T00:00:00.000Z').toDate(),
     },
   ],
   caseNum: '',
-  date: moment('2019-05-19T00:00:00.000Z').toDate(),
-  end: moment('2019-08-30T00:00:00.000Z').toDate(),
+  date: dayjs('2019-05-19T00:00:00.000Z').toDate(),
+  end: dayjs('2019-08-30T00:00:00.000Z').toDate(),
   fiReason: 'Routine',
   fiStatus: 'A2',
   identifier: '356b6b84-fc36-4389-a44a-2b038ed2f38d',
@@ -1391,7 +1391,7 @@ export const planFormValues2 = {
   jurisdictions: [{ id: '3952', name: '3952' }],
   name: 'A2-Lusaka_Akros_Focus_2',
   opensrpEventId: undefined,
-  start: moment('2019-05-20T00:00:00.000Z').toDate(),
+  start: dayjs('2019-05-20T00:00:00.000Z').toDate(),
   status: 'active',
   taskGenerationStatus: 'False',
   teamAssignmentStatus: '',
@@ -1420,11 +1420,11 @@ export const planFormValues3 = {
         },
       ],
       goalDescription: 'Spray structures in the operational area',
-      goalDue: moment('2020-12-31T00:00:00.000Z').toDate(),
+      goalDue: dayjs('2020-12-31T00:00:00.000Z').toDate(),
       goalPriority: 'medium-priority',
       goalValue: 90,
-      timingPeriodEnd: moment('2020-12-31T00:00:00.000Z').toDate(),
-      timingPeriodStart: moment('2020-06-24T00:00:00.000Z').toDate(),
+      timingPeriodEnd: dayjs('2020-12-31T00:00:00.000Z').toDate(),
+      timingPeriodStart: dayjs('2020-06-24T00:00:00.000Z').toDate(),
       trigger: [
         { name: 'plan-activation' },
         {
@@ -1436,8 +1436,8 @@ export const planFormValues3 = {
     },
   ],
   caseNum: '',
-  date: moment('2020-06-24T00:00:00.000Z').toDate(),
-  end: moment('2020-12-31T00:00:00.000Z').toDate(),
+  date: dayjs('2020-06-24T00:00:00.000Z').toDate(),
+  end: dayjs('2020-12-31T00:00:00.000Z').toDate(),
   fiReason: undefined,
   fiStatus: undefined,
   identifier: '043fc8cb-0459-4b39-b71c-abc15f13a5dd',
@@ -1447,7 +1447,7 @@ export const planFormValues3 = {
   ],
   name: 'IRS-2020-06-24-Dynamic-Task-Test-Plan',
   opensrpEventId: undefined,
-  start: moment('2020-06-24T00:00:00.000Z').toDate(),
+  start: dayjs('2020-06-24T00:00:00.000Z').toDate(),
   status: PlanStatus.ACTIVE,
   taskGenerationStatus: 'Disabled',
   title: 'IRS 2020-06-24 Dynamic Task Test Plan',

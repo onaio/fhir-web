@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { TableColumnsNamespace } from '../../constants';
 import { SelectOption } from '../AssignmentModal';
-import { Assignment, fetchAssignments } from '@opensrp/team-assignment';
+import { Assignment, fetchAssignments } from '@opensrp/team-management';
 import { Dictionary, keyBy } from 'lodash';
 import { Organization } from '@opensrp/team-management';
 import { Jurisdiction } from '../../ducks/jurisdictions';
@@ -169,7 +169,7 @@ export const getDataSource = (
  */
 export const staticColumns = (t: TFunction): ColumnsType<TableData> => [
   {
-    title: t('Assigned areas'),
+    title: t('Assigned regions'),
     dataIndex: 'jurisdictions',
     key: `${TableColumnsNamespace}-assigned-areas`,
     width: '40%',

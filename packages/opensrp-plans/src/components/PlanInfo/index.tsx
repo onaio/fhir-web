@@ -7,7 +7,7 @@ import { useTranslation } from '../../mls';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { redirectMapping } from '../../helpers/common';
-import { Route, BreadcrumbProps } from 'antd/lib/breadcrumb/Breadcrumb';
+import { BreadcrumbProps } from 'antd';
 
 /** interface describing the props of PlanInfo */
 export interface PlanInfoProps {
@@ -29,11 +29,11 @@ const PlanInfo = (props: PlanInfoProps) => {
     return last || !hasPath ? (
       <span>{route.breadcrumbName}</span>
     ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
+      <Link to={route.path as string}>{route.breadcrumbName}</Link>
     );
   };
 
-  const routes = [
+  const items = [
     {
       breadcrumbName: t('Missions'),
     },
@@ -45,13 +45,13 @@ const PlanInfo = (props: PlanInfoProps) => {
       path: `${URL_MISSIONS}/${plan.status}/${plan.identifier}`,
       breadcrumbName: plan.title,
     },
-  ] as Route[];
+  ];
 
   return (
     <div className="plan-detail-view">
       <Breadcrumb
         className="site-page-header-responsive"
-        routes={routes}
+        items={items}
         itemRender={itemRender}
       ></Breadcrumb>
       <Row className="plan-info-main">

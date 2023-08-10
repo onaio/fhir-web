@@ -7,6 +7,7 @@ import {
   render,
   screen,
   waitForElementToBeRemoved,
+  waitFor,
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { QuestionnaireList } from '..';
@@ -116,7 +117,7 @@ test('pagination events work correctly', async () => {
     .query({
       _getpagesoffset: 0,
       _count: 20,
-      'name:contains': 'sample',
+      'title:contains': 'sample,name:contains=sample',
     })
     .reply(200, questionnairesSearchPage)
     .persist();
@@ -129,9 +130,15 @@ test('pagination events work correctly', async () => {
     </Router>
   );
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+  };
+
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(screen.getByTitle(/Questionnaire list view/)).toBeInTheDocument();
+  expect(screen.getByText(/Questionnaire list view/)).toBeInTheDocument();
 
   expect(screen.getByText(/NSW Government My Personal Health Record/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
@@ -144,7 +151,9 @@ test('pagination events work correctly', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   expect(screen.getByText(/426/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -157,7 +166,10 @@ test('pagination events work correctly', async () => {
   await userEvents.type(searchForm, 'sample');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=sample');
+
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);

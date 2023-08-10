@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, Button, Spin, Divider, Dropdown, Menu, PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
+import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -89,11 +91,13 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   const [groupId, setGroupId] = useState<string | null>(null);
   const { t } = useTranslation();
 
+  const history = useHistory();
+
   const { isLoading: isUserGroupsLoading, isError: isUserGroupsError } = useQuery(
     ['fetchKeycloakUserGroups', KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL],
     () => new KeycloakService(KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL).list(),
     {
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching User Groups')),
       onSuccess: (response: KeycloakUserGroup[]) => dispatch(fetchKeycloakUserGroups(response)),
     }
   );
@@ -107,7 +111,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     () => loadGroupDetails(groupId as string, keycloakBaseURL),
     {
       enabled: groupId !== null,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Group Details')),
     }
   );
 
@@ -120,7 +124,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     () => loadGroupMembers(groupId as string, keycloakBaseURL),
     {
       enabled: groupId !== null,
-      onError: () => sendErrorNotification(t('An error occurred')),
+      onError: () => sendErrorNotification(t('There was a problem fetching Group Members')),
     }
   );
 
@@ -143,22 +147,37 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
 
   if (isUserGroupsError) return <Resource404 />;
 
+  const getItems = (record: KeycloakUserGroup): MenuProps['items'] => [
+    {
+      key: record.id,
+      label: (
+        <Button
+          type="link"
+          data-testid="view-details"
+          onClick={() => {
+            setGroupId(record.id);
+          }}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <div className="content-section">
       <Helmet>
         <title>{t('User Groups')}</title>
       </Helmet>
-      <PageHeader title={t('User Groups')} className="page-header" />
+      <PageHeader title={t('User Groups')} />
       <Row className="list-view">
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={URL_USER_GROUP_CREATE}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('New User Group')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(URL_USER_GROUP_CREATE)}>
+              <PlusOutlined />
+              {t('New User Group')}
+            </Button>
           </div>
           <TableLayout
             id="UserGroupsList"
@@ -169,33 +188,19 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               title: t('Actions'),
               width: '10%',
               // eslint-disable-next-line react/display-name
-              render: (record) => (
+              render: (record: KeycloakUserGroup) => (
                 <span>
-                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`}>
-                    <Button type="link" className="m-0 p-1">
-                      {t('Edit')}
-                    </Button>
+                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`} className="m-0 p-1">
+                    {t('Edit')}
                   </Link>
                   <Divider type="vertical" />
                   <Dropdown
-                    overlay={
-                      <Menu className="menu">
-                        <Menu.Item
-                          key={record.id}
-                          className="viewdetails"
-                          onClick={() => {
-                            setGroupId(record.id);
-                          }}
-                        >
-                          {t('View Details')}
-                        </Menu.Item>
-                      </Menu>
-                    }
+                    menu={{ items: getItems(record) }}
                     placement="bottomLeft"
                     arrow
                     trigger={['click']}
                   >
-                    <MoreOutlined className="more-options" />
+                    <MoreOutlined className="more-options" data-testid="more-options" />
                   </Dropdown>
                 </span>
               ),

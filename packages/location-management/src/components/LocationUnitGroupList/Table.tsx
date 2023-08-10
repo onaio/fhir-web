@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Dropdown, Button, Divider } from 'antd';
+import { Dropdown, Button, Divider } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { LocationUnitGroup } from '../../ducks/location-unit-groups';
 import { Column, OpenSRPService, TableLayout } from '@opensrp/react-utils';
@@ -31,7 +32,7 @@ export const onDelete = (record: LocationUnitGroup, opensrpBaseURL: string, t: T
   clientService
     .delete()
     .then(() => sendSuccessNotification('Successfully Deleted!'))
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem deleting group')));
 };
 
 const Table: React.FC<Props> = (props: Props) => {
@@ -47,6 +48,33 @@ const Table: React.FC<Props> = (props: Props) => {
     },
   ];
 
+  const getItems = (record: LocationUnitGroup): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Button
+          className="viewdetails"
+          data-testid="viewdetails"
+          onClick={() => (onViewDetails ? onViewDetails(record) : {})}
+        >
+          {t('View Details')}
+        </Button>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button
+          className="delete"
+          data-testid="delete"
+          onClick={() => onDelete(record, opensrpBaseURL, t)}
+        >
+          {t('Deactivate')}
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <TableLayout
       id="LocationUnitGroupList"
@@ -59,26 +87,15 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: unknown, record) => (
           <span>
-            <Link to={`${URL_LOCATION_UNIT_GROUP_EDIT}/${record.id.toString()}`}>
-              <Button type="link" className="m-0 p-1">
-                {t('Edit')}
-              </Button>
+            <Link
+              to={`${URL_LOCATION_UNIT_GROUP_EDIT}/${record.id.toString()}`}
+              className="m-0 p-1"
+            >
+              {t('Edit')}
             </Link>
             <Divider type="vertical" />
             <Dropdown
-              overlay={
-                <Menu className="menu">
-                  <Menu.Item
-                    className="viewdetails"
-                    onClick={() => (onViewDetails ? onViewDetails(record) : {})}
-                  >
-                    {t('View Details')}
-                  </Menu.Item>
-                  <Menu.Item className="delete" onClick={() => onDelete(record, opensrpBaseURL, t)}>
-                    {t('Deactivate')}
-                  </Menu.Item>
-                </Menu>
-              }
+              menu={{ items: getItems(record) }}
               placement="bottomLeft"
               arrow
               trigger={['click']}

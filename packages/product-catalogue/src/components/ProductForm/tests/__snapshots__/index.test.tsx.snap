@@ -8,6 +8,7 @@ exports[`productForm edit form submission: accountabilityPeriod 1`] = `
   aria-valuenow="1"
   autoComplete="off"
   className="ant-input-number-input"
+  disabled={false}
   name="accountabilityPeriod"
   onBlur={[Function]}
   onChange={[Function]}
@@ -19,48 +20,66 @@ exports[`productForm edit form submission: accountabilityPeriod 1`] = `
 
 exports[`productForm edit form submission: appropriateUsage 1`] = `
 <textarea
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   name="appropriateUsage"
   onBlur={[Function]}
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
+  onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe the product's intended use at the service point"
   rows={4}
-  style={Object {}}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
   value="staff is trained to use it appropriately"
 />
 `;
 
 exports[`productForm edit form submission: availability 1`] = `
 <textarea
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   name="availability"
   onBlur={[Function]}
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
+  onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe where a supply monitor can locate this product at the service point."
   rows={4}
-  style={Object {}}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
   value="available"
 />
 `;
 
 exports[`productForm edit form submission: condition 1`] = `
 <textarea
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   name="condition"
   onBlur={[Function]}
   onChange={[Function]}
   onCompositionEnd={[Function]}
   onCompositionStart={[Function]}
+  onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Describe how a supply monitor would assess whether the product is in good condition"
   rows={4}
-  style={Object {}}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
   value="good condition"
 />
 `;
@@ -69,12 +88,8 @@ exports[`productForm edit form submission: isAttractive radio1 1`] = `
 <input
   checked={true}
   className="ant-radio-input"
-  onBlur={[Function]}
+  disabled={false}
   onChange={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value={true}
 />
@@ -84,12 +99,8 @@ exports[`productForm edit form submission: isAttractive radio2 1`] = `
 <input
   checked={false}
   className="ant-radio-input"
-  onBlur={[Function]}
+  disabled={false}
   onChange={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
   type="radio"
   value={false}
 />
@@ -97,13 +108,15 @@ exports[`productForm edit form submission: isAttractive radio2 1`] = `
 
 exports[`productForm edit form submission: materialNumber 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   name="materialNumber"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter the product's material number"
+  style={Object {}}
   type="text"
   value="MT-123"
 />
@@ -111,13 +124,15 @@ exports[`productForm edit form submission: materialNumber 1`] = `
 
 exports[`productForm edit form submission: productName 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   name="productName"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
   placeholder="Enter the product's name e.g Midwifery Kit"
+  style={Object {}}
   type="text"
   value="Scale"
 />
@@ -125,7 +140,8 @@ exports[`productForm edit form submission: productName 1`] = `
 
 exports[`productForm edit form submission: uniqueId 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   id="uniqueId"
   name="uniqueId"
   onBlur={[Function]}
@@ -133,6 +149,7 @@ exports[`productForm edit form submission: uniqueId 1`] = `
   onFocus={[Function]}
   onKeyDown={[Function]}
   readOnly={true}
+  style={Object {}}
   type="hidden"
   value="1"
 />

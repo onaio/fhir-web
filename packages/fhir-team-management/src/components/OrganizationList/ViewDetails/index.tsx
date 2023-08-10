@@ -1,19 +1,21 @@
 import React from 'react';
 import { Col, Space, Spin, Button, Alert } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { useHistory } from 'react-router';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
   getObjLike,
   getResourcesFromBundle,
   IdentifierUseCodes,
+  loadAllResources,
   parseFhirHumanName,
   renderObjectAsKeyvalue,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import {
+  organizationAffiliationResourceType,
   organizationResourceType,
-  ORGANIZATION_LIST_URL,
   practitionerResourceType,
   practitionerRoleResourceType,
 } from '../../../constants';
@@ -25,6 +27,8 @@ import { useTranslation } from '../../../mls';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
+import { FindAssignedLocations } from '../../AddEditOrganization/utils';
 
 /**
  * parse an organization to object we can easily consume in Table layout
@@ -80,6 +84,20 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     )
   );
 
+  const {
+    data: affiliationsData,
+    isLoading: affiliationsLoading,
+    error: affiliationsError,
+  } = useQuery(
+    [organizationAffiliationResourceType, resourceId],
+    () => loadAllResources(fhirBaseURL, organizationAffiliationResourceType),
+    {
+      select: (res) => {
+        return getResourcesFromBundle<IOrganizationAffiliation>(res);
+      },
+    }
+  );
+
   // fetch practitioners assigned to this organization
   const { data: assignedPractitioners, isLoading: assignedPractitionersLoading } = useQuery(
     [practitionerRoleResourceType, resourceId],
@@ -101,12 +119,14 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     return <Spin size="large" className="custom-spinner" />;
   }
 
-  if (orgError && !organization) {
-    return <Alert type="error" message={`${orgError}`} />;
+  if ((orgError && !organization) || (affiliationsError && !affiliationsData)) {
+    return <Alert type="error" message={`${orgError || affiliationsError}`} />;
   }
 
   const org = organization as IOrganization;
   const { active, id, identifier } = parseOrganization(org);
+
+  const assignedLocations = FindAssignedLocations(affiliationsData ?? [], id);
 
   const practitionerKeyValues = {
     [t('Team practitioners')]: (
@@ -119,6 +139,17 @@ export const ViewDetails = (props: ViewDetailsProps) => {
       </ul>
     ),
   };
+
+  const locationsKeyValues = {
+    [t('Assigned locations')]: (
+      <ul id="assigned-locations">
+        {assignedLocations.map((location) => {
+          return <li key={location.reference}>{location.display}</li>;
+        })}
+      </ul>
+    ),
+  };
+
   const organizationKeyValues = {
     [t('Team id')]: id,
     [t('Team identifier')]: identifier,
@@ -134,7 +165,17 @@ export const ViewDetails = (props: ViewDetailsProps) => {
         renderObjectAsKeyvalue(practitionerKeyValues)
       ) : (
         <Alert
-          description={t('Organiation does not have any assigned practitioners')}
+          description={t('Organization does not have any assigned practitioners')}
+          type="warning"
+        ></Alert>
+      )}
+      {affiliationsLoading ? (
+        <Alert description={t('Fetching assigned locations')} type="info"></Alert>
+      ) : assignedLocations.length ? (
+        renderObjectAsKeyvalue(locationsKeyValues)
+      ) : (
+        <Alert
+          description={t('Organization does not have any assigned locations')}
           type="warning"
         ></Alert>
       )}
@@ -150,7 +191,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
  */
 export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
   const { resourceId, fhirBaseURL } = props;
-  const history = useHistory();
+  const { removeParam } = useSearchParams();
 
   if (!resourceId) {
     return null;
@@ -164,7 +205,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
           icon={<CloseOutlined />}
           shape="circle"
           type="text"
-          onClick={() => history.push(ORGANIZATION_LIST_URL)}
+          onClick={() => removeParam(viewDetailsQuery)}
         />
       </div>
       <ViewDetails resourceId={resourceId} fhirBaseURL={fhirBaseURL} />

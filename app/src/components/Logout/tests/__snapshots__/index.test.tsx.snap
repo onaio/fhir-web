@@ -5,29 +5,37 @@ exports[`components/Logout renders logout component 1`] = `
   <Spin
     className="custom-spinner"
     size="large"
-    spinning={true}
-    wrapperClassName=""
   >
-    <div
-      className="ant-spin ant-spin-lg ant-spin-spinning custom-spinner"
+    <Empty />
+    <Spin
+      className="custom-spinner"
+      hashId="css-dev-only-do-not-override-k7429z"
+      size="large"
+      spinPrefixCls="ant-spin"
     >
-      <span
-        className="ant-spin-dot ant-spin-dot-spin"
+      <div
+        aria-busy={true}
+        aria-live="polite"
+        className="ant-spin ant-spin-lg ant-spin-spinning custom-spinner css-dev-only-do-not-override-k7429z"
       >
-        <i
-          className="ant-spin-dot-item"
-        />
-        <i
-          className="ant-spin-dot-item"
-        />
-        <i
-          className="ant-spin-dot-item"
-        />
-        <i
-          className="ant-spin-dot-item"
-        />
-      </span>
-    </div>
+        <span
+          className="ant-spin-dot ant-spin-dot-spin"
+        >
+          <i
+            className="ant-spin-dot-item"
+          />
+          <i
+            className="ant-spin-dot-item"
+          />
+          <i
+            className="ant-spin-dot-item"
+          />
+          <i
+            className="ant-spin-dot-item"
+          />
+        </span>
+      </div>
+    </Spin>
   </Spin>
 </CustomLogout>
 `;

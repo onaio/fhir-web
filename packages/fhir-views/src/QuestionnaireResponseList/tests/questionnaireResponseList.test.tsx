@@ -96,6 +96,12 @@ test('pagination events work correctly', async () => {
     </Router>
   );
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).not.toBeInTheDocument();
+    });
+  };
+
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   await waitFor(() => {
@@ -112,7 +118,9 @@ test('pagination events work correctly', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   expect(screen.getByText(/8d8d0c07-c2bf-4e5a-9cb3-6c264c3e58dd/)).toBeInTheDocument();
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

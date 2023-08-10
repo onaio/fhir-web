@@ -11,16 +11,13 @@
     "access": "public"
   },
   "repository": "https://github.com/opensrp/web",
-  "config": {
-    "folderName": "opensrp-plans"
-  },
   "scripts": {
-    "test": " cd ../../ && yarn test packages/$npm_package_config_folderName --verbose --collectCoverage=true && cd packages/$npm_package_config_folderName",
-    "tsc": "tsc",
-    "lint": "eslint ./**/*.{js,jsx,ts,tsx}",
-    "copy": "copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
-    "build": "yarn run tsc && yarn run transpile && yarn run copy",
-    "transpile": "babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
   },
   "jest": {
     "automock": false,
@@ -32,11 +29,11 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "peerDependencies": {
-    "@opensrp/store": "^0.0.10",
     "@opensrp/i18n": "^0.0.1",
-    "antd": "^4.6.3",
+    "@opensrp/store": "^0.0.10",
+    "antd": "^5.5.1",
     "lodash": "^4.17.21",
-    "react": "^16.18.1",
+    "react": "^17.0.0 ",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1",
@@ -50,11 +47,10 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
-    "@opensrp/plan-form": "^0.0.4",
+    "@opensrp/plan-form": "^0.0.5",
     "@opensrp/plan-form-core": "^0.0.4",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
-    "@opensrp/team-assignment": "^0.0.6",
     "@opensrp/team-management": "^0.0.9",
     "fast_array_intersect": "^1.1.0",
     "geojson": "^0.5.0",

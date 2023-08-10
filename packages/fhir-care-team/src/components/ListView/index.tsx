@@ -1,30 +1,33 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button, Divider, Dropdown, Menu, Popconfirm } from 'antd';
+import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
+import type { MenuProps } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
+import { useHistory, Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
-  useSimpleTabularView,
+  useTabularViewWithLocalSearch,
   BrokenPage,
   SearchForm,
   TableLayout,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import {
   FHIR_CARE_TEAM,
   URL_EDIT_CARE_TEAM,
-  URL_CARE_TEAM,
   URL_CREATE_CARE_TEAM,
   careTeamResourceType,
 } from '../../constants';
 import { ViewDetails } from '../ViewDetails';
 import { Dictionary } from '@onaio/utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 // route params for care team pages
 interface RouteParams {
@@ -47,7 +50,7 @@ export const deleteCareTeam = async (
   return serve
     .delete(id)
     .then(() => sendSuccessNotification(t('Successfully Deleted Care Team')))
-    .catch(() => sendErrorNotification(t('An error occurred')));
+    .catch(() => sendErrorNotification(t('There was a problem deleting the Care Team')));
 };
 
 /**
@@ -59,19 +62,22 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
+  const history = useHistory();
 
-  const { careTeamId: resourceId } = useParams<RouteParams>();
-  const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<ICareTeam>(
-    fhirBaseURL,
-    careTeamResourceType
-  );
-  const { data, isFetching, isLoading, error, refetch } = queryValues;
+  const { addParam, sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+
+  const {
+    queryValues: { data, isFetching, isLoading, error, refetch },
+    tablePaginationProps,
+    searchFormProps,
+  } = useTabularViewWithLocalSearch<ICareTeam>(fhirBaseURL, careTeamResourceType);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data?.records ?? []).map((datum: Dictionary) => {
+  const tableData = (data ?? []).map((datum: Dictionary) => {
     return {
       key: datum.id,
       id: datum.id,
@@ -79,6 +85,36 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     };
   });
   type TableData = typeof tableData[0];
+
+  const getItems = (record: TableData): MenuProps['items'] => [
+    {
+      key: '1',
+      label: (
+        <Popconfirm
+          title={t('Are you sure you want to delete this Care Team?')}
+          okText={t('Yes')}
+          className="delCareteam"
+          cancelText={t('No')}
+          onConfirm={async () => {
+            await deleteCareTeam(fhirBaseURL, record.id, t);
+            await refetch();
+          }}
+        >
+          <Button danger data-testid="deleteBtn" type="link" style={{ color: '#' }}>
+            {t('Delete')}
+          </Button>
+        </Popconfirm>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
+          View Details
+        </Button>
+      ),
+    },
+  ];
 
   const columns = [
     {
@@ -93,35 +129,12 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`}>
-            <Button type="link" className="m-0 p-1">
-              {t('Edit')}
-            </Button>
+          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
+            {t('Edit')}
           </Link>
           <Divider type="vertical" />
           <Dropdown
-            overlay={
-              <Menu className="menu">
-                <Menu.Item key="delete">
-                  <Popconfirm
-                    title={t('Are you sure you want to delete this Care Team?')}
-                    okText={t('Yes')}
-                    cancelText={t('No')}
-                    onConfirm={async () => {
-                      await deleteCareTeam(fhirBaseURL, record.id, t);
-                      await refetch();
-                    }}
-                  >
-                    <Button danger type="link" style={{ color: '#' }}>
-                      {t('Delete')}
-                    </Button>
-                  </Popconfirm>
-                </Menu.Item>
-                <Menu.Item key="view-details" className="view-details">
-                  <Link to={`${URL_CARE_TEAM}/${record.id}`}>View Details</Link>
-                </Menu.Item>
-              </Menu>
-            }
+            menu={{ items: getItems(record) }}
             placement="bottomRight"
             arrow
             trigger={['click']}
@@ -145,13 +158,13 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       <Helmet>
         <title>{t('FHIR Care Team')}</title>
       </Helmet>
-      <PageHeader title={t('FHIR Care Team')} className="page-header" />
+      <PageHeader title={t('FHIR Care Team')} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
-            <SearchForm {...searchFormProps} disabled />
+            <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
-              <Button type="primary">
+              <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
                 <PlusOutlined />
                 {t('Create Care Team')}
               </Button>

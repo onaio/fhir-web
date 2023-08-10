@@ -7,12 +7,13 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import { waitForElementToBeRemoved } from '@testing-library/dom';
+import { waitForElementToBeRemoved, waitFor } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import {
   organizationResourceType,
   ORGANIZATION_LIST_URL,
   practitionerRoleResourceType,
+  organizationAffiliationResourceType,
 } from '../../../../constants';
 import {
   assignedPractitionerRole,
@@ -21,6 +22,7 @@ import {
   organizationsPage2,
 } from './fixtures';
 import userEvents from '@testing-library/user-event';
+import { allAffiliations } from '../../../OrganizationAffiliation/tests/fixures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -138,13 +140,19 @@ test('renders correctly when listing organizations', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
+  const waitForSpinner = async () => {
+    return await waitFor(() => {
+      expect(document.querySelector('.ant-spin')).toBeInTheDocument();
+    });
+  };
+
   expect(document.querySelector('title')).toMatchInlineSnapshot(`
     <title>
       Organization list
     </title>
   `);
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -156,7 +164,9 @@ test('renders correctly when listing organizations', async () => {
 
   expect(history.location.search).toEqual('?pageSize=20&page=2');
 
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`table row ${idx} page 2`);
@@ -168,7 +178,10 @@ test('renders correctly when listing organizations', async () => {
   await userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
+
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -191,27 +204,46 @@ test('renders correctly when listing organizations', async () => {
     })
     .reply(200, assignedPractitionerRole);
 
+  // affiliations
+  nock(props.fhirBaseURL)
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 })
+    .get(`/${organizationAffiliationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, allAffiliations);
+
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
   fireEvent.click(dropdown);
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/admin/teams/205"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual('/admin/teams/205');
+  expect(history.location.search).toEqual('?pageSize=20&page=1&viewDetails=205');
 
+  await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // wait for affiliations to finish loading
+  await waitFor(() => {
+    const fetchingLocations = screen.queryByText(/Fetching assigned locations/);
+    expect(fetchingLocations).not.toBeInTheDocument();
+  });
 
   // see details in viewDetails
   document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
     expect(pair).toMatchSnapshot('single key value pairs detail section');
   });
+
+  // As organization 205 has no assigned locations
+  expect(
+    screen.queryByText(/Organization does not have any assigned locations/)
+  ).toBeInTheDocument();
 
   // close view details
   const closeButton = document.querySelector('[data-testid="close-button"]');

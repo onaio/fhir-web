@@ -19,6 +19,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
+import { fetchInventories } from '../../../ducks/inventory';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('jest-fetch-mock');
@@ -84,7 +85,7 @@ describe('Inventory list Page', () => {
     });
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo Data"`
+      `"Inventory itemsAdd new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo data"`
     );
     wrapper.unmount();
   });
@@ -109,12 +110,20 @@ describe('Inventory list Page', () => {
     expect(fetch.mock.calls[0]).toEqual(fetchCalls[3]);
 
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"Inventory items + Add new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
+      `"Inventory itemsAdd new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsChange name Test1101123434Feb 02, 2020May 02, 2021HealthADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditEmpty product test1057Feb 03, 2021May 03, 2021WASHADBEditScale1101123434Jan 02, 2020May 02, 2021HealthADBEdit"`
     );
 
-    expect(toJson(wrapper.find('.inventory-profile a'))).toMatchSnapshot(
+    expect(toJson(wrapper.find('.inventory-profile button'))).toMatchSnapshot(
       'link to add new inventory item'
     );
+
+    store.dispatch(fetchInventories([], true));
+    wrapper.update();
+
+    expect(wrapper.text()).toMatchInlineSnapshot(
+      `"Inventory itemsAdd new inventory itemProduct nameQtyPO no.Serial no.Delivery dt.Acct. end dt.Unicef sectionDonorActionsNo data"`
+    );
+
     wrapper.unmount();
   });
 
@@ -170,8 +179,10 @@ describe('Inventory list Page', () => {
     );
     expect(wrapper.find('tbody').find('tr').at(3).find('td').at(0).text()).toEqual('Scale');
 
+    expect(toJson(wrapper.find('th'))).toMatchSnapshot('without children');
+    expect(toJson(wrapper.find('th').at(0).children())).toMatchSnapshot('with children');
     // Cancel sorting
-    heading.find('th').at(0).children().simulate('click');
+    heading.find('th').at(0).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(
@@ -181,7 +192,7 @@ describe('Inventory list Page', () => {
       'Empty product test'
     );
     // descending
-    heading.find('th').at(0).children().simulate('click');
+    heading.find('th').at(0).simulate('click');
     wrapper.update();
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(0).text()).toEqual('Scale');
     expect(wrapper.find('tbody').find('tr').at(1).find('td').at(0).text()).toEqual(

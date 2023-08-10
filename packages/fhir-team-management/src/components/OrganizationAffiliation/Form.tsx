@@ -64,7 +64,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
       onSuccess: () => {
         sendSuccessNotification(t('Team assignments updated successfully'));
         handleCancel();
-        queryClient.invalidateQueries([organizationAffiliationResourceType]).catch(() => {
+        queryClient.refetchQueries([organizationAffiliationResourceType]).catch(() => {
           sendInfoNotification(
             t('Failed to refresh assignments, Please Refresh the page to see the changes')
           );
@@ -90,7 +90,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
     <Modal
       destroyOnClose={true}
       title={t(`Assign/Unassign Teams | {{locationName}}`, { locationName })}
-      visible={visible}
+      open={visible}
       okText="Save"
       onCancel={handleCancel}
       cancelText="Cancel"

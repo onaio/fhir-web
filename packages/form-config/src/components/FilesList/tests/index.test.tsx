@@ -100,7 +100,7 @@ describe('components/manifestFiles', () => {
     });
 
     expect(wrapper.find('DrillDownTable').props()).toMatchSnapshot('isJsonValidator true');
-    expect(wrapper.find('SearchBar')).toHaveLength(1);
+    expect(wrapper.find('SearchForm')).toHaveLength(1);
     expect(wrapper.find('Row Col').at(1).text()).toEqual('Upload new file');
     wrapper.unmount();
   });
@@ -127,8 +127,8 @@ describe('components/manifestFiles', () => {
     expect(wrapper.find('.tbody .tr')).toHaveLength(fixManifestFiles.length);
 
     // search
-    const search = wrapper.find('SearchBar input');
-    search.simulate('input', { target: { value: 'reveal-test' } });
+    const search = wrapper.find('SearchForm input');
+    search.simulate('change', { target: { value: 'reveal-test' } });
     wrapper.update();
     expect(wrapper.find('.tbody .tr')).toHaveLength(1);
 
@@ -258,7 +258,9 @@ describe('components/manifestFiles', () => {
     });
     wrapper.update();
 
-    expect(props.customAlert).toHaveBeenCalledWith('An error occurred', { type: 'error' });
+    expect(props.customAlert).toHaveBeenCalledWith('There was a problem fetching manifest files', {
+      type: 'error',
+    });
     expect(wrapper.find('.tbody .tr')).toHaveLength(0);
 
     wrapper.unmount();

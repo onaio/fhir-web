@@ -127,14 +127,18 @@ test('renders correctly when listing resources', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  });
 
   expect(fetch.mock.calls.map((x) => x[0])).toEqual([
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?max=15',
   ]);
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -193,14 +197,13 @@ test('renders correctly when listing resources', async () => {
 
   const viewDetailsLink = screen.getByText(/View Details/);
   expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <a
-      href="/admin/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78"
-    >
+    <span>
       View Details
-    </a>
+    </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`${URL_USER}/${userFixtures[14].id}`);
+  expect(history.location.pathname).toEqual(`${URL_USER}`);
+  expect(history.location.search).toEqual('?viewDetails=b79e5f2d-37de-4c7e-9b3d-4341bf62ad78');
 
   // this only await the first call to get the users.
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
@@ -239,7 +242,8 @@ test('renders correctly when listing resources', async () => {
   fireEvent.click(deleteBtn);
 
   // confirm
-  const yesBtn = document.querySelectorAll('.ant-popover-buttons button')[1];
+  const yesBtn = document.querySelectorAll('.ant-popconfirm-buttons button')[1];
+
   expect(yesBtn).toMatchSnapshot('yes button');
   fireEvent.click(yesBtn);
 
@@ -248,7 +252,7 @@ test('renders correctly when listing resources', async () => {
   });
 
   await waitFor(async () => {
-    expect(screen.queryByText(/Practitioner deactivated/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Practitioner role deactivated/i)).toBeInTheDocument();
     expect(screen.queryByText(/Group deactivated/i)).toBeInTheDocument();
   });
 
