@@ -1,26 +1,41 @@
+import { faker } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
-import { PLAYWRIGHT_BASE_URL } from '../../env';
+import { PLAYWRIGHT_BASE_URL, PLAYWRIGHT_PREFIX } from '../../env';
 import { HomePage } from '../poms/app/home';
 import { LocationCreate, LocationFormFields } from '../poms/locationManagement/create';
 import { LocationUnitList } from '../poms/locationManagement/list';
-import { TeamForm } from '../poms/teamManagement/create';
+import { TeamForm, TeamFormFields } from '../poms/teamManagement/create';
 import { TeamList } from '../poms/teamManagement/list';
 import { TeamAssignment } from '../poms/teamManagement/teamAssignment';
-import { UserCreate, UserFormFields } from '../poms/userManagement/create';
+import { UserForm, UserFormFields } from '../poms/userManagement/userForm';
 import { UserListDash } from '../poms/userManagement/list';
+import { UserCredentialsForm, UserCrendentials } from '../poms/userManagement/userCredentials';
+import { waitForSpinner } from '../helpers/utils';
 
 const locationPayload: LocationFormFields = {
-    name: "PlayTest-location",
-    alias: "play-location",
-    description: "Auto created location"
+    name: `${PLAYWRIGHT_PREFIX}-${faker.location.city()}`,
+    alias: `${PLAYWRIGHT_PREFIX}-${faker.word.adjective()}`,
+    description: faker.word.words(10)
 }
 
-const teamFormPayload = {
-    name: "playOrg",
-    alias: "playOrg-alias",
-    status: true,
-    practitioners: ["Play Test"]
+const userFormPayload: UserFormFields & UserCrendentials = {
+    firstName: `${PLAYWRIGHT_PREFIX}-${faker.person.firstName()}`,
+    lastName: `${PLAYWRIGHT_PREFIX}-${faker.person.lastName()}`,
+    email: faker.internet.email(),
+    userType: 'supervisor',
+    username: `${PLAYWRIGHT_PREFIX}-${faker.internet.userName()}`,
+    keycloakUserGroup: "rbacTest",
+    applicationID: 'Device configurations(quest)',
+    password: faker.internet.password()
 }
+
+const teamFormPayload: TeamFormFields = {
+    name: `${PLAYWRIGHT_PREFIX}-${faker.word.noun()}`,
+    alias: `${PLAYWRIGHT_PREFIX}-${faker.word.adjective()}`,
+    status: true,
+    practitioners: [userFormPayload.firstName] // TODO - does practitioner exist
+}
+
 
 
 test.describe.configure({ mode: 'serial' });
@@ -33,6 +48,7 @@ test.describe("User modification", () => {
 
         // got to user list and then user creation
         await homePage.dashboard.usersLink.click()
+        await waitForSpinner(page)
         await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/users`)
 
         // confirm user list view is loaded.
@@ -48,26 +64,24 @@ test.describe("User modification", () => {
 
 
         // we now fill the form.
-        const userCreatePage = new UserCreate(page);
-        const formFields: UserFormFields = {
-            firstName: 'Play',
-            lastName: 'test',
-            email: "playwright@example.com",
-            userType: 'supervisor',
-            username: 'playTest',
-            keycloakUserGroup: "rbacTest",
-            applicationID: 'Device configurations(quest)'
+        const userForm = new UserForm(page);
+        await userForm.fillForm(userFormPayload)
 
-        }
-        await userCreatePage.fillForm(formFields)
+
+        const userCredentials = new UserCredentialsForm(page)
+        // confirm credentials update view is loaded
+        await expect(homePage.dashboard.section.getByRole("heading", {name: /User credentials/i})).toBeVisible()
+        userCredentials.fillForm({password: userFormPayload.password})
 
         // after Action - search for created entity in 
-        await userListPage.goSearch(formFields.username)
+        await userListPage.goSearch(userFormPayload.username)
+        await waitForSpinner(page)
 
         // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
         const table = await page.locator(".ant-table table")
         const tableRows = await table.locator('tbody tr')
-        await expect(tableRows.allTextContents).toContain(`${formFields.firstName}${formFields.lastName}${formFields.username}Edit`)
+        const content = await tableRows.allTextContents()
+        await expect(content).toContain(`${userFormPayload.firstName}${userFormPayload.lastName}${userFormPayload.username.toLowerCase()}Edit`)
     })
 
     test('creates a location', async ({ page }) => {
@@ -104,29 +118,34 @@ test.describe("User modification", () => {
         const homePage = new HomePage(page);
         await homePage.goto()
 
-        // go to team list and then create organization
+        // go to organization list and then organization creation
         await homePage.dashboard.teamsLink.click()
+        await waitForSpinner(page)
         await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/teams`)
 
-        //confirm that we are in the teams list
-        await expect(homePage.dashboard.section.getByRole("heading", { name: /Organization list/i })).toBeVisible()
+        // confirm organization list view is loaded.
+        await expect(homePage.dashboard.section.getByRole("heading", {name: /Organization list/i})).toBeVisible()
 
-        // click add organization/team.
+        // // click add organization.
         const teamList = new TeamList(page)
         await teamList.addTeamBtn.click()
         await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/teams/add`)
 
-        const teamForm = new TeamForm(page)
+        // confirm organization creation view is loaded
+        await expect(homePage.dashboard.section.getByRole("heading", {name: /Create team/i})).toBeVisible()
 
+        const teamForm = new TeamForm(page)
         await teamForm.fillForm(teamFormPayload)
 
         // after Action - search for created entity in 
         await teamList.goSearch(teamFormPayload.name)
+        await waitForSpinner(page)
 
-        // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
-        const table = await page.locator(".ant-table table")
-        const tableRows = await table.locator('tbody tr')
-        await expect(tableRows.allTextContents).toContain(`${teamFormPayload.name}Edit`)
+         // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
+         const table = page.locator(".ant-table table")
+         const tableRows = table.locator('tbody tr')
+         const content = await tableRows.allTextContents()
+         await expect(content).toContain(`${teamFormPayload.name}Edit`)
     })
 
     test("Assign team to location", async ({ page }) => {

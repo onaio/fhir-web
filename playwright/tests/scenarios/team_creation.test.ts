@@ -7,6 +7,7 @@ import {faker} from '@faker-js/faker'
 import { waitForSpinner } from '../helpers/utils';
 
 test.beforeEach(async ({page}) => {
+    // TODO - attempt at recording requests for reveral later.
     // page.on('requestfinished', async request => {
     //     const response = await request.response()
     //     console.log(response?.status(), request.method(), request.url(), request.postData())
@@ -24,7 +25,7 @@ test.describe("Team/Organization creation", () => {
         const homePage = new HomePage(page)
         await homePage.goto()
 
-        // got to organization list and then organization creation
+        // go to organization list and then organization creation
         await homePage.dashboard.teamsLink.click()
         await waitForSpinner(page)
         await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/teams`)
