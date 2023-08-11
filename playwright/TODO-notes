@@ -26,3 +26,6 @@ helpful links and tools
  - vs code extension for debugging.
  - inspector for debugging
  
+
+ - Add  a log of XHR requests that have been made.
+ - monkeypath faker functions to add the prefix automatically.
