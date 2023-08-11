@@ -14,7 +14,15 @@ export async function waitForKeycloakResponses(page){
 //     await this.practitionersField.click()
 // }
 
-export async function waitForSpinner(page: Page){
-    await expect(page.locator("div.ant-spin")).toBeVisible()
+export async function waitForSpinnerToHide(page: Page){
     await expect(page.locator("div.ant-spin")).toBeHidden()
+}
+
+export async function waitForSpinnerToShow(page: Page){
+    await expect(page.locator("div.ant-spin")).toBeVisible()
+}
+
+export async function waitForSpinner(page: Page){
+    // await waitForSpinnerToShow(page);
+    await waitForSpinnerToHide(page);
 }
