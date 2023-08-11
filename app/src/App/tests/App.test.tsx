@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
-import App, { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } from '../App';
+import App from '../App';
+import { CallbackComponent, FHIRApps, LoadingComponent, SuccessfulLoginComponent } from '../fhir-apps';
 import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -316,6 +317,8 @@ describe('App - authenticated', () => {
   });
 
   it('commodity routes are correctly registered', async () => {
+    const envModule = require('../../configs/env');
+    envModule.ENABLE_FHIR = 'true';
     // redirecting to certain routes renders the correct page
     const queryClient = new QueryClient();
 
