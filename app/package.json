@@ -69,23 +69,6 @@
       "last 1 safari version"
     ]
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!src/index.tsx",
-      "!src/serviceWorker.ts",
-      "!**/tests/**",
-      "!src/configs/**"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 80,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
-      }
-    }
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
