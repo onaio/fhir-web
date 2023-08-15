@@ -7,7 +7,7 @@ import { MemoryRouter, RouteComponentProps, Router } from 'react-router';
 import fetch from 'jest-fetch-mock';
 import { store } from '@opensrp/store';
 import App from '../App';
-import { CallbackComponent, FHIRApps, LoadingComponent, SuccessfulLoginComponent } from '../fhir-apps';
+import { CallbackComponent, LoadingComponent, SuccessfulLoginComponent } from '../fhir-apps';
 import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
