@@ -237,3 +237,5 @@ export const PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY = setEnv(
   'REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY',
   undefined
 );
+
+export const ENABLE_FHIR = setEnv('REACT_APP_ENABLE_FHIR', 'true') === 'true';
