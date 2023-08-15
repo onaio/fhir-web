@@ -37,8 +37,8 @@
     "react-i18next": "^11.14.2",
     "react-query": "^3.15.1",
     "react-redux": "^7.2.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router": "^6.15.0",
+    "react-router-dom": "^6.15.0"
   },
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
