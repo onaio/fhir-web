@@ -47,7 +47,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.find('Menu').at(0).prop('items')).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -89,7 +89,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.find('Menu').at(0).prop('items')).toMatchSnapshot();
 
     wrapper.unmount();
   });
@@ -121,7 +121,7 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('Menu').at(0).prop('children')).toMatchSnapshot();
+    expect(wrapper.find('Menu').at(0).prop('items')).toMatchSnapshot();
     wrapper.unmount();
   });
 

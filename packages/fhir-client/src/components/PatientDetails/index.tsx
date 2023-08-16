@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React from 'react';
-import { Col, Row, Menu, Badge, Card, Avatar, Tag, Spin, Layout, Alert } from 'antd';
+import { Col, Row, Menu, Badge, Card, Avatar, Tag, Spin, Layout, Alert, Space } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
 import { RouteComponentProps, useParams } from 'react-router-dom';
@@ -17,6 +17,7 @@ import { useQuery } from 'react-query';
 import { resourcesSchema } from './ResourceSchema';
 import { PatientDetailsTable } from '../..//helpers/utils';
 import { useTranslation } from '../../mls';
+import type { MenuProps } from 'antd';
 
 const { Header, Sider, Content } = Layout;
 
@@ -45,12 +46,37 @@ export const defaultEditPatientProps: PatientDetailProps = {
   patientBundleSize: 1000,
 };
 
+type MenuItem = Required<MenuProps>['items'][number];
+
+/**
+ * Function to get the menu and submenu items
+ *
+ * @param label - Menu label
+ * @param key - Unique ID of the menu item
+ * @param id - Id for the menu item
+ * @param icon - The icon of the menu item
+ */
+function getItem(
+  label: React.ReactNode,
+  key: React.Key,
+  id: string,
+  icon?: React.ReactNode
+): MenuItem {
+  return {
+    key,
+    icon,
+    label,
+    id,
+  } as MenuItem;
+}
+
 /**
  * Component which shows FHIR resource details of a single patient
  *
  * @param {Object} props - PatientDetails component props
  * @returns {React.FC} returns patient resources display
  */
+
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL, patientBundleSize } = props;
   const { id: patientId } = useParams<RouteParams>();
@@ -103,6 +129,29 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const currentPatient = resourceTypeMap['Patient'].data[0];
   const { gender, birthDate } = currentPatient;
   const avatarLink = `https://www.gravatar.com/avatar/${patientId}?s=50&r=any&default=identicon&forcedefault=1`;
+
+  const items: MenuProps['items'] = [];
+  const onClick: MenuProps['onClick'] = (e) => {
+    setResourceType(e.key);
+  };
+
+  Object.keys(resourceTypeMap).map((type: string) => {
+    return items.push(
+      getItem(
+        type,
+        type,
+        type,
+        <Space align="end">
+          <Badge
+            count={resourceTypeMap[type].count}
+            overflowCount={500}
+            style={{ backgroundColor: '#777', float: 'right', marginTop: '10px' }}
+          />
+        </Space>
+      )
+    );
+  });
+
   return (
     <Row id="patient-details">
       <Col span={24}>
@@ -172,24 +221,9 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
                 style={{ width: 'auto' }}
                 defaultSelectedKeys={[resourceType]}
                 selectedKeys={[resourceType]}
-              >
-                {Object.keys(resourceTypeMap).map((type: string) => (
-                  <Menu.Item
-                    key={type}
-                    id={type}
-                    onClick={(e) => {
-                      setResourceType(e.key as string);
-                    }}
-                  >
-                    {type}{' '}
-                    <Badge
-                      count={resourceTypeMap[type].count}
-                      overflowCount={500}
-                      style={{ backgroundColor: '#777', float: 'right', marginTop: '10px' }}
-                    />
-                  </Menu.Item>
-                ))}
-              </Menu>
+                items={items}
+                onClick={onClick}
+              />
             </Col>
             <Col span={18}>
               <Card

@@ -156,7 +156,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       ),
     },
     {
-      key: '1',
+      key: '2',
       label: (
         <Button
           type="link"
@@ -170,7 +170,7 @@ export const ServerSettingsView: React.FC<Props> = (props: Props) => {
       ),
     },
     {
-      key: '1',
+      key: '3',
       label: (
         <Button
           type="link"
