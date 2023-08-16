@@ -5,10 +5,6 @@ import { WEBSITE_NAME } from '../configs/env';
 import ConnectedHeader from '../containers/ConnectedHeader';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import './App.css';
-import '@opensrp/plans/dist/index.css';
-import '@opensrp/user-management/dist/index.css';
-import '@opensrp/product-catalogue/dist/index.css';
-import '@opensrp/inventory/dist/index.css';
 import { FHIRApps } from './fhir-apps';
 
 const { Content } = Layout;
