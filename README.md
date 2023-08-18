@@ -124,6 +124,6 @@ We use different technologies to deploy OpenSRP FHIR Web.
 
 **Important:** We are deprecating packages used for administration of both opensrp web server and mobile clients that do not use fhir. These packages will no longer be actively maintained or receive updates.
 
-The last release that includes this modules can be found [here](https://github.com/opensrp/web/releases/tag/v2-deprecated-web) and the code in this [branch](https://github.com/opensrp/web/tree/v2-deprecated-web-branch)
+The last release that includes this modules can be found [here](https://github.com/opensrp/web/releases/tag/v2-deprecated-web) and the code in this [branch](https://github.com/opensrp/web/tree/v2-deprecate-web-branch)
 
 For any questions or assistance regarding issues in the affected modules, please feel free to create an [issue](https://github.com/opensrp/web/issues/new/choose)
