@@ -63,39 +63,9 @@ Below is a list of currently supported environment variables:
   - **Required**
   - default: `https://web.opensrp-stage.smartregister.org/oauth/state`
 
-- **REACT_APP_ENABLE_CARD_SUPPORT**
-
-  - Enables the card support module
-  - **Optional**(_string_)
-  - default: `false`
-
-- **REACT_APP_ENABLE_PRODUCT_CATALOGUE**
-
-  - Enables the product-catalogue module
-  - **Optional**(_string_)
-  - default: `"false"`
-
-- **REACT_APP_ENABLE_PLANS**
-
-  - Enables the plans module
-  - **Optional**(_string_)
-  - default: `"false"`
-
 - **REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES**
 
   - Enables the Fhir Healthcare services module
-  - **Optional**(_string_)
-  - default: `"false"`
-
-- **REACT_APP_ENABLE_LOCATIONS**
-
-  - Enables the location module
-  - **Optional**(_string_)
-  - default: `"false"`
-
-- **REACT_APP_ENABLE_TEAMS**
-
-  - Enables the teams module
   - **Optional**(_string_)
   - default: `"false"`
 
@@ -116,37 +86,6 @@ Below is a list of currently supported environment variables:
   - _not required_; _(`string`)_
   - The default time used by date fields when creating plans
 
-- **REACT_APP_DEFAULT_PLAN_DURATION_DAYS**
-
-  - _not required_; _(`string`)>)_
-  - Helps determine the number of the default date of a plan given the start date
-
-- **REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS**
-
-  - _not required_; _(`string`)>)_
-  - same as `REACT_APP_DEFAULT_PLAN_DURATION_DAYS` but for each of the activities inside the plan
-
-- **REACT_APP_PLAN_UUID_NAMESPACE**
-
-  - _not required_; _(`string`)_
-  - a random string to use as the namespace when creating uuids for plans
-
-- **REACT_APP_ACTION_UUID_NAMESPACE**
-
-  - _not required_; _(`string`)_
-  - a random string to use as the namespace when creating uuids for plan actions
-
-- **REACT_APP_DEFAULT_PLAN_VERSION**
-
-  - _not required_; _(`string`)_
-  - the default plan version , used when creating plans
-
-- **REACT_APP_ENABLE_FORM_CONFIGURATION**
-
-  - Enables the form configuration module
-  - **Optional**(_string_)
-  - default: `"false"`
-
 - **REACT_APP_LANGUAGE_CODE**
 
   - language resources to use for text i18next
@@ -158,12 +97,6 @@ Below is a list of currently supported environment variables:
   - project code to help decide where to pick the language resource files from
   - **optional**_(`string`)_
   - default: `core`
-
-- **REACT_APP_ENABLE_INVENTORY**
-
-  - Enables the inventory module
-  - **Optional**(`boolean`)
-  - default: `"false"`
 
 - **REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL**
 
@@ -189,23 +122,11 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `true`
 
-- **REACT_APP_DEFAULT_HOME_MODE**
-
-  - whether to redirect on eusm or tunisia home page
-  - **not required**_(`string`)_
-  - _accepted values_: _default | eusm | tunisia_
-
 - **REACT_APP_FHIR_API_BASE_URL**
 
   - FHIR server base URL
   - **Required**
   - default: `https://fhir.labs.smartregister.org/fhir`
-
-- **REACT_APP_ENABLE_USER_MANAGEMENT**
-
-  - Enables user management module
-  - **Optional**(`boolean`)
-  - default: `"false"`
 
 - **REACT_APP_ENABLE_FHIR_USER_MANAGEMENT**
 
@@ -293,18 +214,6 @@ Below is a list of currently supported environment variables:
   - FHIR Hierarchy root location UUID
   - **Optional**_(`string`)_
 
-- **REACT_APP_ENABLE_SERVER_SETTINGS**
-
-  - Enables the server settings module
-  - **Optional**(_string_)
-  - default: `"false"`
-
-- **REACT_APP_OPENSRP_API_V2_BASE_URL**
-
-  - Opensrp server V2 base URL
-  - **Required**
-  - default: `https://opensrp-stage.smartregister.org/opensrp/rest/v2/`
-
 - **REACT_APP_OPENSRP_WEB_VERSION**
 
   - Opensrp web version deployed
@@ -322,12 +231,6 @@ Below is a list of currently supported environment variables:
 
   - Enable the fhir Quest views
   - **Optional**(_'true'|'false'_)
-  - default: 'false'
-
-- **REACT_APP_ENABLE_REPORTS**
-
-  - enables the reports module
-  - **Optional**('true'|'false')
   - default: 'false'
 
 - **REACT_APP_ENABLE_FHIR_GROUP**
