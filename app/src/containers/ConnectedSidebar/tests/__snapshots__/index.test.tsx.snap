@@ -41,85 +41,6 @@ Array [
 exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
 Array [
   <SubMenu
-    icon={
-      <MapMarkerOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Plans"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/active"
-      >
-        Active
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/draft"
-      >
-        Draft
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/complete"
-      >
-        Complete
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/retired"
-      >
-        Retired
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ArchiveOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/upload"
-      >
-        Add inventory via CSV
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
     icon={<ForwardRef(DashboardOutlined) />}
     title="Administration"
   >
@@ -143,14 +64,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/product-catalogue"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
       title="Team Management"
     >
@@ -168,34 +81,6 @@ Array [
           to="/admin/teams/team-assignment"
         >
           Team Assignment
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Form Configuration"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/releases"
-        >
-          Manifest Releases
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/drafts"
-        >
-          Draft Files
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/form-config/json-validators"
-        >
-          JSON Validators
         </Link>
       </MenuItem>
     </SubMenu>

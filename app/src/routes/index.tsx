@@ -31,6 +31,7 @@ import {
   COMPOSITE_ENABLE_TEAM_MANAGEMENT,
   COMPOSITE_ENABLE_USER_MANAGEMENT,
 } from '../configs/settings';
+import React from 'react';
 
 /** Interface for menu items */
 export interface Route {

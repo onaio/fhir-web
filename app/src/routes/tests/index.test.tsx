@@ -1,10 +1,7 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { filterFalsyRoutes, getRoutes } from '..';
-import React from 'react';
-import MapMarkerOutlineIcon from '@2fd/ant-design-icons/lib/MapMarkerOutline';
-import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
-import ArchiveOutlineIcon from '@2fd/ant-design-icons/lib/ArchiveOutline';
+import { DashboardOutlined } from '@ant-design/icons';
 
 jest.mock('../../configs/env');
 jest.mock('../../configs/settings');
@@ -103,16 +100,10 @@ describe('routes', () => {
     );
 
     let envModule = require('../../configs/env');
-    envModule.ENABLE_LOCATIONS = true;
-    envModule.ENABLE_TEAMS = true;
-    envModule.ENABLE_INVENTORY = true;
-    envModule.ENABLE_FORM_CONFIGURATION = true;
+    envModule.ENABLE_FHIR_LOCATIONS = true;
+    envModule.ENABLE_FHIR_TEAMS = true;
     envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
-    envModule.ENABLE_PRODUCT_CATALOGUE = true;
-    envModule.ENABLE_PLANS = true;
-    envModule.ENABLE_SERVER_SETTINGS = true;
-    envModule.ENABLE_CARD_SUPPORT = true;
-    envModule.ENABLE_USER_MANAGEMENT = true;
+    envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
     envModule.ENABLE_QUEST = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
@@ -132,71 +123,6 @@ describe('routes', () => {
       (t: string) => t
     );
     expect(routes).toMatchObject([
-      {
-        children: [
-          {
-            key: 'missions-active',
-            title: 'Active',
-            url: '/missions/active',
-          },
-          {
-            key: 'missions-draft',
-            title: 'Draft',
-            url: '/missions/draft',
-          },
-          {
-            key: 'missions-complete',
-            title: 'Complete',
-            url: '/missions/complete',
-          },
-          {
-            key: 'missions-retired',
-            title: 'Retired',
-            url: '/missions/retired',
-          },
-        ],
-        enabled: true,
-        key: 'plans',
-        otherProps: {
-          icon: <MapMarkerOutlineIcon className="sidebar-icons" />,
-        },
-        title: 'Plans',
-      },
-      {
-        children: [
-          {
-            key: 'download-client-data',
-            title: 'Download Client Data',
-            url: '/card-support/download-client-data',
-          },
-        ],
-        enabled: true,
-        key: 'card-support',
-        otherProps: {
-          icon: <IdcardOutlined />,
-        },
-        title: 'Card Support',
-      },
-      {
-        children: [
-          {
-            key: 'inventory-list',
-            title: 'Service point inventory',
-            url: '/inventory',
-          },
-          {
-            key: 'inventory-upload',
-            title: 'Add inventory via CSV',
-            url: '/inventory/upload',
-          },
-        ],
-        enabled: true,
-        key: 'inventory',
-        otherProps: {
-          icon: <ArchiveOutlineIcon className="sidebar-icons" />,
-        },
-        title: 'Inventory',
-      },
       {
         children: [
           {
@@ -228,21 +154,10 @@ describe('routes', () => {
                 title: 'Location Units',
                 url: '/admin/location/unit',
               },
-              {
-                key: 'location-group',
-                title: 'Location Unit Group',
-                url: '/admin/location/group',
-              },
             ],
             enabled: true,
             key: 'location-management',
             title: 'Location Management',
-          },
-          {
-            enabled: true,
-            key: 'product-catalogue',
-            title: 'Product Catalogue',
-            url: '/admin/product-catalogue',
           },
           {
             children: [
@@ -263,34 +178,6 @@ describe('routes', () => {
             title: 'Team Management',
           },
           { enabled: true, key: 'fhir-quest', title: 'Questionnaire Management', url: '/quest' },
-          {
-            children: [
-              {
-                key: 'form-config-releases',
-                title: 'Manifest Releases',
-                url: '/admin/form-config/releases',
-              },
-              {
-                key: 'form-config-draft',
-                title: 'Draft Files',
-                url: '/admin/form-config/drafts',
-              },
-              {
-                key: 'form-config-validators',
-                title: 'JSON Validators',
-                url: '/admin/form-config/json-validators',
-              },
-            ],
-            enabled: true,
-            key: 'form-config',
-            title: 'Form Configuration',
-          },
-          {
-            enabled: true,
-            key: 'server-settings',
-            title: 'Server Settings',
-            url: '/admin/server-settings',
-          },
         ],
         enabled: true,
         key: 'admin',
@@ -300,10 +187,6 @@ describe('routes', () => {
         title: 'Administration',
       },
     ]);
-    // check inventory bulk upload title in routes as second item under inventory sub menu
-    expect((routes.find((r) => r.key === 'inventory')?.children as any)[1].title).toEqual(
-      'Add inventory via CSV'
-    );
   });
 
   it('#1135 Enable envs are not coupled', () => {

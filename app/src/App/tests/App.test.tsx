@@ -12,16 +12,6 @@ import { expressAPIResponse } from './fixtures';
 import { mount } from 'enzyme';
 import { authenticateUser } from '@onaio/session-reducer';
 import * as serverLogout from '@opensrp/server-logout';
-import {
-  CATALOGUE_CREATE_VIEW_URL,
-  CATALOGUE_EDIT_VIEW_URL,
-  CATALOGUE_LIST_VIEW_URL,
-  ConnectedProductCatalogueList,
-  CreateProductView,
-  EditProductView,
-} from '@opensrp/product-catalogue';
-import { ACTIVE_PLANS_LIST_VIEW_URL } from '@opensrp/plans';
-import { URL_DOWNLOAD_CLIENT_DATA } from '../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import flushPromises from 'flush-promises';
 import { getOpenSRPUserInfo } from '@onaio/gatekeeper';
@@ -184,7 +174,7 @@ describe('App - authenticated', () => {
     );
     // before resolving get oauth state request, the user is logged out
     expect(wrapper.text()).toMatchInlineSnapshot(
-      `"InventoryAdministrationdemoWelcome to OpenSRPInventoryUser ManagementProduct CatalogueQuestionnaire Management"`
+      `"AdministrationdemoWelcome to OpenSRPUser ManagementQuestionnaire Management"`
     );
 
     await act(async () => {
@@ -196,64 +186,6 @@ describe('App - authenticated', () => {
     expect(wrapper.find('Router').prop('history')).toMatchObject({
       location: {
         pathname: '/',
-      },
-    });
-    wrapper.unmount();
-  });
-
-  it('renders App correctly when staging environment is set to eusm', async () => {
-    const envModule = require('../../configs/env');
-    envModule.DEFAULT_HOME_MODE = 'eusm';
-    history.push(ACTIVE_PLANS_LIST_VIEW_URL);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // after resolving get oauth state request superset user is logged in
-    expect(wrapper.find('Router').prop('history')).toMatchObject({
-      location: {
-        pathname: '/missions/active',
-      },
-    });
-    wrapper.unmount();
-  });
-
-  it('renders App correctly when staging environment is set to tunisia', async () => {
-    const envModule = require('../../configs/env');
-    envModule.DEFAULT_HOME_MODE = 'tunisia';
-    history.push(URL_DOWNLOAD_CLIENT_DATA);
-
-    // card support uses react query (component at history.push)
-    const queryClient = new QueryClient();
-
-    const wrapper = mount(
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </QueryClientProvider>
-    );
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // after resolving get oauth state request superset user is logged in
-    expect(wrapper.find('Router').prop('history')).toMatchObject({
-      location: {
-        pathname: '/card-support/download-client-data',
       },
     });
     wrapper.unmount();
@@ -273,47 +205,6 @@ describe('App - authenticated', () => {
       wrapper.update();
     });
     expect(mock).toHaveBeenCalled();
-  });
-
-  it('product catalogue routes are correctly registered', async () => {
-    // redirecting to certain routes renders the correct page
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `${CATALOGUE_LIST_VIEW_URL}` }]}>
-          <App />
-        </MemoryRouter>
-      </Provider>
-    );
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // start with the catalogue list component
-    expect(wrapper.find(ConnectedProductCatalogueList)).toHaveLength(1);
-
-    // go to the product profile view
-    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${CATALOGUE_LIST_VIEW_URL}/1`
-    );
-    wrapper.update();
-    expect(wrapper.find('ViewDetails')).toHaveLength(1);
-
-    // go to new product page
-    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${CATALOGUE_CREATE_VIEW_URL}`
-    );
-
-    wrapper.update();
-    expect(wrapper.find(CreateProductView)).toHaveLength(1);
-
-    // go to edit product page
-    (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
-      `${CATALOGUE_EDIT_VIEW_URL}/1`
-    );
-    wrapper.update();
-    expect(wrapper.find(EditProductView)).toHaveLength(1);
-    wrapper.unmount();
   });
 
   it('commodity routes are correctly registered', async () => {
