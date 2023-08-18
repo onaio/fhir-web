@@ -10,24 +10,27 @@ OpenSRP FHIR Web is the default frontend for [OpenSRP HAPI FHIR Server](https://
 
 ---
 
-- [FHIR Standard](#what-is-the-fhir-standard)
-- [OpenSRP FHIR Core](#what-is-opensrp-fhir-core)
-- [Project Architecture](#project-architecture)
-- [Repository Setup](#repository-setup)
-  - [Bootstrapping](#bootstrapping)
-  - [Current Build Tools](#current-build-tools)
-  - [Deprecated Build Tools](#deprecated-build-tools)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [Deployments](#deployments)
-  - [Prerequisites](#prerequisites)
-  - [Docker](#1-docker)
-  - [Kubernetes](#2-kubernetes)
-  - [Ansible](#3-ansible)
-- [Configuration](#configuration)
-  - [Environment Variables](#environment-variables)
-  - [Multi-language Support](#multi-language-support-mls)
-- [Publishing](#publishing)
+- [OpenSRP FHIR Web](#opensrp-fhir-web)
+  - [Table of Contents](#table-of-contents)
+  - [What is the FHIR Standard](#what-is-the-fhir-standard)
+  - [What is OpenSRP FHIR Core](#what-is-opensrp-fhir-core)
+  - [Project Architecture](#project-architecture)
+  - [Repository Setup](#repository-setup)
+    - [Bootstrapping](#bootstrapping)
+    - [Current Build Tools](#current-build-tools)
+    - [Deprecated Build Tools](#deprecated-build-tools)
+  - [Getting Started](#getting-started)
+  - [Contributing](#contributing)
+  - [Deployments](#deployments)
+    - [Prerequisites](#prerequisites)
+    - [1. Docker](#1-docker)
+    - [2. Kubernetes](#2-kubernetes)
+    - [3. Ansible](#3-ansible)
+  - [Configuration](#configuration)
+    - [Environment Variables](#environment-variables)
+    - [Multi-language Support (MLS)](#multi-language-support-mls)
+  - [Publishing](#publishing)
+  - [Deprecation Notice](#deprecation-notice)
 
 ## What is the FHIR Standard
 
@@ -116,3 +119,11 @@ We use different technologies to deploy OpenSRP FHIR Web.
 ## Publishing
 
 - [Publishing Documentation](/docs/publishing.md).
+
+## Deprecation Notice
+
+**Important:** We are deprecating packages used for administration of both opensrp web server and mobile clients that do not use fhir. These packages will no longer be actively maintained or receive updates.
+
+The last release that includes this modules can be found [here](https://github.com/opensrp/web/releases/tag/v2-deprecated-web) and the code in this [branch](https://github.com/opensrp/web/tree/v2-deprecated-web-branch)
+
+For any questions or assistance regarding issues in the affected modules, please feel free to create an [issue](https://github.com/opensrp/web/issues/new/choose)
