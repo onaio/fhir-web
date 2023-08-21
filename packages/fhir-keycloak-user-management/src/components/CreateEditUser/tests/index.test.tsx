@@ -13,7 +13,7 @@ import {
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -34,6 +34,7 @@ import * as notifications from '@opensrp/notifications';
 import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
+import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -110,7 +111,8 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-beforeAll(() => {
+beforeAll(async () => {
+  await opensrpI18nInstance.init();
   nock.disableNetConnect();
   store.dispatch(
     authenticateUser(
@@ -242,7 +244,11 @@ test('renders correctly for edit user', async () => {
   // simulate click on select - to show dropdown items
   fireEvent.mouseDown(appIdInput);
 
-  await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+  // await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+  await waitFor(() => {
+    const spin = appIdSection.querySelector('.anticon-spin');
+    expect(spin).toBeNull();
+  });
 
   fireEvent.click(queryByTitle('Device configurations(cha)') as Element);
 

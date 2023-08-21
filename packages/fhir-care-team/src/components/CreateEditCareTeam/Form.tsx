@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Radio, Select, PageHeader } from 'antd';
+import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   FormFields,
@@ -59,8 +60,8 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             ? t('Edit Care Team | {{name}}', { name: initialValues.name })
             : t('Create Care Team')
         }
-        className="page-header"
       />
+
       <Col className="bg-white p-3" span={24}>
         <Form
           {...formItemLayout}
@@ -69,7 +70,13 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
           onFinish={(values: FormFields) => {
             setIsSubmitting(true);
             submitForm(values, initialValues, fhirBaseURL, organizations, practitioners, t)
-              .catch(() => sendErrorNotification(t('An error occurred')))
+              .catch(() => {
+                if (initialValues.id) {
+                  sendErrorNotification(t('There was a problem updating the Care Team'));
+                } else {
+                  sendErrorNotification(t('There was a problem creating the Care Team'));
+                }
+              })
               .finally(() => setIsSubmitting(false));
           }}
         >

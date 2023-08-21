@@ -15,9 +15,8 @@ import { loadKeycloakResources } from './utils';
 import { getTableColumns } from './tableColumns';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { PageHeader } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
@@ -117,17 +116,15 @@ export const UserList = (props: OrganizationListProps) => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <PageHeader title={title} className="page-header" />
+      <PageHeader title={title} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Link to={URL_USER_CREATE}>
-              <Button type="primary">
-                <PlusOutlined />
-                {t('Add User')}
-              </Button>
-            </Link>
+            <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
+              <PlusOutlined />
+              {t('Add User')}
+            </Button>
           </div>
           <TableLayout {...tableProps} />
         </Col>

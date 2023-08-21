@@ -25,6 +25,6 @@ export const fetchAllRoles = async (
       dispatch(fetchKeycloakUserRoles(response));
     })
     .catch((_: Error) => {
-      sendErrorNotification(t('An error occurred'));
+      sendErrorNotification(t('There was a problem fetching realm roles'));
     });
 };

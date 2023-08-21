@@ -80,7 +80,7 @@ describe('dataLoading', () => {
       throw e;
     });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching User Group');
   });
 
   it('assignRoles works correctly', async () => {
@@ -115,7 +115,7 @@ describe('dataLoading', () => {
       }
     );
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem assigning roles');
   });
 
   it('removeAssignedRoles works correctly', async () => {
@@ -158,7 +158,9 @@ describe('dataLoading', () => {
       throw e;
     });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem removing assigned roles'
+    );
   });
 
   it('fetchRoleMappings fetches available roles', async () => {
@@ -249,7 +251,9 @@ describe('dataLoading', () => {
       throw e;
     });
     await flushPromises();
-    expect(mockNotificationError).toHaveBeenCalledWith('An error occurred');
+    expect(mockNotificationError).toHaveBeenCalledWith(
+      'There was a problem fetching role mappings'
+    );
   });
 
   it('submits group creation correctly', async () => {
@@ -344,7 +348,7 @@ describe('dataLoading', () => {
       await flushPromises();
     });
     expect(notificationErrorMock).toBeCalledTimes(1);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem creating User Group');
     expect(historyPushMock).not.toHaveBeenCalled();
   });
 
@@ -358,6 +362,6 @@ describe('dataLoading', () => {
       await flushPromises();
     });
     expect(notificationErrorMock).toBeCalledTimes(1);
-    expect(notificationErrorMock).toHaveBeenCalledWith('An error occurred');
+    expect(notificationErrorMock).toHaveBeenCalledWith('There was a problem editing User Group');
   });
 });

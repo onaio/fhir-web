@@ -4,7 +4,8 @@ import { USER_PREFERENCE_KEY } from '../constants';
 import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
 export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
-export const supportedProjectCode = ['eusm', 'core'] as const;
+
+export const supportedProjectCode = ['eusm', 'core', 'echis'] as const;
 export const supportedRbacStrategies = ['keycloak'] as const;
 
 export type LanguageCode = typeof supportedLanguageCodes[number];
@@ -28,10 +29,21 @@ export interface ConfigState {
   fhirBaseURL?: string;
   defaultTablesPageSize?: number; // static value of the default number of rows per page
   rbacStrategy?: KeycloakStrategies;
+  practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
 }
 
 export interface UserPreference {
   tablespref?: Record<string, TableState>;
+}
+
+/**
+ * This strategy only applies unilaterally, i.e. from practitioner to organization.
+ * It does not imply any relations in the opposite direction i.e. from organization
+ * to practitioner.
+ */
+export enum PractToOrgAssignmentStrategy {
+  ONE_TO_ONE = 'ONE_TO_ONE', // one practitioner assignable to one organization
+  ONE_TO_MANY = 'ONE_TO_MANY', // one practitioner assignable to multiple organizations
 }
 
 const defaultConfigs: GlobalState = {
@@ -44,6 +56,7 @@ const defaultConfigs: GlobalState = {
   defaultTablesPageSize: 5,
   projectCode: 'core',
   rbacStrategy: 'keycloak',
+  practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)

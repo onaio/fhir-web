@@ -9,7 +9,7 @@ import { history } from '@onaio/connected-reducer-registry';
 import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
 import { URL_EXPRESS_LOGIN } from '../../../../constants';
 import { Provider } from 'react-redux';
-import { CallbackComponent } from '../../../../App/App';
+import { CallbackComponent } from '../../../../App/fhir-apps';
 
 jest.mock('../../../../configs/env', () => ({
   ENABLE_OPENSRP_OAUTH: true,

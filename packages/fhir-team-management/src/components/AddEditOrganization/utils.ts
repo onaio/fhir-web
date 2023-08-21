@@ -10,11 +10,14 @@ import {
   practitionerResourceType,
 } from '../../constants';
 import { getObjLike, parseFhirHumanName, IdentifierUseCodes } from '@opensrp/react-utils';
-import { flatten } from 'lodash';
+import { flatten, groupBy } from 'lodash';
 import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import type { TFunction } from '@opensrp/i18n';
+import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
+import { IOrganizationAffiliation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganizationAffiliation';
+import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
 export interface OrganizationFormFields {
   id?: string;
@@ -172,9 +175,30 @@ export const getAssignedPractsOptions = (roles: IPractitionerRole[]) => {
  * map practitioner to select options
  *
  * @param practitioners - map of practitioners
+ * @param existingPractitionerRoles - practitioner Roles that reference organizatio, [] when creating an organization
+ * @param allPractitionerRoles - all practitioner roles resources
+ * @param assignmentStrategy - strategy to use when generating options to assign
  */
-export const getPractitionerOptions = (practitioners: IPractitioner[]) => {
-  return practitioners.map((pract) => {
+export const getPractitionerOptions = (
+  practitioners: IPractitioner[],
+  existingPractitionerRoles: IPractitionerRole[],
+  allPractitionerRoles: IPractitionerRole[],
+  assignmentStrategy?: PractToOrgAssignmentStrategy
+) => {
+  let allowedPractitioners = practitioners;
+  const rolesWithOrganizations = allPractitionerRoles.filter(
+    (practRole) => practRole.organization?.reference
+  );
+  // group allPractitionerRoles by practitioner references
+  const rolesByPractReference = groupBy(rolesWithOrganizations, 'practitioner.reference');
+
+  if (assignmentStrategy && assignmentStrategy === PractToOrgAssignmentStrategy.ONE_TO_ONE) {
+    allowedPractitioners = allowedPractitioners.filter((pract) => {
+      const practReference = `${pract.resourceType}/${pract.id}`;
+      return !rolesByPractReference[practReference] as boolean;
+    });
+  }
+  const newPractitionerOptions = allowedPractitioners.map((pract) => {
     const nameObj = getObjLike(pract.name, 'use', HumanNameUseCodes.OFFICIAL)[0];
     const value = `${practitionerResourceType}/${pract.id}`;
     const label = parseFhirHumanName(nameObj);
@@ -183,4 +207,42 @@ export const getPractitionerOptions = (practitioners: IPractitioner[]) => {
       label: label ?? value,
     };
   });
+  const existingPractitionerOptions = existingPractitionerRoles.map((role) => {
+    const value = role.practitioner?.reference as string;
+    const label = role.practitioner?.display;
+    return {
+      value,
+      label: label ?? value,
+    };
+  });
+  return [...newPractitionerOptions, ...existingPractitionerOptions];
+};
+
+/**
+ * Find locations assigned to a particular organization
+ *
+ * @param orgAffiliations - Affiliations
+ * @param id - Id of the affiliated organization
+ */
+export const FindAssignedLocations = (
+  orgAffiliations: IOrganizationAffiliation[],
+  id: string | undefined
+) => {
+  const locations: Reference[] = [];
+
+  orgAffiliations.forEach((affiliation) => {
+    const { organization, location } = affiliation;
+    const orgReference = organization?.reference;
+
+    if (!orgReference) {
+      return;
+    }
+
+    if (`${organizationResourceType}/${id}` === orgReference) {
+      location?.forEach((loc) => {
+        locations.push(loc);
+      });
+    }
+  });
+  return locations;
 };

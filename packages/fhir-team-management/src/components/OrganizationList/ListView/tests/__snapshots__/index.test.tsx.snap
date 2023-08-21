@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly when listing organizations: Header title 1`] = `
-<span
-  class="ant-page-header-heading-title"
-  title="Organization list"
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
 >
   Organization list
-</span>
+</h4>
 `;
 
 exports[`renders correctly when listing organizations: Search 1 page 1 1`] = `
@@ -25,19 +24,13 @@ exports[`renders correctly when listing organizations: Search 1 page 1 2`] = `
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/205"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -73,7 +66,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Team id
     </span>
@@ -82,7 +75,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       205
     </span>
@@ -98,7 +91,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Team identifier
     </span>
@@ -107,7 +100,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       205
     </span>
@@ -123,7 +116,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Team status
     </span>
@@ -132,7 +125,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       Active
     </span>
@@ -148,7 +141,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__label"
   >
     <span
-      class="ant-typography ant-typography-secondary"
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
       Team practitioners
     </span>
@@ -157,7 +150,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
     class="singleKeyValue-pair__value"
   >
     <span
-      class="ant-typography"
+      class="ant-typography css-dev-only-do-not-override-k7429z"
     >
       <ul
         id="practitioner-teams"
@@ -187,19 +180,13 @@ exports[`renders correctly when listing organizations: table row 1 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/205"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -243,19 +230,13 @@ exports[`renders correctly when listing organizations: table row 1 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/363"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -299,19 +280,13 @@ exports[`renders correctly when listing organizations: table row 2 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/361"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -355,19 +330,13 @@ exports[`renders correctly when listing organizations: table row 2 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/364"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -411,19 +380,13 @@ exports[`renders correctly when listing organizations: table row 3 page 1 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/362"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span
@@ -467,19 +430,13 @@ exports[`renders correctly when listing organizations: table row 3 page 2 2`] = 
     class="d-flex align-items-center"
   >
     <a
+      class="m-0 p-1"
       href="/admin/teams/edit/365"
     >
-      <button
-        class="ant-btn ant-btn-link m-0 p-1"
-        type="button"
-      >
-        <span>
-          Edit
-        </span>
-      </button>
+      Edit
     </a>
     <div
-      class="ant-divider ant-divider-vertical"
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
     <span

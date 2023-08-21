@@ -2,13 +2,15 @@
 
 exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 <input
-  className="ant-input ant-input-disabled"
+  aria-required="true"
+  className="ant-input ant-input-disabled css-dev-only-do-not-override-k7429z"
   disabled={true}
   id="username"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value="opensrp"
 />
@@ -16,12 +18,15 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 
 exports[`components/forms/UserForm form validation works for contact field: contact input 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   id="contact"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -39,12 +44,14 @@ exports[`components/forms/UserForm form validation works for contact field: cont
 
 exports[`components/forms/UserForm renders correctly: email input 1`] = `
 <input
-  className="ant-input"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   id="email"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -65,26 +72,18 @@ Array [
   <input
     checked={true}
     className="ant-radio-input"
+    disabled={false}
     name="enabled"
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={true}
   />,
   <input
     checked={false}
     className="ant-radio-input"
+    disabled={false}
     name="enabled"
-    onBlur={[Function]}
     onChange={[Function]}
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onKeyPress={[Function]}
-    onKeyUp={[Function]}
     type="radio"
     value={false}
   />,
@@ -93,12 +92,15 @@ Array [
 
 exports[`components/forms/UserForm renders correctly: firstName input 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   id="firstName"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -116,12 +118,15 @@ exports[`components/forms/UserForm renders correctly: firstName label 1`] = `
 
 exports[`components/forms/UserForm renders correctly: lastName input 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
   id="lastName"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -155,13 +160,15 @@ exports[`components/forms/UserForm renders correctly: userGroups label 1`] = `
 
 exports[`components/forms/UserForm renders correctly: username input 1`] = `
 <input
-  className="ant-input"
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
   disabled={false}
   id="username"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value=""
 />
@@ -231,13 +238,15 @@ Object {
 
 exports[`components/forms/UserForm user is not edited if api is down: readonly username edit 1`] = `
 <input
-  className="ant-input ant-input-disabled"
+  aria-required="true"
+  className="ant-input ant-input-disabled css-dev-only-do-not-override-k7429z"
   disabled={true}
   id="username"
   onBlur={[Function]}
   onChange={[Function]}
   onFocus={[Function]}
   onKeyDown={[Function]}
+  style={Object {}}
   type="text"
   value="opensrp"
 />

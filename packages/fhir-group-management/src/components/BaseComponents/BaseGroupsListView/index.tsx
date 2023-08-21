@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Row, Col, PageHeader, Button } from 'antd';
+import { Row, Col, Button } from 'antd';
+import { PageHeader } from '@opensrp/react-utils';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   SearchForm,
   BrokenPage,
@@ -49,6 +50,7 @@ export const BaseListView = (props: BaseListViewProps) => {
   const { sParams } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
   const { t } = useTranslation();
+  const history = useHistory();
 
   const {
     queryValues: { data, isFetching, isLoading, error },
@@ -81,18 +83,16 @@ export const BaseListView = (props: BaseListViewProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} className="page-header" />
+      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
             {createButtonUrl && (
-              <Link to={createButtonUrl}>
-                <Button type="primary">
-                  <PlusOutlined />
-                  {createButtonLabel}
-                </Button>
-              </Link>
+              <Button type="primary" onClick={() => history.push(createButtonUrl)}>
+                <PlusOutlined />
+                {createButtonLabel}
+              </Button>
             )}
           </div>
           <TableLayout {...tableProps} />

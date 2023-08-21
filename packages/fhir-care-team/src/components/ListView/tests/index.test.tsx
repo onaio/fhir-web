@@ -108,17 +108,18 @@ describe('Care Teams list view', () => {
     });
 
     wrapper.update();
-    wrapper.find('.more-options').at(0).simulate('click');
+    wrapper.find('[data-testid="action-dropdown"]').at(0).simulate('click');
     wrapper.update();
-    wrapper.find('Button').at(2).simulate('click');
-    expect(wrapper.find('Button').at(2).text()).toEqual('Delete');
+    const dropdown = wrapper.find('button[data-testid="deleteBtn"]');
+    expect(dropdown).toHaveLength(1);
+    dropdown.simulate('click');
     wrapper.update();
     // check pop up text
     expect(wrapper.find('.ant-popover-content').at(0).text()).toMatchInlineSnapshot(
       `"Are you sure you want to delete this Care Team?NoYes"`
     );
     const popconfirm = wrapper.find('.ant-popover-content').at(0);
-    popconfirm.find('Button').at(1).simulate('click');
+    popconfirm.find('.ant-btn').at(1).simulate('click');
 
     await act(async () => {
       await flushPromises();
@@ -145,7 +146,9 @@ describe('Care Teams list view', () => {
       await flushPromises();
     });
 
-    expect(notificationErrorsMock.mock.calls).toEqual([['An error occurred']]);
+    expect(notificationErrorsMock.mock.calls).toEqual([
+      ['There was a problem deleting the Care Team'],
+    ]);
   });
 });
 

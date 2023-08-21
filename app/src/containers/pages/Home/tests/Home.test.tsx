@@ -42,17 +42,10 @@ describe('containers/pages/Home', () => {
       )
     );
     const envModule = require('../../../../configs/env');
-    envModule.ENABLE_LOCATIONS = true;
-    envModule.ENABLE_TEAMS = true;
-    envModule.ENABLE_INVENTORY = true;
-    envModule.ENABLE_FORM_CONFIGURATION = true;
     envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
-    envModule.ENABLE_PRODUCT_CATALOGUE = true;
-    envModule.ENABLE_PLANS = true;
-    envModule.ENABLE_CARD_SUPPORT = true;
-    envModule.ENABLE_USER_MANAGEMENT = true;
-    envModule.ENABLE_LOCATIONS = true;
-    envModule.ENABLE_TEAMS = true;
+    envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
+    envModule.ENABLE_FHIR_LOCATIONS = true;
+    envModule.ENABLE_FHIR_TEAMS = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
       PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
@@ -73,15 +66,10 @@ describe('containers/pages/Home', () => {
 
     const helmet = Helmet.peek();
     expect(helmet.title).toEqual('OpenSRP Web');
-    const links = [...screen.queryAllByRole('link')];
-    expect(links.map((x) => x.textContent)).toEqual([
-      'Plans',
-      'Card Support',
-      'Inventory',
+    const links = document.querySelectorAll('.admin-link');
+    expect(Array.from(links).map((x) => x.textContent)).toEqual([
       'Location Management',
-      'Product Catalogue',
       'Team Management',
-      'Form Configuration',
     ]);
     links.forEach((link) => {
       expect(link).toMatchSnapshot(link.textContent ?? undefined);

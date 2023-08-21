@@ -128,7 +128,7 @@ test('renders correctly when listing resources', async () => {
   const addGroupBtn = screen.queryByText(/Add Group/);
   expect(addGroupBtn).not.toBeInTheDocument();
 
-  expect(document.querySelector('.ant-page-header-heading-title')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

@@ -1,120 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Card Support 1`] = `
-<a
-  class="admin-link"
-  href="/card-support/download-client-data"
->
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Card Support
-    </span>
-  </button>
-</a>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Form Configuration 1`] = `
-<a
-  class="admin-link"
-  href="/admin/form-config/releases"
->
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Form Configuration
-    </span>
-  </button>
-</a>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Inventory 1`] = `
-<a
-  class="admin-link"
-  href="/inventory"
->
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Inventory
-    </span>
-  </button>
-</a>
-`;
-
 exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Location Management 1`] = `
-<a
-  class="admin-link"
-  href="/admin/location/unit"
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
 >
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Location Management
-    </span>
-  </button>
-</a>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Plans 1`] = `
-<a
-  class="admin-link"
-  href="/missions/active"
->
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Plans
-    </span>
-  </button>
-</a>
-`;
-
-exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Product Catalogue 1`] = `
-<a
-  class="admin-link"
-  href="/admin/product-catalogue"
->
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Product Catalogue
-    </span>
-  </button>
-</a>
+  <span>
+    Location Management
+  </span>
+</button>
 `;
 
 exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
-<a
-  class="admin-link"
-  href=""
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
 >
-  <button
-    class="ant-btn ant-btn-default btn-links"
-    color="outline"
-    type="button"
-  >
-    <span>
-      Team Management
-    </span>
-  </button>
-</a>
+  <span>
+    Team Management
+  </span>
+</button>
 `;

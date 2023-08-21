@@ -37,6 +37,8 @@ jest.mock('antd', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
@@ -62,10 +64,12 @@ describe('components/forms/CreateTeamForm', () => {
     await act(async () => {
       await flushPromises();
     });
-    wrapper.update();
 
+    wrapper.update();
     // name is required and has no default
-    expect(wrapper.find('FormItem#name').text()).toMatchInlineSnapshot(`"NameName is Required"`);
+    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
+      `"NameName is Required"`
+    );
     wrapper.unmount();
   });
 

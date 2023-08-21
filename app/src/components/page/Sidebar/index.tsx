@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
-import { getActiveKey } from './utils';
+import { getActivePath } from './utils';
 import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
@@ -27,7 +27,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
-  const [openKeys, setOpenKeys] = React.useState<React.Key[]>([]);
 
   const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
 
@@ -55,10 +54,14 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     return routes.map(mapChildren);
   }, [routes]);
 
-  const activeLocationPaths = location.pathname
-    .split('/')
-    .filter((locString: string) => locString.length);
-  const activeKey = getActiveKey(location.pathname, routes);
+  const { activeKey, activePaths } = getActivePath(location.pathname, routes);
+
+  const [collapsedKeys, setCollapsedKeys] = useState<string[]>([]);
+
+  useEffect(() => {
+    const { activePaths } = getActivePath(location.pathname, routes);
+    setCollapsedKeys(activePaths.concat(...collapsedKeys));
+  }, [location.pathname, routes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Layout.Sider width="275px" className="layout-sider">
@@ -75,10 +78,10 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         key="main-menu"
         theme="dark"
         selectedKeys={[activeKey ?? '']}
-        openKeys={openKeys.length ? (openKeys as string[]) : activeLocationPaths}
-        defaultOpenKeys={activeLocationPaths}
+        openKeys={collapsedKeys}
+        defaultOpenKeys={activePaths}
         defaultSelectedKeys={[activeKey ?? '']}
-        onOpenChange={(keys) => setOpenKeys(keys)}
+        onOpenChange={(openKeys) => setCollapsedKeys(openKeys)}
         mode="inline"
         className="menu-dark"
       >
