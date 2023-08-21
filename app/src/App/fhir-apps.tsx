@@ -12,11 +12,7 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Routes, Route, Navigate, Params } from 'react-router';
 import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
-import {
-  BACKEND_ACTIVE,
-  DISABLE_LOGIN_PROTECTION,
-  OPENSRP_ROLES,
-} from '../configs/env';
+import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION, OPENSRP_ROLES } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
@@ -112,10 +108,7 @@ import {
   LIST_GROUP_URL,
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
-import '@opensrp/plans/dist/index.css';
 import '@opensrp/user-management/dist/index.css';
-import '@opensrp/product-catalogue/dist/index.css';
-import '@opensrp/inventory/dist/index.css';
 import { APP_LOGIN_URL } from '../configs/dispatchConfig';
 
 /** Util function that renders Oauth2 callback components
@@ -251,10 +244,8 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
-        {...(fhirCreateEditUserProps)}
-        element={
-          FHIRConnectedCreateEditUser
-        }
+        {...fhirCreateEditUserProps}
+        component={FHIRConnectedCreateEditUser}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -275,10 +266,8 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         path={URL_USER_CREATE}
-        {...(fhirCreateEditUserProps)}
-        element={
-          FHIRConnectedCreateEditUser
-        }
+        {...fhirCreateEditUserProps}
+        component={FHIRConnectedCreateEditUser}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -338,9 +327,8 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={
-          activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
-        }
+        activeRoles={activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')}
+        exact
         path={URL_JSON_VALIDATOR_LIST}
         element={FileList}
         {...jsonValidatorListProps}
@@ -372,36 +360,28 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={
-          activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
-        }
+        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
         element={HealthCareAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={
-          activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
-        }
+        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
         element={HealthCareAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={
-          activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
-        }
+        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={`${LIST_HEALTHCARE_URL}/:id`}
         element={HealthCareList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={
-          activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')
-        }
+        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={LIST_HEALTHCARE_URL}
         element={HealthCareList}
       />

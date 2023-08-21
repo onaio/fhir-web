@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`components/Antd/DraftFilelist/TableActions renders correctly 1`] = `
-Object {
-  "children": "Download",
-  "onClick": [Function],
-  "type": "link",
-}
-`;
