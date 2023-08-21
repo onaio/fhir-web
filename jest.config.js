@@ -25,6 +25,14 @@ module.exports = {
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
   testEnvironment: 'jsdom',
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
 };
 
 // import dotenv from 'dotenv';

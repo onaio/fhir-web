@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`containers/InventoryAddEdit renders correctly: heading 1`] = `"Add inventory item to Ambatoharanana"`;
