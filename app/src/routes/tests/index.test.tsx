@@ -2,6 +2,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { filterFalsyRoutes, getRoutes } from '..';
 import { DashboardOutlined } from '@ant-design/icons';
+import React from 'react';
 
 jest.mock('../../configs/env');
 jest.mock('../../configs/settings');
