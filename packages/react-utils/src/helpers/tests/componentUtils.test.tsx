@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useEffect, useState } from 'react';
 import { act } from 'react-dom/test-utils';
-import { history } from '@onaio/connected-reducer-registry';
+// import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { MemoryRouter, Router } from 'react-router';
+import { MemoryRouter, BrowserRouter as Router } from 'react-router-dom';
 import { store } from '@opensrp/store';
 import * as componentUtils from '../componentUtils';
 import { UserList } from '@opensrp/user-management';
@@ -16,6 +16,9 @@ import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 
 const { PublicComponent, PrivateComponent, isAuthorized } = componentUtils;
 
@@ -256,7 +259,7 @@ describe('componentUtils', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <PrivateComponent
             {...props}
             component={MockComponent}

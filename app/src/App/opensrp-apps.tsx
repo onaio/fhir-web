@@ -9,7 +9,7 @@ import {
   OauthCallbackProps,
 } from '@onaio/gatekeeper';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
-import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
+import { Routes, Route, Navigate, RouteComponentProps } from 'react-router';
 import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
 import {
@@ -166,11 +166,11 @@ import { APP_LOGIN_URL } from '../configs/dispatchConfig';
 export const LoadingComponent = () => <Spin size="large" className="custom-spinner" />;
 export const SuccessfulLoginComponent = () => {
   if (DEFAULT_HOME_MODE === 'eusm') {
-    return <Redirect to={ACTIVE_PLANS_LIST_VIEW_URL} />;
+    return <Navigate to={ACTIVE_PLANS_LIST_VIEW_URL} />;
   } else if (DEFAULT_HOME_MODE === 'tunisia') {
-    return <Redirect to={URL_DOWNLOAD_CLIENT_DATA} />;
+    return <Navigate to={URL_DOWNLOAD_CLIENT_DATA} />;
   } else {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 };
 
@@ -202,7 +202,7 @@ const OpenSRPApps = () => {
   useTranslation();
 
   return (
-    <Switch>
+    <Routes>
       {/* tslint:disable jsx-no-lambda */}
       {/* Home Page view */}
       <ConnectedPrivateRoute
@@ -210,158 +210,142 @@ const OpenSRPApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_HOME}
-        component={Home}
+        element={Home}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={URL_USER_GROUPS}
-        component={UserGroupsList}
+        element={UserGroupsList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        exact
         path={URL_USER_ROLES}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        component={UserRolesList}
+        element={UserRolesList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={URL_USER}
         {...usersListProps}
-        component={ConnectedUserList}
+        element={ConnectedUserList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={PLANS_CREATE_VIEW_URL}
         {...planCreateProps}
-        component={CreatePlanView}
+        element={CreatePlanView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={ACTIVE_PLANS_LIST_VIEW_URL}
         {...plansListProps}
         {...activePlansListStatusProp}
-        component={ConnectedPlansList}
+        element={ConnectedPlansList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${ACTIVE_PLANS_LIST_VIEW_URL}/:planId`}
         {...plansListProps}
         {...missionAssignmentProps}
-        component={ConnectedPlanAssignment}
+        element={ConnectedPlanAssignment}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${ACTIVE_PLANS_LIST_VIEW_URL}/edit/:planId`}
         {...planEditProps}
-        component={ConnectedEditPlanView}
+        element={ConnectedEditPlanView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={DRAFT_PLANS_LIST_VIEW_URL}
         {...plansListProps}
         {...draftPlansListStatusProp}
-        component={ConnectedPlansList}
+        element={ConnectedPlansList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${DRAFT_PLANS_LIST_VIEW_URL}/:planId`}
         {...plansListProps}
         {...missionAssignmentProps}
-        component={ConnectedPlanAssignment}
+        element={ConnectedPlanAssignment}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${DRAFT_PLANS_LIST_VIEW_URL}/edit/:planId`}
         {...planEditProps}
-        component={ConnectedEditPlanView}
+        element={ConnectedEditPlanView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={COMPLETE_PLANS_LIST_VIEW_URL}
         {...plansListProps}
         {...completedPlansListStatusProp}
-        component={ConnectedPlansList}
+        element={ConnectedPlansList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${COMPLETE_PLANS_LIST_VIEW_URL}/:planId`}
         {...plansListProps}
         {...missionAssignmentProps}
-        component={ConnectedPlanAssignment}
+        element={ConnectedPlanAssignment}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${COMPLETE_PLANS_LIST_VIEW_URL}/edit/:planId`}
         {...planEditProps}
-        component={ConnectedEditPlanView}
+        element={ConnectedEditPlanView}
       />
 
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={RETIRED_PLANS_LIST_VIEW_URL}
         {...plansListProps}
         {...retiredPlansListStatusProp}
-        component={ConnectedPlansList}
+        element={ConnectedPlansList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${RETIRED_PLANS_LIST_VIEW_URL}/:planId`}
         {...plansListProps}
         {...missionAssignmentProps}
-        component={ConnectedPlanAssignment}
+        element={ConnectedPlanAssignment}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.PLANS && activeRoles.PLANS.split(',')}
-        exact
         path={`${RETIRED_PLANS_LIST_VIEW_URL}/edit/:planId`}
         {...planEditProps}
-        component={ConnectedEditPlanView}
+        element={ConnectedEditPlanView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -369,10 +353,9 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
         }
-        exact
         path={CATALOGUE_CREATE_VIEW_URL}
         {...BaseProps}
-        component={CreateProductView}
+        element={CreateProductView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -380,10 +363,9 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
         }
-        exact
         path={`${CATALOGUE_EDIT_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
         {...BaseProps}
-        component={ConnectedEditProductView}
+        element={ConnectedEditProductView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -391,10 +373,9 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
         }
-        exact
         path={CATALOGUE_LIST_VIEW_URL}
         {...BaseProps}
-        component={ConnectedProductCatalogueList}
+        element={ConnectedProductCatalogueList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -402,64 +383,57 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.PRODUCT_CATALOGUE && activeRoles.PRODUCT_CATALOGUE.split(',')
         }
-        exact
         path={`${CATALOGUE_LIST_VIEW_URL}/:${PRODUCT_ID_ROUTE_PARAM}`}
         {...BaseProps}
-        component={ConnectedProductCatalogueList}
+        element={ConnectedProductCatalogueList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-        exact
         path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${INVENTORY_SERVICE_POINT_PROFILE_PARAM}`}
         {...inventoryServiceProps}
-        component={ServicePointProfile}
+        element={ServicePointProfile}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-        exact
         path={INVENTORY_SERVICE_POINT_LIST_VIEW}
         {...inventoryServiceProps}
-        component={ConnectedServicePointList}
+        element={ConnectedServicePointList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-        exact
         {...BaseProps}
         path={INVENTORY_ADD_SERVICE_POINT}
-        component={ServicePointsAdd}
+        element={ServicePointsAdd}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-        exact
         path={INVENTORY_BULK_UPLOAD_URL}
         {...inventoryServiceProps}
-        component={BulkUpload}
+        element={BulkUpload}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
-        exact
         {...BaseProps}
         path={`${INVENTORY_EDIT_SERVICE_POINT}/:id`}
-        component={ServicePointEdit}
+        element={ServicePointEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
         {...(createEditUserProps)}
-        component={
+        element={
           ConnectedCreateEditUser
         }
       />
@@ -467,26 +441,23 @@ const OpenSRPApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
-        component={CreateEditUserGroup}
+        element={CreateEditUserGroup}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={URL_USER_GROUP_CREATE}
-        component={CreateEditUserGroup}
+        element={CreateEditUserGroup}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={URL_USER_CREATE}
         {...(createEditUserProps)}
-        component={
+        element={
           ConnectedCreateEditUser
         }
       />
@@ -494,62 +465,55 @@ const OpenSRPApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
-        component={ConnectedUserCredentials}
+        element={ConnectedUserCredentials}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        exact
         path={`${URL_USER}/:id`}
         {...usersListProps}
-        component={ConnectedUserList}
+        element={ConnectedUserList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-        exact
         path={URL_TEAMS}
         {...teamAssignmentProps}
-        component={TeamsView}
+        element={TeamsView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-        exact
         path={URL_TEAM_ASSIGNMENT}
         {...teamAssignmentProps}
-        component={TeamAssignmentView}
+        element={TeamAssignmentView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-        exact
         path={URL_TEAMS_ADD}
         {...teamManagementProps}
-        component={TeamsAddEdit}
+        element={TeamsAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
-        exact
         path={`${URL_TEAMS_EDIT}/:id`}
         {...teamManagementProps}
-        component={TeamsAddEdit}
+        element={TeamsAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.CARD_SUPPORT && activeRoles.CARD_SUPPORT.split(',')}
-        exact
         path={URL_DOWNLOAD_CLIENT_DATA}
-        component={DownloadClientData}
+        element={DownloadClientData}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -558,7 +522,7 @@ const OpenSRPApps = () => {
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
         path={URL_UPLOAD_JSON_VALIDATOR}
-        component={UploadForm}
+        element={UploadForm}
         {...jsonValidatorFormProps}
       />
       <PrivateComponent
@@ -567,9 +531,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={`${URL_UPLOAD_JSON_VALIDATOR}/:${ROUTE_PARAM_FORM_ID}`}
-        component={UploadForm}
+        element={UploadForm}
         {...jsonValidatorFormProps}
       />
       <PrivateComponent
@@ -578,9 +541,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={URL_JSON_VALIDATOR_LIST}
-        component={FileList}
+        element={FileList}
         {...jsonValidatorListProps}
       />
       <PrivateComponent
@@ -589,9 +551,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={URL_UPLOAD_DRAFT_FILE}
-        component={UploadForm}
+        element={UploadForm}
         {...draftFormProps}
       />
       <PrivateComponent
@@ -600,9 +561,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={`${URL_UPLOAD_DRAFT_FILE}/:${ROUTE_PARAM_FORM_ID}`}
-        component={UploadForm}
+        element={UploadForm}
         {...draftFormProps}
       />
       <PrivateComponent
@@ -611,9 +571,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={URL_DRAFT_FILE_LIST}
-        component={DrafFileList}
+        element={DrafFileList}
         {...draftListProps}
       />
       <PrivateComponent
@@ -622,9 +581,8 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={URL_MANIFEST_RELEASE_LIST}
-        component={ReleaseList}
+        element={ReleaseList}
         {...releaseListProps}
       />
       <PrivateComponent
@@ -633,61 +591,54 @@ const OpenSRPApps = () => {
         activeRoles={
           activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')
         }
-        exact
         path={`${URL_MANIFEST_RELEASE_LIST}/:${ROUTE_PARAM_FORM_VERSION}`}
-        component={FileList}
+        element={FileList}
         {...releaseViewProps}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT}
         {...locationUnitProps}
-        component={LocationUnitList}
+        element={LocationUnitList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT_ADD}
         {...newLocationUnitProps}
-        component={NewLocationUnit}
+        element={NewLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT_EDIT}
         {...editLocationProps}
-        component={EditLocationUnit}
+        element={EditLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT_GROUP}
-        component={LocationUnitGroupList}
+        element={LocationUnitGroupList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT_GROUP_ADD}
-        component={LocationUnitGroupAddEdit}
+        element={LocationUnitGroupAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
-        exact
         path={URL_LOCATION_UNIT_GROUP_EDIT}
-        component={LocationUnitGroupAddEdit}
+        element={LocationUnitGroupAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -695,7 +646,7 @@ const OpenSRPApps = () => {
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
         path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_ADD}`}
         {...inventoryItemAddEditProps}
-        component={ConnectedInventoryAddEdit}
+        element={ConnectedInventoryAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -703,7 +654,7 @@ const OpenSRPApps = () => {
         activeRoles={activeRoles.SERVER_SETTINGS && activeRoles.SERVER_SETTINGS.split(',')}
         path={URL_SERVER_SETTINGS}
         {...serverSettingsProps}
-        component={ServerSettingsView}
+        element={ServerSettingsView}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -711,33 +662,30 @@ const OpenSRPApps = () => {
         activeRoles={activeRoles.INVENTORY && activeRoles.INVENTORY.split(',')}
         path={`${INVENTORY_SERVICE_POINT_PROFILE_VIEW}/:${ROUTE_PARAM_SERVICE_POINT_ID}${URL_INVENTORY_EDIT}/:${ROUTE_PARAM_INVENTORY_ID}`}
         {...inventoryItemAddEditProps}
-        component={ConnectedInventoryAddEdit}
+        element={ConnectedInventoryAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        exact
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
-        component={UserGroupsList}
+        element={UserGroupsList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.DISTRICT_REPORT && activeRoles.DISTRICT_REPORT.split(',')}
-        exact
         path={URL_DOWNLOAD_DISTRICT_REPORT}
-        component={DistrictReport}
+        element={DistrictReport}
       />
       <Route
-        exact
         path={APP_LOGIN_URL}
-        render={() => {
+        element={() => {
           window.location.href = OpenSRP;
           return <></>;
         }}
       />
-      <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
+      <PublicComponent path={APP_CALLBACK_PATH} element={CallbackComponent} />
       {/* tslint:enable jsx-no-lambda */}
       <ConnectedPrivateRoute
         redirectPath={APP_CALLBACK_URL}
@@ -747,8 +695,8 @@ const OpenSRPApps = () => {
         // tslint:disable-next-line: jsx-no-lambda
         component={CustomLogout}
       />
-      <Route exact component={Resource404} />
-    </Switch>
+      <Route element={Resource404} />
+    </Routes>
   );
 };
 

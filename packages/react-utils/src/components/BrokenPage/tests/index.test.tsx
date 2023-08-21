@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import { BrokenPage, useHandleBrokenPage } from '..';
 import { createBrowserHistory } from 'history';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { HOME_URL } from '../../../constants';
 
 const history = createBrowserHistory();
@@ -12,7 +12,7 @@ describe('broken page', () => {
     const mockBack = jest.fn();
     history.goBack = mockBack;
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <BrokenPage></BrokenPage>
       </Router>
     );
@@ -50,8 +50,8 @@ describe('broken page', () => {
       );
     };
     const wrapper = mount(
-      <Router history={history}>
-        <MockApp></MockApp>
+      <Router>
+        <MockApp />
       </Router>
     );
     expect(wrapper.text()).toMatchInlineSnapshot(`""`);

@@ -1,5 +1,6 @@
 import {
   cleanup,
+  prettyDOM,
   render,
   screen,
   waitFor,
@@ -14,7 +15,7 @@ import { createMemoryHistory } from 'history';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Input } from 'antd';
 import TableLayout from '../../components/TableLayout';
-import { Router, Route, Switch } from 'react-router';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useTabularViewWithLocalSearch } from '../useTabularViewWithLocalSearch';
 import { hugeSinglePageData, hugeSinglePageDataSummary } from './fixtures';
 
@@ -101,11 +102,9 @@ const SampleApp = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/qr">
-        <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
-      </Route>
-    </Switch>
+    <Routes>
+      <Route path="/qr" element={<QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>} />
+    </Routes>
   );
 };
 
@@ -148,12 +147,14 @@ test('integrates correctly in component', async () => {
     .reply(200, hugeSinglePageData);
 
   render(
-    <Router history={history}>
+    <Router>
       <App>
         <SampleApp />
       </App>
     </Router>
   );
+
+  console.log(prettyDOM(document))
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

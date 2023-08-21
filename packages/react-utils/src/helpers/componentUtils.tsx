@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Route, RouteProps, RouteComponentProps, useLocation } from 'react-router';
+import { Route, RouteProps, Routes, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
 import { getAllConfigs } from '@opensrp/pkg-config';
@@ -11,7 +11,7 @@ import { useTranslation } from '../mls';
 const configs = getAllConfigs();
 
 /** Private/Public component props */
-interface ComponentProps extends Partial<RouteProps> {
+interface ComponentProps {
   component: any;
   redirectPath: string;
   disableLoginProtection: boolean;
@@ -46,7 +46,11 @@ export const PrivateComponent = (props: ComponentProps) => {
   const { activeRoles } = props;
   if (authenticated) {
     if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
-      return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
+      return (
+        <Routes>
+          <ConnectedPrivateRoute {...CPRProps} key={pathname} />
+        </Routes>
+      );
     } else {
       return (
         <UnauthorizedPage
@@ -56,7 +60,11 @@ export const PrivateComponent = (props: ComponentProps) => {
       );
     }
   }
-  return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
+  return (
+    <Routes>
+      <ConnectedPrivateRoute {...CPRProps} key={pathname} />
+    </Routes>
+  );
 };
 
 /**
@@ -70,10 +78,12 @@ export const PublicComponent = ({ component: Component, ...rest }: Partial<Compo
   // get current pathname - to be passed as unique key to ConnectedPrivateRoute
   const { pathname } = useLocation();
   return (
-    <Route
+    <Routes>
+      <Route
       {...rest}
-      component={(props: RouteComponentProps) => <Component {...props} key={pathname} />}
+      element={<Component key={pathname} />}
     />
+    </Routes>
   );
 };
 

@@ -1,7 +1,7 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { User } from '@onaio/session-reducer';
 import * as React from 'react';
-import { RouteComponentProps, withRouter, useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Layout, Avatar, Button, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import './Header.css';
@@ -16,7 +16,7 @@ import { APP_LOGIN_URL } from '../../../configs/dispatchConfig';
 import { ButtonLink } from '@opensrp/react-utils';
 
 /** interface for HeaderProps */
-export interface HeaderProps extends RouteComponentProps {
+export interface HeaderProps {
   authenticated: boolean;
   user: User;
   extraData: { [key: string]: Dictionary };
@@ -56,7 +56,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { authenticated, user, extraData } = props;
   const { user_id } = extraData;
   const { t, i18n } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /** default enum of all possible language options */
 
@@ -111,7 +111,7 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
           icon={<BellOutlined />}
           className="bg-transparent border-0"
           type="primary"
-          onClick={() => history.push(APP_LOGIN_URL)}
+          onClick={() => navigate(APP_LOGIN_URL)}
         >
           {t('Login')}
         </Button>
@@ -123,6 +123,6 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
 
 HeaderComponent.defaultProps = defaultHeaderProps;
 
-const Header = withRouter(HeaderComponent);
+const Header = HeaderComponent;
 
 export default Header;

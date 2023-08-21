@@ -1,6 +1,6 @@
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { ChangeEvent } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { Location, PathMatch } from 'react-router';
 
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
@@ -13,7 +13,7 @@ export const viewDetailsQuery = 'viewDetails';
  * @param location - route information
  * @param paramKey - search param key
  */
-export const getStringParam = (location: RouteComponentProps['location'], paramKey: string) => {
+export const getStringParam = (location: Location, paramKey: string) => {
   const sParams = new URLSearchParams(location.search);
   return sParams.get(paramKey);
 };
@@ -26,7 +26,7 @@ export const getStringParam = (location: RouteComponentProps['location'], paramK
  * @param fallback - fallback if key not found, or malformed
  */
 export const getNumberParam = (
-  location: RouteComponentProps['location'],
+  location: Location,
   paramKey: string,
   fallback: number | null = null
 ) => {
@@ -50,11 +50,11 @@ export const startingPageSize = 20;
  */
 export const getNextUrlOnSearch = (
   event: ChangeEvent<HTMLInputElement>,
-  location: RouteComponentProps['location'],
-  match: RouteComponentProps['match']
+  location: Location,
+  match: PathMatch
 ) => {
   const searchText = event.target.value;
-  let nextUrl = match.path;
+  let nextUrl = match.pathname;
   const currentSParams = new URLSearchParams(location.search);
 
   if (searchText) {

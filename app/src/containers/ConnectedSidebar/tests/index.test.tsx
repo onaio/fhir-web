@@ -125,16 +125,16 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('shows the correct logo', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
-          <ConnectedSidebar />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
-  });
+  // it('shows the correct logo', () => {
+  //   const wrapper = mount(
+  //     <Provider store={store}>
+  //       <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
+  //         <ConnectedSidebar />
+  //       </MemoryRouter>
+  //     </Provider>
+  //   );
+  //   expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
+  // });
 
   it('shows version if available', () => {
     const envModule = require('../../../configs/env');

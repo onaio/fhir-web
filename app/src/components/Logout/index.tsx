@@ -12,7 +12,7 @@ import { getAccessToken, getExtraData } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useTranslation } from '../../mls';
 
 /** HOC function that calls function that logs out the user from both opensrp
@@ -30,11 +30,11 @@ export const CustomLogout: React.FC = (): JSX.Element => {
     'GET'
   );
   const redirectUri = BACKEND_ACTIVE ? EXPRESS_OAUTH_LOGOUT_URL : DOMAIN_NAME;
-  const history = useHistory();
+  const navigate = useNavigate();
   logout(payload, KEYCLOAK_LOGOUT_URL, redirectUri, OPENSRP_LOGOUT_URL, idTokenHint).catch(
     (_: Error) => {
       sendErrorNotification(t('There was a problem logging out. Please try again.'));
-      history.push('/');
+      navigate('/');
     }
   );
   return <Spin size="large" className="custom-spinner" />;

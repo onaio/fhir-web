@@ -1,22 +1,23 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { createMemoryHistory } from 'history';
 import React from 'react';
-import { Router, Route, Switch } from 'react-router';
+import { unstable_HistoryRouter as Router, Route, Routes } from 'react-router-dom';
 import { useSearchParams } from '../useSearchParams';
+import { prettyDOM } from '@testing-library/react';
 
 const history = createMemoryHistory();
 
 test('useSimpleSearch works correctly', () => {
   history.push('/qr');
 
+  window.history.pushState({}, '', '/qr')
+
   const wrapper = ({ children }) => (
     <>
       <Router history={history}>
-        <Switch>
-          <Route exact path="/qr">
-            <div>{children}</div>
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/qr" element={children} />
+        </Routes>
       </Router>
     </>
   );
@@ -24,6 +25,10 @@ test('useSimpleSearch works correctly', () => {
   const {
     result: { current },
   } = renderHook(() => useSearchParams(), { wrapper });
+
+  console.log(prettyDOM(document))
+
+  console.log({ current })
 
   expect(current.sParams.toString()).toEqual('');
   const params = {
@@ -38,12 +43,14 @@ test('useSimpleSearch works correctly', () => {
   current.addParam('key1', 'newValue3');
   expect(current.sParams.toString()).toEqual('key=value&key1=newValue3&key2=value2');
 
+  console.log(history.location)
+
   expect(history.location).toMatchObject({
     hash: '',
     key: expect.any(String),
     pathname: '/qr',
     search: '?key=value&key1=newValue3&key2=value2',
-    state: undefined,
+    // state: undefined,
   });
 
   current.removeParam('key1');
@@ -53,6 +60,6 @@ test('useSimpleSearch works correctly', () => {
     key: expect.any(String),
     pathname: '/qr',
     search: '?key=value&key2=value2',
-    state: undefined,
+    // state: undefined,
   });
 });

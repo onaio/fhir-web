@@ -29,8 +29,6 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
-    "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
     "connected-react-router": "^6.8.0",

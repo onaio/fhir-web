@@ -11,7 +11,7 @@ import {
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { Router, Route, Switch } from 'react-router';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { TableLayout } from '../../components/TableLayout';
 import { useSimpleTabularView } from '../useSimpleTabularView';
 import nock from 'nock';
@@ -19,6 +19,7 @@ import { dataPage1, dataPage2, searchData } from './fixtures';
 import userEvents from '@testing-library/user-event';
 import { Input } from 'antd';
 
+const history = createMemoryHistory()
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
@@ -98,11 +99,9 @@ const SampleApp = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/qr">
-        <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
-      </Route>
-    </Switch>
+    <Routes>
+      <Route path="/qr" element={<QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>} />
+    </Routes>
   );
 };
 
@@ -121,8 +120,10 @@ afterEach(() => {
 });
 
 test('pagination and search work correctly', async () => {
-  const history = createMemoryHistory();
-  history.push('/qr');
+  // const history = createMemoryHistory();
+  // history.push('/qr');
+  window.history.replaceState({}, "test page", '/qr');
+  console.log(window.history.state)
 
   nock(options.baseUrl)
     .get(`/${options.endpoint}/_search`)
@@ -153,7 +154,7 @@ test('pagination and search work correctly', async () => {
     .persist();
 
   render(
-    <Router history={history}>
+    <Router>
       <App>
         <SampleApp />
       </App>
@@ -180,7 +181,7 @@ test('pagination and search work correctly', async () => {
 
   fireEvent.click(screen.getByTitle('2'));
 
-  expect(history.location.search).toEqual('?pageSize=20&page=2');
+  expect(window.location.search).toEqual('?pageSize=20&page=2');
 
   await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));

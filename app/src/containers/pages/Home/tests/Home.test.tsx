@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { cleanup, render, screen } from '@testing-library/react';
 import { authenticateUser } from '@onaio/session-reducer';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../../configs/env');
 jest.mock('../../../../configs/settings');
@@ -18,9 +19,9 @@ describe('containers/pages/Home', () => {
   it('renders Home correctly & changes Title of page', () => {
     render(
       <Provider store={store}>
-        <Router history={history}>
-          <Home />
-        </Router>
+        <BrowserRouter>
+        <Home />
+        </BrowserRouter>       
       </Provider>
     );
 
@@ -65,9 +66,9 @@ describe('containers/pages/Home', () => {
     };
     render(
       <Provider store={store}>
-        <Router history={history}>
+        <BrowserRouter>
           <Home />
-        </Router>
+        </BrowserRouter>
       </Provider>
     );
 

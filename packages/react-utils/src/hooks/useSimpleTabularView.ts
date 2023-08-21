@@ -4,7 +4,7 @@ import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
 import { getConfig } from '@opensrp/pkg-config';
-import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { useNavigate, useLocation, useMatch } from 'react-router';
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
@@ -91,8 +91,8 @@ export function useSimpleTabularView<T extends Resource>(
   extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams
 ) {
   const location = useLocation();
-  const history = useHistory();
-  const match = useRouteMatch();
+  const navigate = useNavigate();
+  const match = useMatch('/');
 
   const page = getNumberParam(location, pageQuery, startingPage) as number;
   const search = getStringParam(location, searchQuery);
@@ -129,7 +129,7 @@ export function useSimpleTabularView<T extends Resource>(
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: ChangeEvent<HTMLInputElement>) {
       const nextUrl = getNextUrlOnSearch(event, location, match);
-      history.push(nextUrl);
+      navigate(nextUrl);
     },
   };
 
@@ -143,7 +143,7 @@ export function useSimpleTabularView<T extends Resource>(
         const newSParams = new URLSearchParams(location.search);
         newSParams.set(pageSizeQuery, pageSize.toString());
         newSParams.set(pageQuery, current.toString());
-        history.push(`${match.url}?${newSParams.toString()}`);
+        navigate(`${match?.pathname}?${newSParams.toString()}`);
       }
     },
   };

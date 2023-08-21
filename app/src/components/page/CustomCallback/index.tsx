@@ -3,7 +3,7 @@ import { getUser, User } from '@onaio/session-reducer';
 import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router';
+import { Navigate, RouteComponentProps, withRouter, Location } from 'react-router';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
@@ -22,10 +22,10 @@ export const openNotification = (user: User, t: TFunction): void => {
 
 /** checks if the value of next in searchParam is blacklisted
  *
- * @param {RouteComponentProps} props - the props should contain the routing state.
+ * @param {location} - 
  * @returns {boolean} return the response
  */
-export const nextIsValid = (props: RouteComponentProps): boolean => {
+export const nextIsValid = (location: Location): boolean => {
   let response = true;
   const indirectionURLs = [URL_LOGOUT];
   /** we should probably sieve some routes from being passed on.
@@ -34,7 +34,7 @@ export const nextIsValid = (props: RouteComponentProps): boolean => {
    */
   const stringifiedUrls = indirectionURLs.map((url) => querystring.stringify({ next: url }));
   for (const url of stringifiedUrls) {
-    if (props.location.search.includes(url)) {
+    if (location.search.includes(url)) {
       response = false;
       break;
     }
@@ -61,7 +61,7 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
       openNotification(user, t);
     }
   }
-  return <Redirect to={pathToRedirectTo} />;
+  return <Navigate to={pathToRedirectTo} />;
 };
 
 export const SuccessfulLoginComponent = withRouter(BaseSuccessfulLoginComponent);

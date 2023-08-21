@@ -1,6 +1,6 @@
-import { connectReducer, getConnectedStore } from '@onaio/connected-reducer-registry';
+import { getConnectedStore } from '@onaio/connected-reducer-registry';
 import { gateKeeperReducer, gateKeeperReducerName } from '@onaio/gatekeeper';
-import reducerRegistry, { combine, Registry } from '@onaio/redux-reducer-registry';
+import reducerRegistry, { combine, Registry, getStore } from '@onaio/redux-reducer-registry';
 import session, { reducerName as sessionReducer } from '@onaio/session-reducer';
 import { Reducer } from 'redux';
 import { RouterState } from 'connected-react-router';
@@ -14,9 +14,10 @@ declare global {
 }
 
 /** Initial reducers in the reducer registry */
-const defaultReducers: Registry = {
-  router: connectReducer as Reducer<RouterState>,
-};
+// const defaultReducers: Registry = {
+//   router: Reducer as Reducer,
+// };
+const defaultReducers = reducerRegistry.getReducers();
 
 // Grab the state from a global variable injected into the server-generated HTML
 const preloadedState = window.__PRELOADED_STATE__;
@@ -28,7 +29,7 @@ defaultReducers[sessionReducer] = session;
 defaultReducers[gateKeeperReducerName] = gateKeeperReducer;
 
 /** The initial store for the reveal web app */
-export const store = getConnectedStore(defaultReducers, preloadedState);
+export const store = getStore(defaultReducers, preloadedState);
 
 /** Set listener to add reducers to store when registered */
 reducerRegistry.setChangeListener((reducers) => {
