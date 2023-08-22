@@ -68,9 +68,11 @@ export const parseKeycloakRoles = (stringRole: string) => {
 export const keycloakAdapter: RbacAdapter = (rolesAsStrings: string[]) => {
   /** parse each role, figure out which resource and verb permission it maps to and add that to the permission object */
   // https://github.com/opensrp/fhircore/discussions/1603
-
+  const cleanedRoleStrings = rolesAsStrings.map((roleTxt) => {
+    return roleTxt.replace(/^ROLE_/, '');
+  });
   const allRoles: Role[] = [];
-  rolesAsStrings.forEach((role) => {
+  cleanedRoleStrings.forEach((role) => {
     let asRole = parseFHirRoles(role);
     if (asRole === undefined) {
       asRole = parseKeycloakRoles(role);
