@@ -3786,16 +3786,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@opensrp/rbac@workspace:packages/rbac":
+"@opensrp/rbac@workspace:^, @opensrp/rbac@workspace:packages/rbac":
   version: 0.0.0-use.local
   resolution: "@opensrp/rbac@workspace:packages/rbac"
   dependencies:
-    "@onaio/session-reducer": ^0.0.12
+    "@onaio/gatekeeper": ^0.4.0
+    "@onaio/session-reducer": ^0.0.13
     "@opensrp/i18n": ^0.0.1
     "@opensrp/pkg-config": ^0.0.9
   peerDependencies:
     "@opensrp/store": ^0.0.10
-    react: ^16.18.1
+    react: ^17.0.0
     react-redux: ^7.2.1
   languageName: unknown
   linkType: soft
@@ -3985,6 +3986,7 @@ __metadata:
     "@opensrp/keycloak-service": ^0.0.17
     "@opensrp/notifications": ^0.0.5
     "@opensrp/pkg-config": ^0.0.9
+    "@opensrp/rbac": "workspace:^"
     "@opensrp/react-utils": ^0.0.12
     "@opensrp/reducer-factory": ^0.0.13
     "@opensrp/server-logout": ^0.0.2
