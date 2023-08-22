@@ -33,6 +33,9 @@
     "@opensrp/i18n": "^0.0.1",
     "@opensrp/pkg-config": "^0.0.9"
   },
+  "devDependencies": {
+    "@onaio/gatekeeper": "^0.4.0"
+  },
   "peerDependencies": {
     "@opensrp/store": "^0.0.10",
     "react": "^17.0.0",
