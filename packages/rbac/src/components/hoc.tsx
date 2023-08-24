@@ -1,17 +1,21 @@
-import { ReactNode } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import * as keycloakAdapter from '../adapters/keycloakAdapter';
-import { Role, sanitizeToArray } from '../utils/roleDefinition';
 import { getConfig, KeycloakStrategies } from '@opensrp/pkg-config';
+import { getExtraData } from '@onaio/session-reducer';
+import React from 'react';
+import { UserRole } from '../roleDefinition';
+import { RbacAdapter } from '../helpers/types';
 
 export interface RbacProps {
-  requiredroles: Role[];
-  children: ReactNode | JSX.Element;
-  fallback?: ReactNode | JSX.Element; // TODO - whats the difference.
+  permissions: string[];
+  matchStrategy?: 'exact' | 'any' | 'none';
+  children: JSX.Element;
+  fallback?: JSX.Element; // TODO - whats the difference.
 }
 
-const iamStrategiesLookup: Record<KeycloakStrategies, any> = {
-  keycloak: keycloakAdapter,
+const iamStrategiesLookup: Record<KeycloakStrategies, RbacAdapter> = {
+  keycloak: keycloakAdapter.adapter,
 };
 
 /**
@@ -20,16 +24,12 @@ const iamStrategiesLookup: Record<KeycloakStrategies, any> = {
  * @param props - component props
  */
 export function RbacCheck(props: RbacProps) {
-  const { requiredroles, children, fallback } = props;
-  const iamStrategy = getConfig('rbacStrategy') ?? 'keycloak';
-  const strategy = iamStrategiesLookup[iamStrategy];
-  const userRole = useSelector((state) => strategy.getUserRole(state));
-
-  const requiredRolesArr = sanitizeToArray(requiredroles);
+  const { permissions, children, fallback } = props;
+  const userRole = useContext(RoleContext);
 
   // might actually need the adapter knowledge to understand how to translate string roles - for the poc
   // constraining the requiredRoles to be of type of Role only.
-  if (userRole.hasRoles(requiredRolesArr)) {
+  if (userRole.hasPermissions(permissions)) {
     return children;
   } else {
     //   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -37,6 +37,38 @@ export function RbacCheck(props: RbacProps) {
     // } else {
     //     // production code
     // }
-    return fallback;
+    return fallback ?? null;
   }
+}
+
+const defaultUserRole = new UserRole();
+export const RoleContext = createContext<UserRole>(defaultUserRole);
+
+export interface RbacProviderProps {
+  children: ReactNode;
+}
+/**
+ * Provides the userRole context to tree.
+ *
+ * @param props - props
+ */
+export function RbacProvider(props: RbacProviderProps) {
+  const { children } = props;
+  // gest session information from the session-reducer;
+  // - depends on session-reducer.
+  // - peer on redux
+  // create context with role object.
+  const extraData = useSelector((state) => getExtraData(state));
+  // const authenticated = useSelector((state) => isAuthenticated(state));
+  const { roles } = extraData;
+
+  // if not authenticated then jump to no permission fallback. - or we can just concern ourselves
+  // with roles only.
+
+  const iamStrategy = getConfig('rbacStrategy') ?? 'keycloak';
+  const strategy = iamStrategiesLookup[iamStrategy];
+  // TODO - why does this return undefined sometimes
+  const userRole = (strategy(roles) as UserRole | undefined) ?? defaultUserRole;
+
+  return <RoleContext.Provider value={userRole}>{children}</RoleContext.Provider>;
 }
