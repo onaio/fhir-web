@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Route, RouteProps, RouteComponentProps, useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
-import { getExtraData, isAuthenticated } from '@onaio/session-reducer';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { UnauthorizedPage } from '../components/UnauthorizedPage';
 import { useTranslation } from '../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 const configs = getAllConfigs();
 
@@ -16,10 +15,10 @@ interface ComponentProps extends Partial<RouteProps> {
   redirectPath: string;
   disableLoginProtection: boolean;
   path: string;
-  activeRoles?: string[];
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
+  permissions: string[];
 }
 
 /**
@@ -31,32 +30,28 @@ interface ComponentProps extends Partial<RouteProps> {
 
 export const PrivateComponent = (props: ComponentProps) => {
   //  props to pass on to Connected Private Route
+  const { permissions, ...otherProps } = props;
   const CPRProps = {
-    ...props,
+    ...otherProps,
     keycloakBaseURL: configs.keycloakBaseURL,
     opensrpBaseURL: configs.opensrpBaseURL,
     fhirBaseURL: configs.fhirBaseURL,
   };
   const { t } = useTranslation();
-  // get current pathname - to be passed as unique key to ConnectedPrivateRoute
-  const { pathname } = useLocation();
-  const extraData = useSelector((state) => getExtraData(state));
-  const authenticated = useSelector((state) => isAuthenticated(state));
-  const { roles } = extraData;
-  const { activeRoles } = props;
-  if (authenticated) {
-    if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
-      return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
-    } else {
-      return (
+
+  return (
+    <RbacCheck
+      permissions={permissions}
+      fallback={
         <UnauthorizedPage
           title={t('403')}
           errorMessage={t('Sorry, you are not authorized to access this page')}
         />
-      );
-    }
-  }
-  return <ConnectedPrivateRoute {...CPRProps} key={pathname} />;
+      }
+    >
+      <ConnectedPrivateRoute {...CPRProps} />
+    </RbacCheck>
+  );
 };
 
 /**
