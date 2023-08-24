@@ -11,7 +11,7 @@ import {
 } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { MemoryRouter as Router, Route, Routes } from 'react-router';
 import { TableLayout } from '../../components/TableLayout';
 import { useSimpleTabularView } from '../useSimpleTabularView';
 import nock from 'nock';
@@ -99,9 +99,11 @@ const SampleApp = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
+  <QueryClientProvider client={rQClient}>
     <Routes>
-      <Route path="/qr" element={<QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>} />
+      <Route path="/qr" element={props.children} />
     </Routes>
+    </QueryClientProvider>
   );
 };
 
@@ -154,7 +156,7 @@ test('pagination and search work correctly', async () => {
     .persist();
 
   render(
-    <Router>
+    <Router initialEntries={['/qr']}>
       <App>
         <SampleApp />
       </App>

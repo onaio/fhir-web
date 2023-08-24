@@ -3,7 +3,7 @@ import React from 'react';
 import { Col, Row, Menu, Badge, Card, Avatar, Tag, Spin, Layout, Alert } from 'antd';
 import { IdcardOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
-import { RouteComponentProps, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import FHIR from 'fhirclient';
 import get from 'lodash/get';
 import { BrokenPage, handleSessionOrTokenExpiry } from '@opensrp/react-utils';
@@ -20,11 +20,6 @@ import { useTranslation } from '../../mls';
 
 const { Header, Sider, Content } = Layout;
 
-// Interface for route params
-interface RouteParams {
-  id: string;
-}
-
 // Interface for resourceTypeMap
 interface ResourceTypeMap {
   [key: string]: { count: number; data: fhirclient.FHIR.Resource[] };
@@ -37,7 +32,7 @@ export interface PatientDetailProps {
 }
 
 /** type intersection for all types that pertain to the props */
-export type PatientDetailPropTypes = PatientDetailProps & RouteComponentProps<RouteParams>;
+export type PatientDetailPropTypes = PatientDetailProps;
 
 /** default props for editing patient component */
 export const defaultEditPatientProps: PatientDetailProps = {
@@ -53,7 +48,7 @@ export const defaultEditPatientProps: PatientDetailProps = {
  */
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL, patientBundleSize } = props;
-  const { id: patientId } = useParams<RouteParams>();
+  const { id: patientId } = useParams();
   const { t } = useTranslation();
 
   const [resourceType, setResourceType] = React.useState<string>(patientResourceType);

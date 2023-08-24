@@ -29,7 +29,7 @@ export interface RouteParams {
 export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
-  const { id: resourceId } = useParams<RouteParams>();
+  const { id: resourceId } = useParams();
   const { t } = useTranslation();
 
   const healthCareService = useQuery(

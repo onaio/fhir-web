@@ -18,7 +18,7 @@ import {
 import { useQueryClient, useMutation } from 'react-query';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import {
   generateHealthCarePayload,
   getOrgSelectOptions,
@@ -51,9 +51,9 @@ const HealthCareForm = (props: HealthCareFormProps) => {
   const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl, organizations } = props;
 
   const queryClient = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const goTo = (url = '#') => history.push(url);
+  const goTo = (url = '#') => navigate(url);
 
   const { mutate, isLoading } = useMutation(
     (values: HealthCareFormFields) => {

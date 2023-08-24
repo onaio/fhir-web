@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { HealthCareAddEdit } from '..';
 import { Provider } from 'react-redux';
@@ -36,14 +37,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <HealthCareAddEdit {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <HealthCareAddEdit {...props} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/add" element={<HealthCareAddEdit {...props} />} />
+          <Route path="/add/:id" element={<HealthCareAddEdit {...props} />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -86,7 +83,7 @@ test('renders correctly for new resource', async () => {
     .reply(200, allOrgs);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -115,7 +112,7 @@ test('renders correctly for edit resource', async () => {
     .reply(200, healthCare313);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${healthCare313.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -141,7 +138,7 @@ test('data loading problem', async () => {
     .replyWithError('Could not get count');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${healthCare313.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

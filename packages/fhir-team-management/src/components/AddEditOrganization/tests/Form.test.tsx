@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { OrganizationForm } from '../Form';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -62,7 +62,7 @@ describe('OrganizationForm', () => {
 
   const AppWrapper = (props: { children: React.ReactNode }) => {
     return (
-      <Router history={history}>
+      <Router>
         <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
       </Router>
     );
@@ -269,7 +269,7 @@ describe('OrganizationForm', () => {
     ]);
 
     // filter searching through members works
-    await userEvents.type(document.querySelector('input#members'), 'allan');
+    await userEvents.type(document.querySelector('input#members') as Element, 'allan');
 
     // options after search
     const afterFilterOptionTexts = [
@@ -283,7 +283,7 @@ describe('OrganizationForm', () => {
     expect(afterFilterOptionTexts).toHaveLength(1);
     expect(afterFilterOptionTexts).toEqual(['Allay Allan']);
 
-    fireEvent.click(document.querySelector('[title="Allay Allan"]'));
+    fireEvent.click(document.querySelector('[title="Allay Allan"]') as Element);
 
     await flushPromises();
     wrapper.update();
@@ -391,7 +391,7 @@ describe('OrganizationForm', () => {
         expect(option).toMatchSnapshot('practitioner option');
       });
 
-    fireEvent.click(document.querySelector('[title="test fhir"]'));
+    fireEvent.click(document.querySelector('[title="test fhir"]') as Element);
 
     // remove one of the previously selected options - Bobi mapesa
     const bobiMapesaOption = wrapper.find('span[title="Bobi mapesa"]');

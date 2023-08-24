@@ -129,9 +129,5 @@
     "app",
     "packages/*"
   ],
-  "packageManager": "yarn@3.6.1",
-  "resolutions": {
-    "@onaio/redux-reducer-registry": "portal:/home/james/Projects/js-tools/packages/reducer-registry",
-    "@onaio/connected-reducer-registry": "portal:/home/james/Projects/js-tools/packages/connected-reducer-registry"
-  }
+  "packageManager": "yarn@3.6.1"
 }

@@ -16,14 +16,10 @@ export interface GroupAddEditProps {
   listId: string;
 }
 
-export interface RouteParams {
-  id?: string;
-}
-
 export const CommodityAddEdit = (props: GroupAddEditProps) => {
   const { fhirBaseURL: fhirBaseUrl, listId } = props;
 
-  const { id: resourceId } = useParams<RouteParams>();
+  const { id: resourceId } = useParams();
   const { t } = useTranslation();
 
   const groupQuery = useQuery(

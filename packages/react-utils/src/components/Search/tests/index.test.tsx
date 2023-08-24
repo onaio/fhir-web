@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import _ from 'lodash';
 import React from 'react';
 // import { Router } from 'react-router';
-import { unstable_HistoryRouter as Router, Location } from 'react-router-dom';
+import { BrowserRouter as Router, Location } from 'react-router-dom';
 import { SearchForm } from '../../Search';
 import { createChangeHandler } from '../utils';
 

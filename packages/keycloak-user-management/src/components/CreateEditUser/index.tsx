@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Col, Row, Spin } from 'antd';
-import { RouteComponentProps } from 'react-router';
+import { useParams } from 'react-router';
 import { Store } from 'redux';
 import { connect } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
@@ -64,7 +64,7 @@ const defaultProps = {
 };
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditPropTypes = CreateEditUserProps & RouteComponentProps<RouteParams>;
+export type CreateEditPropTypes = CreateEditUserProps;
 
 /**
  *
@@ -96,7 +96,9 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     getPractitionerRoleFun,
   } = props;
 
-  const userId = props.match.params[ROUTE_PARAM_USER_ID];
+  const params = useParams();
+
+  const userId = params[ROUTE_PARAM_USER_ID];
 
   useEffect(() => {
     if (!userGroups.length) {

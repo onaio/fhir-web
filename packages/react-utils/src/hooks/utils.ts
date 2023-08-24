@@ -51,10 +51,10 @@ export const startingPageSize = 20;
 export const getNextUrlOnSearch = (
   event: ChangeEvent<HTMLInputElement>,
   location: Location,
-  match: PathMatch
+  // match: PathMatch
 ) => {
   const searchText = event.target.value;
-  let nextUrl = match.pathname;
+  let nextUrl = location.pathname;
   const currentSParams = new URLSearchParams(location.search);
 
   if (searchText) {

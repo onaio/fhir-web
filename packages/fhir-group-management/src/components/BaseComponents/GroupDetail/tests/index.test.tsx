@@ -8,6 +8,7 @@ import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, render, screen } from '@testing-library/react';
 import { groupResourceType } from '../../../../constants';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -57,7 +58,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
         <ViewDetails {...props} />
+
+        </BrowserRouter>
       </QueryClientProvider>
     </Provider>
   );

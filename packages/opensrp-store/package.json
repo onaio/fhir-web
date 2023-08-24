@@ -29,9 +29,9 @@
     "url": "https://github.com/opensrp/web/issues"
   },
   "dependencies": {
+    "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.11",
     "@onaio/utils": "^0.0.1",
-    "connected-react-router": "^6.8.0",
     "fast_array_intersect": "^1.1.0",
     "reselect": "^4.0.0",
     "seamless-immutable": "^7.1.4"

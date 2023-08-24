@@ -35,7 +35,9 @@ export interface RouteParams {
 export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
-  const { id: orgId } = useParams<RouteParams>();
+  const { id: orgId } = useParams();
+
+  console.log({ orgId })
   const { t } = useTranslation();
   const configuredPractAssignmentStrategy = getConfig('practToOrgAssignmentStrategy');
 
@@ -96,6 +98,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const pageTitle = organization.data
     ? t('Edit team | {{teamName}}', { teamName: organization.data.name ?? '' })
     : t('Create team');
+  console.log({ pageTitle })
 
   return (
     <section className="content-section">

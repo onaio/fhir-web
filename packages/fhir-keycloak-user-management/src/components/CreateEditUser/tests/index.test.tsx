@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   CreateEditUser,
@@ -91,14 +91,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <CreateEditUser {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <CreateEditUser {...props} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/add" element={<CreateEditUser {...props} />} />
+          <Route path="/add/:id" element={<CreateEditUser {...props} />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -192,7 +188,7 @@ test('renders correctly for edit user', async () => {
   const errorStub = jest.spyOn(notifications, 'sendErrorNotification').mockImplementation(jest.fn);
 
   const { getByTestId, getByText, queryByTitle } = render(
-    <Router history={history}>
+    <Router initialEntries={['/add/id']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

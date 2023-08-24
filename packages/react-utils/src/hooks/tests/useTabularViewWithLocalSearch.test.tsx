@@ -15,7 +15,7 @@ import { createMemoryHistory } from 'history';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Input } from 'antd';
 import TableLayout from '../../components/TableLayout';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { MemoryRouter as Router, Route, Routes } from 'react-router';
 import { useTabularViewWithLocalSearch } from '../useTabularViewWithLocalSearch';
 import { hugeSinglePageData, hugeSinglePageDataSummary } from './fixtures';
 
@@ -147,7 +147,7 @@ test('integrates correctly in component', async () => {
     .reply(200, hugeSinglePageData);
 
   render(
-    <Router>
+    <Router initialEntries={['/qr']}>
       <App>
         <SampleApp />
       </App>

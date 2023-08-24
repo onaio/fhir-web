@@ -65,7 +65,7 @@ describe('FormComponents/CustomTreeSelect', () => {
     fireEvent.mouseDown(input);
 
     expect(screen.getByTitle(/Ona Office Sub Location/)).toMatchSnapshot('root location');
-    fireEvent.click(document.querySelector('.ant-select-tree-switcher_close'));
+    fireEvent.click(document.querySelector('.ant-select-tree-switcher_close') as Element);
 
     fireEvent.click(screen.getByText(/Part Of Sub Location/));
 

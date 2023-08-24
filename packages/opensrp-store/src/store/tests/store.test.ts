@@ -9,6 +9,7 @@ describe('store', () => {
   beforeEach(() => {
     FlushThunks.createMiddleware();
     reducerRegistry.register(randomReducer, random);
+    console.log(store.getState())
     jest.resetAllMocks();
   });
 

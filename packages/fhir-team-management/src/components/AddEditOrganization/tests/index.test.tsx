@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AddEditOrganization } from '..';
 import { Provider } from 'react-redux';
@@ -39,14 +39,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <AddEditOrganization {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <AddEditOrganization {...props} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/add" element={<AddEditOrganization {...props} />} />
+          <Route path="/add/:id" element={<AddEditOrganization {...props} />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -77,13 +73,10 @@ afterAll(() => {
 });
 
 test('renders correctly for new organizations', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
-
   nock(props.fhirBaseURL).get(`/${practitionerResourceType}/_search`).reply(200, allPractitioners);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -96,9 +89,6 @@ test('renders correctly for new organizations', async () => {
 });
 
 test('renders correctly for edit locations', async () => {
-  const history = createMemoryHistory();
-  history.push(`/add/${org105.id}`);
-
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
     .query({ _summary: 'count' })
@@ -116,9 +106,11 @@ test('renders correctly for edit locations', async () => {
     .get(`/${practitionerRoleResourceType}/_search`)
     .query({ _count: 1000 })
     .reply(200, allPractitioners);
+  
+  console.log(`${org105.id}`)
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${org105.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -137,15 +129,12 @@ test('renders correctly for edit locations', async () => {
 });
 
 test('data loading problem', async () => {
-  const history = createMemoryHistory();
-  history.push(`/add/${org105.id}`);
-
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/${org105.id}`)
     .replyWithError('something aweful happened');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${org105.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

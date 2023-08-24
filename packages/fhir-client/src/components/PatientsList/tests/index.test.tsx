@@ -2,7 +2,8 @@ import { PatientsList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
+import { MemoryRouter as Router } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -55,11 +56,9 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${LIST_PATIENTS_URL}`}>
-            {(routeProps) => <PatientsList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={`${LIST_PATIENTS_URL}`} element={<PatientsList { ...props } />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -89,9 +88,6 @@ afterAll(() => {
 });
 
 test('renders correctly in list view', async () => {
-  const history = createMemoryHistory();
-  history.push(LIST_PATIENTS_URL);
-
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
     .query({
@@ -111,7 +107,7 @@ test('renders correctly in list view', async () => {
     .reply(200, patients);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[LIST_PATIENTS_URL]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -140,11 +136,11 @@ test('renders correctly in list view', async () => {
   await waitForSpinner();
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(history.location.search).toEqual('?search=345&page=1&pageSize=20');
+  expect(location.search).toEqual('?search=345&page=1&pageSize=20');
 
   // remove search.
   userEvents.clear(searchForm);
-  expect(history.location.search).toEqual('?page=1&pageSize=20');
+  expect(location.search).toEqual('?page=1&pageSize=20');
 
   // test sort
   const dobCaretUp = document.querySelector('.anticon-caret-up:first-child');
@@ -241,7 +237,7 @@ test('renders correctly in list view', async () => {
 
 test('responds as expected to errors', async () => {
   const history = createMemoryHistory();
-  history.push(LIST_PATIENTS_URL);
+  // history.push(LIST_PATIENTS_URL);
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
@@ -252,7 +248,7 @@ test('responds as expected to errors', async () => {
     .replyWithError('An error happened');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[LIST_PATIENTS_URL]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

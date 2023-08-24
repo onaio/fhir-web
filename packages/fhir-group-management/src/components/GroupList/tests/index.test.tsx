@@ -3,7 +3,7 @@ import { GroupList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -56,14 +56,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${LIST_GROUP_URL}`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${LIST_GROUP_URL}/:id`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={`${LIST_GROUP_URL}`} element={<GroupList { ...props } />} />
+          <Route path={`${LIST_GROUP_URL}/:id`} element={<GroupList { ...props } />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -111,7 +107,7 @@ test('renders correctly when listing resources', async () => {
     .reply(200, firstFiftygroups);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[LIST_GROUP_URL]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -218,7 +214,7 @@ test('responds as expected to errors', async () => {
     .replyWithError('coughid');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[LIST_GROUP_URL]}>
       <AppWrapper debugKey="responds" {...props}></AppWrapper>
     </Router>
   );

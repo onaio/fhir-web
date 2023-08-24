@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { CareTeamList, deleteCareTeam } from '..';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
 import flushPromises from 'flush-promises';
@@ -31,7 +31,7 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
 const props = {
   fhirBaseURL: 'https://r4.smarthealthit.org/',
@@ -93,13 +93,13 @@ describe('Care Teams list view', () => {
     document.body.appendChild(div);
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
+      // <Provider store={store}>
+        <Router>
           <QueryClientProvider client={queryClient}>
             <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
-        </Router>
-      </Provider>,
+        </Router>,
+      // </Provider>,
       { attachTo: div }
     );
 
@@ -172,13 +172,13 @@ describe('hooks', () => {
     );
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
+      // <Provider store={store}>
+        <Router>
           <QueryClientProvider client={queryClient}>
             <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
           </QueryClientProvider>
         </Router>
-      </Provider>
+      // </Provider>
     );
 
     await act(async () => {

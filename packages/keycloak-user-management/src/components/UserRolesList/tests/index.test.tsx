@@ -5,8 +5,8 @@ import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
 import { UserRolesList } from '..';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserRouter as Router } from 'react-router-dom';
+// import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
@@ -33,7 +33,7 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
 const locationProps = {
   history,
@@ -77,7 +77,7 @@ describe('components/UserRolesList', () => {
   it('renders users table without crashing', () => {
     shallow(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList
             {...locationProps}
             keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
@@ -95,7 +95,7 @@ describe('components/UserRolesList', () => {
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList {...props} />
         </Router>
       </Provider>
@@ -120,7 +120,7 @@ describe('components/UserRolesList', () => {
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList {...props} />
         </Router>
       </Provider>
@@ -157,7 +157,7 @@ describe('components/UserRolesList', () => {
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList {...props} />
         </Router>
       </Provider>
@@ -182,7 +182,7 @@ describe('components/UserRolesList', () => {
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList {...props} />
         </Router>
       </Provider>
@@ -210,7 +210,7 @@ describe('components/UserRolesList', () => {
     };
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <UserRolesList {...props} />
         </Router>
       </Provider>

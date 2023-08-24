@@ -187,20 +187,15 @@ exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
   <Link
     to="/"
   >
-    <LinkAnchor
+    <a
       href="/"
-      navigate={[Function]}
+      onClick={[Function]}
     >
-      <a
-        href="/"
-        onClick={[Function]}
-      >
-        <img
-          alt="The logo"
-          src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
-        />
-      </a>
-    </LinkAnchor>
+      <img
+        alt="The logo"
+        src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
+      />
+    </a>
   </Link>
 </div>
 `;

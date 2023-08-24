@@ -5,14 +5,12 @@ import { createBrowserHistory } from 'history';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { HOME_URL } from '../../../constants';
 
-const history = createBrowserHistory();
-
 // pay attention to write it at the top level of your file
-const mockedUsedNavigate = jest.fn();
+const mockedNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
    ...jest.requireActual('react-router-dom') as any,
-  useNavigate: () => mockedUsedNavigate,
+  useNavigate: () => mockedNavigate,
 }));
 
 describe('ExtraLinks util component', () => {
@@ -30,7 +28,7 @@ describe('ExtraLinks util component', () => {
     expect(wrapper.find('button').first().text()).toMatchInlineSnapshot(`"Go back"`);
     wrapper.find('button').first().simulate('click');
 
-    expect(mockedUsedNavigate).toHaveBeenCalled();
+    expect(mockedNavigate).toHaveBeenCalled();
 
     // click go back
     expect(wrapper.find('button').last().text()).toMatchInlineSnapshot(`"Go home"`);

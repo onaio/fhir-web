@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Spin } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
-import { RouteComponentProps } from 'react-router';
+import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -50,11 +50,12 @@ const defaultProps = {
  * @param {Object} props - UserRolesList component props
  * @returns {Function} returns User Roles list display
  */
-export const UserRolesList: React.FC<Props & RouteComponentProps> = (
-  props: Props & RouteComponentProps
+export const UserRolesList: React.FC<Props> = (
+  props: Props
 ) => {
   const dispatch = useDispatch();
-  const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
+  const location = useLocation();
+  const searchQuery = getQueryParams(location)[SEARCH_QUERY_PARAM] as string;
   const getUserRolesList = useSelector((state) =>
     userRolesSelector(state, { searchText: searchQuery })
   );
@@ -75,8 +76,8 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   if (isLoading) return <Spin size="large" className="custom-spinner" />;
 
   const searchFormProps = {
-    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
-    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+    defaultValue: getQueryParams(location)[SEARCH_QUERY_PARAM],
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, location),
   };
 
   const columns: Column<TableData>[] = [

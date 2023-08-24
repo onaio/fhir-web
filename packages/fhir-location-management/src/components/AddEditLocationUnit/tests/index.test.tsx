@@ -2,7 +2,7 @@ import { NewEditLocationUnit } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -11,11 +11,20 @@ import { locationHierarchyResourceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, prettyDOM, render, screen, waitFor } from '@testing-library/react';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+  useParams: () => ({
+    companyId: 'company-id1',
+    teamId: 'team-id1',
+  }),
+  // useRouteMatch: () => ({ url: '/company/company-id1/team/team-id1' }),
+}));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,18 +43,14 @@ const props = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => {
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <NewEditLocationUnit {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <NewEditLocationUnit {...props} />
-          </Route>
-        </Switch>
+          <Routes>
+            <Route path="/add" element={<NewEditLocationUnit {...props } />} />
+            <Route path="/add/:id" element={<NewEditLocationUnit {...props } />} />
+          </Routes>
       </QueryClientProvider>
-    </Provider>
+    // </Provider>
   );
 };
 
@@ -74,9 +79,6 @@ afterAll(() => {
 });
 
 test('renders correctly for new locations', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
-
   const cancelUrlGenerator = '/cancelled';
 
   nock(props.fhirBaseURL)
@@ -84,11 +86,15 @@ test('renders correctly for new locations', async () => {
     .query({ identifier: props.fhirRootLocationIdentifier })
     .reply(200, fhirHierarchy);
 
+  console.log({ fhirHierarchy })
+
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, createdLocation1);
+  console.log({ createdLocation1 })
+
 
   render(
-    <Router history={history}>
-      <AppWrapper cancelUrlGenerator={cancelUrlGenerator} {...props}></AppWrapper>
+    <Router initialEntries={['/add']}>
+    <AppWrapper cancelUrlGenerator={cancelUrlGenerator} {...props}></AppWrapper>
     </Router>
   );
 
@@ -117,7 +123,7 @@ test('renders correctly for edit locations', async () => {
     .reply(200, createdLocation1);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${createdLocation1.partOf.identifier}?parentId=Location/303`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -130,9 +136,6 @@ test('renders correctly for edit locations', async () => {
 });
 
 test('data loading problem', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
-
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ identifier: props.fhirRootLocationIdentifier })
@@ -141,8 +144,8 @@ test('data loading problem', async () => {
   nock(props.fhirBaseURL).get('/Location/someId').replyWithError('Throw in the towel, as well');
 
   render(
-    <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+    <Router initialEntries={['/add']}>
+      <AppWrapper {...props} />
     </Router>
   );
 
@@ -153,9 +156,6 @@ test('data loading problem', async () => {
 });
 
 test('data loading but undefined', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
-
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ identifier: props.fhirRootLocationIdentifier })
@@ -164,7 +164,7 @@ test('data loading but undefined', async () => {
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, null);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

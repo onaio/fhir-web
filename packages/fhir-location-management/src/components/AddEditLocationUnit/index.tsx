@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, useHistory, useLocation, useParams } from 'react-router';
+import { useNavigate, useLocation, useParams } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { getLocationFormFields } from '../LocationForm/utils';
 import { Row, Col, Spin } from 'antd';
@@ -16,8 +16,7 @@ export interface NewEditLocationUnitProps
   extends Pick<
       LocationFormProps,
       'hidden' | 'disabled' | 'disabledTreeNodesCallback' | 'successURLGenerator'
-    >,
-    RouteComponentProps<LocationRouteProps> {
+    > {
   fhirBaseURL: string;
   fhirRootLocationIdentifier: string;
   cancelURLGenerator: () => string;
@@ -38,15 +37,17 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     cancelURLGenerator,
     disabledTreeNodesCallback,
   } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
-  const params = useParams<LocationRouteProps>();
+  console.log({ location })
+  const { id } = useParams();
+  console.log({ id })
   const sParams = new URLSearchParams(location.search);
   const { t } = useTranslation();
 
   const cancelHandler = () => {
     const cancelURL = cancelURLGenerator();
-    history.push(cancelURL);
+    navigate(cancelURL);
   };
 
   const { data, error, isLoading } = useGetLocationHierarchy(
@@ -55,7 +56,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   );
 
   // location being edited id
-  const locId = params.id;
+  const locId = id;
   const {
     data: locData,
     error: locError,

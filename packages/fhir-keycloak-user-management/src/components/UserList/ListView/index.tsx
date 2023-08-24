@@ -13,7 +13,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { loadKeycloakResources } from './utils';
 import { getTableColumns } from './tableColumns';
-import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { useNavigate, useLocation, useMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { PageHeader } from '@opensrp/react-utils';
@@ -37,8 +37,8 @@ interface OrganizationListProps {
 export const UserList = (props: OrganizationListProps) => {
   const { fhirBaseURL, keycloakBaseURL } = props;
   const location = useLocation();
-  const history = useHistory();
-  const match = useRouteMatch();
+  const navigate = useNavigate();
+  // const match = useMatch('');
   const extraData = useSelector(getExtraData);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -89,7 +89,7 @@ export const UserList = (props: OrganizationListProps) => {
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
       const searchText = event.target.value;
-      let nextUrl = match.url;
+      let nextUrl = location.pathname;
       const currentSParams = new URLSearchParams(location.search);
 
       if (searchText) {
@@ -98,8 +98,8 @@ export const UserList = (props: OrganizationListProps) => {
         currentSParams.delete(searchQuery);
       }
 
-      nextUrl = ''.concat(nextUrl, '?').concat(currentSParams.toString());
-      history.push(nextUrl);
+      nextUrl = ''.concat(nextUrl as string, '?').concat(currentSParams.toString());
+      navigate(nextUrl);
     },
   };
 
@@ -121,7 +121,7 @@ export const UserList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
+            <Button type="primary" onClick={() => navigate(URL_USER_CREATE)}>
               <PlusOutlined />
               {t('Add User')}
             </Button>

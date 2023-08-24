@@ -1,5 +1,5 @@
 import React, { useEffect, useState, FC } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import {
@@ -47,7 +47,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const [form] = Form.useForm();
 
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -258,7 +258,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             <Button type="primary" htmlType="submit" className="create-user">
               {isSubmitting ? t('SAVING') : t('Save')}
             </Button>
-            <Button onClick={() => history.goBack()} className="cancel-user">
+            <Button onClick={() => navigate(-1)} className="cancel-user">
               {t('Cancel')}
             </Button>
           </Form.Item>

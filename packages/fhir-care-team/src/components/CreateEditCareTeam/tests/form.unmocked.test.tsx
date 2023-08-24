@@ -20,6 +20,7 @@ import {
 } from './fixtures';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -83,7 +84,11 @@ test('filter select by text able to create new careteam', async () => {
     .reply(200)
     .persist();
 
-  const wrapper = mount(<CareTeamForm {...props} />, { attachTo: container });
+  const wrapper = mount(
+    <Router>
+      <CareTeamForm {...props} />
+    </Router>
+  );
 
   await act(async () => {
     await flushPromises();
@@ -131,7 +136,7 @@ test('filter select by text able to create new careteam', async () => {
   ]);
 
   // filter searching through members works
-  await userEvents.type(document.querySelector('input#practitionerParticipants'), 'Ward');
+  await userEvents.type(document.querySelector('input#practitionerParticipants') as Element, 'Ward');
 
   // options after search
   let afterFilterOptionTexts = [
@@ -148,7 +153,7 @@ test('filter select by text able to create new careteam', async () => {
     'Ward N Williams MD',
   ]);
 
-  fireEvent.click(document.querySelector('[title="Ward N 2 Williams MD"]'));
+  fireEvent.click(document.querySelector('[title="Ward N 2 Williams MD"]') as Element);
 
   // simulate value selection for type
   wrapper.find('input#managingOrganizations').simulate('mousedown');
@@ -178,7 +183,7 @@ test('filter select by text able to create new careteam', async () => {
   ]);
 
   // filter searching through members works
-  await userEvents.type(document.querySelector('input#managingOrganizations'), '70');
+  await userEvents.type(document.querySelector('input#managingOrganizations') as Element, '70');
 
   // options after search
   afterFilterOptionTexts = [
@@ -191,7 +196,7 @@ test('filter select by text able to create new careteam', async () => {
 
   expect(afterFilterOptionTexts).toEqual(['Test Team 70']);
 
-  fireEvent.click(document.querySelector('[title="Test Team 70"]'));
+  fireEvent.click(document.querySelector('[title="Test Team 70"]') as Element);
 
   await flushPromises();
   wrapper.update();
@@ -216,7 +221,11 @@ test('1157 - Create care team works corectly', async () => {
     .reply(200)
     .persist();
 
-  render(<CareTeamForm {...props} />);
+  render(
+    <Router>
+      <CareTeamForm {...props} />
+    </Router>
+  );
 
   await waitFor(() => {
     expect(screen.getByText(/Create Care Team/)).toBeInTheDocument();
@@ -267,7 +276,11 @@ test('1157 - editing care team works corectly', async () => {
     .reply(200)
     .persist();
 
-  render(<CareTeamForm {...thisProps} />);
+  render(
+    <Router>
+      <CareTeamForm {...thisProps} />
+    </Router>
+  );
 
   await waitFor(() => {
     expect(screen.getByText(/Edit Care Team /)).toBeInTheDocument();

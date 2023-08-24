@@ -2,7 +2,7 @@ import React from 'react';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { authenticateUser } from '@onaio/session-reducer';
-import { Route, Router, Switch } from 'react-router';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import * as fixtures from './fixtures';
 import { CreateEditCareTeam } from '..';
 import {
@@ -56,14 +56,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <CreateEditCareTeam {...props} />
-          </Route>
-          <Route exact path={`/add/:${ROUTE_PARAM_CARE_TEAM_ID}`}>
-            <CreateEditCareTeam {...props} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/add" element={<CreateEditCareTeam {...props} />} />
+          <Route path={`/add/:${ROUTE_PARAM_CARE_TEAM_ID}`} element={<CreateEditCareTeam {...props} />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -94,8 +90,7 @@ afterAll(() => {
 });
 
 test('renders correctly for create care team', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
+  window.history.pushState({}, '', '/add')
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
@@ -114,7 +109,7 @@ test('renders correctly for create care team', async () => {
     .reply(200, fixtures.practitioners);
 
   render(
-    <Router history={history}>
+    <Router>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -131,10 +126,10 @@ test('renders correctly for create care team', async () => {
 
   // does not show inactive practitioners
   // find antd Select with id 'practitionersId' in the component
-  const practitionersSelect = document.querySelector('[data-testid="practitioners"]');
+  const practitionersSelect = document.querySelector('[data-testid="practitioners"]') as Element;
 
   // simulate click on select - to show dropdown items
-  fireEvent.mouseDown(practitionersSelect.querySelector('.ant-select-selector'));
+  fireEvent.mouseDown(practitionersSelect.querySelector('.ant-select-selector') as Element);
 
   // expect to see all options (practitioners)
 
@@ -162,6 +157,7 @@ test('renders correctly for edit care team', async () => {
   const history = createMemoryHistory();
   const careTeamId = careTeam1.id;
   history.push(`/add/${careTeamId}`);
+  window.history.pushState({}, '', `/add/${careTeamId}`)
 
   nock(props.fhirBaseURL).get(`/${careTeamResourceType}/${careTeamId}`).reply(200, careTeam1);
 
@@ -182,7 +178,7 @@ test('renders correctly for edit care team', async () => {
     .reply(200, fixtures.practitioners);
 
   render(
-    <Router history={history}>
+    <Router>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -224,7 +220,7 @@ test('#1016 - does not create malformed request body', async () => {
     .reply(200, fixtures.practitioners);
 
   render(
-    <Router history={history}>
+    <Router>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -263,7 +259,7 @@ test('data loading problem', async () => {
     .replyWithError('Something awful happened');
 
   render(
-    <Router history={history}>
+    <Router>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

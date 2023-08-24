@@ -16,7 +16,7 @@ import {
 } from '@opensrp/notifications';
 import { useQueryClient, useMutation } from 'react-query';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import {
   generateGroupPayload,
   getGroupTypeOptions,
@@ -51,9 +51,12 @@ const CommodityForm = (props: GroupFormProps) => {
   const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl, postSuccess } = props;
 
   const queryClient = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const goTo = (url = '#') => history.push(url);
+  const goTo = (url = '#') => {
+    console.log(url)
+    navigate(url)
+  };
 
   const { mutate, isLoading } = useMutation(
     (values: GroupFormFields) => {

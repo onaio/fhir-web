@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { CareTeamList } from '..';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import nock from 'nock';
 import * as reactQuery from 'react-query';
@@ -50,7 +50,7 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
 const props = {
   fhirBaseURL: 'https://r4.smarthealthit.org/',
@@ -75,14 +75,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${URL_CARE_TEAM}`}>
-            {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${URL_CARE_TEAM}/:careTeamId`}>
-            {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={`${URL_CARE_TEAM}`} element={<CareTeamList { ...props } />} />
+          <Route path={`${URL_CARE_TEAM}/:careTeamId`} element={<CareTeamList { ...props } />}/>
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -133,8 +129,10 @@ describe('Care Teams list view', () => {
     const history = createMemoryHistory();
     history.push(URL_CARE_TEAM);
 
+    window.history.pushState({}, '', URL_CARE_TEAM)
+
     const { getByText, queryByText } = render(
-      <Router history={history}>
+      <Router initialEntries={[URL_CARE_TEAM]}>
         <AppWrapper {...props} />
       </Router>
     );
@@ -173,8 +171,8 @@ describe('Care Teams list view', () => {
       </span>
     `);
     fireEvent.click(viewDetailsLink);
-    expect(history.location.pathname).toEqual('/admin/CareTeams');
-    expect(history.location.search).toEqual('?viewDetails=308');
+    expect(window.location.pathname).toEqual('/admin/CareTeams');
+    expect(window.location.search).toEqual('?viewDetails=308');
 
     await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
     document.querySelectorAll('.display-block').forEach((block) => {
@@ -183,6 +181,6 @@ describe('Care Teams list view', () => {
 
     // close view details
     const closeButton = document.querySelector('[data-testid="cancel"]');
-    fireEvent.click(closeButton);
+    fireEvent.click(closeButton as Element);
   });
 });

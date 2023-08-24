@@ -2,7 +2,8 @@ import { UserList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
+import { MemoryRouter as Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -68,14 +69,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${URL_USER}`}>
-            {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${URL_USER}/:id`}>
-            {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={`${URL_USER}`} element={<UserList { ...props } />} />
+          <Route path={`${URL_USER}/:id`} element={<UserList {...props } />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -122,7 +119,7 @@ test('renders correctly when listing resources', async () => {
   fetch.mockResponse(JSON.stringify([]));
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[URL_USER]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -158,7 +155,7 @@ test('renders correctly when listing resources', async () => {
   const searchForm = document.querySelector('[data-testid="search-form"]') as Element;
   userEvents.paste(searchForm as HTMLElement, 'petertest');
 
-  expect(history.location.search).toEqual('?search=petertest');
+  expect(window.location.search).toEqual('?search=petertest');
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
       expect(td).toMatchSnapshot(`Search ${idx} page 1`);
@@ -277,7 +274,7 @@ test('responds as expected to errors', async () => {
   fetch.mockReject(new Error(errorMessage));
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[URL_USER]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

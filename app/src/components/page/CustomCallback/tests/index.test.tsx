@@ -1,78 +1,78 @@
-// import { mount } from 'enzyme';
-// import React from 'react';
-// import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
-// import { Route, Switch } from 'react-router-dom';
-// import { authenticateUser } from '@onaio/session-reducer';
-// import * as notifications from '@opensrp/notifications';
-// import { store } from '@opensrp/store';
-// import { history } from '@onaio/connected-reducer-registry';
-// import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
-// import { URL_EXPRESS_LOGIN } from '../../../../constants';
-// import { Provider } from 'react-redux';
-// import { CallbackComponent } from '../../../../App/fhir-apps';
+import { mount } from 'enzyme';
+import React from 'react';
+import { MemoryRouter, RouteComponentProps } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import { authenticateUser } from '@onaio/session-reducer';
+import * as notifications from '@opensrp/notifications';
+import { store } from '@opensrp/store';
+import { history } from '@onaio/connected-reducer-registry';
+import { SuccessfulLoginComponent, UnSuccessfulLogin } from '..';
+import { URL_EXPRESS_LOGIN } from '../../../../constants';
+import { Provider } from 'react-redux';
+import { CallbackComponent } from '../../../../App/fhir-apps';
 
-// jest.mock('../../../../configs/env', () => ({
-//   ENABLE_OPENSRP_OAUTH: true,
-//   OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
-//   DOMAIN_NAME: 'http://localhost:3000',
-//   OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
-// }));
+jest.mock('../../../../configs/env', () => ({
+  ENABLE_OPENSRP_OAUTH: true,
+  OPENSRP_API_BASE_URL: 'https://test.smartregister.org/opensrp/rest/',
+  DOMAIN_NAME: 'http://localhost:3000',
+  OPENSRP_OAUTH_SCOPES: ['read', 'profile'],
+}));
 
-// jest.mock('@opensrp/notifications', () => ({
-//   __esModule: true,
-//   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
-// }));
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
-// const App = () => {
-//   return (
-//     <Switch>
-//       <Route exact={true} path="/callback" component={SuccessfulLoginComponent} />
-//       {/* tslint:disable-next-line: jsx-no-lambda */}
-//       <Route exact={true} path="/failedCallback" component={UnSuccessfulLogin} />
-//       {/* tslint:disable-next-line: jsx-no-lambda */}
-//       <Route path="/login" component={() => <div id="login" />} />
-//       {/* tslint:disable-next-line: jsx-no-lambda */}
-//       <Route path="/teams" component={() => <div id="teams" />} />
-//       {/* tslint:disable-next-line: jsx-no-lambda */}
-//       <Route path="/plans/update/:id" component={() => <div id="plans" />} />
-//       {/* tslint:disable-next-line: jsx-no-lambda */}
-//       <Route path="/" component={() => <div id="home" />} />
-//     </Switch>
-//   );
-// };
-// const realLocation = window.location;
-// describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
-//   beforeAll(() => {
-//     store.dispatch(
-//       authenticateUser(
-//         true,
-//         {
-//           email: 'bob@example.com',
-//           name: 'Bobbie',
-//           username: 'RobertBaratheon',
-//         },
-//         {
-//           roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
-//           username: 'superset-user',
-//           user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-//         }
-//       )
-//     );
-//   });
-//   afterEach(() => {
-//     window.location = realLocation;
-//   });
-//   it('renders correctly', () => {
-//     const wrapper = mount(
-//       <Provider store={store}>
-//         <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>
-//           <App />
-//         </MemoryRouter>
-//       </Provider>
-//     );
-//     // should redirect to home
-//     expect(wrapper.find('#home')).toHaveLength(1);
-//   });
+const App = () => {
+  return (
+    <Routes>
+      <Route path="/callback" element={SuccessfulLoginComponent} />
+      {/* tslint:disable-next-line: jsx-no-lambda */}
+      <Route path="/failedCallback" element={UnSuccessfulLogin} />
+      {/* tslint:disable-next-line: jsx-no-lambda */}
+      <Route path="/login" element={() => <div id="login" />} />
+      {/* tslint:disable-next-line: jsx-no-lambda */}
+      <Route path="/teams" element={() => <div id="teams" />} />
+      {/* tslint:disable-next-line: jsx-no-lambda */}
+      <Route path="/plans/update/:id" element={() => <div id="plans" />} />
+      {/* tslint:disable-next-line: jsx-no-lambda */}
+      <Route path="/" element={() => <div id="home" />} />
+    </Routes>
+  );
+};
+const realLocation = window.location;
+describe('src/components/page/CustomCallback.SuccessfulLogin', () => {
+  beforeAll(() => {
+    store.dispatch(
+      authenticateUser(
+        true,
+        {
+          email: 'bob@example.com',
+          name: 'Bobbie',
+          username: 'RobertBaratheon',
+        },
+        {
+          roles: ['ROLE_EDIT_KEYCLOAK_USERS'],
+          username: 'superset-user',
+          user_id: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+        }
+      )
+    );
+  });
+  afterEach(() => {
+    window.location = realLocation;
+  });
+  it('renders correctly', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: `/callback`, search: '', hash: '', state: {} }]}>
+          <App />
+        </MemoryRouter>
+      </Provider>
+    );
+    // should redirect to home
+    expect(wrapper.find('#home')).toHaveLength(1);
+  });
 
 //   it('redirects to home if next page is /', () => {
 //     const mockNotificationSuccess = jest.spyOn(notifications, 'sendSuccessNotification');
@@ -230,4 +230,4 @@
 //     ]);
 //     wrapper.unmount();
 //   });
-// });
+});

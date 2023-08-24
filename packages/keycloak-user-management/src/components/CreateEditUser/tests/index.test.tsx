@@ -3,9 +3,8 @@ import reducerRegistry from '@onaio/redux-reducer-registry';
 import { mount } from 'enzyme';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from '@opensrp/store';
 import * as opensrpStore from '@opensrp/store';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
@@ -120,7 +119,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUser {...propsCreate} />
         </Router>
       </Provider>
@@ -160,7 +159,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
@@ -193,7 +192,7 @@ describe('components/CreateEditUser', () => {
     fetch.mockResponseOnce(JSON.stringify(keycloakUser));
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <CreateEditUser {...propsCreate} />
       </Router>
     );
@@ -240,7 +239,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...propsPageRefreshed} />
         </Router>
       </Provider>
@@ -330,7 +329,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...userProps} />
         </Router>
       </Provider>
@@ -377,7 +376,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...propsPageRefreshed} />
         </Router>
       </Provider>
@@ -409,7 +408,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>
@@ -439,7 +438,7 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedCreateEditUser {...props} />
         </Router>
       </Provider>

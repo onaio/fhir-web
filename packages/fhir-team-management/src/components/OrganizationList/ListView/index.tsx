@@ -8,7 +8,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   SearchForm,
   BrokenPage,
@@ -47,7 +47,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
     useSimpleTabularView<IOrganization>(fhirBaseURL, organizationResourceType);
   const { data, isFetching, isLoading, error } = queryValues;
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
@@ -121,7 +121,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_ADD_ORGANIZATION)}>
+            <Button type="primary" onClick={() => navigate(URL_ADD_ORGANIZATION)}>
               <PlusOutlined />
               {t('Add Organization')}
             </Button>

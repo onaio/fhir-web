@@ -5,7 +5,7 @@ import type { MenuProps } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IHealthcareService } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IHealthcareService';
 import {
   SearchForm,
@@ -34,7 +34,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
   const { sParams, addParam } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -127,7 +127,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(ADD_EDIT_HEALTHCARE_SERVICE_URL)}>
+            <Button type="primary" onClick={() => navigate(ADD_EDIT_HEALTHCARE_SERVICE_URL)}>
               <PlusOutlined />
               {t('Create Care Service')}
             </Button>

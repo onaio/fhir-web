@@ -13,7 +13,7 @@ import {
   fireEvent,
   waitFor,
 } from '@testing-library/react';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
@@ -54,7 +54,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   const AppWrapper = (props) => {
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <QueryClientProvider client={queryClient}>
             <LocationUnitList {...props} />
           </QueryClientProvider>

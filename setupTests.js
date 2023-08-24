@@ -51,7 +51,7 @@ Object.defineProperty(window, 'location', {
   },
   writable: true,
 });
-window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
+window.__PRELOADED_STATE__ = {};
 
 jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => {
