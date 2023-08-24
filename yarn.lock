@@ -3794,6 +3794,8 @@ __metadata:
     "@onaio/session-reducer": ^0.0.13
     "@opensrp/i18n": ^0.0.1
     "@opensrp/pkg-config": ^0.0.9
+    "@types/invariant": ^2.2.35
+    invariant: ^2.2.4
   peerDependencies:
     "@opensrp/store": ^0.0.10
     react: ^17.0.0
@@ -5106,6 +5108,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 3b3d683498267096c8aca03652702243b1e087bc20e77a9abe74fdbee1c89c8283ee41c47d245cda2f422483b01980d70a1030b92a8ff24b280e0aa868241a8b
+  languageName: node
+  linkType: hard
+
+"@types/invariant@npm:^2.2.35":
+  version: 2.2.35
+  resolution: "@types/invariant@npm:2.2.35"
+  checksum: af1b624057c89789ed0917838fea3d42bb0c101cc22b829a24d8777c678be3bc79d6ae05992a13bdf607b94731262467a2e62a809602ea1f7eea5e8c2242660d
   languageName: node
   linkType: hard
 
@@ -14771,7 +14780,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.2":
+"invariant@npm:^2.2.2, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
