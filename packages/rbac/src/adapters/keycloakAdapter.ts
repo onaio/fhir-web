@@ -1,47 +1,24 @@
-import { getExtraData } from '@onaio/session-reducer/dist/types';
-import { toUpper } from 'lodash';
-import { Store } from 'redux';
-import { VerbPermission } from '../constants';
-import {
-  FhirResourceTypeKeys,
-  fhirResourceTypeMap,
-  Role,
-  ResourceType,
-  VerbPermissionKeys,
-  verbPermissionMap,
-  IAMResourceType,
-} from '../utils/roleDefinition';
-
-export interface RbacAdapter {
-  (roles: string[]): Role;
-}
+import { AuthZResource, Permit, PermitKey } from '../constants';
+import { RbacAdapter } from '../helpers/types';
+import { UserRole } from '../roleDefinition';
 
 export const parseFHirRoles = (role: string) => {
   const roleParts = role.split('_');
   if (roleParts.length !== 2) {
     return;
   }
-  const [verb, resourceType] = roleParts.map(toUpper);
+  const [verb, resource] = roleParts;
   // look up in resource Map and verb Maps
-  const verbPermission = verbPermissionMap.get(verb as VerbPermissionKeys);
-  const resource = fhirResourceTypeMap.get(resourceType as FhirResourceTypeKeys) as
-    | ResourceType
-    | undefined;
-  if (resource && verbPermission) {
-    return new Role(resource, verbPermission);
-  }
-  return;
+  const verbPermission = Permit[verb.toUpperCase() as PermitKey];
+  return new UserRole(resource as AuthZResource, verbPermission);
 };
 
-const keycloakRoleMappings: Record<string, Role> = {
-  'realm-admin': new Role(
-    [IAMResourceType.GROUP, IAMResourceType.ROLE, IAMResourceType.USER],
-    VerbPermission.MANAGE
-  ),
+const keycloakRoleMappings: Record<string, UserRole> = {
+  'realm-admin': new UserRole(['iam_group', 'iam_role', 'iam_user'], Permit.MANAGE),
 };
 
 export const parseKeycloakRoles = (stringRole: string) => {
-  const lookedURole = keycloakRoleMappings[stringRole] as Role | undefined;
+  const lookedURole = keycloakRoleMappings[stringRole] as UserRole | undefined;
   if (lookedURole !== undefined) {
     return keycloakRoleMappings[stringRole];
   }
@@ -49,29 +26,26 @@ export const parseKeycloakRoles = (stringRole: string) => {
   if (roleParts.length !== 2) {
     return;
   }
-  const [verb, resourceType] = roleParts.map(toUpper);
+  // TODO - a better scheme of converting keycloak permissions to
+  // our internal representation
+  const [verb, resourceType] = roleParts;
   // look up in resource Map and verb Maps
   let recognizedVerb = 'READ';
   if (verb === 'manage') {
     recognizedVerb = 'MANAGE';
   }
 
-  const verbPermission = verbPermissionMap.get(recognizedVerb as VerbPermissionKeys);
-  const resource = fhirResourceTypeMap.get(resourceType as FhirResourceTypeKeys) as
-    | ResourceType
-    | undefined;
-  if (resource && verbPermission) {
-    return new Role(resource, verbPermission);
-  }
+  const verbPermission = Permit[recognizedVerb.toUpperCase() as PermitKey];
+  return new UserRole(resourceType as AuthZResource, verbPermission);
 };
 
-export const keycloakAdapter: RbacAdapter = (rolesAsStrings: string[]) => {
+export const adapter: RbacAdapter = (rolesAsStrings: string[] = []) => {
   /** parse each role, figure out which resource and verb permission it maps to and add that to the permission object */
   // https://github.com/opensrp/fhircore/discussions/1603
   const cleanedRoleStrings = rolesAsStrings.map((roleTxt) => {
     return roleTxt.replace(/^ROLE_/, '');
   });
-  const allRoles: Role[] = [];
+  const allRoles: UserRole[] = [];
   cleanedRoleStrings.forEach((role) => {
     let asRole = parseFHirRoles(role);
     if (asRole === undefined) {
@@ -82,7 +56,7 @@ export const keycloakAdapter: RbacAdapter = (rolesAsStrings: string[]) => {
     }
   });
 
-  return Role.combineRoles(allRoles);
+  return UserRole.combineRoles(allRoles);
 };
 
 /**
@@ -102,15 +76,15 @@ export const keycloakAdapter: RbacAdapter = (rolesAsStrings: string[]) => {
  *  - Simplest way forward is to write a selector that reads the role information and returns the Role object.
  */
 
-/**
- * @param state - the redux state.
- */
-export function getUserRole(state: Store) {
-  // needs the store.
-  // needs the session-reducer.
-  // part of the adapter.
-  const extraData = getExtraData(state);
-  const roles = extraData.roles;
+// /**
+//  * @param state - the redux state.
+//  */
+// export function getUserRole(state: Store) {
+//   // needs the store.
+//   // needs the session-reducer.
+//   // part of the adapter.
+//   const extraData = getExtraData(state);
+//   const roles = extraData.roles;
 
-  return keycloakAdapter(roles);
-}
+//   return keycloakAdapter(roles);
+// }
