@@ -1,20 +1,12 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { createMemoryHistory } from 'history';
 import React from 'react';
-import { unstable_HistoryRouter as Router, Route, Routes } from 'react-router-dom';
+import { MemoryRouter as Router, Route, Routes } from 'react-router';
 import { useSearchParams } from '../useSearchParams';
-import { prettyDOM } from '@testing-library/react';
-
-const history = createMemoryHistory();
 
 test('useSimpleSearch works correctly', () => {
-  history.push('/qr');
-
-  window.history.pushState({}, '', '/qr')
-
   const wrapper = ({ children }) => (
     <>
-      <Router history={history}>
+      <Router initialEntries={['/qr']}>
         <Routes>
           <Route path="/qr" element={children} />
         </Routes>
@@ -25,10 +17,8 @@ test('useSimpleSearch works correctly', () => {
   const {
     result: { current },
   } = renderHook(() => useSearchParams(), { wrapper });
-
-  console.log(prettyDOM(document))
-
-  console.log({ current })
+  
+  console.log(window.location)
 
   expect(current.sParams.toString()).toEqual('');
   const params = {
@@ -42,8 +32,6 @@ test('useSimpleSearch works correctly', () => {
   //Test that when we call addParams to an existing key we replace it instead of appending
   current.addParam('key1', 'newValue3');
   expect(current.sParams.toString()).toEqual('key=value&key1=newValue3&key2=value2');
-
-  console.log(history.location)
 
   expect(history.location).toMatchObject({
     hash: '',
