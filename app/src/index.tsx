@@ -15,6 +15,7 @@ import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { OpensrpWebI18nProvider } from '@opensrp/i18n';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
+import { RbacProvider } from '@opensrp/rbac';
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
@@ -41,7 +42,9 @@ ReactDOM.render(
         <ConnectedRouter history={history}>
           <QueryClientProvider client={queryClient}>
             <OpensrpWebI18nProvider>
-              <App />
+              <RbacProvider>
+                <App />
+              </RbacProvider>
             </OpensrpWebI18nProvider>
           </QueryClientProvider>
         </ConnectedRouter>
