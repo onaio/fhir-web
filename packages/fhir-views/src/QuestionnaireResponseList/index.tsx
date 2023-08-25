@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BrokenPage, Resource404, TableLayout } from '@opensrp/react-utils';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import {
@@ -75,10 +75,14 @@ const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
 
 const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
   const { fhirBaseURL } = props;
-  const { id: questId } = useParams<RouteProps>();
+  const { id: questId } = useParams();
+
+  if (!questId) {
+    return <Resource404 errorMessage='Invalid quest Id' />
+  }
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     isLoading: QuestLoading,
@@ -130,7 +134,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
             <Button
               type="primary"
               onClick={() =>
-                history.push(
+                navigate(
                   `${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`
                 )
               }

@@ -2,7 +2,7 @@ import { isAuthenticated } from '@onaio/session-reducer';
 import queryString from 'querystring';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Navigate, PathRouteProps, Route, RouteProps, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, PathRouteProps, Route, RouteProps, Routes, useLocation } from 'react-router-dom';
 import { Store } from 'redux';
 
 /** interface for PrivateRoute props */
@@ -52,9 +52,12 @@ export const AuthLayout = (props: AuthLayoutProps) => {
 
   if (routerEnabled) {
     if (authenticated === true || disableLoginProtection === true) {
-      return <Navigate to={fullRedirectPath} />;
+      return <Outlet />;
+    } else {
+      return <Navigate to={fullRedirectPath} />
     }
   }
+  // If user is authenticated go to outlet else redirect to full redirect path
   return <Navigate to={routerDisabledRedirectPath} />;
 };
 

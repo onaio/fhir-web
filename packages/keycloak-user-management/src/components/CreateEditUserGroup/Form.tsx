@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Button, Col, Row, Form, Input, Transfer } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -104,7 +104,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
   const [sourceSelectedKeys, setSourceSelectedKeys] = useState<string[]>([]);
   const [targetSelectedKeys, setTargetSelectedKeys] = useState<string[]>([]);
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const { t } = useTranslation();
 
@@ -257,7 +257,7 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
             <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? t('Saving') : t('Save')}
             </Button>
-            <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-group">
+            <Button onClick={() => navigate(URL_USER_GROUPS)} className="cancel-group">
               {t('Cancel')}
             </Button>
           </Form.Item>

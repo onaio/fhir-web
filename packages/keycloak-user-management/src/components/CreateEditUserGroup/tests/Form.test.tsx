@@ -13,7 +13,7 @@ import {
   effectiveRoles,
 } from '../../../ducks/tests/fixtures';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { UserGroupForm, defaultInitialValues } from '../Form';
 import toJson from 'enzyme-to-json';
 
@@ -53,17 +53,29 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('renders without crashing', () => {
-    shallow(<UserGroupForm {...props} />);
+    shallow(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
   });
 
   it('renders correctly', async () => {
-    const wrapper = mount(<UserGroupForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
     expect(wrapper.find('Row').at(0).text()).toMatchSnapshot();
     wrapper.unmount();
   });
 
   it('form validation works for required fields', async () => {
-    const wrapper = mount(<UserGroupForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
 
     wrapper.find('form').simulate('submit');
 
@@ -78,7 +90,11 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('adds new user group successfully', async () => {
-    const wrapper = mount(<UserGroupForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -119,7 +135,11 @@ describe('components/forms/UserFroupForm', () => {
       initialValues: fixtures.userGroup,
     };
 
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -160,7 +180,11 @@ describe('components/forms/UserFroupForm', () => {
 
   it('usergroup is not created if api is down', async () => {
     fetch.mockReject(new Error('API is down'));
-    const wrapper = mount(<UserGroupForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -188,7 +212,11 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -212,7 +240,7 @@ describe('components/forms/UserFroupForm', () => {
 
   it('cancel button returns user to groups list view  page', async () => {
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserGroupForm {...props} />
       </Router>
     );
@@ -236,7 +264,10 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+    <Router>
+      <UserGroupForm {...propEdit} />
+    </Router>);
 
     await act(async () => {
       await flushPromises();
@@ -252,7 +283,11 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -268,7 +303,10 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+    <Router>
+      <UserGroupForm {...propEdit} />
+    </Router>);
 
     const transferComponent = wrapper.find('Transfer');
     const transferSource = transferComponent.find('TransferList').at(0);
@@ -338,7 +376,11 @@ describe('components/forms/UserFroupForm', () => {
       ...props,
       initialValues: fixtures.userGroup,
     };
-    const wrapper = mount(<UserGroupForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...propEdit} />
+      </Router>
+    );
 
     const transferComponent = wrapper.find('Transfer');
     const transferSource = transferComponent.find('TransferList').at(0);
@@ -401,7 +443,11 @@ describe('components/forms/UserFroupForm', () => {
   });
 
   it('doesnt show transfer component on new user group creation', async () => {
-    const wrapper = mount(<UserGroupForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserGroupForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();

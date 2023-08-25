@@ -1,12 +1,11 @@
 import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
 import React from 'react';
-import { history } from '@onaio/connected-reducer-registry';
 import { defaultUserFormInitialValues, UserForm } from '..';
 import { compositionPage1, createdUser, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { getFormValues, postPutPractitioner } from '../utils';
 import nock from 'nock';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -36,9 +35,9 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 // TODO - we need to dry this setup section
-jest.mock('fhirclient', () => {
-  return jest.requireActual('fhirclient/lib/entry/browser');
-});
+// jest.mock('fhirclient', () => {
+//   return jest.requireActual('fhirclient/lib/entry/browser');
+// });
 
 jest.unmock('');
 
@@ -102,7 +101,7 @@ describe('forms/userForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...propsOwn} />
       </Router>
     );
@@ -161,7 +160,7 @@ describe('forms/userForm', () => {
 
     const { getByRole } = render(
       <QueryWrapper>
-        <Router history={history}>
+        <Router>
           <UserForm {...propsOwn} />
         </Router>
       </QueryWrapper>

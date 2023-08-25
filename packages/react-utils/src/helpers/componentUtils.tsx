@@ -13,9 +13,6 @@ const configs = getAllConfigs();
 /** Private/Public component props */
 interface ComponentProps {
   component: any;
-  redirectPath: string;
-  disableLoginProtection: boolean;
-  path: string;
   activeRoles?: string[];
   keycloakBaseURL?: string;
   opensrpBaseURL?: string;
@@ -29,7 +26,17 @@ interface ComponentProps {
  * @param props - Component props object
  */
 
-export const PrivateComponent = (props: ComponentProps) => {
+const PrivateWrapper = (props: { children: React.ReactNode }) => {
+  return (
+    // <Route>
+      <>
+      {props.children}
+      </>
+    // </Route> 
+  )
+}
+
+export const PrivateComponent = ({ component: Component, ...props }: Partial<ComponentProps>) => {
   //  props to pass on to Connected Private Route
   const CPRProps = {
     ...props,
@@ -47,9 +54,9 @@ export const PrivateComponent = (props: ComponentProps) => {
   if (authenticated) {
     if (activeRoles && roles && isAuthorized(roles, activeRoles)) {
       return (
-        <Routes>
-          <ConnectedPrivateRoute {...CPRProps} key={pathname} />
-        </Routes>
+        // <PrivateWrapper {...CPRProps} >
+          <Component {...CPRProps} key={pathname} />
+        // </PrivateWrapper>
       );
     } else {
       return (
@@ -60,11 +67,6 @@ export const PrivateComponent = (props: ComponentProps) => {
       );
     }
   }
-  return (
-    <Routes>
-      <ConnectedPrivateRoute {...CPRProps} key={pathname} />
-    </Routes>
-  );
 };
 
 /**
@@ -74,18 +76,18 @@ export const PrivateComponent = (props: ComponentProps) => {
  * @param props - Component props object
  */
 
-export const PublicComponent = ({ component: Component, ...rest }: Partial<ComponentProps>) => {
-  // get current pathname - to be passed as unique key to ConnectedPrivateRoute
-  const { pathname } = useLocation();
-  return (
-    <Routes>
-      <Route
-      {...rest}
-      element={<Component key={pathname} />}
-    />
-    </Routes>
-  );
-};
+// export const PublicComponent = ({ component: Component, ...rest }: Partial<ComponentProps>) => {
+//   // get current pathname - to be passed as unique key to ConnectedPrivateRoute
+//   const { pathname } = useLocation();
+//   return (
+//     <Routes>
+//       <Route
+//       {...rest}
+//       element={<Component key={pathname} />}
+//     />
+//     </Routes>
+//   );
+// };
 
 /**
  * Util function to check if user is authorized to access a particular page

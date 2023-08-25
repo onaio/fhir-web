@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { Route, MemoryRouter as Router, Routes } from 'react-router-dom';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   CreateEditUser,

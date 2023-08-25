@@ -5,7 +5,7 @@ import fetch from 'jest-fetch-mock';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { mount, shallow } from 'enzyme';
 import { ConnectedUserList, UserList } from '..';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
@@ -96,7 +96,11 @@ describe('components/UserList', () => {
   });
 
   it('renders users table without crashing', () => {
-    shallow(<UserList {...locationProps} />);
+    shallow(
+      <Router>
+        <UserList {...locationProps} />
+      </Router>
+    );
   });
 
   it('works correctly with store', async () => {
@@ -107,7 +111,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...props} />
           </Router>
         </QueryClientProvider>
@@ -132,7 +136,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...props} />
           </Router>
         </QueryClientProvider>
@@ -180,7 +184,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
@@ -246,7 +250,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
@@ -277,7 +281,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...props} />
           </Router>
         </QueryClientProvider>
@@ -307,7 +311,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...newProps} />
           </Router>
         </QueryClientProvider>
@@ -343,7 +347,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...props} />
           </Router>
         </QueryClientProvider>
@@ -393,7 +397,7 @@ describe('components/UserList', () => {
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
-          <Router history={history}>
+          <Router>
             <ConnectedUserList {...props} />
           </Router>
         </QueryClientProvider>

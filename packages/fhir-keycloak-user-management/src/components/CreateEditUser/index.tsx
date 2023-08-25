@@ -307,5 +307,5 @@ export function CreateEditUser(props: CreateEditPropTypes) {
     postPutPractitionerFactory: practitionerUpdater,
   };
 
-  return <BaseCreateEditUser {...baseCompProps} />;
+  return <BaseCreateEditUser {...baseCompProps} /> ;
 }
