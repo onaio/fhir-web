@@ -5,8 +5,8 @@ import { SkjemautfyllerContainer } from '@helsenorge/skjemautfyller/components';
 import { Store, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { RouteComponentProps, useHistory, useParams } from 'react-router';
-import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
+import { useNavigate, useParams } from 'react-router';
+import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
@@ -123,12 +123,16 @@ export interface RouteParams {
   [resourceTypeParam]: typeof questionnaireResourceType | typeof questionnaireResponseResourceType;
 }
 
-export type QuestRFormProps = Pick<BaseQuestRFormProps, 'fhirBaseURL'> &
-  RouteComponentProps<RouteParams>;
+export type QuestRFormProps = Pick<BaseQuestRFormProps, 'fhirBaseURL'>;
 
 export const QuestRForm = (props: QuestRFormProps) => {
-  const { resourceId, resourceType } = useParams<RouteParams>();
-  const history = useHistory();
+  const { resourceId, resourceType } = useParams();
+
+  if (!resourceId) {
+    return <Resource404 errorMessage='Unable to load resource. Invalid resource Id' />
+  }
+
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const isQuestionnaire = resourceType === 'Questionnaire';
   const { fhirBaseURL } = props;
@@ -146,7 +150,7 @@ export const QuestRForm = (props: QuestRFormProps) => {
       )
       .catch((e) => sendErrorNotification(e));
   };
-  const onCancel = () => history.goBack();
+  const onCancel = () => navigate(-1);
 
   const rawQuestProps = {
     resourceId,

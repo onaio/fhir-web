@@ -1,18 +1,18 @@
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import React from 'react';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClientProvider } from 'react-query';
 import { ViewDetails } from '..';
 import { careTeam2, careTeam3500, careTeamWithIncluded } from './fixtures';
-import { createBrowserHistory } from 'history';
+// import { createBrowserHistory } from 'history';
 import { createTestQueryClient } from '../../ListView/tests/utils';
 import nock from 'nock';
 import { cleanup, fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { URL_CARE_TEAM, careTeamResourceType } from '../../../constants';
 
-const history = createBrowserHistory();
+// const history = createBrowserHistory();
 
 const testQueryClient = createTestQueryClient();
 
@@ -58,7 +58,7 @@ afterAll(() => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => {
   return (
-    <Router history={history}>
+    <Router>
       <QueryClientProvider client={testQueryClient}>
         <ViewDetails {...props} />
       </QueryClientProvider>
@@ -87,8 +87,10 @@ test('works correctly', async () => {
 });
 
 test('Closes on clicking cancel (X) ', async () => {
-  const history = createMemoryHistory();
-  history.push(URL_CARE_TEAM);
+  // const history = createMemoryHistory();
+  // history.push(URL_CARE_TEAM);
+  window.history.pushState({}, '', URL_CARE_TEAM)
+  console.log(window.history)
 
   const localProps = {
     ...props,
@@ -113,9 +115,9 @@ test('Closes on clicking cancel (X) ', async () => {
 
   // simulate clicking on close button
   const button = document.querySelector('.flex-right button');
-  fireEvent.click(button);
+  fireEvent.click(button as Element);
 
-  expect(history.location.pathname).toEqual('/admin/CareTeams');
+  expect(window.location.pathname).toEqual('/admin/CareTeams');
 });
 
 test('shows broken page if fhir api is down', async () => {

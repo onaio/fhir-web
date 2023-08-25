@@ -2,7 +2,7 @@ import { ViewDetails } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -60,12 +60,10 @@ const AppWrapper = (props: any) => {
 };
 
 test('responds as expected to errors', async () => {
-  const history = createMemoryHistory();
-
   nock(props.fhirBaseURL).get(`/${healthCareServiceResourceType}/345`).replyWithError('coughid');
 
   render(
-    <Router history={history}>
+    <Router>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

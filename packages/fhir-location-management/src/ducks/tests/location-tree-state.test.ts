@@ -5,8 +5,11 @@ import { fhirHierarchy } from '../tests/fixtures';
 import { store } from '@opensrp/store';
 
 reducerRegistry.register(reducerName, reducer);
+console.log({store: store.getState()})
 
 const node = convertApiResToTree(fhirHierarchy);
+
+console.log(store.getState())
 
 describe('src/ducks/location-state', () => {
   it('selects the correct data', () => {

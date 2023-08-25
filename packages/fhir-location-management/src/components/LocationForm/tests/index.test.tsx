@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import * as React from 'react';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { LocationForm } from '..';
 import { getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
@@ -51,7 +51,7 @@ describe('LocationForm', () => {
 
   const AppWrapper = (props: { children: React.ReactNode }) => {
     return (
-      <Router history={history}>
+      <Router>
         <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
       </Router>
     );

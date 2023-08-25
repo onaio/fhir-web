@@ -5,8 +5,7 @@ import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
 import type { MenuProps } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { RouteComponentProps } from 'react-router';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
   useTabularViewWithLocalSearch,
@@ -29,17 +28,12 @@ import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
-// route params for care team pages
-interface RouteParams {
-  careTeamId: string | undefined;
-}
-
 interface Props {
   fhirBaseURL: string;
   careTeamPageSize: number;
 }
 
-export type CareTeamListPropTypes = Props & RouteComponentProps<RouteParams>;
+export type CareTeamListPropTypes = Props;
 
 export const deleteCareTeam = async (
   fhirBaseURL: string,
@@ -62,7 +56,7 @@ export const deleteCareTeam = async (
 export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamListPropTypes) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { addParam, sParams } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -152,7 +146,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
   };
-
+  console.log({ resourceId })
   return (
     <div className="content-section">
       <Helmet>
@@ -164,14 +158,14 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             <Link to={URL_CREATE_CARE_TEAM}>
-              <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
+              <Button type="primary" onClick={() => navigate(URL_CREATE_CARE_TEAM)}>
                 <PlusOutlined />
                 {t('Create Care Team')}
               </Button>
             </Link>
           </div>
           <TableLayout {...tableProps} />
-        </Col>
+        </Col> 
         {resourceId && <ViewDetails careTeamId={resourceId} fhirBaseURL={fhirBaseURL} />}
       </Row>
     </div>

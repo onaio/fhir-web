@@ -2,8 +2,8 @@ import { mount, shallow } from 'enzyme';
 import { createBrowserHistory } from 'history';
 import _ from 'lodash';
 import React from 'react';
-import { Router } from 'react-router';
-import { RouteComponentProps } from 'react-router-dom';
+// import { Router } from 'react-router';
+import { BrowserRouter as Router, Location } from 'react-router-dom';
 import { SearchForm } from '../../Search';
 import { createChangeHandler } from '../utils';
 
@@ -40,7 +40,7 @@ describe('src/components/SearchForm', () => {
       placeholder: '',
     };
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <SearchForm {...props} />
       </Router>
     );
@@ -54,7 +54,7 @@ describe('src/components/SearchForm', () => {
   it('changeHandler Factory works', () => {
     // this test case exercises the createChangeHandler factory with is reveal-specific
     const queryParam = 'randomString';
-    const locationProps: RouteComponentProps = {
+    const locationProps = {
       history,
       location: {
         hash: '',
@@ -69,19 +69,28 @@ describe('src/components/SearchForm', () => {
         url: '/somehwere',
       },
     };
-    const onChangeHandler = createChangeHandler(queryParam, locationProps);
+
+    const location: Location = {
+      state: undefined,
+      key: '',
+      pathname: '/somewhere',
+      search: '',
+      hash: ''
+    }
+    const onChangeHandler = createChangeHandler(queryParam, location);
     const props = {
       onChangeHandler,
       placeholder: '',
     };
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <SearchForm {...props} />
       </Router>
     );
 
+    console.log(location)
     wrapper.find('input').simulate('change', { target: { value: 'test' } });
-    expect(history.location.search).toEqual('?randomString=test');
+    expect(location.search).toEqual('?randomString=test');
 
     // simulate clear
     wrapper.find('.ant-input-clear-icon').first().simulate('click');

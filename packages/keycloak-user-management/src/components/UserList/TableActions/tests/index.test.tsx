@@ -26,7 +26,11 @@ describe('components/UserList/TableActions', () => {
   };
 
   it('does not crash', () => {
-    shallow(<TableActions {...props} />);
+    shallow(
+      <BrowserRouter>
+        <TableActions {...props} />
+      </BrowserRouter>
+    );
   });
 
   it('renders correctly', () => {
@@ -72,11 +76,11 @@ describe('components/UserList/TableActions', () => {
 
     // target the initial row view details
     const dropdown = document.querySelector('[data-testid="action-dropdown"]');
-    fireEvent.click(dropdown);
+    fireEvent.click(dropdown as Element);
 
     wrapper.update();
     const deleteBtn = document.querySelector('[data-testid="delete-user"]');
-    fireEvent.click(deleteBtn);
+    fireEvent.click(deleteBtn as Element);
 
     // confirm
     const yesBtn = document.querySelectorAll('.ant-popconfirm-buttons button')[1];

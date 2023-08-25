@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router';
+// import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 
 /** interface for SidebarProps */
-export interface SidebarProps extends RouteComponentProps {
+export interface SidebarProps {
   authenticated: boolean;
   extraData: { [key: string]: Dictionary };
 }
@@ -93,6 +93,6 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
 SidebarComponent.defaultProps = defaultSidebarProps;
 
-const Sidebar = withRouter(SidebarComponent);
+const Sidebar = SidebarComponent;
 
 export default Sidebar;

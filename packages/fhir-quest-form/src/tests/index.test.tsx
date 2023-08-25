@@ -9,7 +9,7 @@ import {
 } from '@testing-library/react';
 import { QuestRForm } from '..';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Router, Route, Switch } from 'react-router';
+import { MemoryRouter as Router, Route, Routes } from 'react-router';
 import { createMemoryHistory } from 'history';
 import nock from 'nock';
 import { openChoiceQuest, openChoiceQuestRes } from './fixtures';
@@ -32,11 +32,9 @@ jest.mock('uuid', () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/:resourceId/:resourceType">
-        <QuestRForm {...props} />
-      </Route>
-    </Switch>
+    <Routes>
+      <Route path="/:resourceId/:resourceType" element={<QuestRForm {...props} />} />
+    </Routes>
   );
 };
 
@@ -72,7 +70,7 @@ test('renders and submits a questionnaire correctly', async () => {
     .reply(200, {});
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/123/Questionnaire']}>
       <QueryClientProvider client={qClient}>
         <App {...props} />
       </QueryClientProvider>
@@ -105,7 +103,7 @@ test('renders and submits a questionnaire response correctly', async () => {
   nock(props.fhirBaseURL).get('/Questionnaire/123').reply(200, openChoiceQuest);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/321/QuestionnaireResponse']}>
       <QueryClientProvider client={qClient}>
         <App {...props} />
       </QueryClientProvider>

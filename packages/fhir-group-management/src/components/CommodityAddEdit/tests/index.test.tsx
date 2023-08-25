@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/naming-convention */
 import React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { CommodityAddEdit } from '..';
 import { Provider } from 'react-redux';
@@ -16,6 +16,7 @@ import { groupResourceType, listResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import flushPromises from 'flush-promises';
+import { MemoryRouter as Router } from "react-router-dom";
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -55,14 +56,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <CommodityAddEdit {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <CommodityAddEdit {...props} />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/add" element={<CommodityAddEdit {...props} />} />
+          <Route path="/add/:id" element={<CommodityAddEdit {...props} />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -94,11 +91,11 @@ afterAll(() => {
 });
 
 test('renders correctly for new resource', async () => {
-  const history = createMemoryHistory();
-  history.push('/add');
+  // const history = createMemoryHistory();
+  // history.push('/add');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -115,7 +112,7 @@ test('renders correctly for edit resource', async () => {
   nock(props.fhirBaseURL).get(`/${groupResourceType}/${commodity1.id}`).reply(200, commodity1);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${commodity1.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -136,7 +133,7 @@ test('data loading problem', async () => {
     .replyWithError('something aweful happened');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[`/add/${commodity1.id}`]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -159,7 +156,7 @@ test('#1116 adds new resources to list', async () => {
   nock(props.fhirBaseURL).get(`/${listResourceType}/${listResId}`).reply(200, newList).persist();
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -235,7 +232,7 @@ test('#1116 adding new group but list does not exist', async () => {
     .persist();
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/add']}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

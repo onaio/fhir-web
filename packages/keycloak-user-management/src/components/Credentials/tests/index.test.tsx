@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import fetch from 'jest-fetch-mock';
 import { cancelUserHandler, ConnectedUserCredentials, UserCredentials, submitForm } from '..';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
@@ -31,6 +31,14 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const history = createBrowserHistory();
+
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+   ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedUsedNavigate,
+}));
+
 
 describe('components/Credentials', () => {
   beforeAll(() => {
@@ -88,7 +96,7 @@ describe('components/Credentials', () => {
   it('renders correctly', () => {
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedUserCredentials {...props} />
         </Router>
       </Provider>
@@ -103,7 +111,7 @@ describe('components/Credentials', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedUserCredentials {...props} />
         </Router>
       </Provider>
@@ -260,7 +268,7 @@ describe('components/Credentials', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedUserCredentials {...props} />
         </Router>
       </Provider>
@@ -290,7 +298,7 @@ describe('components/Credentials', () => {
     };
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <ConnectedUserCredentials {...props2} />
         </Router>
       </Provider>
@@ -300,10 +308,9 @@ describe('components/Credentials', () => {
     wrapper.unmount();
   });
   it('cancelUserHandler pushes to history', () => {
-    const mockUseHistory = {
-      push: jest.fn(),
-    };
-    cancelUserHandler(mockUseHistory);
-    expect(mockUseHistory.push).toBeCalledWith(URL_USER);
+    const mockNavigation = jest.fn();
+    
+    cancelUserHandler(mockNavigation);
+    expect(mockNavigation).toBeCalledWith(URL_USER);
   });
 });

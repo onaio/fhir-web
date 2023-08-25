@@ -16,7 +16,7 @@ import {
 } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
-import { Router } from 'react-router';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import { Form } from 'antd';
 import { URL_USER } from '../../../../constants';
 import { UserFormProps } from '../types';
@@ -90,11 +90,19 @@ describe('components/forms/UserForm', () => {
   });
 
   it('renders without crashing', () => {
-    shallow(<UserForm {...props} />);
+    shallow(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
   });
 
   it('renders correctly', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
     await act(async () => {
       await flushPromises();
       wrapper.update();
@@ -125,7 +133,11 @@ describe('components/forms/UserForm', () => {
   });
 
   it('form validation works for required fields', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
 
     wrapper.find('form').simulate('submit');
 
@@ -149,7 +161,9 @@ describe('components/forms/UserForm', () => {
 
   it('hidden fields', async () => {
     const wrapper = mount(
-      <UserForm {...{ ...props, renderFields: ['contact'], hiddenFields: ['contact'] }} />
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'], hiddenFields: ['contact'] }} />
+      </Router>
     );
 
     expect(wrapper.find('FormItemInput#contact').prop('hidden')).toBeTruthy();
@@ -157,7 +171,11 @@ describe('components/forms/UserForm', () => {
   });
 
   it('form validation works for contact field', async () => {
-    const wrapper1 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper1 = mount(
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'] }} />
+      </Router>
+    );
 
     // found
     expect(toJson(wrapper1.find('#contact label'))).toMatchSnapshot('contact label');
@@ -173,7 +191,11 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper1.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
 
-    const wrapper2 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper2 = mount(
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'] }} />
+      </Router>
+    );
 
     // regex validation
     wrapper2
@@ -191,7 +213,11 @@ describe('components/forms/UserForm', () => {
       'Contact should be 10 digits and start with 0',
     ]);
 
-    const wrapper3 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper3 = mount(
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'] }} />
+      </Router>
+    );
 
     // regex validation more than 10 alphanumerics
     wrapper3
@@ -209,7 +235,11 @@ describe('components/forms/UserForm', () => {
       'Contact should be 10 digits and start with 0',
     ]);
 
-    const wrapper4 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper4 = mount(
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'] }} />
+      </Router>
+    );
 
     // should now not have an error.
     wrapper4
@@ -234,7 +264,11 @@ describe('components/forms/UserForm', () => {
   });
 
   it('adds user', async () => {
-    const wrapper = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...{ ...props, renderFields: ['contact'] }} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -304,7 +338,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: getFormValues(keycloakUser),
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -344,7 +382,11 @@ describe('components/forms/UserForm', () => {
   });
 
   it('render correct value for enabled when set to true', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -372,7 +414,11 @@ describe('components/forms/UserForm', () => {
   });
 
   it('render correct value for enabled when set to false', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -401,7 +447,11 @@ describe('components/forms/UserForm', () => {
 
   it('user is not created if api is down', async () => {
     fetch.mockReject(new Error('API is down'));
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...props} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -440,7 +490,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: getFormValues(keycloakUser),
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -465,7 +519,7 @@ describe('components/forms/UserForm', () => {
 
   it('cancel button returns user to admin page', async () => {
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...props} />
       </Router>
     );
@@ -488,7 +542,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: keycloakUser,
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...propEdit} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -507,7 +565,7 @@ describe('components/forms/UserForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...propsPractitionerNull} />
       </Router>
     );
@@ -530,7 +588,7 @@ describe('components/forms/UserForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...propsPractitioner} />
       </Router>
     );
@@ -553,7 +611,7 @@ describe('components/forms/UserForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...propsOwn} />
       </Router>
     );
@@ -572,7 +630,11 @@ describe('components/forms/UserForm', () => {
       initialValues: getFormValues(FirstUser),
     };
 
-    const wrapper = mount(<UserForm {...propsFirstUser} />);
+    const wrapper = mount(
+      <Router>
+        <UserForm {...propsFirstUser} />
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -586,7 +648,8 @@ describe('components/forms/UserForm', () => {
     // update user
     wrapper.setProps({ initialValues: keycloakUser });
     // re-render
-    wrapper.update();
+    // wrapper.update();
+    console.log('Props not updating!!')
 
     expect(wrapper.find('input#firstName').props().value).toEqual(keycloakUser.firstName);
     expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
@@ -605,7 +668,7 @@ describe('components/forms/UserForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <UserForm {...propsOwn} />
       </Router>
     );

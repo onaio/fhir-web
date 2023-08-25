@@ -1,7 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PatientDetails } from '..';
-import { Route, Router, Switch } from 'react-router';
+import { Route, Routes } from 'react-router';
+import { MemoryRouter as Router } from "react-router";
 import * as reactQuery from 'react-query';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
@@ -74,11 +75,9 @@ describe('Patients list view', () => {
     return (
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <Switch>
-            <Route exact path={`${LIST_PATIENTS_URL}/:id`}>
-              {(routeProps) => <PatientDetails {...{ ...props, ...routeProps }} />}
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path={`${LIST_PATIENTS_URL}/:id`} element={<PatientDetails { ...props } />} />
+          </Routes>
         </QueryClientProvider>
       </Provider>
     );
@@ -86,7 +85,10 @@ describe('Patients list view', () => {
 
   it('renders correctly', async () => {
     const history = createMemoryHistory();
-    history.push(`${LIST_PATIENTS_URL}/${patientDetails.id}`);
+    // history.push(`${LIST_PATIENTS_URL}/${patientDetails.id}`);
+
+    window.history.pushState({}, '', `${LIST_PATIENTS_URL}/${patientDetails.id}`);
+    console.log(window.history.pushState({}, '', `${LIST_PATIENTS_URL}/${patientDetails.id}`))
 
     nock(props.fhirBaseURL)
       .get(`/Patient/${patientDetails.id}/$everything`)
@@ -94,7 +96,7 @@ describe('Patients list view', () => {
       .reply(200, patientDetails);
 
     render(
-      <Router history={history}>
+      <Router initialEntries={[`${LIST_PATIENTS_URL}/${patientDetails.id}`]}>
         <AppWrapper {...props}></AppWrapper>
       </Router>
     );
@@ -107,7 +109,7 @@ describe('Patients list view', () => {
 
     // click on documentReference button
     const docReferenceBtn = document.querySelector('li#DocumentReference');
-    fireEvent.click(docReferenceBtn);
+    fireEvent.click(docReferenceBtn as Element);
 
     const firstAndOnlyReference = screen.getByText(/^1015$/);
     expect(firstAndOnlyReference).toMatchSnapshot('reference collapse item');
@@ -121,7 +123,7 @@ describe('Patients list view', () => {
 
     // click on immunizationRecommendation button
     const immunizationRecommendationBtn = document.querySelector('li#ImmunizationRecommendation');
-    fireEvent.click(immunizationRecommendationBtn);
+    fireEvent.click(immunizationRecommendationBtn as Element);
 
     document.querySelectorAll('tr').forEach((tr, idx) => {
       tr.querySelectorAll('td').forEach((td) => {
@@ -131,7 +133,7 @@ describe('Patients list view', () => {
 
     // see sort direction in Observations.
     const observationMenuItem = document.querySelector('li#Observation');
-    fireEvent.click(observationMenuItem);
+    fireEvent.click(observationMenuItem as Element);
 
     // generally see the table view
     document.querySelectorAll('table tr').forEach((tr) => {
@@ -148,7 +150,7 @@ describe('Patients list view', () => {
     expect(unsorted).toEqual(['4/16/2018', '4/11/2016', '3/29/2010', '4/7/2014', '4/2/2012']);
 
     const sortCaret = document.querySelector('.anticon-caret-up');
-    fireEvent.click(sortCaret);
+    fireEvent.click(sortCaret as Element);
 
     const sorted = Array.from(document.querySelectorAll('table tr td:last-of-type')).map(
       (td) => td.textContent
@@ -169,7 +171,7 @@ describe('Patients list view', () => {
       .replyWithError('Something went wrong');
 
     render(
-      <Router history={history}>
+      <Router initialEntries={[`${LIST_PATIENTS_URL}/${patientDetails.id}`]}>
         <AppWrapper {...props}></AppWrapper>
       </Router>
     );

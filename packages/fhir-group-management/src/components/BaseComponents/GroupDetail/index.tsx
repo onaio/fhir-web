@@ -44,7 +44,7 @@ export const parseGroup = (obj: IGroup) => {
     active,
     id,
     identifier,
-    lastUpdated: get(obj, 'meta.lastUpdated'),
+    lastUpdated: get(obj, 'meta.lastUpdated') as string | number,
     members: member,
     quantity,
     type,

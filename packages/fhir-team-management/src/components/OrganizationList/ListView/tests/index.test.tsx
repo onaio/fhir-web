@@ -2,7 +2,7 @@ import { OrganizationList } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -66,14 +66,10 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${ORGANIZATION_LIST_URL}`}>
-            {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${ORGANIZATION_LIST_URL}/:id`}>
-            {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path={`${ORGANIZATION_LIST_URL}`} element={<OrganizationList { ...props } />} />
+          <Route path={`${ORGANIZATION_LIST_URL}/:id`} element={<OrganizationList { ...props } />} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -133,7 +129,7 @@ test('renders correctly when listing organizations', async () => {
     .reply(200, organizationSearchPage1);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[ORGANIZATION_LIST_URL]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
@@ -174,7 +170,7 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // works with search as well.
-  const searchForm = document.querySelector('[data-testid="search-form"]');
+  const searchForm = document.querySelector('[data-testid="search-form"]') as Element;
   await userEvents.type(searchForm, '345');
 
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=345');
@@ -214,7 +210,7 @@ test('renders correctly when listing organizations', async () => {
     .reply(200, allAffiliations);
 
   // target the initial row view details
-  const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
+  const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]') as Element;
   fireEvent.click(dropdown);
 
   const viewDetailsLink = screen.getByText(/View Details/);
@@ -246,7 +242,7 @@ test('renders correctly when listing organizations', async () => {
   ).toBeInTheDocument();
 
   // close view details
-  const closeButton = document.querySelector('[data-testid="close-button"]');
+  const closeButton = document.querySelector('[data-testid="close-button"]') as Element;
   fireEvent.click(closeButton);
 
   expect(history.location.pathname).toEqual('/admin/teams');
@@ -267,7 +263,7 @@ test('responds as expected to errors', async () => {
     .replyWithError('coughid');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[ORGANIZATION_LIST_URL]}>
       <AppWrapper debugKey="responds" {...props}></AppWrapper>
     </Router>
   );

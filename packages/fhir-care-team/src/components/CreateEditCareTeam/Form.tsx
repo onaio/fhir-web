@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -39,7 +39,7 @@ export interface CareTeamFormProps {
 const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => {
   const { fhirBaseURL, initialValues, practitioners, organizations } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
@@ -143,7 +143,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             <Button type="primary" htmlType="submit" className="create-group">
               {isSubmitting ? t('Saving') : t('Save')}
             </Button>
-            <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
+            <Button onClick={() => navigate(URL_CARE_TEAM)} className="cancel-care-team">
               {t('Cancel')}
             </Button>
           </Form.Item>

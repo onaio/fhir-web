@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -41,6 +41,7 @@ import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
+console.log(reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer))
 
 // Define selector instance
 const userGroupsSelector = makeKeycloakUserGroupsSelector();
@@ -73,7 +74,7 @@ const defaultProps = {
   keycloakBaseURL: '',
 };
 
-export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
+export type UserGroupListTypes = Props;
 
 /**
  * Component which shows the list of all groups and their details
@@ -84,14 +85,17 @@ export type UserGroupListTypes = Props & RouteComponentProps<RouteParams>;
 export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupListTypes) => {
   const { keycloakBaseURL } = props;
   const dispatch = useDispatch();
-  const searchQuery = getQueryParams(props.location)[SEARCH_QUERY_PARAM] as string;
+  const location = useLocation();
+  const searchQuery = getQueryParams(location)[SEARCH_QUERY_PARAM] as string;
   const getUserGroupsList = useSelector((state) =>
     userGroupsSelector(state, { searchText: searchQuery })
   );
+
+  console.log({ searchQuery, getUserGroupsList, location })
   const [groupId, setGroupId] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { isLoading: isUserGroupsLoading, isError: isUserGroupsError } = useQuery(
     ['fetchKeycloakUserGroups', KEYCLOAK_URL_USER_GROUPS, keycloakBaseURL],
@@ -129,8 +133,8 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
   );
 
   const searchFormProps = {
-    defaultValue: getQueryParams(props.location)[SEARCH_QUERY_PARAM],
-    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, props),
+    defaultValue: getQueryParams(location)[SEARCH_QUERY_PARAM],
+    onChangeHandler: createChangeHandler(SEARCH_QUERY_PARAM, location),
   };
 
   const columns: Column<KeycloakUserGroup>[] = [
@@ -174,7 +178,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_USER_GROUP_CREATE)}>
+            <Button type="primary" onClick={() => navigate(URL_USER_GROUP_CREATE)}>
               <PlusOutlined />
               {t('New User Group')}
             </Button>

@@ -2,7 +2,7 @@ import { ViewDetails } from '..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router';
+import { MemoryRouter as Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -66,7 +66,7 @@ test('responds as expected to errors', async () => {
   nock(props.fhirBaseURL).get(`/${organizationResourceType}/345`).replyWithError('coughid');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={[ORGANIZATION_LIST_URL]}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );

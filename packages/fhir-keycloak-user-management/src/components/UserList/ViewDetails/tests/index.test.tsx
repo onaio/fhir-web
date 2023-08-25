@@ -11,6 +11,7 @@ import fetch from 'jest-fetch-mock';
 import { KeycloakUser } from '@opensrp/user-management';
 import { practitionerRoleResourceType } from '../../../../constants';
 import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
+import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -68,14 +69,18 @@ const AppWrapper = (props: any) => {
       <QueryClientProvider client={queryClient}>
         <ViewDetails {...props} />
       </QueryClientProvider>
-    </Provider>
+   </Provider>
   );
 };
 
 test('responds as expected to errors', async () => {
   const errorMessage = 'coughid';
   fetch.mockReject(new Error(errorMessage));
-  render(<AppWrapper {...props}></AppWrapper>);
+  render(
+    <BrowserRouter>
+    <AppWrapper {...props} />
+    </BrowserRouter>
+  );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -100,7 +105,11 @@ test('shows user type in details', async () => {
     })
     .reply(200, practitionerRoleBundle);
 
-  const { getByText, getByTestId } = render(<AppWrapper {...props}></AppWrapper>);
+  const { getByText, getByTestId } = render(
+    <BrowserRouter>
+    <AppWrapper {...props} />
+    </BrowserRouter>
+  );
 
   expect(getByTestId('custom-spinner')).toBeInTheDocument();
 

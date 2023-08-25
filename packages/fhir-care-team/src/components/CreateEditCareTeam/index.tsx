@@ -3,7 +3,7 @@ import { Col, Row } from 'antd';
 import { useQuery } from 'react-query';
 import { Spin } from 'antd';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { RouteComponentProps, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   BrokenPage,
   FHIRServiceClass,
@@ -24,18 +24,13 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 
-// Interface for route params
-interface RouteParams {
-  [ROUTE_PARAM_CARE_TEAM_ID]?: string;
-}
-
 /** props for editing a user view */
 export interface EditCareTeamProps {
   fhirBaseURL: string;
 }
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditCareTeamProps = EditCareTeamProps & RouteComponentProps<RouteParams>;
+export type CreateEditCareTeamProps = EditCareTeamProps;
 
 /**
  *
@@ -44,7 +39,7 @@ export type CreateEditCareTeamProps = EditCareTeamProps & RouteComponentProps<Ro
 
 const CreateEditCareTeam: React.FC<CreateEditCareTeamProps> = (props: CreateEditCareTeamProps) => {
   const { fhirBaseURL } = props;
-  const params = useParams<RouteParams>();
+  const params = useParams();
   const careTeamId = params[ROUTE_PARAM_CARE_TEAM_ID];
   const { t } = useTranslation();
 

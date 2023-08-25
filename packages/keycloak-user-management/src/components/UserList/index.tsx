@@ -35,7 +35,7 @@ import {
 import { useTranslation } from '../../mls';
 import { getTableColumns } from './utils';
 import { getExtraData } from '@onaio/session-reducer';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { TableActions } from './TableActions';
 import { UserDetails, UserDetailType } from '../UserDetails';
@@ -67,7 +67,7 @@ export const defaultProps = {
   usersPageSize: 20,
 };
 
-export type UserListTypes = Props & RouteComponentProps;
+export type UserListTypes = Props;
 
 const UserList = (props: UserListTypes): JSX.Element => {
   const {
@@ -80,10 +80,11 @@ const UserList = (props: UserListTypes): JSX.Element => {
     usersPageSize,
   } = props;
 
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
 
-  const searchParam = getQueryParams(props.location)[SEARCH_QUERY_PARAM] ?? '';
+  const searchParam = getQueryParams(location)[SEARCH_QUERY_PARAM] ?? '';
   const [sortedInfo, setSortedInfo] = useState<Dictionary>();
   const [userDetails, setUserDetails] = useState<UserDetailType | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
@@ -185,15 +186,15 @@ const UserList = (props: UserListTypes): JSX.Element => {
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
             <SearchForm
-              defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
-              onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
+              defaultValue={getQueryParams(location)[SEARCH_QUERY_PARAM]}
+              onChange={createChangeHandler(SEARCH_QUERY_PARAM, location)}
               size={'middle'}
             />
             <Space style={{ marginBottom: 16, float: 'right' }}>
               <Button
                 type="primary"
                 className="create-user"
-                onClick={() => history.push(URL_USER_CREATE)}
+                onClick={() => navigate(URL_USER_CREATE)}
               >
                 <PlusOutlined />
                 {t('Add User')}

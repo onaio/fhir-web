@@ -103,7 +103,7 @@ export const getGroupFormFields = (obj?: IGroup) => {
     active,
     name,
     type,
-    unitOfMeasure: get(unitMeasureCharacteristic, 'valueCodeableConcept.text', undefined),
+    unitOfMeasure: get(unitMeasureCharacteristic, 'valueCodeableConcept.text', undefined) as IGroup['type'],
   };
   return formFields;
 };

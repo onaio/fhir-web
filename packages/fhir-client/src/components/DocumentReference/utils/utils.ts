@@ -1,5 +1,5 @@
 import { get, isEmpty, some } from 'lodash';
-import { IfhirR4 } from '@smile-cdr/fhirts';
+import { IfhirR4, fhirR4 } from '@smile-cdr/fhirts';
 import { format } from 'date-fns';
 import { dateFormat } from '../../../constants';
 import FHIR from 'fhirclient';
@@ -30,11 +30,11 @@ export const processTopLevelFields = (docResource: IfhirR4.IDocumentReference) =
     status,
     documentType: {
       codeList: type?.coding,
-      code: get(type, 'coding.0'),
+      code: get(type, 'coding.0') as fhirR4.Coding,
     },
     securityCodes: {
       codeList: securityLabel,
-      code: get(securityLabel, '[0].coding[0]'),
+      code: get(securityLabel, '[0].coding[0]') as unknown as fhirR4.Coding,
     },
   };
 };
@@ -50,9 +50,9 @@ export const processContextFields = (docResource: IfhirR4.IDocumentReference) =>
   return {
     periodStart: start ? format(new Date(start), dateFormat) : undefined,
     periodEnd: end ? format(new Date(end), dateFormat) : undefined,
-    eventCoding: get(docResource, 'context.event[0].coding[0]'),
-    facilityTypeCoding: get(docResource, 'context.facilityType.coding[0]'),
-    practiceSettingCoding: get(docResource, 'context.practiceSetting.coding[0]'),
+    eventCoding: get(docResource, 'context.event[0].coding[0]') as fhirR4.Coding,
+    facilityTypeCoding: get(docResource, 'context.facilityType.coding[0]') as fhirR4.Coding,
+    practiceSettingCoding: get(docResource, 'context.practiceSetting.coding[0]') as fhirR4.Coding,
   };
 };
 

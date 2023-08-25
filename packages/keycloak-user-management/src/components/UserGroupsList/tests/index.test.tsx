@@ -5,7 +5,7 @@ import fetch from 'jest-fetch-mock';
 import { authenticateUser } from '@onaio/session-reducer';
 import { mount, shallow } from 'enzyme';
 import { UserGroupsList } from '..';
-import { Router } from 'react-router';
+import { MemoryRouter as Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
@@ -87,7 +87,7 @@ describe('components/UserGroupsList', () => {
     shallow(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...locationProps} keycloakBaseURL={keycloakBaseURL} />
           </Router>
         </Provider>
@@ -105,7 +105,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>
@@ -133,7 +133,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>
@@ -174,7 +174,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>
@@ -202,7 +202,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>
@@ -233,7 +233,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>
@@ -287,7 +287,7 @@ describe('components/UserGroupsList', () => {
     const wrapper = mount(
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router initialEntries={[URL_USER_GROUPS]}>
             <UserGroupsList {...props} />
           </Router>
         </Provider>

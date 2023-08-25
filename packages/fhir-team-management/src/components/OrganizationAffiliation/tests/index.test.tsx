@@ -1,6 +1,6 @@
 import { AffiliationList } from '..';
 import React from 'react';
-import { Route, Router, Switch } from 'react-router';
+import { Route, MemoryRouter as Router, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
@@ -60,11 +60,9 @@ const AppWrapper = ({ children }: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/assignments">
-            {children}
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/assignments" element={children} />
+        </Routes>
       </QueryClientProvider>
     </Provider>
   );
@@ -129,7 +127,7 @@ test('Edits organization affiliation correctly', async () => {
     .reply(200, allOrgs);
 
   const { unmount } = render(
-    <Router history={history}>
+    <Router initialEntries={['/assignments']}>
       <AppWrapper>
         <AffiliationList {...props} />
       </AppWrapper>
@@ -284,7 +282,7 @@ test('api error response', async () => {
     .replyWithError('Something awful happened');
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/assignments']}>
       <AppWrapper>
         <AffiliationList {...props} />
       </AppWrapper>
@@ -307,7 +305,7 @@ test('api undefined response', async () => {
     .reply(200, null);
 
   render(
-    <Router history={history}>
+    <Router initialEntries={['/assignments']}>
       <AppWrapper>
         <AffiliationList {...props} />
       </AppWrapper>

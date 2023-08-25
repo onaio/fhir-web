@@ -5,7 +5,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   SearchForm,
   BrokenPage,
@@ -50,7 +50,7 @@ export const BaseListView = (props: BaseListViewProps) => {
   const { sParams } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {
     queryValues: { data, isFetching, isLoading, error },
@@ -89,7 +89,7 @@ export const BaseListView = (props: BaseListViewProps) => {
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
             {createButtonUrl && (
-              <Button type="primary" onClick={() => history.push(createButtonUrl)}>
+              <Button type="primary" onClick={() => navigate(createButtonUrl)}>
                 <PlusOutlined />
                 {createButtonLabel}
               </Button>

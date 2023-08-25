@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import React from 'react';
 import { CustomLogout } from '..';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from '@opensrp/store';
 import * as notifications from '@opensrp/notifications';
 import { act } from 'react-dom/test-utils';
@@ -42,9 +42,9 @@ describe('components/Logout', () => {
   it('renders logout component', () => {
     const wrapper = mountWithTranslations(
       <Provider store={store}>
-        <MemoryRouter>
+        <Router>
           <CustomLogout />
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
     expect(toJson(wrapper.find('CustomLogout'))).toMatchSnapshot();
@@ -66,9 +66,9 @@ describe('components/Logout', () => {
       'https://keycloak-stage.smartregister.org/auth/realms/opensrp-web-stage/protocol/openid-connect/logout';
     mountWithTranslations(
       <Provider store={store}>
-        <MemoryRouter>
+        <Router>
           <CustomLogout />
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
     await flushPromises();
@@ -86,9 +86,9 @@ describe('components/Logout', () => {
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
     mountWithTranslations(
       <Provider store={store}>
-        <MemoryRouter>
+        <Router>
           <CustomLogout />
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
     await act(async () => {

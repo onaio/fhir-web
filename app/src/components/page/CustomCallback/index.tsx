@@ -3,7 +3,7 @@ import { getUser, User } from '@onaio/session-reducer';
 import { trimStart } from 'lodash';
 import querystring from 'querystring';
 import React from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router';
+import { Navigate, Location, useLocation } from 'react-router';
 import { EXPRESS_OAUTH_GET_STATE_URL } from '../../../configs/env';
 import { URL_EXPRESS_LOGIN, URL_HOME, URL_LOGOUT } from '../../../constants';
 import { store } from '@opensrp/store';
@@ -25,7 +25,7 @@ export const openNotification = (user: User, t: TFunction): void => {
  * @param {RouteComponentProps} props - the props should contain the routing state.
  * @returns {boolean} return the response
  */
-export const nextIsValid = (props: RouteComponentProps): boolean => {
+export const nextIsValid = (location: Location): boolean => {
   let response = true;
   const indirectionURLs = [URL_LOGOUT];
   /** we should probably sieve some routes from being passed on.
@@ -34,7 +34,7 @@ export const nextIsValid = (props: RouteComponentProps): boolean => {
    */
   const stringifiedUrls = indirectionURLs.map((url) => querystring.stringify({ next: url }));
   for (const url of stringifiedUrls) {
-    if (props.location.search.includes(url)) {
+    if (location.search.includes(url)) {
       response = false;
       break;
     }
@@ -42,14 +42,13 @@ export const nextIsValid = (props: RouteComponentProps): boolean => {
   return response;
 };
 
-export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
-  props: RouteComponentProps
-) => {
+export const BaseSuccessfulLoginComponent: React.FC = () => {
   let pathToRedirectTo = URL_HOME;
   const { t } = useTranslation();
+  const location = useLocation();
 
-  if (nextIsValid(props)) {
-    const searchString = trimStart(props.location.search, '?');
+  if (nextIsValid(location)) {
+    const searchString = trimStart(location.search, '?');
     const searchParams = querystring.parse(searchString);
     const nextPath = searchParams.next as string | undefined;
 
@@ -61,14 +60,15 @@ export const BaseSuccessfulLoginComponent: React.FC<RouteComponentProps> = (
       openNotification(user, t);
     }
   }
-  return <Redirect to={pathToRedirectTo} />;
+  return <Navigate to={pathToRedirectTo} replace />;
 };
 
-export const SuccessfulLoginComponent = withRouter(BaseSuccessfulLoginComponent);
+export const SuccessfulLoginComponent = BaseSuccessfulLoginComponent;
 
-const BaseUnsuccessfulLogin: React.FC<RouteComponentProps> = (props: RouteComponentProps) => {
-  let redirectTo = `${URL_EXPRESS_LOGIN}${props.location.search}`;
-  if (!nextIsValid(props)) {
+const BaseUnsuccessfulLogin: React.FC = (props) => {
+  const location = useLocation();
+  let redirectTo = `${URL_EXPRESS_LOGIN}${location.search}`;
+  if (!nextIsValid(location)) {
     redirectTo = URL_EXPRESS_LOGIN;
   }
 
@@ -76,9 +76,9 @@ const BaseUnsuccessfulLogin: React.FC<RouteComponentProps> = (props: RouteCompon
   return <></>;
 };
 
-export const UnSuccessfulLogin = withRouter(BaseUnsuccessfulLogin);
+export const UnSuccessfulLogin = BaseUnsuccessfulLogin;
 
-const CustomConnectedAPICallBack: React.FC<RouteComponentProps<RouteParams>> = (props) => {
+const CustomConnectedAPICallBack: React.FC<RouteParams> = (props) => {
   const unifiedProps = {
     LoadingComponent: () => <Spin size="large" className="custom-spinner" />,
     UnSuccessfulLoginComponent: UnSuccessfulLogin,

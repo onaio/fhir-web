@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { Col, Row, Spin } from 'antd';
-import { RouteComponentProps } from 'react-router';
+import { useParams } from 'react-router';
 import { Store } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { OpenSRPService } from '@opensrp/react-utils';
+import { OpenSRPService, Resource404 } from '@opensrp/react-utils';
 import {
   ROUTE_PARAM_USER_ID,
   KEYCLOAK_URL_USERS,
@@ -64,7 +64,7 @@ const defaultProps = {
 };
 
 /** type intersection for all types that pertain to the props */
-export type CreateEditPropTypes = CreateEditUserProps & RouteComponentProps<RouteParams>;
+export type CreateEditPropTypes = CreateEditUserProps;
 
 /**
  *
@@ -84,7 +84,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
   const { t } = useTranslation();
 
   const {
-    keycloakUser,
     keycloakBaseURL,
     baseUrl,
     extraData,
@@ -96,7 +95,21 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     getPractitionerRoleFun,
   } = props;
 
-  const userId = props.match.params[ROUTE_PARAM_USER_ID];
+  const params = useParams();
+
+  const userId = params[ROUTE_PARAM_USER_ID];
+
+  if (!userId) {
+    return <Resource404 errorMessage={t('Unable to load resource. Unknown user id.')} />;
+  }
+
+  const keycloakUsersSelector = makeKeycloakUsersSelector();
+  
+  const keycloakUser = useSelector((state) => {
+    const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
+    const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
+    return keycloakUser
+  })
 
   useEffect(() => {
     if (!userGroups.length) {
@@ -231,19 +244,7 @@ interface DispatchedProps {
 }
 
 // connect to store
-const mapStateToProps = (state: Partial<Store>, ownProps: CreateEditPropTypes): DispatchedProps => {
-  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
-  let keycloakUser = null;
-
-  if (userId) {
-    const keycloakUsersSelector = makeKeycloakUsersSelector();
-    const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-    keycloakUser = keycloakUsers.length === 1 ? keycloakUsers[0] : null;
-  }
-
-  const extraData = getExtraData(state);
-  return { keycloakUser, extraData };
-};
+const mapStateToProps = () => {};
 
 /** map props to actions that may be dispatched by component */
 const mapDispatchToProps = {

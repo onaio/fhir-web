@@ -5,7 +5,7 @@ import { Row, Col, Button, Spin, Alert } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
 import { useQuery } from 'react-query';
@@ -68,7 +68,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const hierarchyParams = {
     identifier: fhirRootLocationIdentifier,
@@ -163,9 +163,9 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
                     if (selectedNode) {
                       const queryParams = { parentId: selectedNode.model.nodeId };
                       const searchString = new URLSearchParams(queryParams).toString();
-                      history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
+                      navigate(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
                     }
-                    history.push(URL_LOCATION_UNIT_ADD);
+                    navigate(URL_LOCATION_UNIT_ADD);
                   }}
                 >
                   <PlusOutlined />

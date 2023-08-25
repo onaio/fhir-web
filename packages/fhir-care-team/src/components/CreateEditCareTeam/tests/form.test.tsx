@@ -2,11 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
 import nock from 'nock';
-import { history } from '@onaio/connected-reducer-registry';
 import * as fhirCient from 'fhirclient';
 import * as fixtures from './fixtures';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { CareTeamForm } from '../Form';
 import { defaultInitialValues } from '../utils';
 import Client from 'fhirclient/lib/Client';
@@ -14,6 +13,13 @@ import { getResourcesFromBundle } from '@opensrp/react-utils';
 import toJson from 'enzyme-to-json';
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+const mockedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+   ...jest.requireActual('react-router-dom') as any,
+  useNavigate: () => mockedNavigate,
+}));
 
 jest.mock('antd', () => {
   const antd = jest.requireActual('antd');
@@ -57,7 +63,11 @@ describe('components/forms/CreateTeamForm', () => {
   });
 
   it('form validation works for required fields', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <CareTeamForm {...props} />)
+      </Router>
+    );
 
     wrapper.find('form').simulate('submit');
 
@@ -98,7 +108,11 @@ describe('components/forms/CreateTeamForm', () => {
       })
       .reply(200, 'CareTeam created successfully');
 
-    const wrapper = mount(<CareTeamForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <CareTeamForm {...props} />)
+      </Router>
+    );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const client = new Client({} as any, {
@@ -163,7 +177,11 @@ describe('components/forms/CreateTeamForm', () => {
       },
     };
 
-    const wrapper = mount(<CareTeamForm {...propEdit} />);
+    const wrapper = mount(
+      <Router>
+        <CareTeamForm {...props} />)
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -187,7 +205,11 @@ describe('components/forms/CreateTeamForm', () => {
   });
 
   it('Care Team is not created if api is down', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
+    const wrapper = mount(
+      <Router>
+        <CareTeamForm {...props} />)
+      </Router>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -219,9 +241,9 @@ describe('components/forms/CreateTeamForm', () => {
   });
 
   it('cancel button returns user to list view', async () => {
-    const historyPushMock = jest.spyOn(history, 'push');
+  
     const wrapper = mount(
-      <Router history={history}>
+      <Router>
         <CareTeamForm {...props} />
       </Router>
     );
@@ -233,7 +255,7 @@ describe('components/forms/CreateTeamForm', () => {
     wrapper.update();
     wrapper.find('.cancel-care-team').at(1).simulate('click');
     wrapper.update();
-    expect(historyPushMock).toHaveBeenCalledTimes(1);
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/CareTeams');
+    expect(mockedNavigate).toHaveBeenCalledTimes(1);
+    expect(mockedNavigate).toHaveBeenCalledWith('/admin/CareTeams');
   });
 });

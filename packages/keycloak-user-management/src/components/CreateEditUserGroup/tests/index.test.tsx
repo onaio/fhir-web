@@ -4,7 +4,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { history } from '@onaio/connected-reducer-registry';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { authenticateUser } from '@onaio/session-reducer';
 import { store } from '@opensrp/store';
 import * as opensrpStore from '@opensrp/store';
@@ -101,7 +101,7 @@ describe('components/CreateEditUserGroup', () => {
     act(() => {
       shallow(
         <Provider store={opensrpStore.store}>
-          <Router history={history}>
+          <Router>
             <CreateEditUserGroup {...props} />
           </Router>
         </Provider>
@@ -121,7 +121,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...props} />
         </Router>
       </Provider>
@@ -165,7 +165,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const wrapper = mount(
       <Provider store={opensrpStore.store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...propsCreate} />
         </Router>
       </Provider>
@@ -190,7 +190,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...props} />
         </Router>
       </Provider>
@@ -225,7 +225,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...props} />
         </Router>
       </Provider>
@@ -245,7 +245,7 @@ describe('components/CreateEditUserGroup', () => {
     store.dispatch(fetchKeycloakUserRoles([userRoles[0]]));
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...props} />
         </Router>
       </Provider>
@@ -278,7 +278,7 @@ describe('components/CreateEditUserGroup', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
+        <Router>
           <CreateEditUserGroup {...props} />
         </Router>
       </Provider>

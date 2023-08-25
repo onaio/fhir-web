@@ -4,7 +4,7 @@ import { Popconfirm, Divider, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { KeycloakUser, removeKeycloakUsers } from '../../../ducks/user';
 import { URL_USER_CREDENTIALS, URL_USER_EDIT, UserQueryId } from '../../../constants';
 import { Dictionary } from '@onaio/utils';
@@ -39,7 +39,7 @@ const TableActions = (props: Props): JSX.Element => {
   const { t } = useTranslation();
   const { user_id } = extraData;
   const query = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const getItems = (record: KeycloakUser): MenuProps['items'] => [
     {
@@ -84,7 +84,7 @@ const TableActions = (props: Props): JSX.Element => {
         <Button
           type="link"
           data-testid="credentials"
-          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+          onClick={() => navigate(`${URL_USER_CREDENTIALS}/${record.id}`)}
         >
           {t('Credentials')}
         </Button>

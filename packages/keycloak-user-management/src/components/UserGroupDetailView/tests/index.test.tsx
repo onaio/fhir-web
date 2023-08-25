@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import { Router } from 'react-router';
+import { MemoryRouter as Router } from 'react-router';
 import { ViewDetails } from '..';
-import { createMemoryHistory } from 'history';
+// import { createMemoryHistory } from 'history';
 import { URL_USER_GROUPS } from '../../../constants';
 import { act } from 'react-dom/test-utils';
 import flushPromises from 'flush-promises';
@@ -12,8 +12,8 @@ import { KeycloakUserGroup } from '../../../ducks/userGroups';
 import { UserGroupMembers } from '../../UserGroupsList';
 import { Resource404 } from '@opensrp/react-utils';
 
-const history = createMemoryHistory();
-history.push(URL_USER_GROUPS);
+// const history = createMemoryHistory();
+// history.push(URL_USER_GROUPS);
 
 describe('View User Group Details', () => {
   const props = {
@@ -49,7 +49,7 @@ describe('View User Group Details', () => {
 
   it('works correctly', async () => {
     const wrapper = mount(
-      <Router history={history}>
+      <Router initialEntries={[URL_USER_GROUPS]}>
         <ViewDetails {...props} />
       </Router>
     );
@@ -72,7 +72,7 @@ describe('View User Group Details', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router initialEntries={[URL_USER_GROUPS]}>
         <ViewDetails {...newProps} />
       </Router>
     );
@@ -87,7 +87,7 @@ describe('View User Group Details', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router initialEntries={[URL_USER_GROUPS]}>
         <ViewDetails {...newProps} />
       </Router>
     );
@@ -98,7 +98,7 @@ describe('View User Group Details', () => {
 
   it('Closes on clicking cancel (X) ', () => {
     const wrapper = mount(
-      <Router history={history}>
+      <Router initialEntries={[URL_USER_GROUPS]}>
         <ViewDetails {...props} />
       </Router>
     );
@@ -123,7 +123,7 @@ describe('View User Group Details', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
+      <Router initialEntries={[URL_USER_GROUPS]}>
         <ViewDetails {...newProps} />
       </Router>
     );

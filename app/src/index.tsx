@@ -1,8 +1,8 @@
 import './configs/dispatchConfig'; // this needs to be imported before anything else
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import { history } from '@onaio/connected-reducer-registry';
-import { ConnectedRouter } from 'connected-react-router';
+// import { history } from '@onaio/connected-reducer-registry';
+// import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import './index.css';
 import App from './App/App';
@@ -19,6 +19,7 @@ import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
 import { Spin } from 'antd';
+import { BrowserRouter } from 'react-router-dom';
 // tslint:disable-next-line: ordered-imports
 const queryClient = new QueryClient();
 
@@ -38,13 +39,13 @@ ReactDOM.render(
   <Suspense fallback={() => <Spin className="custom-spinner" />}>
     <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
+        <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <OpensrpWebI18nProvider>
               <App />
             </OpensrpWebI18nProvider>
           </QueryClientProvider>
-        </ConnectedRouter>
+        </BrowserRouter>
       </Provider>
     </Sentry.ErrorBoundary>
   </Suspense>,

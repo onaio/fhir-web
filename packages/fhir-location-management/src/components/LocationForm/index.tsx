@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Space, Button, Radio } from 'antd';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
   defaultFormField,
@@ -129,7 +129,7 @@ const LocationForm = (props: LocationFormProps) => {
 
   /** if plan is updated or saved redirect to plans page */
   if (areWeDoneHere && successUrl) {
-    return <Redirect to={successUrl} />;
+    return <Navigate to={successUrl} />;
   }
 
   return (

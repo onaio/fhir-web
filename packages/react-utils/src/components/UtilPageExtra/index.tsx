@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeftOutlined } from '@ant-design/icons';
@@ -20,7 +20,7 @@ export const extraLinksDefault = {
  */
 
 const ExtraLinks = (props: UtilPageExtraProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { homeUrl } = props;
   return (
@@ -28,7 +28,7 @@ const ExtraLinks = (props: UtilPageExtraProps) => {
       <Button
         type="primary"
         onClick={() => {
-          history.goBack();
+          navigate(-1);
         }}
       >
         <ArrowLeftOutlined />

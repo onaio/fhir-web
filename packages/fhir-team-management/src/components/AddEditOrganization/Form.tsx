@@ -26,7 +26,7 @@ import {
   sendInfoNotification,
   sendSuccessNotification,
 } from '@opensrp/notifications';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import {
   generateOrgPayload,
   getPractitionerOptions,
@@ -69,9 +69,9 @@ const OrganizationForm = (props: OrganizationFormProps) => {
   } = props;
 
   const queryClient = useQueryClient();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const goTo = (url = '#') => history.push(url);
+  const goTo = (url = '#') => navigate(url);
 
   const { mutate, isLoading } = useMutation(
     (values: OrganizationFormFields) => {

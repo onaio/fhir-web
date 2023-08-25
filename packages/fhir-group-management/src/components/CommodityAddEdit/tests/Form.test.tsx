@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { CommodityForm } from '../Form';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
@@ -48,7 +48,7 @@ describe('Health care form', () => {
 
   const AppWrapper = (props: { children: React.ReactNode }) => {
     return (
-      <Router history={history}>
+      <Router>
         <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
       </Router>
     );
@@ -235,7 +235,7 @@ describe('Health care form', () => {
     expect(optionTexts).toEqual(['Medication', 'Device']);
 
     // filter searching through members works
-    await userEvents.type(document.querySelector('input#type'), 'dev');
+    await userEvents.type(document.querySelector('input#type') as Element, 'dev');
 
     // options after search
     const afterFilterOptionTexts = [
@@ -249,7 +249,7 @@ describe('Health care form', () => {
     expect(afterFilterOptionTexts).toHaveLength(1);
     expect(afterFilterOptionTexts).toEqual(['Device']);
 
-    fireEvent.click(document.querySelector('[title="Device"]'));
+    fireEvent.click(document.querySelector('[title="Device"]') as Element);
 
     // unit of measure
     // simulate value selection for members
@@ -276,7 +276,7 @@ describe('Health care form', () => {
       'Straps',
     ]);
 
-    fireEvent.click(document.querySelector('[title="Bottles"]'));
+    fireEvent.click(document.querySelector('[title="Bottles"]') as Element);
 
     await flushPromises();
     wrapper.update();
@@ -313,7 +313,7 @@ describe('Health care form', () => {
     wrapper.find('button#cancel-button').simulate('click');
     wrapper.update();
 
-    expect(history.location.pathname).toEqual('/canceled');
+    expect(location.pathname).toEqual('/canceled');
     wrapper.unmount();
   });
 
@@ -365,7 +365,7 @@ describe('Health care form', () => {
         expect(option).toMatchSnapshot('organizations option');
       });
 
-    fireEvent.click(document.querySelector('[title="Strips"]'));
+    fireEvent.click(document.querySelector('[title="Strips"]') as Element);
 
     await flushPromises();
     wrapper.update();

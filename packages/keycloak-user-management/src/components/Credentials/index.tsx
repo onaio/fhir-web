@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Form, Col, Row, Input } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
-import { RouteComponentProps, useHistory } from 'react-router';
+import { PageHeader, Resource404 } from '@opensrp/react-utils';
+import { NavigateFunction, useNavigate, useParams } from 'react-router';
 import { Store } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
@@ -40,7 +40,7 @@ export interface CredentialsProps {
   keycloakUser: KeycloakUser | null;
   serviceClass: typeof KeycloakService;
   keycloakBaseURL: string;
-  cancelUserHandler: (genericHistory: Dictionary) => void;
+  cancelUserHandler: (navigate: NavigateFunction) => void;
 }
 
 /** interface for data fields for team's form */
@@ -51,15 +51,15 @@ export interface UserCredentialsFormFields {
 }
 
 /** type intersection for all types that pertain to the props */
-export type CredentialsPropsTypes = CredentialsProps & RouteComponentProps<CredentialsRouteParams>;
+export type CredentialsPropsTypes = CredentialsProps;
 /**
  * redirect to /admin view
  * find appropriate type for history from usehistory hook
  *
  * @param {Dictionary} genericHistory react-rouet usehistory hook
  */
-export const cancelUserHandler = (genericHistory: Dictionary): void => {
-  genericHistory.push(URL_USER);
+export const cancelUserHandler = (navigate: NavigateFunction): void => {
+  navigate(URL_USER);
 };
 
 /** default props for editing user component */
@@ -83,7 +83,8 @@ export const submitForm = (
   userId: string,
   serviceClass: typeof KeycloakService,
   keycloakBaseURL: string,
-  t: TFunction
+  t: TFunction,
+  navigate: NavigateFunction
 ): void => {
   const serve = new serviceClass(
     `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_RESET_PASSWORD}`,
@@ -98,17 +99,31 @@ export const submitForm = (
     })
     .then(() => {
       sendSuccessNotification(t('Credentials updated successfully'));
-      history.push(URL_USER);
+      navigate(URL_USER);
     })
     .catch((e: HTTPError) => {
       sendErrorNotification(e.description);
     });
 };
 
+const keycloakUsersSelector = makeKeycloakUsersSelector();
+
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const { serviceClass, match, keycloakBaseURL, keycloakUser } = props;
-  const userId = match.params[ROUTE_PARAM_USER_ID];
+  const { serviceClass, keycloakBaseURL } = props;
   const { t } = useTranslation();
+  const params = useParams();
+  const userId = params[ROUTE_PARAM_USER_ID];
+
+  if (!userId) {
+    return <Resource404 errorMessage={t('Unable to load resource. Unknown user id.')} />;
+  }
+  
+  const keycloakUser = useSelector((state) => {
+    const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
+    const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
+    return keycloakUser
+  })
+  
   const layout = {
     labelCol: {
       xs: { offset: 0, span: 16 },
@@ -126,8 +141,9 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
       lg: { offset: 8, span: 14 },
     },
   };
-  const history = useHistory();
+  const navigate = useNavigate();
   const heading = `${t('User Credentials')} | ${keycloakUser ? keycloakUser.username : ''}`;
+  
   return (
     <Row className="content-section">
       <PageHeader title={heading} />
@@ -136,7 +152,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
           <Form
             {...layout}
             onFinish={(values: UserCredentialsFormFields) =>
-              submitForm(values, userId, serviceClass, keycloakBaseURL, t)
+              submitForm(values, userId, serviceClass, keycloakBaseURL, t, navigate)
             }
           >
             <Form.Item
@@ -179,7 +195,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
               <Button type="primary" htmlType="submit" className="reset-password">
                 {t('Set password')}
               </Button>
-              <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
+              <Button onClick={() => props.cancelUserHandler(navigate)} className="cancel-user">
                 {t('Cancel')}
               </Button>
             </Form.Item>
@@ -194,29 +210,12 @@ UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
 
-/** Interface for connected state to props */
-interface DispatchedProps {
-  keycloakUser: KeycloakUser | null;
-}
-
-// connect to store
-const mapStateToProps = (
-  state: Partial<Store>,
-  ownProps: CredentialsPropsTypes
-): DispatchedProps => {
-  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
-  const keycloakUsersSelector = makeKeycloakUsersSelector();
-  const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-  const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
-  return { keycloakUser };
-};
-
 /** map props to action creators */
 const mapDispatchToProps = {
   fetchKeycloakUsersCreator: fetchKeycloakUsers,
 };
 
 export const ConnectedUserCredentials = connect(
-  mapStateToProps,
+  undefined,
   mapDispatchToProps
 )(UserCredentials);

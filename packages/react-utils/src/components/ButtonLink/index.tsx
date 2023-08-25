@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import { Button } from 'antd';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 /***
  * Simple button, type link supposed to be used for navigation
@@ -12,11 +12,11 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 }
 
 const ButtonLink = (props: ButtonProps) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { name, route, className } = props;
 
   const handleClick = () => {
-    history.push(route);
+    navigate(route);
   };
 
   return (
