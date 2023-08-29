@@ -15,6 +15,7 @@ export const parseFHirRoles = (role: string) => {
 
 const keycloakRoleMappings: Record<string, UserRole> = {
   'realm-admin': new UserRole(['iam_group', 'iam_role', 'iam_user'], Permit.MANAGE),
+  'view-users': new UserRole(['iam_user'], Permit.READ),
 };
 
 export const parseKeycloakRoles = (stringRole: string) => {
