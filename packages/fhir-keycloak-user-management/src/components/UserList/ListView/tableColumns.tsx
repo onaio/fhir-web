@@ -10,6 +10,7 @@ import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { QueryClient } from 'react-query';
 import type { TFunction } from '@opensrp/i18n';
+import { UserRole } from '@opensrp/rbac';
 
 /**
  * Get table columns for user list
@@ -20,6 +21,7 @@ import type { TFunction } from '@opensrp/i18n';
  * @param queryClient - react query client
  * @param t - translator function
  * @param onViewDetails - callback when view details is clicked.
+ * @param userRole - role of logged in user.
  */
 export const getTableColumns = (
   keycloakBaseUrl: string,
@@ -27,7 +29,8 @@ export const getTableColumns = (
   extraData: Dictionary,
   queryClient: QueryClient,
   t: TFunction,
-  onViewDetails: (recordId: string) => void
+  onViewDetails: (recordId: string) => void,
+  userRole: UserRole
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
@@ -49,43 +52,52 @@ export const getTableColumns = (
     });
   });
 
-  const getItems = (record: KeycloakUser): MenuProps['items'] => [
-    {
-      key: '1',
-      label: (
-        <Button onClick={() => onViewDetails(record.id)} type="link">
-          {t('View Details')}
-        </Button>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <Popconfirm
-          title={t('Are you sure you want to delete this user?')}
-          okText={t('Yes')}
-          cancelText={t('No')}
-          onConfirm={async () => {
-            await deleteUser(keycloakBaseUrl, baseUrl, record.id, t);
-            try {
-              return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
-            } catch {
-              return sendErrorNotification(
-                t('Failed to update data, please refresh the page to see the most recent changes')
-              );
-            }
-          }}
-        >
-          {user_id &&
-            (record.id === user_id ? null : (
-              <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
-                {t('Delete')}
-              </Button>
-            ))}
-        </Popconfirm>
-      ),
-    },
-  ];
+  const getItems = (record: KeycloakUser): MenuProps['items'] => {
+    return [
+      {
+        key: '1',
+        permissions: [],
+        label: (
+          <Button onClick={() => onViewDetails(record.id)} type="link">
+            {t('View Details')}
+          </Button>
+        ),
+      },
+      {
+        key: '2',
+        permissions: ['iam_user.delete'],
+        label: (
+          <Popconfirm
+            title={t('Are you sure you want to delete this user?')}
+            okText={t('Yes')}
+            cancelText={t('No')}
+            onConfirm={async () => {
+              await deleteUser(keycloakBaseUrl, baseUrl, record.id, t);
+              try {
+                return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
+              } catch {
+                return sendErrorNotification(
+                  t('Failed to update data, please refresh the page to see the most recent changes')
+                );
+              }
+            }}
+          >
+            {user_id &&
+              (record.id === user_id ? null : (
+                <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
+                  {t('Delete')}
+                </Button>
+              ))}
+          </Popconfirm>
+        ),
+      },
+    ]
+      .filter((item) => userRole.hasPermissions(item.permissions))
+      .map((item) => {
+        const { permissions, ...rest } = item;
+        return rest;
+      });
+  };
 
   dataElements.push({
     title: t('Actions'),
