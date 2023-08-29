@@ -9,6 +9,7 @@ import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/Ba
 import { TFunction } from '@opensrp/i18n';
 import { SingleKeyNestedValue, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { RbacCheck } from '@opensrp/rbac';
 
 interface GroupListProps {
   fhirBaseURL: string;
@@ -94,10 +95,14 @@ export const GroupList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`#`} className="m-0 p-1" onClick={(e) => e.preventDefault()}>
-            {t('Edit')}
-          </Link>
-          <Divider type="vertical" />
+          <RbacCheck permissions={['group.update']}>
+            <>
+              <Link to={`#`} className="m-0 p-1" onClick={(e) => e.preventDefault()}>
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Dropdown
             menu={{ items: getItems(record) }}
             placement="bottomRight"

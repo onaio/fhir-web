@@ -74,49 +74,59 @@ export const CommodityList = (props: GroupListProps) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { addParam } = useSearchParams();
+  const userRole = useUserRole();
 
-  const getItems = (record: TableData): MenuProps['items'] => [
-    {
-      key: '1',
-      label: (
-        <Button
-          data-testid="view-details"
-          onClick={() => addParam(viewDetailsQuery, record.id)}
-          type="link"
-        >
-          {t('View Details')}
-        </Button>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <Popconfirm
-          title={t('Are you sure you want to delete this Commodity?')}
-          okText={t('Yes')}
-          cancelText={t('No')}
-          onConfirm={async () => {
-            deleteCommodity(fhirBaseURL, record.obj, listId)
-              .then(() => {
-                queryClient.invalidateQueries([groupResourceType]).catch(() => {
-                  sendInfoNotification(
-                    t('Unable to refresh data at the moment, please refresh the page')
-                  );
-                });
-                sendSuccessNotification(t('Successfully deleted commodity'));
-              })
-              .catch(() => {
-                sendErrorNotification(t('Deletion of commodity failed'));
-              });
-          }}
-        >
-          <Button danger type="link" style={{ color: '#' }}>
-            {t('Delete')}
+  const getItems = (record: TableData): MenuProps['items'] => {
+    return [
+      {
+        key: '1',
+        permissions: [],
+        label: (
+          <Button
+            data-testid="view-details"
+            onClick={() => addParam(viewDetailsQuery, record.id)}
+            type="link"
+          >
+            {t('View Details')}
           </Button>
-        </Popconfirm>
-      ),
-    },
-  ];
+        ),
+      },
+      {
+        key: '2',
+        permissions: ['group.delete'],
+        label: (
+          <Popconfirm
+            title={t('Are you sure you want to delete this Commodity?')}
+            okText={t('Yes')}
+            cancelText={t('No')}
+            onConfirm={async () => {
+              deleteCommodity(fhirBaseURL, record.obj, listId)
+                .then(() => {
+                  queryClient.invalidateQueries([groupResourceType]).catch(() => {
+                    sendInfoNotification(
+                      t('Unable to refresh data at the moment, please refresh the page')
+                    );
+                  });
+                  sendSuccessNotification(t('Successfully deleted commodity'));
+                })
+                .catch(() => {
+                  sendErrorNotification(t('Deletion of commodity failed'));
+                });
+            }}
+          >
+            <Button danger type="link" style={{ color: '#' }}>
+              {t('Delete')}
+            </Button>
+          </Popconfirm>
+        ),
+      },
+    ]
+      .filter((item) => userRole.hasPermissions(item.permissions))
+      .map((item) => {
+        const { permissions, ...rest } = item;
+        return rest;
+      });
+  };
 
   const getColumns = (t: TFunction) => [
     {

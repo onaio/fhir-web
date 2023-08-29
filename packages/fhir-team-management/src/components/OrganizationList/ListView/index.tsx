@@ -25,6 +25,7 @@ import {
 import { parseOrganization, ViewDetailsWrapper } from '../ViewDetails';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { useTranslation } from '../../../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 export type TRQuery = [string, number, number];
 
@@ -85,10 +86,14 @@ export const OrganizationList = (props: OrganizationListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_ORGANIZATION}/${record.id}`} className="m-0 p-1">
-            {t('Edit')}
-          </Link>
-          <Divider type="vertical" />
+          <RbacCheck permissions={['organization.update']}>
+            <>
+              <Link to={`${URL_EDIT_ORGANIZATION}/${record.id}`} className="m-0 p-1">
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Dropdown
             menu={{ items: getItems(record) }}
             placement="bottomRight"
@@ -121,10 +126,12 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_ADD_ORGANIZATION)}>
-              <PlusOutlined />
-              {t('Add Organization')}
-            </Button>
+            <RbacCheck permissions={['organization.create']}>
+              <Button type="primary" onClick={() => history.push(URL_ADD_ORGANIZATION)}>
+                <PlusOutlined />
+                {t('Add Organization')}
+              </Button>
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>
