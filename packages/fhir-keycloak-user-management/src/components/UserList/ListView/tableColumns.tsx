@@ -3,8 +3,8 @@ import { Popconfirm, Divider, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
-import { Link } from 'react-router-dom';
-import { KeycloakUser, URL_USER_EDIT, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
+import { Link, useHistory } from 'react-router-dom';
+import { KeycloakUser, URL_USER_EDIT, KEYCLOAK_URL_USERS, URL_USER_CREDENTIALS } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
@@ -34,6 +34,7 @@ export const getTableColumns = (
   const headerItems: string[] = [t('First name'), t('Last name'), t('Username')];
   const dataElements: Column<KeycloakUser>[] = [];
   const fields: string[] = ['firstName', 'lastName', 'username'];
+  const history = useHistory();
 
   fields.forEach((field: string, index: number) => {
     dataElements.push({
@@ -84,6 +85,18 @@ export const getTableColumns = (
             ))}
         </Popconfirm>
       ),
+     },
+      {
+        key: '3',
+        label: (
+          <Button
+            type="link"
+            data-testid="credentials"
+            onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+          >
+            {t('Credentials')}
+          </Button>
+        ),
     },
   ];
 
