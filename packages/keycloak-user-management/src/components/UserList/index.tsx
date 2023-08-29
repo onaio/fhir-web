@@ -40,6 +40,7 @@ import { sendErrorNotification } from '@opensrp/notifications';
 import { TableActions } from './TableActions';
 import { UserDetails, UserDetailType } from '../UserDetails';
 import { Organization } from '@opensrp/team-management';
+import { RbacCheck } from '@opensrp/rbac';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -189,16 +190,18 @@ const UserList = (props: UserListTypes): JSX.Element => {
               onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
               size={'middle'}
             />
-            <Space style={{ marginBottom: 16, float: 'right' }}>
-              <Button
-                type="primary"
-                className="create-user"
-                onClick={() => history.push(URL_USER_CREATE)}
-              >
-                <PlusOutlined />
-                {t('Add User')}
-              </Button>
-            </Space>
+            <RbacCheck permissions={['iam_user.create']}>
+              <Space style={{ marginBottom: 16, float: 'right' }}>
+                <Button
+                  type="primary"
+                  className="create-user"
+                  onClick={() => history.push(URL_USER_CREATE)}
+                >
+                  <PlusOutlined />
+                  {t('Add User')}
+                </Button>
+              </Space>
+            </RbacCheck>
           </div>
           <Space>
             <PaginateData<KeycloakUser>
