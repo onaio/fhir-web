@@ -10,7 +10,7 @@ import { RbacAdapter } from '../helpers/types';
 export interface RbacProps {
   permissions: string[];
   matchStrategy?: 'exact' | 'any' | 'none';
-  children: JSX.Element;
+  children?: JSX.Element | null;
   fallback?: JSX.Element; // TODO - whats the difference.
 }
 
@@ -30,15 +30,16 @@ export function RbacCheck(props: RbacProps) {
   // might actually need the adapter knowledge to understand how to translate string roles - for the poc
   // constraining the requiredRoles to be of type of Role only.
   if (userRole.hasPermissions(permissions)) {
-    return children;
-  } else {
-    //   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    //     console.warn("")
-    // } else {
-    //     // production code
-    // }
-    return fallback ?? null;
+    if (children) {
+      return children;
+    }
   }
+  //   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+  //     console.warn("")
+  // } else {
+  //     // production code
+  // }
+  return fallback ?? null;
 }
 
 const defaultUserRole = new UserRole();
