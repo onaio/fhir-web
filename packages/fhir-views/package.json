@@ -39,6 +39,7 @@
     "@ant-design/icons": "^4.7.0",
     "@opensrp/fhir-resources": "^0.0.0",
     "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/rbac": "workspace:^",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/server-service": "^0.0.17",
     "@smile-cdr/fhirts": "^1.3.1",
