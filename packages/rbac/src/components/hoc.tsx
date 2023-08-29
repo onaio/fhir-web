@@ -59,6 +59,20 @@ export function RbacProvider(props: RbacProviderProps) {
   // - depends on session-reducer.
   // - peer on redux
   // create context with role object.
+  const userRole = useUserRole();
+  console.log({ userRole });
+
+  return <RoleContext.Provider value={userRole}>{children}</RoleContext.Provider>;
+}
+
+/**
+ *
+ */
+export function useUserRole() {
+  // gest session information from the session-reducer;
+  // - depends on session-reducer.
+  // - peer on redux
+  // create context with role object.
   const extraData = useSelector((state) => getExtraData(state));
   // const authenticated = useSelector((state) => isAuthenticated(state));
   const { roles } = extraData;
@@ -70,6 +84,5 @@ export function RbacProvider(props: RbacProviderProps) {
   const strategy = iamStrategiesLookup[iamStrategy];
   // TODO - why does this return undefined sometimes
   const userRole = (strategy(roles) as UserRole | undefined) ?? defaultUserRole;
-
-  return <RoleContext.Provider value={userRole}>{children}</RoleContext.Provider>;
+  return userRole;
 }
