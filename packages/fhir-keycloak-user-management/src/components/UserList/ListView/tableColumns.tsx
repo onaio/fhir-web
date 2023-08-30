@@ -15,7 +15,7 @@ import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { QueryClient } from 'react-query';
 import type { TFunction } from '@opensrp/i18n';
-import { history } from '@onaio/connected-reducer-registry';
+import { History } from 'history';
 
 /**
  * Get table columns for user list
@@ -26,6 +26,7 @@ import { history } from '@onaio/connected-reducer-registry';
  * @param queryClient - react query client
  * @param t - translator function
  * @param onViewDetails - callback when view details is clicked.
+ * @param history - history object for managing navigation
  */
 export const getTableColumns = (
   keycloakBaseUrl: string,
@@ -33,7 +34,8 @@ export const getTableColumns = (
   extraData: Dictionary,
   queryClient: QueryClient,
   t: TFunction,
-  onViewDetails: (recordId: string) => void
+  onViewDetails: (recordId: string) => void,
+  history: History
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
