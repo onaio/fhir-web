@@ -82,7 +82,8 @@ export const UserList = (props: OrganizationListProps) => {
     extraData,
     queryClient,
     t,
-    onViewDetails
+    onViewDetails,
+    history
   );
 
   const searchFormProps = {

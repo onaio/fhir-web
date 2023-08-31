@@ -10,7 +10,7 @@ import nock from 'nock';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
-import { URL_USER } from '@opensrp/user-management';
+import { URL_USER, URL_USER_CREDENTIALS, UserCredentials } from '@opensrp/user-management';
 import { careTeams, practitioner, userFixtures, group } from './fixtures';
 import fetch from 'jest-fetch-mock';
 import {
@@ -74,6 +74,9 @@ const AppWrapper = (props: any) => {
           </Route>
           <Route exact path={`${URL_USER}/:id`}>
             {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
+          </Route>
+          <Route exact path={`${URL_USER_CREDENTIALS}/:id`}>
+            {(routeProps) => <UserCredentials {...{ ...props, ...routeProps }} />}
           </Route>
         </Switch>
       </QueryClientProvider>
@@ -267,6 +270,69 @@ test('renders correctly when listing resources', async () => {
   ]);
 
   expect(nock.isDone()).toBeTruthy();
+});
+
+test('credentials view renders correctly', async () => {
+  const history = createMemoryHistory();
+  history.push(URL_USER);
+
+  fetch
+    .once(JSON.stringify(15))
+    .once(JSON.stringify(userFixtures))
+    .once(JSON.stringify(userFixtures[0]));
+  fetch.mockResponse(JSON.stringify([]));
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  });
+
+  const practitionerObj = practitioner.entry?.[0].resource;
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ identifier: userFixtures[14].id })
+    .reply(200, practitioner)
+    .get(`/Group/_search`)
+    .query({ identifier: userFixtures[14].id })
+    .reply(200, group)
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ 'participant:Practitioner': practitionerObj?.id, _summary: 'count' })
+    .reply(200, { total: 2 })
+    .get(`/${careTeamResourceType}/_search`)
+    .query({ 'participant:Practitioner': practitionerObj?.id, _count: '2' })
+    .reply(200, careTeams)
+    .get(`/${practitionerRoleResourceType}/_search`)
+    .query({ identifier: userFixtures[14].id })
+    .reply(200, practitionerRoleBundle)
+    .persist();
+
+  // target the initial row view details
+  const dropdown = document.querySelector(
+    'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
+  ) as Element;
+  fireEvent.click(dropdown);
+
+  // Clicking credentials takes you to the credentials view
+  const updateLink = screen.getByText(/Credentials/i);
+  fireEvent.click(updateLink);
+  expect(history.location.pathname).toEqual(
+    `${URL_USER_CREDENTIALS}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0`
+  );
+
+  // Confirm we are in the credentials view
+  expect(screen.getByText(/User Credentials/i)).toBeInTheDocument();
+
+  // Clicking cancel returns us to users
+  fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+  expect(history.location.pathname).toEqual(URL_USER);
 });
 
 test('responds as expected to errors', async () => {
