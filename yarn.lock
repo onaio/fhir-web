@@ -3360,16 +3360,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@onaio/gatekeeper@npm:^0.4.0":
+"@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::locator=%40opensrp%2Fweb%40workspace%3Aapp":
   version: 0.4.0
-  resolution: "@onaio/gatekeeper@npm:0.4.0"
+  resolution: "@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/#/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::hash=aaa487&locator=%40opensrp%2Fweb%40workspace%3Aapp"
   dependencies:
     "@onaio/session-reducer": ^0.0.13
     client-oauth2: ^4.3.3
     jsonwebtoken: ^8.5.1
     query-string: ^6.4.2
     reactstrap: ^7.1.0
-  checksum: c38de1cc74e548f1a39d8031459b6223c1ec3c4acaa2a3927d61817c498b5ad031df8aa94a9c89390b785bf216dd12cc9ccedace9f6029022f603a0d56b293a6
+  checksum: 167007d7c532a40cb4dad4c3ab98ff98d4012147cb86621a62831c1c4a457b67bf0e992b0dee552510155eb79331bc83ad1e2fe25b87e6cf0b847b340ddc7cb8
   languageName: node
   linkType: hard
 
@@ -3801,7 +3801,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@opensrp/rbac@workspace:packages/rbac"
   dependencies:
-    "@onaio/gatekeeper": ^0.4.0
     "@onaio/session-reducer": ^0.0.13
     "@opensrp/i18n": ^0.0.1
     "@opensrp/pkg-config": ^0.0.9
@@ -3983,7 +3982,7 @@ __metadata:
     "@ant-design/icons": ^4.7.0
     "@onaio/connected-private-route": ^0.0.11
     "@onaio/connected-reducer-registry": ^0.0.3
-    "@onaio/gatekeeper": ^0.4.0
+    "@onaio/gatekeeper": /home/peter/Desktop/onaio/js-tools/packages/gatekeeper/
     "@onaio/redux-reducer-registry": ^0.0.9
     "@onaio/session-reducer": ^0.0.12
     "@onaio/utils": ^0.0.1
