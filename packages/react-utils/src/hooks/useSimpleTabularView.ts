@@ -64,7 +64,15 @@ const loadResources = async (
     _count: pageSize,
   };
   const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
-  const res = await service.list(filterParams);
+  const res = await service.list(filterParams).catch((err) => {
+    const isNameFilterErr = err.message.includes('HAPI-0524: Unknown search parameter');
+    if (isNameFilterErr) {
+      throw Error(
+        `Name is not a natively supported filter for ${resourceType},\n please ask support to update SearchParameters to enable searching using 'name' filter.\n https://github.com/opensrp/web/issues/1249#issuecomment-1702701518 `
+      );
+    }
+    throw err;
+  });
   if (res.total === undefined) {
     // patient endpoint does not include total after _search response like other resource endpoints do
     const countFilter = {
