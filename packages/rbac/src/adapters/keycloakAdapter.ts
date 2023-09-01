@@ -40,14 +40,26 @@ export const parseKeycloakRoles = (stringRole: string) => {
   return new UserRole(resourceType as AuthZResource, verbPermission);
 };
 
-export const adapter: RbacAdapter = (rolesAsStrings: string[] = []) => {
+export interface KeycloakRoleData {
+  realmAccess?: string[];
+  clientRoles?: Record<string, string[]>;
+}
+
+const defaultRoleData = {
+  realmAccess: [],
+  clientRoles: {},
+};
+
+export const adapter: RbacAdapter = (roles: KeycloakRoleData = defaultRoleData) => {
   /** parse each role, figure out which resource and verb permission it maps to and add that to the permission object */
   // https://github.com/opensrp/fhircore/discussions/1603
-  const cleanedRoleStrings = rolesAsStrings.map((roleTxt) => {
-    return roleTxt.replace(/^ROLE_/, '');
+  let allRoleStrings = roles.realmAccess ?? [];
+  Object.values(roles.clientRoles ?? {}).forEach((roleArray) => {
+    allRoleStrings = [...allRoleStrings, ...roleArray];
   });
+  console.log({ allRoleStrings });
   const allRoles: UserRole[] = [];
-  cleanedRoleStrings.forEach((role) => {
+  allRoleStrings.forEach((role) => {
     let asRole = parseFHirRoles(role);
     if (asRole === undefined) {
       asRole = parseKeycloakRoles(role);
