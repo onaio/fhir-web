@@ -323,7 +323,7 @@ test('credentials view renders correctly', async () => {
   const updateLink = screen.getByText(/Credentials/i);
   fireEvent.click(updateLink);
   expect(history.location.pathname).toEqual(
-    `${URL_USER_CREDENTIALS}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0`
+    `${URL_USER_CREDENTIALS}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0/april4petertest`
   );
 
   // Confirm we are in the credentials view
