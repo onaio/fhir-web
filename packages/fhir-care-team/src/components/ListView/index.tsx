@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
-  useTabularViewWithLocalSearch,
+  useSimpleTabularView,
   BrokenPage,
   SearchForm,
   TableLayout,
@@ -53,6 +53,13 @@ export const deleteCareTeam = async (
     .catch(() => sendErrorNotification(t('There was a problem deleting the Care Team')));
 };
 
+const getSearchParams = (search: string | null) => {
+  if (search) {
+    return { [`name:contains`]: search };
+  }
+  return {};
+};
+
 /**
  * Function which shows the list of all roles and their details
  *
@@ -71,13 +78,13 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     queryValues: { data, isFetching, isLoading, error, refetch },
     tablePaginationProps,
     searchFormProps,
-  } = useTabularViewWithLocalSearch<ICareTeam>(fhirBaseURL, careTeamResourceType);
+  } = useSimpleTabularView<ICareTeam>(fhirBaseURL, careTeamResourceType, getSearchParams);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data ?? []).map((datum: Dictionary) => {
+  const tableData = (data?.records ?? []).map((datum: Dictionary) => {
     return {
       key: datum.id,
       id: datum.id,
