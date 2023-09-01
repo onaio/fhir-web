@@ -75,7 +75,7 @@ const AppWrapper = (props: any) => {
           <Route exact path={`${URL_USER}/:id`}>
             {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
           </Route>
-          <Route exact path={`${URL_USER_CREDENTIALS}/:id`}>
+          <Route exact path={`${URL_USER_CREDENTIALS}/:id/:username`}>
             {(routeProps) => <UserCredentials {...{ ...props, ...routeProps }} />}
           </Route>
         </Switch>
