@@ -21,6 +21,9 @@ import {
 } from '../../tests/fixtures';
 import userEvents from '@testing-library/user-event';
 import _ from 'lodash';
+import { superUserRole } from '@opensrp/react-utils';
+import { RoleContext } from '@opensrp/rbac';
+import { Provider } from 'react-redux';
 
 const actualDebounce = _.debounce;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,11 +62,15 @@ store.dispatch(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/questList">
-        <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
-      </Route>
-    </Switch>
+    <Provider store={store}>
+      <Switch>
+        <Route exact path="/questList">
+          <RoleContext.Provider value={superUserRole}>
+            <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
+          </RoleContext.Provider>
+        </Route>
+      </Switch>
+    </Provider>
   );
 };
 
