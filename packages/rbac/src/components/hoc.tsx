@@ -25,7 +25,7 @@ const iamStrategiesLookup: Record<KeycloakStrategies, RbacAdapter> = {
  */
 export function RbacCheck(props: RbacProps) {
   const { permissions, children, fallback } = props;
-  const userRole = useContext(RoleContext);
+  const userRole = useUserRole();
 
   // might actually need the adapter knowledge to understand how to translate string roles - for the poc
   // constraining the requiredRoles to be of type of Role only.
@@ -55,20 +55,14 @@ export interface RbacProviderProps {
  */
 export function RbacProvider(props: RbacProviderProps) {
   const { children } = props;
-  // gest session information from the session-reducer;
-  // - depends on session-reducer.
-  // - peer on redux
-  // create context with role object.
-  const userRole = useUserRole();
-  console.log({ userRole });
-
+  const userRole = useStoreUserRole();
   return <RoleContext.Provider value={userRole}>{children}</RoleContext.Provider>;
 }
 
 /**
  *
  */
-export function useUserRole() {
+export function useStoreUserRole() {
   // gest session information from the session-reducer;
   // - depends on session-reducer.
   // - peer on redux
@@ -84,5 +78,13 @@ export function useUserRole() {
   const strategy = iamStrategiesLookup[iamStrategy];
   // TODO - why does this return undefined sometimes
   const userRole = (strategy(roles) as UserRole | undefined) ?? defaultUserRole;
+  return userRole;
+}
+
+/**
+ *
+ */
+export function useUserRole() {
+  const userRole = useContext(RoleContext);
   return userRole;
 }
