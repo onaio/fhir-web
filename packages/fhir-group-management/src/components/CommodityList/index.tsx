@@ -27,6 +27,7 @@ import {
   sendInfoNotification,
   sendSuccessNotification,
 } from '@opensrp/notifications';
+import { useUserRole } from '@opensrp/rbac';
 
 interface GroupListProps {
   fhirBaseURL: string;
