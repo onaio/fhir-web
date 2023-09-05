@@ -12,13 +12,13 @@ describe('pkg-configs/configStore', () => {
     expect(getAllConfigs()).toEqual({
       tablespref: undefined,
       appLoginURL: undefined,
-      i18n: undefined,
       keycloakBaseURL: undefined,
       languageCode: 'en',
       opensrpBaseURL: undefined,
       practToOrgAssignmentStrategy: 'ONE_TO_MANY',
       fhirBaseURL: undefined,
       projectCode: 'core',
+      rbacStrategy: 'keycloak',
       defaultTablesPageSize: 5,
     });
   });
