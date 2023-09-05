@@ -74,7 +74,7 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: boolean, record) => (
           <>
-            <RbacCheck permissions={['location.update']}>
+            <RbacCheck permissions={['Location.update']}>
               <>
                 <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`} className="m-0 p-1">
                   {t('Edit')}

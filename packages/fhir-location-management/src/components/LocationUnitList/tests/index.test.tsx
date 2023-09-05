@@ -18,6 +18,8 @@ import { createBrowserHistory } from 'history';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
 import { locationHierarchyResourceType } from '../../../constants';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 const history = createBrowserHistory();
 
@@ -54,11 +56,13 @@ describe('location-management/src/components/LocationUnitList', () => {
   const AppWrapper = (props) => {
     return (
       <Provider store={store}>
-        <Router history={history}>
-          <QueryClientProvider client={queryClient}>
-            <LocationUnitList {...props} />
-          </QueryClientProvider>
-        </Router>
+        <RoleContext.Provider value={superUserRole}>
+          <Router history={history}>
+            <QueryClientProvider client={queryClient}>
+              <LocationUnitList {...props} />
+            </QueryClientProvider>
+          </Router>
+        </RoleContext.Provider>
       </Provider>
     );
   };
