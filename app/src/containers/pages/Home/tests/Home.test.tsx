@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { cleanup, render, screen } from '@testing-library/react';
 import { authenticateUser } from '@onaio/session-reducer';
 import React from 'react';
+import { RbacProvider } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('../../../../configs/env');
 jest.mock('../../../../configs/settings');
@@ -46,20 +48,12 @@ describe('containers/pages/Home', () => {
     envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
     envModule.ENABLE_FHIR_LOCATIONS = true;
     envModule.ENABLE_FHIR_TEAMS = true;
-    envModule.OPENSRP_ROLES = {
-      USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
-      PLANS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      CARD_SUPPORT: 'ROLE_VIEW_KEYCLOAK_USERS',
-      PRODUCT_CATALOGUE: 'ROLE_VIEW_KEYCLOAK_USERS',
-      FORM_CONFIGURATION: 'ROLE_VIEW_KEYCLOAK_USERS',
-      LOCATIONS: 'ROLE_VIEW_KEYCLOAK_USERS',
-      INVENTORY: 'ROLE_VIEW_KEYCLOAK_USERS',
-      TEAMS: 'ROLE_VIEW_KEYCLOAK_USERS',
-    };
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Home />
+          <RbacProvider activeRole={superUserRole}>
+            <Home />
+          </RbacProvider>
         </Router>
       </Provider>
     );
@@ -68,8 +62,10 @@ describe('containers/pages/Home', () => {
     expect(helmet.title).toEqual('OpenSRP Web');
     const links = document.querySelectorAll('.admin-link');
     expect(Array.from(links).map((x) => x.textContent)).toEqual([
+      'User Management',
       'Location Management',
       'Team Management',
+      'Questionnaire Management',
     ]);
     links.forEach((link) => {
       expect(link).toMatchSnapshot(link.textContent ?? undefined);
