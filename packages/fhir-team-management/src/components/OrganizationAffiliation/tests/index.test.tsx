@@ -20,6 +20,8 @@ import {
 import { organizationAffiliationResourceType, organizationResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -59,13 +61,15 @@ const props = {
 const AppWrapper = ({ children }: any) => {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/assignments">
-            {children}
-          </Route>
-        </Switch>
-      </QueryClientProvider>
+      <RoleContext.Provider value={superUserRole}>
+        <QueryClientProvider client={queryClient}>
+          <Switch>
+            <Route exact path="/assignments">
+              {children}
+            </Route>
+          </Switch>
+        </QueryClientProvider>
+      </RoleContext.Provider>
     </Provider>
   );
 };

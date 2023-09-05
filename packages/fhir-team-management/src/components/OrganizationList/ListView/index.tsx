@@ -86,7 +86,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['organization.update']}>
+          <RbacCheck permissions={['Organization.update']}>
             <>
               <Link to={`${URL_EDIT_ORGANIZATION}/${record.id}`} className="m-0 p-1">
                 {t('Edit')}

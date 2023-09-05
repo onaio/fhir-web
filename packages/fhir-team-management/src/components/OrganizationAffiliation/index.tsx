@@ -16,6 +16,7 @@ import {
   locationTreeStateDucks,
 } from '@opensrp/fhir-location-management';
 import { useTranslation } from '../../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 const { reducerName, reducer, setSelectedNode, getSelectedNode } = locationTreeStateDucks;
 
@@ -100,7 +101,9 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
         </Col>
         <Col className="bg-white p-3 border-left" span={18}>
           <div className="bg-white p-3">
-            <AffiliationTable baseUrl={fhirBaseURL} locationNodes={tableNodes} />
+            <RbacCheck permissions={['OrganizationAffiliation.read']}>
+              <AffiliationTable baseUrl={fhirBaseURL} locationNodes={tableNodes} />
+            </RbacCheck>
           </div>
         </Col>
       </Row>

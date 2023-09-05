@@ -64,7 +64,6 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
   const [seeModal, setSeeModal] = useState<boolean>(false);
   const [location, setLocation] = useState<ILocation>();
   const { t } = useTranslation();
-  const userRole = useUserRole();
 
   const {
     data: affiliationsData,
@@ -110,9 +109,6 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
     {
       title: t('Assigned teams'),
       render: (_, record) => {
-        if (userRole.hasPermissions('organizationAffiliation.read')) {
-          return '';
-        }
         const { id } = record;
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const affiliations = affiliationsByLocId[`${locationResourceType}/${id}`] ?? [];
@@ -128,7 +124,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_, record) => (
-        <RbacCheck permissions={['organizationAffiliation.update']}>
+        <RbacCheck permissions={['OrganizationAffiliation.update']}>
           <Button
             type="link"
             className="action-button"

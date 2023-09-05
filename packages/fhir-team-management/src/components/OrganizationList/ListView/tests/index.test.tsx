@@ -23,6 +23,8 @@ import {
 } from './fixtures';
 import userEvents from '@testing-library/user-event';
 import { allAffiliations } from '../../../OrganizationAffiliation/tests/fixures';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -65,16 +67,18 @@ const props = {
 const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${ORGANIZATION_LIST_URL}`}>
-            {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${ORGANIZATION_LIST_URL}/:id`}>
-            {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
-      </QueryClientProvider>
+      <RoleContext.Provider value={superUserRole}>
+        <QueryClientProvider client={queryClient}>
+          <Switch>
+            <Route exact path={`${ORGANIZATION_LIST_URL}`}>
+              {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
+            </Route>
+            <Route exact path={`${ORGANIZATION_LIST_URL}/:id`}>
+              {(routeProps) => <OrganizationList {...{ ...props, ...routeProps }} />}
+            </Route>
+          </Switch>
+        </QueryClientProvider>
+      </RoleContext.Provider>
     </Provider>
   );
 };
