@@ -11,7 +11,7 @@ import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
-import { firstFiftygroups } from './fixtures';
+import { firstTwentygroups } from './fixtures';
 import userEvents from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
@@ -99,16 +99,12 @@ test('renders correctly when listing resources', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _summary: 'count',
+      _total: 'accurate',
+      _getpagesoffset: 0,
+      _count: 20,
     })
-    .reply(200, { total: 50 });
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _count: 50,
-    })
-    .reply(200, firstFiftygroups);
+    .reply(200, firstTwentygroups)
+    .persist();
 
   render(
     <Router history={history}>
@@ -165,7 +161,7 @@ test('renders correctly when listing resources', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/145838`)
-    .reply(200, firstFiftygroups.entry[1].resource);
+    .reply(200, firstTwentygroups.entry[1].resource);
 
   // target the initial row view details
   const dropdown = document.querySelector('tbody tr:nth-child(1) [data-testid="action-dropdown"]');
@@ -206,14 +202,9 @@ test('responds as expected to errors', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _summary: 'count',
-    })
-    .reply(200, { total: 50 });
-
-  nock(props.fhirBaseURL)
-    .get(`/${groupResourceType}/_search`)
-    .query({
-      _count: 50,
+      _total: 'accurate',
+      _getpagesoffset: 0,
+      _count: 20,
     })
     .replyWithError('coughid');
 

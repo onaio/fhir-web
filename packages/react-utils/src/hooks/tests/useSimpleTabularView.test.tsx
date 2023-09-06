@@ -127,6 +127,7 @@ test('pagination and search work correctly', async () => {
   nock(options.baseUrl)
     .get(`/${options.endpoint}/_search`)
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
     })
@@ -136,6 +137,7 @@ test('pagination and search work correctly', async () => {
   nock(options.baseUrl)
     .get(`/${options.endpoint}/_search`)
     .query({
+      _total: 'accurate',
       _getpagesoffset: 20,
       _count: 20,
     })
@@ -145,6 +147,7 @@ test('pagination and search work correctly', async () => {
   nock(options.baseUrl)
     .get(`/${options.endpoint}/_search`)
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       'name:contains': '345',
