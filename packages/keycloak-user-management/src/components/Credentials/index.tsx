@@ -2,8 +2,6 @@ import React from 'react';
 import { Button, Form, Col, Row, Input } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router';
-import { Store } from 'redux';
-import { connect } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
 import { history } from '@onaio/connected-reducer-registry';
@@ -13,13 +11,13 @@ import {
   KEYCLOAK_URL_RESET_PASSWORD,
   ROUTE_PARAM_USER_ID,
   URL_USER,
+  ROUTE_PARAM_USERNAME,
 } from '../../constants';
 import { useTranslation } from '../../mls';
 import {
   reducer as keycloakUsersReducer,
   reducerName as keycloakUsersReducerName,
   fetchKeycloakUsers,
-  makeKeycloakUsersSelector,
   KeycloakUser,
 } from '../../ducks/user';
 import { Dictionary } from '@onaio/utils';
@@ -32,6 +30,7 @@ reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
 export interface CredentialsRouteParams {
   userId: string;
+  username: string;
 }
 
 /** props for editing a user view */
@@ -106,8 +105,10 @@ export const submitForm = (
 };
 
 const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsPropsTypes) => {
-  const { serviceClass, match, keycloakBaseURL, keycloakUser } = props;
+  const { serviceClass, match, keycloakBaseURL } = props;
   const userId = match.params[ROUTE_PARAM_USER_ID];
+  const username = match.params[ROUTE_PARAM_USERNAME];
+
   const { t } = useTranslation();
   const layout = {
     labelCol: {
@@ -127,7 +128,8 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     },
   };
   const history = useHistory();
-  const heading = `${t('User Credentials')} | ${keycloakUser ? keycloakUser.username : ''}`;
+  const heading = `${t('User Credentials')} | ${username}`;
+
   return (
     <Row className="content-section">
       <PageHeader title={heading} />
@@ -193,30 +195,3 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
-
-/** Interface for connected state to props */
-interface DispatchedProps {
-  keycloakUser: KeycloakUser | null;
-}
-
-// connect to store
-const mapStateToProps = (
-  state: Partial<Store>,
-  ownProps: CredentialsPropsTypes
-): DispatchedProps => {
-  const userId = ownProps.match.params[ROUTE_PARAM_USER_ID];
-  const keycloakUsersSelector = makeKeycloakUsersSelector();
-  const keycloakUsers = keycloakUsersSelector(state, { id: [userId] });
-  const keycloakUser = keycloakUsers.length >= 1 ? keycloakUsers[0] : null;
-  return { keycloakUser };
-};
-
-/** map props to action creators */
-const mapDispatchToProps = {
-  fetchKeycloakUsersCreator: fetchKeycloakUsers,
-};
-
-export const ConnectedUserCredentials = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserCredentials);

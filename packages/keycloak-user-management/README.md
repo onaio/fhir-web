@@ -22,6 +22,7 @@ import {
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
+  ROUTE_PARAM_USERNAME,
   URL_USER_CREATE,
   URL_USER_CREDENTIALS,
 } from '@opensrp/user-management';
@@ -62,9 +63,9 @@ const App = () => {
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
-              path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
+              path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}/:${ROUTE_PARAM_USERNAME}`}
               component={(props: any) => (
-                <ConnectedUserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
+                <UserCredentials {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />
               )}
             />
         </Switch>
