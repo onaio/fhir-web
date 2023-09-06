@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { PageHeader, useSimpleTabularView } from '@opensrp/react-utils';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
@@ -11,7 +11,6 @@ import {
   BrokenPage,
   TableLayout,
   Column,
-  useTabularViewWithLocalSearch,
   viewDetailsQuery,
   useSearchParams,
 } from '@opensrp/react-utils';
@@ -52,17 +51,24 @@ export const BaseListView = (props: BaseListViewProps) => {
   const { t } = useTranslation();
   const history = useHistory();
 
+  const getSearchParams = (search: string | null) => {
+    if (search) {
+      return { [`name:contains`]: search, ...extraQueryFilters };
+    }
+    return { ...extraQueryFilters };
+  };
+
   const {
     queryValues: { data, isFetching, isLoading, error },
     tablePaginationProps,
     searchFormProps,
-  } = useTabularViewWithLocalSearch<IGroup>(fhirBaseURL, groupResourceType, extraQueryFilters);
+  } = useSimpleTabularView<IGroup>(fhirBaseURL, groupResourceType, getSearchParams);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data ?? []).map((org: IGroup, index: number) => {
+  const tableData = (data?.records ?? []).map((org: IGroup, index: number) => {
     return {
       ...parseGroup(org),
       key: `${index}`,

@@ -62,6 +62,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/QuestionnaireResponse/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       questionnaire: '214',
@@ -72,6 +73,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/QuestionnaireResponse/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 20,
       _count: 20,
       questionnaire: '214',
@@ -80,11 +82,7 @@ test('pagination events work correctly', async () => {
     .persist();
   nock(props.fhirBaseURL)
     .get('/QuestionnaireResponse/_search')
-    .query({
-      _getpagesoffset: 40,
-      _count: 20,
-      questionnaire: '214',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 40, _count: 20, questionnaire: '214' })
     .reply(200, [])
     .persist();
 
