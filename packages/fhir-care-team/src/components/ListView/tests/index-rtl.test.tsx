@@ -119,16 +119,12 @@ describe('Care Teams list view', () => {
     nock(props.fhirBaseURL)
       .get(`/${careTeamResourceType}/_search`)
       .query({
-        _summary: 'count',
+        _total: 'accurate',
+        _getpagesoffset: 0,
+        _count: 20,
       })
-      .reply(200, { total: 100 });
-
-    nock(props.fhirBaseURL)
-      .get(`/${careTeamResourceType}/_search`)
-      .query({
-        _count: 100,
-      })
-      .reply(200, careTeams);
+      .reply(200, careTeams)
+      .persist();
 
     const history = createMemoryHistory();
     history.push(URL_CARE_TEAM);

@@ -94,20 +94,13 @@ test('renders correctly in list view', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .reply(200, patients)
     .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      'name:contains': '345',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20, 'name:contains': '345' })
     .reply(200, patients);
 
   render(
@@ -158,17 +151,14 @@ test('renders correctly in list view', async () => {
   // mock requests due to sort
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      _sort: 'birthdate',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20, _sort: 'birthdate' })
     .reply(200, sortedAscPatients)
     .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       _sort: 'birthdate',
@@ -201,17 +191,14 @@ test('renders correctly in list view', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      _sort: '-birthdate',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20, _sort: '-birthdate' })
     .reply(200, sortedDescPatients)
     .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       _sort: '-birthdate',
@@ -245,10 +232,7 @@ test('responds as expected to errors', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${patientResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .replyWithError('An error happened');
 
   render(

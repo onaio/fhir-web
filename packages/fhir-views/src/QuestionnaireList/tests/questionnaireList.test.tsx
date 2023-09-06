@@ -88,6 +88,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
     })
@@ -97,6 +98,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 20,
       _count: 20,
     })
@@ -106,6 +108,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 40,
       _count: 20,
     })
@@ -115,6 +118,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       'title:contains': 'sample,name:contains=sample',
@@ -188,6 +192,7 @@ test('shows an error', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
     })
