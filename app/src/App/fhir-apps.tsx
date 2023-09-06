@@ -36,12 +36,13 @@ import { providers } from '../configs/settings';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import { PatientsList, PatientDetails, LIST_PATIENTS_URL } from '@opensrp/fhir-client';
 import {
-  ConnectedUserCredentials,
+  UserCredentials,
   UserGroupsList,
   UserRolesList,
   URL_USER,
   URL_USER_EDIT,
   ROUTE_PARAM_USER_ID,
+  ROUTE_PARAM_USERNAME,
   ROUTE_PARAM_USER_GROUP_ID,
   URL_USER_GROUP_EDIT,
   URL_USER_GROUP_CREATE,
@@ -286,8 +287,8 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
-        path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}`}
-        component={ConnectedUserCredentials}
+        path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}/:${ROUTE_PARAM_USERNAME}`}
+        component={UserCredentials}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

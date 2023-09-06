@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory, createMemoryHistory } from 'history';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 import fetch from 'jest-fetch-mock';
-import { cancelUserHandler, ConnectedUserCredentials, UserCredentials, submitForm } from '..';
+import { cancelUserHandler, UserCredentials, submitForm } from '..';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
 import { store } from '@opensrp/store';
@@ -22,6 +22,7 @@ import {
 import { URL_USER } from '../../../constants';
 
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -31,6 +32,29 @@ jest.mock('@opensrp/notifications', () => ({
 }));
 
 const history = createBrowserHistory();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path="/user/:userId/:username">
+            {(props) => <UserCredentials {...props} />}
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
 
 describe('components/Credentials', () => {
   beforeAll(() => {
@@ -65,7 +89,7 @@ describe('components/Credentials', () => {
     history,
     location: {
       hash: '',
-      pathname: `/user/credentials/${fixtures.keycloakUser.id}`,
+      pathname: `/user/credentials/${fixtures.keycloakUser.id}/${fixtures.keycloakUser.username}`,
       search: '',
       state: undefined,
     },
@@ -73,9 +97,10 @@ describe('components/Credentials', () => {
       isExact: true,
       params: {
         userId: fixtures.keycloakUser.id,
+        username: fixtures.keycloakUser.username,
       },
-      path: '/user/credentials/:userId',
-      url: `/user/credentials/${fixtures.keycloakUser.id}`,
+      path: '/user/credentials/:userId/:username',
+      url: `/user/credentials/${fixtures.keycloakUser.id}/${fixtures.keycloakUser.username}`,
     },
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     fetchKeycloakUsersCreator: fetchKeycloakUsers,
@@ -86,12 +111,13 @@ describe('components/Credentials', () => {
   });
 
   it('renders correctly', () => {
+    const history = createMemoryHistory();
+    history.push(`/user/${fixtures.keycloakUser.id}/${fixtures.keycloakUser.username}`);
+
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedUserCredentials {...props} />
-        </Router>
-      </Provider>
+      <Router history={history}>
+        <AppWrapper {...props} />
+      </Router>
     );
     expect(wrapper.find('Row').at(0).props()).toMatchSnapshot('row props');
     wrapper.unmount();
@@ -104,7 +130,7 @@ describe('components/Credentials', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedUserCredentials {...props} />
+          <UserCredentials {...props} />
         </Router>
       </Provider>
     );
@@ -150,7 +176,7 @@ describe('components/Credentials', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedUserCredentials {...props} />
+          <UserCredentials {...props} />
         </Router>
       </Provider>
     );
@@ -190,7 +216,7 @@ describe('components/Credentials', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedUserCredentials {...props} />
+          <UserCredentials {...props} />
         </Router>
       </Provider>
     );
@@ -261,7 +287,7 @@ describe('components/Credentials', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedUserCredentials {...props} />
+          <UserCredentials {...props} />
         </Router>
       </Provider>
     );
@@ -291,7 +317,7 @@ describe('components/Credentials', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <ConnectedUserCredentials {...props2} />
+          <UserCredentials {...props2} />
         </Router>
       </Provider>
     );
