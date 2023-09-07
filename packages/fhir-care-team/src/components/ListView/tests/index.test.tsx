@@ -14,6 +14,8 @@ import { careTeams } from './fixtures';
 import { mount } from 'enzyme';
 import * as fhirclient from 'fhirclient';
 import { URL_CARE_TEAM } from '../../../constants';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -96,7 +98,9 @@ describe('Care Teams list view', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <RoleContext.Provider value={superUserRole}>
+              <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
+            </RoleContext.Provider>
           </QueryClientProvider>
         </Router>
       </Provider>,
@@ -175,7 +179,9 @@ describe('hooks', () => {
       <Provider store={store}>
         <Router history={history}>
           <QueryClientProvider client={queryClient}>
-            <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
+            <RoleContext.Provider value={superUserRole}>
+              <CareTeamList {...props} fhirBaseURL="https://r4.smarthealthit.org/" />
+            </RoleContext.Provider>
           </QueryClientProvider>
         </Router>
       </Provider>

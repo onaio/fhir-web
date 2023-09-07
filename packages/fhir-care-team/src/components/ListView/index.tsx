@@ -92,7 +92,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     return [
       {
         key: '1',
-        permissions: ['careteam.delete'],
+        permissions: ['CareTeam.delete'],
         label: (
           <Popconfirm
             title={t('Are you sure you want to delete this Care Team?')}
@@ -140,7 +140,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['careTeam.update']}>
+          <RbacCheck permissions={['CareTeam.update']}>
             <>
               <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
                 {t('Edit')}
@@ -178,7 +178,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <RbacCheck permissions={['careTeam.create']}>
+            <RbacCheck permissions={['CareTeam.create']}>
               <Link to={URL_CREATE_CARE_TEAM}>
                 <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
                   <PlusOutlined />
