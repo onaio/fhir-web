@@ -52,7 +52,7 @@ export const getColumns = (t: TFunction, userRole: UserRole): Column<ParsedQuest
   const columns: Column<ParsedQuestionnaire>[] = [
     {
       title: t('Name/Id'),
-      render: userRole.hasPermissions('questionnaireResponse.create')
+      render: userRole.hasPermissions('QuestionnaireResponse.create')
         ? NamesColumnCustomRenderLink
         : NamesColumnCustomRender,
       width: '20%',
@@ -78,7 +78,7 @@ export const getColumns = (t: TFunction, userRole: UserRole): Column<ParsedQuest
       title: t('Actions'),
       render: (record: IQuestionnaire) => {
         return (
-          <RbacCheck permissions={['questionnaireResponse.read']}>
+          <RbacCheck permissions={['QuestionnaireResponse.read']}>
             <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>
               {t('View Questionnaire Responses')}
             </Link>
@@ -140,7 +140,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} data-testid="search-form" />
-            <RbacCheck permissions={['questionnaireResponse.create']}>
+            <RbacCheck permissions={['QuestionnaireResponse.create']}>
               <Button type="primary" disabled={true}>
                 <PlusOutlined />
                 {t('Create questionnaire')}

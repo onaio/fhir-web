@@ -59,7 +59,7 @@ const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
       title: t('Actions'),
       render: (record: ParsedQuestionnaireResponse) => {
         return (
-          <RbacCheck permissions={['questionnaireResponse.update']}>
+          <RbacCheck permissions={['QuestionnaireResponse.update']}>
             <Link to={`${QUEST_FORM_VIEW_URL}/${record.id}/${questionnaireResponseResourceType}`}>
               {t('Edit')}
             </Link>
@@ -127,7 +127,7 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Questionnaire resource={questData as IQuestionnaire} />,
       <Row className="list-view">
         <Col className="main-content">
-          <RbacCheck permissions={['questionnaireResponse.create']}>
+          <RbacCheck permissions={['QuestionnaireResponse.create']}>
             <div className="main-content__header flex-right">
               <Button
                 type="primary"
