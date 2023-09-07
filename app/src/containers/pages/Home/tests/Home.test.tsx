@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { cleanup, render, screen } from '@testing-library/react';
 import { authenticateUser } from '@onaio/session-reducer';
 import React from 'react';
-import { RbacProvider } from '@opensrp/rbac';
+import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('../../../../configs/env');
@@ -51,9 +51,9 @@ describe('containers/pages/Home', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <Home />
-          </RbacProvider>
+          </RoleContext.Provider>
         </Router>
       </Provider>
     );

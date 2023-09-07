@@ -8,7 +8,7 @@ import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
 import toJson from 'enzyme-to-json';
 import { superUserRole } from '@opensrp/react-utils';
-import { RbacProvider } from '@opensrp/rbac';
+import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('../../../configs/env');
 jest.mock('../../../configs/settings');
@@ -18,9 +18,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -39,9 +39,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -83,9 +83,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -117,9 +117,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -131,9 +131,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -147,9 +147,9 @@ describe('components/ConnectedSidebar', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -164,9 +164,9 @@ describe('components/ConnectedSidebar', () => {
         <MemoryRouter
           initialEntries={[{ pathname: `/admin/users`, hash: '', search: '', state: {} }]}
         >
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <ConnectedSidebar />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );

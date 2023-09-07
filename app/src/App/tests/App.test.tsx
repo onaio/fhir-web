@@ -22,7 +22,7 @@ import {
   LIST_COMMODITY_URL,
 } from '@opensrp/fhir-group-management';
 import { viewDetailsQuery, ContextProvider, superUserRole } from '@opensrp/react-utils';
-import { RbacProvider } from '@opensrp/rbac';
+import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('../../configs/env');
 
@@ -167,9 +167,9 @@ describe('App - authenticated', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <App />
-          </RbacProvider>
+          </RoleContext.Provider>
         </Router>
       </Provider>
     );
@@ -197,9 +197,9 @@ describe('App - authenticated', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/logout` }]}>
-          <RbacProvider activeRole={superUserRole}>
+          <RoleContext.Provider value={superUserRole}>
             <App />
-          </RbacProvider>
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -220,9 +220,9 @@ describe('App - authenticated', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: `${LIST_COMMODITY_URL}` }]}>
-            <RbacProvider activeRole={superUserRole}>
+            <RoleContext.Provider value={superUserRole}>
               <App />
-            </RbacProvider>
+            </RoleContext.Provider>
           </MemoryRouter>
         </Provider>
       </QueryClientProvider>
