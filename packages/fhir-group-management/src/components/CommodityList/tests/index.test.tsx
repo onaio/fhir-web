@@ -12,6 +12,8 @@ import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { groupResourceType, listResourceType, LIST_COMMODITY_URL } from '../../../constants';
 import { firstFiftyCommodities, listResource } from './fixtures';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -60,14 +62,16 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${LIST_COMMODITY_URL}`}>
-            {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${LIST_COMMODITY_URL}/:id`}>
-            {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path={`${LIST_COMMODITY_URL}`}>
+              {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
+            </Route>
+            <Route exact path={`${LIST_COMMODITY_URL}/:id`}>
+              {(routeProps) => <CommodityList {...{ ...props, ...routeProps }} />}
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );

@@ -89,7 +89,7 @@ export const BaseListView = (props: BaseListViewProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <RbacCheck permissions={['group.create']}>
+            <RbacCheck permissions={['Group.create']}>
               {createButtonUrl ? (
                 <Button type="primary" onClick={() => history.push(createButtonUrl)}>
                   <PlusOutlined />

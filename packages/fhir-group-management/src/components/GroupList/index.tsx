@@ -95,7 +95,7 @@ export const GroupList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['group.update']}>
+          <RbacCheck permissions={['Group.update']}>
             <>
               <Link to={`#`} className="m-0 p-1" onClick={(e) => e.preventDefault()}>
                 {t('Edit')}

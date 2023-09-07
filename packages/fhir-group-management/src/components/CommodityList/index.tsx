@@ -94,7 +94,7 @@ export const CommodityList = (props: GroupListProps) => {
       },
       {
         key: '2',
-        permissions: ['group.delete'],
+        permissions: ['Group.delete'],
         label: (
           <Popconfirm
             title={t('Are you sure you want to delete this Commodity?')}
