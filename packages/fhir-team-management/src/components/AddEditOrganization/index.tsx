@@ -52,7 +52,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
 
   const practitioners = useQuery(
     [practitionerResourceType],
-    () => loadAllResources(fhirBaseUrl, practitionerResourceType),
+    () => loadAllResources(fhirBaseUrl, practitionerResourceType, { active: true }),
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
       onError: () => sendErrorNotification(t('There was a problem fetching practitioners')),
@@ -62,7 +62,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   // practitioners already assigned to this organization
   const allPractitionerRoles = useQuery(
     [practitionerResourceType, organizationResourceType, orgId],
-    () => loadAllResources(fhirBaseUrl, practitionerRoleResourceType),
+    () => loadAllResources(fhirBaseUrl, practitionerRoleResourceType, { active: true }),
     {
       onError: () =>
         sendErrorNotification(t('There was a problem fetching assigned practitioners')),
