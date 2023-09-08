@@ -84,7 +84,7 @@ const TableActions = (props: Props): JSX.Element => {
         <Button
           type="link"
           data-testid="credentials"
-          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}`)}
+          onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}/${record.username}`)}
         >
           {t('Credentials')}
         </Button>
