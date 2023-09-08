@@ -56,6 +56,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
       onError: () => sendErrorNotification(t('There was a problem fetching practitioners')),
+      staleTime: 0,
     }
   );
 
@@ -70,13 +71,17 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
         return getResourcesFromBundle(res) as IPractitionerRole[];
       },
       enabled: !!orgId,
+      staleTime: 0,
     }
   );
 
   if (
-    (!organization.isIdle && organization.isLoading) ||
-    (!practitioners.isIdle && practitioners.isLoading) ||
-    (!allPractitionerRoles.isIdle && allPractitionerRoles.isLoading)
+    organization.isLoading ||
+    organization.isFetching ||
+    practitioners.isLoading ||
+    practitioners.isFetching ||
+    allPractitionerRoles.isLoading ||
+    allPractitionerRoles.isFetching
   ) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
