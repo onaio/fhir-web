@@ -56,7 +56,6 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
     {
       select: (res) => getResourcesFromBundle(res) as IPractitionerRole[],
       onError: () => sendErrorNotification(t('There was a problem fetching practitioners')),
-      staleTime: 0,
     }
   );
 
@@ -71,7 +70,6 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
         return getResourcesFromBundle(res) as IPractitionerRole[];
       },
       enabled: !!orgId,
-      staleTime: 0,
     }
   );
 
