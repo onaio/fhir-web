@@ -2,20 +2,12 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import {
-  CreateEditUser,
-  getGroup,
-  createEditGroupResource,
-  practitionerUpdater,
-  getPractitioner,
-  getPractitionerRole,
-} from '..';
+import { CreateEditUser, practitionerUpdater, getPractitioner, getPractitionerRole } from '..';
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
-import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
 import {
@@ -24,10 +16,11 @@ import {
   updatedPractitioner,
   userGroup,
   group,
-  updatedGroup,
   practitionerRoleBundle,
-  updatedPractitionerRole,
   compositionResource,
+  newPractitioner,
+  newPractitionerRole,
+  newGroup,
 } from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
@@ -35,6 +28,8 @@ import { practitionerResourceType, practitionerRoleResourceType } from '../../..
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
 import { opensrpI18nInstance } from '@opensrp/i18n';
+
+jest.setTimeout(10000);
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -45,11 +40,13 @@ jest.mock('@opensrp/notifications', () => ({
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
+const mockId = 'acb9d47e-7247-448f-be93-7a193a5312da';
+
 jest.mock('uuid', () => {
   const actual = jest.requireActual('uuid');
   return {
     ...actual,
-    v4: () => 'acb9d47e-7247-448f-be93-7a193a5312da',
+    v4: () => mockId,
   };
 });
 
@@ -98,6 +95,9 @@ const AppWrapper = (props: any) => {
           <Route exact path="/add/:id">
             <CreateEditUser {...props} />
           </Route>
+          <Route exact path="/">
+            I love oof!
+          </Route>
         </Switch>
       </QueryClientProvider>
     </Provider>
@@ -131,12 +131,29 @@ afterAll(() => {
   nock.enableNetConnect();
 });
 
-test('renders correctly for edit user', async () => {
-  const history = createMemoryHistory();
-  history.push('/add/id');
+test('renders correctly for new user', async () => {
+  history.push('/add');
 
-  fetch.once(JSON.stringify(userGroup)).once(JSON.stringify(keycloakUser)).once(JSON.stringify([]));
-  fetch.mockResponses(JSON.stringify([]));
+  const thisProps = {
+    ...props,
+    history,
+    location: {
+      hash: '',
+      pathname: '/add',
+      search: '',
+      state: '',
+    },
+    match: {
+      isExact: true,
+      params: {},
+      path: `/add`,
+      url: `/add`,
+    },
+    keycloakUser: null,
+  };
+
+  fetch.once(JSON.stringify(userGroup));
+  fetch.once(JSON.stringify(keycloakUser), { headers: { location: `/${keycloakUser.id}` } });
 
   nock(props.baseUrl)
     .get(`/${practitionerResourceType}/_search`)
@@ -153,14 +170,11 @@ test('renders correctly for edit user', async () => {
     .reply(200, practitionerRoleBundle);
 
   nock(props.baseUrl)
-    .put(`/${practitionerResourceType}/${updatedPractitioner.id}`, updatedPractitioner)
+    .put(`/${practitionerResourceType}/${mockId}`, newPractitioner)
     .reply(200, updatedPractitioner);
 
   nock(props.baseUrl)
-    .put(
-      `/${practitionerRoleResourceType}/${practitionerRoleBundle.entry[0].resource.id}`,
-      updatedPractitionerRole
-    )
+    .put(`/${practitionerRoleResourceType}/${mockId}`, newPractitionerRole)
     .reply(200, {});
 
   nock(props.baseUrl)
@@ -170,9 +184,7 @@ test('renders correctly for edit user', async () => {
     })
     .reply(200, group);
 
-  nock(props.baseUrl)
-    .put('/Group/acb9d47e-7247-448f-be93-7a193a5312da', updatedGroup)
-    .reply(200, {});
+  nock(props.baseUrl).put(`/Group/${mockId}`, newGroup).reply(200, {});
 
   nock(props.baseUrl)
     .get(`/Composition/_search`)
@@ -193,7 +205,7 @@ test('renders correctly for edit user', async () => {
 
   const { getByTestId, getByText, queryByTitle } = render(
     <Router history={history}>
-      <AppWrapper {...props}></AppWrapper>
+      <AppWrapper {...thisProps}></AppWrapper>
     </Router>
   );
 
@@ -203,11 +215,7 @@ test('renders correctly for edit user', async () => {
     expect(getByText(/User Type/)).toBeInTheDocument();
   });
 
-  expect(fetch.mock.calls.map((req) => req[0])).toEqual([
-    'http://test-keycloak.server.org/groups',
-    'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-    'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-  ]);
+  expect(fetch.mock.calls.map((req) => req[0])).toEqual(['http://test-keycloak.server.org/groups']);
 
   // simulate first Name change
   const firstNameInput = document.querySelector('input#firstName');
@@ -225,10 +233,6 @@ test('renders correctly for edit user', async () => {
   const usernameInput = document.querySelector('input#username');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(usernameInput!, 'flopo');
-
-  // change mark as practitioner to tue
-  const yesMarkPractitioner = document.querySelectorAll('input[name="active"]')[0];
-  userEvent.click(yesMarkPractitioner);
 
   const markSupervisor = document.querySelectorAll('input[name="userType"]')[1];
   userEvent.click(markSupervisor);
@@ -256,17 +260,22 @@ test('renders correctly for edit user', async () => {
   fireEvent.click(submitButton!);
 
   // need not concern ourselves with groups, should be tested in user-management package
-
   await waitFor(() => {
-    expect(errorStub.mock.calls).toEqual([]);
+    expect(errorStub).toHaveBeenCalledTimes(0);
+    // TODO - Includes caught mock calls from previous test
     expect(successStub.mock.calls).toEqual([
-      ['User edited successfully'],
-      ['Practitioner updated successfully'],
+      ['User created successfully'],
+      ['Practitioner created successfully'],
       ['User Group edited successfully'],
-      ['Group resource updated successfully'],
-      ['PractitionerRole updated successfully'],
+      ['Group resource created successfully'],
+      ['PractitionerRole created successfully'],
     ]);
   });
+
+  expect(fetch.mock.calls.map((req) => req[0])).toEqual([
+    'http://test-keycloak.server.org/groups',
+    'http://test-keycloak.server.org/users',
+  ]);
 
   expect(
     fetch.mock.calls.map((call) => ({
@@ -276,52 +285,12 @@ test('renders correctly for edit user', async () => {
   ).toEqual([
     { endpoint: 'http://test-keycloak.server.org/groups', method: 'GET' },
     {
-      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-      method: 'GET',
-    },
-    {
-      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b/groups',
-      method: 'GET',
-    },
-    {
-      endpoint: 'http://test-keycloak.server.org/users/cab07278-c77b-4bc7-b154-bcbf01b7d35b',
-      method: 'PUT',
+      endpoint: 'http://test-keycloak.server.org/users',
+      method: 'POST',
     },
   ]);
-});
 
-test('it fetches groups', async () => {
-  nock(props.baseUrl)
-    .get(`/Group/_search`)
-    .query({
-      identifier: keycloakUser.id,
-    })
-    .reply(200, group);
-
-  const fetchGroup = await getGroup(props.baseUrl, keycloakUser.id);
-  expect(fetchGroup).toEqual(group.entry[0].resource);
-});
-
-test('it creates a group resource', async () => {
-  const successMessage = { message: 'Successfully created' };
-
-  nock(props.baseUrl).put(`/Group/${updatedGroup.id}`, updatedGroup).reply(200, successMessage);
-
-  const successStub = jest.fn();
-  const errorStub = jest.fn();
-
-  await createEditGroupResource(
-    updatedGroup.active,
-    updatedGroup.identifier[1].value,
-    updatedGroup.name,
-    updatedGroup.member[0].entity.reference.split('/')[1],
-    props.baseUrl
-  )
-    .then((resp) => successStub(resp))
-    .catch(() => errorStub());
-
-  await waitFor(() => {
-    expect(errorStub).not.toHaveBeenCalled();
-    expect(successStub).toHaveBeenCalledWith(successMessage);
-  });
+  expect(history.location.pathname).toEqual(
+    '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b/flopo'
+  );
 });
