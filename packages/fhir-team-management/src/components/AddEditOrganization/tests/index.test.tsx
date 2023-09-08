@@ -101,20 +101,20 @@ test('renders correctly for edit locations', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count' })
+    .query({ _summary: 'count', active: true })
     .reply(200, { total: 1000 })
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _count: 1000, active: true })
     .reply(200, allPractitioners);
 
   nock(props.fhirBaseURL).get(`/${organizationResourceType}/${org105.id}`).reply(200, org105);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerRoleResourceType}/_search`)
-    .query({ _summary: 'count' })
+    .query({ _summary: 'count', active: true })
     .reply(200, { total: 1000 })
     .get(`/${practitionerRoleResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _count: 1000, active: true })
     .reply(200, allPractitioners);
 
   render(
