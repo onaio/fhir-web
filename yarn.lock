@@ -3362,14 +3362,14 @@ __metadata:
 
 "@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::locator=%40opensrp%2Fweb%40workspace%3Aapp":
   version: 0.4.0
-  resolution: "@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/#/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::hash=aaa487&locator=%40opensrp%2Fweb%40workspace%3Aapp"
+  resolution: "@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/#/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::hash=a0a798&locator=%40opensrp%2Fweb%40workspace%3Aapp"
   dependencies:
     "@onaio/session-reducer": ^0.0.13
     client-oauth2: ^4.3.3
     jsonwebtoken: ^8.5.1
     query-string: ^6.4.2
     reactstrap: ^7.1.0
-  checksum: 167007d7c532a40cb4dad4c3ab98ff98d4012147cb86621a62831c1c4a457b67bf0e992b0dee552510155eb79331bc83ad1e2fe25b87e6cf0b847b340ddc7cb8
+  checksum: 8599f980b094ca051dfa9df410c940bef56811636115483569f117fc77b5388ff4bc5a383da66e927cf18afec5d694905039d9a00c9a91c37e00a950c978bf78
   languageName: node
   linkType: hard
 
