@@ -126,7 +126,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <RbacCheck permissions={['organization.create']}>
+            <RbacCheck permissions={['Organization.create']}>
               <Button type="primary" onClick={() => history.push(URL_ADD_ORGANIZATION)}>
                 <PlusOutlined />
                 {t('Add Organization')}
