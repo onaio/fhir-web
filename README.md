@@ -1,19 +1,19 @@
-# OpenSRP FHIR Web
+# fhir-web
 
-[![codecov](https://codecov.io/gh/opensrp/web/branch/master/graph/badge.svg?token=EG3TX9MAM4)](https://codecov.io/gh/opensrp/web)
+[![codecov](https://codecov.io/gh/onaio/fhir-web/branch/master/graph/badge.svg?token=EG3TX9MAM4)](https://codecov.io/gh/onaio/fhir-web)
 
-<!-- We need an intoduction banner here -->
+<!-- We need an introduction banner here -->
 
-OpenSRP FHIR Web is the default frontend for [OpenSRP HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the [OpenSRP FHIR Core](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP FHIR Server and OpenSRP FHIR Core.
+fhir-web is the default frontend for the [HAPI FHIR Server](https://github.com/opensrp/hapi-fhir-jpaserver-starter), as well as a configuration dashboard for the FHIR-based version of [OpenSRP](https://github.com/opensrp/fhircore) mobile application. It provides access to healthcare data, configuration options, and other functionality provided by OpenSRP.
 
 ## Table of Contents
 
 ---
 
-- [OpenSRP FHIR Web](#opensrp-fhir-web)
+- [fhir-web](#fhir-web)
   - [Table of Contents](#table-of-contents)
   - [What is the FHIR Standard](#what-is-the-fhir-standard)
-  - [What is OpenSRP FHIR Core](#what-is-opensrp-fhir-core)
+  - [What is OpenSRP](#what-is-opensrp)
   - [Project Architecture](#project-architecture)
   - [Repository Setup](#repository-setup)
     - [Bootstrapping](#bootstrapping)
@@ -36,15 +36,15 @@ OpenSRP FHIR Web is the default frontend for [OpenSRP HAPI FHIR Server](https://
 
 HL7 Fast Healthcare Interoperability Resources (`FHIR`), is a standard to enable quick and efficient representation and exchange of health care data, including clinical and administrative data, by digital health systems.
 
-## What is OpenSRP FHIR Core
+## What is OpenSRP
 
-OpenSRP FHIR Core is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
+OpenSRP is a Kotlin application for delivering offline-capable, mobile-first healthcare project implementations from local community to national and international scale using FHIR and the WHO Smart Guidelines on Android.
 
 ## Project Architecture
 
 <!-- We need an architecture diagram here -->
 
-OpenSRP FHIR Web consumes FHIR resources from the[ OpenSRP HAPI FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter). Both OpenSRP FHIR Web and OpenSRP HAPI FHIR server use a [Keycloak Server](https://hub.docker.com/r/onaio/keycloak) for authentication (Oauth 2.0). On top of the React Js web application, there is a tiny [Express JS Server](https://github.com/onaio/express-server) that is bundled together with OpenSRP FHIR Web that handles both authentication and serving the compiled FHIR Web files. For All Intents and Purposes, both the Express and the React Js apps are bundled together and collectively referred to as the OpenSRP FHIR Web.
+fhir-web consumes FHIR resources from the[ OpenSRP HAPI FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter). Both fhir-web and the HAPI FHIR server use a [Keycloak Server](https://hub.docker.com/r/onaio/keycloak) for authentication (Oauth 2.0). On top of the React JS web application, there is a tiny [Express JS Server](https://github.com/onaio/express-server) that is bundled together with fhir-web that handles both authentication and serving the compiled fhir-web files. For All Intents and Purposes, both the Express and the React JS apps are bundled together and collectively referred to as the fhir-web.
 
 ## Repository Setup
 
@@ -81,7 +81,7 @@ This repository is a monorepo bootstrapped with [Lerna](https://github.com/lerna
 
 ## Deployments
 
-We use different technologies to deploy OpenSRP FHIR Web.
+We use different technologies to deploy fhir-web.
 
 ### Prerequisites
 
@@ -92,18 +92,16 @@ We use different technologies to deploy OpenSRP FHIR Web.
 
 ### 1. Docker
 
-- [FHIR Web Docker Deployment Documentation](/docs/fhir-web-docker-deployment.md).
-
-- [OpenSRP Web Docker Deployment Documentation](/docs/opensrp-web-docker-deployment.md).
+- [fhir-web Docker Deployment Documentation](/docs/fhir-web-docker-deployment.md).
 
 ### 2. Kubernetes
 
-- [FHIR Web and OpenSRP Web Kubernetes Helm Chart](https://github.com/opensrp/helm-charts/tree/main/charts/opensrp-web).
+- [fhir-web Kubernetes Helm Chart](https://github.com/opensrp/helm-charts/tree/main/charts/opensrp-web).
 
 ### 3. Ansible
 
-- [OpenSRP Web Ansible Playbook](https://github.com/opensrp/playbooks/blob/master/web.yml)
-  - Run an OpenSRP Web deployment with certbot, react, express, and nginx.
+- [fhir-web Ansible Playbook](https://github.com/opensrp/playbooks/blob/master/web.yml)
+  - Run an fhir-web deployment with certbot, react, express, and nginx.
   - You'll need accompanying ansible inventories
 
 ## Configuration
