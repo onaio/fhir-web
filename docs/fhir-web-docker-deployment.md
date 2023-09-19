@@ -1,6 +1,6 @@
-# FHIR WEB DOCKER DEPLOYMENT
+# fhir-web docker deployment
 
-We use different technologies to deploy OpenSRP FHIR Web. This documentation will focus on [Docker](https://www.docker.com/)
+We use different technologies to deploy fhir-web. This documentation will focus on [Docker](https://www.docker.com/)
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ We use different technologies to deploy OpenSRP FHIR Web. This documentation wil
 
 ---
 
-- Whenever we cut a [FHIR web release](https://github.com/opensrp/web/releases) we use [github actions](/.github/workflows/docker-publish.yml) to build, tag, and push a docker image based on our [Dockerfile](/Dockerfile) specification to [docker hub](https://hub.docker.com/r/opensrp/web/tags)
+- Whenever we cut a [fhir-web release](https://github.com/opensrp/web/releases) we use [github actions](/.github/workflows/docker-publish.yml) to build, tag, and push a docker image based on our [Dockerfile](/Dockerfile) specification to [docker hub](https://hub.docker.com/r/opensrp/web/tags)
 
 - This means that all our releases have a corresponding docker image on docker hub ready for use. E.g [release v2.3.4](https://github.com/opensrp/web/releases/tag/v2.3.4) has the corresponding [docker image tag v2.3.4](https://hub.docker.com/layers/opensrp/web/v2.3.4/images/sha256-de13e5482194d76fd22980e73cda0e4f77d6b59aab868130dea24c3b609aa312?context=explore)
 
