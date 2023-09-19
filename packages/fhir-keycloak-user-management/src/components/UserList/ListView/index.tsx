@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Row, Col, Button } from 'antd';
 import {
   getQueryParams,
@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux';
 import { ViewDetailsWrapper } from '../ViewDetails';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from '@opensrp/i18n';
-import { RbacCheck, RoleContext } from '@opensrp/rbac';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -43,7 +43,7 @@ export const UserList = (props: OrganizationListProps) => {
   const extraData = useSelector(getExtraData);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const userRole = useContext(RoleContext);
+  const userRole = useUserRole;
 
   const { sParams, addParam } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -85,7 +85,8 @@ export const UserList = (props: OrganizationListProps) => {
     queryClient,
     t,
     onViewDetails,
-    userRole
+    userRole,
+    history
   );
 
   const searchFormProps = {

@@ -101,28 +101,18 @@ test('renders correctly when listing resources', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${healthCareServiceResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .reply(200, healthCareServicePage1)
     .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${healthCareServiceResourceType}/_search`)
-    .query({
-      _getpagesoffset: 20,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 20, _count: 20 })
     .reply(200, healthCareServicePage2);
 
   nock(props.fhirBaseURL)
     .get(`/${healthCareServiceResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      'name:contains': 'testing',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20, 'name:contains': 'testing' })
     .reply(200, healthCareServiceSearch);
 
   render(
@@ -211,10 +201,7 @@ test('responds as expected to errors', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${healthCareServiceResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .replyWithError('coughid');
 
   render(

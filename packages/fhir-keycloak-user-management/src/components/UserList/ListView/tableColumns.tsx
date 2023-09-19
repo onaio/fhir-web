@@ -4,13 +4,19 @@ import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { deleteUser } from './utils';
 import { Link } from 'react-router-dom';
-import { KeycloakUser, URL_USER_EDIT, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
+import {
+  KeycloakUser,
+  URL_USER_EDIT,
+  KEYCLOAK_URL_USERS,
+  URL_USER_CREDENTIALS,
+} from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { QueryClient } from 'react-query';
 import type { TFunction } from '@opensrp/i18n';
 import { UserRole } from '@opensrp/rbac';
+import { History } from 'history';
 
 /**
  * Get table columns for user list
@@ -22,6 +28,7 @@ import { UserRole } from '@opensrp/rbac';
  * @param t - translator function
  * @param onViewDetails - callback when view details is clicked.
  * @param userRole - role of logged in user.
+ * @param history - history object for managing navigation
  */
 export const getTableColumns = (
   keycloakBaseUrl: string,
@@ -30,7 +37,8 @@ export const getTableColumns = (
   queryClient: QueryClient,
   t: TFunction,
   onViewDetails: (recordId: string) => void,
-  userRole: UserRole
+  userRole: UserRole,
+  history: History
 ): Column<KeycloakUser>[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
@@ -89,6 +97,21 @@ export const getTableColumns = (
                 </Button>
               ))}
           </Popconfirm>
+        ),
+      },
+      {
+        key: '3',
+        Permissions: ['iam_user.update'],
+        label: (
+          <Button
+            type="link"
+            data-testid="credentials"
+            onClick={() => {
+              history.push(`${URL_USER_CREDENTIALS}/${record.id}/${record.username}`);
+            }}
+          >
+            {t('Credentials')}
+          </Button>
         ),
       },
     ]

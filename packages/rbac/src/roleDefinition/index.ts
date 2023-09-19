@@ -83,7 +83,8 @@ export class UserRole {
         return false;
       }
 
-      if (this.permissions.get(key) && value === 0) {
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      if ((this.permissions.get(key)! & value) === 0) {
         return false;
       }
     }

@@ -112,28 +112,18 @@ test('renders correctly when listing organizations', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .reply(200, organizationsPage1)
     .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({
-      _getpagesoffset: 20,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 20, _count: 20 })
     .reply(200, organizationsPage2);
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-      'name:contains': '345',
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20, 'name:contains': '345' })
     .reply(200, organizationSearchPage1);
 
   render(
@@ -264,10 +254,7 @@ test('responds as expected to errors', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({
-      _getpagesoffset: 0,
-      _count: 20,
-    })
+    .query({ _total: 'accurate', _getpagesoffset: 0, _count: 20 })
     .replyWithError('coughid');
 
   render(

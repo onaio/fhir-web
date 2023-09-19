@@ -43,6 +43,55 @@ export const keycloakUser = {
   },
 };
 
+export const newPractitioner = {
+  resourceType: 'Practitioner',
+  id: 'acb9d47e-7247-448f-be93-7a193a5312da',
+  identifier: [
+    { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
+    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+  ],
+  active: true,
+  name: [{ use: 'official', family: 'plotus', given: ['flotus', ''] }],
+  telecom: [{ system: 'email', value: 'flotus@plotus.duck' }],
+};
+export const newPractitionerRole = {
+  resourceType: 'PractitionerRole',
+  id: 'acb9d47e-7247-448f-be93-7a193a5312da',
+  identifier: [
+    { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
+    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+  ],
+  active: true,
+  practitioner: {
+    reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2',
+    display: 'Demoflotus  kenyaplotus',
+  },
+  code: [
+    {
+      coding: [
+        { system: 'http://snomed.info/sct', code: '236321002', display: 'Supervisor (occupation)' },
+      ],
+    },
+  ],
+};
+export const newGroup = {
+  resourceType: 'Group',
+  id: 'acb9d47e-7247-448f-be93-7a193a5312da',
+  identifier: [
+    { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
+    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+  ],
+  active: true,
+  type: 'practitioner',
+  actual: true,
+  code: {
+    coding: [
+      { system: 'http://snomed.info/sct', code: '405623001', display: 'Assigned practitioner' },
+    ],
+  },
+  name: 'flotus plotus',
+  member: [{ entity: { reference: 'Practitioner/c1d36d9a-b771-410b-959e-af2c04d132a2' } }],
+};
 export const practitioner = {
   resourceType: 'Bundle',
   id: '30c8715d-c661-4c58-b7f1-303f6e6251c6',

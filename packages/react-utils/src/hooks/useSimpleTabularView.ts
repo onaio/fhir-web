@@ -57,6 +57,7 @@ const loadResources = async (
   }
 
   filterParams = {
+    _total: 'accurate',
     ...filterParams,
     ...otherParams,
     _getpagesoffset: (page - 1) * pageSize,
