@@ -6,15 +6,13 @@ import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { useHistory } from 'react-router-dom';
-import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
-import { useQuery } from 'react-query';
+import { BrokenPage, Resource404 } from '@opensrp/react-utils';
+import { URL_LOCATION_UNIT_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { convertApiResToTree, useGetLocationsAsHierarchy } from '../../helpers/utils';
+import { useGetLocationsAsHierarchy } from '../../helpers/utils';
 import './LocationUnitList.css';
 import { TreeNode } from '../../helpers/types';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -75,8 +73,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier)
-
+  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier);
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

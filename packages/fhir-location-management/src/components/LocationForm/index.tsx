@@ -9,7 +9,7 @@ import {
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { locationHierarchyResourceType, locationResourceType } from '../../constants';
+import { locationResourceType } from '../../constants';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
@@ -154,7 +154,7 @@ const LocationForm = (props: LocationFormProps) => {
               const successUrl = successURLGenerator(payload);
               sendSuccessNotification(successMessage);
               afterSubmit?.(payload);
- 
+
               queryClient.refetchQueries([locationResourceType]).catch((err) => {
                 throw err;
               });

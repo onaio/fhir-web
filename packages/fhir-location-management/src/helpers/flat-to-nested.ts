@@ -1,21 +1,22 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { CommonHierarchyNode } from './types';
 
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 /**
  * Convert a hierarchy from flat to nested representation.
  *
- * @param {array} locations The array with the hierachy flat representation.
+ * @param {Array} locations The array with the hierachy flat representation.
  */
 export function nestLocations(locations: ILocation[]) {
-  let roots, id, parentId, pendingChildOf;
+  let id, parentId;
 
-  roots = [];
+  const roots = [];
   const temp: Record<string, CommonHierarchyNode> = {};
-  pendingChildOf = {};
+  const pendingChildOf: Record<string, CommonHierarchyNode[]> = {};
 
   for (let i = 0, len = locations.length; i < len; i++) {
     const rawLocation = locations[i];
-    console.log({ rawLocation, locations });
     const location = {
       nodeId: rawLocation.id as string,
       label: rawLocation.name ?? '',
@@ -44,32 +45,35 @@ export function nestLocations(locations: ILocation[]) {
   return roots;
 }
 
-function initPush(arrayName: any, obj: any, toPush: any) {
-  if (obj[arrayName] === undefined) {
-    obj[arrayName] = [];
+const initPush = (arrayName: string, obj: unknown, toPush: unknown) => {
+  const typedObj = obj as Record<string, unknown[]>;
+  if (typedObj[arrayName] === undefined) {
+    typedObj[arrayName] = [];
   }
-  obj[arrayName].push(toPush);
-}
+  typedObj[arrayName].push(toPush);
+};
 
-function multiInitPush(arrayName: any, obj: any, toPushArray: any) {
-  var len;
+const multiInitPush = (arrayName: string, obj: unknown, toPushArray: unknown[]) => {
+  let len;
   len = toPushArray.length;
-  if (obj[arrayName] === undefined) {
-    obj[arrayName] = [];
+  const typedObj = obj as Record<string, unknown[]>;
+  if (typedObj[arrayName] === undefined) {
+    typedObj[arrayName] = [];
   }
   while (len-- > 0) {
-    obj[arrayName].push(toPushArray.shift());
+    typedObj[arrayName].push(toPushArray.shift());
   }
-}
+};
 
 /**
  * Gets id of parent location from a location resource.
- * @param obj
- * @returns
+ *
+ * @param obj - location object to get parent id from
+ * @returns - parent id or undefined
  */
 const getParentResourceId = (obj: ILocation) => {
-  const reference = obj?.partOf?.reference;
-  if (reference == undefined) {
+  const reference = obj.partOf?.reference;
+  if (reference === undefined) {
     return undefined;
   }
   const parts = reference.split('/');

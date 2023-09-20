@@ -1,4 +1,10 @@
-import { ChildNodeList, LocationHierarchyResource, ParsedHierarchyNode, TreeNode } from './types';
+import {
+  ChildNodeList,
+  CommonHierarchyNode,
+  LocationHierarchyResource,
+  ParsedHierarchyNode,
+  TreeNode,
+} from './types';
 import { cloneDeep } from 'lodash';
 import cycle from 'cycle';
 import TreeModel from 'tree-model';
@@ -85,16 +91,16 @@ export const useGetLocationsAsHierarchy = (baseUrl: string, rootIdentifier: stri
     },
     {
       select: (res: IBundle) => {
-        const rawLocations =  cloneDeep(getResourcesFromBundle<ILocation>(res));
+        const rawLocations = cloneDeep(getResourcesFromBundle<ILocation>(res));
         const nested = nestLocations(rawLocations);
-        const interestingRoot = nested.filter(root => root.nodeId === `${rootIdentifier}`)[0]
-        console.log({interestingRoot, nested, rootIdentifier})
-        if(!interestingRoot){
-          return undefined
+        const interestingRoot = nested.filter((root) => root.nodeId === `${rootIdentifier}`)[0] as
+          | CommonHierarchyNode
+          | undefined;
+        if (!interestingRoot) {
+          return undefined;
         }
-        const tree = new TreeModel().parse(interestingRoot)
-        return tree
-
+        const tree = new TreeModel().parse(interestingRoot);
+        return tree;
       },
       refetchInterval: false,
       staleTime: Infinity, // prevent refetches on things like window refocus
