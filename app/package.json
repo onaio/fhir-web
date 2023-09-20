@@ -7,7 +7,7 @@
     "@ant-design/icons": "^4.7.0",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
-    "@onaio/gatekeeper": "/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/",
+    "@onaio/gatekeeper": "1.0.0",
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",

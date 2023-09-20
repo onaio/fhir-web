@@ -3360,16 +3360,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::locator=%40opensrp%2Fweb%40workspace%3Aapp":
-  version: 0.4.0
-  resolution: "@onaio/gatekeeper@file:/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/#/home/peter/Desktop/onaio/js-tools/packages/gatekeeper/::hash=a0a798&locator=%40opensrp%2Fweb%40workspace%3Aapp"
+"@onaio/gatekeeper@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@onaio/gatekeeper@npm:1.0.0"
   dependencies:
     "@onaio/session-reducer": ^0.0.13
     client-oauth2: ^4.3.3
     jsonwebtoken: ^8.5.1
     query-string: ^6.4.2
     reactstrap: ^7.1.0
-  checksum: 8599f980b094ca051dfa9df410c940bef56811636115483569f117fc77b5388ff4bc5a383da66e927cf18afec5d694905039d9a00c9a91c37e00a950c978bf78
+  checksum: 4a7895f63833f5959517d9c7e000e966470d0c055fd71d4defd14ba6bf721d3b58a58f4c50f4884e0e3ffe16b410f1dbf9d7f26e8c162d9b3a6266a1e0b893d4
   languageName: node
   linkType: hard
 
@@ -3830,7 +3830,7 @@ __metadata:
     fhirclient: ^2.4.0
     react-query: ^3.15.1
   peerDependencies:
-    "@onaio/gatekeeper": ^0.4.0
+    "@onaio/gatekeeper": ^1.0.0
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
     lodash: ^4.17.21
@@ -3894,7 +3894,7 @@ __metadata:
     reselect: ^4.0.0
     seamless-immutable: ^7.1.4
   peerDependencies:
-    "@onaio/gatekeeper": ^0.4.0
+    "@onaio/gatekeeper": ^1.0.0
     lodash: ^4.17.21
     redux: ^4.0.5
     redux-thunk: ^2.3.0
@@ -3960,7 +3960,7 @@ __metadata:
     uuid: ^8.3.1
     yup: ^0.29.3
   peerDependencies:
-    "@onaio/gatekeeper": ^0.4.0
+    "@onaio/gatekeeper": ^1.0.0
     "@opensrp/i18n": ^0.0.1
     "@opensrp/store": ^0.0.10
     antd: ^5.5.1
@@ -3982,7 +3982,7 @@ __metadata:
     "@ant-design/icons": ^4.7.0
     "@onaio/connected-private-route": ^0.0.11
     "@onaio/connected-reducer-registry": ^0.0.3
-    "@onaio/gatekeeper": /home/peter/Desktop/onaio/js-tools/packages/gatekeeper/
+    "@onaio/gatekeeper": 1.0.0
     "@onaio/redux-reducer-registry": ^0.0.9
     "@onaio/session-reducer": ^0.0.12
     "@onaio/utils": ^0.0.1
