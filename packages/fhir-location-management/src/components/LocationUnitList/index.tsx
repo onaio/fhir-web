@@ -70,33 +70,13 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const { t } = useTranslation();
   const history = useHistory();
 
-  const hierarchyParams = {
-    identifier: fhirRootLocationIdentifier,
-  };
-
-  // get the root locations. the root node is the opensrp root location, its immediate children
-  // are the user-defined root locations.
   const {
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
   } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier)
-  
-  // useQuery<IBundle, Error, TreeNode | undefined>(
-  //   [locationHierarchyResourceType, hierarchyParams],
-  //   async ({ signal }) => {
-  //     return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
-  //       hierarchyParams
-  //     );
-  //   },
-  //   {
-  //     select: (res) => {
-  //       return convertApiResToTree(res);
-  //     },
-  //     staleTime: Infinity, // prevent refetches on things like window refocus
-  //   }
-  // );
+
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

@@ -78,7 +78,7 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
  * @param rootIdentifier - the location id
  */
 export const useGetLocationsAsHierarchy = (baseUrl: string, rootIdentifier: string) => {
-  return useQuery<IBundle, Error, TreeNode>(
+  return useQuery<IBundle, Error, TreeNode | undefined>(
     [locationResourceType, rootIdentifier],
     async () => {
       return loadAllResources(baseUrl, locationResourceType);
@@ -88,6 +88,10 @@ export const useGetLocationsAsHierarchy = (baseUrl: string, rootIdentifier: stri
         const rawLocations =  cloneDeep(getResourcesFromBundle<ILocation>(res));
         const nested = nestLocations(rawLocations);
         const interestingRoot = nested.filter(root => root.nodeId === `${rootIdentifier}`)[0]
+        console.log({interestingRoot, nested, rootIdentifier})
+        if(!interestingRoot){
+          return undefined
+        }
         const tree = new TreeModel().parse(interestingRoot)
         return tree
 
