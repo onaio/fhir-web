@@ -8,7 +8,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { locationHierarchyResourceType, locationResourceType } from '../../../constants';
-import { fhirHierarchy, locationSData } from '../../../ducks/tests/fixtures';
+import { locationSData } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
@@ -80,15 +80,15 @@ test('renders correctly for new locations', async () => {
   const cancelUrlGenerator = '/cancelled';
 
   nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _summary: 'count' })
-  .reply(200, { total: 1000 });
+    .get(`/${locationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 });
 
-nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _count: 1000 })
-  .reply(200, locationSData)
-  
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, locationSData);
+
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, createdLocation1);
 
   render(
@@ -113,14 +113,14 @@ test('renders correctly for edit locations', async () => {
   history.push(`/add/${createdLocation1.partOf.identifier}?parentId=Location/303`);
 
   nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _summary: 'count' })
-  .reply(200, { total: 1000 });
+    .get(`/${locationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 });
 
-nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _count: 1000 })
-  .reply(200, locationSData)
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, locationSData);
 
   nock(props.fhirBaseURL)
     .get(`/Location/${createdLocation1.partOf.identifier}`)

@@ -11,13 +11,12 @@ import {
   screen,
   within,
   fireEvent,
-  waitFor,
 } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
-import { locationHierarchyResourceType, locationResourceType } from '../../../constants';
+import { locationResourceType } from '../../../constants';
 import { locationSData } from '../../../ducks/tests/fixtures';
 
 const history = createBrowserHistory();
@@ -87,7 +86,8 @@ describe('location-management/src/components/LocationUnitList', () => {
     nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
       .query({ _summary: 'count' })
-      .reply(200, { total: 1000 }).persist();
+      .reply(200, { total: 1000 })
+      .persist();
 
     nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
@@ -97,10 +97,10 @@ describe('location-management/src/components/LocationUnitList', () => {
         code: 'AWFUL_ERROR',
       });
 
-      nock(props.fhirBaseURL)
+    nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
       .query({ _count: 1000 })
-      .reply(200, [])
+      .reply(200, []);
 
     const { rerender } = render(<AppWrapper {...props} />);
 
@@ -198,15 +198,5 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table change- node deselect
     expect(document.querySelectorAll('table tbody tr')).toHaveLength(1);
-
-    // // invalidate queries to initiate a refetch of locationhierarchy
-    // queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
-    //   throw err;
-    // });
-
-    // await waitFor(() => {
-    //   expect(screen.getByText(/Refreshing data/i)).toBeInTheDocument();
-    // });
-    // await waitForElementToBeRemoved(screen.getByText(/Refreshing data/i));
   });
 });
