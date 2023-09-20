@@ -14,6 +14,7 @@ import {
   Tree,
   TreeNode,
   locationTreeStateDucks,
+  useGetLocationsAsHierarchy,
 } from '@opensrp/fhir-location-management';
 import { useTranslation } from '../../mls';
 
@@ -32,29 +33,27 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const hierarchyParams = {
-    identifier: fhirRootLocationIdentifier,
-  };
-
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
   const {
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
-  } = useQuery<IBundle | undefined, Error, TreeNode | undefined>(
-    [locationHierarchyResourceType, hierarchyParams],
-    async () => {
-      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
-        hierarchyParams
-      );
-    },
-    {
-      select: (res) => {
-        return res && convertApiResToTree(res);
-      },
-    }
-  );
+  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier)
+  
+  // useQuery<IBundle | undefined, Error, TreeNode | undefined>(
+  //   [locationHierarchyResourceType, hierarchyParams],
+  //   async () => {
+  //     return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
+  //       hierarchyParams
+  //     );
+  //   },
+  //   {
+  //     select: (res) => {
+  //       return res && convertApiResToTree(res);
+  //     },
+  //   }
+  // );
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

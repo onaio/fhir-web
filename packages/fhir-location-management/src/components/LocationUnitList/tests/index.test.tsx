@@ -17,7 +17,8 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
-import { locationHierarchyResourceType } from '../../../constants';
+import { locationHierarchyResourceType, locationResourceType } from '../../../constants';
+import { locationSData } from '../../../ducks/tests/fixtures';
 
 const history = createBrowserHistory();
 

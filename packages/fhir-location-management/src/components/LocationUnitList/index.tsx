@@ -11,7 +11,7 @@ import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../cons
 import { useQuery } from 'react-query';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { convertApiResToTree } from '../../helpers/utils';
+import { convertApiResToTree, useGetLocationsAsHierarchy } from '../../helpers/utils';
 import './LocationUnitList.css';
 import { TreeNode } from '../../helpers/types';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
@@ -81,20 +81,22 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useQuery<IBundle, Error, TreeNode | undefined>(
-    [locationHierarchyResourceType, hierarchyParams],
-    async ({ signal }) => {
-      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
-        hierarchyParams
-      );
-    },
-    {
-      select: (res) => {
-        return convertApiResToTree(res);
-      },
-      staleTime: Infinity, // prevent refetches on things like window refocus
-    }
-  );
+  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier)
+  
+  // useQuery<IBundle, Error, TreeNode | undefined>(
+  //   [locationHierarchyResourceType, hierarchyParams],
+  //   async ({ signal }) => {
+  //     return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
+  //       hierarchyParams
+  //     );
+  //   },
+  //   {
+  //     select: (res) => {
+  //       return convertApiResToTree(res);
+  //     },
+  //     staleTime: Infinity, // prevent refetches on things like window refocus
+  //   }
+  // );
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;
