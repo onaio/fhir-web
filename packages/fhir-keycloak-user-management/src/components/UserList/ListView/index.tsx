@@ -43,7 +43,7 @@ export const UserList = (props: OrganizationListProps) => {
   const extraData = useSelector(getExtraData);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const userRole = useUserRole;
+  const userRole = useUserRole();
 
   const { sParams, addParam } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;

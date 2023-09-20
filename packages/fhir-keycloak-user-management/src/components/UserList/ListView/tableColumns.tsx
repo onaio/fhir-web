@@ -15,7 +15,7 @@ import { Column } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { QueryClient } from 'react-query';
 import type { TFunction } from '@opensrp/i18n';
-import { UserRole } from '@opensrp/rbac';
+import { RbacCheck, UserRole } from '@opensrp/rbac';
 import { History } from 'history';
 
 /**
@@ -101,7 +101,7 @@ export const getTableColumns = (
       },
       {
         key: '3',
-        Permissions: ['iam_user.update'],
+        permissions: ['iam_user.update'],
         label: (
           <Button
             type="link"
@@ -128,10 +128,14 @@ export const getTableColumns = (
     render: (_, record) => {
       return (
         <>
-          <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
-            {t('Edit')}
-          </Link>
-          <Divider type="vertical" />
+          <RbacCheck permissions={['iam_user.update']}>
+            <>
+              <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Dropdown
             placement="bottomRight"
             arrow
