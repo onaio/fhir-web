@@ -71,33 +71,3 @@ export const adapter: RbacAdapter = (roles: KeycloakRoleData = defaultRoleData) 
 
   return UserRole.combineRoles(allRoles);
 };
-
-/**
- * Next step. Update/create a way to store this such that it is accessible globally- add it to some global state.
- *
- * IDEA1:
- *  - Update sessionReducer to be able to store this Role object as well.
- *
- * IDEA2:
- *  - create a context wrapper that supplies the Role object, will be a wrapper around session reducer.
- *
- * IDEA3:
- * - Create a rbac dux module(This will be part of the adapter) - create an action that creates Role and adds it to the store.
- *  - Where/when should the action be callled.
- *  - action can be passed as a sideEffect to the gatekeeper, but its derived information.
- *
- *  - Simplest way forward is to write a selector that reads the role information and returns the Role object.
- */
-
-// /**
-//  * @param state - the redux state.
-//  */
-// export function getUserRole(state: Store) {
-//   // needs the store.
-//   // needs the session-reducer.
-//   // part of the adapter.
-//   const extraData = getExtraData(state);
-//   const roles = extraData.roles;
-
-//   return keycloakAdapter(roles);
-// }
