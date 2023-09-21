@@ -1,13 +1,20 @@
-import { ChildNodeList, LocationHierarchyResource, ParsedHierarchyNode, TreeNode } from './types';
+import {
+  ChildNodeList,
+  CommonHierarchyNode,
+  LocationHierarchyResource,
+  ParsedHierarchyNode,
+  TreeNode,
+} from './types';
 import { cloneDeep } from 'lodash';
 import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, getResourcesFromBundle, loadAllResources } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, locationResourceType } from '../constants';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { nestLocations } from './flat-to-nested';
 
 /**
  * Parse the raw child hierarchy node map
@@ -67,6 +74,38 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
   }
   const sanitizeTrees = Array.isArray(trees) ? trees : [trees];
   return JSON.stringify(sanitizeTrees.map((tree) => JSON.stringify(cycle.decycle(tree))));
+};
+
+/**
+ * get locations and create a hiearrchy from which we extract the location tree whose
+ * root location id is given.
+ *
+ * @param baseUrl - the server base url
+ * @param rootIdentifier - the location id
+ */
+export const useGetLocationsAsHierarchy = (baseUrl: string, rootIdentifier: string) => {
+  return useQuery<IBundle, Error, TreeNode | undefined>(
+    [locationResourceType, rootIdentifier],
+    async () => {
+      return loadAllResources(baseUrl, locationResourceType);
+    },
+    {
+      select: (res: IBundle) => {
+        const rawLocations = cloneDeep(getResourcesFromBundle<ILocation>(res));
+        const nested = nestLocations(rawLocations);
+        const interestingRoot = nested.filter((root) => root.nodeId === `${rootIdentifier}`)[0] as
+          | CommonHierarchyNode
+          | undefined;
+        if (!interestingRoot) {
+          return undefined;
+        }
+        const tree = new TreeModel().parse(interestingRoot);
+        return tree;
+      },
+      refetchInterval: false,
+      staleTime: Infinity, // prevent refetches on things like window refocus
+    }
+  );
 };
 
 /**
