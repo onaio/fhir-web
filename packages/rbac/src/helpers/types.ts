@@ -1,7 +1,7 @@
 import { UserRole } from '../roleDefinition';
 
 export interface RbacAdapter {
-  (roles: any): UserRole;
+  (roles: unknown): UserRole;
 }
 
 export type Valueof<T> = T[keyof T];

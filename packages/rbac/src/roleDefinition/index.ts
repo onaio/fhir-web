@@ -44,20 +44,22 @@ export class UserRole {
     const permAsStr = makeArray(permissions);
     const permitMaps = parsePermissionStr(permAsStr);
     const permitApplies = (permitMap: ResourcePermitMap) => {
-      for (const [resource, permit] of permitMap.entries()){
-      if (!this.permissions.has(resource)) {
-        return false;
+      for (const [resource, permit] of permitMap.entries()) {
+        if (!this.permissions.has(resource)) {
+          return false;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const activePermit = this.permissions.get(resource)!;
+        return (activePermit & permit) !== 0;
       }
-      const activePermit = this.permissions.get(resource)!
-      return (activePermit & permit) !== 0}
-    }
-    switch(strategy){
+    };
+    switch (strategy) {
       case 'all':
-        return permitMaps.every(permitApplies)
+        return permitMaps.every(permitApplies);
       case 'any':
-        return permitMaps.some(permitApplies)
+        return permitMaps.some(permitApplies);
       default:
-        return false
+        return false;
     }
   }
 
@@ -79,7 +81,7 @@ export class UserRole {
   public static fromPermissionStrings(permissionStrings: string | string[]) {
     const permAsStr = makeArray(permissionStrings);
     const permitMaps = parsePermissionStr(permAsStr);
-    const combinedPermitMap = combineResourcePermits(permitMaps)
+    const combinedPermitMap = combineResourcePermits(permitMaps);
     return this.fromResourceMap(combinedPermitMap);
   }
 

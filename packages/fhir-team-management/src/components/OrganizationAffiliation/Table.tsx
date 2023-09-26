@@ -17,7 +17,7 @@ import { reformatOrganizationByLocation } from './utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useTranslation } from '../../mls';
-import { RbacCheck, useUserRole } from '@opensrp/rbac';
+import { RbacCheck } from '@opensrp/rbac';
 
 export interface TableData {
   id: string;

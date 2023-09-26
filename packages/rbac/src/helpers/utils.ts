@@ -62,23 +62,26 @@ export function parsePermissionStr(permissions: string[]) {
       `Permission string: '${permission}' is not internally recognized as a valid permission string.`
     );
     const parts = permission.split('.');
-    const resource = parts[0] as AuthZResource
-    const permit = Permit[parts[1].toUpperCase() as PermitKey]
+    const resource = parts[0] as AuthZResource;
+    const permit = Permit[parts[1].toUpperCase() as PermitKey];
     newMap.set(resource, permit);
-    return newMap
+    return newMap;
   });
 }
 
-export function combineResourcePermits(resourcePermits: ResourcePermitMap[]){
+/**
+ * @param resourcePermits array of resource permits to merge into one resource permit map
+ */
+export function combineResourcePermits(resourcePermits: ResourcePermitMap[]) {
   return resourcePermits.reduce((acc, map) => {
-    for (const [resource, permit] of map.entries()){
-      const existingPermit = acc.get(resource)
-      if(existingPermit){
-        acc.set(resource, existingPermit | permit)
-      }else{
-        acc.set(resource, permit)
+    for (const [resource, permit] of map.entries()) {
+      const existingPermit = acc.get(resource);
+      if (existingPermit) {
+        acc.set(resource, existingPermit | permit);
+      } else {
+        acc.set(resource, permit);
       }
     }
-    return acc
-  }, new Map())
+    return acc;
+  }, new Map());
 }
