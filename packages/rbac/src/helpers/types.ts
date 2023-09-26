@@ -1,7 +1,8 @@
 import { UserRole } from '../roleDefinition';
 
 export interface RbacAdapter {
-  (roles: unknown): UserRole;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (roles: any): UserRole;
 }
 
 export type Valueof<T> = T[keyof T];

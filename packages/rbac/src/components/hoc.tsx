@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import * as keycloakAdapter from '../adapters/keycloakAdapter';
+import { adapter } from '../adapters/keycloakAdapter';
 import { getConfig, KeycloakStrategies } from '@opensrp/pkg-config';
 import { getExtraData } from '@onaio/session-reducer';
 import React from 'react';
@@ -15,7 +15,7 @@ export interface RbacProps {
 }
 
 const iamStrategiesLookup: Record<KeycloakStrategies, RbacAdapter> = {
-  keycloak: keycloakAdapter.adapter,
+  keycloak: adapter,
 };
 
 /**
