@@ -31,6 +31,7 @@ const configObject: ConfigState = {
   fhirBaseURL: FHIR_API_BASE_URL,
   defaultTablesPageSize: DEFAULTS_TABLE_PAGE_SIZE,
   practToOrgAssignmentStrategy: PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
+  rbacStrategy: AUTHN_STRATEGY,
 };
 
 setAllConfigs(configObject);
