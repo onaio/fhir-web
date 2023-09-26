@@ -11,7 +11,7 @@ export interface RbacProps {
   permissions: string[];
   matchStrategy?: 'exact' | 'any' | 'none';
   children?: JSX.Element | null;
-  fallback?: JSX.Element; // TODO - whats the difference.
+  fallback?: JSX.Element;
 }
 
 const iamStrategiesLookup: Record<KeycloakStrategies, RbacAdapter> = {
@@ -27,18 +27,15 @@ export function RbacCheck(props: RbacProps) {
   const { permissions, children, fallback } = props;
   const userRole = useUserRole();
 
-  // might actually need the adapter knowledge to understand how to translate string roles - for the poc
-  // constraining the requiredRoles to be of type of Role only.
   if (userRole.hasPermissions(permissions)) {
     if (children) {
       return children;
     }
   }
-  //   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  //     console.warn("")
-  // } else {
-  //     // production code
-  // }
+
+  // TODO - how can we quickly communicate (in dev mode) that there are permission
+  // restrictions in force.
+
   return fallback ?? null;
 }
 
@@ -48,6 +45,7 @@ export const RoleContext = createContext<UserRole>(defaultUserRole);
 export interface RbacProviderProps {
   children: ReactNode;
 }
+
 /**
  * Provides the userRole context to tree.
  *
@@ -63,26 +61,17 @@ export function RbacProvider(props: RbacProviderProps) {
  *
  */
 export function useStoreUserRole() {
-  // gest session information from the session-reducer;
-  // - depends on session-reducer.
-  // - peer on redux
-  // create context with role object.
   const extraData = useSelector((state) => getExtraData(state));
-  // const authenticated = useSelector((state) => isAuthenticated(state));
   const { roles } = extraData;
-
-  // if not authenticated then jump to no permission fallback. - or we can just concern ourselves
-  // with roles only.
 
   const iamStrategy = getConfig('rbacStrategy') ?? 'keycloak';
   const strategy = iamStrategiesLookup[iamStrategy];
-  // TODO - why does this return undefined sometimes
   const userRole = (strategy(roles) as UserRole | undefined) ?? defaultUserRole;
   return userRole;
 }
 
 /**
- *
+ * Get userRole from RoleContext
  */
 export function useUserRole() {
   const userRole = useContext(RoleContext);
