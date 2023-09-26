@@ -5,11 +5,11 @@ import { getConfig, KeycloakStrategies } from '@opensrp/pkg-config';
 import { getExtraData } from '@onaio/session-reducer';
 import React from 'react';
 import { UserRole } from '../roleDefinition';
-import { RbacAdapter } from '../helpers/types';
+import { MatchStrategy, RbacAdapter } from '../helpers/types';
 
 export interface RbacProps {
   permissions: string[];
-  matchStrategy?: 'exact' | 'any' | 'none';
+  matchStrategy?: MatchStrategy;
   children?: JSX.Element | null;
   fallback?: JSX.Element;
 }
@@ -24,10 +24,10 @@ const iamStrategiesLookup: Record<KeycloakStrategies, RbacAdapter> = {
  * @param props - component props
  */
 export function RbacCheck(props: RbacProps) {
-  const { permissions, children, fallback } = props;
+  const { permissions, children, fallback, matchStrategy } = props;
   const userRole = useUserRole();
 
-  if (userRole.hasPermissions(permissions)) {
+  if (userRole.hasPermissions(permissions, matchStrategy)) {
     if (children) {
       return children;
     }
