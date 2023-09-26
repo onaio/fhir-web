@@ -9,19 +9,14 @@ import { cleanup, render, screen, waitFor, within } from '@testing-library/react
 import { fireEvent, waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
-import { locationHierarchyResourceType } from '@opensrp/fhir-location-management';
-import {
-  allAffiliations,
-  allOrgs,
-  createdAffiliation1,
-  createdAffiliation2,
-  fhirHierarchy,
-} from './fixures';
+import { locationResourceType } from '@opensrp/fhir-location-management';
+import { allAffiliations, allOrgs, createdAffiliation1, createdAffiliation2 } from './fixures';
 import { organizationAffiliationResourceType, organizationResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
+import { locationSData } from '@opensrp/fhir-location-management/src/ducks/tests/fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -54,7 +49,7 @@ const queryClient = new QueryClient({
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
-  fhirRootLocationIdentifier: 'rootLoc',
+  fhirRootLocationIdentifier: '2252',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,9 +107,15 @@ test('Edits organization affiliation correctly', async () => {
   history.push('/assignments');
 
   nock(props.fhirBaseURL)
-    .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
-    .reply(200, fhirHierarchy);
+    .get(`/${locationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, locationSData)
+    .persist();
 
   nock(props.fhirBaseURL)
     .get(`/${organizationAffiliationResourceType}/_search`)
@@ -283,8 +284,8 @@ test('api error response', async () => {
   history.push('/assignments');
 
   nock(props.fhirBaseURL)
-    .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
+    .get(`/${locationResourceType}/_search`)
+    .query({ _summary: 'count' })
     .replyWithError('Something awful happened');
 
   render(
@@ -306,9 +307,15 @@ test('api undefined response', async () => {
   history.push('/assignments');
 
   nock(props.fhirBaseURL)
-    .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
-    .reply(200, null);
+    .get(`/${locationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, { total: 1000 });
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/_search`)
+    .query({ _count: 1000 })
+    .reply(200, [])
+    .persist();
 
   render(
     <Router history={history}>
