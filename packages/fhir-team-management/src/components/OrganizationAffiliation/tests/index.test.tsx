@@ -14,6 +14,8 @@ import { allAffiliations, allOrgs, createdAffiliation1, createdAffiliation2 } fr
 import { organizationAffiliationResourceType, organizationResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 import { locationSData } from '@opensrp/fhir-location-management/src/ducks/tests/fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
@@ -54,13 +56,15 @@ const props = {
 const AppWrapper = ({ children }: any) => {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/assignments">
-            {children}
-          </Route>
-        </Switch>
-      </QueryClientProvider>
+      <RoleContext.Provider value={superUserRole}>
+        <QueryClientProvider client={queryClient}>
+          <Switch>
+            <Route exact path="/assignments">
+              {children}
+            </Route>
+          </Switch>
+        </QueryClientProvider>
+      </RoleContext.Provider>
     </Provider>
   );
 };

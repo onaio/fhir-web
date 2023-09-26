@@ -71,26 +71,18 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: (
-        <ButtonLink name={t('Logout')} route={URL_LOGOUT} />
-      )
+      label: <ButtonLink name={t('Logout')} route={URL_LOGOUT} />,
     },
     {
       key: '2',
-      label: (
-        <ButtonLink name={t('Manage account')} route={`${URL_USER_EDIT}/${user_id}`} />
-      )
-    }
-  ]
+      label: <ButtonLink name={t('Manage account')} route={`${URL_USER_EDIT}/${user_id}`} />,
+    },
+  ];
 
   return (
     <Layout.Header className="app-header txt-white align-items-center justify-content-end px-1 layout-header">
       {authenticated ? (
-        <Dropdown
-          menu={{ items }}
-          placement="bottomRight"
-          trigger={['click', 'hover']}
-        >
+        <Dropdown menu={{ items }} placement="bottomRight" trigger={['click', 'hover']}>
           <Button
             shape="circle"
             icon={

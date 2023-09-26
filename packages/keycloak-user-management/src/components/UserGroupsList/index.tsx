@@ -38,6 +38,7 @@ import {
 } from '../../ducks/userGroups';
 import { ViewDetails } from '../UserGroupDetailView';
 import { loadGroupDetails, loadGroupMembers } from '../UserGroupsList/utils';
+import { RbacCheck } from '@opensrp/rbac';
 
 /** Register reducer */
 reducerRegistry.register(keycloakUserGroupsReducerName, keycloakUserGroupsReducer);
@@ -174,10 +175,12 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_USER_GROUP_CREATE)}>
-              <PlusOutlined />
-              {t('New User Group')}
-            </Button>
+            <RbacCheck permissions={['iam_group.create']}>
+              <Button type="primary" onClick={() => history.push(URL_USER_GROUP_CREATE)}>
+                <PlusOutlined />
+                {t('New User Group')}
+              </Button>
+            </RbacCheck>
           </div>
           <TableLayout
             id="UserGroupsList"
@@ -190,10 +193,14 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
               // eslint-disable-next-line react/display-name
               render: (record: KeycloakUserGroup) => (
                 <span>
-                  <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`} className="m-0 p-1">
-                    {t('Edit')}
-                  </Link>
-                  <Divider type="vertical" />
+                  <RbacCheck permissions={['iam_group.update']}>
+                    <>
+                      <Link to={`${URL_USER_GROUP_EDIT}/${record.id}`} className="m-0 p-1">
+                        {t('Edit')}
+                      </Link>
+                      <Divider type="vertical" />
+                    </>
+                  </RbacCheck>
                   <Dropdown
                     menu={{ items: getItems(record) }}
                     placement="bottomLeft"

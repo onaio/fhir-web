@@ -17,6 +17,7 @@ import {
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../../mls';
 import { TFunction } from '@opensrp/i18n';
+import { RbacCheck } from '@opensrp/rbac';
 
 export type TableData = ReturnType<typeof parseGroup>;
 
@@ -94,12 +95,14 @@ export const BaseListView = (props: BaseListViewProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            {createButtonUrl && (
-              <Button type="primary" onClick={() => history.push(createButtonUrl)}>
-                <PlusOutlined />
-                {createButtonLabel}
-              </Button>
-            )}
+            <RbacCheck permissions={['Group.create']}>
+              {createButtonUrl ? (
+                <Button type="primary" onClick={() => history.push(createButtonUrl)}>
+                  <PlusOutlined />
+                  {createButtonLabel}
+                </Button>
+              ) : null}
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>

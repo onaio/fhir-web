@@ -11,6 +11,17 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
 </button>
 `;
 
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Questionnaire Management 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    Questionnaire Management
+  </span>
+</button>
+`;
+
 exports[`containers/pages/Home renders Home correctly & changes Title of page 2: Team Management 1`] = `
 <button
   class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
@@ -18,6 +29,17 @@ exports[`containers/pages/Home renders Home correctly & changes Title of page 2:
 >
   <span>
     Team Management
+  </span>
+</button>
+`;
+
+exports[`containers/pages/Home renders Home correctly & changes Title of page 2: User Management 1`] = `
+<button
+  class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link admin-link btn-links"
+  type="button"
+>
+  <span>
+    User Management
   </span>
 </button>
 `;

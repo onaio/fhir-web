@@ -1,0 +1,47 @@
+{
+  "name": "@opensrp/rbac",
+  "version": "0.0.1",
+  "description": "Opensrp rbac's implementation",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "scripts": {
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "dependencies": {
+    "@onaio/session-reducer": "^0.0.13",
+    "@opensrp/i18n": "^0.0.1",
+    "@opensrp/pkg-config": "^0.0.9",
+    "invariant": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/invariant": "^2.2.35"
+  },
+  "peerDependencies": {
+    "@opensrp/store": "^0.0.10",
+    "react": "^17.0.0",
+    "react-redux": "^7.2.1"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0"
+}

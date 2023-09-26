@@ -1,20 +1,16 @@
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
-import { isAuthorized } from '@opensrp/react-utils';
 import {
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FHIR_GROUP,
-  OPENSRP_ROLES,
   ENABLE_PATIENTS_MODULE,
   ENABLE_FHIR_CARE_TEAM,
   ENABLE_QUEST,
   ENABLE_TEAMS_ASSIGNMENT_MODULE,
   ENABLE_FHIR_COMMODITY,
-  ENABLE_FHIR_LOCATIONS,
 } from '../configs/env';
 import {
   URL_USER,
   URL_LOCATION_UNIT,
-  URL_LOCATION_UNIT_GROUP,
   URL_TEAMS,
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
@@ -32,6 +28,7 @@ import {
   COMPOSITE_ENABLE_USER_MANAGEMENT,
 } from '../configs/settings';
 import React from 'react';
+import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
 
 /** Interface for menu items */
 export interface Route {
@@ -43,11 +40,12 @@ export interface Route {
   otherProps?: {
     icon?: string | JSX.Element;
   };
+  permissions?: string[];
   children?: Route[];
 }
 
 export interface GetRoutes {
-  (roles: string[], t: TFunction): Route[];
+  (roles: string[], t: TFunction, userRole: UserRole): Route[];
 }
 
 /** Gets Routes For Application
@@ -55,30 +53,36 @@ export interface GetRoutes {
  * @param roles User's roles
  * @returns {Route[]} returns generated routes
  */
-export function getRoutes(roles: string[], t: TFunction): Route[] {
-  const activeRoles = OPENSRP_ROLES;
-
+export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Route[] {
   const routes: Route[] = [
     {
       otherProps: { icon: <DashboardOutlined /> },
       title: t('Administration'),
       key: 'admin',
       enabled: true,
+      permissions: [],
       children: [
         {
           title: t('User Management'),
           key: 'user-management',
           isHomePageLink: true,
           url: URL_USER,
-          enabled:
-            COMPOSITE_ENABLE_USER_MANAGEMENT &&
-            roles &&
-            activeRoles.USERS &&
-            isAuthorized(roles, activeRoles.USERS.split(',')),
+          permissions: ['iam_user.read'],
+          enabled: COMPOSITE_ENABLE_USER_MANAGEMENT,
           children: [
-            { title: t('Users'), key: 'users', url: URL_USER },
-            { title: t('User Groups'), key: 'user-groups', url: URL_USER_GROUPS },
-            { title: t('User Roles'), key: 'user-roles', url: URL_USER_ROLES },
+            { title: t('Users'), key: 'users', url: URL_USER, permissions: ['iam_user.read'] },
+            {
+              title: t('User Groups'),
+              key: 'user-groups',
+              url: URL_USER_GROUPS,
+              permissions: ['iam_group.read'],
+            },
+            {
+              title: t('User Roles'),
+              key: 'user-roles',
+              url: URL_USER_ROLES,
+              permissions: ['iam_role.read'],
+            },
           ],
         },
         {
@@ -86,18 +90,14 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           key: 'location-management',
           isHomePageLink: true,
           url: URL_LOCATION_UNIT,
-          enabled:
-            COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT &&
-            roles &&
-            activeRoles.LOCATIONS &&
-            isAuthorized(roles, activeRoles.LOCATIONS.split(',')),
+          permissions: ['Location.read'],
+          enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
           children: [
-            { title: t('Location Units'), url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
-              enabled: !ENABLE_FHIR_LOCATIONS,
-              title: t('Location Unit Group'),
-              url: URL_LOCATION_UNIT_GROUP,
-              key: 'location-group',
+              title: t('Location Units'),
+              url: URL_LOCATION_UNIT,
+              key: 'location-unit',
+              permissions: ['Location.read'],
             },
           ],
         },
@@ -105,26 +105,21 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           title: t('Care Teams Management'),
           key: 'fhir-care-team',
           isHomePageLink: true,
-          enabled:
-            ENABLE_FHIR_CARE_TEAM &&
-            roles &&
-            activeRoles.CARE_TEAM &&
-            isAuthorized(roles, activeRoles.CARE_TEAM.split(',')),
+          permissions: ['CareTeam.read'],
+          enabled: ENABLE_FHIR_CARE_TEAM,
           url: URL_FHIR_CARE_TEAM,
         },
         {
           title: t('Team Management'),
           key: 'team-management',
           isHomePageLink: true,
+          permissions: ['Organization.read'],
           url: URL_TEAMS,
-          enabled:
-            COMPOSITE_ENABLE_TEAM_MANAGEMENT &&
-            roles &&
-            activeRoles.TEAMS &&
-            isAuthorized(roles, activeRoles.TEAMS.split(',')),
+          enabled: COMPOSITE_ENABLE_TEAM_MANAGEMENT,
           children: [
-            { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS' },
+            { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS', permissions: ['Organization.read'] },
             {
+              permissions: ['OrganizationAffiliation.read'],
               title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',
@@ -137,31 +132,22 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           key: 'fhir-group',
           url: LIST_GROUP_URL,
           isHomePageLink: true,
-          enabled:
-            ENABLE_FHIR_GROUP &&
-            roles &&
-            activeRoles.GROUP &&
-            isAuthorized(roles, activeRoles.GROUP.split(',')),
+          permissions: ['Group.read'],
+          enabled: ENABLE_FHIR_GROUP,
         },
         {
           title: t('Commodity Management'),
           key: 'fhir-commodity',
           isHomePageLink: true,
           url: LIST_COMMODITY_URL,
-          enabled:
-            ENABLE_FHIR_COMMODITY &&
-            roles &&
-            activeRoles.COMMODITY &&
-            isAuthorized(roles, activeRoles.COMMODITY.split(',')),
+          permissions: ['Group.read'],
+          enabled: ENABLE_FHIR_COMMODITY,
         },
         {
           title: t('Questionnaire Management'),
           key: 'fhir-quest',
-          enabled:
-            ENABLE_QUEST &&
-            roles &&
-            activeRoles.QUEST &&
-            isAuthorized(roles, activeRoles.QUEST.split(',')),
+          permissions: ['Questionnaire.read'],
+          enabled: ENABLE_QUEST,
           url: QUEST_VIEW_URL,
           isHomePageLink: true,
         },
@@ -170,11 +156,8 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
           key: 'healthcare',
           isHomePageLink: true,
           url: LIST_HEALTHCARE_URL,
-          enabled:
-            ENABLE_HEALTHCARE_SERVICES &&
-            roles &&
-            activeRoles.HEALTHCARE_SERVICE &&
-            isAuthorized(roles, activeRoles.HEALTHCARE_SERVICE.split(',')),
+          permissions: ['HealthcareService.read'],
+          enabled: ENABLE_HEALTHCARE_SERVICES,
         },
       ],
     },
@@ -182,13 +165,14 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
       otherProps: { icon: <IdcardOutlined /> },
       title: t('Patients'),
       key: 'fhir-patients',
+      permissions: ['Patient.read'],
       enabled: ENABLE_PATIENTS_MODULE,
       url: LIST_PATIENTS_URL,
       isHomePageLink: true,
     },
   ];
 
-  return filterFalsyRoutes(routes);
+  return filterFalsyRoutes(routes, userRole);
 }
 
 /** Removes the disabled Routes from
@@ -196,18 +180,20 @@ export function getRoutes(roles: string[], t: TFunction): Route[] {
  * @param routes all routes
  * @returns {Route[]} returns only enabled routes
  */
-export function filterFalsyRoutes(routes: Route[]): Route[] {
+export function filterFalsyRoutes(routes: Route[], userRole: UserRole): Route[] {
   return routes
     .filter(
-      (e) => !e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true)
+      (e) =>
+        (!e.hasOwnProperty('enabled') || (e.hasOwnProperty('enabled') && e.enabled === true)) &&
+        userRole.hasPermissions(e.permissions ?? [])
     )
     .map((e) => {
-      return e.children ? { ...e, children: filterFalsyRoutes(e.children) } : e;
+      return e.children ? { ...e, children: filterFalsyRoutes(e.children, userRole) } : e;
     });
 }
 
-export const getRoutesForHomepage: GetRoutes = (roles, t) => {
-  const routes = getRoutes(roles, t);
+export const getRoutesForHomepage: GetRoutes = (roles, t, userRole) => {
+  const routes = getRoutes(roles, t, userRole);
   const homePageRoutes: Route[] = [];
 
   function extractHomePAgeLink(routes: Route[]) {

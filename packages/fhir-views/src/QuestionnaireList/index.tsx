@@ -17,13 +17,14 @@ import { ParsedQuestionnaire, parseQuestionnaire } from '@opensrp/fhir-resources
 import { useTranslation } from '../mls';
 import type { TFunction } from '@opensrp/i18n';
 import './index.css';
+import { RbacCheck, UserRole, useUserRole } from '@opensrp/rbac';
 
 /** props for the PlansList view */
 interface QuestionnaireListProps {
   fhirBaseURL: string;
 }
 
-export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
+export const NamesColumnCustomRenderLink: Column<ParsedQuestionnaire>['render'] = (
   record: IQuestionnaire
 ) => {
   return (
@@ -35,16 +36,25 @@ export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
   );
 };
 
+export const NamesColumnCustomRender: Column<ParsedQuestionnaire>['render'] = (
+  record: IQuestionnaire
+) => {
+  return <>{record.title ?? record.id ?? ''}</>;
+};
+
 /**
  * generates columns for questionnaire rendering component
  *
  * @param t - translator function
+ * @param userRole - role of logged in user
  */
-export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
+export const getColumns = (t: TFunction, userRole: UserRole): Column<ParsedQuestionnaire>[] => {
   const columns: Column<ParsedQuestionnaire>[] = [
     {
       title: t('Name/Id'),
-      render: NamesColumnCustomRender,
+      render: userRole.hasPermissions('QuestionnaireResponse.create')
+        ? NamesColumnCustomRenderLink
+        : NamesColumnCustomRender,
       width: '20%',
     },
     {
@@ -68,11 +78,11 @@ export const getColumns = (t: TFunction): Column<ParsedQuestionnaire>[] => {
       title: t('Actions'),
       render: (record: IQuestionnaire) => {
         return (
-          <>
+          <RbacCheck permissions={['QuestionnaireResponse.read']}>
             <Link to={`${QUEST_RESPONSE_VIEW_URL}/${record.id}`}>
               {t('View Questionnaire Responses')}
             </Link>
-          </>
+          </RbacCheck>
         );
       },
       width: '20%',
@@ -102,9 +112,10 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
     questionnaireResourceType,
     getSearchParams
   );
+  const userRole = useUserRole();
   const { data, isFetching, isLoading, error } = queryValues;
 
-  const columns = getColumns(t);
+  const columns = getColumns(t, userRole);
   const dataSource = ((data?.records ?? []) as IQuestionnaire[]).map(parseQuestionnaire);
   const tableProps = {
     datasource: dataSource,
@@ -129,10 +140,12 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} data-testid="search-form" />
-            <Button type="primary" disabled={true}>
-              <PlusOutlined />
-              {t('Create questionnaire')}
-            </Button>
+            <RbacCheck permissions={['QuestionnaireResponse.create']}>
+              <Button type="primary" disabled={true}>
+                <PlusOutlined />
+                {t('Create questionnaire')}
+              </Button>
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>
