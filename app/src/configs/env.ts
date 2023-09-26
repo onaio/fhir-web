@@ -238,4 +238,4 @@ export const PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY = setEnv(
   undefined
 );
 
-export const AUTHN_STRATEGY = setEnv('REACT_APP_AUTHN_STRATEGY', 'keycloak');
+export const AUTHZ_STRATEGY = setEnv('REACT_APP_AUTHZ_STRATEGY', 'keycloak');
