@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
 import { Layout, Menu } from 'antd';
@@ -9,6 +9,7 @@ import { getActivePath } from './utils';
 import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
+import { RoleContext } from '@opensrp/rbac';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -27,8 +28,12 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
   const { extraData } = props;
   const { roles } = extraData;
   let location = useLocation();
+  const userRole = useContext(RoleContext);
 
-  const routes = React.useMemo(() => getRoutes(roles as string[], t), [roles, t]);
+  const routes = React.useMemo(
+    () => getRoutes(roles as string[], t, userRole),
+    [roles, t, userRole]
+  );
 
   const sidebaritems: JSX.Element[] = React.useMemo(() => {
     function mapChildren(route: Route) {

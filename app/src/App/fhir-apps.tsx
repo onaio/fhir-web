@@ -12,7 +12,7 @@ import ConnectedPrivateRoute from '@onaio/connected-private-route';
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
-import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION, OPENSRP_ROLES } from '../configs/env';
+import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
 import {
   REACT_CALLBACK_PATH,
   URL_BACKEND_CALLBACK,
@@ -26,7 +26,6 @@ import {
   URL_TEAMS,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_UNIT_EDIT,
-  URL_JSON_VALIDATOR_LIST,
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
@@ -78,7 +77,6 @@ import {
   NewEditLocationUnit as FHIRNewEditLocationUnit,
 } from '@opensrp/fhir-location-management';
 import {
-  jsonValidatorListProps,
   teamAssignmentProps,
   teamAffiliationProps,
   editLocationProps,
@@ -145,7 +143,6 @@ const FHIRApps = () => {
   const AuthGrantType = BACKEND_ACTIVE ? AUTHORIZATION_CODE : IMPLICIT;
   const APP_CALLBACK_PATH = BACKEND_ACTIVE ? BACKEND_CALLBACK_PATH : REACT_CALLBACK_PATH;
   const { OpenSRP } = useOAuthLogin({ providers, authorizationGrantType: AuthGrantType });
-  const activeRoles = OPENSRP_ROLES;
 
   useTranslation();
 
@@ -163,39 +160,39 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
         path={`${QUEST_FORM_VIEW_URL}/:${resourceIdParam}/:${resourceTypeParam}`}
+        permissions={['Questionnaire.read']}
         component={QuestRForm}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
         path={`${QUEST_RESPONSE_VIEW_URL}/:${qrListRouteKey}`}
+        permissions={['QuestionnaireResponse.read']}
         component={QuestionnaireResponseList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.QUEST && activeRoles.QUEST.split(',')}
         path={QUEST_VIEW_URL}
+        permissions={['Questionnaire.read']}
         component={QuestionnaireList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={URL_USER_GROUPS}
+        permissions={['iam_group.read']}
         component={UserGroupsList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={LIST_PATIENTS_URL}
         {...patientProps}
+        permissions={['Patient.read']}
         component={PatientsList}
       />
       <PrivateComponent
@@ -203,8 +200,8 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={`${LIST_PATIENTS_URL}/:${'id'}`}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         {...patientProps}
+        permissions={['Patient.read']}
         component={PatientDetails}
       />
       <PrivateComponent
@@ -212,248 +209,239 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_USER_ROLES}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
+        permissions={['iam_role.read']}
         component={UserRolesList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={URL_USER}
         {...usersListProps}
+        permissions={['iam_user.read']}
         component={FhirUserList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={URL_FHIR_CARE_TEAM}
+        permissions={['CareTeam.read']}
         component={CareTeamList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={`${URL_EDIT_CARE_TEAM}/:${ROUTE_PARAM_CARE_TEAM_ID}`}
+        permissions={['CareTeam.update']}
         component={CreateEditCareTeam}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={URL_CREATE_CARE_TEAM}
+        permissions={['CareTeam.create']}
         component={CreateEditCareTeam}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={`${URL_USER_EDIT}/:${ROUTE_PARAM_USER_ID}`}
         {...fhirCreateEditUserProps}
+        permissions={['iam_user.update']}
         component={FHIRConnectedCreateEditUser}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={`${URL_USER_GROUP_EDIT}/:${ROUTE_PARAM_USER_GROUP_ID}`}
+        permissions={['iam_group.update']}
         component={CreateEditUserGroup}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={URL_USER_GROUP_CREATE}
+        permissions={['iam_group.create']}
         component={CreateEditUserGroup}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={URL_USER_CREATE}
         {...fhirCreateEditUserProps}
+        permissions={['iam_user.create']}
         component={FHIRConnectedCreateEditUser}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={`${URL_USER_CREDENTIALS}/:${ROUTE_PARAM_USER_ID}/:${ROUTE_PARAM_USERNAME}`}
+        permissions={['iam_user.update']}
         component={UserCredentials}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         exact
         path={`${URL_USER}/:id`}
         {...usersListProps}
+        permissions={['iam_group.update']}
         component={FhirUserList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={URL_TEAMS}
         {...teamAssignmentProps}
+        permissions={['Organization.read']}
         component={FhirTeamsList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={URL_TEAM_ASSIGNMENT}
         {...teamAffiliationProps}
+        permissions={['OrganizationAffiliation.read']}
         component={FhirTeamAssignment}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={URL_TEAMS_ADD}
         {...teamManagementProps}
+        permissions={['Organization.create']}
         component={FhirTeamsAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={`${URL_TEAMS_EDIT}/:id`}
         {...teamManagementProps}
+        permissions={['Organization.update']}
         component={FhirTeamsAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.TEAMS && activeRoles.TEAMS.split(',')}
         exact
         path={`${URL_TEAMS}/:id`}
         {...teamAffiliationProps}
+        permissions={['OrganizationAffiliation.read']}
         component={FhirTeamsList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.FORM_CONFIGURATION && activeRoles.FORM_CONFIGURATION.split(',')}
-        exact
-        path={URL_JSON_VALIDATOR_LIST}
-        component={FileList}
-        {...jsonValidatorListProps}
-      />
-      <PrivateComponent
-        redirectPath={APP_CALLBACK_URL}
-        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
         exact
         path={URL_LOCATION_UNIT}
         {...locationUnitProps}
+        permissions={['Location.read']}
         component={FHIRLocationUnitList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
         exact
         path={URL_LOCATION_UNIT_ADD}
         {...newLocationUnitProps}
+        permissions={['Location.create']}
         component={FHIRNewEditLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.LOCATIONS && activeRoles.LOCATIONS.split(',')}
         exact
         path={URL_LOCATION_UNIT_EDIT}
         {...editLocationProps}
+        permissions={['Location.update']}
         component={FHIRNewEditLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
+        permissions={['HealthcareService.update']}
         component={HealthCareAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={ADD_EDIT_HEALTHCARE_SERVICE_URL}
+        permissions={['HealthcareService.create']}
         component={HealthCareAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={`${LIST_HEALTHCARE_URL}/:id`}
+        permissions={['HealthcareService.read']}
         component={HealthCareList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.HEALTHCARE_SERVICE && activeRoles.HEALTHCARE_SERVICE.split(',')}
         path={LIST_HEALTHCARE_URL}
+        permissions={['HealthCareList.read']}
         component={HealthCareList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
         path={`${ADD_EDIT_COMMODITY_URL}/:id`}
         exact
         {...commmodityProps}
+        permissions={['Group.read']}
         component={CommodityAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
         path={ADD_EDIT_COMMODITY_URL}
         {...commmodityProps}
         exact
+        permissions={['Group.create']}
         component={CommodityAddEdit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
         path={`${LIST_GROUP_URL}/:id`}
+        permissions={['Group.read']}
         component={GroupList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.GROUP && activeRoles.GROUP.split(',')}
         path={LIST_GROUP_URL}
+        permissions={['Group.update']}
         component={GroupList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.COMMODITY && activeRoles.COMMODITY.split(',')}
         path={`${LIST_COMMODITY_URL}/:id`}
         {...commmodityProps}
+        permissions={['Group.read']}
         component={CommodityList}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        activeRoles={activeRoles.COMMODITY && activeRoles.COMMODITY.split(',')}
         path={LIST_COMMODITY_URL}
         {...commmodityProps}
+        permissions={['Group.read']}
         component={CommodityList}
       />
       <PrivateComponent
@@ -461,8 +449,8 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
-        activeRoles={activeRoles.USERS && activeRoles.USERS.split(',')}
         component={UserGroupsList}
+        permissions={['iam_group.read']}
       />
       <Route
         exact

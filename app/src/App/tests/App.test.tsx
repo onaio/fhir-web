@@ -21,7 +21,8 @@ import {
   CommodityList,
   LIST_COMMODITY_URL,
 } from '@opensrp/fhir-group-management';
-import { viewDetailsQuery } from '@opensrp/react-utils';
+import { viewDetailsQuery, ContextProvider, superUserRole } from '@opensrp/react-utils';
+import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('../../configs/env');
 
@@ -40,23 +41,23 @@ describe('App - unauthenticated', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>,
+      <ContextProvider>
+        <App />
+      </ContextProvider>,
       div
     );
     ReactDOM.unmountComponentAtNode(div);
   });
 
+  <ContextProvider>
+    <App />
+  </ContextProvider>;
+
   it('integration: renders App correctly', async () => {
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>
+      <ContextProvider>
+        <App />
+      </ContextProvider>
     );
     // before resolving get oauth state request, the user is logged out
     expect(wrapper.text()).toMatchInlineSnapshot(`"AdministrationLogin"`);
@@ -154,11 +155,9 @@ describe('App - authenticated', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(
-      <Provider store={store}>
-        <Router history={history}>
-          <App />
-        </Router>
-      </Provider>,
+      <ContextProvider>
+        <App />
+      </ContextProvider>,
       div
     );
     ReactDOM.unmountComponentAtNode(div);
@@ -168,7 +167,9 @@ describe('App - authenticated', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <App />
+          <RoleContext.Provider value={superUserRole}>
+            <App />
+          </RoleContext.Provider>
         </Router>
       </Provider>
     );
@@ -196,7 +197,9 @@ describe('App - authenticated', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/logout` }]}>
-          <App />
+          <RoleContext.Provider value={superUserRole}>
+            <App />
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -217,7 +220,9 @@ describe('App - authenticated', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: `${LIST_COMMODITY_URL}` }]}>
-            <App />
+            <RoleContext.Provider value={superUserRole}>
+              <App />
+            </RoleContext.Provider>
           </MemoryRouter>
         </Provider>
       </QueryClientProvider>

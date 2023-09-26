@@ -4,10 +4,13 @@ import { USER_PREFERENCE_KEY } from '../constants';
 import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
 export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
+
 export const supportedProjectCode = ['eusm', 'core', 'echis'] as const;
+export const supportedRbacStrategies = ['keycloak'] as const;
 
 export type LanguageCode = typeof supportedLanguageCodes[number];
 export type ProjectCode = typeof supportedProjectCode[number];
+export type KeycloakStrategies = typeof supportedRbacStrategies[number];
 export type GlobalState = ConfigState & UserPreference;
 
 export type PaginationState = Pick<PaginationProps, 'current' | 'pageSize'>;
@@ -25,6 +28,7 @@ export interface ConfigState {
   opensrpBaseURL?: string;
   fhirBaseURL?: string;
   defaultTablesPageSize?: number; // static value of the default number of rows per page
+  rbacStrategy?: KeycloakStrategies;
   practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
 }
 
@@ -51,6 +55,7 @@ const defaultConfigs: GlobalState = {
   tablespref: undefined,
   defaultTablesPageSize: 5,
   projectCode: 'core',
+  rbacStrategy: 'keycloak',
   practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
 };
 

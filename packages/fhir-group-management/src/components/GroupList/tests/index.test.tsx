@@ -13,6 +13,8 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { groupResourceType, LIST_GROUP_URL } from '../../../constants';
 import { firstTwentygroups } from './fixtures';
 import userEvents from '@testing-library/user-event';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -56,14 +58,16 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${LIST_GROUP_URL}`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${LIST_GROUP_URL}/:id`}>
-            {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path={`${LIST_GROUP_URL}`}>
+              {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
+            </Route>
+            <Route exact path={`${LIST_GROUP_URL}/:id`}>
+              {(routeProps) => <GroupList {...{ ...props, ...routeProps }} />}
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );
@@ -193,7 +197,7 @@ test('renders correctly when listing resources', async () => {
 
   expect(history.location.pathname).toEqual('/groups/list');
   expect(nock.isDone()).toBeTruthy();
-});
+}, 10000);
 
 test('responds as expected to errors', async () => {
   const history = createMemoryHistory();

@@ -35,6 +35,7 @@
     "@opensrp/fhir-team-management": "^0.0.5",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/rbac": "workspace:^",
     "@opensrp/react-utils": "^0.0.12",
     "react-helmet": "^6.1.0",
     "uuid": "^8.3.1"

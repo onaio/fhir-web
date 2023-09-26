@@ -19,3 +19,4 @@ export * from './components/FhirSelect';
 export * from './hooks/utils';
 export * from './components/PageHeader';
 export * from './components/ButtonLink';
+export * from './helpers/test-utils';

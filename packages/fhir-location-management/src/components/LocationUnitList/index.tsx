@@ -22,6 +22,7 @@ import {
   getSelectedNode,
 } from '../../ducks/location-tree-state';
 import { useTranslation } from '../../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -135,22 +136,24 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               <h6 className="mt-4">
                 {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
               </h6>
-              <div>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    if (selectedNode) {
-                      const queryParams = { parentId: selectedNode.model.nodeId };
-                      const searchString = new URLSearchParams(queryParams).toString();
-                      history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
-                    }
-                    history.push(URL_LOCATION_UNIT_ADD);
-                  }}
-                >
-                  <PlusOutlined />
-                  {t('Add Location Unit')}
-                </Button>
-              </div>
+              <RbacCheck permissions={['Location.create']}>
+                <div>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      if (selectedNode) {
+                        const queryParams = { parentId: selectedNode.model.nodeId };
+                        const searchString = new URLSearchParams(queryParams).toString();
+                        history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
+                      }
+                      history.push(URL_LOCATION_UNIT_ADD);
+                    }}
+                  >
+                    <PlusOutlined />
+                    {t('Add Location Unit')}
+                  </Button>
+                </div>
+              </RbacCheck>
             </div>
             <div className="bg-white p-3">
               <Table

@@ -7,15 +7,14 @@ import { Provider } from 'react-redux';
 import { MemoryRouter, Router } from 'react-router';
 import { store } from '@opensrp/store';
 import * as componentUtils from '../componentUtils';
-import { UserList } from '@opensrp/user-management';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { Resource404 } from '../../components/Resource404';
-import { KEYCLOAK_API_BASE_URL } from '@opensrp/keycloak-service';
 import { authenticateUser } from '@onaio/session-reducer';
 import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { superUserRole } from '../test-utils';
+import { RbacProvider, RoleContext, UserRole } from '@opensrp/rbac';
 
 const { PublicComponent, PrivateComponent, isAuthorized } = componentUtils;
 
@@ -61,8 +60,8 @@ describe('componentUtils', () => {
         }
       )
     );
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
+    const MockComponent = () => {
+      return <p>I love oof!</p>;
     };
     const props = {
       exact: true,
@@ -71,18 +70,14 @@ describe('componentUtils', () => {
       path: '/admin',
       authenticated: true,
     };
-    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+
     const wrapper = mount(
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-            <PrivateComponent
-              {...props}
-              component={MockComponent}
-              activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-            />
-          </MemoryRouter>
-        </QueryClientProvider>
+        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
+          <RoleContext.Provider value={superUserRole}>
+            <PrivateComponent {...props} component={MockComponent} permissions={[]} />
+          </RoleContext.Provider>
+        </MemoryRouter>
       </Provider>
     );
     await act(async () => {
@@ -96,8 +91,8 @@ describe('componentUtils', () => {
   });
 
   it('should not redirect to unauthorized page if not autenticated', async () => {
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
+    const MockComponent = () => {
+      return <p>I love oof!</p>;
     };
     const props = {
       exact: true,
@@ -106,19 +101,14 @@ describe('componentUtils', () => {
       path: '/admin',
       authenticated: false,
     };
-    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
     const wrapper = mount(
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-            <PrivateComponent
-              {...props}
-              component={MockComponent}
-              activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-            />
-          </MemoryRouter>
-        </QueryClientProvider>
+        <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
+          <RbacProvider>
+            <PrivateComponent {...props} component={MockComponent} permissions={[]} />
+          </RbacProvider>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -133,8 +123,8 @@ describe('componentUtils', () => {
   });
 
   it('Show Unauthorized Page if role doesnt have sufficient permissions', async () => {
-    const MockComponent = (props: any) => {
-      return <UserList {...props} keycloakBaseURL={KEYCLOAK_API_BASE_URL} />;
+    const MockComponent = () => {
+      return <p>I love oof!</p>;
     };
     const props = {
       exact: true,
@@ -146,7 +136,13 @@ describe('componentUtils', () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/admin`, hash: '', search: '', state: {} }]}>
-          <PrivateComponent {...props} component={MockComponent} activeRoles={['unauthorized']} />
+          <RoleContext.Provider value={new UserRole()}>
+            <PrivateComponent
+              {...props}
+              component={MockComponent}
+              permissions={['iam_user.create']}
+            />
+          </RoleContext.Provider>
         </MemoryRouter>
       </Provider>
     );
@@ -257,11 +253,9 @@ describe('componentUtils', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Router history={history}>
-          <PrivateComponent
-            {...props}
-            component={MockComponent}
-            activeRoles={['ROLE_VIEW_KEYCLOAK_USERS']}
-          />
+          <RoleContext.Provider value={superUserRole}>
+            <PrivateComponent {...props} component={MockComponent} permissions={[]} />
+          </RoleContext.Provider>
         </Router>
       </Provider>
     );

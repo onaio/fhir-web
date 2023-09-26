@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 export interface TableData {
   id: string;
@@ -73,10 +74,14 @@ const Table: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react/display-name
         render: (_: boolean, record) => (
           <>
-            <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`} className="m-0 p-1">
-              {t('Edit')}
-            </Link>
-            <Divider type="vertical" />
+            <RbacCheck permissions={['Location.update']}>
+              <>
+                <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id}`} className="m-0 p-1">
+                  {t('Edit')}
+                </Link>
+                <Divider type="vertical" />
+              </>
+            </RbacCheck>
             <Dropdown
               menu={{ items: getItems(record) }}
               placement="bottomRight"

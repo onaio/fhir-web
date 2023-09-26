@@ -252,6 +252,12 @@ Below is a list of currently supported environment variables:
   - default: ''
 
 - **REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY=ONE_TO_ONE**
+
   - define the assignment relationship between practitioners to organizations for fhir deployments. This strategy only applies unilaterally, i.e. form practitioner to organization. It does not imply any relations in the opposite direction i.e. from organization to practitioner.
   - **Optional**(`ONE_TO_ONE, ONE_TO_MANY`)
   - default: `ONE_TO_MANY`
+
+- **REACT_APP_AUTHZ_STRATEGY**
+  - defines which authorization strategy to use. This affects how roles and permissions fetched from the Authorization server are parsed and used in the web app.Currently only keycloak is supported which means Role based acces will only work when using keycloak as the IAM server.
+  - **Required**(`keycloak`).
+  - default: `keycloak`

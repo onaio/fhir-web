@@ -14,6 +14,9 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { Router, Route, Switch } from 'react-router';
 import nock from 'nock';
 import { questionnairesPage1, questRespPage1, questRespPage2 } from '../../tests/fixtures';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
+import { Provider } from 'react-redux';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -41,11 +44,15 @@ store.dispatch(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/qr/:id">
-        <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
-      </Route>
-    </Switch>
+    <Provider store={store}>
+      <Switch>
+        <Route exact path="/qr/:id">
+          <RoleContext.Provider value={superUserRole}>
+            <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
+          </RoleContext.Provider>
+        </Route>
+      </Switch>
+    </Provider>
   );
 };
 nock.disableNetConnect();

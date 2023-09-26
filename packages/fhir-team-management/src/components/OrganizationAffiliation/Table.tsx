@@ -17,6 +17,7 @@ import { reformatOrganizationByLocation } from './utils';
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useTranslation } from '../../mls';
+import { RbacCheck } from '@opensrp/rbac';
 
 export interface TableData {
   id: string;
@@ -123,18 +124,20 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_, record) => (
-        <Button
-          type="link"
-          className="action-button"
-          onClick={() => {
-            const { node } = record;
+        <RbacCheck permissions={['OrganizationAffiliation.update']}>
+          <Button
+            type="link"
+            className="action-button"
+            onClick={() => {
+              const { node } = record;
 
-            setLocation(node);
-            setSeeModal(true);
-          }}
-        >
-          {t('Edit')}
-        </Button>
+              setLocation(node);
+              setSeeModal(true);
+            }}
+          >
+            {t('Edit')}
+          </Button>
+        </RbacCheck>
       ),
     },
   ];
