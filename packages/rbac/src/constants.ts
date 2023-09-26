@@ -38,8 +38,6 @@ export type FhirResource = typeof FhirResources[number];
 
 export type AuthZResource = IamResource | FhirResource;
 export type BinaryNumber = number;
-// export type AuthResourceskey = keyof typeof IamResource | keyof typeof HapiFhirResource;
-// export type AuthResourcesValues = Valueof<typeof IamResource> | Valueof<typeof HapiFhirResource>;
 export type PermitKey = keyof typeof Permit;
 export type PermitKeyValues = Valueof<typeof Permit>;
 export type ResourcePermitMap = Map<AuthZResource, number>;
