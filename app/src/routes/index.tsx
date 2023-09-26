@@ -54,7 +54,6 @@ export interface GetRoutes {
  * @returns {Route[]} returns generated routes
  */
 export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Route[] {
-  console.log({ COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT });
   const routes: Route[] = [
     {
       otherProps: { icon: <DashboardOutlined /> },
