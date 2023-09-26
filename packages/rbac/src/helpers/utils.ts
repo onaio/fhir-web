@@ -49,21 +49,36 @@ export function validatePermissionStr(permission: string) {
 }
 
 /**
- * creates a resourcePermit map from a human readable string
+ * creates resourcePermit maps from human readable strings
  *
- * @param permissions - string of arrays to be converted to resourcePermit
+ * @param permissions - string of arrays to be converted to resourcePermitMaps
  */
 export function parsePermissionStr(permissions: string[]) {
-  const newMap: ResourcePermitMap = new Map();
-  permissions.forEach((permission) => {
+  return permissions.map((permission) => {
+    const newMap: ResourcePermitMap = new Map();
     const permissionStrIsValid = validatePermissionStr(permission);
     invariant(
       permissionStrIsValid,
       `Permission string: '${permission}' is not internally recognized as a valid permission string.`
     );
     const parts = permission.split('.');
-    const [resource, permit] = parts;
-    newMap.set(resource as AuthZResource, Permit[permit.toUpperCase() as PermitKey]);
+    const resource = parts[0] as AuthZResource
+    const permit = Permit[parts[1].toUpperCase() as PermitKey]
+    newMap.set(resource, permit);
+    return newMap
   });
-  return newMap;
+}
+
+export function combineResourcePermits(resourcePermits: ResourcePermitMap[]){
+  return resourcePermits.reduce((acc, map) => {
+    for (const [resource, permit] of map.entries()){
+      const existingPermit = acc.get(resource)
+      if(existingPermit){
+        acc.set(resource, existingPermit | permit)
+      }else{
+        acc.set(resource, permit)
+      }
+    }
+    return acc
+  }, new Map())
 }

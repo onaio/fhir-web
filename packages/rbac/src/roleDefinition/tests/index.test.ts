@@ -12,4 +12,11 @@ describe('user role definition', () => {
     const readUserRole = UserRole.fromPermissionStrings('iam_user.read');
     expect(readUserRole?.hasPermissions('iam_user.create')).toBeFalsy();
   });
+
+  it('strategies work correctly', () => {
+    const readUserRole = UserRole.fromPermissionStrings('iam_user.read');
+    expect(readUserRole?.hasPermissions('iam_user.read', 'all')).toBeTruthy();
+    expect(readUserRole?.hasPermissions(['iam_user.read', 'iam_user.create'], 'all')).toBeFalsy();
+    expect(readUserRole?.hasPermissions(['iam_user.read', 'iam_user.create'], 'any')).toBeTruthy();
+  })
 });

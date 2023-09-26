@@ -5,3 +5,5 @@ export interface RbacAdapter {
 }
 
 export type Valueof<T> = T[keyof T];
+
+export type MatchStrategy = 'all' | 'any';

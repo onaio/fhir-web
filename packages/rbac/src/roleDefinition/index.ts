@@ -1,21 +1,6 @@
 import { AuthZResource, BinaryNumber, ResourcePermitMap } from '../constants';
-import { makeArray, parsePermissionStr } from '../helpers/utils';
-
-// create a map lookup
-// export const fhirResourceMap: Map<FhirResourceTypeKeys, string> = Object.entries(
-//   HapiFhirResources
-// ).reduce((acc, [key, value]) => {
-//   acc.set(key, value);
-//   return acc;
-// }, new Map());
-
-// export type VerbPermissionKeys = keyof typeof Permit;
-// export const verbPermissionMap: Map<VerbPermissionKeys, number> = Object.entries(
-//   Permit
-// ).reduce((acc, [key, value]) => {
-//   acc.set(key, value);
-//   return acc;
-// }, new Map());
+import { MatchStrategy } from '../helpers/types';
+import { combineResourcePermits, makeArray, parsePermissionStr } from '../helpers/utils';
 
 export class UserRole {
   private permissions: ResourcePermitMap;
@@ -37,28 +22,6 @@ export class UserRole {
     return this.permissions;
   }
 
-  // public combineWith(roles: UserRole[] | UserRole): UserRole {
-  //   /**
-  //    * Rules:
-  //    * 1: cannot add permissions
-  //    */
-  //   const toAddRoles = makeArray(roles);
-  //   const mapForNewRole = new Map();
-  //   for (const [key, value] of this.getPermissionMap().entries()) {
-  //     mapForNewRole.set(key, value);
-  //   }
-  //   for (const role of toAddRoles) {
-  //     for (const [key, value] of role.getPermissionMap().entries()) {
-  //       if (mapForNewRole.has(key)) {
-  //         mapForNewRole.set(key, mapForNewRole.get(key) | value);
-  //       } else {
-  //         mapForNewRole.set(key, value);
-  //       }
-  //     }
-  //   }
-  //   return UserRole.fromResourceMap(mapForNewRole) as UserRole;
-  // }
-
   public hasRoles(roles: UserRole[] | UserRole): boolean {
     const toCheckRoles = makeArray(roles);
 
@@ -76,26 +39,26 @@ export class UserRole {
     return true;
   }
 
-  // check if it has userRole includes this permission
-  public hasPermissionMap(permissions: ResourcePermitMap): boolean {
-    for (const [key, value] of permissions.entries()) {
-      if (!this.permissions.has(key)) {
-        return false;
-      }
-
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      if ((this.permissions.get(key)! & value) === 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public hasPermissions(permissions: string | string[]) {
+  public hasPermissions(permissions: string | string[], strategy: MatchStrategy = 'all') {
     // parse permission string to a ResourcePermisMap
     const permAsStr = makeArray(permissions);
-    const perms = parsePermissionStr(permAsStr);
-    return this.hasPermissionMap(perms);
+    const permitMaps = parsePermissionStr(permAsStr);
+    const permitApplies = (permitMap: ResourcePermitMap) => {
+      for (const [resource, permit] of permitMap.entries()){
+      if (!this.permissions.has(resource)) {
+        return false;
+      }
+      const activePermit = this.permissions.get(resource)!
+      return (activePermit & permit) !== 0}
+    }
+    switch(strategy){
+      case 'all':
+        return permitMaps.every(permitApplies)
+      case 'any':
+        return permitMaps.some(permitApplies)
+      default:
+        return false
+    }
   }
 
   public static fromResourceMap(resourceMap: ResourcePermitMap) {
@@ -115,8 +78,9 @@ export class UserRole {
 
   public static fromPermissionStrings(permissionStrings: string | string[]) {
     const permAsStr = makeArray(permissionStrings);
-    const perms = parsePermissionStr(permAsStr);
-    return this.fromResourceMap(perms);
+    const permitMaps = parsePermissionStr(permAsStr);
+    const combinedPermitMap = combineResourcePermits(permitMaps)
+    return this.fromResourceMap(combinedPermitMap);
   }
 
   public static combineRoles(roles: UserRole[]): UserRole {
