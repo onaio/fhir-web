@@ -93,7 +93,7 @@ export const useGetLocationsAsHierarchy = (baseUrl: string, rootIdentifier: stri
       select: (res: IBundle) => {
         const rawLocations = cloneDeep(getResourcesFromBundle<ILocation>(res));
         const nested = nestLocations(rawLocations);
-        const interestingRoot = nested.filter((root) => root.nodeId === `${rootIdentifier}`)[0] as
+        const interestingRoot = nested.filter((root) => root.node.id === `${rootIdentifier}`)[0] as
           | CommonHierarchyNode
           | undefined;
         if (!interestingRoot) {
