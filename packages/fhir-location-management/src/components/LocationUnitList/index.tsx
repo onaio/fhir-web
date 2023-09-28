@@ -28,7 +28,7 @@ reducerRegistry.register(reducerName, reducer);
 
 interface LocationUnitListProps {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string;
+  fhirRootLocationIdentifier: string; // This is the location.id field.
 }
 
 export interface AntTreeData {

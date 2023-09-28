@@ -69,4 +69,5 @@ test('can create tree from flat array of locations', () => {
 
   const tree = new TreeModel().parse(roots[0]);
   expect(tree.model.node.id).toEqual('2252');
+  expect(tree.model.nodeId).toEqual('Location/2252');
 });
