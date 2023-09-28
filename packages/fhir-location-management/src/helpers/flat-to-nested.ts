@@ -18,7 +18,7 @@ export function nestLocations(locations: ILocation[]) {
   for (let i = 0, len = locations.length; i < len; i++) {
     const rawLocation = locations[i];
     const location = {
-      nodeId: rawLocation.id as string,
+      nodeId: `${rawLocation.resourceType}/${rawLocation.id}`,
       label: rawLocation.name ?? '',
       node: rawLocation,
     };
