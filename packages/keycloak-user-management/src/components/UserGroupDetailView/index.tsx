@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Space, Spin } from 'antd';
+import { Col, Space, Spin, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { Resource404 } from '@opensrp/react-utils';
 import { Button } from 'antd';
@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
 import { KeycloakUserRole } from 'keycloak-user-management/src/ducks/userRoles';
+
+const { Text } = Typography;
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
@@ -59,22 +61,16 @@ const ViewDetails = (props: ViewDetailsProps) => {
           </div>
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Roles')}</p>
-            {effectiveRoles?.length ? (
-              effectiveRoles.map((role, indx) => {
-                // append word break to wrap underscored strings with css
-                const wordBreakRoleName = role.name.split('_').join('_<wbr/>');
-                return (
-                  <p
-                    key={`${role}-${indx}`}
-                    className="mb-2"
-                    id="realRole"
-                    dangerouslySetInnerHTML={{ __html: wordBreakRoleName }}
-                  />
-                );
-              })
-            ) : (
-              <p id="noRealRole">{t('No assigned roles')}</p>
-            )}
+            <Space direction="vertical" size={1}>
+              {effectiveRoles?.length ? (
+                effectiveRoles.map((role) => {
+                  // append word break to wrap underscored strings with css
+                  return <Text key={role.name}>{role.name}</Text>;
+                })
+              ) : (
+                <p id="noRealRole">{t('No assigned roles')}</p>
+              )}
+            </Space>
           </div>
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Members')}</p>

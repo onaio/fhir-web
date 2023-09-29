@@ -38,3 +38,22 @@ export const userGroup1 = {
   subGroups: [],
   access: { view: true, manage: true, manageMembership: true },
 };
+
+export const effectiveRoles = [
+  {
+    id: 'cb4d5fc9-3b05-4514-b007-5971adba6d2f',
+    name: 'EDIT_KEYCLOAK_USERS',
+    description: 'Allows the management of keycloak users',
+    composite: true,
+    clientRole: false,
+    containerId: 'FHIR_Android',
+  },
+  {
+    id: '55c89f15-94b4-4395-b343-fb57740ff234',
+    name: 'VIEW_KEYCLOAK_USERS',
+    description: 'Allows the user to view the users created in keycloak',
+    composite: true,
+    clientRole: false,
+    containerId: 'FHIR_Android',
+  },
+];
