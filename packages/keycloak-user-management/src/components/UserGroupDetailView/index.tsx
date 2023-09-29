@@ -8,12 +8,14 @@ import { UserGroupMembers } from '../UserGroupsList';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
 import { KeycloakUserGroup } from '../../ducks/userGroups';
+import { KeycloakUserRole } from 'keycloak-user-management/src/ducks/userRoles';
 
 /** typings for the view details component */
 export interface ViewDetailsProps {
   loading: boolean;
   error: boolean;
   GroupDetails: KeycloakUserGroup | undefined;
+  effectiveRoles: KeycloakUserRole[] | undefined;
   userGroupMembers: UserGroupMembers[] | undefined;
   onClose: () => void;
 }
@@ -25,7 +27,7 @@ export interface ViewDetailsProps {
  * @param props - detail view component props
  */
 const ViewDetails = (props: ViewDetailsProps) => {
-  const { loading, error, GroupDetails, userGroupMembers, onClose } = props;
+  const { loading, error, GroupDetails, userGroupMembers, onClose, effectiveRoles } = props;
   const { t } = useTranslation();
 
   return (
@@ -57,10 +59,10 @@ const ViewDetails = (props: ViewDetailsProps) => {
           </div>
           <div className="mb-2 medium mt-2">
             <p className="mb-0 font-weight-bold">{t('Roles')}</p>
-            {GroupDetails.realmRoles?.length ? (
-              GroupDetails.realmRoles.map((role, indx) => {
+            {effectiveRoles?.length ? (
+              effectiveRoles.map((role, indx) => {
                 // append word break to wrap underscored strings with css
-                const wordBreakRoleName = role.split('_').join('_<wbr/>');
+                const wordBreakRoleName = role.name.split('_').join('_<wbr/>');
                 return (
                   <p
                     key={`${role}-${indx}`}
