@@ -190,7 +190,10 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
               <Transfer
                 dataSource={data}
                 titles={[t('Available Roles'), t('Assigned Roles')]}
-                listStyle={{ flexGrow: 'inherit' }}
+                listStyle={{
+                  minWidth: 300,
+                  minHeight: 300,
+                }}
                 targetKeys={
                   targetKeys.length
                     ? targetKeys
