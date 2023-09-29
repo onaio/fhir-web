@@ -11,6 +11,7 @@ import flushPromises from 'flush-promises';
 import { KeycloakUserGroup } from '../../../ducks/userGroups';
 import { UserGroupMembers } from '../../UserGroupsList';
 import { Resource404 } from '@opensrp/react-utils';
+import { effectiveRoles } from '../../UserGroupsList/tests/fixtures';
 
 const history = createMemoryHistory();
 history.push(URL_USER_GROUPS);
@@ -44,6 +45,7 @@ describe('View User Group Details', () => {
         username: 'name-4',
       },
     ] as UserGroupMembers[],
+    effectiveRoles,
     onClose: jest.fn(),
   };
 
@@ -61,7 +63,7 @@ describe('View User Group Details', () => {
 
     expect(wrapper.text()).toMatchSnapshot('nominal display');
     // att test case to capture space element props snapshot
-    expect(wrapper.find('ViewDetails Space').props()).toMatchSnapshot('space element');
+    expect(wrapper.find('ViewDetails Space').first().props()).toMatchSnapshot('space element');
     wrapper.unmount();
   });
 
@@ -119,6 +121,7 @@ describe('View User Group Details', () => {
         ...props.GroupDetails,
         realmRoles: [],
       },
+      effectiveRoles: [],
       userGroupMembers: [],
     };
 

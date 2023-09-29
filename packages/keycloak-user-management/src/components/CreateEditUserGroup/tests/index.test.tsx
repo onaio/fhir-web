@@ -220,7 +220,7 @@ describe('components/CreateEditUserGroup', () => {
   });
 
   it('handles error if fetch user group fails when page reloads', async () => {
-    fetch.mockRejectOnce(new Error('API is down'));
+    fetch.mockReject(new Error('API is down'));
     const mockNotificationError = jest.spyOn(notifications, 'sendErrorNotification');
 
     const wrapper = mount(
@@ -236,7 +236,10 @@ describe('components/CreateEditUserGroup', () => {
       wrapper.update();
     });
 
-    expect(mockNotificationError).toHaveBeenCalledWith('There was a problem fetching User Group');
+    expect(mockNotificationError.mock.calls).toEqual([
+      ['There was a problem fetching role mappings'],
+      ['There was a problem fetching role mappings'],
+    ]);
     wrapper.unmount();
   });
 

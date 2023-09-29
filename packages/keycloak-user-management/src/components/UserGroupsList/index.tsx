@@ -26,6 +26,7 @@ import {
 } from '../../ducks/userGroups';
 import { useTranslation } from '../../mls';
 import {
+  KEYCLOAK_URL_EFFECTIVE_ROLES,
   KEYCLOAK_URL_USER_GROUPS,
   SEARCH_QUERY_PARAM,
   URL_USER_GROUP_CREATE,
@@ -113,6 +114,25 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
     {
       enabled: groupId !== null,
       onError: () => sendErrorNotification(t('There was a problem fetching Group Details')),
+    }
+  );
+
+  const {
+    isLoading: effectiveRolesLoading,
+    isError: effectiveRolesError,
+    data: effectiveRoles,
+  } = useQuery(
+    [KEYCLOAK_URL_EFFECTIVE_ROLES, groupId, keycloakBaseURL],
+    () => {
+      const keycloakService = new KeycloakService(
+        `${KEYCLOAK_URL_USER_GROUPS}/${groupId}${KEYCLOAK_URL_EFFECTIVE_ROLES}`,
+        keycloakBaseURL
+      );
+      return keycloakService.list();
+    },
+    {
+      enabled: groupId !== null,
+      onError: () => sendErrorNotification(t('There was a problem fetching effective roles')),
     }
   );
 
@@ -217,9 +237,10 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
         {groupId ? (
           <Col className="pl-3" span={5}>
             <ViewDetails
-              loading={isGroupDetailsLoading || isUserGroupMembersLoading}
-              error={isGroupDetailsError || isUserGroupMembersError}
+              loading={isGroupDetailsLoading || isUserGroupMembersLoading || effectiveRolesLoading}
+              error={isGroupDetailsError || isUserGroupMembersError || effectiveRolesError}
               GroupDetails={GroupDetails}
+              effectiveRoles={effectiveRoles}
               userGroupMembers={userGroupMembers}
               onClose={() => {
                 setGroupId(null);
