@@ -32,7 +32,6 @@ export interface UserGroupFormProps {
   allRoles: KeycloakUserRole[];
   assignedRoles: KeycloakUserRole[];
   availableRoles: KeycloakUserRole[];
-  effectiveRoles: KeycloakUserRole[];
   initialValues: KeycloakUserGroup;
   keycloakBaseURL: string;
 }
@@ -56,7 +55,6 @@ export const defaultProps: Partial<UserGroupFormProps> = {
   allRoles: [],
   assignedRoles: [],
   availableRoles: [],
-  effectiveRoles: [],
   initialValues: defaultInitialValues,
   keycloakBaseURL: '',
 };
@@ -92,14 +90,7 @@ export const handleTransferChange = async (
  * @param {object} props - component props
  */
 const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) => {
-  const {
-    initialValues,
-    keycloakBaseURL,
-    assignedRoles,
-    availableRoles,
-    effectiveRoles,
-    allRoles,
-  } = props;
+  const { initialValues, keycloakBaseURL, assignedRoles, availableRoles, allRoles } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [sourceSelectedKeys, setSourceSelectedKeys] = useState<string[]>([]);
   const [targetSelectedKeys, setTargetSelectedKeys] = useState<string[]>([]);
@@ -215,40 +206,6 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
                   searchPlaceholder: t('Search'),
                 }}
               />
-              {/** custom transfer to list effective roles */}
-              <div className="ant-transfer">
-                <div className="ant-transfer-list">
-                  <div className="ant-transfer-list-header">
-                    <span className="ant-transfer-list-header-title">{t('Effective Roles')}</span>
-                  </div>
-                  <div className="ant-transfer-list-body">
-                    {!effectiveRoles.length ? (
-                      <div className="ant-transfer-list-body-not-found">
-                        {t('The list is empty')}
-                      </div>
-                    ) : (
-                      <ul className="ant-transfer-list-content">
-                        {effectiveRoles.map((role: KeycloakUserRole) => (
-                          <li
-                            key={role.id}
-                            className="ant-transfer-list-content-item ant-transfer-list-content-item-disabled"
-                          >
-                            <label className="ant-checkbox-wrapper">
-                              <span className="ant-checkbox">
-                                <input type="checkbox" className="ant-checkbox-input" />
-                                <span className="ant-checkbox-inner" />
-                              </span>
-                            </label>
-                            <span className="ant-transfer-list-content-item-text">
-                              <div>{role.name}</div>
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              </div>
             </Form.Item>
           ) : (
             ''
