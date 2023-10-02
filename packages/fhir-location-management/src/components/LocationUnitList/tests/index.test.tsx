@@ -20,6 +20,9 @@ import { Provider } from 'react-redux';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
 import { locationHierarchyResourceType } from '../../../constants';
+import { locationResourceType } from '../../../constants';
+import { locationSData } from '../../../ducks/tests/fixtures';
+import userEvent from '@testing-library/user-event';
 
 const history = createBrowserHistory();
 
@@ -201,5 +204,39 @@ describe('location-management/src/components/LocationUnitList', () => {
       expect(screen.getByText(/Refreshing data/i)).toBeInTheDocument();
     });
     await waitForElementToBeRemoved(screen.getByText(/Refreshing data/i));
+  });
+
+  it('Passes selected node as the parent location when adding location clicked', async () => {
+    nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({ _summary: 'count' })
+      .reply(200, { total: 1000 });
+
+    nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({ _count: 1000 })
+      .reply(200, locationSData)
+      .persist();
+
+    render(<AppWrapper {...props} />);
+
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+    expect(screen.getByText(/Location Unit Management/)).toBeInTheDocument();
+
+    // initially show single user defined root location
+    const treeSection = document.querySelector('.ant-tree') as HTMLElement;
+    const firstRootLoc = within(treeSection).getByTitle(/Ona Office Sub Location/);
+    expect(firstRootLoc).toMatchSnapshot('user defined root location');
+
+    // click/select this first root location
+    userEvent.click(firstRootLoc);
+
+    // then click add location
+    const addLocationBtn = screen.getByText(/Add Location Unit/);
+    userEvent.click(addLocationBtn);
+
+    // check where we redirected to
+    expect(history.location.search).toEqual('?parentId=Location%2F303');
   });
 });
