@@ -21,6 +21,7 @@ import { useSimpleTabularView } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from '../mls';
 import type { TFunction } from '@opensrp/i18n';
+import { RbacCheck } from '@opensrp/rbac';
 
 /** props for the PlansList view */
 export interface QuestionnaireListProps {
@@ -58,11 +59,11 @@ const getColumns = (t: TFunction): Column<ParsedQuestionnaireResponse>[] => {
       title: t('Actions'),
       render: (record: ParsedQuestionnaireResponse) => {
         return (
-          <>
+          <RbacCheck permissions={['QuestionnaireResponse.update']}>
             <Link to={`${QUEST_FORM_VIEW_URL}/${record.id}/${questionnaireResponseResourceType}`}>
               {t('Edit')}
             </Link>
-          </>
+          </RbacCheck>
         );
       },
       width: '20%',
@@ -126,19 +127,21 @@ const QuestionnaireResponseList = (props: QuestionnaireListProps) => {
       <Questionnaire resource={questData as IQuestionnaire} />,
       <Row className="list-view">
         <Col className="main-content">
-          <div className="main-content__header flex-right">
-            <Button
-              type="primary"
-              onClick={() =>
-                history.push(
-                  `${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`
-                )
-              }
-            >
-              <PlusOutlined />
-              {t('Fill form')}
-            </Button>
-          </div>
+          <RbacCheck permissions={['QuestionnaireResponse.create']}>
+            <div className="main-content__header flex-right">
+              <Button
+                type="primary"
+                onClick={() =>
+                  history.push(
+                    `${QUEST_FORM_VIEW_URL}/${questData.id as string}/${questionnaireResourceType}`
+                  )
+                }
+              >
+                <PlusOutlined />
+                {t('Fill form')}
+              </Button>
+            </div>
+          </RbacCheck>
           <TableLayout {...tableProps} />
         </Col>
       </Row>

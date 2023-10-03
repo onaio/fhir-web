@@ -3,8 +3,8 @@ import React from 'react';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import fetch from 'jest-fetch-mock';
 import * as fixtures from '../../forms/UserForm/tests/fixtures';
-import { mount, shallow } from 'enzyme';
-import { ConnectedUserList, UserList } from '..';
+import { mount } from 'enzyme';
+import { ConnectedUserList } from '..';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import toJson from 'enzyme-to-json';
@@ -28,8 +28,9 @@ import {
 } from '../../forms/UserForm/tests/fixtures';
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
-
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { superUserRole } from '@opensrp/react-utils';
+import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -95,10 +96,6 @@ describe('components/UserList', () => {
     );
   });
 
-  it('renders users table without crashing', () => {
-    shallow(<UserList {...locationProps} />);
-  });
-
   it('works correctly with store', async () => {
     fetch.mockResponseOnce(JSON.stringify(fixtures.keycloakUsersArray));
     fetch.mockResponseOnce(JSON.stringify(4));
@@ -108,7 +105,11 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <RoleContext.Provider value={superUserRole}>
+                <ConnectedUserList {...props} />
+              </RoleContext.Provider>
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -133,7 +134,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...props} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -181,7 +184,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...newProps} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...newProps} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -247,7 +252,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...newProps} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...newProps} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -278,7 +285,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...props} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -308,7 +317,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...newProps} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...newProps} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -344,7 +355,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...props} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>
@@ -394,7 +407,9 @@ describe('components/UserList', () => {
       <Provider store={opensrpStore.store}>
         <QueryClientProvider client={queryClient}>
           <Router history={history}>
-            <ConnectedUserList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <ConnectedUserList {...props} />
+            </RoleContext.Provider>
           </Router>
         </QueryClientProvider>
       </Provider>

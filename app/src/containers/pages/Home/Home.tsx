@@ -2,19 +2,24 @@ import { Helmet } from 'react-helmet';
 import { Col, Row, Alert } from 'antd';
 import './Home.css';
 import { useTranslation } from '../../../mls';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { getExtraData } from '@onaio/session-reducer';
 import { getRoutesForHomepage } from '../../../routes';
 import { ButtonLink } from '@opensrp/react-utils';
+import { RoleContext } from '@opensrp/rbac';
 
 export const Home = () => {
   const { t } = useTranslation();
   const extraData = useSelector((state) => {
     return getExtraData(state);
   });
+  const userRole = useContext(RoleContext);
   const { roles } = extraData;
-  const routes = React.useMemo(() => getRoutesForHomepage(roles as string[], t), [roles, t]);
+  const routes = React.useMemo(
+    () => getRoutesForHomepage(roles as string[], t, userRole),
+    [roles, t, userRole]
+  );
 
   // home page has 2 columns by defualt
   let columnNum = 2;

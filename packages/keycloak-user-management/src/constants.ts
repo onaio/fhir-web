@@ -12,6 +12,7 @@ export const ORGANIZATION_BY_PRACTITIONER = 'organization/by-practitioner';
 
 // Route params
 export const ROUTE_PARAM_USER_ID = 'userId';
+export const ROUTE_PARAM_USERNAME = 'username';
 export const ROUTE_PARAM_USER_GROUP_ID = 'userGroupId';
 
 // Keycloak API URLs

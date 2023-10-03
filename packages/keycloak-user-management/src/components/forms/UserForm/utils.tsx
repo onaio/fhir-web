@@ -73,7 +73,9 @@ export const createOrEditPractitioners = async (
     })
     .then(() => sendSuccessNotification(successMessage));
 
-  if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${payload.userId}`);
+  if (!isEditMode) {
+    history.push(`${URL_USER_CREDENTIALS}/${payload.userId}/${payload.username}`);
+  }
 };
 
 /**

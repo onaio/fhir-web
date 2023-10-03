@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { ViewDetailsWrapper } from '../ViewDetails';
 import { useQueryClient } from 'react-query';
 import { useTranslation } from '@opensrp/i18n';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -42,6 +43,7 @@ export const UserList = (props: OrganizationListProps) => {
   const extraData = useSelector(getExtraData);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const userRole = useUserRole();
 
   const { sParams, addParam } = useSearchParams();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -82,7 +84,9 @@ export const UserList = (props: OrganizationListProps) => {
     extraData,
     queryClient,
     t,
-    onViewDetails
+    onViewDetails,
+    userRole,
+    history
   );
 
   const searchFormProps = {
@@ -121,10 +125,12 @@ export const UserList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
-              <PlusOutlined />
-              {t('Add User')}
-            </Button>
+            <RbacCheck permissions={['iam_user.create']}>
+              <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
+                <PlusOutlined />
+                {t('Add User')}
+              </Button>
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>

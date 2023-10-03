@@ -14,6 +14,7 @@ import {
   FHIR_API_BASE_URL,
   DEFAULTS_TABLE_PAGE_SIZE,
   PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
+  AUTHZ_STRATEGY,
 } from './env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from '../constants';
 
@@ -31,6 +32,7 @@ const configObject: ConfigState = {
   fhirBaseURL: FHIR_API_BASE_URL,
   defaultTablesPageSize: DEFAULTS_TABLE_PAGE_SIZE,
   practToOrgAssignmentStrategy: PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
+  rbacStrategy: AUTHZ_STRATEGY,
 };
 
 setAllConfigs(configObject);

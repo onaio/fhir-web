@@ -11,6 +11,8 @@ import { store } from '@opensrp/store';
 import { careTeam4214, careTeams } from './fixtures';
 import { careTeamResourceType, URL_CARE_TEAM } from '../../../constants';
 import { createMemoryHistory } from 'history';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -75,14 +77,16 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`${URL_CARE_TEAM}`}>
-            {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
-          </Route>
-          <Route exact path={`${URL_CARE_TEAM}/:careTeamId`}>
-            {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path={`${URL_CARE_TEAM}`}>
+              {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
+            </Route>
+            <Route exact path={`${URL_CARE_TEAM}/:careTeamId`}>
+              {(routeProps) => <CareTeamList {...{ ...props, ...routeProps }} />}
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );
@@ -119,16 +123,12 @@ describe('Care Teams list view', () => {
     nock(props.fhirBaseURL)
       .get(`/${careTeamResourceType}/_search`)
       .query({
-        _summary: 'count',
+        _total: 'accurate',
+        _getpagesoffset: 0,
+        _count: 20,
       })
-      .reply(200, { total: 100 });
-
-    nock(props.fhirBaseURL)
-      .get(`/${careTeamResourceType}/_search`)
-      .query({
-        _count: 100,
-      })
-      .reply(200, careTeams);
+      .reply(200, careTeams)
+      .persist();
 
     const history = createMemoryHistory();
     history.push(URL_CARE_TEAM);

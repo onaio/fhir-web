@@ -21,6 +21,9 @@ import {
 } from '../../tests/fixtures';
 import userEvents from '@testing-library/user-event';
 import _ from 'lodash';
+import { superUserRole } from '@opensrp/react-utils';
+import { RoleContext } from '@opensrp/rbac';
+import { Provider } from 'react-redux';
 
 const actualDebounce = _.debounce;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,11 +62,15 @@ store.dispatch(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const App = (props: any) => {
   return (
-    <Switch>
-      <Route exact path="/questList">
-        <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
-      </Route>
-    </Switch>
+    <Provider store={store}>
+      <Switch>
+        <Route exact path="/questList">
+          <RoleContext.Provider value={superUserRole}>
+            <QueryClientProvider client={rQClient}>{props.children}</QueryClientProvider>
+          </RoleContext.Provider>
+        </Route>
+      </Switch>
+    </Provider>
   );
 };
 
@@ -88,6 +95,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
     })
@@ -97,6 +105,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 20,
       _count: 20,
     })
@@ -106,6 +115,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 40,
       _count: 20,
     })
@@ -115,6 +125,7 @@ test('pagination events work correctly', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
       'title:contains': 'sample,name:contains=sample',
@@ -188,6 +199,7 @@ test('shows an error', async () => {
   nock(props.fhirBaseURL)
     .get('/Questionnaire/_search')
     .query({
+      _total: 'accurate',
       _getpagesoffset: 0,
       _count: 20,
     })

@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
 import {
   FHIRServiceClass,
-  useTabularViewWithLocalSearch,
+  useSimpleTabularView,
   BrokenPage,
   SearchForm,
   TableLayout,
@@ -28,6 +28,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { useTranslation } from '../../mls';
 import type { TFunction } from '@opensrp/i18n';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
 // route params for care team pages
 interface RouteParams {
@@ -53,6 +54,13 @@ export const deleteCareTeam = async (
     .catch(() => sendErrorNotification(t('There was a problem deleting the Care Team')));
 };
 
+const getSearchParams = (search: string | null) => {
+  if (search) {
+    return { [`name:contains`]: search };
+  }
+  return {};
+};
+
 /**
  * Function which shows the list of all roles and their details
  *
@@ -65,19 +73,20 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   const history = useHistory();
 
   const { addParam, sParams } = useSearchParams();
+  const userRole = useUserRole();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const {
     queryValues: { data, isFetching, isLoading, error, refetch },
     tablePaginationProps,
     searchFormProps,
-  } = useTabularViewWithLocalSearch<ICareTeam>(fhirBaseURL, careTeamResourceType);
+  } = useSimpleTabularView<ICareTeam>(fhirBaseURL, careTeamResourceType, getSearchParams);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const tableData = (data ?? []).map((datum: Dictionary) => {
+  const tableData = (data?.records ?? []).map((datum: Dictionary) => {
     return {
       key: datum.id,
       id: datum.id,
@@ -86,35 +95,44 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
   });
   type TableData = typeof tableData[0];
 
-  const getItems = (record: TableData): MenuProps['items'] => [
-    {
-      key: '1',
-      label: (
-        <Popconfirm
-          title={t('Are you sure you want to delete this Care Team?')}
-          okText={t('Yes')}
-          className="delCareteam"
-          cancelText={t('No')}
-          onConfirm={async () => {
-            await deleteCareTeam(fhirBaseURL, record.id, t);
-            await refetch();
-          }}
-        >
-          <Button danger data-testid="deleteBtn" type="link" style={{ color: '#' }}>
-            {t('Delete')}
+  const getItems = (record: TableData): MenuProps['items'] => {
+    return [
+      {
+        key: '1',
+        permissions: ['CareTeam.delete'],
+        label: (
+          <Popconfirm
+            title={t('Are you sure you want to delete this Care Team?')}
+            okText={t('Yes')}
+            className="delCareteam"
+            cancelText={t('No')}
+            onConfirm={async () => {
+              await deleteCareTeam(fhirBaseURL, record.id, t);
+              await refetch();
+            }}
+          >
+            <Button danger data-testid="deleteBtn" type="link" style={{ color: '#' }}>
+              {t('Delete')}
+            </Button>
+          </Popconfirm>
+        ),
+      },
+      {
+        key: '2',
+        permissions: [],
+        label: (
+          <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
+            View Details
           </Button>
-        </Popconfirm>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
-          View Details
-        </Button>
-      ),
-    },
-  ];
+        ),
+      },
+    ]
+      .filter((item) => userRole.hasPermissions(item.permissions))
+      .map((item) => {
+        const { permissions, ...rest } = item;
+        return rest;
+      });
+  };
 
   const columns = [
     {
@@ -129,10 +147,14 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
-            {t('Edit')}
-          </Link>
-          <Divider type="vertical" />
+          <RbacCheck permissions={['CareTeam.update']}>
+            <>
+              <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Dropdown
             menu={{ items: getItems(record) }}
             placement="bottomRight"
@@ -163,12 +185,14 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
-            <Link to={URL_CREATE_CARE_TEAM}>
-              <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
-                <PlusOutlined />
-                {t('Create Care Team')}
-              </Button>
-            </Link>
+            <RbacCheck permissions={['CareTeam.create']}>
+              <Link to={URL_CREATE_CARE_TEAM}>
+                <Button type="primary" onClick={() => history.push(URL_CREATE_CARE_TEAM)}>
+                  <PlusOutlined />
+                  {t('Create Care Team')}
+                </Button>
+              </Link>
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>

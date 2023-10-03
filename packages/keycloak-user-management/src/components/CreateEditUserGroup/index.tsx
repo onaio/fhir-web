@@ -9,7 +9,6 @@ import { defaultInitialValues, UserGroupFormProps } from './Form';
 import {
   KEYCLOAK_URL_ASSIGNED_ROLES,
   KEYCLOAK_URL_AVAILABLE_ROLES,
-  KEYCLOAK_URL_EFFECTIVE_ROLES,
   ROUTE_PARAM_USER_GROUP_ID,
 } from '../../constants';
 import { useTranslation } from '../../mls';
@@ -62,7 +61,6 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [availableRoles, setAvailableRoles] = React.useState<KeycloakUserRole[]>([]);
   const [assignedRoles, setAssignedRoles] = React.useState<KeycloakUserRole[]>([]);
-  const [effectiveRoles, setEffectiveRoles] = React.useState<KeycloakUserRole[]>([]);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userGroupId = props.match.params[ROUTE_PARAM_USER_GROUP_ID];
@@ -95,20 +93,7 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
         setAssignedRoles,
         t
       );
-      const effectiveRolesPromise = fetchRoleMappings(
-        userGroupId,
-        keycloakBaseURL,
-        KEYCLOAK_URL_EFFECTIVE_ROLES,
-        setEffectiveRoles,
-        t
-      );
-      Promise.all([
-        groupPromise,
-        allRolesPromise,
-        availableRolesPromise,
-        assignedRolesPromise,
-        effectiveRolesPromise,
-      ])
+      Promise.all([groupPromise, allRolesPromise, availableRolesPromise, assignedRolesPromise])
         .catch(() => sendErrorNotification(t('There was a problem fetching user groups')))
         .finally(() => setIsLoading(false));
     }
@@ -123,7 +108,6 @@ const CreateEditUserGroup: React.FC<CreateEditGroupPropTypes> = (
     allRoles,
     assignedRoles,
     availableRoles,
-    effectiveRoles,
     initialValues: initialValues as KeycloakUserGroup,
     keycloakBaseURL,
   };

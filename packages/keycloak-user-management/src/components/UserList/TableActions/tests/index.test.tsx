@@ -8,6 +8,8 @@ import { fireEvent, act } from '@testing-library/react';
 import * as reactQuery from 'react-query';
 import * as utils from '../utils';
 import flushPromises from 'flush-promises';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('react-query');
 
@@ -26,13 +28,19 @@ describe('components/UserList/TableActions', () => {
   };
 
   it('does not crash', () => {
-    shallow(<TableActions {...props} />);
+    shallow(
+      <RoleContext.Provider value={superUserRole}>
+        <TableActions {...props} />
+      </RoleContext.Provider>
+    );
   });
 
   it('renders correctly', () => {
     const wrapper = mount(
       <BrowserRouter>
-        <TableActions {...props} />
+        <RoleContext.Provider value={superUserRole}>
+          <TableActions {...props} />
+        </RoleContext.Provider>
       </BrowserRouter>
     );
     const tableActions = wrapper.find('TableActions');
@@ -63,7 +71,9 @@ describe('components/UserList/TableActions', () => {
 
     const wrapper = mount(
       <BrowserRouter>
-        <TableActions {...props} />
+        <RoleContext.Provider value={superUserRole}>
+          <TableActions {...props} />
+        </RoleContext.Provider>
       </BrowserRouter>,
       { attachTo: div }
     );
@@ -98,7 +108,9 @@ describe('components/UserList/TableActions', () => {
     };
     const wrapper = mount(
       <BrowserRouter>
-        <TableActions {...props} />
+        <RoleContext.Provider value={superUserRole}>
+          <TableActions {...props} />
+        </RoleContext.Provider>
       </BrowserRouter>
     );
     const tableActions = wrapper.find('TableActions');

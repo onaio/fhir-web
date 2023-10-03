@@ -289,7 +289,9 @@ export const practitionerUpdater =
         })
         .catch(() => sendErrorNotification(practitionerErrorMessage))
         .finally(() => {
-          if (!isEditMode) history.push(`${URL_USER_CREDENTIALS}/${userId}`);
+          if (!isEditMode) {
+            history.push(`${URL_USER_CREDENTIALS}/${userId}/${values.username}`);
+          }
         })
     );
   };

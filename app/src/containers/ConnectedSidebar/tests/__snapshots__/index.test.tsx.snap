@@ -34,95 +34,6 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
-  </SubMenu>,
-]
-`;
-
-exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
-Array [
-  <SubMenu
-    icon={
-      <MapMarkerOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Plans"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/active"
-      >
-        Active
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/draft"
-      >
-        Draft
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/complete"
-      >
-        Complete
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/missions/retired"
-      >
-        Retired
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(IdcardOutlined) />}
-    title="Card Support"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/card-support/download-client-data"
-      >
-        Download Client Data
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={
-      <ArchiveOutlineIcon
-        className="sidebar-icons"
-      />
-    }
-    title="Inventory"
-  >
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory"
-      >
-        Service point inventory
-      </Link>
-    </MenuItem>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/inventory/upload"
-      >
-        Add inventory via CSV
-      </Link>
-    </MenuItem>
-  </SubMenu>,
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
     <SubMenu
       title="Location Management"
     >
@@ -134,23 +45,7 @@ Array [
           Location Units
         </Link>
       </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/group"
-        >
-          Location Unit Group
-        </Link>
-      </MenuItem>
     </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/admin/product-catalogue"
-      >
-        Product Catalogue
-      </Link>
-    </MenuItem>
     <SubMenu
       title="Team Management"
     >
@@ -171,34 +66,92 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/quest"
+      >
+        Questionnaire Management
+      </Link>
+    </MenuItem>
+  </SubMenu>,
+]
+`;
+
+exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
+Array [
+  <SubMenu
+    icon={<ForwardRef(DashboardOutlined) />}
+    title="Administration"
+  >
     <SubMenu
-      title="Form Configuration"
+      title="User Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/form-config/releases"
+          to="/admin/users"
         >
-          Manifest Releases
+          Users
         </Link>
       </MenuItem>
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/form-config/drafts"
+          to="/admin/users/groups"
         >
-          Draft Files
+          User Groups
         </Link>
       </MenuItem>
       <MenuItem>
         <Link
           className="admin-link"
-          to="/admin/form-config/json-validators"
+          to="/admin/users/roles"
         >
-          JSON Validators
+          User Roles
         </Link>
       </MenuItem>
     </SubMenu>
+    <SubMenu
+      title="Location Management"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location Units
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Team Management"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams"
+        >
+          Teams
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams/team-assignment"
+        >
+          Team Assignment
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/quest"
+      >
+        Questionnaire Management
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;
@@ -242,7 +195,68 @@ Object {
         <SubMenu
           icon={<ForwardRef(DashboardOutlined) />}
           title="Administration"
-        />
+        >
+          <SubMenu
+            title="User Management"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/users"
+              >
+                Users
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/users/groups"
+              >
+                User Groups
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/users/roles"
+              >
+                User Roles
+              </Link>
+            </MenuItem>
+          </SubMenu>
+          <SubMenu
+            title="Location Management"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/location/unit"
+              >
+                Location Units
+              </Link>
+            </MenuItem>
+          </SubMenu>
+          <SubMenu
+            title="Team Management"
+          >
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/teams"
+              >
+                Teams
+              </Link>
+            </MenuItem>
+          </SubMenu>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/quest"
+            >
+              Questionnaire Management
+            </Link>
+          </MenuItem>
+        </SubMenu>
       </Menu>
     </div>,
     null,
@@ -291,6 +305,38 @@ Array [
         </Link>
       </MenuItem>
     </SubMenu>
+    <SubMenu
+      title="Location Management"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/unit"
+        >
+          Location Units
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <SubMenu
+      title="Team Management"
+    >
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/teams"
+        >
+          Teams
+        </Link>
+      </MenuItem>
+    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/quest"
+      >
+        Questionnaire Management
+      </Link>
+    </MenuItem>
   </SubMenu>,
 ]
 `;

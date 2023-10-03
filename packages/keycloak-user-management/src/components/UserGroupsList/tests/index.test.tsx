@@ -21,6 +21,8 @@ import {
 } from '../../../ducks/userGroups';
 import { unsortedUserGroups, userGroups } from '../../../ducks/tests/fixtures';
 import { URL_USER_GROUPS } from '../../../constants';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/store', () => {
   const actual = jest.requireActual('@opensrp/store');
@@ -88,7 +90,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...locationProps} keycloakBaseURL={keycloakBaseURL} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...locationProps} keycloakBaseURL={keycloakBaseURL} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -106,7 +110,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -134,7 +140,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -175,7 +183,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -203,7 +213,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -234,7 +246,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>
@@ -288,7 +302,9 @@ describe('components/UserGroupsList', () => {
       <QueryClientProvider client={queryClient}>
         <Provider store={opensrpStore.store}>
           <Router history={history}>
-            <UserGroupsList {...props} />
+            <RoleContext.Provider value={superUserRole}>
+              <UserGroupsList {...props} />
+            </RoleContext.Provider>
           </Router>
         </Provider>
       </QueryClientProvider>

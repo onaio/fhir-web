@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`pre confirmation success works correctly: full card snapshot 1`] = `"“uploaded.csv” ready0 inventory items will be added to service points. Do you wish to proceed?Proceed with adding inventoryCancel"`;

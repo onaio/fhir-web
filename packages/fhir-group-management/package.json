@@ -33,6 +33,7 @@
   "dependencies": {
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/rbac": "workspace:^",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "fhirclient": "^2.3.11",
