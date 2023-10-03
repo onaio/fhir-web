@@ -2,7 +2,7 @@ import {Page, Locator} from '@playwright/test';
 
 
 export interface LocationFormFields{
-    partOf?: string[];
+    partOf?: string;
     name: string;
     alias?: string;
     status?: boolean;
@@ -10,7 +10,7 @@ export interface LocationFormFields{
     description?: string
 }
 
-export class LocationCreate{
+export class LocationForm{
     readonly page: Page
     readonly partOf: Locator
     readonly name: Locator
