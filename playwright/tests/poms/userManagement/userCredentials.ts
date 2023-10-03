@@ -10,7 +10,7 @@ import { Page, Locator } from '@playwright/test';
  * When filling a select, one should prefer the label. if the labels are not unique
  * enough then a one can fall back to using the value.
  */
-export interface UserCrendentials {
+export interface UserCredentials {
     password: string
 }
 
@@ -29,7 +29,7 @@ export class UserCredentialsForm {
         this.cancelBtn = page.getByRole('button', { name: /cancel/i })
     }
 
-    async fillForm(formFields: UserCrendentials) {
+    async fillForm(formFields: UserCredentials) {
         const { password } = formFields
         await this.passwordField.fill(password)
         await this.confirmPasswordField.fill(password)
