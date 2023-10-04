@@ -2,15 +2,18 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Spin } from 'antd';
-import { BrokenPage, Resource404 } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
+import { useQuery } from 'react-query';
 import AffiliationTable from './Table';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
+  locationHierarchyResourceType,
+  convertApiResToTree,
   Tree,
   TreeNode,
   locationTreeStateDucks,
-  useGetLocationsAsHierarchy,
 } from '@opensrp/fhir-location-management';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
@@ -30,13 +33,29 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  const hierarchyParams = {
+    identifier: fhirRootLocationIdentifier,
+  };
+
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
   const {
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
-  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier);
+  } = useQuery<IBundle | undefined, Error, TreeNode | undefined>(
+    [locationHierarchyResourceType, hierarchyParams],
+    async () => {
+      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
+        hierarchyParams
+      );
+    },
+    {
+      select: (res) => {
+        return res && convertApiResToTree(res);
+      },
+    }
+  );
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

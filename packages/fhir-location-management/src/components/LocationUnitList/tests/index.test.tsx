@@ -11,15 +11,15 @@ import {
   screen,
   within,
   fireEvent,
+  waitFor,
 } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
+import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
-import { locationResourceType } from '../../../constants';
-import { locationSData } from '../../../ducks/tests/fixtures';
+import { locationHierarchyResourceType } from '../../../constants';
 
 const history = createBrowserHistory();
 
@@ -28,7 +28,7 @@ jest.mock('fhirclient', () => {
 });
 
 const props = {
-  fhirRootLocationIdentifier: '2252',
+  fhirRootLocationIdentifier: 'eff94f33-c356-4634-8795-d52340706ba9',
   fhirBaseURL: 'http://test.server.org',
 };
 
@@ -88,23 +88,17 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   it('shows broken page', async () => {
     nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _summary: 'count' })
-      .reply(200, { total: 1000 })
-      .persist();
-
-    nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _count: 1000 })
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: props.fhirRootLocationIdentifier })
       .replyWithError({
         message: 'something awful happened',
         code: 'AWFUL_ERROR',
       });
 
     nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _count: 1000 })
-      .reply(200, []);
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: 'missing' })
+      .reply(200, {});
 
     const { rerender } = render(<AppWrapper {...props} />);
 
@@ -124,14 +118,9 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   it('works correctly', async () => {
     nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _summary: 'count' })
-      .reply(200, { total: 1000 });
-
-    nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _count: 1000 })
-      .reply(200, locationSData)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ identifier: props.fhirRootLocationIdentifier })
+      .reply(200, fhirHierarchy)
       .persist();
 
     nock(props.fhirBaseURL).get('/Location/303').reply(200, onaOfficeSubLocation);
@@ -202,5 +191,15 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // table change- node deselect
     expect(document.querySelectorAll('table tbody tr')).toHaveLength(1);
+
+    // invalidate queries to initiate a refetch of locationhierarchy
+    queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
+      throw err;
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Refreshing data/i)).toBeInTheDocument();
+    });
+    await waitForElementToBeRemoved(screen.getByText(/Refreshing data/i));
   });
 });

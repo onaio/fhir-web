@@ -6,7 +6,7 @@ import { Row, Col, Spin } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { useGetLocation, useGetLocationsAsHierarchy } from '../../helpers/utils';
+import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
 import { useTranslation } from '../../mls';
 
 export type LocationRouteProps = { id?: string };
@@ -49,7 +49,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     history.push(cancelURL);
   };
 
-  const { data, error, isLoading } = useGetLocationsAsHierarchy(
+  const { data, error, isLoading } = useGetLocationHierarchy(
     fhirBaseURL,
     fhirRootLocationIdentifier
   );

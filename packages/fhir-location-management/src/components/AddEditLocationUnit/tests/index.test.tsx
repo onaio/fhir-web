@@ -7,8 +7,8 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import { locationHierarchyResourceType, locationResourceType } from '../../../constants';
-import { locationSData } from '../../../ducks/tests/fixtures';
+import { locationHierarchyResourceType } from '../../../constants';
+import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createdLocation1 } from '../../LocationForm/tests/fixtures';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
@@ -28,7 +28,7 @@ const queryClient = new QueryClient({
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
-  fhirRootLocationIdentifier: '2252',
+  fhirRootLocationIdentifier: 'someId',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,14 +80,9 @@ test('renders correctly for new locations', async () => {
   const cancelUrlGenerator = '/cancelled';
 
   nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 });
-
-  nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _count: 1000 })
-    .reply(200, locationSData);
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, createdLocation1);
 
@@ -113,14 +108,9 @@ test('renders correctly for edit locations', async () => {
   history.push(`/add/${createdLocation1.partOf.identifier}?parentId=Location/303`);
 
   nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 });
-
-  nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _count: 1000 })
-    .reply(200, locationSData);
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ identifier: props.fhirRootLocationIdentifier })
+    .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL)
     .get(`/Location/${createdLocation1.partOf.identifier}`)

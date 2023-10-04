@@ -1,11 +1,5 @@
 import { convertApiResToTree, serializeTree } from '../utils';
 import { fhirHierarchy, serializedSample } from '../../ducks/tests/fixtures';
-import { locationSData } from '../../ducks/tests/fixtures';
-import { getResourcesFromBundle } from '@opensrp/react-utils';
-import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import TreeModel from 'tree-model';
-import { nestLocations } from '../flat-to-nested';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 test('parses fhir hierarchy correctly', () => {
   const tree = convertApiResToTree(fhirHierarchy);
@@ -61,13 +55,4 @@ test('serializes tress', () => {
 
   expect(serializeTree([tree])).toEqual(serializedSample);
   expect(serializeTree()).toBeUndefined();
-});
-
-test('can create tree from flat array of locations', () => {
-  const locations = getResourcesFromBundle<ILocation>(locationSData as IBundle);
-  const roots = nestLocations(locations);
-
-  const tree = new TreeModel().parse(roots[0]);
-  expect(tree.model.node.id).toEqual('2252');
-  expect(tree.model.nodeId).toEqual('Location/2252');
 });

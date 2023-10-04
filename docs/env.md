@@ -209,9 +209,9 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `"false"`
 
-- **REACT_APP_FHIR_ROOT_LOCATION_ID**
+- **REACT_APP_FHIR_ROOT_LOCATION_IDENTIFIER**
 
-  - FHIR Hierarchy root location id
+  - FHIR Hierarchy root location UUID
   - **Optional**_(`string`)_
 
 - **REACT_APP_OPENSRP_WEB_VERSION**

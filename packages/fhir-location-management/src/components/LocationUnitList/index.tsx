@@ -6,13 +6,15 @@ import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { useHistory } from 'react-router-dom';
-import { BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { URL_LOCATION_UNIT_ADD } from '../../constants';
+import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
+import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
+import { useQuery } from 'react-query';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { useGetLocationsAsHierarchy } from '../../helpers/utils';
+import { convertApiResToTree } from '../../helpers/utils';
 import './LocationUnitList.css';
 import { TreeNode } from '../../helpers/types';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -69,12 +71,31 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const { t } = useTranslation();
   const history = useHistory();
 
+  const hierarchyParams = {
+    identifier: fhirRootLocationIdentifier,
+  };
+
+  // get the root locations. the root node is the opensrp root location, its immediate children
+  // are the user-defined root locations.
   const {
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier);
+  } = useQuery<IBundle, Error, TreeNode | undefined>(
+    [locationHierarchyResourceType, hierarchyParams],
+    async ({ signal }) => {
+      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
+        hierarchyParams
+      );
+    },
+    {
+      select: (res) => {
+        return convertApiResToTree(res);
+      },
+      staleTime: Infinity, // prevent refetches on things like window refocus
+    }
+  );
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;
