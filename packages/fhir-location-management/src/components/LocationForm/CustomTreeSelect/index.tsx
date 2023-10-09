@@ -13,8 +13,6 @@ export interface CustomTreeSelectProps extends TreeSelectProps<LabelValueType> {
   disabledTreeNodesCallback?: (node: TreeNode) => boolean;
 }
 
-export const locationHierarchyResourceType = 'LocationHierarchy';
-
 /**
  * form field where user can select the parent location from a tree structure
  *

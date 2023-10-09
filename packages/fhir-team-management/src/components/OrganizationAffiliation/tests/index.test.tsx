@@ -54,7 +54,7 @@ const queryClient = new QueryClient({
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
-  fhirRootLocationIdentifier: 'rootLoc',
+  fhirRootLocationId: 'rootLoc',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,7 +113,7 @@ test('Edits organization affiliation correctly', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
+    .query({ identifier: props.fhirRootLocationId })
     .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL)
@@ -284,7 +284,7 @@ test('api error response', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
+    .query({ identifier: props.fhirRootLocationId })
     .replyWithError('Something awful happened');
 
   render(
@@ -307,7 +307,7 @@ test('api undefined response', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationIdentifier })
+    .query({ identifier: props.fhirRootLocationId })
     .reply(200, null);
 
   render(

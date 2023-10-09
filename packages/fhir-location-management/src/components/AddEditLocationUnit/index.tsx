@@ -19,7 +19,7 @@ export interface NewEditLocationUnitProps
     >,
     RouteComponentProps<LocationRouteProps> {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string;
+  fhirRootLocationId: string;
   cancelURLGenerator: () => string;
 }
 
@@ -33,7 +33,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     hidden,
     disabled,
     fhirBaseURL,
-    fhirRootLocationIdentifier,
+    fhirRootLocationId,
     successURLGenerator,
     cancelURLGenerator,
     disabledTreeNodesCallback,
@@ -49,10 +49,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
     history.push(cancelURL);
   };
 
-  const { data, error, isLoading } = useGetLocationHierarchy(
-    fhirBaseURL,
-    fhirRootLocationIdentifier
-  );
+  const { data, error, isLoading } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
 
   // location being edited id
   const locId = params.id;

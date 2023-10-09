@@ -28,7 +28,7 @@ jest.mock('fhirclient', () => {
 });
 
 const props = {
-  fhirRootLocationIdentifier: 'eff94f33-c356-4634-8795-d52340706ba9',
+  fhirRootLocationId: 'eff94f33-c356-4634-8795-d52340706ba9',
   fhirBaseURL: 'http://test.server.org',
 };
 
@@ -89,7 +89,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('shows broken page', async () => {
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: props.fhirRootLocationIdentifier })
+      .query({ identifier: props.fhirRootLocationId })
       .replyWithError({
         message: 'something awful happened',
         code: 'AWFUL_ERROR',
@@ -106,7 +106,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     expect(screen.getByText(/reason: something awful happened/)).toBeInTheDocument();
 
-    rerender(<AppWrapper {...{ ...props, fhirRootLocationIdentifier: 'missing' }} />);
+    rerender(<AppWrapper {...{ ...props, fhirRootLocationId: 'missing' }} />);
 
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -119,7 +119,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('works correctly', async () => {
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: props.fhirRootLocationIdentifier })
+      .query({ identifier: props.fhirRootLocationId })
       .reply(200, fhirHierarchy)
       .persist();
 

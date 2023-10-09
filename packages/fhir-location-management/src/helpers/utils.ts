@@ -73,11 +73,11 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
  * get the location hierarchy of location with given identifier
  *
  * @param baseUrl - the server base url
- * @param rootIdentifier - the location identifier
+ * @param rootId - the location identifier
  */
-export const useGetLocationHierarchy = (baseUrl: string, rootIdentifier: string) => {
+export const useGetLocationHierarchy = (baseUrl: string, rootId: string) => {
   const hierarchyParams = {
-    identifier: rootIdentifier,
+    _id: rootId,
   };
   return useQuery<IBundle, Error, TreeNode>(
     [locationHierarchyResourceType, hierarchyParams],

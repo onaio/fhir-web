@@ -2,18 +2,15 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { PageHeader } from '@opensrp/react-utils';
 import { Row, Col, Spin } from 'antd';
-import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { useQuery } from 'react-query';
+import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import AffiliationTable from './Table';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
-  locationHierarchyResourceType,
-  convertApiResToTree,
   Tree,
   TreeNode,
   locationTreeStateDucks,
+  useGetLocationHierarchy,
 } from '@opensrp/fhir-location-management';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
@@ -24,18 +21,14 @@ reducerRegistry.register(reducerName, reducer);
 
 interface LocationUnitListProps {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string;
+  fhirRootLocationId: string;
 }
 
 export const AffiliationList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
-  const { fhirBaseURL, fhirRootLocationIdentifier } = props;
+  const { fhirBaseURL, fhirRootLocationId } = props;
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  const hierarchyParams = {
-    identifier: fhirRootLocationIdentifier,
-  };
 
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
@@ -43,19 +36,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
-  } = useQuery<IBundle | undefined, Error, TreeNode | undefined>(
-    [locationHierarchyResourceType, hierarchyParams],
-    async () => {
-      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType).list(
-        hierarchyParams
-      );
-    },
-    {
-      select: (res) => {
-        return res && convertApiResToTree(res);
-      },
-    }
-  );
+  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

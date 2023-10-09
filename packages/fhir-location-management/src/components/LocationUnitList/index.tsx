@@ -6,15 +6,13 @@ import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { LocationUnitDetail } from '../LocationUnitDetail';
 import { useHistory } from 'react-router-dom';
-import { FHIRServiceClass, BrokenPage, Resource404 } from '@opensrp/react-utils';
-import { locationHierarchyResourceType, URL_LOCATION_UNIT_ADD } from '../../constants';
-import { useQuery } from 'react-query';
+import { BrokenPage, Resource404 } from '@opensrp/react-utils';
+import { URL_LOCATION_UNIT_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { convertApiResToTree } from '../../helpers/utils';
+import { useGetLocationHierarchy } from '../../helpers/utils';
 import './LocationUnitList.css';
 import { TreeNode } from '../../helpers/types';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useSelector, useDispatch } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import {
@@ -30,7 +28,7 @@ reducerRegistry.register(reducerName, reducer);
 
 interface LocationUnitListProps {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string; // This is the location.id field.
+  fhirRootLocationId: string; // This is the location.id field.
 }
 
 export interface AntTreeData {
@@ -64,16 +62,12 @@ export function parseTableData(hierarchy: TreeNode[]) {
 }
 
 export const LocationUnitList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
-  const { fhirBaseURL, fhirRootLocationIdentifier } = props;
+  const { fhirBaseURL, fhirRootLocationId } = props;
   const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
-
-  const hierarchyParams = {
-    identifier: fhirRootLocationIdentifier,
-  };
 
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
@@ -82,20 +76,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useQuery<IBundle, Error, TreeNode | undefined>(
-    [locationHierarchyResourceType, hierarchyParams],
-    async ({ signal }) => {
-      return new FHIRServiceClass<IBundle>(fhirBaseURL, locationHierarchyResourceType, signal).list(
-        hierarchyParams
-      );
-    },
-    {
-      select: (res) => {
-        return convertApiResToTree(res);
-      },
-      staleTime: Infinity, // prevent refetches on things like window refocus
-    }
-  );
+  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;
