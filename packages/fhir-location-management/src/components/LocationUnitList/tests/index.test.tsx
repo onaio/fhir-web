@@ -89,7 +89,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('shows broken page', async () => {
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: props.fhirRootLocationId })
+      .query({ _id: props.fhirRootLocationId })
       .replyWithError({
         message: 'something awful happened',
         code: 'AWFUL_ERROR',
@@ -97,7 +97,7 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: 'missing' })
+      .query({ _id: 'missing' })
       .reply(200, {});
 
     const { rerender } = render(<AppWrapper {...props} />);
@@ -119,7 +119,7 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('works correctly', async () => {
     nock(props.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: props.fhirRootLocationId })
+      .query({ _id: props.fhirRootLocationId })
       .reply(200, fhirHierarchy)
       .persist();
 

@@ -81,7 +81,7 @@ test('renders correctly for new locations', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, createdLocation1);
@@ -109,7 +109,7 @@ test('renders correctly for edit locations', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL)
@@ -135,7 +135,7 @@ test('data loading problem', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .replyWithError('something aweful happened');
 
   nock(props.fhirBaseURL).get('/Location/someId').replyWithError('Throw in the towel, as well');
@@ -158,7 +158,7 @@ test('data loading but undefined', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .reply(200, null);
 
   nock(props.fhirBaseURL).get('/Location/someId').reply(200, null);

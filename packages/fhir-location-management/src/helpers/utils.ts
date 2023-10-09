@@ -91,6 +91,7 @@ export const useGetLocationHierarchy = (baseUrl: string, rootId: string) => {
         return convertApiResToTree(res) as TreeNode;
       },
       refetchInterval: false,
+      staleTime: Infinity,
     }
   );
 };

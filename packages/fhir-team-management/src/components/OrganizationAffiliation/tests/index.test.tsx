@@ -113,7 +113,7 @@ test('Edits organization affiliation correctly', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy);
 
   nock(props.fhirBaseURL)
@@ -284,7 +284,7 @@ test('api error response', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
+    .query({ _id: props.fhirRootLocationId })
     .replyWithError('Something awful happened');
 
   render(
@@ -305,15 +305,32 @@ test('api undefined response', async () => {
   const history = createMemoryHistory();
   history.push('/assignments');
 
+  const thisProps = {
+    ...props,
+    fhirRootLocationId: 'unknown',
+  };
+
   nock(props.fhirBaseURL)
     .get(`/${locationHierarchyResourceType}/_search`)
-    .query({ identifier: props.fhirRootLocationId })
-    .reply(200, null);
+    .query({ _id: thisProps.fhirRootLocationId })
+    .reply(404, {
+      resourceType: 'OperationOutcome',
+      text: {
+        status: 'generated',
+      },
+      issue: [
+        {
+          severity: 'error',
+          code: 'processing',
+          diagnostics: 'HAPI-2001: Resource Location/2252d is not known',
+        },
+      ],
+    });
 
   render(
     <Router history={history}>
       <AppWrapper>
-        <AffiliationList {...props} />
+        <AffiliationList {...thisProps} />
       </AppWrapper>
     </Router>
   );
@@ -321,7 +338,5 @@ test('api undefined response', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // error page
-  expect(
-    screen.getByText(/Sorry, the resource you requested for, does not exist/)
-  ).toBeInTheDocument();
+  expect(screen.getByText(/Resource Location\/2252d is not known/)).toBeInTheDocument();
 });
