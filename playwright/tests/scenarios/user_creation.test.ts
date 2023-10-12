@@ -48,14 +48,17 @@ test.describe("User management", () => {
         const userCredentials = new UserCredentialsForm(page)
         // confirm credentials update view is loaded
         await expect(homePage.dashboard.section.getByRole("heading", {name: /User credentials/i})).toBeVisible()
-        userCredentials.fillForm({password: formFields.password})
+        await userCredentials.fillForm({password: formFields.password})
+
+        await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/users`)
+        await waitForSpinner(page);
 
 
         // after Action - search for created entity in 
         await userListPage.goSearch(formFields.username)
-        await waitForSpinner(page)
 
-        // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
+        await expect(page.getByRole('cell', { name: formFields.firstName, exact: true })).toBeVisible()
+        // should at-least one entry - TODO - possibility of having a centralized util methods for interacting with tables - including pagination.
         const table = await page.locator(".ant-table table")
         const tableRows = await table.locator('tbody tr')
         const content = await tableRows.allTextContents()

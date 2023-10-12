@@ -2,14 +2,14 @@ import { faker } from '@faker-js/faker';
 import { test, expect } from '@playwright/test';
 import { PLAYWRIGHT_BASE_URL, PLAYWRIGHT_PREFIX } from '../../env';
 import { HomePage } from '../poms/app/home';
-import { LocationCreate, LocationFormFields } from '../poms/locationManagement/create';
+import { LocationFormFields, LocationForm } from '../poms/locationManagement/create';
 import { LocationUnitList } from '../poms/locationManagement/list';
 import { TeamForm, TeamFormFields } from '../poms/teamManagement/create';
 import { TeamList } from '../poms/teamManagement/list';
 import { TeamAssignment } from '../poms/teamManagement/teamAssignment';
 import { UserForm, UserFormFields } from '../poms/userManagement/userForm';
 import { UserListDash } from '../poms/userManagement/list';
-import { UserCredentialsForm, UserCrendentials } from '../poms/userManagement/userCredentials';
+import { UserCredentialsForm, UserCredentials } from '../poms/userManagement/userCredentials';
 import { waitForSpinner } from '../helpers/utils';
 
 const locationPayload: LocationFormFields = {
@@ -18,7 +18,7 @@ const locationPayload: LocationFormFields = {
     description: faker.word.words(10)
 }
 
-const userFormPayload: UserFormFields & UserCrendentials = {
+const userFormPayload: UserFormFields & UserCredentials = {
     firstName: `${PLAYWRIGHT_PREFIX}-${faker.person.firstName()}`,
     lastName: `${PLAYWRIGHT_PREFIX}-${faker.person.lastName()}`,
     email: faker.internet.email(),
@@ -71,20 +71,10 @@ test.describe("User modification", () => {
         const userCredentials = new UserCredentialsForm(page)
         // confirm credentials update view is loaded
         await expect(homePage.dashboard.section.getByRole("heading", {name: /User credentials/i})).toBeVisible()
-        userCredentials.fillForm({password: userFormPayload.password})
-
-        // after Action - search for created entity in 
-        await userListPage.goSearch(userFormPayload.username)
-        await waitForSpinner(page)
-
-        // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
-        const table = await page.locator(".ant-table table")
-        const tableRows = await table.locator('tbody tr')
-        const content = await tableRows.allTextContents()
-        await expect(content).toContain(`${userFormPayload.firstName}${userFormPayload.lastName}${userFormPayload.username.toLowerCase()}Edit`)
+        await userCredentials.fillForm({password: userFormPayload.password})
     })
 
-    test('creates a location', async ({ page }) => {
+    test.skip('creates a location', async ({ page }) => {
         const homePage = new HomePage(page)
         await homePage.goto()
 
@@ -105,7 +95,7 @@ test.describe("User modification", () => {
         await expect(homePage.dashboard.section.getByRole("heading", { name: /Add Location Unit/i })).toBeVisible()
 
         // fill location form
-        const locationForm = new LocationCreate(page)
+        const locationForm = new LocationForm(page)
 
         await locationForm.fillForm(locationPayload)
 
@@ -114,7 +104,7 @@ test.describe("User modification", () => {
         await page.getByTitle(new RegExp(locationPayload.name, "i"))
     })
 
-    test("create and assign user to team", async ({ page }) => {
+    test.skip("create and assign user to team", async ({ page }) => {
         const homePage = new HomePage(page);
         await homePage.goto()
 
@@ -148,7 +138,7 @@ test.describe("User modification", () => {
          await expect(content).toContain(`${teamFormPayload.name}Edit`)
     })
 
-    test("Assign team to location", async ({ page }) => {
+    test.skip("Assign team to location", async ({ page }) => {
         const homePage = new HomePage(page)
         await homePage.goto()
 

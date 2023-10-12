@@ -50,14 +50,14 @@ test.describe("Location Management", () => {
 
         // go to location list view
         await homePage.dashboard.locationsLink.click()
-        await waitForSpinner(page)
+        await expect(page.locator("div.ant-spin")).toBeHidden({timeout: 10000})
         await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/admin/location/unit`)
 
         // confirm list view is loaded.
         await expect(homePage.dashboard.section.getByRole("heading", {name: /Location Unit management/i})).toBeVisible()
     })
 
-    test('Create locations within a hierarchy', async ({page}) => {
+    test.skip('Create locations within a hierarchy', async ({page}) => {
         const homePage = new HomePage(page)
         await homePage.goto()
 

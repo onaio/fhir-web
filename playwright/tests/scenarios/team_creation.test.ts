@@ -57,6 +57,7 @@ test.describe("Team/Organization creation", () => {
         await waitForSpinner(page)
 
         // should atleast one entry - TODO - possiblity of having a centralized util methods for interacting with tables - including pagination.
+        await expect(page.getByRole('cell', { name: formFields.name, exact: true })).toBeVisible()
         const table = page.locator(".ant-table table")
         const tableRows = table.locator('tbody tr')
         const content = await tableRows.allTextContents()
