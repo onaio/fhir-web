@@ -20,9 +20,9 @@ export class CommodityForm {
     constructor(page: Page) {
         this.page = page
         this.nameField = page.getByLabel(/Name/i)
-        this.statusActiveRadio = page.getByText(/^active/i, { exact: true })
-        this.statusInactiveRadio = page.getByText(/Inactive/i)
-        this.commodityTypeSelectField = page.getByLabel(/Select Commodity status/i)
+        this.statusActiveRadio = page.getByText(/^Active/i, { exact: true })
+        this.statusInactiveRadio = page.getByText(/Disabled/i)
+        this.commodityTypeSelectField = page.getByLabel(/Select Commodity Type/i)
         this.measureSelectField = page.getByLabel(/Select the unit of measure/i)
         this.submitBtn = page.getByRole('button', { name: /save/i })
         this.cancelBtn = page.getByRole('button', { name: /cancel/i })
@@ -47,7 +47,7 @@ export class CommodityForm {
         }
         if (type) {
             await this.measureSelectField.click()
-            await this.measureSelectField.fill(type)
+            await this.measureSelectField.fill(measure)
             await this.page.getByTitle(new RegExp(measure, "i")).getByText(new RegExp(measure, "i")).click()
             await this.measureSelectField.press("Escape")
         }
