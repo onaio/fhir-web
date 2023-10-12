@@ -19,16 +19,17 @@ test.describe("Commodity Management", () => {
         await homePage.goto()
 
         // go to commodities list view
-        await homePage.dashboard.groupsLink.click()
+        await homePage.dashboard.commoditiesLink.click()
         await waitForSpinner(page)
-        await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/groups/list`)
+        await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/commodity/list`)
 
         // confirm list view is loaded.
-        await expect(homePage.dashboard.section.getByRole("heading", { name: /Groups List/i })).toBeVisible()
+        await expect(homePage.dashboard.section.getByRole("heading", { name: /Commodity List/i })).toBeVisible()
 
         // we do not know what commodities would be here
-        const tableHeader = homePage.page.locator('table thead')
-        await expect(tableHeader.allTextContents()).toEqual("")
+        const tableHeader = await page.locator('table thead');
+        const tableHeaderText = await tableHeader.allTextContents()
+        await expect(tableHeaderText).toEqual(["NameActivetypeActions"])
     })
 
     test('Can create new commodities and see them',async ({page}) => {
@@ -36,23 +37,26 @@ test.describe("Commodity Management", () => {
         await homePage.goto()
 
         // go to commodities list view
-        await homePage.dashboard.groupsLink.click()
-        await waitForSpinner(page)
-        await expect(page).toHaveURL(`${PLAYWRIGHT_BASE_URL}/groups/list`)
+        await homePage.dashboard.commoditiesLink.click()
+        await waitForSpinner(page);
 
         // confirm list view is loaded.
-        await expect(homePage.dashboard.section.getByRole("heading", { name: /Groups List/i })).toBeVisible()
+        await expect(homePage.dashboard.section.getByRole("heading", { name: /Commodity List/i })).toBeVisible()
 
         const commodityList = new CommodityList(page);
         await commodityList.addCommodityBtn.click();
 
         const commodityForm = new CommodityForm(page);
-        commodityForm.fillForm(commodity1);
+        await commodityForm.fillForm(commodity1);
 
-        commodityList.goSearch(commodity1.name)
+        await commodityList.goSearch(commodity1.name)
+        await waitForSpinner(page);
         // expect at least on table record and all records names should include this commodity name
 
-        const tableEntries = commodityForm.page.locator('table tbody').getByText(commodity1.name)
+        const tBodies = (await page.locator('table tbody'))
+        const tableEntries = await tBodies.getByText(commodity1.name)
+        // TODO - should we check that all table records include the search substring. In most cases we 
+        // only expect a single record.
         await expect(tableEntries).toBeVisible()
 
         const areSuperStrings = await (await tableEntries.allInnerTexts()).every(str => str.includes(commodity1.name))

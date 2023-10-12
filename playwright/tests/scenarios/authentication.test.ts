@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { PLAYWRIGHT_PASSWORD, PLAYWRIGHT_USERNAME } from '../../env';
-import {HomePage} from './poms/home'
-import { LoginPage } from './poms/keycloakLogin';
+import {HomePage} from '../poms/app/home'
+import { LoginPage } from '../poms/app/keycloakLogin';
 
 // use no authentication state if one is already created.
 test.use({

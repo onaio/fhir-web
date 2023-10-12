@@ -21,7 +21,9 @@ test.describe("Group Management", () => {
 
         // we do not know what groups would be here
 
-        const tableHeader = homePage.page.locator('table thead')
-        await expect(tableHeader.allTextContents()).toEqual("")
+        await expect(page.getByRole('columnheader', { name: 'Name' })).toBeVisible();
+        await expect(page.getByRole('columnheader', { name: 'Active' })).toBeVisible();
+        await expect(page.getByRole('columnheader', { name: 'Last Updated' })).toBeVisible();
+        await expect(page.getByRole('columnheader', { name: 'Actions' })).toBeVisible();
     })
 })
