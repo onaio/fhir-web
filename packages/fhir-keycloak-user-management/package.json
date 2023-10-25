@@ -23,6 +23,7 @@
     "dist"
   ],
   "peerDependencies": {
+    "@ant-design/pro-components": "^2.6.32",
     "@opensrp/store": "^0.0.10",
     "antd": "^5.5.1",
     "i18next": "^19.8.4",
