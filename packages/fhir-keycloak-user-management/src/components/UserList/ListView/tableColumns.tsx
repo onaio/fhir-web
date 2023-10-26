@@ -9,6 +9,7 @@ import {
   URL_USER_EDIT,
   KEYCLOAK_URL_USERS,
   URL_USER_CREDENTIALS,
+  URL_USER,
 } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
@@ -66,7 +67,7 @@ export const getTableColumns = (
         key: '1',
         permissions: [],
         label: (
-          <Button onClick={() => onViewDetails(record.id)} type="link">
+          <Button onClick={() =>  history.push(`${URL_USER}/${record.id}`)} type="link">
             {t('View Details')}
           </Button>
         ),
