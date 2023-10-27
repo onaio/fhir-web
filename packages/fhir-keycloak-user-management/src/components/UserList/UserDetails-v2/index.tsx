@@ -1,16 +1,17 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Alert, Button, Descriptions, Divider, Table, Tabs, Tag } from 'antd';
+import { Alert, Button, Col, Descriptions, Divider, Row, Table, Tabs, Tag } from 'antd';
+import { Tree, generateFhirLocationTree } from '@opensrp/fhir-location-management';
 import { Organization } from '@opensrp/team-management';
 import { Spin } from 'antd';
 import { useTranslation } from '../../../mls'
 import { useParams } from 'react-router';
-import { BrokenPage, Resource404, TableLayout, getResourcesFromBundle, parseFhirHumanName, useSimpleTabularView, useTabularViewWithLocalSearch } from '@opensrp/react-utils';
+import { BrokenPage, FHIRServiceClass, Resource404, TableLayout, getResourcesFromBundle, parseFhirHumanName, useSimpleTabularView, useTabularViewWithLocalSearch } from '@opensrp/react-utils';
 import { PageHeader } from '@ant-design/pro-layout';
 import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS, KeycloakUser, URL_USER, UserGroupDucks } from '@opensrp/user-management';
-import { KeycloakService } from '@opensrp/keycloak-service';
+import { KeycloakAPIService, KeycloakService } from '@opensrp/keycloak-service';
 import { useQuery } from 'react-query';
-import { groupResourceType, practitionerResourceType } from '../../../constants';
+import { groupResourceType, keycloakRoleMappingsEndpoint, practitionerResourceType } from '../../../constants';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
@@ -19,6 +20,9 @@ import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { Link } from 'react-router-dom';
+import { StringLocale } from 'yup';
 
 
 /** New details view. ->
@@ -42,23 +46,108 @@ const useGetKeycloakUserRoles = (userId: string) => {
   // roles assigned to user by clients.
 }
 
-
-// TODO - what if we do not have a linked practitioner.
-const useGetPractitioner = (userId: string) => {
-  // get practitioner include practitionerRoles. Multiple practitioners having multiple practitionerRoles.
-  // some practitioenerRoles are purely for assignment. Add codes where possible.
+interface KeycloakGroupDetailsProp {
+  keycloakBaseUrl: string;
+  resourceId: string;
 }
 
-const useGetCareTeams = () => {
-  // get careTeams that reference this practitioner
+const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
+  const { t } = useTranslation();
+  const { keycloakBaseUrl, resourceId } = props;
+
+  // TODO - useSimpleTabular view but for keycloak requests.
+  const { data, error, isLoading } = useQuery([], () => new KeycloakService(
+    `${KEYCLOAK_URL_USERS}/${resourceId}${KEYCLOAK_URL_USER_GROUPS}`,
+    keycloakBaseUrl
+  ).list())
+
+  if (error && !data) {
+    return <BrokenPage errorMessage={"Unable to fetch the keycloak groups that the user is assigned to"} />;
+  }
+
+  // name, path, leave action.
+  const columns = [
+    {
+      title: t('Name'),
+      dataIndex: 'name' as const,
+    },
+    {
+      title: t('Path'),
+      dataIndex: 'path' as const,
+    },
+    {
+      title: t(''),
+      dataIndex: 'id' as const,
+      render: (id: string) => <Button disabled type='link'>{"Leave"}</Button>,
+    },
+  ];
+
+  const tableProps = {
+    datasource: data,
+    columns,
+    loading: isLoading,
+    // pagination: true,
+  };
+
+  return <TableLayout {...tableProps} />
 }
 
-const useGetOrganization = () => {
-  // get organizations that reference this practitioner either directly or via a careTeam
+interface RoleMapping {
+  id: string;
+  name: string;
+  description: string;
+  composite: boolean;
+  clientRole: boolean;
+  containerId: string;
 }
+interface ClientRoleMapping {
+  id: string;
+  client: string;
+  mappings: RoleMapping[]
+}
+interface KeycloakUserRoleMappings {
+  realMappings?: RoleMapping[];
+  clientMappings?: Record<string, ClientRoleMapping>
+}
+const KeycloakRoleDetails = (props: KeycloakGroupDetailsProp) => {
+  const { t } = useTranslation();
+  const { keycloakBaseUrl, resourceId } = props;
 
-const useGetLocations = () => {
-  // get locations where this practitioner is assigned.
+  // TODO - useSimpleTabular view but for keycloak requests.
+  const { data, error, isLoading } = useQuery([], () => new KeycloakService(
+    `${KEYCLOAK_URL_USERS}/${resourceId}/${keycloakRoleMappingsEndpoint}`,
+    keycloakBaseUrl
+  ).list())
+
+  if (error && !data) {
+    return <BrokenPage errorMessage={"Unable to fetch Roles assigned to the user"} />;
+  }
+
+  // name, path, leave action.
+  const columns = [
+    {
+      title: t('Name'),
+      dataIndex: 'name' as const,
+    },
+    {
+      title: t('Path'),
+      dataIndex: 'path' as const,
+    },
+    {
+      title: t(''),
+      dataIndex: 'id' as const,
+      render: (id: string) => <Button disabled type='link'>{"Leave"}</Button>,
+    },
+  ];
+
+  const tableProps = {
+    datasource: data,
+    columns,
+    loading: isLoading,
+    // pagination: true,
+  };
+
+  return <TableLayout {...tableProps} />
 }
 
 // - if user record not found then show 404 under page details.
@@ -81,8 +170,7 @@ const routes = [{
 ]
 
 export const UserDetails = (props: UserDetailProps) => {
-  const { keycloakBaseURL: keycloakBaseUrl, fhirBaseURL: fhirBBaseUrl } = props
-  console.log({ props })
+  const { keycloakBaseURL: keycloakBaseUrl, fhirBaseURL: fhirBaseUrl } = props
   const params = useParams<{ id: string }>()
   const { id: resourceId } = params;
   const { t } = useTranslation();
@@ -94,6 +182,23 @@ export const UserDetails = (props: UserDetailProps) => {
   } = useQuery<KeycloakUser>([KEYCLOAK_URL_USERS, resourceId], () =>
     new KeycloakService(`${KEYCLOAK_URL_USERS}`, keycloakBaseUrl).read(resourceId)
   );
+
+  const practitionerDetailsResourceType = "practitioner-details"
+
+  const extraQueryFilters = {
+    "keycloak-uuid": resourceId,
+  }
+
+  const {
+    data: practitionerDetails, isLoading: detailsLoading, error: detailsError,
+
+  } = useQuery<IBundle, unknown, PractitionerDetail>([practitionerDetailsResourceType, resourceId], () => new FHIRServiceClass<IBundle>(fhirBaseUrl, practitionerDetailsResourceType).list(extraQueryFilters), {
+    select: (res) => {
+      // invariant : expect practitioner-details will always ever be a single record per keycloak user.
+      return getResourcesFromBundle<PractitionerDetail>(res)[0]
+    }
+  });
+  const practDetailsByResName: PractitionerDetail['fhir'] = practitionerDetails?.fhir ?? {}
 
   if (userIsLoading) {
     return <Spin className='custom-spinner'></Spin>
@@ -179,12 +284,12 @@ export const UserDetails = (props: UserDetailProps) => {
             size={"middle"}
             items={
               [
-                { label: "Groups", key: 'Groups', children: <Table /> },
+                { label: "Groups", key: 'Groups', children: <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} /> },
                 { label: "Roles", key: 'Roles', children: <Table /> },
-                { label: "Practitioners", key: 'Practitioners', children: <PractitionerDetailsView fhirBaseUrl={fhirBBaseUrl} keycloakId={resourceId} /> },
-                { label: "CareTeams", key: 'CareTeams', children: <Table /> },
-                { label: "Organizations", key: 'Organizations', children: <Table /> },
-                { label: "Locations", key: 'Locations', children: <Table /> },
+                { label: "Practitioners", key: 'Practitioners', children: <PractitionerDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
+                { label: "CareTeams", key: 'CareTeams', children: <CareTeamDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
+                { label: "Organizations", key: 'Organizations', children: <OrganizationDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
+                { label: "Locations", key: 'Locations', children: <LocationDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
               ]
             }
           />
@@ -195,91 +300,25 @@ export const UserDetails = (props: UserDetailProps) => {
   );
 };
 
-// const UserDetailsTabView = ({keycloakBaseUrl, resourceId}: {keycloakBaseUrl: string, resourceId: string}) => {
-
-//   // get groups in a searchable way
-//    // read userGroup
-//    const { data, isLoading, error, isFetching } = useQuery<
-//    UserGroupDucks.KeycloakUserGroup[]
-//  >([groupResourceType, resourceId], () => {
-//    return new KeycloakService(
-//      `${KEYCLOAK_URL_USERS}/${resourceId}${KEYCLOAK_URL_USER_GROUPS}`,
-//      keycloakBaseUrl
-//    ).list();
-//  });
-
-//  if (error && !data) {
-//   return <BrokenPage errorMessage={(error as Error).message} />;
-// }
-
-// const tableData = (data?.records ?? []).map((org: IGroup, index: number) => {
-//   return {
-//     ...parseGroup(org),
-//     key: `${index}`,
-//   };
-// });
-
-// const columns = 
-
-// const tableProps = {
-//   datasource: tableData,
-//   columns,
-//   loading: isFetching || isLoading,
-//   pagination: tablePaginationProps,
-// };
-
-
-
-
-// }
-
 interface PractitionerDetail extends Resource {
   fhir: {
     careteams?: ICareTeam[];
     teams?: IOrganization[];
-    locationHierarchyList: any[]; // TODO - import LocationHierarchy
-    practitionerRoles: IPractitionerRole[];
-    groups: IGroup[];
-    practitioner: IPractitioner[]
+    locationHierarchyList?: any[]; // TODO - import LocationHierarchy
+    practitionerRoles?: IPractitionerRole[];
+    groups?: IGroup[];
+    practitioner?: IPractitioner[]
   }
 }
 
-function groupResourcesIdDetails(details: PractitionerDetail[]){
-  const groupedData = {}
-  for (const detail of details){
-    for(const [_, resources] of Object.entries(detail.fhir)){
-      for(const resource of resources){
 
-      }
-    }
-  }
-}
-
-const DetailsTabView = ({ fhirBaseUrl, keycloakId }: { fhirBaseUrl: string, keycloakId: string }) => {
+const PractitionerDetailsView = ({ loading, practitionerDetails }: { loading: boolean, practitionerDetails: PractitionerDetail['fhir'] }) => {
   const { t } = useTranslation();
 
-  /** Get practitioner details and group them, provision them for the tab children, they can consume whichever data they want.
-  */
 
-  const practitionerDetailsResourceType = "practitioner-details"
-
-  const extraQueryFilters = {
-    "keycloak-uuid": keycloakId,
-  }
-
-  const {
-    data, isFetching, isLoading, error,
-
-  } = useQuery<IBundle, unknown, PractitionerDetail>([practitionerDetailsResourceType, keycloakId], () => new KeycloakService(practitionerDetailsResourceType, fhirBaseUrl).list(extraQueryFilters), {
-    select: (res) => {
-      // invariant : expect practitioner-details will always ever be a single record per keycloak user.
-      return getResourcesFromBundle<PractitionerDetail>(res)[0]
-    }
-  });
-  const resourcesByName = data?.fhir ?? {}
-
-  // loop through records, and for each practitioner figure their practitionerRoles.
-  const tableData = processPractitionerDetails(data?.records ?? [])
+  const practitioners = practitionerDetails.practitioner ?? [];
+  const practitionerRoles = practitionerDetails.practitionerRoles ?? [];
+  const tableData = processPractitionerDetails(practitioners, practitionerRoles)
 
 
   const columns = [
@@ -302,8 +341,8 @@ const DetailsTabView = ({ fhirBaseUrl, keycloakId }: { fhirBaseUrl: string, keyc
   const tableProps = {
     datasource: tableData,
     columns,
-    loading: isFetching || isLoading,
-    pagination: tablePaginationProps,
+    loading,
+    // pagination: true,
   };
 
   return <TableLayout {...tableProps} />
@@ -311,41 +350,82 @@ const DetailsTabView = ({ fhirBaseUrl, keycloakId }: { fhirBaseUrl: string, keyc
 }
 
 
-const PractitionerDetailsView = ({ fhirBaseUrl, keycloakId }: { fhirBaseUrl: string, keycloakId: string }) => {
+const CareTeamDetailsView = ({ loading, practitionerDetails }: { loading: boolean, practitionerDetails: PractitionerDetail['fhir'] }) => {
   const { t } = useTranslation();
-  /** get all practitioners linked to this user. 
-   * where do practitioner role information come in. revInclude practitionerRoles.
-  */
-
-  /** get practitioners that  have the given secondary identfier, an include practitionerRoles that reference those practitioners. */
-  const extraQueryFilters = {
-    identifier: keycloakId,
-    _revinclude: "PractitionerRole:practitioner"
-  }
-
-  const {
-    queryValues: { data, isFetching, isLoading, error },
-    tablePaginationProps,
-    searchFormProps,
-  } = useSimpleTabularView<IPractitioner | IPractitionerRole>(fhirBaseUrl, practitionerResourceType, extraQueryFilters);
-
-  // loop through records, and for each practitioner figure their practitionerRoles.
-  const tableData = processPractitionerDetails(data?.records ?? [])
 
 
+  const careTeams = practitionerDetails.careteams ?? [];
+  const tableData = careTeams.map(resource => {
+    const { id, status, name, } = resource
+    return {
+      id, status, name
+    }
+  })
+
+
+  // identifier, status, 
   const columns = [
     {
+      title: t('Id'),
+      dataIndex: 'id' as const,
+    },
+    {
       title: t('Name'),
-      dataIndex: 'name',
+      dataIndex: 'name' as const,
+      render: (name: string) => <Link to="#">{name}</Link>
+    },
+    {
+      title: t('status'),
+      dataIndex: 'status' as const,
+      render: (code: Coding) => <FhirCoding coding={code} />,
+    },
+  ];
+
+  const tableProps = {
+    datasource: tableData,
+    columns,
+    loading,
+    // pagination: true,
+  };
+
+  return <TableLayout {...tableProps} />
+
+}
+
+
+const OrganizationDetailsView = ({ loading, practitionerDetails }: { loading: boolean, practitionerDetails: PractitionerDetail['fhir'] }) => {
+  const { t } = useTranslation();
+
+
+  // get organization Affiliation - use it tag the codings for the organizations.
+  const organizations = practitionerDetails.teams ?? [];
+  const tableData = organizations.map(resource => {
+    const { id, active, type, name } = resource
+    return {
+      id, active, type: type ?? [], name
+    }
+  })
+
+
+  // identifier, status, 
+  const columns = [
+    {
+      title: t('Id'),
+      dataIndex: 'id' as const,
+    },
+    {
+      title: t('Name'),
+      dataIndex: 'name' as const,
+      render: (name: string) => <Link to="#">{name}</Link>
     },
     {
       title: t('Active'),
-      dataIndex: 'active',
-      render: (value: boolean) => (value === true ? 'Active' : 'Inactive'),
+      dataIndex: 'active' as const,
+      render: (isActive: string) => isActive ? "Active" : "Inactive",
     },
     {
-      title: t('Coding'),
-      dataIndex: 'concepts',
+      title: t('Type'),
+      dataIndex: 'type' as const,
       render: (concepts: CodeableConcept[]) => concepts.map(concept => <FhirCodeableConcept concept={concept} />),
     },
   ];
@@ -353,42 +433,140 @@ const PractitionerDetailsView = ({ fhirBaseUrl, keycloakId }: { fhirBaseUrl: str
   const tableProps = {
     datasource: tableData,
     columns,
-    loading: isFetching || isLoading,
-    pagination: tablePaginationProps,
+    loading,
+    // pagination: true,
   };
 
   return <TableLayout {...tableProps} />
 
 }
 
-function processPractitionerDetails(records: (IPractitioner | IPractitionerRole)[]) {
+
+const LocationDetailsView = ({ loading, practitionerDetails }: { loading: boolean, practitionerDetails: PractitionerDetail['fhir'] }) => {
+  const { t } = useTranslation();
+
+
+  // get organization Affiliation - use it tag the codings for the organizations.
+  const hierarchies = practitionerDetails.locationHierarchyList ?? [];
+  const treeData = hierarchies.map(rawTree => generateFhirLocationTree(rawTree))
+  // const tableData = hierarchies.map(resource => {
+  //   const tree =
+  //   const {id, active, type,name } = resource
+  //   return {
+  //     id, active, type, name
+  //   }
+  // })
+
+
+  // identifier, status, 
+  const columns = [
+    {
+      title: t('Id'),
+      dataIndex: 'id' as const,
+    },
+    {
+      title: t('Name'),
+      dataIndex: 'name' as const,
+      render: (name: string) => <Link to="#">{name}</Link>
+    },
+    {
+      title: t('Active'),
+      dataIndex: 'active' as const,
+      render: (isActive: string) => isActive ? "Active" : "Inactive",
+    },
+    {
+      title: t('Type'),
+      dataIndex: 'type' as const,
+      render: (concepts: CodeableConcept[]) => concepts.map(concept => <FhirCodeableConcept concept={concept} />),
+    },
+  ];
+
+  // const tableProps = {
+  //   datasource: tableData,
+  //   columns,
+  //   loading,
+  //   // pagination: true,
+  // };
+
+  return <>
+    <Row>
+      <Col className="bg-white p-3" span={6}>
+        <Tree
+          data-testid="hierarchy-display"
+          data={treeData}
+          // selectedNode={selectedNode}
+          onSelect={(node) => {
+            // dispatch(setSelectedNode(node));
+          }}
+        />
+      </Col>
+      {/* <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
+            <div className="mb-3 d-flex justify-content-between p-3">
+              <h6 className="mt-4">
+                {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
+              </h6>
+              <RbacCheck permissions={['Location.create']}>
+                <div>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      if (selectedNode) {
+                        const queryParams = { parentId: selectedNode.model.nodeId };
+                        const searchString = new URLSearchParams(queryParams).toString();
+                        history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
+                      }
+                      history.push(URL_LOCATION_UNIT_ADD);
+                    }}
+                  >
+                    <PlusOutlined />
+                    {t('Add Location Unit')}
+                  </Button>
+                </div>
+              </RbacCheck>
+            </div>
+            <div className="bg-white p-3">
+              <Table
+                data={tableDispData}
+                onViewDetails={async (row) => {
+                  setDetailId(row.id);
+                }}
+              />
+            </div>
+          </Col> */}
+    </Row>
+  </>
+
+}
+
+
+
+function processPractitionerDetails(practitioners: IPractitioner[], practitionerRoles: IPractitionerRole[]) {
   const tableData: Record<string, any> = {}
   const tempPractitionerRoleCodings: Record<string, any> = {};
 
-  for (const res of records) {
-    if (res.resourceType === practitionerResourceType) {
-      const typedRes = res as IPractitioner
-      const resName = typedRes.name?.[0] // TODO - use get official name 
-      // add to store
-      tableData[`${practitionerResourceType}/${typedRes.id}`] = { name: parseFhirHumanName(resName), active: res.active, concepts: [] }
+  for (const res of practitioners) {
+    const typedRes = res
+    const resName = typedRes.name?.[0] // TODO - use get official name 
+    // add to store
+    tableData[`${practitionerResourceType}/${typedRes.id}`] = { name: parseFhirHumanName(resName), active: res.active, concepts: [] }
+  }
+
+  for (const res of practitionerRoles) {
+    // practitionerRole resource
+    const typedRes = res as IPractitionerRole
+    const practitionerId = typedRes.practitioner?.reference as string
+
+    // extract the coding
+    const concepts = (typedRes.code ?? [])
+
+    // have we encountered a corresponding practitioner for this role
+    if (tableData[practitionerId] === undefined) {
+      tableData[practitionerId].codings.push(concepts)
     }
-    else {
-      // practitionerRole resource
-      const typedRes = res as IPractitionerRole
-      const practitionerId = typedRes.practitioner?.reference as string
-
-      // extract the coding
-      const concepts = (typedRes.code ?? [])
-
-      // have we encountered a corresponding practitioner for this role
-      if (tableData[practitionerId] === undefined) {
-        tableData[practitionerId].codings.push(concepts)
-      }
-      else if (tempPractitionerRoleCodings[practitionerId] === undefined) {
-        tempPractitionerRoleCodings[practitionerId] = []
-      } else {
-        tempPractitionerRoleCodings[practitionerId].push(concepts)
-      }
+    else if (tempPractitionerRoleCodings[practitionerId] === undefined) {
+      tempPractitionerRoleCodings[practitionerId] = []
+    } else {
+      tempPractitionerRoleCodings[practitionerId].push(concepts)
     }
   }
 
@@ -409,8 +587,13 @@ export const FhirCodeableConcept = ({ concept }: { concept: CodeableConcept }) =
 }
 
 
+export const FhirCoding = ({ coding }: { coding: Coding }) => {
+  return <span>Coding</span>
+}
+
 
 
 
 
 // TODO - extract css to own file.- make sure to scope it to current component.
+// TODO - include any other details added to practitionerDetails.

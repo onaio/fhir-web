@@ -70,7 +70,9 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     () => {
       return new FHIRServiceClass<IBundle>(fhirBaseUrl, practitionerResourceType)
         .list({ identifier: resourceId })
-        .then((res: IBundle) => getResourcesFromBundle<IPractitioner>(res)[0]);
+        
+    },{
+      select:(res: IBundle) => getResourcesFromBundle<IPractitioner>(res)[0]
     }
   );
 
