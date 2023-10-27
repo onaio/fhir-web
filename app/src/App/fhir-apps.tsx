@@ -63,6 +63,7 @@ import {
 import {
   CreateEditUser as FHIRConnectedCreateEditUser,
   UserList as FhirUserList,
+  UserDetailsV2,
 } from '@opensrp/fhir-user-management';
 import { Home } from '../containers/pages/Home/Home';
 import {
@@ -223,6 +224,14 @@ const FHIRApps = () => {
         {...usersListProps}
         permissions={['iam_user.read']}
         component={FhirUserList}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_USER}/:${'id'}`}
+        permissions={['iam_user.read']}
+        component={UserDetailsV2}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
