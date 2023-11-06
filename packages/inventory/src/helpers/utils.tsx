@@ -52,7 +52,6 @@ export const disabledTreeNodesCallback = (node: TreeNode) => {
 /** location form fields that are hidden for service point creation and editing in EUSM */
 export const commonHiddenFields = [
   'extraFields',
-  'status',
   'type',
   'locationTags',
   'externalId',
