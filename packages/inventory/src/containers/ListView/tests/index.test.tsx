@@ -94,9 +94,9 @@ describe('List view Page', () => {
     );
 
     expect(fetch.mock.calls.map((call) => call[0])).toEqual([
-      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false',
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false&includeInactive=false',
       'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/findByProperties?is_jurisdiction=true&return_geometry=false&properties_filter=status:Active,geographicLevel:0',
-      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&limit=0',
+      'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&includeInactive=false&limit=0',
     ]);
 
     wrapper.unmount();
