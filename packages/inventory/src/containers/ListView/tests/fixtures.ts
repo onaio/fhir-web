@@ -57,7 +57,7 @@ export const structures = [structure1, structure2, structure3] as LocationUnit[]
 
 export const fetchCalls = [
   [
-    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false&includeInactive=false',
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/countAll?serverVersion=0&is_jurisdiction=false',
     {
       headers: {
         accept: 'application/json',
@@ -79,7 +79,7 @@ export const fetchCalls = [
     },
   ],
   [
-    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&includeInactive=false&limit=3',
+    'https://mg-eusm-staging.smartregister.org/opensrp/rest/location/getAll?serverVersion=0&is_jurisdiction=false&limit=3',
     {
       headers: {
         accept: 'application/json',
