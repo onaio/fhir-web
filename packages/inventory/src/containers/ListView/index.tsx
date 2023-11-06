@@ -15,6 +15,7 @@ import {
   LocationUnit,
   getLocationsBySearch,
   getTreesByIds,
+  LocationUnitStatus,
 } from '@opensrp/location-management';
 import { connect } from 'react-redux';
 import { columnsFactory, getNodePath, ActionsColumnCustomRender, TableData } from './utils';
@@ -130,18 +131,22 @@ const ServicePointList = (props: ServicePointsListTypes) => {
   if (broken) {
     return <BrokenPage errorMessage={errorMessage} />;
   }
-  const structureNum = structures.length;
-  const pageTitle = t('Service point inventory ({{structureNum}})', { structureNum });
 
-  const datasource: TableData[] = structures.map((location) => {
-    const locationToDisplay = {
-      key: location.id,
-      type: location.properties.type as string,
-      serviceName: location.properties.name,
-      location: getNodePath(location, trees),
-      servicePointId: location.id,
-    };
-    return locationToDisplay;
+  const dataSource: TableData[] = structures
+    .filter((loc) => loc.properties.status === LocationUnitStatus.ACTIVE)
+    .map((location) => {
+      const locationToDisplay = {
+        key: location.id,
+        type: location.properties.type as string,
+        serviceName: location.properties.name,
+        location: getNodePath(location, trees),
+        servicePointId: location.id,
+      };
+      return locationToDisplay;
+    });
+  const activeStructureNum = dataSource.length;
+  const pageTitle = t('Service point inventory ({{structureNum}})', {
+    structureNum: activeStructureNum,
   });
 
   const searchFormProps = {
@@ -167,7 +172,7 @@ const ServicePointList = (props: ServicePointsListTypes) => {
             id="InventoryListView"
             persistState={true}
             className="custom-table"
-            datasource={datasource}
+            datasource={dataSource}
             columns={columns}
             actions={{
               title: t('Actions'),
