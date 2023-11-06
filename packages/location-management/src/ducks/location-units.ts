@@ -36,7 +36,7 @@ export interface ExtraField {
 /** Enum representing the possible location unit status types */
 export enum LocationUnitStatus {
   ACTIVE = 'Active',
-  INACTIVE = 'InActive',
+  INACTIVE = 'Inactive',
 }
 
 export enum LocationUnitSyncStatus {
