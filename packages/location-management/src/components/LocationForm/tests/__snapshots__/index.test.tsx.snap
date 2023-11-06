@@ -443,7 +443,7 @@ Array [
     disabled={false}
     onChange={[Function]}
     type="radio"
-    value="InActive"
+    value="Inactive"
   />,
 ]
 `;
