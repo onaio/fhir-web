@@ -79,14 +79,13 @@ const ServicePointList = (props: ServicePointsListTypes) => {
       serverVersion: 0,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       is_jurisdiction: false,
+      includeInactive: false,
     };
     loadCount(undefined, baseURL, getCountParams)
       .then((count) => {
         // get structures, this is the most important call for this page
         const params = {
-          serverVersion: 0,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          is_jurisdiction: false,
+          ...getCountParams,
           limit: count,
         };
         const structuresDispatcher = (locations: LocationUnit[] = []) => {
