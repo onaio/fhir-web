@@ -1,71 +1,246 @@
+import { UserDetails } from '../';
+import {
+  cleanup,
+  fireEvent,
+  prettyDOM,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
+import nock from 'nock';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { authenticateUser } from '@onaio/session-reducer';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
+import { store } from '@opensrp/store';
+import {
+  URL_USER,
+  UserList,
+  URL_USER_CREDENTIALS,
+  UserCredentials,
+  KEYCLOAK_URL_USERS,
+  KEYCLOAK_URL_USER_GROUPS,
+} from '@opensrp/user-management';
 import { mount } from 'enzyme';
 import React from 'react';
-import { UserDetails } from '../';
-import { Organization } from '@opensrp/team-management';
-import { Practitioner, KeycloakUser } from '../../../ducks/user';
+import { Provider } from 'react-redux';
+import { Switch, Route, Router } from 'react-router';
+import { createMemoryHistory } from 'history';
+import {
+  keycloakGroupEndpoint,
+  keycloakMembersEndpoint,
+  practitionerDetailsResourceType,
+  practitionerResourceType,
+} from '../../../../constants';
+import {
+  practitionerDetailsBundle,
+  user1147,
+  user1147Groups,
+} from '../ViewDetailResources/tests/fixtures';
+import * as notifications from '@opensrp/notifications';
 
-describe('components/TeamsDetail', () => {
-  const props = {
-    keycloakUser: {
-      id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
-      username: 'allay_allan',
-    } as KeycloakUser,
-    practitioner: {
-      identifier: 'f713620c-076e-407f-98fd-ae655b3dc5ba',
-      active: true,
-    } as Practitioner,
-    assignedTeams: [
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fetch = require('node-fetch');
+global.fetch = fetch;
+
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+nock.disableNetConnect();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
+
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+  keycloakBaseURL: 'http://test-keycloak.server.org',
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            {/* <Route exact path={`${URL_USER}`}>
+              {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
+            </Route> */}
+            <Route exact path={`${URL_USER}/:id`}>
+              {(routeProps) => <UserDetails {...{ ...props, ...routeProps }} />}
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
+
+beforeAll(() => {
+  store.dispatch(
+    authenticateUser(
+      true,
       {
-        identifier: 'b0d21cea-9e0f-4ff8-b3e3-808a2655b9c5',
-        active: true,
-        name: 'Goldsmith CHW',
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
       },
       {
-        identifier: '88e63364-53c1-436f-94b4-92d4bf7fc6c7',
-        active: true,
-        name: 'New team test',
-      },
-    ] as Organization[],
-  };
-  it('shows details section with data', () => {
-    const wrapper = mount(<UserDetails {...props} />);
+        api_token: 'hunter2',
+        oAuth2Data: {
+          access_token: 'sometoken',
+          state: 'abcde',
+        },
+        user_id: 'userFixtures[0].id',
+      }
+    )
+  );
+});
 
-    const keycloakUsername = wrapper.find('#username').text();
-    expect(keycloakUsername).toEqual(props.keycloakUser.username);
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+});
 
-    const keycloakId = wrapper.find('#keycloakId').text();
-    expect(keycloakId).toEqual(props.keycloakUser.id);
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    const practitionerId = wrapper.find('#practitionerId').text();
-    expect(practitionerId).toEqual(props.practitioner.identifier);
+/***
+ * End of setup.
+ */
+const userId = 'userId';
+test('Renders without crashing', async () => {
+  const history = createMemoryHistory();
+  history.push(`${URL_USER}/${userId}`);
 
-    const practitionerStatus = wrapper.find('#practitionerStatus').text();
-    expect(practitionerStatus).toMatchInlineSnapshot(`"active"`);
+  const successMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => {
+      return;
+    });
 
-    const assignedTeams = wrapper.find('#assignedTeam').map((team) => team.text());
-    expect(assignedTeams).toEqual(props.assignedTeams.map((team) => team.name));
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerDetailsResourceType}/_search`)
+    .query({ 'keycloak-uuid': userId })
+    .reply(200, practitionerDetailsBundle);
+
+  nock(props.keycloakBaseURL).get(`${KEYCLOAK_URL_USERS}/${userId}`).reply(200, user1147);
+
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}`)
+    .reply(200, user1147Groups);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  // this only await the first call to get the users.
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  expect(screen.queryByTitle(/View details/i)).toBeInTheDocument();
+
+  // second page header details.
+  const userProfile = screen.getByTestId('user-profile');
+  const textContent = userProfile.textContent;
+  expect(textContent).toEqual(
+    '1147EnabledDeleteEditID9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["ecbis"]'
+  );
+
+  // have a look at the tabs
+
+  // start with group
+  const groupTab = screen.getByText('Groups');
+  await fireEvent.click(groupTab);
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // check table has correct number of rows. and try removing user from one group
+  let detailsTabSection = document.querySelector('.details-tab');
+  const groupsTable = detailsTabSection?.querySelector('table');
+
+  const tableData = [...(groupsTable?.querySelectorAll('tr') ?? [])].map((tr) => tr.textContent);
+  expect(tableData).toEqual(['NamePath', 'SuperUser/SuperUserLeave']);
+
+  const leaveBtn = screen.getByText('Leave');
+  expect(leaveBtn).toMatchInlineSnapshot(`
+    <span>
+      Leave
+    </span>
+  `);
+
+  nock(props.keycloakBaseURL)
+    .delete(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}/${user1147Groups[0].id}`)
+    .reply(200, user1147Groups);
+
+  await fireEvent.click(leaveBtn);
+
+  await waitFor(() => {
+    expect(successMock).toHaveBeenCalledWith('User was removed from the keycloak group');
   });
-  it('shows no practitioner message when practitioner not available', () => {
-    const newProps = { ...props, practitioner: undefined };
-    const wrapper = mount(<UserDetails {...newProps} />);
-    expect(wrapper.find('#noActivePractitioner').text()).toMatchInlineSnapshot(
-      `"No Active Practitioner"`
-    );
+
+  // go to practitioners
+  const practTab = screen.getByText('Practitioners');
+  await fireEvent.click(practTab);
+
+  // Check that practitioner-details has finished loading.
+  await waitFor(() => {
+    expect(screen.getByText('3a801d6e-7bd3-4a5f-bc9c-64758fbb3dad')).toBeInTheDocument();
   });
-  it('shows no team available message when team not available', () => {
-    const newProps = { ...props, assignedTeams: [] };
-    const wrapper = mount(<UserDetails {...newProps} />);
-    expect(wrapper.find('#noAssignedTeams').text()).toMatchInlineSnapshot(`"No Assigned Teams"`);
-  });
-  it('shows spinner', () => {
-    const newProps = { ...props, keycloakUser: undefined };
-    const wrapper = mount(<UserDetails {...newProps} />);
-    expect(wrapper.find('.ant-spin').exists()).toBeTruthy();
-  });
-  it('removes it self on close', () => {
-    const wrapper = mount(<UserDetails {...props} onClose={() => wrapper.unmount()} />);
-    expect(wrapper.children()).toHaveLength(1);
-    wrapper.find('.close-btn button').simulate('click');
-    expect(wrapper).toHaveLength(0);
-  });
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const practitionerTable = detailsTabSection?.querySelector('table');
+
+  const practitionerData = [...(practitionerTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(practitionerData).toEqual([
+    'IdNameActiveUser TypePractitioner Role Coding',
+    '3a801d6e-7bd3-4a5f-bc9c-64758fbb3dadtest1147 1147ActivepractitionerAssigned practitioner(http://snomed.info/sct|405623001), ',
+  ]);
+
+  // go to careTeams
+  const careTeamsTab = screen.getByText('CareTeams');
+  await fireEvent.click(careTeamsTab);
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const careTeamsTable = detailsTabSection?.querySelector('table');
+
+  const careTeamsData = [...(careTeamsTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(careTeamsData).toEqual(['IdNameStatusCategory', 'No data']);
+
+  // go to organization
+  const organizationsTab = screen.getByText('Organizations');
+  await fireEvent.click(organizationsTab);
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const organizationsTable = detailsTabSection?.querySelector('table');
+
+  const organizationsData = [...(organizationsTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(organizationsData).toEqual([
+    'IdNameActiveType',
+    '0d7ae048-9b84-4f0c-ba37-8d6c0b97dc84e2e-corporationActive(http://terminology.hl7.org/CodeSystem/organization-type|team), ',
+  ]);
 });
