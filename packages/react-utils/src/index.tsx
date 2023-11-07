@@ -21,3 +21,4 @@ export * from './components/PageHeader';
 export * from './components/ButtonLink';
 export * from './helpers/test-utils';
 export * from './components/PrivateRoute';
+export * from './components/fhirDataTypes';
