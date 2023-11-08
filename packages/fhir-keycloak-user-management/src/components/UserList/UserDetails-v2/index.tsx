@@ -19,6 +19,7 @@ import { practitionerDetailsResourceType } from '../../../constants';
 import "./index.css"
 import { sendErrorNotification } from '@opensrp/notifications';
 import { deleteUser } from '../ListView/utils';
+import { UserDeleteBtn } from '../../UserDeleteBtn';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
@@ -53,8 +54,11 @@ export const UserDetails = (props: UserDetailProps) => {
   const params = useParams<{ id: string }>()
   const { id: resourceId } = params;
   const { t } = useTranslation();
-  const queryClient = useQueryClient()
   const history = useHistory()
+
+  const userDeleteAfterAction = () => {
+    history.push(URL_USER)
+  }
 
   const {
     data: user,
@@ -120,26 +124,7 @@ export const UserDetails = (props: UserDetailProps) => {
             title={user.username}
             subTitle={enabled ? <Tag color="green">Enabled</Tag> : <Tag color="green">Disabled</Tag>}
             extra={[,
-              <Popconfirm
-              key="delete-user"
-                title={t('Are you sure you want to delete this user?')}
-                okText={t('Yes')}
-                cancelText={t('No')}
-                onConfirm={async () => {
-                  await deleteUser(keycloakBaseUrl, fhirBaseUrl, resourceId, t);
-                  try {
-                    return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
-                  } catch {
-                    return sendErrorNotification(
-                      t('Failed to update data, please refresh the page to see the most recent changes')
-                    );
-                  }
-                }}
-              >
-                <Button data-testid="delete-user" danger type="link" >
-                  {t('Delete')}
-                </Button>
-              </Popconfirm>,
+              <UserDeleteBtn fhirBaseUrl={fhirBaseUrl} keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} afterActions={userDeleteAfterAction}/>,
               <Button type="primary" onClick={() =>  history.push(`${URL_USER_EDIT}/${resourceId}`)} key="edit-user">
                 {t('Edit')}
               </Button>,
