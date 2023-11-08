@@ -1,12 +1,11 @@
 import React from 'react';
 import { Alert, Button } from 'antd';
 import { useTranslation } from '../../../../mls';
-import { BrokenPage, TableLayout } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp/react-utils';
 import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '@opensrp/user-management';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { QueryClient, useQueryClient, useQuery } from 'react-query';
-import { keycloakGroupEndpoint, keycloakMembersEndpoint } from '../../../../constants';
-import { sendSuccessNotification } from '@opensrp/notifications';
+import { sendInfoNotification, sendSuccessNotification } from '@opensrp/notifications';
 
 export interface KeycloakGroupDetailsProp {
   keycloakBaseUrl: string;
@@ -76,7 +75,9 @@ export const removeGroupFromUser = async (
   const endpoint = `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`;
   const server = new KeycloakService(endpoint, baseUrl);
   return server.delete().then(() => {
-    query.refetchQueries([KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS]);
+    query.refetchQueries([KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS]).catch(() => {
+      sendInfoNotification('Failed to refresh data, please refresh the page');
+    });
     sendSuccessNotification('User was removed from the keycloak group');
   });
 };

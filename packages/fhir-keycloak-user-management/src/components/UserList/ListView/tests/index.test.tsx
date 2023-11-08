@@ -11,13 +11,9 @@ import { waitFor, waitForElementToBeRemoved } from '@testing-library/dom';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { URL_USER, URL_USER_CREDENTIALS, UserCredentials } from '@opensrp/user-management';
-import { careTeams, practitioner, userFixtures, group } from './fixtures';
+import { practitioner, userFixtures, group } from './fixtures';
 import fetch from 'jest-fetch-mock';
-import {
-  careTeamResourceType,
-  practitionerResourceType,
-  practitionerRoleResourceType,
-} from '../../../../constants';
+import { practitionerResourceType, practitionerRoleResourceType } from '../../../../constants';
 import flushPromises from 'flush-promises';
 import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 import { RoleContext } from '@opensrp/rbac';
@@ -185,12 +181,6 @@ test('renders correctly when listing resources', async () => {
     .get(`/Group/_search`)
     .query({ identifier: userFixtures[14].id })
     .reply(200, group)
-    .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj?.id, _summary: 'count' })
-    .reply(200, { total: 2 })
-    .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj?.id, _count: '2' })
-    .reply(200, careTeams)
     .get(`/${practitionerRoleResourceType}/_search`)
     .query({ identifier: userFixtures[14].id })
     .reply(200, practitionerRoleBundle)
@@ -201,38 +191,6 @@ test('renders correctly when listing resources', async () => {
     'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
   ) as Element;
   fireEvent.click(dropdown);
-
-  const viewDetailsLink = screen.getByText(/View Details/);
-  expect(viewDetailsLink).toMatchInlineSnapshot(`
-    <span>
-      View Details
-    </span>
-  `);
-  fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`${URL_USER}`);
-  expect(history.location.search).toEqual('?viewDetails=b79e5f2d-37de-4c7e-9b3d-4341bf62ad78');
-
-  // this only await the first call to get the users.
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-
-  // wait for other calls to resolve.
-  await waitFor(async () => {
-    await flushPromises();
-    // practitioner information
-    expect(screen.queryByText(/Practitioner Id/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Practitioner status/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Linked care teams/i)).toBeInTheDocument();
-  });
-
-  document
-    .querySelectorAll('[data-testid="key-value"]')
-    .forEach((keyValue) => expect(keyValue).toMatchSnapshot('user details'));
-
-  // close view details
-  const closeButton = document.querySelector('[data-testid="close-button"]') as Element;
-  fireEvent.click(closeButton);
-
-  expect(history.location.pathname).toEqual(URL_USER);
 
   // try and delete certain user
   // one nock request to get practitioner is already mocked above.
@@ -267,8 +225,6 @@ test('renders correctly when listing resources', async () => {
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?max=15',
     'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78',
-    'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78/groups',
-    'http://test-keycloak.server.org/users/b79e5f2d-37de-4c7e-9b3d-4341bf62ad78',
     'http://test-keycloak.server.org/users/count',
     'http://test-keycloak.server.org/users?',
   ]);
@@ -296,26 +252,6 @@ test('credentials view renders correctly', async () => {
     const spin = document.querySelector('.ant-spin');
     expect(spin).toBeNull();
   });
-
-  const practitionerObj = practitioner.entry?.[0].resource;
-
-  nock(props.fhirBaseURL)
-    .get(`/${practitionerResourceType}/_search`)
-    .query({ identifier: userFixtures[14].id })
-    .reply(200, practitioner)
-    .get(`/Group/_search`)
-    .query({ identifier: userFixtures[14].id })
-    .reply(200, group)
-    .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj?.id, _summary: 'count' })
-    .reply(200, { total: 2 })
-    .get(`/${careTeamResourceType}/_search`)
-    .query({ 'participant:Practitioner': practitionerObj?.id, _count: '2' })
-    .reply(200, careTeams)
-    .get(`/${practitionerRoleResourceType}/_search`)
-    .query({ identifier: userFixtures[14].id })
-    .reply(200, practitionerRoleBundle)
-    .persist();
 
   // target the initial row view details
   const dropdown = document.querySelector(
@@ -355,4 +291,46 @@ test('responds as expected to errors', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(screen.getByText(/coughid/)).toBeInTheDocument();
+});
+
+test('View details navigates correctly', async () => {
+  const history = createMemoryHistory();
+  history.push(URL_USER);
+
+  fetch
+    .once(JSON.stringify(15))
+    .once(JSON.stringify(userFixtures))
+    .once(JSON.stringify(userFixtures[0]));
+  fetch.mockResponse(JSON.stringify([]));
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  });
+
+  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+
+  // view details
+
+  // target the initial row view details
+  const dropdown = document.querySelector(
+    'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
+  ) as Element;
+  fireEvent.click(dropdown);
+
+  const viewDetailsLink = screen.getByText(/View Details/);
+  expect(viewDetailsLink).toMatchInlineSnapshot(`
+    <span>
+      View Details
+    </span>
+  `);
+  fireEvent.click(viewDetailsLink);
+  expect(history.location.pathname).toEqual(`${URL_USER}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0`);
 });

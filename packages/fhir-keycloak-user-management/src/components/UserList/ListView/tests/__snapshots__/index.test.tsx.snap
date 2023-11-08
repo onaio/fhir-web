@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`View details navigates correctly: Header title 1`] = `
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+>
+  User Management
+</h4>
+`;
+
 exports[`renders correctly when listing resources: Header title 1`] = `
 <h4
   class="ant-typography page-header css-dev-only-do-not-override-k7429z"
