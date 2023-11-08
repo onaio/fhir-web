@@ -244,3 +244,41 @@ test('Renders without crashing', async () => {
     '0d7ae048-9b84-4f0c-ba37-8d6c0b97dc84e2e-corporationActive(http://terminology.hl7.org/CodeSystem/organization-type|team), ',
   ]);
 });
+
+test('Edit button works correctly', async () => {
+  const history = createMemoryHistory();
+  history.push(`${URL_USER}/${userId}`);
+
+  const successMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => {
+      return;
+    });
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerDetailsResourceType}/_search`)
+    .query({ 'keycloak-uuid': userId })
+    .reply(200, practitionerDetailsBundle);
+
+  nock(props.keycloakBaseURL).get(`${KEYCLOAK_URL_USERS}/${userId}`).reply(200, user1147);
+
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}`)
+    .reply(200, user1147Groups);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  // this only await the first call to get the users.
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  expect(screen.queryByTitle(/View details/i)).toBeInTheDocument();
+
+  const editBtn = screen.getByRole('button', {name: "Edit"})
+  fireEvent.click(editBtn);
+
+  expect(history.location.pathname).toEqual("/admin/users/edit/userId")
+});
