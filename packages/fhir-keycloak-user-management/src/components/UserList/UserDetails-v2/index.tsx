@@ -20,6 +20,7 @@ import "./index.css"
 import { sendErrorNotification } from '@opensrp/notifications';
 import { deleteUser } from '../ListView/utils';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
+import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
@@ -153,8 +154,8 @@ export const UserDetails = (props: UserDetailProps) => {
             size={"small"}
             items={
               [
-                { label: "Groups", key: 'Groups', children: <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} /> },
-                // { label: "Roles", key: 'Roles', children: <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} /> },
+                { label: "User groups", key: 'Groups', children: <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} /> },
+                { label: "User roles", key: 'Roles', children: <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} /> },
                 { label: "Practitioners", key: 'Practitioners', children: <PractitionerDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
                 { label: "CareTeams", key: 'CareTeams', children: <CareTeamDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
                 { label: "Organizations", key: 'Organizations', children: <OrganizationDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
