@@ -131,7 +131,7 @@ export const UserDetails = (props: UserDetailProps) => {
               </Button>,
             ]}
           >
-            <Descriptions size="small" column={3}>
+            <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
               {Object.entries(userDetails).map(([key, value]) => {
                 return <Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>
               })}
@@ -140,7 +140,7 @@ export const UserDetails = (props: UserDetailProps) => {
               Attributes
             </Divider>
             {attributesArray.length === 0 ? <Alert message="This user does not have any attributes" type="info" /> :
-              <Descriptions size="small" column={3}>
+              <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
                 {attributesArray.map(([key, value]) => {
                   return <Descriptions.Item key={key} label={key}>{JSON.stringify(value)}</Descriptions.Item>
                 })}
