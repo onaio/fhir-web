@@ -30,6 +30,7 @@ import { createMemoryHistory } from 'history';
 import {
   keycloakGroupEndpoint,
   keycloakMembersEndpoint,
+  keycloakRoleMappingsEndpoint,
   practitionerDetailsResourceType,
   practitionerResourceType,
 } from '../../../../constants';
@@ -37,6 +38,7 @@ import {
   practitionerDetailsBundle,
   user1147,
   user1147Groups,
+  user1147Roles,
 } from '../ViewDetailResources/tests/fixtures';
 import * as notifications from '@opensrp/notifications';
 
@@ -165,7 +167,7 @@ test('Renders without crashing', async () => {
   // have a look at the tabs
 
   // start with group
-  const groupTab = screen.getByText('Groups');
+  const groupTab = screen.getByText('User groups');
   await fireEvent.click(groupTab);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
@@ -213,6 +215,45 @@ test('Renders without crashing', async () => {
   expect(practitionerData).toEqual([
     'IdNameActiveUser TypePractitioner Role Coding',
     '3a801d6e-7bd3-4a5f-bc9c-64758fbb3dadtest1147 1147ActivepractitionerAssigned practitioner(http://snomed.info/sct|405623001), ',
+  ]);
+
+  // go to roles
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}/${keycloakRoleMappingsEndpoint}`)
+    .reply(200, user1147Roles);
+
+  const rolesTab = screen.getByText('User roles');
+  await fireEvent.click(rolesTab);
+
+  console.log(prettyDOM(document));
+
+  // Check that practitioner-details has finished loading.
+  await waitFor(() => {
+    expect(screen.getByText('GET_LOCATION')).toBeInTheDocument();
+  });
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const realmRolesTable = detailsTabSection?.querySelectorAll('table')[0];
+  const clientRolesTable = detailsTabSection?.querySelectorAll('table')[1];
+  const realmRolesData = [...(realmRolesTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  const clientRolesData = [...(clientRolesTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(realmRolesData).toEqual([
+    'NameDescription',
+    'POST_LOCATION',
+    'GET_LOCATION',
+    'offline_access${role_offline-access}',
+  ]);
+
+  expect(clientRolesData).toEqual([
+    'ClientNameDescription',
+    'realm-managementmanage-realm${role_manage-realm}',
+    'realm-managementmanage-users${role_manage-users}',
+    'accountmanage-account${role_manage-account}',
   ]);
 
   // go to careTeams
@@ -277,8 +318,8 @@ test('Edit button works correctly', async () => {
 
   expect(screen.queryByTitle(/View details/i)).toBeInTheDocument();
 
-  const editBtn = screen.getByRole('button', {name: "Edit"})
+  const editBtn = screen.getByRole('button', { name: 'Edit' });
   fireEvent.click(editBtn);
 
-  expect(history.location.pathname).toEqual("/admin/users/edit/userId")
+  expect(history.location.pathname).toEqual('/admin/users/edit/userId');
 });

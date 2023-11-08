@@ -174,3 +174,70 @@ export const user1147Groups = [
 		"path": "/SuperUser"
 	}
 ]
+
+export const user1147Roles = {
+	"realmMappings": [
+		{
+			"id": "2637bf64-5b3b-4e63-8849-d5b876c4e661",
+			"name": "POST_LOCATION",
+			"description": "",
+			"composite": false,
+			"clientRole": false,
+			"containerId": "a9103f9f-4759-47a3-9c22-c2398f9f5e21"
+		},
+		{
+			"id": "2cf50188-55a6-4143-b293-f009bc25356f",
+			"name": "GET_LOCATION",
+			"description": "",
+			"composite": false,
+			"clientRole": false,
+			"containerId": "a9103f9f-4759-47a3-9c22-c2398f9f5e21"
+		},
+		{
+			"id": "674c5a60-9ed6-478f-9836-290945b40def",
+			"name": "offline_access",
+			"description": "${role_offline-access}",
+			"composite": false,
+			"clientRole": false,
+			"containerId": "a9103f9f-4759-47a3-9c22-c2398f9f5e21"
+		}
+	],
+	"clientMappings": {
+		"realm-management": {
+			"id": "9d9637dc-d86c-4669-bc0d-6600c22090f7",
+			"client": "realm-management",
+			"mappings": [
+				{
+					"id": "43218a35-baf4-45fd-b926-5923996e9eb7",
+					"name": "manage-realm",
+					"description": "${role_manage-realm}",
+					"composite": false,
+					"clientRole": true,
+					"containerId": "9d9637dc-d86c-4669-bc0d-6600c22090f7"
+				},
+				{
+					"id": "bcf4874f-760d-45d4-881e-eda109ecf033",
+					"name": "manage-users",
+					"description": "${role_manage-users}",
+					"composite": false,
+					"clientRole": true,
+					"containerId": "9d9637dc-d86c-4669-bc0d-6600c22090f7"
+				}
+			]
+		},
+		"account": {
+			"id": "7b3904aa-2394-4940-8981-03262642f047",
+			"client": "account",
+			"mappings": [
+				{
+					"id": "c0dcef4f-eb0d-49f0-9389-96dc4d7316a2",
+					"name": "manage-account",
+					"description": "${role_manage-account}",
+					"composite": true,
+					"clientRole": true,
+					"containerId": "7b3904aa-2394-4940-8981-03262642f047"
+				}
+			]
+		}
+	}
+}
