@@ -1,7 +1,7 @@
 import React from 'react';
-import { Alert, Divider, Space, Typography } from 'antd';
+import { Alert, Typography } from 'antd';
 import { useTranslation } from '../../../../mls';
-import { BrokenPage, TableLayout } from '@opensrp/react-utils';
+import { TableLayout } from '@opensrp/react-utils';
 import { KEYCLOAK_URL_USERS } from '@opensrp/user-management';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { useQuery } from 'react-query';
@@ -62,7 +62,6 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
     },
   ];
 
-  console.log({ realmRoles, clientRoles });
   const realmRolesTableProps = {
     datasource: realmRoles,
     columns: realmRoleTableColumn,

@@ -2,7 +2,6 @@ import { UserDetails } from '../';
 import {
   cleanup,
   fireEvent,
-  prettyDOM,
   render,
   screen,
   waitFor,
@@ -14,25 +13,14 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
 import { store } from '@opensrp/store';
-import {
-  URL_USER,
-  UserList,
-  URL_USER_CREDENTIALS,
-  UserCredentials,
-  KEYCLOAK_URL_USERS,
-  KEYCLOAK_URL_USER_GROUPS,
-} from '@opensrp/user-management';
-import { mount } from 'enzyme';
+import { URL_USER, KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '@opensrp/user-management';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Switch, Route, Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 import {
-  keycloakGroupEndpoint,
-  keycloakMembersEndpoint,
   keycloakRoleMappingsEndpoint,
   practitionerDetailsResourceType,
-  practitionerResourceType,
 } from '../../../../constants';
 import {
   practitionerDetailsBundle,
@@ -41,6 +29,8 @@ import {
   user1147Roles,
 } from '../ViewDetailResources/tests/fixtures';
 import * as notifications from '@opensrp/notifications';
+
+/* eslint-disable no-template-curly-in-string */
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -78,9 +68,6 @@ const AppWrapper = (props: any) => {
       <QueryClientProvider client={queryClient}>
         <RoleContext.Provider value={superUserRole}>
           <Switch>
-            {/* <Route exact path={`${URL_USER}`}>
-              {(routeProps) => <UserList {...{ ...props, ...routeProps }} />}
-            </Route> */}
             <Route exact path={`${URL_USER}/:id`}>
               {(routeProps) => <UserDetails {...{ ...props, ...routeProps }} />}
             </Route>
@@ -168,7 +155,7 @@ test('Renders without crashing', async () => {
 
   // start with group
   const groupTab = screen.getByText('User groups');
-  await fireEvent.click(groupTab);
+  fireEvent.click(groupTab);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
@@ -190,7 +177,7 @@ test('Renders without crashing', async () => {
     .delete(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}/${user1147Groups[0].id}`)
     .reply(200, user1147Groups);
 
-  await fireEvent.click(leaveBtn);
+  fireEvent.click(leaveBtn);
 
   await waitFor(() => {
     expect(successMock).toHaveBeenCalledWith('User was removed from the keycloak group');
@@ -198,7 +185,7 @@ test('Renders without crashing', async () => {
 
   // go to practitioners
   const practTab = screen.getByText('Practitioners');
-  await fireEvent.click(practTab);
+  fireEvent.click(practTab);
 
   // Check that practitioner-details has finished loading.
   await waitFor(() => {
@@ -223,9 +210,7 @@ test('Renders without crashing', async () => {
     .reply(200, user1147Roles);
 
   const rolesTab = screen.getByText('User roles');
-  await fireEvent.click(rolesTab);
-
-  console.log(prettyDOM(document));
+  fireEvent.click(rolesTab);
 
   // Check that practitioner-details has finished loading.
   await waitFor(() => {
@@ -258,7 +243,7 @@ test('Renders without crashing', async () => {
 
   // go to careTeams
   const careTeamsTab = screen.getByText('CareTeams');
-  await fireEvent.click(careTeamsTab);
+  fireEvent.click(careTeamsTab);
 
   // practitioner records
   detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
@@ -271,7 +256,7 @@ test('Renders without crashing', async () => {
 
   // go to organization
   const organizationsTab = screen.getByText('Organizations');
-  await fireEvent.click(organizationsTab);
+  fireEvent.click(organizationsTab);
 
   // practitioner records
   detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
@@ -290,11 +275,9 @@ test('Edit button works correctly', async () => {
   const history = createMemoryHistory();
   history.push(`${URL_USER}/${userId}`);
 
-  const successMock = jest
-    .spyOn(notifications, 'sendSuccessNotification')
-    .mockImplementation(() => {
-      return;
-    });
+  jest.spyOn(notifications, 'sendSuccessNotification').mockImplementation(() => {
+    return;
+  });
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerDetailsResourceType}/_search`)

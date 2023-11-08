@@ -3,7 +3,6 @@ import { useTranslation } from '../../../../mls';
 import {
   TableLayout,
   parseFhirHumanName,
-  Coding as CodingJsx,
   CodeableConcept as CodeableConceptJsx,
 } from '@opensrp/react-utils';
 import { practitionerResourceType } from '../../../../constants';
@@ -15,7 +14,6 @@ import { Alert } from 'antd';
 import {
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
-  UserListTypes,
   getUserType,
   getUserTypeCode,
 } from '@opensrp/user-management';
@@ -23,7 +21,7 @@ import {
 export interface PractitionerDetailViewsProps {
   loading: boolean;
   practitionerDetails: PractitionerDetail['fhir'];
-  error?: Error;
+  error: Error | null;
 }
 
 export const PractitionerDetailsView = (props: PractitionerDetailViewsProps) => {
@@ -64,8 +62,9 @@ export const PractitionerDetailsView = (props: PractitionerDetailViewsProps) => 
       title: t('Practitioner Role Coding'),
       dataIndex: 'concepts' as const,
       render: (concepts: CodeableConcept[]) => {
-        console.log({ concepts });
-        return concepts.map((concept) => <CodeableConceptJsx concept={concept} />);
+        return concepts.map((concept, index) => (
+          <CodeableConceptJsx key={index} concept={concept} />
+        ));
       },
     },
   ];
@@ -81,8 +80,11 @@ export const PractitionerDetailsView = (props: PractitionerDetailViewsProps) => 
 };
 
 /**
- * @param practitioners
- * @param practitionerRoles
+ * Get practitioner table data source form practitioners and practitioner roles
+ * returned in the practitioner details endpoint
+ *
+ * @param practitioners - practitioner resources
+ * @param practitionerRoles - practitioner role resources
  */
 function processPractitionerDetails(
   practitioners: IPractitioner[],
@@ -130,9 +132,11 @@ function processPractitionerDetails(
     }
 
     // have we encountered a corresponding practitioner for this role
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (tableData[practitionerId] === undefined) {
       tableData[practitionerId].concepts = [...tableData[practitionerId].concepts, ...concepts];
       tableData[practitionerId].userType = userType;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (tempPractitionerRoleCodings[practitionerId] === undefined) {
       tempPractitionerRoleCodings[practitionerId] = { concepts: [] };
       tempPractitionerRoleCodings[practitionerId].concepts = [];
@@ -150,6 +154,5 @@ function processPractitionerDetails(
     tableData[key].userType = value.userType;
   }
 
-  console.log({ tableData, practitionerRoles });
   return Object.values(tableData);
 }
