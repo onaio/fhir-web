@@ -1,23 +1,21 @@
 import React from 'react';
 import { useTranslation } from '../../../../mls';
 import { TableLayout, CodeableConcept as CodeableConceptJsx } from '@opensrp/react-utils';
-import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
-import { Link } from 'react-router-dom';
 import { PractitionerDetail } from '../types';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 import { Alert } from 'antd';
 
-export interface CareTeamDetailsViewProps {
+export interface OrganizationDetailsViewProp {
   loading: boolean;
   practitionerDetails: PractitionerDetail['fhir'];
-  error?: Error;
+  error: Error | null;
 }
 
-export const CareTeamDetailsView = ({
+export const OrganizationDetailsView = ({
   loading,
   practitionerDetails,
   error,
-}: CareTeamDetailsViewProps) => {
+}: OrganizationDetailsViewProp) => {
   const { t } = useTranslation();
 
   if (error) {
@@ -28,17 +26,19 @@ export const CareTeamDetailsView = ({
     );
   }
 
-  const careTeams = practitionerDetails.careteams ?? [];
-  const tableData = careTeams.map((resource) => {
-    const { id, status, name, category } = resource;
+  // get organization Affiliation - use it tag the codings for the organizations.
+  const organizations = practitionerDetails.teams ?? [];
+  const tableData = organizations.map((resource) => {
+    const { id, active, type, name } = resource;
     return {
       id,
-      status,
+      active,
+      type: type ?? [],
       name,
-      category: category ?? [],
     };
   });
 
+  // identifier, status,
   const columns = [
     {
       title: t('Id'),
@@ -49,16 +49,15 @@ export const CareTeamDetailsView = ({
       dataIndex: 'name' as const,
     },
     {
-      title: t('Status'),
-      dataIndex: 'status' as const,
+      title: t('Active'),
+      dataIndex: 'active' as const,
+      render: (isActive: string) => (isActive ? 'Active' : 'Inactive'),
     },
     {
-      title: t('Category'),
-      dataIndex: 'category' as const,
-      render: (concepts: CodeableConcept[]) => {
-        console.log({ concepts });
-        return concepts.map((concept) => <CodeableConceptJsx concept={concept} />);
-      },
+      title: t('Type'),
+      dataIndex: 'type' as const,
+      render: (concepts: CodeableConcept[]) =>
+        concepts.map((concept, index) => <CodeableConceptJsx key={index} concept={concept} />),
     },
   ];
 

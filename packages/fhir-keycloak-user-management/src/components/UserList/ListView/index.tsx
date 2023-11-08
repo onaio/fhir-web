@@ -6,8 +6,6 @@ import {
   TableLayout,
   BrokenPage,
   searchQuery,
-  useSearchParams,
-  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
@@ -20,8 +18,6 @@ import { PageHeader } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
-import { ViewDetailsWrapper } from '../ViewDetails';
-import { useQueryClient } from 'react-query';
 import { useTranslation } from '@opensrp/i18n';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
@@ -41,12 +37,8 @@ export const UserList = (props: OrganizationListProps) => {
   const history = useHistory();
   const match = useRouteMatch();
   const extraData = useSelector(getExtraData);
-  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const userRole = useUserRole();
-
-  const { sParams, addParam } = useSearchParams();
-  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const { isLoading, data, error, isFetching } = useQuery([KEYCLOAK_URL_USERS], () =>
     loadKeycloakResources(keycloakBaseURL, KEYCLOAK_URL_USERS)
@@ -77,17 +69,7 @@ export const UserList = (props: OrganizationListProps) => {
       };
     });
 
-  const onViewDetails = (resourceId: string) => addParam(viewDetailsQuery, resourceId);
-  const columns = getTableColumns(
-    keycloakBaseURL,
-    fhirBaseURL,
-    extraData,
-    queryClient,
-    t,
-    onViewDetails,
-    userRole,
-    history
-  );
+  const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, t, userRole, history);
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
@@ -134,11 +116,6 @@ export const UserList = (props: OrganizationListProps) => {
           </div>
           <TableLayout {...tableProps} />
         </Col>
-        <ViewDetailsWrapper
-          resourceId={resourceId}
-          fhirBaseUrl={fhirBaseURL}
-          keycloakBaseUrl={keycloakBaseURL}
-        />
       </Row>
     </div>
   );

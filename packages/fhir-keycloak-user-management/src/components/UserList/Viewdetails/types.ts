@@ -4,17 +4,17 @@ import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-
+import { LocationHierarchyResource } from '@opensrp/fhir-location-management';
 
 export interface PractitionerDetail extends Resource {
   fhir: {
     careteams?: ICareTeam[];
     teams?: IOrganization[];
-    locationHierarchyList?: any[]; // TODO - import LocationHierarchy
+    locationHierarchyList?: LocationHierarchyResource[];
     practitionerRoles?: IPractitionerRole[];
     groups?: IGroup[];
-    practitioner?: IPractitioner[]
-  }
+    practitioner?: IPractitioner[];
+  };
 }
 
 export interface RoleMapping {
@@ -29,21 +29,21 @@ export interface RoleMapping {
 export interface ClientRoleMapping {
   id: string;
   client: string;
-  mappings: RoleMapping[]
+  mappings: RoleMapping[];
 }
 
 export interface KeycloakUserRoleMappings {
   realmMappings?: RoleMapping[];
-  clientMappings?: Record<string, ClientRoleMapping>
+  clientMappings?: Record<string, ClientRoleMapping>;
 }
 
 export interface PractitionerDetail extends Resource {
   fhir: {
     careteams?: ICareTeam[];
     teams?: IOrganization[];
-    locationHierarchyList?: any[]; // TODO - import LocationHierarchy
+    locationHierarchyList?: LocationHierarchyResource[];
     practitionerRoles?: IPractitionerRole[];
     groups?: IGroup[];
-    practitioner?: IPractitioner[]
-  }
+    practitioner?: IPractitioner[];
+  };
 }
