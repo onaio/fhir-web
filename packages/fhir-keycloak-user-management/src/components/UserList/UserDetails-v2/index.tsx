@@ -159,7 +159,6 @@ export const UserDetails = (props: UserDetailProps) => {
                 { label: "Practitioners", key: 'Practitioners', children: <PractitionerDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
                 { label: "CareTeams", key: 'CareTeams', children: <CareTeamDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
                 { label: "Organizations", key: 'Organizations', children: <OrganizationDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
-                // { label: "Locations", key: 'Locations', children: <LocationDetailsView loading={detailsLoading} practitionerDetails={practDetailsByResName} /> },
               ]
             }
           />
