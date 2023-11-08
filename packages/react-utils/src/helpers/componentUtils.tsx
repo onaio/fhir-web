@@ -30,16 +30,11 @@ interface ComponentProps extends Partial<RouteProps> {
 
 export const PrivateComponent = (props: ComponentProps) => {
   //  props to pass on to Connected Private Route
-  const { permissions, ...otherProps } = props;
-  const CPRProps = {
-    ...otherProps,
-    keycloakBaseURL: configs.keycloakBaseURL,
-    opensrpBaseURL: configs.opensrpBaseURL,
-    fhirBaseURL: configs.fhirBaseURL,
-  };
+  const { permissions, component: WrappedComponent, ...otherProps } = props;
+
   const { t } = useTranslation();
 
-  return (
+  const RbacWrappedComponent = (props: Record<string, unknown>) => (
     <RbacCheck
       permissions={permissions}
       fallback={
@@ -49,9 +44,19 @@ export const PrivateComponent = (props: ComponentProps) => {
         />
       }
     >
-      <ConnectedPrivateRoute {...CPRProps} />
+      <WrappedComponent {...props} />
     </RbacCheck>
   );
+
+  const CPRProps = {
+    ...otherProps,
+    component: RbacWrappedComponent,
+    keycloakBaseURL: configs.keycloakBaseURL,
+    opensrpBaseURL: configs.opensrpBaseURL,
+    fhirBaseURL: configs.fhirBaseURL,
+  };
+
+  return <ConnectedPrivateRoute {...CPRProps} />;
 };
 
 /**
