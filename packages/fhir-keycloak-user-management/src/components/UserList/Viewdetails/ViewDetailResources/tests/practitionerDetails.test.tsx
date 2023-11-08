@@ -1,5 +1,5 @@
-import { PractitionerDetailsView } from '../practitionerDetails';
-import { render, screen } from '@testing-library/react';
+import { PractitionerDetailsView } from '../PractitionerDetails';
+import { render } from '@testing-library/react';
 import { practitionerDetailsBundle } from './fixtures';
 import React from 'react';
 import { getResourcesFromBundle } from '@opensrp/react-utils';
