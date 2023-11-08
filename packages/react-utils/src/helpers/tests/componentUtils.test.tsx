@@ -15,6 +15,8 @@ import flushPromises from 'flush-promises';
 import fetch from 'jest-fetch-mock';
 import { superUserRole } from '../test-utils';
 import { RbacProvider, RoleContext, UserRole } from '@opensrp/rbac';
+import { render } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 
 const { PublicComponent, PrivateComponent, isAuthorized } = componentUtils;
 
@@ -42,6 +44,35 @@ describe('componentUtils', () => {
 
     expect(wrapper.exists(MockComponent)).toBeTruthy();
     wrapper.unmount();
+  });
+
+  it('First check that user is logged in before Rbac', async () => {
+    const MockComponent = () => {
+      return <p>I love oof!</p>;
+    };
+    const history = createMemoryHistory();
+    const props = {
+      component: MockComponent,
+      redirectPath: '/login',
+      disableLoginProtection: false,
+    };
+
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <RbacProvider value={superUserRole}>
+            <PrivateComponent {...props} component={MockComponent} permissions={[]} />
+          </RbacProvider>
+        </Router>
+      </Provider>
+    );
+    await act(async () => {
+      await flushPromises();
+    });
+
+    // should redirect non-AuthN'd users to login
+    expect(history.location.pathname).toEqual('/login');
+    expect(history.location.search).toEqual('?next=');
   });
 
   it('PrivateComponent Renders correctly', async () => {
