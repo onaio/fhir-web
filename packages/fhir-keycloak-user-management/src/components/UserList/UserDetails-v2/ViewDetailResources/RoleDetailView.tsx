@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Typography } from 'antd';
+import { Alert, Divider, Space, Typography } from 'antd';
 import { useTranslation } from '../../../../mls';
 import { BrokenPage, TableLayout } from '@opensrp/react-utils';
 import { KEYCLOAK_URL_USERS } from '@opensrp/user-management';
@@ -27,7 +27,7 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
   );
 
   if (error && !data) {
-    return <BrokenPage errorMessage={'Unable to fetch Roles assigned to the user'} />;
+    return <Alert type="error">{'Unable to fetch Roles assigned to the user'}</Alert>;
   }
 
   const { realmMappings, clientMappings } = data ?? {};
@@ -58,13 +58,13 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
 
     {
       title: t('Description'),
-      dataIndex: 'id' as const,
+      dataIndex: 'description' as const,
     },
   ];
 
   console.log({ realmRoles, clientRoles });
   const realmRolesTableProps = {
-    datasource: [],
+    datasource: realmRoles,
     columns: realmRoleTableColumn,
     loading: isLoading,
     size: 'small' as const,
@@ -72,7 +72,7 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
   };
 
   const clientRolesTableProps = {
-    datasource: [],
+    datasource: clientRoles,
     columns: clientRoleTableColumn,
     loading: isLoading,
     size: 'small' as const,
@@ -81,11 +81,22 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
 
   return (
     <>
-      <Text strong>Realm Roles</Text>
-      <TableLayout {...realmRolesTableProps} key="realm" />
-      <Divider />
-      <Text strong>Client Roles</Text>
-      <TableLayout {...clientRolesTableProps} key="client" />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '32px',
+        }}
+      >
+        <section>
+          <Text strong>Realm Roles</Text>
+          <TableLayout {...realmRolesTableProps} key="realm" />
+        </section>
+        <section>
+          <Text strong>Client Roles</Text>
+          <TableLayout {...clientRolesTableProps} key="client" />
+        </section>
+      </div>
     </>
   );
 };
