@@ -49,6 +49,7 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
         <Button
           onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query)}
           type="link"
+          danger
         >
           {'Leave'}
         </Button>
