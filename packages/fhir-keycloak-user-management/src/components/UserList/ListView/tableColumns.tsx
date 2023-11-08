@@ -18,6 +18,7 @@ import { QueryClient } from 'react-query';
 import type { TFunction } from '@opensrp/i18n';
 import { RbacCheck, UserRole } from '@opensrp/rbac';
 import { History } from 'history';
+import { UserDeleteBtn } from '../../UserDeleteBtn';
 
 /**
  * Get table columns for user list
@@ -75,30 +76,7 @@ export const getTableColumns = (
       {
         key: '2',
         permissions: ['iam_user.delete'],
-        label: (
-          <Popconfirm
-            title={t('Are you sure you want to delete this user?')}
-            okText={t('Yes')}
-            cancelText={t('No')}
-            onConfirm={async () => {
-              await deleteUser(keycloakBaseUrl, baseUrl, record.id, t);
-              try {
-                return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
-              } catch {
-                return sendErrorNotification(
-                  t('Failed to update data, please refresh the page to see the most recent changes')
-                );
-              }
-            }}
-          >
-            {user_id &&
-              (record.id === user_id ? null : (
-                <Button data-testid="delete-user" danger type="link" style={{ color: '#' }}>
-                  {t('Delete')}
-                </Button>
-              ))}
-          </Popconfirm>
-        ),
+        label: <UserDeleteBtn keycloakBaseUrl={keycloakBaseUrl} fhirBaseUrl={baseUrl} resourceId={record.id}/>,
       },
       {
         key: '3',
