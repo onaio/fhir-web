@@ -148,7 +148,7 @@ test('Renders without crashing', async () => {
   const userProfile = screen.getByTestId('user-profile');
   const textContent = userProfile.textContent;
   expect(textContent).toEqual(
-    '1147EnabledDeleteEditID9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["ecbis"]'
+    '1147EnabledDeleteEditId9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["ecbis"]'
   );
 
   // have a look at the tabs
@@ -164,7 +164,7 @@ test('Renders without crashing', async () => {
   const groupsTable = detailsTabSection?.querySelector('table');
 
   const tableData = [...(groupsTable?.querySelectorAll('tr') ?? [])].map((tr) => tr.textContent);
-  expect(tableData).toEqual(['NamePath', 'SuperUser/SuperUserLeave']);
+  expect(tableData).toEqual(['NamePathActions', 'SuperUser/SuperUserLeave']);
 
   const leaveBtn = screen.getByText('Leave');
   expect(leaveBtn).toMatchInlineSnapshot(`

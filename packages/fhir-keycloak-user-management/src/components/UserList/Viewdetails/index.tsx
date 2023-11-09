@@ -29,6 +29,7 @@ import { practitionerDetailsResourceType } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
+import { RbacCheck } from 'rbac/dist/types';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
@@ -127,20 +128,22 @@ export const UserDetails = (props: UserDetailProps) => {
               )
             }
             extra={[
-              <UserDeleteBtn
-                key="user-delete-btn"
-                fhirBaseUrl={fhirBaseUrl}
-                keycloakBaseUrl={keycloakBaseUrl}
-                resourceId={resourceId}
-                afterActions={userDeleteAfterAction}
-              />,
-              <Button
-                type="primary"
-                onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}
-                key="edit-user"
-              >
-                {t('Edit')}
-              </Button>,
+              <RbacCheck permissions={['iam_user.delete']} key="user-delete-btn">
+                <UserDeleteBtn
+                  fhirBaseUrl={fhirBaseUrl}
+                  keycloakBaseUrl={keycloakBaseUrl}
+                  resourceId={resourceId}
+                  afterActions={userDeleteAfterAction}
+                />
+              </RbacCheck>,
+              <RbacCheck permissions={['iam_user.update']} key="edit-user">
+                <Button
+                  type="primary"
+                  onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}
+                >
+                  {t('Edit')}
+                </Button>
+              </RbacCheck>,
             ]}
           >
             <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
@@ -168,61 +171,69 @@ export const UserDetails = (props: UserDetailProps) => {
             )}
           </PageHeader>
         </div>
-        <div className="details-tab">
-          <Tabs
-            defaultActiveKey="1"
-            size={'small'}
-            items={[
-              {
-                label: t('User groups'),
-                key: 'Groups',
-                children: (
-                  <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-                ),
-              },
-              {
-                label: t('User roles'),
-                key: 'Roles',
-                children: (
-                  <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-                ),
-              },
-              {
-                label: t('Practitioners'),
-                key: 'Practitioners',
-                children: (
-                  <PractitionerDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-              {
-                label: t('CareTeams'),
-                key: 'CareTeams',
-                children: (
-                  <CareTeamDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-              {
-                label: t('Organizations'),
-                key: 'Organizations',
-                children: (
-                  <OrganizationDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-            ]}
-          />
-        </div>
+        <RbacCheck permissions={['PractitionerDetails.read']}>
+          <div className="details-tab">
+            <Tabs
+              defaultActiveKey="1"
+              size={'small'}
+              items={[
+                {
+                  label: t('User groups'),
+                  key: 'Groups',
+                  children: (
+                    <KeycloakGroupDetails
+                      keycloakBaseUrl={keycloakBaseUrl}
+                      resourceId={resourceId}
+                    />
+                  ),
+                },
+                {
+                  label: t('User roles'),
+                  key: 'Roles',
+                  children: (
+                    <KeycloakRoleDetails
+                      keycloakBaseUrl={keycloakBaseUrl}
+                      resourceId={resourceId}
+                    />
+                  ),
+                },
+                {
+                  label: t('Practitioners'),
+                  key: 'Practitioners',
+                  children: (
+                    <PractitionerDetailsView
+                      loading={detailsLoading}
+                      practitionerDetails={practDetailsByResName}
+                      error={detailsError}
+                    />
+                  ),
+                },
+                {
+                  label: t('CareTeams'),
+                  key: 'CareTeams',
+                  children: (
+                    <CareTeamDetailsView
+                      loading={detailsLoading}
+                      practitionerDetails={practDetailsByResName}
+                      error={detailsError}
+                    />
+                  ),
+                },
+                {
+                  label: t('Organizations'),
+                  key: 'Organizations',
+                  children: (
+                    <OrganizationDetailsView
+                      loading={detailsLoading}
+                      practitionerDetails={practDetailsByResName}
+                      error={detailsError}
+                    />
+                  ),
+                },
+              ]}
+            />
+          </div>
+        </RbacCheck>
       </div>
     </div>
   );
