@@ -171,7 +171,7 @@ export const UserDetails = (props: UserDetailProps) => {
             )}
           </PageHeader>
         </div>
-        <RbacCheck permissions={['PractitionerDetails.read']}>
+        <RbacCheck permissions={['PractitionerDetail.read']}>
           <div className="details-tab">
             <Tabs
               defaultActiveKey="1"
