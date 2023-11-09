@@ -27,7 +27,7 @@ export const KeycloakRoleDetails = (props: KeycloakRoleDetailsProps) => {
   );
 
   if (error && !data) {
-    return <Alert type="error">{'Unable to fetch Roles assigned to the user'}</Alert>;
+    return <Alert type="error">{t("An error occurred while fetching the user's roles")}</Alert>;
   }
 
   const { realmMappings, clientMappings } = data ?? {};

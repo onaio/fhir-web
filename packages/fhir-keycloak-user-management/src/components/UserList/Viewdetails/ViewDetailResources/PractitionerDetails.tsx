@@ -31,7 +31,7 @@ export const PractitionerDetailsView = (props: PractitionerDetailViewsProps) => 
   if (error) {
     return (
       <Alert type="error">
-        {'An error occurred while trying to fetch the practitioner details.'}
+        {t('An error occurred while trying to fetch the practitioner details.')}
       </Alert>
     );
   }

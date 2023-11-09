@@ -6,6 +6,7 @@ import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '@opensrp/user-mana
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { QueryClient, useQueryClient, useQuery } from 'react-query';
 import { sendInfoNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { TFunction } from 'i18n/dist/types';
 
 export interface KeycloakGroupDetailsProp {
   keycloakBaseUrl: string;
@@ -27,7 +28,7 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
   if (error && !data) {
     return (
       <Alert type="error">
-        {'Unable to fetch the keycloak groups that the user is assigned to'}
+        {t('An error occured while fetching user groups that the user is assigned to')}
       </Alert>
     );
   }
@@ -42,11 +43,11 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
       dataIndex: 'path' as const,
     },
     {
-      title: t(''),
+      title: t('Actions'),
       dataIndex: 'id' as const,
       render: (id: string) => (
         <Button
-          onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query)}
+          onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query, t)}
           type="link"
           danger
         >
@@ -70,14 +71,15 @@ export const removeGroupFromUser = async (
   baseUrl: string,
   groupId: string,
   userId: string,
-  query: QueryClient
+  query: QueryClient,
+  t: TFunction
 ) => {
   const endpoint = `${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}/${groupId}`;
   const server = new KeycloakService(endpoint, baseUrl);
   return server.delete().then(() => {
     query.refetchQueries([KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS]).catch(() => {
-      sendInfoNotification('Failed to refresh data, please refresh the page');
+      sendInfoNotification(t('Failed to refresh data, please refresh the page'));
     });
-    sendSuccessNotification('User was removed from the keycloak group');
+    sendSuccessNotification(t('User has been successfully removed from the keycloak group'));
   });
 };
