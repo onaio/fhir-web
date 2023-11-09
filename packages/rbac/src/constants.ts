@@ -33,6 +33,7 @@ export const FhirResources = [
   'CareTeam',
   'PlanDefinition',
   'Questionnaire',
+  'PractitionerDetail',
 ] as const;
 export type FhirResource = typeof FhirResources[number];
 
