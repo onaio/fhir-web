@@ -58,7 +58,7 @@ export const getTableColumns = (
     const items = [
       {
         key: '1',
-        permissions: [],
+        permissions: ['iam_user.read'],
         label: (
           <Button onClick={() => history.push(`${URL_USER}/${record.id}`)} type="link">
             {t('View Details')}

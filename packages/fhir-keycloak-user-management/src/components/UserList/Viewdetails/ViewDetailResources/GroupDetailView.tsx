@@ -6,7 +6,8 @@ import { KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '@opensrp/user-mana
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { QueryClient, useQueryClient, useQuery } from 'react-query';
 import { sendInfoNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { TFunction } from 'i18n/dist/types';
+import { TFunction } from '@opensrp/i18n';
+import { RbacCheck } from '@opensrp/rbac';
 
 export interface KeycloakGroupDetailsProp {
   keycloakBaseUrl: string;
@@ -46,13 +47,15 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
       title: t('Actions'),
       dataIndex: 'id' as const,
       render: (id: string) => (
-        <Button
-          onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query, t)}
-          type="link"
-          danger
-        >
-          {'Leave'}
-        </Button>
+        <RbacCheck permissions={['iam_user.update']}>
+          <Button
+            onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query, t)}
+            type="link"
+            danger
+          >
+            {'Leave'}
+          </Button>
+        </RbacCheck>
       ),
     },
   ];
