@@ -36,36 +36,6 @@ interface UserDetailProps {
   keycloakBaseURL: string;
 }
 
-const breadCrumbItems = [
-  {
-    title: 'Users',
-    path: URL_USER,
-  },
-  {
-    title: 'View details',
-  },
-];
-
-const breadCrumb = (
-  <Breadcrumb
-    items={breadCrumbItems}
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    itemRender={(route, _, items, __) => {
-      const last = items.indexOf(route) === items.length - 1;
-      return last ? (
-        <span>{route.title}</span>
-      ) : (
-        <Link to={route.path ? route.path : '#'}>{route.title}</Link>
-      );
-    }}
-  >
-    <Breadcrumb.Item>
-      <Link to={URL_USER}>Users</Link>
-    </Breadcrumb.Item>
-    <Breadcrumb.Item>View details</Breadcrumb.Item>
-  </Breadcrumb>
-);
-
 export const UserDetails = (props: UserDetailProps) => {
   const { keycloakBaseURL: keycloakBaseUrl, fhirBaseURL: fhirBaseUrl } = props;
   const params = useParams<{ id: string }>();
@@ -114,22 +84,24 @@ export const UserDetails = (props: UserDetailProps) => {
 
   if (userError && !user) {
     return (
-      <BrokenPage errorMessage="An error occurred when fetching the user details"></BrokenPage>
+      <BrokenPage
+        errorMessage={t('An error occurred when fetching the user details.')}
+      ></BrokenPage>
     );
   }
 
   if (user === undefined) {
-    return <Resource404 title="User was not found"></Resource404>;
+    return <Resource404 title={t('Could not find the user.')}></Resource404>;
   }
 
   const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
   const userDetails = {
-    ID: id,
-    'First Name': firstName,
-    'Last Name': lastName,
-    Username: username,
-    Email: email,
-    Verified: emailVerified ? 'True' : 'False',
+    [t('Id')]: id,
+    [t('First Name')]: firstName,
+    [t('Last Name')]: lastName,
+    [t('Username')]: username,
+    [t('Email')]: email,
+    [t('Verified')]: emailVerified ? t('True') : t('False'),
   };
   const attributesArray = Object.entries(attributes ?? {});
 
@@ -138,8 +110,8 @@ export const UserDetails = (props: UserDetailProps) => {
       <PageHeader
         className="site-page-header"
         onBack={() => history.goBack()}
-        title="View details"
-        breadcrumb={breadCrumb}
+        title={t('View details')}
+        breadcrumbRender={() => <UserProfileBreadCrumb />}
         subTitle={user.username}
       />
       <div className="content-body">
@@ -148,7 +120,11 @@ export const UserDetails = (props: UserDetailProps) => {
             ghost={false}
             title={user.username}
             subTitle={
-              enabled ? <Tag color="green">Enabled</Tag> : <Tag color="green">Disabled</Tag>
+              enabled ? (
+                <Tag color="green">{t('Enabled')}</Tag>
+              ) : (
+                <Tag color="green">{t('Disabled')}</Tag>
+              )
             }
             extra={[
               <UserDeleteBtn
@@ -178,7 +154,7 @@ export const UserDetails = (props: UserDetailProps) => {
             </Descriptions>
             <Divider orientation="center">Attributes</Divider>
             {attributesArray.length === 0 ? (
-              <Alert message="This user does not have any attributes" type="info" />
+              <Alert message={t('This user does not have any attributes')} type="info" />
             ) : (
               <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
                 {attributesArray.map(([key, value]) => {
@@ -198,21 +174,21 @@ export const UserDetails = (props: UserDetailProps) => {
             size={'small'}
             items={[
               {
-                label: 'User groups',
+                label: t('User groups'),
                 key: 'Groups',
                 children: (
                   <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
                 ),
               },
               {
-                label: 'User roles',
+                label: t('User roles'),
                 key: 'Roles',
                 children: (
                   <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
                 ),
               },
               {
-                label: 'Practitioners',
+                label: t('Practitioners'),
                 key: 'Practitioners',
                 children: (
                   <PractitionerDetailsView
@@ -223,7 +199,7 @@ export const UserDetails = (props: UserDetailProps) => {
                 ),
               },
               {
-                label: 'CareTeams',
+                label: t('CareTeams'),
                 key: 'CareTeams',
                 children: (
                   <CareTeamDetailsView
@@ -234,7 +210,7 @@ export const UserDetails = (props: UserDetailProps) => {
                 ),
               },
               {
-                label: 'Organizations',
+                label: t('Organizations'),
                 key: 'Organizations',
                 children: (
                   <OrganizationDetailsView
@@ -249,5 +225,33 @@ export const UserDetails = (props: UserDetailProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const UserProfileBreadCrumb = () => {
+  const { t } = useTranslation();
+  const breadCrumbItems = [
+    {
+      title: t('Users'),
+      path: URL_USER,
+    },
+    {
+      title: t('View details'),
+    },
+  ];
+
+  return (
+    <Breadcrumb
+      items={breadCrumbItems}
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      itemRender={(route, _, items, __) => {
+        const last = items.indexOf(route) === items.length - 1;
+        return last ? (
+          <span>{route.title}</span>
+        ) : (
+          <Link to={route.path ? route.path : '#'}>{route.title}</Link>
+        );
+      }}
+    ></Breadcrumb>
   );
 };
