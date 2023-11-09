@@ -180,7 +180,9 @@ test('Renders without crashing', async () => {
   fireEvent.click(leaveBtn);
 
   await waitFor(() => {
-    expect(successMock).toHaveBeenCalledWith('User was removed from the keycloak group');
+    expect(successMock).toHaveBeenCalledWith(
+      'User has been successfully removed from the keycloak group'
+    );
   });
 
   // go to practitioners
