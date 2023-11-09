@@ -29,7 +29,7 @@ import { practitionerDetailsResourceType } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
-import { RbacCheck } from 'rbac/dist/types';
+import { RbacCheck } from '@opensrp/rbac';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
