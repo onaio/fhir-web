@@ -152,14 +152,9 @@ test('#1277 - works ok for new locations', async () => {
   const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
   nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 });
-
-  nock(props.fhirBaseURL)
-    .get(`/${locationResourceType}/_search`)
-    .query({ _count: 1000 })
-    .reply(200, locationSData);
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ _id: props.fhirRootLocationId })
+    .reply(200, fhirHierarchy);
 
   const createdLoc = {
     resourceType: 'Location',
