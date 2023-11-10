@@ -9,7 +9,7 @@ import {
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { locationHierarchyResourceType } from '../../constants';
+import { locationHierarchyResourceType, locationResourceType } from '../../constants';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
@@ -161,7 +161,14 @@ const LocationForm = (props: LocationFormProps) => {
               queryClient.cancelQueries([locationHierarchyResourceType]).catch((err) => {
                 throw err;
               });
-              queryClient.invalidateQueries([locationHierarchyResourceType]).catch((err) => {
+              queryClient
+              .invalidateQueries({
+                predicate: (query) =>
+                  [locationResourceType, locationHierarchyResourceType].includes(
+                    query.queryKey[0] as string
+                  ),
+              })
+              .catch((err) => {
                 throw err;
               });
               setSuccessUrl(successUrl);
