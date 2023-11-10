@@ -147,8 +147,9 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
                         const queryParams = { parentId: selectedNode.model.nodeId };
                         const searchString = new URLSearchParams(queryParams).toString();
                         history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
+                      } else {
+                        history.push(URL_LOCATION_UNIT_ADD);
                       }
-                      history.push(URL_LOCATION_UNIT_ADD);
                     }}
                   >
                     <PlusOutlined />
