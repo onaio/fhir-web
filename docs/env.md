@@ -211,7 +211,7 @@ Below is a list of currently supported environment variables:
 
 - **REACT_APP_FHIR_ROOT_LOCATION_ID**
 
-  - FHIR Hierarchy root location id
+  - FHIR Hierarchy root location Id
   - **Optional**_(`string`)_
 
 - **REACT_APP_OPENSRP_WEB_VERSION**

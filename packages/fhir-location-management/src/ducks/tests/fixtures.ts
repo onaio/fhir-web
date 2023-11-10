@@ -1,8 +1,5 @@
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import * as locationSData from './locationsBundle.json';
-
-export { locationSData };
 
 export const onaOfficeSubLocation = {
   resourceType: 'Location',
