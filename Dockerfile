@@ -1,6 +1,6 @@
 FROM alpine/git AS sources
 
-RUN git clone --depth=1 --branch=v2.0.0 https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --depth=1 --branch=v2.0.1 https://github.com/onaio/express-server.git /usr/src/express-server
 
 FROM node:16.18-alpine as build
 
