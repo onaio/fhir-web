@@ -28,7 +28,7 @@ import {
   PAGINATION_SIZE,
   FHIR_PATIENT_SORT_FIELDS,
   FHIR_PATIENT_BUNDLE_SIZE,
-  FHIR_ROOT_LOCATION_IDENTIFIER,
+  FHIR_ROOT_LOCATION_ID,
   COMMODITIES_LIST_RESOURCE_ID,
 } from '../configs/env';
 
@@ -42,7 +42,7 @@ export const teamAssignmentProps = {
 };
 
 export const teamAffiliationProps = {
-  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
+  fhirRootLocationId: FHIR_ROOT_LOCATION_ID,
 };
 
 export const teamManagementProps = {
@@ -53,7 +53,7 @@ export const teamManagementProps = {
 
 export const locationUnitProps = {
   filterByParentId: FILTER_BY_PARENT_ID,
-  fhirRootLocationIdentifier: FHIR_ROOT_LOCATION_IDENTIFIER,
+  fhirRootLocationId: FHIR_ROOT_LOCATION_ID,
 };
 
 export const newLocationUnitProps = {

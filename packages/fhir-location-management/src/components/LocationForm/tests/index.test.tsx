@@ -60,7 +60,7 @@ describe('LocationForm', () => {
   const tree = convertApiResToTree(fhirHierarchy);
   const formProps = {
     fhirBaseURL: 'http://test.server.org',
-    fhirRootLocationIdentifier: 'potus',
+    fhirRootLocationId: 'potus',
     tree,
   };
 
@@ -89,7 +89,7 @@ describe('LocationForm', () => {
 
     nock(formProps.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .query({ _id: formProps.fhirRootLocationId })
       .reply(200, fhirHierarchy)
       .persist();
 
@@ -137,7 +137,7 @@ describe('LocationForm', () => {
 
     nock(formProps.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .query({ _id: formProps.fhirRootLocationId })
       .reply(200, fhirHierarchy)
       .persist();
 
@@ -277,7 +277,7 @@ describe('LocationForm', () => {
 
     nock(formProps.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .query({ _id: formProps.fhirRootLocationId })
       .reply(200, fhirHierarchy)
 
       .persist();
@@ -311,7 +311,7 @@ describe('LocationForm', () => {
 
     nock(formProps.fhirBaseURL)
       .get(`/${locationHierarchyResourceType}/_search`)
-      .query({ identifier: formProps.fhirRootLocationIdentifier })
+      .query({ _id: formProps.fhirRootLocationId })
       .reply(200, fhirHierarchy)
       .put(`/Location/${createdLocation2.id}`, createdLocation2 as unknown as RequestBodyMatcher)
       .reply(201, {})

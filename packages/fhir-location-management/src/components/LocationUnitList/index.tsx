@@ -10,7 +10,7 @@ import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { URL_LOCATION_UNIT_ADD } from '../../constants';
 import Table, { TableData } from './Table';
 import Tree from '../LocationTree';
-import { useGetLocationsAsHierarchy } from '../../helpers/utils';
+import { useGetLocationHierarchy } from '../../helpers/utils';
 import './LocationUnitList.css';
 import { TreeNode } from '../../helpers/types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -28,7 +28,7 @@ reducerRegistry.register(reducerName, reducer);
 
 interface LocationUnitListProps {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string; // This is the location.id field.
+  fhirRootLocationId: string; // This is the location.id field.
 }
 
 export interface AntTreeData {
@@ -62,19 +62,21 @@ export function parseTableData(hierarchy: TreeNode[]) {
 }
 
 export const LocationUnitList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
-  const { fhirBaseURL, fhirRootLocationIdentifier } = props;
+  const { fhirBaseURL, fhirRootLocationId } = props;
   const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
 
+  // get the root locations. the root node is the opensrp root location, its immediate children
+  // are the user-defined root locations.
   const {
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier);
+  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;

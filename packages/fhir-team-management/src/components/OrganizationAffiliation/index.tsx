@@ -10,7 +10,7 @@ import {
   Tree,
   TreeNode,
   locationTreeStateDucks,
-  useGetLocationsAsHierarchy,
+  useGetLocationHierarchy,
 } from '@opensrp/fhir-location-management';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
@@ -21,11 +21,11 @@ reducerRegistry.register(reducerName, reducer);
 
 interface LocationUnitListProps {
   fhirBaseURL: string;
-  fhirRootLocationIdentifier: string;
+  fhirRootLocationId: string;
 }
 
 export const AffiliationList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
-  const { fhirBaseURL, fhirRootLocationIdentifier } = props;
+  const { fhirBaseURL, fhirRootLocationId } = props;
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     data: treeData,
     isLoading: treeIsLoading,
     error: treeError,
-  } = useGetLocationsAsHierarchy(fhirBaseURL, fhirRootLocationIdentifier);
+  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;
