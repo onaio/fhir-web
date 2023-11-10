@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`location-management/src/components/LocationUnitList Passes selected node as the parent location when adding location clicked: user defined root location 1`] = `
+<span
+  title="Ona Office Sub Location"
+>
+  Ona Office Sub Location
+</span>
+`;
+
 exports[`location-management/src/components/LocationUnitList works correctly: first row containing ona office loc details 1`] = `
 <td
   class="ant-table-cell"
