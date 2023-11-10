@@ -162,15 +162,15 @@ const LocationForm = (props: LocationFormProps) => {
                 throw err;
               });
               queryClient
-              .invalidateQueries({
-                predicate: (query) =>
-                  [locationResourceType, locationHierarchyResourceType].includes(
-                    query.queryKey[0] as string
-                  ),
-              })
-              .catch((err) => {
-                throw err;
-              });
+                .invalidateQueries({
+                  predicate: (query) =>
+                    [locationResourceType, locationHierarchyResourceType].includes(
+                      query.queryKey[0] as string
+                    ),
+                })
+                .catch((err) => {
+                  throw err;
+                });
               setSuccessUrl(successUrl);
               setAreWeDoneHere(true);
             })
