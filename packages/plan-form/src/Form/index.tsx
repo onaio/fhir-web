@@ -5,7 +5,6 @@ import { Dictionary } from '@onaio/utils';
 import { xor } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { RangePickerSharedProps } from 'rc-picker/lib/RangePicker';
 import { useTranslation } from '../mls';
 import { PLAN_LIST_URL, PLAN_DESCRIPTION_WORD_LIMIT } from '../constants';
 import { getConditionAndTriggers } from './componentsUtils/actions';
@@ -137,22 +136,13 @@ export interface PlanFormProps extends CommonProps {
 }
 
 /**
- * Plan Form Date range picker
- * Function checks end date to be greater than start date and today date
+ * Denotes what range of dates can be picked. I.e. only dates in the future
  *
  * @param {dayjs.Dayjs} current - current selected/hovered date (date picker)
- * @param {dayjs.Dayjs[]} dates - start and end date
  * @returns {boolean} - returns true if disabled and viseversa
  */
-export const disableDate = (current: dayjs.Dayjs, dates: dayjs.Dayjs[]) => {
-  if (!dates || dates.length === 0) {
-    return false;
-  }
-  return (
-    current.valueOf() <= Date.now() ||
-    current.format('L') <= (dates[0] && dates[0].format('L')) ||
-    (dates[1] && dates[1].valueOf() <= Date.now())
-  );
+export const disableDate = (current: dayjs.Dayjs) => {
+  return current && current < dayjs().endOf('day');
 };
 
 /**
@@ -169,7 +159,6 @@ const PlanForm = (props: PlanFormProps) => {
   const [actionTriggers, setActionTriggers] = useState<Dictionary>({});
   const [actionDynamicValue, setActionDynamicValue] = useState<Dictionary>({});
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
-  const [dates, setDates] = useState<dayjs.Dayjs[]>([]);
   const { t } = useTranslation();
   const {
     allFormActivities,
@@ -436,25 +425,7 @@ const PlanForm = (props: PlanFormProps) => {
             id="dateRange"
           >
             <DatePicker.RangePicker
-              onCalendarChange={
-                ((val: dayjs.Dayjs[]) => {
-                  setDates(val);
-                }) as RangePickerSharedProps<dayjs.Dayjs>['onCalendarChange']
-              }
-              onOpenChange={(open: boolean) => {
-                if (open) {
-                  if (form.getFieldValue('dateRange')) {
-                    setDates(
-                      form.getFieldValue('dateRange')[0] && form.getFieldValue('dateRange')[1]
-                        ? form.getFieldValue('dateRange')
-                        : []
-                    );
-                  } else {
-                    setDates([]);
-                  }
-                }
-              }}
-              disabledDate={(current: dayjs.Dayjs) => disableDate(current, dates)}
+              disabledDate={(current: dayjs.Dayjs) => disableDate(current)}
               disabled={disabledFields.includes('dateRange')}
               format={configs.dateFormat}
             />
