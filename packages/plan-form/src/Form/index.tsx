@@ -139,10 +139,10 @@ export interface PlanFormProps extends CommonProps {
  * Denotes what range of dates can be picked. I.e. only dates in the future
  *
  * @param {dayjs.Dayjs} current - current selected/hovered date (date picker)
- * @returns {boolean} - returns true if disabled and viseversa
+ * @returns {boolean} - returns true if disabled and vice versa
  */
 export const disableDate = (current: dayjs.Dayjs) => {
-  return current && current < dayjs().endOf('day');
+  return current && current < dayjs().startOf('day');
 };
 
 /**
