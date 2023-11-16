@@ -295,38 +295,17 @@ describe('containers/forms/PlanForm', () => {
     wrapper.unmount();
   });
 
-  it('disableDate should return false if no value selected', async () => {
-    const dates = [];
-    const current = dayjs('2017-07-13');
-    expect(disableDate(current, dates)).toBeFalsy();
+  it('disableDate should return false if date is now or future', async () => {
+    let current = dayjs('2017-07-13');
+    expect(disableDate(current)).toBeFalsy();
+    current = dayjs('2017-07-14');
+    expect(disableDate(current)).toBeFalsy();
   });
 
-  it('disableDate should return true if end date is less than todays date', async () => {
-    const dates = [dayjs('2017-07-10'), dayjs('2017-07-11')];
-    const current = dayjs('2017-07-13');
+  it('disableDate should return true if date is in the past', async () => {
+    const current = dayjs('2017-07-12');
     // date today is 2017-07-13
-    expect(disableDate(current, dates)).toBeTruthy();
-  });
-
-  it('disableDate should return true if start and end date is same', async () => {
-    const dates = [dayjs('2017-07-10'), dayjs('2017-07-10')];
-    const current = dayjs('2017-07-13');
-    // date today is 2017-07-13
-    expect(disableDate(current, dates)).toBeTruthy();
-  });
-
-  it('renders correcty when dates are passed', async () => {
-    const wrapper = mount(
-      <MemoryRouter>
-        <PlanForm />
-      </MemoryRouter>
-    );
-
-    const instance = wrapper.find('#dateRange RangePicker').at(0).props();
-    instance.onCalendarChange(['2022-07-13', '2022-07-14']);
-    instance.onOpenChange(true);
-    expect(instance.disabledDate(dayjs('2017-07-13'))).toBeFalsy();
-    wrapper.unmount();
+    expect(disableDate(current)).toBeTruthy();
   });
 
   it('Form submission for new plans works', async () => {
