@@ -200,6 +200,7 @@ const LocationForm = (props: LocationFormProps) => {
             disabledTreeNodesCallback={disabledTreeNodesCallback}
             fullDataCallback={setParentNode}
             tree={tree}
+            allowClear={true}
           />
         </FormItem>
 
