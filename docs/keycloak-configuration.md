@@ -40,9 +40,9 @@ Next we create the client that fhir-web will use to authenticate users.
    3. `Web origins` - whitelist CORS
 6. Save the client configuration.
 
-|                                                        |                                                   |                                                                    |
-| ------------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------ |
-| ![Clients list start](./images/clients-list-start.png) | ![Create client form](./images/create-client.png) | ![Create client capability](./images/create-client-capability.png) |
+|                                                        |                                                   |                                                                    |                                                          |
+| ------------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
+| ![Clients list start](./images/clients-list-start.png) | ![Create client form](./images/create-client.png) | ![Create client capability](./images/create-client-capability.png) | ![Valid redirect uris](./images/valid-redirect-uris.png) |
 
 ### Create a realm admin user account
 
