@@ -8,8 +8,8 @@ We use different technologies to deploy fhir-web. This documentation will focus 
 
 - A basic knowledge of containerization technologies with focus on Docker.
 - A well configured [keycloak server](https://hub.docker.com/r/onaio/keycloak) deployment.
-  - We currently support version `18.0.0-legacy`
   - This should include the Keycloak [Realm](https://www.keycloak.org/docs/latest/server_admin/#configuring-realms) and [Client](https://www.keycloak.org/docs/latest/server_admin/#assembly-managing-clients_server_administration_guide) configurations.
+  - Read more about the expected keycloak configuration [here](./keycloak-configuration.md)
 - A well configured [Hapi FHIR server](https://github.com/opensrp/hapi-fhir-jpaserver-starter) deployment.
 
 ## Background
@@ -109,6 +109,8 @@ We use different technologies to deploy fhir-web. This documentation will focus 
           # content security policy configuration
           # remove optional-sentry-base-url config block if your deployment has no sentry
           - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG={"connect-src":["''self''","<optional-sentry-base-url>","<keycloak-base-url>","<fhir-server-base-url>"],"default-src":["''self''"],"img-src":["''self''","https://github.com/opensrp/","https://*.githubusercontent.com/opensrp/"]}'
+          # to disable CSP
+          # - 'EXPRESS_CONTENT_SECURITY_POLICY_CONFIG=false'
 
         # optional sentry config
         # - 'EXPRESS_RESPONSE_HEADERS={"report-to":", {endpoints:[{url:https://<optional-sentry-base-url>/api/<optional-sentry-projectId>/security/?sentry_key=<optional-sentry-key>\\u0026sentry_environment=<optional-sentry-environment>\\u0026sentry_release=<optional-sentry-release-name>}],group:csp-endpoint,max_age:10886400}"}'
@@ -123,6 +125,7 @@ We use different technologies to deploy fhir-web. This documentation will focus 
 
     window._env_ = {
       // keycloak
+      REACT_APP_AUTHZ_STRATEGY: 'keycloak',
       REACT_APP_KEYCLOAK_API_BASE_URL: '<keycloak-base-url>/auth/admin/realms/<keycloak-realm>',
       REACT_APP_KEYCLOAK_LOGOUT_URL:
         '<keycloak-base-url>/auth/realms/<keycloak-realm>/protocol/openid-connect/logout',
@@ -158,6 +161,13 @@ We use different technologies to deploy fhir-web. This documentation will focus 
       REACT_APP_ENABLE_FHIR_USER_MANAGEMENT: 'false',
       REACT_APP_ENABLE_FHIR_COMMODITY: 'false',
       REACT_APP_ENABLE_QUEST: 'false',
+      REACT_APP_ENABLE_TEAMS_ASSIGNMENT_MODULE: 'false',
+
+      // i18n
+      REACT_APP_SUPPORTED_LANGUAGES: "en,fr",
+      REACT_APP_ENABLE_LANGUAGE_SWITCHER: 'false',
+      REACT_APP_PROJECT_CODE: 'core',
+      REACT_APP_LANGUAGE_CODE: 'en'
 
       // optional overrides
       SKIP_PREFLIGHT_CHECK: 'true',
@@ -173,8 +183,6 @@ We use different technologies to deploy fhir-web. This documentation will focus 
       REACT_APP_PROJECT_CODE: 'demo',
       REACT_APP_DEFAULTS_TABLE_PAGE_SIZE: '10',
       REACT_APP_OPENSRP_LOGOUT_URL: 'null',
-      REACT_APP_OPENSRP_ROLES:
-        '{"USERS":"ROLE_EDIT_KEYCLOAK_USERS","LOCATIONS":"ROLE_VIEW_KEYCLOAK_USERS","TEAMS":"ROLE_VIEW_KEYCLOAK_USERS","CARE_TEAM":"ROLE_VIEW_KEYCLOAK_USERS","QUEST":"ROLE_VIEW_KEYCLOAK_USERS","HEALTHCARE_SERVICE":"ROLE_VIEW_KEYCLOAK_USERS","GROUP":"ROLE_VIEW_KEYCLOAK_USERS","COMMODITY":"ROLE_VIEW_KEYCLOAK_USERS",}',
       REACT_APP_PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY: 'ONE_TO_MANY',
 
       // optional sentry config
