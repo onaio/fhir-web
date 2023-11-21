@@ -58,7 +58,7 @@ At this point you can use the client credentials to run fhir-web. However, when 
 
 ![Unauthorized](./images/403-unauthorized.png)
 
-To do this we first have to create the roles. We then need to assign these roles to the user by either:
+To be able to proceed we must first create the roles. We then need to assign these roles to the user by either:
 
 1. Directly assigning roles to a user or
 2. Curating roles into contextual groups and then adding users to these groups.
