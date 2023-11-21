@@ -54,7 +54,7 @@ You can use this user for keycloak administrative tasks. However, all other fhir
 
 ### Managing permissions.
 
-At this point you can use the client credentials to run fhir-web. However, when you login with the realm admin user, you will notice that you get a 403 Unauthorized page. This is because we have not yet assigned the user with the required permissions to view content on the web app.
+At this point you can use the client credentials to run fhir-web. However, when you login with the realm admin user or any other new user, you will notice that you get a 403 Unauthorized page or that some modules are missing. This is because we have not yet assigned the user with the required permissions to view content on the web app.
 
 ![Unauthorized](./images/403-unauthorized.png)
 
