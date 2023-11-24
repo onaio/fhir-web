@@ -44,6 +44,34 @@ Next we create the client that fhir-web will use to authenticate users.
 | ------------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
 | ![Clients list start](./images/clients-list-start.png) | ![Create client form](./images/create-client.png) | ![Create client capability](./images/create-client-capability.png) | ![Valid redirect uris](./images/valid-redirect-uris.png) |
 
+**Alternatively**
+
+1. On the left sidebar, click on `clients`.
+2. This loads up a table with a few default clients that provide specific administrative purposes within the keycloak identity management system.
+3. click on `Import client`,
+4. Import a client representation resource file. A sample is shown below.
+
+```json
+// client.json
+{
+  "name": "Fhir web client",
+  "clientId": "fhir-web",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "publicClient": false,
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": true,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": false,
+  "redirectUris": ["http://localhost:3000/*", "https://<fhir-web-domain>*"],
+  "webOrigins": ["http://localhost:3000", "https://<fhir-web-domain>"],
+  "attributes": {
+    "post.logout.redirect.uris": "http://localhost:300/*##https://<fhir-web-domain>/*"
+  },
+  "secret": "<client-secret>"
+}
+```
+
 ### Create a realm admin user account
 
 You can use this user for keycloak administrative tasks. However, all other fhir system users should be created via the web.
