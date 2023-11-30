@@ -429,7 +429,7 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={LIST_GROUP_URL}
-        permissions={['Group.update']}
+        permissions={['Group.read']}
         component={GroupList}
       />
       <PrivateComponent
