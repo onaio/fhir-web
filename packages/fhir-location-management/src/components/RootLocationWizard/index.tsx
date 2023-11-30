@@ -10,6 +10,7 @@ import { postPutLocationUnit } from '../LocationForm/utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useQuery } from 'react-query';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { RbacCheck } from 'rbac/dist/types';
 
 const { Text } = Typography;
 
@@ -106,7 +107,6 @@ const CardBodyContent = ({
     return (
       <Space direction="vertical">
         <Text>No locations have been uploaded yet.</Text>
-
         <CreateRootConfirm {...createRootConfirmProps} />
       </Space>
     );
@@ -149,28 +149,33 @@ const CreateRootConfirm = (props: CreateRootConfirmProps) => {
   } as ILocation;
 
   return (
-    <Popconfirm
-      title={t(
-        `This action will create a new location with id {{rootLocationId}}. The web application will then use the created location as the root location.`,
-        { rootLocationId }
-      )}
-      okText={t('Proceed')}
-      cancelText={t('Cancel')}
-      onConfirm={async () => {
-        await postPutLocationUnit(rootLocationPayload, fhirBaseUrl)
-          .then(() => {
-            sendSuccessNotification('Root location uploaded to the server.');
-            onOk();
-          })
-          .catch(() => {
-            sendErrorNotification(
-              'Could not upload the root location at this time, please try again later.'
-            );
-          });
-      }}
+    <RbacCheck
+      permissions={['Location.create']}
+      fallback={<Text type="warning">Missing required permissions to create locations</Text>}
     >
-      <Button type="primary">{t('Create root location.')}</Button>
-    </Popconfirm>
+      <Popconfirm
+        title={t(
+          `This action will create a new location with id {{rootLocationId}}. The web application will then use the created location as the root location.`,
+          { rootLocationId }
+        )}
+        okText={t('Proceed')}
+        cancelText={t('Cancel')}
+        onConfirm={async () => {
+          await postPutLocationUnit(rootLocationPayload, fhirBaseUrl)
+            .then(() => {
+              sendSuccessNotification('Root location uploaded to the server.');
+              onOk();
+            })
+            .catch(() => {
+              sendErrorNotification(
+                'Could not upload the root location at this time, please try again later.'
+              );
+            });
+        }}
+      >
+        <Button type="primary">{t('Create root location.')}</Button>
+      </Popconfirm>
+    </RbacCheck>
   );
 };
 
