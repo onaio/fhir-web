@@ -15,8 +15,6 @@ list of non-trivial changes included with the PR
 - [ ] tests are included and passing
 - [ ] documentation is changed or added
 - [ ] **Internationalization**:
-
   - [ ] Ensure all strings are internationalized.
-
 - [ ] **Role-Based Access**:
   - [ ] Verify that all user actions have appropriate role-based access permissions set.
