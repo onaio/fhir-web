@@ -10,7 +10,8 @@ import { postPutLocationUnit } from '../LocationForm/utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useQuery } from 'react-query';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { RbacCheck } from 'rbac/dist/types';
+import { RbacCheck } from '@opensrp/rbac';
+import { Trans } from '@opensrp/i18n';
 
 const { Text } = Typography;
 
@@ -48,12 +49,11 @@ export const RootLocationWizard = (props: RootLocationWizardProps) => {
 
       <Row className="list-view">
         <Col className="main-content">
-          <Card title={t('Root location was not found')} style={{ minHeight: '80vh' }}>
+          <Card title={t('Root location was not found')} style={{ minHeight: '60vh' }}>
             <p>
-              {t(
-                `Root location with {{rootLocationId}} was not found on this server. This prevents the location view from fully loading.`,
-                { rootLocationId }
-              )}
+              {t(`Root location with id: {{rootLocationId}} was not found on the server.`, {
+                rootLocationId,
+              })}
             </p>
 
             <CardBodyContent
@@ -85,6 +85,7 @@ const CardBodyContent = ({
   rootLocationId,
   error,
 }: CardBodyContentProps) => {
+  const { t } = useTranslation();
   const createRootConfirmProps = {
     fhirBaseUrl,
     rootLocationId,
@@ -92,33 +93,32 @@ const CardBodyContent = ({
 
   if (fetching) {
     return (
-      <>
-        <Spin size="small" /> Checking for presence of possible root locations on the server.
-      </>
+      <Trans i18nKey="LookingForUploadedLocations" t={t}>
+        <Spin size="small" /> Looking for uploaded locations on the server.
+      </Trans>
     );
   } else if (error || locationNum === undefined) {
     return (
       <Space direction="vertical">
-        <Alert type="error" message="Unable to check if the server has any locations." />
+        <Alert type="error" message={t('Unable to check if the server has any locations.')} />
         <CreateRootConfirm {...createRootConfirmProps} />
       </Space>
     );
   } else if (locationNum === 0) {
     return (
       <Space direction="vertical">
-        <Text>No locations have been uploaded yet.</Text>
+        <Text>{t('No locations have been uploaded yet.')}</Text>
         <CreateRootConfirm {...createRootConfirmProps} />
       </Space>
     );
   } else {
     return (
       <Space direction="vertical">
-        <Text>
-          {/* // TODO - plural translation */}
-          There exists locationNum locations on the server.
-        </Text>
-        <Text> One of these could be the intended but wrongly configured, root location. </Text>
-        <Text> If you are not sure, kindly reach out to the web administrator for help.</Text>
+        <Trans i18nKey={'locationsOnServer'} t={t} locationNum={locationNum}>
+          <Text>There exists {{ locationNum }} locations on the server.</Text>
+          <Text> One of these could be the intended but wrongly configured, root location. </Text>
+          <Text> If you are not sure, kindly reach out to the web administrator for help.</Text>
+        </Trans>
         <CreateRootConfirm {...createRootConfirmProps} />
       </Space>
     );
@@ -163,12 +163,12 @@ const CreateRootConfirm = (props: CreateRootConfirmProps) => {
         onConfirm={async () => {
           await postPutLocationUnit(rootLocationPayload, fhirBaseUrl)
             .then(() => {
-              sendSuccessNotification('Root location uploaded to the server.');
+              sendSuccessNotification(t('Root location uploaded to the server.'));
               onOk();
             })
             .catch(() => {
               sendErrorNotification(
-                'Could not upload the root location at this time, please try again later.'
+                t('Could not upload the root location at this time, please try again later.')
               );
             });
         }}
