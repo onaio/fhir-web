@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@onaio/connected-private-route": "^0.1.0",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/session-reducer": "^0.0.12",
     "@onaio/utils": "^0.0.1",
