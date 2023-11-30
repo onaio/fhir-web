@@ -23,6 +23,7 @@ import {
 } from '../../ducks/location-tree-state';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
+import { RootLocationWizard } from '../RootLocationWizard';
 
 reducerRegistry.register(reducerName, reducer);
 
@@ -68,6 +69,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const history = useHistory();
+  const [showWizard, setShowWizard] = useState(false);
 
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
@@ -76,10 +78,21 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
     isLoading: treeIsLoading,
     error: treeError,
     isFetching: treeIsFetching,
-  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId);
+  } = useGetLocationHierarchy(fhirBaseURL, fhirRootLocationId, {
+    enabled: !showWizard,
+    onError: (error) => {
+      if (error.statusCode === 404) {
+        setShowWizard(true);
+      }
+    },
+  });
 
   if (treeIsLoading) {
     return <Spin size="large" className="custom-spinner" />;
+  }
+
+  if (showWizard) {
+    return <RootLocationWizard fhirBaseUrl={fhirBaseURL} rootLocationId={fhirRootLocationId} />;
   }
 
   if (treeError && !treeData) {

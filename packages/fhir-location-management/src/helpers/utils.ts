@@ -4,10 +4,11 @@ import cycle from 'cycle';
 import TreeModel from 'tree-model';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
-import { useQuery } from 'react-query';
+import { UseQueryOptions, useQuery } from 'react-query';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { locationHierarchyResourceType, locationResourceType } from '../constants';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { HTTPError } from '@opensrp/server-service';
 
 /**
  * Parse the raw child hierarchy node map
@@ -74,12 +75,17 @@ export const serializeTree = (trees?: TreeNode[] | TreeNode) => {
  *
  * @param baseUrl - the server base url
  * @param rootId - the location identifier
+ * @param queryOptions - extra query options.
  */
-export const useGetLocationHierarchy = (baseUrl: string, rootId: string) => {
+export const useGetLocationHierarchy = (
+  baseUrl: string,
+  rootId: string,
+  queryOptions: UseQueryOptions<IBundle, HTTPError, TreeNode> = {}
+) => {
   const hierarchyParams = {
     _id: rootId,
   };
-  return useQuery<IBundle, Error, TreeNode>(
+  return useQuery<IBundle, HTTPError, TreeNode>(
     [locationHierarchyResourceType, hierarchyParams],
     async () => {
       return new FHIRServiceClass<IBundle>(baseUrl, locationHierarchyResourceType).list(
@@ -92,6 +98,7 @@ export const useGetLocationHierarchy = (baseUrl: string, rootId: string) => {
       },
       refetchInterval: false,
       staleTime: Infinity,
+      ...queryOptions,
     }
   );
 };
