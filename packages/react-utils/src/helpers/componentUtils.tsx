@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Route, RouteProps, RouteComponentProps, useLocation } from 'react-router';
-import { getAllConfigs } from '@opensrp/pkg-config';
-import ConnectedPrivateRoute from '@onaio/connected-private-route';
-import { UnauthorizedPage } from '../components/UnauthorizedPage';
-import { useTranslation } from '../mls';
-import { RbacCheck } from '@opensrp/rbac';
-
-const configs = getAllConfigs();
 
 /** Private/Public component props */
 interface ComponentProps extends Partial<RouteProps> {
@@ -20,44 +13,6 @@ interface ComponentProps extends Partial<RouteProps> {
   fhirBaseURL?: string;
   permissions: string[];
 }
-
-/**
- * Util wrapper around ConnectedPrivateRoute to render components
- *  that use private routes/ require authentication
- *
- * @param props - Component props object
- */
-
-export const PrivateComponent = (props: ComponentProps) => {
-  //  props to pass on to Connected Private Route
-  const { permissions, component: WrappedComponent, ...otherProps } = props;
-
-  const { t } = useTranslation();
-
-  const RbacWrappedComponent = (props: Record<string, unknown>) => (
-    <RbacCheck
-      permissions={permissions}
-      fallback={
-        <UnauthorizedPage
-          title={t('403')}
-          errorMessage={t('Sorry, you are not authorized to access this page')}
-        />
-      }
-    >
-      <WrappedComponent {...props} />
-    </RbacCheck>
-  );
-
-  const CPRProps = {
-    ...otherProps,
-    component: RbacWrappedComponent,
-    keycloakBaseURL: configs.keycloakBaseURL,
-    opensrpBaseURL: configs.opensrpBaseURL,
-    fhirBaseURL: configs.fhirBaseURL,
-  };
-
-  return <ConnectedPrivateRoute {...CPRProps} />;
-};
 
 /**
  * Util wrapper around Route for rendering components

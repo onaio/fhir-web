@@ -1,5 +1,9 @@
 import React from 'react';
-import { Resource404, PrivateComponent, PublicComponent } from '@opensrp/react-utils';
+import {
+  Resource404,
+  PrivateRoute as PrivateComponent,
+  PublicComponent,
+} from '@opensrp/react-utils';
 import {
   AuthorizationGrantType,
   ConnectedOauthCallback,
