@@ -21,8 +21,9 @@ import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
 import { locationHierarchyResourceType } from '../../../constants';
 import { locationResourceType } from '../../../constants';
-import { locationSData } from '../../../ducks/tests/fixtures';
 import userEvent from '@testing-library/user-event';
+import { rootlocationFixture } from '../../RootLocationWizard/tests/fixtures';
+import * as notifications from '@opensrp/notifications';
 
 const history = createBrowserHistory();
 
@@ -84,8 +85,8 @@ describe('location-management/src/components/LocationUnitList', () => {
     );
   });
 
-  nock.cleanAll();
   afterEach(() => {
+    nock.cleanAll();
     cleanup();
   });
 
@@ -208,14 +209,9 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   it('Passes selected node as the parent location when adding location clicked', async () => {
     nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _summary: 'count' })
-      .reply(200, { total: 1000 });
-
-    nock(props.fhirBaseURL)
-      .get(`/${locationResourceType}/_search`)
-      .query({ _count: 1000 })
-      .reply(200, locationSData)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ _id: props.fhirRootLocationId })
+      .reply(200, fhirHierarchy)
       .persist();
 
     render(<AppWrapper {...props} />);
@@ -238,5 +234,58 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     // check where we redirected to
     expect(history.location.search).toEqual('?parentId=Location%2F303');
+  });
+
+  it('Root location wizard works correclty', async () => {
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+
+    nock(props.fhirBaseURL)
+      .get(`/${locationHierarchyResourceType}/_search`)
+      .query({ _id: props.fhirRootLocationId })
+      .reply(404, {
+        resourceType: 'OperationOutcome',
+        issue: [
+          {
+            severity: 'error',
+            code: 'processing',
+            diagnostics: `HAPI-2001: Resource Location/${props.fhirRootLocationId} is not known`,
+          },
+        ],
+      });
+
+    nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({ _summary: 'count' })
+      .reply(200, { total: 0 })
+      .persist();
+
+    nock(props.fhirBaseURL)
+      .put(`/Location/${rootlocationFixture.id}`, rootlocationFixture)
+      .reply(201, {})
+      .persist();
+
+    render(<AppWrapper {...props} />);
+
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+    expect(screen.getByText(/Location Unit Management/)).toBeInTheDocument();
+    expect(screen.getByText(/Root location was not found/)).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.queryByText(/No locations have been uploaded yet./)).toBeInTheDocument();
+    });
+
+    const locationCreate = screen.getByRole('button', { name: 'Create root location.' });
+
+    fireEvent.click(locationCreate);
+
+    expect(screen.getByText(/This action will create a new location with id/)).toBeInTheDocument();
+    const confirmBtn = screen.getByRole('button', { name: 'Proceed' });
+
+    fireEvent.click(confirmBtn);
+
+    await waitFor(() => {
+      expect(notificationSuccessMock).toHaveBeenCalledWith('Root location uploaded to the server.');
+    });
   });
 });
