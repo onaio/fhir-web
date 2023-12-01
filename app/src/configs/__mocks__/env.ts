@@ -42,3 +42,5 @@ export const OPENSRP_WEB_VERSION = '';
 export const ENABLE_QUEST = true;
 
 export const BACKEND_ACTIVE = false;
+
+export const ENABLE_FHIR_USER_MANAGEMENT = true;
