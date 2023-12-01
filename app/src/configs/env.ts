@@ -10,14 +10,6 @@ export const OPENSRP_OAUTH_SCOPES = setEnv('REACT_APP_OPENSRP_OAUTH_SCOPES', 'pr
 
 export const ENABLE_FHIR_GROUP = setEnv('REACT_APP_ENABLE_FHIR_GROUP', 'false') === 'true';
 
-export const DEFAULT_ACTIVITY_DURATION_DAYS = Number(
-  setEnv('REACT_APP_DEFAULT_ACTIVITY_DURATION_DAYS', 7)
-);
-
-export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = Number(
-  setEnv('REACT_APP_PLAN_ASSIGNMENT_AT_GEO_LEVEL', 0)
-);
-
 export const MAIN_LOGO_SRC = setEnv(
   'REACT_APP_MAIN_LOGO_SRC',
   'https://github.com/OpenSRP/web/raw/main/app/src/assets/images/opensrp-logo-color.png'
