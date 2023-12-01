@@ -29,7 +29,7 @@
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
     "@opensrp/server-logout": "^0.0.2",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp/server-service": "^0.0.17",
     "@opensrp/store": "^0.0.10",
     "@sentry/react": "^5.27.4",
     "antd": "^5.5.2",

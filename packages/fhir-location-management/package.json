@@ -40,7 +40,7 @@
     "@opensrp/rbac": "workspace:^",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
-    "@opensrp/server-service": "^0.0.16",
+    "@opensrp/server-service": "^0.0.17",
     "cycle": "^1.0.3",
     "fhirclient": "^2.4.0",
     "tree-model": "^1.0.7",
