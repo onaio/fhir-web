@@ -1,8 +1,6 @@
 export const OPENSRP_API_BASE_URL = 'https://test.smartregister.org/opensrp/rest/';
 export const KEYCLOAK_API_BASE_URL =
   'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage';
-export const ENABLE_PRODUCT_CATALOGUE = true;
-export const ENABLE_INVENTORY = true;
 export const LANGUAGE_CODE = 'en';
 export const PROJECT_LANGUAGE_CODE = 'eusm';
 export const SUPPORTED_LANGUAGES = ['en', 'fr'];
@@ -43,6 +41,6 @@ export const OPENSRP_WEB_VERSION = '';
 
 export const ENABLE_QUEST = true;
 
-export const ENABLE_USER_MANAGEMENT = true;
-
 export const BACKEND_ACTIVE = false;
+
+export const ENABLE_FHIR_USER_MANAGEMENT = true;

@@ -3562,7 +3562,7 @@ __metadata:
     "@opensrp/rbac": "workspace:^"
     "@opensrp/react-utils": ^0.0.12
     "@opensrp/reducer-factory": ^0.0.13
-    "@opensrp/server-service": ^0.0.16
+    "@opensrp/server-service": ^0.0.17
     "@smile-cdr/fhirts": 1.2.5
     "@types/uuid": 8.3.0
     cycle: ^1.0.3
@@ -3744,7 +3744,7 @@ __metadata:
     "@opensrp/rbac": "workspace:^"
     "@opensrp/react-utils": ^0.0.12
     "@opensrp/reducer-factory": ^0.0.13
-    "@opensrp/server-service": ^0.0.16
+    "@opensrp/server-service": ^0.0.17
     "@types/geojson": ^7946.0.7
     "@types/uuid": 8.3.0
     cycle: ^1.0.3
@@ -4003,7 +4003,7 @@ __metadata:
     "@opensrp/react-utils": ^0.0.12
     "@opensrp/reducer-factory": ^0.0.13
     "@opensrp/server-logout": ^0.0.2
-    "@opensrp/server-service": ^0.0.16
+    "@opensrp/server-service": ^0.0.17
     "@opensrp/store": ^0.0.10
     "@sentry/react": ^5.27.4
     antd: ^5.5.2

@@ -81,7 +81,6 @@ import {
   NewEditLocationUnit as FHIRNewEditLocationUnit,
 } from '@opensrp/fhir-location-management';
 import {
-  teamAssignmentProps,
   teamAffiliationProps,
   editLocationProps,
   newLocationUnitProps,
@@ -305,7 +304,6 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_TEAMS}
-        {...teamAssignmentProps}
         permissions={['Organization.read']}
         component={FhirTeamsList}
       />
