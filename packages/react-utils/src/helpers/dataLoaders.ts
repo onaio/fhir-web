@@ -11,11 +11,12 @@ import { history } from '@onaio/connected-reducer-registry';
 import { refreshToken } from '@onaio/gatekeeper';
 import { getAccessToken, isTokenExpired } from '@onaio/session-reducer';
 import { Dictionary } from '@onaio/utils';
-import { EXPRESS_TOKEN_REFRESH_URL } from '../constants';
+import { EXPRESS_TOKEN_REFRESH_URL, INVALIDATE_CACHE_PARAM } from '../constants';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import FHIR from 'fhirclient';
 import { fhirclient } from 'fhirclient/lib/types';
 import type { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
+import { URLSearchParams } from 'url';
 
 const configs = getAllConfigs();
 
@@ -77,6 +78,21 @@ export class FHIRServiceClass<T extends IResource> {
     this.signal = signal;
   }
 
+  public getCacheControlHeaders(searchParams?: URLSearchParams): HeadersInit {
+    if (!searchParams) {
+      return {};
+    }
+    const resourcesToInvalidate = searchParams.get(INVALIDATE_CACHE_PARAM);
+    if (resourcesToInvalidate) {
+      if (resourcesToInvalidate.split(',').includes(this.resourceType)) {
+        return {
+          'cache-control': 'no-cache',
+        };
+      }
+    }
+    return {};
+  }
+
   public buildQueryParams(params: URLParams | null) {
     if (params) {
       const urlParams = new URLSearchParams();
@@ -112,17 +128,19 @@ export class FHIRServiceClass<T extends IResource> {
     return serve.update<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
   }
 
-  public async list(params: URLParams | null = null) {
+  public async list(params: URLParams | null = null, searchParams?: URLSearchParams) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const queryStr = this.buildQueryParams(params);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>(queryStr);
+    const cacheHeaders = this.getCacheControlHeaders(searchParams);
+    return serve.request<T>({ url: queryStr, headers: { ...cacheHeaders } });
   }
 
-  public async read(id: string) {
+  public async read(id: string, searchParams?: URLSearchParams) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>(`${this.resourceType}/${id}`);
+    const cacheHeaders = this.getCacheControlHeaders(searchParams);
+    return serve.request<T>({ url: `${this.resourceType}/${id}`, headers: { ...cacheHeaders } });
   }
 
   public async delete(id: string) {
