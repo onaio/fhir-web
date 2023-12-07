@@ -219,7 +219,16 @@ describe('dataloaders/FHIRService', () => {
     const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
     const result = await fhir.list();
     await flushPromises();
-    expect(requestMock.mock.calls).toEqual([['CareTeam']]);
+    expect(requestMock.mock.calls).toEqual([
+      [
+        {
+          headers: {
+            'cache-control': 'no-cache',
+          },
+          url: 'CareTeam',
+        },
+      ],
+    ]);
     expect(result).toEqual(fixtures.careTeams);
     // make sure every item of fhirlist returns the CareTeam
     expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
@@ -239,7 +248,16 @@ describe('dataloaders/FHIRService', () => {
     // without url params
     const result = await fhir.list({ _count: '100' });
     await flushPromises();
-    expect(requestMock.mock.calls).toEqual([['CareTeam/_search?_count=100']]);
+    expect(requestMock.mock.calls).toEqual([
+      [
+        {
+          headers: {
+            'cache-control': 'no-cache',
+          },
+          url: 'CareTeam/_search?_count=100',
+        },
+      ],
+    ]);
     expect(result).toEqual(fixtures.careTeams);
     // make sure every item of fhirlist returns the CareTeam
     expect(result.entry.every((e) => e.resource.resourceType === 'CareTeam')).toBeTruthy();
