@@ -116,13 +116,16 @@ export class FHIRServiceClass<T extends IResource> {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const queryStr = this.buildQueryParams(params);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>(queryStr);
+    return serve.request<T>({ url: queryStr, headers: { 'cache-control': 'no-cache' } });
   }
 
   public async read(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>(`${this.resourceType}/${id}`);
+    return serve.request<T>({
+      url: `${this.resourceType}/${id}`,
+      headers: { 'cache-control': 'no-cache' },
+    });
   }
 
   public async delete(id: string) {
