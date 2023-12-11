@@ -9,6 +9,9 @@ import {
   SERVICE_POINT_CHECK_CODE,
   RECORD_GPS_CODE,
 } from '@opensrp/plan-form-core';
+import { HTTPMethod } from '@opensrp/server-service';
+import { getFileNameFromCDHHeader, downloadFile } from '@opensrp/react-utils';
+import { OpenSRPService } from './dataLoaders';
 
 /**
  * helper to retrieve the plan Type from a plan definition object
@@ -62,7 +65,38 @@ export const PlanLoading = () => {
   return <Spin size="large" className="custom-spinner"></Spin>;
 };
 
-export const BuildDownloadUrl = (baseURL: string, planId: string) => {
+const getFetchOptions = (_: AbortSignal, accessToken: string, method: HTTPMethod): RequestInit => {
+  return {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+    },
+    method,
+  };
+};
+
+/**
+ * download a misisons data.
+ *
+ * @param baseURL - opensrp server base url
+ * @param plan - plan whose mission data we fetching.
+ */
+export const downloadMissionData = async (baseURL: string, plan: PlanDefinition) => {
+  const { title, identifier } = plan;
+  const fileTitle = title.replaceAll(/\\s/g, ' ').split(' ').join('_');
   const eventType = `${FLAG_PROBLEM_CODE},${SERVICE_POINT_CHECK_CODE},${LOOKS_GOOD_CODE},${RECORD_GPS_CODE}`;
-  return `${baseURL}${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${planId}`;
+  const exportPath = `${OPENSRP_TASK_EXPORT_DATA}?eventTypes=${eventType}&planIdentifier=${identifier}`;
+
+  const serve = new OpenSRPService(exportPath, baseURL, getFetchOptions);
+  const response = await serve.download();
+
+  // get filename from content-disposition header
+  const contentDispositionHeader = response.headers.get('content-disposition');
+  const fileName = contentDispositionHeader
+    ? getFileNameFromCDHHeader(contentDispositionHeader)
+    : `${fileTitle}_${Date.now()}.zip`;
+
+  // get blob data from response
+  const blob = await response.blob();
+
+  downloadFile(blob, fileName);
 };
