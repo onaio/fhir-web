@@ -11,11 +11,12 @@ import { useTranslation } from '../../mls';
 import { loadTasksIndicators, TaskCount, TaskParams } from '../../helpers/dataLoaders';
 import { CommonProps, defaultCommonProps } from '@opensrp/plan-form';
 import { useHandleBrokenPage } from '@opensrp/react-utils';
-import { BuildDownloadUrl } from '../../helpers/utils';
 import {
   OPENSRP_BUSINESS_STATUS_HAS_PROBLEM,
   OPENSRP_TASK_STATUS_COMPLETED,
 } from '../../constants';
+import { sendErrorNotification } from '@opensrp/notifications';
+import { downloadMissionData } from '../../helpers/utils';
 
 const { Title, Text } = Typography;
 
@@ -98,9 +99,7 @@ const MissionData = (props: MissionDataProps) => {
           <Text>{t('Number of flagged products')}</Text>:&nbsp;
           <Text type="secondary">{flaggedProducts}</Text>
         </p>
-        <a href={BuildDownloadUrl(baseURL, plan.identifier)} download>
-          <Button type="primary">{t('Download mission data')}</Button>
-        </a>
+        <DownloadMissionData baseUrl={baseURL} plan={plan} />
       </Space>
     </Card>
   ) : null;
@@ -109,3 +108,31 @@ const MissionData = (props: MissionDataProps) => {
 MissionData.defaultProps = defaultProps;
 
 export { MissionData };
+
+// Download Mission button.
+
+interface DownloadMissionDataProps {
+  baseUrl: string;
+  plan: PlanDefinition;
+}
+
+export const DownloadMissionData = (props: DownloadMissionDataProps) => {
+  const { baseUrl, plan } = props;
+  const { t } = useTranslation();
+  const [downloading, setDownloading] = useState(false);
+  const handleClick = () => {
+    setDownloading(true);
+    downloadMissionData(baseUrl, plan)
+      .catch(() => {
+        sendErrorNotification(t('Mission data download failed.'));
+      })
+      .finally(() => {
+        setDownloading(false);
+      });
+  };
+  return (
+    <Button type="primary" disabled={downloading} onClick={handleClick}>
+      {t('Download mission data')}
+    </Button>
+  );
+};

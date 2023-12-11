@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Space, Button, Radio } from 'antd';
+import { Form, Input, Space, Button, Radio, FormInstance } from 'antd';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { Redirect } from 'react-router';
 import { ExtraFields } from './ExtraFields';
@@ -175,6 +175,7 @@ const LocationForm = (props: LocationFormProps) => {
             is_jurisdiction: values.isJurisdiction,
           };
 
+          setSubmitting(true);
           postPutLocationUnit(payload, opensrpBaseURL, isEditMode, params)
             .then(() => {
               afterSubmit(payload);
@@ -353,14 +354,7 @@ const LocationForm = (props: LocationFormProps) => {
 
           <FormItem {...tailLayout}>
             <Space>
-              <Button
-                type="primary"
-                id="location-form-submit-button"
-                disabled={isSubmitting}
-                htmlType="submit"
-              >
-                {isSubmitting ? t('Saving') : t('Save')}
-              </Button>
+              <SubmitButton form={form} isSubmitting={isSubmitting} />
               <Button id="location-form-cancel-button" onClick={() => onCancel()}>
                 {t('Cancel')}
               </Button>
@@ -375,3 +369,34 @@ const LocationForm = (props: LocationFormProps) => {
 LocationForm.defaultProps = defaultProps;
 
 export { LocationForm };
+
+const SubmitButton = ({ form, isSubmitting }: { form: FormInstance; isSubmitting: boolean }) => {
+  const { t } = useTranslation();
+  const [submittable, setSubmittable] = React.useState(false);
+
+  // Watch all values
+  const values = Form.useWatch([], form);
+
+  React.useEffect(() => {
+    form.validateFields({ validateOnly: true }).then(
+      () => {
+        setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
+
+  return (
+    <Button
+      type="primary"
+      id="location-form-submit-button"
+      disabled={isSubmitting || !submittable}
+      htmlType="submit"
+    >
+      {isSubmitting ? t('Saving') : t('Save')}
+    </Button>
+  );
+};

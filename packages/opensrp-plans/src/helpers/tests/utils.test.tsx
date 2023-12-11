@@ -2,18 +2,12 @@ import {
   ACTIVE_PLANS_LIST_VIEW_URL,
   COMPLETE_PLANS_LIST_VIEW_URL,
   DRAFT_PLANS_LIST_VIEW_URL,
-  OPENSRP_API_BASE_URL,
   SORT_BY_EFFECTIVE_PERIOD_START_FIELD,
   RETIRED_PLANS_LIST_VIEW_URL,
 } from '../../constants';
 import * as planDefinitionFixtures from '../../ducks/planDefinitions/tests/fixtures';
 import { InterventionType, PlanDefinition, PlanStatus } from '@opensrp/plan-form-core';
-import {
-  descendingOrderSort,
-  isPlanDefinitionOfType,
-  getPlanType,
-  BuildDownloadUrl,
-} from '../utils';
+import { descendingOrderSort, isPlanDefinitionOfType, getPlanType } from '../utils';
 import { redirectPathGetter } from '../common';
 
 describe('helpers/utils', () => {
@@ -75,10 +69,5 @@ describe('helpers/utils', () => {
     expect(redirectPathGetter(PlanStatus.ACTIVE)).toEqual(ACTIVE_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.COMPLETE)).toEqual(COMPLETE_PLANS_LIST_VIEW_URL);
     expect(redirectPathGetter(PlanStatus.RETIRED)).toEqual(RETIRED_PLANS_LIST_VIEW_URL);
-  });
-  it('tests BuildDownloadUrl', () => {
-    expect(BuildDownloadUrl(OPENSRP_API_BASE_URL, '123')).toEqual(
-      'https://opensrp-stage.smartregister.org/opensrp/rest/event/export-data?eventTypes=flag_problem,service_point_check,looks_good,record_gps&planIdentifier=123'
-    );
   });
 });

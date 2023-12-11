@@ -461,7 +461,7 @@ exports[`LocationForm renders correctly: status label 1`] = `
 exports[`LocationForm renders correctly: submit button 1`] = `
 <button
   className="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
-  disabled={false}
+  disabled={true}
   id="location-form-submit-button"
   onClick={[Function]}
   type="submit"
