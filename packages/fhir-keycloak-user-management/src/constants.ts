@@ -4,7 +4,7 @@ export const organizationResourceType = 'Organization';
 export const groupResourceType = 'Group';
 export const practitionerRoleResourceType = 'PractitionerRole';
 export const keycloakRoleMappingsEndpoint = 'role-mappings';
-export const practitionerDetailsResourceType = 'practitioner-details';
+export const practitionerDetailsResourceType = 'PractitionerDetail';
 
 // keycloak endpoints strings
 export const keycloakCountEndpoint = 'count';
