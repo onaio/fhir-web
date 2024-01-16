@@ -3,18 +3,14 @@ import { Divider, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import {
-  KeycloakUser,
-  URL_USER_EDIT,
-  URL_USER_CREDENTIALS,
-  URL_USER,
-} from '@opensrp/user-management';
+import { KeycloakUser, URL_USER_EDIT, URL_USER_CREDENTIALS } from '@opensrp/user-management';
 import { Dictionary } from '@onaio/utils';
 import { Column } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 import { RbacCheck, UserRole } from '@opensrp/rbac';
 import { History } from 'history';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
+import { USER_DETAILS_URL } from '../../../constants';
 
 /**
  * Get table columns for user list
@@ -60,7 +56,7 @@ export const getTableColumns = (
         key: '1',
         permissions: ['iam_user.read'],
         label: (
-          <Button onClick={() => history.push(`${URL_USER}/${record.id}`)} type="link">
+          <Button onClick={() => history.push(`${USER_DETAILS_URL}/${record.id}`)} type="link">
             {t('View Details')}
           </Button>
         ),
