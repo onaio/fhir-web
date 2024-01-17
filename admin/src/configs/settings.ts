@@ -1,0 +1,34 @@
+import { Providers } from '@onaio/gatekeeper';
+import {
+  ENABLE_OPENSRP_OAUTH,
+  OPENSRP_ACCESS_TOKEN_URL,
+  OPENSRP_AUTHORIZATION_URL,
+  OPENSRP_CLIENT_ID,
+  DOMAIN_NAME,
+  OPENSRP_OAUTH_STATE,
+  OPENSRP_USER_URL,
+  OPENSRP_OAUTH_SCOPES,
+  ENABLE_FHIR_USER_MANAGEMENT,
+  ENABLE_FHIR_TEAMS,
+  ENABLE_FHIR_LOCATIONS,
+} from './env';
+
+/** Authentication Configs */
+const providers: Providers = {};
+if (ENABLE_OPENSRP_OAUTH) {
+  providers.OpenSRP = {
+    accessTokenUri: OPENSRP_ACCESS_TOKEN_URL,
+    authorizationUri: OPENSRP_AUTHORIZATION_URL,
+    clientId: OPENSRP_CLIENT_ID,
+    redirectUri: `${DOMAIN_NAME}/oauth/callback/OpenSRP/`,
+    scopes: OPENSRP_OAUTH_SCOPES,
+    state: OPENSRP_OAUTH_STATE,
+    userUri: OPENSRP_USER_URL,
+  };
+}
+
+export { providers };
+
+export const COMPOSITE_ENABLE_USER_MANAGEMENT = ENABLE_FHIR_USER_MANAGEMENT;
+export const COMPOSITE_ENABLE_TEAM_MANAGEMENT = ENABLE_FHIR_TEAMS;
+export const COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT = ENABLE_FHIR_LOCATIONS;

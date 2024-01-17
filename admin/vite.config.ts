@@ -7,4 +7,5 @@ export default defineConfig({
   preview: {
     port: 3000,
   },
+  envPrefix: "REACT_" // TODO - change to this to default VITE_
 });
