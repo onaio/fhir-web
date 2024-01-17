@@ -40,7 +40,7 @@
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "react-query": "^3.15.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
@@ -72,8 +72,8 @@
     ]
   },
   "peerDependencies": {
-    "react": "17.0.0",
-    "react-dom": "17.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-helmet": "^6.1.0",
     "react-redux": "^7.2.1",
     "react-router": "^5.2.1",
