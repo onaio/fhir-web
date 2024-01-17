@@ -102,7 +102,7 @@ import {
   qrListRouteKey,
   QUEST_FORM_VIEW_URL,
 } from '@opensrp/fhir-views';
-import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
+// import { QuestRForm, resourceTypeParam, resourceIdParam } from '@opensrp/fhir-quest-form';
 import {
   CommodityList,
   ADD_EDIT_COMMODITY_URL,
@@ -162,13 +162,13 @@ const FHIRApps = () => {
         path={URL_HOME}
         component={Home}
       />
-      <PrivateComponent
+      {/* <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={`${QUEST_FORM_VIEW_URL}/:${resourceIdParam}/:${resourceTypeParam}`}
         permissions={['Questionnaire.read']}
         component={QuestRForm}
-      />
+      /> */}
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}

@@ -2,6 +2,7 @@
   "name": "@opensrp/web",
   "version": "0.1.10",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@2fd/ant-design-icons": "^2.6.0",
     "@ant-design/icons": "^4.7.0",
@@ -18,7 +19,6 @@
     "@opensrp/fhir-group-management": "^0.0.5",
     "@opensrp/fhir-healthcare-service": "^0.0.1",
     "@opensrp/fhir-location-management": "^0.0.1",
-    "@opensrp/fhir-quest-form": "^0.0.0",
     "@opensrp/fhir-team-management": "^0.0.5",
     "@opensrp/fhir-user-management": "^0.0.1",
     "@opensrp/fhir-views": "^0.0.0",
@@ -39,6 +39,8 @@
     "connected-react-router": "^6.8.0",
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
+    "querystring": "^0.2.1",
+    "querystring-es3": "^0.2.1",
     "react-query": "^3.15.1",
     "react-scripts": "^5.0.1",
     "redux": "^4.0.5",
@@ -46,30 +48,16 @@
     "reselect": "^4.0.0",
     "seamless-immutable": "^7.1.4"
   },
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "cd ../ && yarn test app --verbose --collectCoverage=true && cd app",
-    "test:watch": "cd ../ && yarn test app --verbose --watch && cd app",
-    "lint": "eslint ./**/*.{ts,tsx} --max-warnings 0",
-    "lint-snap": "eslint ./**/*.snap",
-    "eject": "react-scripts eject",
-    "coveralls": "set CI=true && yarn test --runInBand --verbose --coverage=true --forceExit --detectOpenHandles && cat ./coverage/lcov.info | coveralls"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "peerDependencies": {
     "react": "18.2.0",
