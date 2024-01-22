@@ -29,7 +29,7 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
   if (error && !data) {
     return (
       <Alert type="error">
-        {t('An error occured while fetching user groups that the user is assigned to')}
+        {t('An error occurred while fetching user groups that the user is assigned to')}
       </Alert>
     );
   }
@@ -53,7 +53,7 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
             type="link"
             danger
           >
-            {'Leave'}
+            {t('Leave')}
           </Button>
         </RbacCheck>
       ),

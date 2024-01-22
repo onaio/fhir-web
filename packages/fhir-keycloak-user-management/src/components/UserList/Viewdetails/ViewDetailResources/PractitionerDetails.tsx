@@ -80,7 +80,7 @@ export const PractitionerDetailsView = (props: PractitionerDetailViewsProps) => 
 };
 
 /**
- * Get practitioner table data source form practitioners and practitioner roles
+ * Get practitioner table data by combining practitioners and practitioner roles
  * returned in the practitioner details endpoint
  *
  * @param practitioners - practitioner resources
@@ -149,7 +149,7 @@ function processPractitionerDetails(
   }
 
   for (const [key, value] of Object.entries(tempPractitionerRoleCodings)) {
-    // invariant: we should have encountered all possible practitioners whole practitioner Roles records are in tempPractitionerRoleCodings
+    // invariant: we should have encountered all possible practitioners whose practitioner Roles records are in tempPractitionerRoleCodings
     tableData[key].concepts = [...tableData[key].concepts, ...value.concepts];
     tableData[key].userType = value.userType;
   }

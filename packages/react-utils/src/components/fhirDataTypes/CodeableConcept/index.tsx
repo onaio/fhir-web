@@ -23,5 +23,5 @@ export const CodeableConcept = (props: CodeableConceptProps) => {
       ))}
     </>
   );
-  return <Tooltip title={codingsTitle}>{text ? <Text>{text}</Text> : codingsTitle}</Tooltip>;
+  return <Tooltip title={codingsTitle} color='white'>{text ? <Text>{text}</Text> : codingsTitle}</Tooltip>;
 };
