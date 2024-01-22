@@ -5,6 +5,7 @@
   "dependencies": {
     "@2fd/ant-design-icons": "^2.6.0",
     "@ant-design/icons": "^4.7.0",
+    "@ant-design/pro-components": "^2.6.32",
     "@onaio/connected-private-route": "^0.0.11",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@onaio/gatekeeper": "1.0.0",
