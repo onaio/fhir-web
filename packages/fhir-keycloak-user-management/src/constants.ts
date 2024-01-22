@@ -14,4 +14,4 @@ export const keycloakGroupEndpoint = 'groups';
 export const keycloakMembersEndpoint = 'members';
 
 // router urls
-export const USER_DETAILS_URL = `${URL_USER}/details/:id`;
+export const USER_DETAILS_URL = `${URL_USER}/details`;

@@ -230,7 +230,7 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
-        path={USER_DETAILS_URL}
+        path={`${USER_DETAILS_URL}/:id`}
         permissions={['iam_user.read']}
         component={UserDetailsV2}
       />
