@@ -27,7 +27,7 @@ export const UserDeleteBtn = (props: UserDeleteBtnProp) => {
       onConfirm={async () => {
         await deleteUser(keycloakBaseUrl, fhirBaseUrl, resourceId, t);
         try {
-          return await queryClient.invalidateQueries([KEYCLOAK_URL_USERS]);
+          return await queryClient.invalidateQueries({queryKey: [KEYCLOAK_URL_USERS], exact: true});
         } catch {
           return sendErrorNotification(
             t('Failed to update data, please refresh the page to see the most recent changes')
