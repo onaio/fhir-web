@@ -13,7 +13,11 @@ import userEvents from '@testing-library/user-event';
 import { URL_USER, URL_USER_CREDENTIALS, UserCredentials } from '@opensrp/user-management';
 import { practitioner, userFixtures, group } from './fixtures';
 import fetch from 'jest-fetch-mock';
-import { USER_DETAILS_URL, practitionerResourceType, practitionerRoleResourceType } from '../../../../constants';
+import {
+  USER_DETAILS_URL,
+  practitionerResourceType,
+  practitionerRoleResourceType,
+} from '../../../../constants';
 import flushPromises from 'flush-promises';
 import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 import { RoleContext } from '@opensrp/rbac';
@@ -332,5 +336,7 @@ test('View details navigates correctly', async () => {
     </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.pathname).toEqual(`${USER_DETAILS_URL}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0`);
+  expect(history.location.pathname).toEqual(
+    `${USER_DETAILS_URL}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0`
+  );
 });
