@@ -12,7 +12,7 @@ import {
   useOAuthLogin,
   OauthCallbackProps,
 } from '@onaio/gatekeeper';
-import ConnectedPrivateRoute from '@onaio/connected-private-route';
+
 import { Switch, Route, Redirect, RouteComponentProps } from 'react-router';
 import { Spin } from 'antd';
 import { CustomLogout } from '../components/Logout';
@@ -155,7 +155,7 @@ const FHIRApps = () => {
     <Switch>
       {/* tslint:disable jsx-no-lambda */}
       {/* Home Page view */}
-      <ConnectedPrivateRoute
+      <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
@@ -474,7 +474,7 @@ const FHIRApps = () => {
       />
       <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
       {/* tslint:enable jsx-no-lambda */}
-      <ConnectedPrivateRoute
+      <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
