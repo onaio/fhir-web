@@ -13,7 +13,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "noEmitOnError": true,
     "jsx": "preserve",
     "baseUrl": "packages",
