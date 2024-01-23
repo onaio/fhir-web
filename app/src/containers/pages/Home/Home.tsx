@@ -39,7 +39,7 @@ export const Home = () => {
       <Helmet>
         <title>{t('OpenSRP Web')}</title>
       </Helmet>
-      <Row justify="center" className="weclome-box">
+      <Row justify="center" className="welcome-box">
         <Col span={6}>
           <h3>{t('Welcome to OpenSRP')}</h3>
         </Col>

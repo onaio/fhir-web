@@ -1,6 +1,5 @@
 import './configs/dispatchConfig'; // this needs to be imported before anything else
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
 import { history } from '@onaio/connected-reducer-registry';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
@@ -16,6 +15,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { OpensrpWebI18nProvider } from '@opensrp/i18n';
 import '@opensrp/react-utils/dist/components/CommonStyles/index.css';
 import { RbacProvider } from '@opensrp/rbac';
+import ReactDOM from 'react-dom/client'
 
 // tslint:disable-next-line: ordered-imports
 import './styles/css/index.css';
@@ -23,7 +23,7 @@ import { Spin } from 'antd';
 // tslint:disable-next-line: ordered-imports
 const queryClient = new QueryClient();
 
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.DEV) {
   const { tags, ...sentryConfigs } = SENTRY_CONFIGS;
   Sentry.init(sentryConfigs);
   if (tags) {
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <Suspense fallback={() => <Spin className="custom-spinner" />}>
     <Sentry.ErrorBoundary fallback={() => <ErrorBoundaryFallback homeUrl={URL_HOME} />}>
       <Provider store={store}>
@@ -50,8 +50,7 @@ ReactDOM.render(
         </ConnectedRouter>
       </Provider>
     </Sentry.ErrorBoundary>
-  </Suspense>,
-  document.getElementById('opensrp-root')
+  </Suspense>
 );
 
 // If you want your app to work offline and load faster, you can change
