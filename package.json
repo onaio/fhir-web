@@ -32,6 +32,7 @@
     ]
   },
   "devDependencies": {
+    "@ant-design/pro-components": "^2.6.32",
     "@babel/cli": "^7.16.8",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
@@ -41,7 +42,6 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@jridgewell/gen-mapping": "^0.3.1",
-    "@onaio/connected-private-route": "^0.1.0",
     "@onaio/connected-reducer-registry": "^0.0.3",
     "@reduxjs/toolkit": "^1.7.1",
     "@smile-cdr/fhirts": "1.2.5",
@@ -114,6 +114,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
+    "react-query": "^3.15.1",
     "react-redux": "^7.2.6",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1",
