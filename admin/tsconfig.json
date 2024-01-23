@@ -20,6 +20,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
+<<<<<<< HEAD
   "include": ["src"],
+=======
+  "include": ["src", "../app/src/vite-env.d.ts"],
+>>>>>>> a87a46ec (Add placebo application)
   "references": [{ "path": "./tsconfig.node.json" }]
 }

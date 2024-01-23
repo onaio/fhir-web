@@ -9,7 +9,10 @@ import { BACKEND_ACTIVE, DISABLE_LOGIN_PROTECTION } from '../configs/env';
 import { BACKEND_CALLBACK_PATH, REACT_CALLBACK_PATH, URL_BACKEND_CALLBACK, URL_HOME, URL_LOGOUT, URL_REACT_LOGIN } from '../constants';
 import { Home } from '../containers/pages/Home/Home';
 import { useTranslation } from '@opensrp/i18n';
+<<<<<<< HEAD
 import ConnectedPrivateRoute from '@onaio/connected-private-route';
+=======
+>>>>>>> a87a46ec (Add placebo application)
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router';
 import { PublicComponent, Resource404 } from '@opensrp/react-utils';
 import { CustomLogout } from '../components/Logout';
@@ -68,8 +71,13 @@ const App: React.FC = () => {
       <div className="body-wrapper">
         <ConnectedHeader />
         <Content>
+<<<<<<< HEAD
           <Switch>
             <ConnectedPrivateRoute
+=======
+          {/* <Switch>
+            <PrivateComponent
+>>>>>>> a87a46ec (Add placebo application)
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
@@ -87,7 +95,11 @@ const App: React.FC = () => {
             />
             <PublicComponent exact path={APP_CALLBACK_PATH} component={CallbackComponent} />
             {/* tslint:enable jsx-no-lambda */}
+<<<<<<< HEAD
             <ConnectedPrivateRoute
+=======
+            <PrivateComponent
+>>>>>>> a87a46ec (Add placebo application)
               redirectPath={APP_CALLBACK_URL}
               disableLoginProtection={DISABLE_LOGIN_PROTECTION}
               exact
@@ -96,7 +108,11 @@ const App: React.FC = () => {
               component={CustomLogout}
             />
             <Route exact component={Resource404} />
+<<<<<<< HEAD
           </Switch>
+=======
+          </Switch> */}
+>>>>>>> a87a46ec (Add placebo application)
         </Content>
       </div>
     </Layout>
