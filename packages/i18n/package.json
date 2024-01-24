@@ -39,8 +39,8 @@
     "react-i18next": "^11.16.6"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/plugin-typescript": "^8.3.2",
-    "rollup": "^2.70.2"
+    "@rollup/plugin-replace": "^5.0.5",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.2.0"
   }
 }

@@ -118,7 +118,6 @@
     "react-redux": "^7.2.6",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.2.1",
-    "react-scripts": "^5.0.1",
     "redux": "^4.1.2",
     "redux-mock-store": "^1.5.4",
     "redux-testkit": "^1.0.6",
