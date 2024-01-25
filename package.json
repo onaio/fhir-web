@@ -98,6 +98,7 @@
     "glob": "^8.0.1",
     "husky": "^8.0.0",
     "i18next-parser": "^5.4.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "27.5.1",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "jest-fetch-mock": "^3.0.3",
