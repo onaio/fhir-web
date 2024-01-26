@@ -15,7 +15,7 @@ import { mount } from 'enzyme';
 import * as fhirclient from 'fhirclient';
 import { URL_CARE_TEAM } from '../../../constants';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 

@@ -4,7 +4,7 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { CareTeamForm } from '../Form';
 import { defaultInitialValues, getCareTeamFormFields } from '../utils';
-import { getResourcesFromBundle, fillSearchableSelect } from '@opensrp/react-utils';
+import { getResourcesFromBundle } from '@opensrp/react-utils';
 import { cleanup, fireEvent, waitFor, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
@@ -23,6 +23,7 @@ import {
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
+import {fillSearchableSelect} from '@opensrp/test-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
