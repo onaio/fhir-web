@@ -24,7 +24,7 @@ import {
 import userEvents from '@testing-library/user-event';
 import { allAffiliations } from '../../../OrganizationAffiliation/tests/fixures';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');

@@ -21,7 +21,7 @@ import { organizationAffiliationResourceType, organizationResourceType } from '.
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
