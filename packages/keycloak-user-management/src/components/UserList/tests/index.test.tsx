@@ -29,7 +29,7 @@ import {
 import { authenticateUser } from '@onaio/session-reducer';
 import { URL_USER } from '../../../constants';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('@opensrp/store', () => ({

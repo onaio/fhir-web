@@ -22,7 +22,7 @@ import {
 import { unsortedUserGroups, userGroups } from '../../../ducks/tests/fixtures';
 import { URL_USER_GROUPS } from '../../../constants';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 jest.mock('@opensrp/store', () => {
   const actual = jest.requireActual('@opensrp/store');

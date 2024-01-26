@@ -9,7 +9,7 @@ import * as reactQuery from 'react-query';
 import * as utils from '../utils';
 import flushPromises from 'flush-promises';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 jest.mock('react-query');
 
