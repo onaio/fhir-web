@@ -17,7 +17,7 @@ import { practitionerResourceType, practitionerRoleResourceType, USER_DETAILS_UR
 import flushPromises from 'flush-promises';
 import { practitionerRoleBundle } from '../../../CreateEditUser/tests/fixtures';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 
 jest.mock('@opensrp/notifications', () => {
   return { _esModule: true, ...Object.assign({}, jest.requireActual('@opensrp/notifications')) };

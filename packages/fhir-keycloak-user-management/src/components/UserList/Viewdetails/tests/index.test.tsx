@@ -11,7 +11,7 @@ import nock from 'nock';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { authenticateUser } from '@onaio/session-reducer';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { store } from '@opensrp/store';
 import { URL_USER, KEYCLOAK_URL_USERS, KEYCLOAK_URL_USER_GROUPS } from '@opensrp/user-management';
 import React from 'react';
