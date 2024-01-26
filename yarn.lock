@@ -3883,6 +3883,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@opensrp/test-utils@workspace:packages/test-utils":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/test-utils@workspace:packages/test-utils"
+  dependencies:
+    "@onaio/connected-reducer-registry": ^0.0.3
+    "@opensrp/pkg-config": ^0.0.9
+    "@opensrp/rbac": "workspace:^"
+  peerDependencies:
+    "@opensrp/store": ^0.0.10
+    "@testing-library/react": ^14.1.2
+    "@testing-library/user-event": ^13.5.0
+    react: "^17.0.0 "
+    react-redux: ^7.2.1
+    react-router: ^5.2.1
+    react-router-dom: ^5.2.1
+  languageName: unknown
+  linkType: soft
+
 "@opensrp/user-management@^0.1.19, @opensrp/user-management@workspace:packages/keycloak-user-management":
   version: 0.0.0-use.local
   resolution: "@opensrp/user-management@workspace:packages/keycloak-user-management"
