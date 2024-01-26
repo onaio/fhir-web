@@ -4,7 +4,7 @@
 // learn more: https://github.com/testing-library/jest-dom
 import enzyme from 'enzyme';
 // temp react 17 enzyme adapter before official adapter is released - https://github.com/enzymejs/enzyme/issues/2429#issuecomment-679265564
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import Adapter from '@cfaester/enzyme-adapter-react-18';
 import MockDate from 'mockdate';
 import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/naming-convention */
