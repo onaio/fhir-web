@@ -14,7 +14,7 @@ import fetch from 'jest-fetch-mock';
 import { RoleContext, UserRole } from '@opensrp/rbac';
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { superUserRole } from '../../../helpers/test-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { PrivateRoute as PrivateComponent } from '../';
 
 it('First check that user is logged in before Rbac', async () => {
