@@ -1708,3 +1708,8 @@ export const createdCareTeam2 = {
   ],
   managingOrganization: [{ reference: 'Organization/368', display: 'Test Team 70' }],
 };
+
+
+export const createdCareTeam3 = { "resourceType": "CareTeam", "identifier": [{ "use": "official", "value": "9b782015-8392-4847-b48c-50c11638656b" }], "id": "9b782015-8392-4847-b48c-50c11638656b", "name": "Care Team Test", "status": "active", "participant": [{ "member": { "reference": "Practitioner/102", "display": "Ward N 2 Williams MD" } }], "managingOrganization": [] }
+
+export const editedCareTeam3 = { "resourceType": "CareTeam", "identifier": [{ "use": "official", "value": "9b782015-8392-4847-b48c-50c11638656b" }], "id": "9b782015-8392-4847-b48c-50c11638656b", "name": "Changed care team", "status": "active", "managingOrganization": [], "participant": [{ "member": { "reference": "Practitioner/102", "display": "Ward N 2 Williams MD" } }] }

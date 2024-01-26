@@ -4,7 +4,7 @@ import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
 import { CareTeamForm } from '../Form';
 import { defaultInitialValues, getCareTeamFormFields } from '../utils';
-import { getResourcesFromBundle } from '@opensrp/react-utils';
+import { getResourcesFromBundle, fillSearchableSelect } from '@opensrp/react-utils';
 import { cleanup, fireEvent, waitFor, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
@@ -17,9 +17,12 @@ import {
   organizations,
   practitioners,
   careTeam4201alternative,
+  createdCareTeam3,
+  editedCareTeam3,
 } from './fixtures';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
+import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -30,11 +33,12 @@ jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
+const mockId = '9b782015-8392-4847-b48c-50c11638656b'
 jest.mock('uuid', () => {
   const actual = jest.requireActual('uuid');
   return {
     ...actual,
-    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
+    v4: () => mockId,
   };
 });
 
@@ -69,6 +73,156 @@ const props = {
   practitioners: getResourcesFromBundle(practitioners),
   organizations: getResourcesFromBundle(organizations),
 };
+
+test('form validation for required fields', async () => {
+  render(<CareTeamForm {...props} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Create Care Team/)).toBeInTheDocument();
+  });
+
+  const saveBtn = screen.getByText("Save")
+  userEvents.click(saveBtn)
+
+  // check for required fields error messages
+  await waitFor(() => {
+    screen.getByText("Name is Required")
+  })
+})
+
+test("can add a new care team", async () => {
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  nock(props.fhirBaseURL)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .put(`/CareTeam/${mockId}`, (body: any) => {
+      expect(body).toMatchObject(createdCareTeam3);
+      return true;
+    })
+    .reply(200, 'CareTeam created successfully');
+
+  render(<CareTeamForm {...props} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Create Care Team/)).toBeInTheDocument();
+  });
+
+  // fill in name field
+  const nameField = screen.getByLabelText(/Name/i)
+  userEvents.type(nameField, 'Care Team Test')
+
+  // status is active by default
+  // set practitioner field.
+  const tddValues = {
+    selectId: "practitionerParticipants", searchOptionText: "ward", beforeFilterOptions: [
+      'Ward N 2 Williams MD',
+      'Ward N 1 Williams MD',
+      'Ward N Williams MD',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+      'test fhir',
+    ], afterFilterOptions: [
+      'Ward N 2 Williams MD',
+      'Ward N 1 Williams MD',
+      'Ward N Williams MD',
+    ], fullOptionText: "Ward N 2 Williams MD"
+  }
+  fillSearchableSelect(tddValues)
+
+  const saveBtn = screen.getByText("Save")
+  userEvents.click(saveBtn)
+
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully added CareTeams']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+})
+
+// TODO - move to index view.
+test("can edit a care team", async () => {
+  const initialValues = getCareTeamFormFields(createdCareTeam3 as ICareTeam)
+  const editProps = {
+    ...props,
+    initialValues,
+  };
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  nock(props.fhirBaseURL)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .put(`/CareTeam/${editProps.initialValues.id}`, editedCareTeam3)
+    .reply(200, 'CareTeam edited successfully');
+
+  render(<CareTeamForm {...editProps} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Edit Care Team \| Care Team Test/)).toBeInTheDocument();
+  });
+
+  // fill in name field
+  const nameField = screen.getByLabelText(/Name/i)
+  userEvents.clear(nameField)
+  userEvents.type(nameField, 'Changed care team')
+
+
+  const saveBtn = screen.getByText("Save")
+  userEvents.click(saveBtn)
+
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([["Successfully updated CareTeams"]]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+})
+
+
+test("test behavior when run into errors", async () => {
+  const initialValues = getCareTeamFormFields(createdCareTeam3 as ICareTeam)
+  const editProps = {
+    ...props,
+    initialValues,
+  };
+
+  const errorNoticMock = jest
+    .spyOn(notifications, 'sendErrorNotification')
+    .mockImplementation(() => undefined);
+
+
+  nock(props.fhirBaseURL)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .put(`/CareTeam/${editProps.initialValues.id}`, () => true)
+    .reply(500, 'CareTeam edited successfully');
+
+  render(<CareTeamForm {...editProps} />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/Edit Care Team \| Care Team Test/)).toBeInTheDocument();
+  });
+
+  const saveBtn = screen.getByText("Save")
+  userEvents.click(saveBtn)
+
+
+  await waitFor(() => {
+    expect(errorNoticMock.mock.calls).toEqual([["There was a problem fetching the Care Team"]]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+})
 
 test('filter select by text able to create new careteam', async () => {
   const container = document.createElement('div');
