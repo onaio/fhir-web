@@ -4,13 +4,11 @@ exports[`location-management/src/components/LocationTree works correctly: langat
 <span
   title="Langata"
 >
-  
   <span
     class="searchValue"
   >
     laNgaTa
   </span>
-  
 </span>
 `;
 

@@ -18,7 +18,7 @@ import { createBrowserHistory } from 'history';
 import { fhirHierarchy, onaOfficeSubLocation } from '../../../ducks/tests/fixtures';
 import { Provider } from 'react-redux';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { locationHierarchyResourceType } from '../../../constants';
 import { locationResourceType } from '../../../constants';
 import userEvent from '@testing-library/user-event';
