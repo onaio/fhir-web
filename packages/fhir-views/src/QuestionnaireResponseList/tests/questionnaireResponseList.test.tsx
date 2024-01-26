@@ -15,7 +15,7 @@ import { Router, Route, Switch } from 'react-router';
 import nock from 'nock';
 import { questionnairesPage1, questRespPage1, questRespPage2 } from '../../tests/fixtures';
 import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { Provider } from 'react-redux';
 
 jest.mock('fhirclient', () => {

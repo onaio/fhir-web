@@ -21,7 +21,7 @@ import {
 } from '../../tests/fixtures';
 import userEvents from '@testing-library/user-event';
 import _ from 'lodash';
-import { superUserRole } from '@opensrp/react-utils';
+import { superUserRole } from '@opensrp/test-utils';
 import { RoleContext } from '@opensrp/rbac';
 import { Provider } from 'react-redux';
 
