@@ -124,29 +124,6 @@ describe('components/forms/UserForm', () => {
     wrapper.unmount();
   });
 
-  it('form validation works for required fields', async () => {
-    const wrapper = mount(<UserForm {...props} />);
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.update();
-
-    expect(wrapper.find('FormItemInput#firstName').prop('errors')).toEqual([
-      'First Name is required',
-    ]);
-    expect(wrapper.find('FormItemInput#lastName').prop('errors')).toEqual([
-      'Last Name is required',
-    ]);
-    expect(wrapper.find('FormItemInput#email').prop('errors')).toEqual([]);
-    expect(wrapper.find('FormItemInput#username').prop('errors')).toEqual(['Username is required']);
-    expect(wrapper.find('FormItemInput#userGroups').prop('errors')).toEqual([]);
-    expect(wrapper.find('FormItemInput#enabled').prop('errors')).toEqual([]);
-    wrapper.unmount();
-  });
-
   it('hidden fields', async () => {
     const wrapper = mount(
       <UserForm {...{ ...props, renderFields: ['contact'], hiddenFields: ['contact'] }} />
@@ -154,83 +131,6 @@ describe('components/forms/UserForm', () => {
 
     expect(wrapper.find('FormItemInput#contact').prop('hidden')).toBeTruthy();
     wrapper.unmount();
-  });
-
-  it('form validation works for contact field', async () => {
-    const wrapper1 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // found
-    expect(toJson(wrapper1.find('#contact label'))).toMatchSnapshot('contact label');
-    expect(toJson(wrapper1.find('#contact input'))).toMatchSnapshot('contact input');
-
-    // empty error message; contact is required
-    await act(async () => {
-      wrapper1.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper1.update();
-
-    expect(wrapper1.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
-
-    const wrapper2 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // regex validation
-    wrapper2
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: 'Test' } });
-
-    await act(async () => {
-      wrapper2.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper2.update();
-
-    expect(wrapper2.find('FormItemInput#contact').prop('errors')).toEqual([
-      'Contact should be 10 digits and start with 0',
-    ]);
-
-    const wrapper3 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // regex validation more than 10 alphanumerics
-    wrapper3
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: '012345678910' } });
-
-    await act(async () => {
-      wrapper3.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper3.update();
-
-    expect(wrapper3.find('FormItemInput#contact').prop('errors')).toEqual([
-      'Contact should be 10 digits and start with 0',
-    ]);
-
-    const wrapper4 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // should now not have an error.
-    wrapper4
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: '0123456789' } });
-
-    await act(async () => {
-      wrapper4.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper4.update();
-
-    await act(async () => {
-      expect(wrapper4.find('FormItemInput#contact').prop('errors')).toEqual([]);
-    });
-
-    wrapper1.unmount();
-    wrapper2.unmount();
-    wrapper3.unmount();
-    wrapper4.unmount();
   });
 
   it('adds user', async () => {

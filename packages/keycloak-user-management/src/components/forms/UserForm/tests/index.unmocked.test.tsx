@@ -20,6 +20,7 @@ import {
   render,
   waitFor,
   waitForElementToBeRemoved,
+  prettyDOM,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { compositionUrlFilter } from '../utils';
@@ -89,6 +90,36 @@ describe('forms/userForm', () => {
     cleanup();
     jest.resetAllMocks();
   });
+
+
+  it('form validation works for required fields', async () => {
+
+    render(
+      <QueryWrapper>
+        <Router history={history}>
+          <UserForm {...props} />
+        </Router>
+      </QueryWrapper>
+    );
+
+    const submitBtn = screen.getByText("Save")
+    userEvent.click(submitBtn)
+
+
+
+    await waitFor(() => [
+      ['First Name is required', 'Last Name is required', 'Username is required'].forEach(err => screen.getByText(err))
+    ]);
+
+    const allErrors = [...document.querySelectorAll(".ant-form-item-explain-error")].map(el => el.textContent)
+    expect(allErrors).toEqual([
+      "First Name is required",
+      "Last Name is required",
+      "Username is required",
+
+    ])
+  });
+
 
   it('filters user groups', async () => {
     const propsOwn = {
@@ -216,7 +247,13 @@ describe('forms/userForm', () => {
 
     await flushPromises();
     await waitFor(() => {
-      expect(notificationSuccessMock.mock.calls).toEqual([['User created successfully']]);
+      expect(notificationSuccessMock.mock.calls).toEqual([['User created successfully'], [
+        "Practitioner created successfully",
+      ],
+      [
+        "User Group edited successfully",
+      ],
+      ]);
     });
 
     expect(nock.pendingMocks()).toHaveLength(0);
