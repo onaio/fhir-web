@@ -23,6 +23,8 @@ import { URL_USER } from '../../../constants';
 
 import { history as registryHistory } from '@onaio/connected-reducer-registry';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { cleanup, fireEvent, prettyDOM, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -75,6 +77,7 @@ describe('components/Credentials', () => {
   afterEach(() => {
     jest.clearAllMocks();
     fetch.mockClear();
+    cleanup()
   });
 
   beforeEach(() => {
@@ -173,76 +176,54 @@ describe('components/Credentials', () => {
   });
 
   it('shows validation error if required fields are empty', async () => {
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Router history={history}>
           <UserCredentials {...props} />
         </Router>
       </Provider>
     );
-    const password = wrapper.find('input#password');
-    password.simulate('change', { target: { value: '' } });
+    const submitBtn = screen.getByText(/Set password/i)
+    fireEvent.click(submitBtn)
 
-    const confirm = wrapper.find('input#confirm');
-    confirm.simulate('change', { target: { value: '' } });
 
-    wrapper.find('form').simulate('submit');
+    await waitFor(() => {
+      const allErrors = [...document.querySelectorAll(".ant-form-item-explain-error")].map(el => el.textContent)
+      expect(allErrors).toEqual([
+        "Password is required",
+        "Confirm Password is required",
 
-    await act(async () => {
-      await flushPromises();
+      ])
     });
-
-    wrapper.update();
-
-    const formContainer = wrapper.find('div.form-container');
-
-    expect(formContainer.find('Row').at(0).find('FormItemInput').prop('errors')).toEqual([
-      'Password is required',
-    ]);
-    expect(
-      formContainer.find('Row').at(0).find('FormItemInput').find('span.ant-form-item-children-icon')
-    ).toBeTruthy();
-
-    expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'Confirm Password is required',
-    ]);
-    expect(
-      formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
-    ).toBeTruthy();
-    wrapper.unmount();
-  });
+  })
 
   it('shows validation error if passwords do not match', async () => {
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Router history={history}>
           <UserCredentials {...props} />
         </Router>
       </Provider>
     );
-    const password = wrapper.find('input#password');
-    password.simulate('change', { target: { value: 'password133' } });
 
-    const confirm = wrapper.find('input#confirm');
-    confirm.simulate('change', { target: { value: 'password100' } });
+    // fill password
+    const passwordInput = screen.getByLabelText("Password", {exact: true})
+    userEvent.type(passwordInput, 'password133')
 
-    wrapper.find('form').simulate('submit');
+    // fill password confirm
+    const passwordConfirmInput = screen.getByLabelText("Confirm Password", {exact: true})
+    userEvent.type(passwordConfirmInput, 'password100')
+    
+    const submitBtn = screen.getByText(/Set password/i)
+    fireEvent.click(submitBtn)
 
-    await act(async () => {
-      await flushPromises();
+    await waitFor(() => {
+      const allErrors = [...document.querySelectorAll(".ant-form-item-explain-error")].map(el => el.textContent)
+      expect(allErrors).toEqual([
+        "The two passwords that you entered do not match!"
+      ])
     });
 
-    wrapper.update();
-
-    const formContainer = wrapper.find('div.form-container');
-
-    expect(formContainer.find('Row').at(1).find('FormItemInput').prop('errors')).toEqual([
-      'The two passwords that you entered do not match!',
-    ]);
-    expect(
-      formContainer.find('Row').at(1).find('FormItemInput').find('span.ant-form-item-children-icon')
-    ).toBeTruthy();
-    wrapper.unmount();
   });
 
   it('submitForm submits form data correctly', async () => {
