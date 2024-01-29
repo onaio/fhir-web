@@ -22,6 +22,7 @@ import { userRoles } from '../../../ducks/tests/fixtures';
 import { URL_USER_ROLES } from '../../../constants';
 
 import { unorderedUserRoles } from './fixtures';
+import { cleanup, render, waitFor, waitForElementToBeRemoved, screen } from '@testing-library/react';
 
 jest.mock('@opensrp/store', () => ({
   __esModule: true,
@@ -74,6 +75,10 @@ describe('components/UserRolesList', () => {
     );
   });
 
+  afterEach(() => {
+    cleanup()
+  })
+
   it('renders users table without crashing', () => {
     shallow(
       <Provider store={opensrpStore.store}>
@@ -93,7 +98,7 @@ describe('components/UserRolesList', () => {
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
-    const wrapper = mount(
+    render(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
           <UserRolesList {...props} />
@@ -101,50 +106,24 @@ describe('components/UserRolesList', () => {
       </Provider>
     );
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    await waitForElementToBeRemoved(document.querySelector(".ant-spin"))
 
-    expect(wrapper.find('Table')).toBeTruthy();
-    expect(wrapper.text()).toMatchSnapshot('full rendered text');
-    wrapper.unmount();
-  });
+    await waitFor(() => {
+      expect(screen.queryByText('User roles')).toBeInTheDocument()
+    })
 
-  it('renders user list correctly', async () => {
-    fetch.once(JSON.stringify(userRoles));
-    const props = {
-      ...locationProps,
-      keycloakBaseURL:
-        'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
-    };
-    const wrapper = mount(
-      <Provider store={opensrpStore.store}>
-        <Router history={history}>
-          <UserRolesList {...props} />
-        </Router>
-      </Provider>
-    );
-    // Loader should be displayed
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
+    // snapshot table text.
+    const tableRowsText = [...document.querySelectorAll("table tr")].map(tr => tr.textContent)
+    expect(tableRowsText).toEqual([
+      "NameCompositeDescription",
+      "ALL_EVENTSfalseAllows on to Download all Events",
+      "EDIT_KEYCLOAK_USERStrueThe role allows one to edit other keycloak users",
+      "offline_accessfalse${role_offline-access}",
+      "OPENMRSfalseBasic Role for users, To be changed to User Or Provider",
+      "PLANS_FOR_USERfalseAllows on to view plans for user",
+    ]
+    )
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    // Loader should be hiddern
-    expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
-
-    const userList = wrapper.find('UserRolesList');
-    const headerRow = userList.find('Row').at(0);
-
-    expect(headerRow.find('Col').at(0).text()).toMatchSnapshot('header actions col props');
-    expect(headerRow.find('Table').first().text()).toMatchSnapshot('table text');
-    expect(userList.find('tbody tr')).toHaveLength(5);
-    expect(userList.find('tbody').text()).toMatchSnapshot(
-      'full table body has 8 user role entries'
-    );
-    wrapper.unmount();
   });
 
   it('handles user role list fetch failure', async () => {
@@ -180,24 +159,27 @@ describe('components/UserRolesList', () => {
       keycloakBaseURL:
         'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     };
-    const wrapper = mount(
+    render(
       <Provider store={opensrpStore.store}>
         <Router history={history}>
           <UserRolesList {...props} />
         </Router>
       </Provider>
     );
-    // Loader should be displayed
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
 
-    //Table should be empty
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    await waitForElementToBeRemoved(document.querySelector(".ant-spin"))
 
-    const userList = wrapper.find('UserRolesList');
-    expect(userList.find('Table').first().text()).toEqual('NameCompositeDescriptionNo data');
+    await waitFor(() => {
+      expect(screen.queryByText('User roles')).toBeInTheDocument()
+    })
+
+    // snapshot table text.
+    const tableRowsText = [...document.querySelectorAll("table tr")].map(tr => tr.textContent)
+    expect(tableRowsText).toEqual([
+      "NameCompositeDescription",
+      "No data"
+    ]
+    )
   });
 
   it('sorts by role name', async () => {

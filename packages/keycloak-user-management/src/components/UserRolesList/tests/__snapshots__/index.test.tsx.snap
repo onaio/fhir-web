@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`components/UserRolesList renders user list correctly: full table body has 8 user role entries 1`] = `"ALL_EVENTSfalseAllows on to Download all EventsEDIT_KEYCLOAK_USERStrueThe role allows one to edit other keycloak usersoffline_accessfalse\${role_offline-access}OPENMRSfalseBasic Role for users, To be changed to User Or ProviderPLANS_FOR_USERfalseAllows on to view plans for user"`;
-
-exports[`components/UserRolesList renders user list correctly: header actions col props 1`] = `"NameCompositeDescriptionALL_EVENTSfalseAllows on to Download all EventsEDIT_KEYCLOAK_USERStrueThe role allows one to edit other keycloak usersoffline_accessfalse\${role_offline-access}OPENMRSfalseBasic Role for users, To be changed to User Or ProviderPLANS_FOR_USERfalseAllows on to view plans for user125 / pageGo toPage"`;
-
-exports[`components/UserRolesList renders user list correctly: table text 1`] = `"NameCompositeDescriptionALL_EVENTSfalseAllows on to Download all EventsEDIT_KEYCLOAK_USERStrueThe role allows one to edit other keycloak usersoffline_accessfalse\${role_offline-access}OPENMRSfalseBasic Role for users, To be changed to User Or ProviderPLANS_FOR_USERfalseAllows on to view plans for user"`;
-
-exports[`components/UserRolesList works correctly with store: full rendered text 1`] = `"User rolesNameCompositeDescriptionALL_EVENTSfalseAllows on to Download all EventsEDIT_KEYCLOAK_USERStrueThe role allows one to edit other keycloak usersoffline_accessfalse\${role_offline-access}OPENMRSfalseBasic Role for users, To be changed to User Or ProviderPLANS_FOR_USERfalseAllows on to view plans for user125 / pageGo toPage"`;
