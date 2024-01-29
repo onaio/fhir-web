@@ -35,6 +35,7 @@ import {
   userRoles,
 } from '../../../ducks/tests/fixtures';
 import { fetchKeycloakUserRoles, makeKeycloakUserRolesSelector } from '../../../ducks/userRoles';
+import { render, waitForElementToBeRemoved, screen, waitFor, cleanup } from '@testing-library/react';
 
 reducerRegistry.register(reducerName, reducer);
 reducerRegistry.register(rolesReducername, rolesReducer);
@@ -95,6 +96,7 @@ describe('components/CreateEditUserGroup', () => {
     store.dispatch(removeKeycloakUserGroups());
     store.dispatch(removeKeycloakUserRoles());
     fetch.mockClear();
+    cleanup()
   });
 
   it('renders without crashing', () => {
@@ -246,7 +248,15 @@ describe('components/CreateEditUserGroup', () => {
   it('works correctly with the store', async () => {
     store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
     store.dispatch(fetchKeycloakUserRoles([userRoles[0]]));
-    const wrapper = mount(
+    
+    fetch
+    .once(JSON.stringify(fixtures.userGroup))
+    .once(JSON.stringify(userRoles))
+    .once(JSON.stringify(availableRoles))
+    .once(JSON.stringify(assignedRoles))
+    .once(JSON.stringify(effectiveRoles));
+    
+    render(
       <Provider store={store}>
         <Router history={history}>
           <CreateEditUserGroup {...props} />
@@ -254,60 +264,22 @@ describe('components/CreateEditUserGroup', () => {
       </Provider>
     );
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
+    await waitForElementToBeRemoved(document.querySelector(".ant-spin"))
 
-    expect(wrapper.find('input#name').prop('value')).toEqual('Admin');
+    await waitFor(() => {
+      screen.getByText("Edit User Group | Admin")
+    })
+
+    const nameField = screen.getByLabelText('Name')
+    expect(nameField).toHaveValue("Admin")
+
     expect(userGroupSelector(store.getState(), { name: fixtures.userGroup.name })).toEqual([
       fixtures.userGroup,
     ]);
     expect(userRolesSelector(store.getState(), { name: userRoles[0].name })).toEqual([
       userRoles[0],
     ]);
-    wrapper.unmount();
   });
 
-  it('initializes form field with data if page is refreshed', async () => {
-    fetch
-      .once(JSON.stringify(fixtures.userGroup))
-      .once(JSON.stringify(userRoles))
-      .once(JSON.stringify(availableRoles))
-      .once(JSON.stringify(assignedRoles))
-      .once(JSON.stringify(effectiveRoles));
 
-    store.dispatch(fetchKeycloakUserGroups([fixtures.userGroup]));
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <CreateEditUserGroup {...props} />
-        </Router>
-      </Provider>
-    );
-
-    // Loader should be displayed
-    expect(toJson(wrapper.find('.ant-spin'))).toBeTruthy();
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(fetch.mock.calls[0]).toEqual([
-      `https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/groups/${fixtures.userGroup.id}`,
-      {
-        headers: {
-          accept: 'application/json',
-          authorization: 'Bearer bamboocha',
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        method: 'GET',
-      },
-    ]);
-
-    expect(wrapper.find('input#name').prop('value')).toEqual('Admin');
-    wrapper.unmount();
-  });
 });

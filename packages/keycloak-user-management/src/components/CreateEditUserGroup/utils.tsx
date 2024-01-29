@@ -40,6 +40,7 @@ export const fetchRoleMappings = async (
       setRolesAction(response);
     })
     .catch((_: Error) => {
+      console.log({_})
       sendErrorNotification(t('There was a problem fetching role mappings'));
     });
 };
