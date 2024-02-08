@@ -1,21 +1,36 @@
-import { IGroup } from "@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup";
-import { id, identifier, active, unitOfMeasure, materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, photoURL, type, name } from "fhir-group-management/src/constants";
+import { Rule } from "antd/es/form";
+import { GroupFormFields, ValidationRulesFactory } from "./types";
+import { TFunction } from "@opensrp/i18n";
+import { id, identifier, active, unitOfMeasure, name, type, materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, photoURL } from "../../constants";
+import { TypeOfGroup, UnitOfMeasure } from "../CommodityAddEdit/utils";
 
+/** extract file from an input event */
+export const normalizeFileInputEvent = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    const fileList = e?.fileList
+    return fileList[0]
+  };
 
-export interface GroupFormFields {
-    [id]?: string;
-    [identifier]?: string;
-    [active]?: boolean;
-    [name]?: string;
-    [type]?: string;
-    [unitOfMeasure]?: IGroup['type'];
-    initialObject?: IGroup;
-    [materialNumber]?: string;
-    [isAttractiveItem]?: string;
-    [isAttractiveItem]?: string;
-    [availability]?: string;
-    [condition]?: string;
-    [appropriateUsage]?: string;
-    [accountabilityPeriod]?: Number;
-    [photoURL]?: File
-  }
+  /** factory to create default validation rules */
+export function defaultValidationRulesFactory(t: TFunction) {
+    return {
+
+        [id]: [{ type: 'string' }] as Rule[],
+        [identifier]: [{ type: 'string' }] as Rule[],
+        [name]: [
+            { type: 'string', message: t('Must be a valid string') },
+        ] as Rule[],
+        [active]: [{ type: 'boolean' },] as Rule[],
+        [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup) }] as Rule[],
+        [unitOfMeasure]: [{ type: 'enum', enum: Object.values(UnitOfMeasure)}] as Rule[],
+        [materialNumber]: [{ type: 'string' }] as Rule[],
+        [isAttractiveItem]: [{ type: 'boolean' }] as Rule[],
+        [availability]: [{ type: 'string' }] as Rule[],
+        [condition]: [{ type: 'string' }] as Rule[],
+        [appropriateUsage]: [{ type: 'string' }] as Rule[],
+        [accountabilityPeriod]: [{ type: 'number' }] as Rule[],
+        [photoURL]: [{type: "object"}] as Rule[]
+    }
+}

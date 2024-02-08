@@ -28,7 +28,6 @@ import {
   generateGroupPayload,
   getGroupTypeOptions,
   getUnitOfMeasureOptions,
-  GroupFormFields,
   groupSelectfilterFunction,
   postPutGroup,
   SelectOption,
@@ -38,6 +37,8 @@ import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../mls';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { PlusOutlined } from '@ant-design/icons';
+import { GroupFormFields } from './types';
+import { normalizeFileInputEvent } from './utils';
 
 const { Item: FormItem } = Form;
 
@@ -48,6 +49,7 @@ export interface GroupFormProps {
   cancelUrl?: string;
   successUrl?: string;
   postSuccess?: (commodity: IGroup, edited: boolean) => Promise<unknown>;
+  validationsFactory: any
 }
 
 const defaultProps = {
@@ -56,13 +58,7 @@ const defaultProps = {
 };
 
 
-const normFile = (e: any) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  const fileList = e?.fileList
-  return fileList[0]
-};
+
 
 /**
  * 
@@ -124,6 +120,7 @@ const CommodityForm = (props: GroupFormProps) => {
   const typeOptions = getGroupTypeOptions();
 
   const validationRules = validationRulesFactory(t);
+
 
   return (
     <Form
@@ -267,7 +264,7 @@ const CommodityForm = (props: GroupFormProps) => {
 
       <Form.Item id={photoURL}
         name={photoURL}
-        label={t('Photo of the product (optional)')} valuePropName="fileList" getValueFromEvent={normFile}>
+        label={t('Photo of the product (optional)')} valuePropName="fileList" getValueFromEvent={normalizeFileInputEvent}>
           <Upload beforeUpload={() => false}
           accept="image/*"
           multiple={false}
