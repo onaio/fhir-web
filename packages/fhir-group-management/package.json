@@ -31,6 +31,7 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/rbac": "workspace:^",
@@ -46,6 +47,7 @@
   },
   "peerDependencies": {
     "@opensrp/i18n": "^0.0.1",
-    "react": "17.0.0"
+    "react": "17.0.0",
+    "react-query": "^3.15.1"
   }
 }

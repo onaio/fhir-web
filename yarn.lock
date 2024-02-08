@@ -3862,6 +3862,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@opensrp/fhir-group-management@workspace:packages/fhir-group-management"
   dependencies:
+    "@ant-design/icons": ^4.7.0
     "@onaio/redux-reducer-registry": ^0.0.9
     "@opensrp/notifications": ^0.0.5
     "@opensrp/pkg-config": ^0.0.9
@@ -3875,6 +3876,7 @@ __metadata:
   peerDependencies:
     "@opensrp/i18n": ^0.0.1
     react: 17.0.0
+    react-query: ^3.15.1
   languageName: unknown
   linkType: soft
 
