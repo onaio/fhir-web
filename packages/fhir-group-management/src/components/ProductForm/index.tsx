@@ -31,25 +31,26 @@ import {
   groupSelectfilterFunction,
   postPutGroup,
   SelectOption,
-  validationRulesFactory,
 } from '../CommodityAddEdit/utils';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../mls';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { PlusOutlined } from '@ant-design/icons';
-import { GroupFormFields } from './types';
+import { GroupFormFields, ValidationRulesFactory } from './types';
 import { normalizeFileInputEvent } from './utils';
+import { Group } from 'fhir-group-management/src/types';
 
 const { Item: FormItem } = Form;
 
 export interface GroupFormProps {
   fhirBaseUrl: string;
   initialValues: GroupFormFields;
-  disabled: string[];
+  disabled: (keyof GroupFormFields)[];
+  hidden: (keyof GroupFormFields)[];
   cancelUrl?: string;
   successUrl?: string;
   postSuccess?: (commodity: IGroup, edited: boolean) => Promise<unknown>;
-  validationsFactory: any
+  validationRulesFactory: ValidationRulesFactory
 }
 
 const defaultProps = {
@@ -74,7 +75,7 @@ const defaultProps = {
  */
 
 const CommodityForm = (props: GroupFormProps) => {
-  const { fhirBaseUrl, initialValues, disabled, cancelUrl, successUrl, postSuccess } = props;
+  const { fhirBaseUrl, initialValues, disabled, hidden, cancelUrl, successUrl, postSuccess, validationRulesFactory } = props;
 
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -141,6 +142,7 @@ const CommodityForm = (props: GroupFormProps) => {
 
       <FormItem
         id={name}
+        hidden={hidden.includes(name)}
         name={name}
         rules={validationRules[name]}
         label={t('Enter Commodity name')}
@@ -153,6 +155,7 @@ const CommodityForm = (props: GroupFormProps) => {
         id={materialNumber}
         name={materialNumber}
         label={t('Material number')}
+        hidden={hidden.includes(materialNumber)}
         rules={validationRules[materialNumber]}
       >
         <Input
@@ -166,6 +169,7 @@ const CommodityForm = (props: GroupFormProps) => {
         id={active}
         rules={validationRules[active]}
         name={active}
+        hidden={hidden.includes(active)}
         label={t('Select Commodity status')}
       >
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
@@ -174,6 +178,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={type}
         name={type}
+        hidden={hidden.includes(type)}
         rules={validationRules[type]}
         label={t('Select Commodity Type')}
       >
@@ -189,6 +194,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={unitOfMeasure}
         name={unitOfMeasure}
+        hidden={hidden.includes(unitOfMeasure)}
         rules={validationRules[unitOfMeasure]}
         label={t('Select the unit of measure')}
       >
@@ -205,6 +211,7 @@ const CommodityForm = (props: GroupFormProps) => {
         id={isAttractiveItem}
         name={isAttractiveItem}
         label={t('Attractive item?')}
+        hidden={hidden.includes(isAttractiveItem)}
         rules={validationRules[isAttractiveItem]}
       >
         <Radio.Group disabled={disabled.includes(isAttractiveItem)} options={attractiveOptions} />
@@ -213,6 +220,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={availability}
         name={availability}
+        hidden={hidden.includes(availability)}
         label={t('Is it there?')}
         rules={validationRules[availability]}
       >
@@ -228,6 +236,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={condition}
         name={condition}
+        hidden={hidden.includes(condition)}
         label={t('Is it in good condition?')}
         rules={validationRules[condition]}
       >
@@ -243,6 +252,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={appropriateUsage}
         name={appropriateUsage}
+        hidden={hidden.includes(appropriateUsage)}
         label={t('Is it being used appropriately?')}
         rules={validationRules[appropriateUsage]}
       >
@@ -256,6 +266,7 @@ const CommodityForm = (props: GroupFormProps) => {
       <FormItem
         id={accountabilityPeriod}
         name={accountabilityPeriod}
+        hidden={hidden.includes(accountabilityPeriod)}
         label={t('Accountability period (in months)')}
         rules={validationRules[accountabilityPeriod]}
       >
@@ -263,21 +274,22 @@ const CommodityForm = (props: GroupFormProps) => {
       </FormItem>
 
       <Form.Item id={photoURL}
+        hidden={hidden.includes(photoURL)}
         name={photoURL}
         label={t('Photo of the product (optional)')} valuePropName="fileList" getValueFromEvent={normalizeFileInputEvent}>
-          <Upload beforeUpload={() => false}
+        <Upload beforeUpload={() => false}
           accept="image/*"
           multiple={false}
           name="photoURL"
           listType="picture-card"
           showUploadList={false}
-          >
-            <button style={{ border: 0, background: 'none' }} type="button">
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </button>
-          </Upload>
-        </Form.Item>
+        >
+          <button style={{ border: 0, background: 'none' }} type="button">
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+          </button>
+        </Upload>
+      </Form.Item>
 
       <FormItem {...tailLayout}>
         <Space>

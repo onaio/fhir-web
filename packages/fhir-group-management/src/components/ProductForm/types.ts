@@ -1,6 +1,7 @@
 import type { IGroup } from "@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup";
 import { id, identifier, active, unitOfMeasure, materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, photoURL, type, name } from "../../constants";
 import type { TFunction } from "@opensrp/i18n";
+import { Rule } from "antd/es/form";
 
 export interface GroupFormFields {
     [id]?: string;
