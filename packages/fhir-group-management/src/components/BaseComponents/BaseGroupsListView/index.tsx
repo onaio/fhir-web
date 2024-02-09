@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button } from 'antd';
 import { PageHeader, useSimpleTabularView } from '@opensrp/react-utils';
@@ -28,6 +28,7 @@ export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp
   createButtonLabel: string;
   createButtonUrl?: string;
   pageTitle: string;
+  viewDetailsRender?: (fhirBaseURL: string, resourceId?: string) => ReactNode
 };
 
 /**
@@ -45,6 +46,7 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
+    viewDetailsRender
   } = props;
 
   const { sParams } = useSearchParams();
@@ -106,11 +108,11 @@ export const BaseListView = (props: BaseListViewProps) => {
           </div>
           <TableLayout {...tableProps} />
         </Col>
-        <ViewDetailsWrapper
+        {viewDetailsRender?.(fhirBaseURL, resourceId) ?? <ViewDetailsWrapper
           resourceId={resourceId}
           fhirBaseURL={fhirBaseURL}
           keyValueMapperRenderProp={keyValueMapperRenderProp}
-        />
+        />}
       </Row>
     </div>
   );
