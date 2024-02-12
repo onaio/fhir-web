@@ -1,0 +1,268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when listing resources 3`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Product Id
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      52cffa51-fa81-49aa-9944-5b45d9e4c117
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 4`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Name
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      Bed nets
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Active
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      Active
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 6`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Is it there
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      yes
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 7`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Is it in good condition
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      Yes, no tears, and inocuated
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 8`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      Is it being used appropriately
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      Hanged at correct height and covers averagely sized beds
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 9`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
+      accountability period(in months)
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      12
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources: Header title 1`] = `
+<h4
+  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+>
+  Commodity List
+</h4>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+/>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  Bed nets
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    No
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  substance
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 5`] = `
+<td
+  class="ant-table-cell"
+>
+  <div>
+    Active
+  </div>
+</td>
+`;
+
+exports[`renders correctly when listing resources: table row 1 page 1 6`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <a
+      class="m-0 p-1"
+      href="/commodity/add-edit/52cffa51-fa81-49aa-9944-5b45d9e4c117"
+    >
+      Edit
+    </a>
+    <div
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
+      role="separator"
+    />
+    <span
+      aria-label="more"
+      class="anticon anticon-more ant-dropdown-trigger more-options"
+      data-testid="action-dropdown"
+      role="img"
+      tabindex="-1"
+    >
+      <svg
+        aria-hidden="true"
+        data-icon="more"
+        fill="currentColor"
+        focusable="false"
+        height="1em"
+        viewBox="64 64 896 896"
+        width="1em"
+      >
+        <path
+          d="M456 231a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0zm0 280a56 56 0 10112 0 56 56 0 10-112 0z"
+        />
+      </svg>
+    </span>
+  </span>
+</td>
+`;
