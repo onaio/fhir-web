@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button } from 'antd';
 import { PageHeader, useSimpleTabularView } from '@opensrp/react-utils';
@@ -19,15 +19,16 @@ import { useTranslation } from '../../../mls';
 import { TFunction } from '@opensrp/i18n';
 import { RbacCheck } from '@opensrp/rbac';
 
-export type TableData = ReturnType<typeof parseGroup>;
+export type TableData = ReturnType<typeof parseGroup> & Record<string, unknown>;
 
-export type BaseListViewProps = Pick<ViewDetailsProps, 'keyValueMapperRenderProp'> & {
+export type BaseListViewProps = Partial<Pick<ViewDetailsProps, 'keyValueMapperRenderProp'>> & {
   fhirBaseURL: string;
   getColumns: (t: TFunction) => Column<TableData>[];
   extraQueryFilters?: Record<string, string>;
   createButtonLabel: string;
   createButtonUrl?: string;
   pageTitle: string;
+  viewDetailsRender?: (fhirBaseURL: string, resourceId?: string) => ReactNode;
 };
 
 /**
@@ -45,6 +46,7 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
+    viewDetailsRender,
   } = props;
 
   const { sParams } = useSearchParams();
@@ -106,11 +108,13 @@ export const BaseListView = (props: BaseListViewProps) => {
           </div>
           <TableLayout {...tableProps} />
         </Col>
-        <ViewDetailsWrapper
-          resourceId={resourceId}
-          fhirBaseURL={fhirBaseURL}
-          keyValueMapperRenderProp={keyValueMapperRenderProp}
-        />
+        {viewDetailsRender?.(fhirBaseURL, resourceId) ?? (
+          <ViewDetailsWrapper
+            resourceId={resourceId}
+            fhirBaseURL={fhirBaseURL}
+            keyValueMapperRenderProp={keyValueMapperRenderProp}
+          />
+        )}
       </Row>
     </div>
   );
