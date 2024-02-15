@@ -30,40 +30,46 @@ export const getUnitMeasureCharacteristic = (obj: IGroup) => {
 export const snomedCodeSystem = 'http://snomed.info/sct';
 export const supplyMgSnomedCode = '386452003';
 export const characteristicUnitMeasureCode = '767524001';
+export const photoUploadCharacteristicCode = '1231415';
+export const accountabilityCharacteristicCode = '67869606'
+export const appropriateUsageCharacteristicCode = '56758595'
+export const conditionCharacteristicCode = '45647484'
+export const availabilityCharacteristicCode = '34536373'
+export const attractiveCharacteristicCode = '23435363'
 
 export const photoUploadCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '1231415',
+  code: photoUploadCharacteristicCode,
   display: 'Product Image code',
 };
 
 export const accountabilityCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '67869606',
+  code: accountabilityCharacteristicCode,
   display: 'Accountability period (in months)',
 };
 
 export const appropriateUsageCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '56758595',
+  code: appropriateUsageCharacteristicCode,
   display: 'Is it being used appropriately? (optional)',
 };
 
 export const conditionCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '45647484',
+  code: conditionCharacteristicCode,
   display: 'Is it in good condition? (optional)',
 };
 
 export const availabilityCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '34536373',
+  code: availabilityCharacteristicCode,
   display: 'Is it there code',
 };
 
 export const attractiveCharacteristicCoding = {
   system: 'http://snomed.info/sct',
-  code: '23435363',
+  code: attractiveCharacteristicCode,
   display: 'Attractive Item code',
 };
 
@@ -93,11 +99,11 @@ export function getCharacteristicWithCoding(
  * @param resourceId - id for the group resource
  * @param baseUrl - fhir base url.
  */
-export function useGetGroupAndBinary(resourceId: string, baseUrl: string) {
+export function useGetGroupAndBinary(baseUrl: string, resourceId?: string) {
   // TODO - read group - get binary reference, also fetch binary.
   const groupQuery = useQuery([groupResourceType, resourceId], () => {
-    return new FHIRServiceClass<IGroup>(baseUrl, groupResourceType).read(resourceId);
-  });
+    return new FHIRServiceClass<IGroup>(baseUrl, groupResourceType).read(resourceId!);
+  }, { enabled: !!resourceId });
 
   const photoCharacteristic = getCharacteristicWithCoding(
     groupQuery.data?.characteristic ?? [],

@@ -116,6 +116,20 @@ export const newList = {
   entry: [],
 };
 
+export const editedList = {
+  resourceType: 'List',
+  id: 'list-resource-id',
+  identifier: [{ use: 'official', value: 'list-resource-id' }],
+  status: 'current',
+  mode: 'working',
+  title: 'Supply Chain commodities',
+  code: {
+    coding: [{ system: 'http://ona.io', code: 'supply-chain', display: 'Supply Chain Commodity' }],
+    text: 'Supply Chain Commodity',
+  },
+  entry: [{ item: { reference: 'Group/123' } }],
+};
+
 export const createdCommodity1 = {
   code: {
     coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
@@ -126,6 +140,32 @@ export const createdCommodity1 = {
   id: '9b782015-8392-4847-b48c-50c11638656b',
   identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
   type: 'device',
+  characteristic: [
+    {
+      code: {
+        coding: [
+          { system: 'http://snomed.info/sct', code: '767524001', display: 'Unit of measure' },
+        ],
+      },
+      valueCodeableConcept: {
+        coding: [{ system: 'http://snomed.info/sct', code: '767525000', display: 'Unit' }],
+        text: 'Bottles',
+      },
+    },
+  ],
+};
+
+export const editedCommodity1 = {
+  resourceType: 'Group',
+  id: '567ec5f2-db90-4fac-b578-6e07df3f48de',
+  identifier: [{ value: '43245245336', use: 'official' }],
+  active: true,
+  type: 'device',
+  actual: false,
+  code: {
+    coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
+  },
+  name: 'Paracetamol 100mg TabletsDettol',
   characteristic: [
     {
       code: {

@@ -14,7 +14,7 @@ import {
   condition,
   appropriateUsage,
   accountabilityPeriod,
-  photoURL,
+  productImage,
 } from '../../constants';
 import {
   sendSuccessNotification,
@@ -24,58 +24,56 @@ import {
 import { useQueryClient, useMutation } from 'react-query';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useHistory } from 'react-router';
-import {
-  generateGroupPayload,
-  getGroupTypeOptions,
-  getUnitOfMeasureOptions,
-  groupSelectfilterFunction,
-  postPutGroup,
-  SelectOption,
-} from '../CommodityAddEdit/utils';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../mls';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { PlusOutlined } from '@ant-design/icons';
 import { GroupFormFields, ValidationRulesFactory } from './types';
-import { normalizeFileInputEvent } from './utils';
-import { Group } from 'fhir-group-management/src/types';
+import {
+  getGroupTypeOptions,
+  getUnitOfMeasureOptions,
+  groupSelectfilterFunction,
+  normalizeFileInputEvent,
+  SelectOption,
+} from './utils';
 
 const { Item: FormItem } = Form;
 
-export interface GroupFormProps {
+export interface GroupFormProps<TCreatedResources = IGroup> {
   fhirBaseUrl: string;
   initialValues: GroupFormFields;
   disabled: (keyof GroupFormFields)[];
   hidden: (keyof GroupFormFields)[];
   cancelUrl?: string;
   successUrl?: string;
-  postSuccess?: (commodity: IGroup, edited: boolean) => Promise<unknown>;
-  validationRulesFactory: ValidationRulesFactory
+  postSuccess?: (createdResources: TCreatedResources, edited: boolean) => Promise<unknown>;
+  validationRulesFactory: ValidationRulesFactory;
+  mutationEffect: (
+    initialValues: GroupFormFields,
+    values: GroupFormFields
+  ) => Promise<TCreatedResources>;
 }
 
 const defaultProps = {
   initialValues: {},
   disabled: [],
+  hidden: [],
 };
 
-
-
-
 /**
- * 
- * Use project code to define how the commodity view works.
- * AddEditBehavior:
- *  - have form with everything, ingest a list of hide-able form fields
- *  - create different views for different projects, include one single export view that conditionally exposes the right component.
- * List view
- *  - same:
- *    create default view let it be as it is, 
- *    create another eusm view
- *    Add a wrapper that shows the correct container conditionally with respect to project code.
+ * @param props - form props
  */
-
-const CommodityForm = (props: GroupFormProps) => {
-  const { fhirBaseUrl, initialValues, disabled, hidden, cancelUrl, successUrl, postSuccess, validationRulesFactory } = props;
+function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResources>) {
+  const {
+    mutationEffect,
+    initialValues,
+    disabled,
+    hidden,
+    cancelUrl,
+    successUrl,
+    postSuccess,
+    validationRulesFactory,
+  } = props;
 
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -84,14 +82,15 @@ const CommodityForm = (props: GroupFormProps) => {
 
   const { mutate, isLoading } = useMutation(
     (values: GroupFormFields) => {
-      const payload = generateGroupPayload(values, initialValues);
-      return postPutGroup(fhirBaseUrl, payload);
+      
+      return mutationEffect(initialValues, values);
     },
     {
       onError: (err: Error) => {
         sendErrorNotification(err.message);
       },
       onSuccess: async (createdGroup) => {
+        
         sendSuccessNotification(t('Commodity updated successfully'));
         const isEdit = !!initialValues.id;
         await postSuccess?.(createdGroup, isEdit).catch((err) => {
@@ -110,7 +109,6 @@ const CommodityForm = (props: GroupFormProps) => {
     { label: t('Disabled'), value: false },
   ];
 
-
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
     { label: t('yes'), value: true },
@@ -121,7 +119,6 @@ const CommodityForm = (props: GroupFormProps) => {
   const typeOptions = getGroupTypeOptions();
 
   const validationRules = validationRulesFactory(t);
-
 
   return (
     <Form
@@ -150,7 +147,6 @@ const CommodityForm = (props: GroupFormProps) => {
         <Input disabled={disabled.includes(name)} placeholder={t('Name')} />
       </FormItem>
 
-
       <FormItem
         id={materialNumber}
         name={materialNumber}
@@ -163,7 +159,6 @@ const CommodityForm = (props: GroupFormProps) => {
           placeholder={t("Enter the product's material number")}
         />
       </FormItem>
-
 
       <FormItem
         id={active}
@@ -273,16 +268,20 @@ const CommodityForm = (props: GroupFormProps) => {
         <InputNumber disabled={disabled.includes(accountabilityPeriod)} min={0} />
       </FormItem>
 
-      <Form.Item id={photoURL}
-        hidden={hidden.includes(photoURL)}
-        name={photoURL}
-        label={t('Photo of the product (optional)')} valuePropName="fileList" getValueFromEvent={normalizeFileInputEvent}>
-        <Upload beforeUpload={() => false}
+      <Form.Item
+        id={productImage}
+        hidden={hidden.includes(productImage)}
+        name={productImage}
+        label={t('Photo of the product')}
+        valuePropName="fileList"
+        getValueFromEvent={normalizeFileInputEvent}
+      >
+        <Upload
+          beforeUpload={() => false}
           accept="image/*"
           multiple={false}
-          name="photoURL"
           listType="picture-card"
-          showUploadList={false}
+          maxCount={1}
         >
           <button style={{ border: 0, background: 'none' }} type="button">
             <PlusOutlined />
@@ -308,7 +307,7 @@ const CommodityForm = (props: GroupFormProps) => {
       </FormItem>
     </Form>
   );
-};
+}
 
 CommodityForm.defaultProps = defaultProps;
 

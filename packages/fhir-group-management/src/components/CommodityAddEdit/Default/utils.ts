@@ -4,7 +4,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { v4 } from 'uuid';
 import { getObjLike, IdentifierUseCodes, FHIRServiceClass } from '@opensrp/react-utils';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
-import { capitalize, cloneDeep, get, set, values } from 'lodash';
+import { cloneDeep, get, set } from 'lodash';
 import {
   active,
   groupResourceType,
@@ -14,41 +14,16 @@ import {
   unitOfMeasure,
   name,
   listResourceType,
-} from '../../constants';
+} from '../../../constants';
 import type { TFunction } from '@opensrp/i18n';
 import {
   characteristicUnitMeasureCode,
   getUnitMeasureCharacteristic,
   snomedCodeSystem,
   supplyMgSnomedCode,
-} from '../../helpers/utils';
-
-export enum UnitOfMeasure {
-  Pieces = 'Pieces',
-  Tablets = 'Tablets',
-  Ampoules = 'Ampoules',
-  Strips = 'Strips',
-  Cycles = 'Cycles',
-  Bottles = 'Bottles',
-  TestKits = 'Test kits',
-  Sachets = 'Sachets',
-  Straps = 'Straps',
-}
-
-export enum TypeOfGroup {
-  Medication = 'medication',
-  Decive = 'device',
-}
-
-export interface GroupFormFields {
-  [id]?: string;
-  [identifier]?: string;
-  [active]?: boolean;
-  [name]?: string;
-  [type]?: string;
-  [unitOfMeasure]?: IGroup['type'];
-  initialObject?: IGroup;
-}
+} from '../../../helpers/utils';
+import { TypeOfGroup, UnitOfMeasure } from '../../ProductForm/utils';
+import { GroupFormFields } from '../../ProductForm/types';
 
 export const defaultCharacteristic = {
   code: {
@@ -71,17 +46,20 @@ export const defaultCode = {
  *
  * @param t - the translator function
  */
-export const validationRulesFactory = (t: TFunction) => ({
-  [id]: [{ type: 'string' }] as Rule[],
-  [identifier]: [{ type: 'string' }] as Rule[],
-  [name]: [
-    { type: 'string', message: t('Must be a valid string') },
-    { required: true, message: t('Required') },
-  ] as Rule[],
-  [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
-  [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup), required: true }] as Rule[],
-  [unitOfMeasure]: [{ type: 'enum', enum: Object.values(UnitOfMeasure), required: true }] as Rule[],
-});
+export const validationRulesFactory = (t: TFunction) => {
+  return ({
+    [id]: [{ type: 'string' }] as Rule[],
+    [identifier]: [{ type: 'string' }] as Rule[],
+    [name]: [
+      { type: 'string', message: t('Must be a valid string') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
+    [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup), required: true }] as Rule[],
+    [unitOfMeasure]: [{ type: 'enum', enum: Object.values(UnitOfMeasure), required: true }] as Rule[],
+  });
+
+}
 
 /**
  * Converts group resource to initial values
@@ -174,47 +152,6 @@ export const generateGroupPayload = (
   }
 
   return payload;
-};
-
-export interface SelectOption {
-  value: string;
-  label: string;
-}
-
-/**
- * get select options for group types
- *
- */
-export const getGroupTypeOptions = () => {
-  return values(TypeOfGroup).map((group) => {
-    return {
-      value: group,
-      label: capitalize(group),
-    };
-  });
-};
-
-/**
- * get select options for group units of measure
- *
- */
-export const getUnitOfMeasureOptions = () => {
-  return values(UnitOfMeasure).map((measure) => {
-    return {
-      value: measure,
-      label: capitalize(measure),
-    };
-  });
-};
-
-/**
- * filter select options
- *
- * @param inputValue search term
- * @param option select option to filter against
- */
-export const groupSelectfilterFunction = (inputValue: string, option?: SelectOption) => {
-  return !!option?.label.toLowerCase().includes(inputValue.toLowerCase());
 };
 
 /**

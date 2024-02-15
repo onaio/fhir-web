@@ -1,7 +1,8 @@
 import type { IGroup } from "@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup";
-import { id, identifier, active, unitOfMeasure, materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, photoURL, type, name } from "../../constants";
+import { id, identifier, active, unitOfMeasure, materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, productImage, type, name } from "../../constants";
 import type { TFunction } from "@opensrp/i18n";
 import { Rule } from "antd/es/form";
+import { UploadFile } from "antd";
 
 export interface GroupFormFields {
     [id]?: string;
@@ -12,13 +13,12 @@ export interface GroupFormFields {
     [unitOfMeasure]?: IGroup['type'];
     initialObject?: IGroup;
     [materialNumber]?: string;
-    [isAttractiveItem]?: string;
-    [isAttractiveItem]?: string;
+    [isAttractiveItem]?: boolean;
     [availability]?: string;
     [condition]?: string;
     [appropriateUsage]?: string;
-    [accountabilityPeriod]?: Number;
-    [photoURL]?: File
+    [accountabilityPeriod]?: number;
+    [productImage]?: UploadFile[]
   }
 
 
