@@ -10384,6 +10384,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cssfontparser@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "cssfontparser@npm:1.2.1"
+  checksum: 952d487cddab591fb944f2a4c326a7736bc963784a6d92b6ad4051f3bf5ee49a732eff62e29a52ff085197cb07f5bd66525a2245ded7fd356113ac81be9238b9
+  languageName: node
+  linkType: hard
+
 "cssnano-preset-default@npm:^4.0.8":
   version: 4.0.8
   resolution: "cssnano-preset-default@npm:4.0.8"
@@ -16053,6 +16060,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest-canvas-mock@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "jest-canvas-mock@npm:2.5.2"
+  dependencies:
+    cssfontparser: ^1.2.1
+    moo-color: ^1.0.2
+  checksum: a3004d2e96473049045e49dcf98e5ea6011494048ab42b5422b3089d9ff406aaca8353e79587055d840fa145541668eb8f78613765f252ad5901a8217e91ea5d
+  languageName: node
+  linkType: hard
+
 "jest-changed-files@npm:^26.6.2":
   version: 26.6.2
   resolution: "jest-changed-files@npm:26.6.2"
@@ -18934,6 +18951,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moo-color@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "moo-color@npm:1.0.3"
+  dependencies:
+    color-name: ^1.1.4
+  checksum: 02bf59b6bbd5e86641bc062e2dc0843e6e579e18ef67e1c8e93bfc01945df578f20e66ce16aa9632db2aa0e16806e0914a26eb345a804f45fff1ae12a8906a29
+  languageName: node
+  linkType: hard
+
 "moo@npm:^0.5.0":
   version: 0.5.1
   resolution: "moo@npm:0.5.1"
@@ -19974,6 +20000,7 @@ __metadata:
     husky: ^8.0.0
     i18next-parser: ^5.4.0
     jest: 27.5.1
+    jest-canvas-mock: ^2.5.2
     jest-environment-jsdom-sixteen: ^2.0.0
     jest-fetch-mock: ^3.0.3
     jest-haste-map: ^27.4.6

@@ -16,7 +16,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(@helsenorge/toolkit|@helsenorge/core-utils|@helsenorge/designsystem-react)/)',
   ],
-  setupFiles: ['./setupTests'],
+  setupFiles: ['./setupTests', 'jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
   roots: ['packages/', 'app'],
   moduleNameMapper: {
