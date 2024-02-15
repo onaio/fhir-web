@@ -66,7 +66,9 @@ const AppWrapper = (props: any) => {
 };
 
 test('test error on commodity request', async () => {
-  nock(props.fhirBaseURL).get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`).replyWithError('coughid');
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`)
+    .replyWithError('coughid');
 
   render(<AppWrapper {...props}></AppWrapper>);
 
@@ -78,41 +80,67 @@ test('test error on commodity request', async () => {
 });
 
 test('test error on attached binary request', async () => {
-  nock(props.fhirBaseURL).get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`).reply(200, firstTwentyEusmCommodities.entry[0].resource);
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`)
+    .reply(200, firstTwentyEusmCommodities.entry[0].resource);
 
-  nock(props.fhirBaseURL).get(`/${binaryResourceType}/24d55827-fbd8-4b86-a47a-2f5b4598c515`).replyWithError("coughId")
+  nock(props.fhirBaseURL)
+    .get(`/${binaryResourceType}/24d55827-fbd8-4b86-a47a-2f5b4598c515`)
+    .replyWithError('coughId');
 
   render(<AppWrapper {...props}></AppWrapper>);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll(".singleKeyValue-pair")].map(keyValue => keyValue.textContent)
-  expect(commodityValues).toEqual(["Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117", "NameBed nets", "ActiveActive", "Is it thereyes", "Is it in good conditionYes, no tears, and inocuated", "Is it being used appropriatelyHanged at correct height and covers averagely sized beds", "accountability period(in months)12"]
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+    (keyValue) => keyValue.textContent
   );
+  expect(commodityValues).toEqual([
+    'Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117',
+    'NameBed nets',
+    'ActiveActive',
+    'Is it thereyes',
+    'Is it in good conditionYes, no tears, and inocuated',
+    'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',
+    'accountability period(in months)12',
+  ]);
 
   // image section
-  screen.getByTestId("fallback-img")
+  screen.getByTestId('fallback-img');
 
   expect(nock.isDone()).toBeTruthy();
 });
 
 test('test missing binary in commodity', async () => {
-  const groupResource = cloneDeep(firstTwentyEusmCommodities.entry[0].resource)
+  const groupResource = cloneDeep(firstTwentyEusmCommodities.entry[0].resource);
   // remove image characteristic
-  groupResource.characteristic = groupResource.characteristic.splice(0, groupResource.characteristic.length - 1)
-  nock(props.fhirBaseURL).get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`).reply(200, groupResource);
+  groupResource.characteristic = groupResource.characteristic.splice(
+    0,
+    groupResource.characteristic.length - 1
+  );
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`)
+    .reply(200, groupResource);
 
   render(<AppWrapper {...props}></AppWrapper>);
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll(".singleKeyValue-pair")].map(keyValue => keyValue.textContent)
-  expect(commodityValues).toEqual(["Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117", "NameBed nets", "ActiveActive", "Is it thereyes", "Is it in good conditionYes, no tears, and inocuated", "Is it being used appropriatelyHanged at correct height and covers averagely sized beds", "accountability period(in months)12"]
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+    (keyValue) => keyValue.textContent
   );
+  expect(commodityValues).toEqual([
+    'Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117',
+    'NameBed nets',
+    'ActiveActive',
+    'Is it thereyes',
+    'Is it in good conditionYes, no tears, and inocuated',
+    'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',
+    'accountability period(in months)12',
+  ]);
 
   // image section
-  screen.getByTestId("fallback-img")
-
+  screen.getByTestId('fallback-img');
 
   expect(nock.isDone()).toBeTruthy();
 });
