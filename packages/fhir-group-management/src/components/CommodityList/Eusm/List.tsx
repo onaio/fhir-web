@@ -4,16 +4,14 @@ import { MoreOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL } from '../../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../mls';
-import { BaseListView, BaseListViewProps, TableData } from '../../BaseComponents/BaseGroupsListView';
+import {
+  BaseListView,
+  BaseListViewProps,
+  TableData,
+} from '../../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import {
-  useSearchParams,
-  viewDetailsQuery,
-} from '@opensrp/react-utils';
-import {
-  supplyMgSnomedCode,
-  snomedCodeSystem,
-} from '../../../helpers/utils';
+import { useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
+import { supplyMgSnomedCode, snomedCodeSystem } from '../../../helpers/utils';
 import { useUserRole } from '@opensrp/rbac';
 import { ViewDetailsWrapper } from './ViewDetails';
 
@@ -60,9 +58,9 @@ export const EusmCommodityList = (props: GroupListProps) => {
 
   const getColumns = (t: TFunction) => [
     {
-      title: t("Material Number"),
-      dataIndex: "materialNumber" as const,
-      key: "materialNumber" as const,
+      title: t('Material Number'),
+      dataIndex: 'identifier' as const,
+      key: 'identifier' as const,
     },
     {
       title: t('Name'),
@@ -70,16 +68,17 @@ export const EusmCommodityList = (props: GroupListProps) => {
       key: 'name' as const,
     },
     {
-      title: t("Attractive Item"),
-      dataIndex: "attractiveItem" as const,
-      key: "attractiveItem" as const,
+      title: t('Attractive Item'),
+      dataIndex: 'attractiveItem' as const,
+      key: 'attractiveItem' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,
     },
     {
       title: t('type'),
       dataIndex: 'type' as const,
       key: 'type' as const,
-    }, {
+    },
+    {
       title: t('Active'),
       dataIndex: 'active' as const,
       key: 'active' as const,
@@ -118,7 +117,9 @@ export const EusmCommodityList = (props: GroupListProps) => {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
       '_has:List:item:_id': listId,
     },
-    viewDetailsRender: (fhirBaseURL, resourceId) => <ViewDetailsWrapper fhirBaseURL={fhirBaseURL} resourceId={resourceId!} />
+    viewDetailsRender: (fhirBaseURL, resourceId) => (
+      <ViewDetailsWrapper fhirBaseURL={fhirBaseURL} resourceId={resourceId} />
+    ),
   };
 
   return <BaseListView {...baseListViewProps} />;

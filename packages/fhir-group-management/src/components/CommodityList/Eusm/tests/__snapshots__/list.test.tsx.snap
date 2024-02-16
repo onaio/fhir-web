@@ -35,6 +35,31 @@ exports[`renders correctly when listing resources 4`] = `
     <span
       class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
+      Material Number
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      52cffa51-fa81-49aa-9944-5b45d9e4c117
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 5`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
       Name
     </span>
   </dt>
@@ -50,7 +75,7 @@ exports[`renders correctly when listing resources 4`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 5`] = `
+exports[`renders correctly when listing resources 6`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -75,7 +100,7 @@ exports[`renders correctly when listing resources 5`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 6`] = `
+exports[`renders correctly when listing resources 7`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -100,7 +125,7 @@ exports[`renders correctly when listing resources 6`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 7`] = `
+exports[`renders correctly when listing resources 8`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -125,7 +150,7 @@ exports[`renders correctly when listing resources 7`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 8`] = `
+exports[`renders correctly when listing resources 9`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -150,7 +175,7 @@ exports[`renders correctly when listing resources 8`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 9`] = `
+exports[`renders correctly when listing resources 10`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -186,7 +211,9 @@ exports[`renders correctly when listing resources: Header title 1`] = `
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
-/>
+>
+  52cffa51-fa81-49aa-9944-5b45d9e4c117
+</td>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 2`] = `

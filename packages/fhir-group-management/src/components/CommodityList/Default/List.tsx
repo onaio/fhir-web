@@ -5,7 +5,11 @@ import { MoreOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL, groupResourceType, listResourceType } from '../../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../mls';
-import { BaseListView, BaseListViewProps, TableData } from '../../BaseComponents/BaseGroupsListView';
+import {
+  BaseListView,
+  BaseListViewProps,
+  TableData,
+} from '../../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
 import {
   FHIRServiceClass,
