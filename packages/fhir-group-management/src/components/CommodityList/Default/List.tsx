@@ -31,7 +31,7 @@ import {
   sendInfoNotification,
   sendSuccessNotification,
 } from '@opensrp/notifications';
-import { useUserRole } from '@opensrp/rbac';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
 export interface GroupListProps {
   fhirBaseURL: string;
@@ -156,9 +156,14 @@ export const DefaultCommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
-            {t('Edit')}
-          </Link>
+          <RbacCheck permissions={['Group.update']}>
+            <>
+              <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
