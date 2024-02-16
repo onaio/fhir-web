@@ -82,18 +82,16 @@ function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResource
 
   const { mutate, isLoading } = useMutation(
     (values: GroupFormFields) => {
-      
       return mutationEffect(initialValues, values);
     },
     {
       onError: (err: Error) => {
         sendErrorNotification(err.message);
       },
-      onSuccess: async (createdGroup) => {
-        
+      onSuccess: async (mutationEffectResponse) => {
         sendSuccessNotification(t('Commodity updated successfully'));
         const isEdit = !!initialValues.id;
-        await postSuccess?.(createdGroup, isEdit).catch((err) => {
+        await postSuccess?.(mutationEffectResponse, isEdit).catch((err) => {
           sendErrorNotification(err.message);
         });
         queryClient.refetchQueries([groupResourceType]).catch(() => {
@@ -115,7 +113,7 @@ function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResource
     { label: t('no'), value: false },
   ];
 
-  const unitsOfMEasureOptions = getUnitOfMeasureOptions();
+  const unitsOfMeasureOptions = getUnitOfMeasureOptions();
   const typeOptions = getGroupTypeOptions();
 
   const validationRules = validationRulesFactory(t);
@@ -196,7 +194,7 @@ function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResource
         <Select
           disabled={disabled.includes(unitOfMeasure)}
           placeholder={t('Select the unit of measure')}
-          options={unitsOfMEasureOptions}
+          options={unitsOfMeasureOptions}
           showSearch={true}
           filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
         ></Select>
