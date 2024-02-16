@@ -67,10 +67,12 @@ export const EusmViewDetails = (props: EusmViewDetailsProps) => {
     name,
     active,
     id,
+    identifier,
   } = parseEusmCommodity(group, binaryQuery.data);
 
   const keyValues = {
     [t('Product Id')]: id,
+    [t('Material Number')]: identifier,
     [t('Name')]: name,
     [t('Active')]: active ? t('Active') : t('Disabled'),
     [t('Attractive item')]: attractive,
