@@ -12,7 +12,7 @@ import {
 import { TFunction } from '@opensrp/i18n';
 import { useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../../helpers/utils';
-import { useUserRole } from '@opensrp/rbac';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 import { ViewDetailsWrapper } from './ViewDetails';
 
 interface GroupListProps {
@@ -90,9 +90,14 @@ export const EusmCommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
-            {t('Edit')}
-          </Link>
+          <RbacCheck permissions={['Group.update']}>
+            <>
+              <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
+                {t('Edit')}
+              </Link>
+              <Divider type="vertical" />
+            </>
+          </RbacCheck>
           <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
