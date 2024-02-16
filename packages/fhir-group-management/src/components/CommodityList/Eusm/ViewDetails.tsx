@@ -153,7 +153,7 @@ export const ViewDetailsWrapper = (props: ViewDetailsWrapperProps) => {
 const FallbackImage = ({ active }: { active: boolean }) => {
   return (
     <Skeleton.Image
-      data-testid="fallback-img"
+      className="fallback-img"
       style={{
         height: '192px',
         width: '192px',

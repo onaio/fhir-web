@@ -97,6 +97,7 @@ test('test error on attached binary request', async () => {
   );
   expect(commodityValues).toEqual([
     'Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117',
+    'Material Number52cffa51-fa81-49aa-9944-5b45d9e4c117',
     'NameBed nets',
     'ActiveActive',
     'Is it thereyes',
@@ -106,7 +107,7 @@ test('test error on attached binary request', async () => {
   ]);
 
   // image section
-  screen.getByTestId('fallback-img');
+  expect(document.querySelector('.fallback-img')).toBeInTheDocument();
 
   expect(nock.isDone()).toBeTruthy();
 });
@@ -131,6 +132,7 @@ test('test missing binary in commodity', async () => {
   );
   expect(commodityValues).toEqual([
     'Product Id52cffa51-fa81-49aa-9944-5b45d9e4c117',
+    'Material Number52cffa51-fa81-49aa-9944-5b45d9e4c117',
     'NameBed nets',
     'ActiveActive',
     'Is it thereyes',
@@ -140,7 +142,7 @@ test('test missing binary in commodity', async () => {
   ]);
 
   // image section
-  screen.getByTestId('fallback-img');
+  expect(document.querySelector('.fallback-img')).toBeInTheDocument();
 
   expect(nock.isDone()).toBeTruthy();
 });
