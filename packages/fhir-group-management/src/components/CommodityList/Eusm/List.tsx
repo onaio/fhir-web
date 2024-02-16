@@ -59,8 +59,8 @@ export const EusmCommodityList = (props: GroupListProps) => {
   const getColumns = (t: TFunction) => [
     {
       title: t('Material Number'),
-      dataIndex: 'materialNumber' as const,
-      key: 'materialNumber' as const,
+      dataIndex: 'identifier' as const,
+      key: 'identifier' as const,
     },
     {
       title: t('Name'),

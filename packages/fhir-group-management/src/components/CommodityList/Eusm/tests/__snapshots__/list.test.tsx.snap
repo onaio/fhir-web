@@ -186,7 +186,9 @@ exports[`renders correctly when listing resources: Header title 1`] = `
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `
 <td
   class="ant-table-cell"
-/>
+>
+  52cffa51-fa81-49aa-9944-5b45d9e4c117
+</td>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 2`] = `
