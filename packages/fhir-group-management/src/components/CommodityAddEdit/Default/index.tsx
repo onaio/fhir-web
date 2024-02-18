@@ -2,13 +2,29 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { CommodityForm } from '../../ProductForm';
 import { useParams } from 'react-router';
-import { accountabilityPeriod, appropriateUsage, availability, condition, groupResourceType, isAttractiveItem, LIST_COMMODITY_URL, materialNumber, productImage } from '../../../constants';
+import {
+  accountabilityPeriod,
+  appropriateUsage,
+  availability,
+  condition,
+  groupResourceType,
+  isAttractiveItem,
+  LIST_COMMODITY_URL,
+  materialNumber,
+  productImage,
+} from '../../../constants';
 import { Spin } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { generateGroupPayload, getGroupFormFields, postPutGroup, updateListReferencesFactory, validationRulesFactory } from './utils';
+import {
+  generateGroupPayload,
+  getGroupFormFields,
+  postPutGroup,
+  updateListReferencesFactory,
+  validationRulesFactory,
+} from './utils';
 import { useTranslation } from '../../../mls';
 
 export interface GroupAddEditProps {
@@ -59,7 +75,15 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
       <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <CommodityForm
-          hidden={[materialNumber, isAttractiveItem, availability, condition, appropriateUsage, accountabilityPeriod, productImage]}
+          hidden={[
+            materialNumber,
+            isAttractiveItem,
+            availability,
+            condition,
+            appropriateUsage,
+            accountabilityPeriod,
+            productImage,
+          ]}
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
           cancelUrl={LIST_COMMODITY_URL}
@@ -67,8 +91,8 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           postSuccess={postSuccess}
           validationRulesFactory={validationRulesFactory}
           mutationEffect={async (initialValues, values) => {
-            const payload = generateGroupPayload(values, initialValues)
-            return postPutGroup(fhirBaseUrl, payload)
+            const payload = generateGroupPayload(values, initialValues);
+            return postPutGroup(fhirBaseUrl, payload);
           }}
         />
       </div>

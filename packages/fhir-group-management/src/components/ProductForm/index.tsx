@@ -28,7 +28,7 @@ import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../mls';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { PlusOutlined } from '@ant-design/icons';
-import { GroupFormFields, ValidationRulesFactory } from './types';
+import { CommonGroupFormFields, GroupFormFields, ValidationRulesFactory } from './types';
 import {
   getGroupTypeOptions,
   getUnitOfMeasureOptions,
@@ -39,19 +39,19 @@ import {
 
 const { Item: FormItem } = Form;
 
-export interface GroupFormProps<TCreatedResources = IGroup> {
+export interface GroupFormProps<
+  TCreatedResources = IGroup,
+  FormFields extends CommonGroupFormFields = GroupFormFields
+> {
   fhirBaseUrl: string;
-  initialValues: GroupFormFields;
-  disabled: (keyof GroupFormFields)[];
-  hidden: (keyof GroupFormFields)[];
+  initialValues: FormFields;
+  disabled: (keyof FormFields)[];
+  hidden: (keyof FormFields)[];
   cancelUrl?: string;
   successUrl?: string;
   postSuccess?: (createdResources: TCreatedResources, edited: boolean) => Promise<unknown>;
   validationRulesFactory: ValidationRulesFactory;
-  mutationEffect: (
-    initialValues: GroupFormFields,
-    values: GroupFormFields
-  ) => Promise<TCreatedResources>;
+  mutationEffect: (initialValues: FormFields, values: FormFields) => Promise<TCreatedResources>;
 }
 
 const defaultProps = {
@@ -63,7 +63,10 @@ const defaultProps = {
 /**
  * @param props - form props
  */
-function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResources>) {
+function CommodityForm<
+  TCreatedResources,
+  FormFields extends CommonGroupFormFields = GroupFormFields
+>(props: GroupFormProps<TCreatedResources, FormFields>) {
   const {
     mutationEffect,
     initialValues,
@@ -81,7 +84,7 @@ function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResource
   const goTo = (url = '#') => history.push(url);
 
   const { mutate, isLoading } = useMutation(
-    (values: GroupFormFields) => {
+    (values: FormFields) => {
       return mutationEffect(initialValues, values);
     },
     {
@@ -122,7 +125,7 @@ function CommodityForm<TCreatedResources>(props: GroupFormProps<TCreatedResource
     <Form
       requiredMark={false}
       {...formItemLayout}
-      onFinish={(values: GroupFormFields) => {
+      onFinish={(values: FormFields) => {
         mutate(values);
       }}
       initialValues={initialValues}

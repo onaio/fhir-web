@@ -7,7 +7,15 @@ import { Spin } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { BrokenPage } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { generateGroupPayload, getGroupFormFields, postPutBinary, postPutGroup, updateListReferencesFactory, validationRulesFactory } from './utils';
+import {
+  EusmGroupFormFields,
+  generateGroupPayload,
+  getGroupFormFields,
+  postPutBinary,
+  postPutGroup,
+  updateListReferencesFactory,
+  validationRulesFactory,
+} from './utils';
 import { useTranslation } from '../../../mls';
 import { useGetGroupAndBinary } from '../../../helpers/utils';
 import { IBinary } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBinary';
@@ -27,7 +35,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
   const { id: resourceId } = useParams<RouteParams>();
   const { t } = useTranslation();
 
-  const {groupQuery, binaryQuery} = useGetGroupAndBinary(fhirBaseUrl, resourceId)
+  const { groupQuery, binaryQuery } = useGetGroupAndBinary(fhirBaseUrl, resourceId);
 
   if (!groupQuery.isIdle && groupQuery.isLoading) {
     return <Spin size="large" className="custom-spinner"></Spin>;
@@ -36,8 +44,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
   if (groupQuery.error && !groupQuery.data) {
     return <BrokenPage errorMessage={(groupQuery.error as Error).message} />;
   }
-  
-  // TODO - add binary to initial values
+
   const initialValues = getGroupFormFields(groupQuery.data, binaryQuery.data);
 
   const pageTitle = groupQuery.data
@@ -53,7 +60,10 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
       </Helmet>
       <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
-        <CommodityForm<{group: IGroup, binary?: IBinary, binaryChanged: boolean}>
+        <CommodityForm<
+          { group: IGroup; binary?: IBinary; binaryChanged: boolean },
+          EusmGroupFormFields
+        >
           hidden={[unitOfMeasure]}
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
@@ -62,15 +72,17 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           postSuccess={postSuccess}
           validationRulesFactory={validationRulesFactory}
           mutationEffect={async (initialValues, values) => {
-            const {group, binary, binaryChanged} = await generateGroupPayload(values, initialValues)
-            
+            const { group, binary, binaryChanged } = await generateGroupPayload(
+              values,
+              initialValues
+            );
 
             let binaryResponse;
-            if(binary){
-              binaryResponse = await postPutBinary(fhirBaseUrl, binary)
+            if (binary) {
+              binaryResponse = await postPutBinary(fhirBaseUrl, binary);
             }
-            const groupResponse = await postPutGroup(fhirBaseUrl, group)
-            return {group: groupResponse, binary: binaryResponse, binaryChanged}
+            const groupResponse = await postPutGroup(fhirBaseUrl, group);
+            return { group: groupResponse, binary: binaryResponse, binaryChanged };
           }}
         />
       </div>

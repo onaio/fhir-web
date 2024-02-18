@@ -45,7 +45,7 @@ export const normalizeFileInputEvent = (e: UploadChangeParam<UploadFile>) => {
   if (Array.isArray(e)) {
     return e;
   }
-  
+
   return e.fileList;
 };
 

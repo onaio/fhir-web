@@ -47,7 +47,7 @@ export const defaultCode = {
  * @param t - the translator function
  */
 export const validationRulesFactory = (t: TFunction) => {
-  return ({
+  return {
     [id]: [{ type: 'string' }] as Rule[],
     [identifier]: [{ type: 'string' }] as Rule[],
     [name]: [
@@ -56,10 +56,11 @@ export const validationRulesFactory = (t: TFunction) => {
     ] as Rule[],
     [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
     [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup), required: true }] as Rule[],
-    [unitOfMeasure]: [{ type: 'enum', enum: Object.values(UnitOfMeasure), required: true }] as Rule[],
-  });
-
-}
+    [unitOfMeasure]: [
+      { type: 'enum', enum: Object.values(UnitOfMeasure), required: true },
+    ] as Rule[],
+  };
+};
 
 /**
  * Converts group resource to initial values

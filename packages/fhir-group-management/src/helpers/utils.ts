@@ -31,11 +31,11 @@ export const snomedCodeSystem = 'http://snomed.info/sct';
 export const supplyMgSnomedCode = '386452003';
 export const characteristicUnitMeasureCode = '767524001';
 export const photoUploadCharacteristicCode = '1231415';
-export const accountabilityCharacteristicCode = '67869606'
-export const appropriateUsageCharacteristicCode = '56758595'
-export const conditionCharacteristicCode = '45647484'
-export const availabilityCharacteristicCode = '34536373'
-export const attractiveCharacteristicCode = '23435363'
+export const accountabilityCharacteristicCode = '67869606';
+export const appropriateUsageCharacteristicCode = '56758595';
+export const conditionCharacteristicCode = '45647484';
+export const availabilityCharacteristicCode = '34536373';
+export const attractiveCharacteristicCode = '23435363';
 
 export const photoUploadCharacteristicCoding = {
   system: 'http://snomed.info/sct',
@@ -73,6 +73,92 @@ export const attractiveCharacteristicCoding = {
   display: 'Attractive Item code',
 };
 
+export const unitOfMeasureCharacteristicCoding = {
+  system: 'http://snomed.info/sct',
+  code: '767524001',
+  display: 'Unit of measure',
+};
+
+export const unitOfMeasureCharacteristic = {
+  code: {
+    coding: [unitOfMeasureCharacteristicCoding],
+  },
+  valueCodeableConcept: {
+    coding: [
+      {
+        system: 'http://snomed.info/sct',
+        code: '767525000',
+        display: 'Unit',
+      },
+    ],
+    text: undefined,
+  },
+};
+
+export const accountabilityCharacteristic = {
+  code: {
+    coding: [accountabilityCharacteristicCoding],
+  },
+  valueQuantity: {
+    value: undefined,
+  },
+};
+
+export const appropriateUsageCharacteristic = {
+  code: {
+    coding: [appropriateUsageCharacteristicCoding],
+  },
+  valueCodeableConcept: {
+    coding: [
+      {
+        system: 'http://snomed.info/sct',
+        code: '56758595-1',
+        display: 'Value entered on the Is it being used appropriately? (optional)',
+      },
+    ],
+    text: undefined,
+  },
+};
+
+export const conditionCharacteristic = {
+  code: {
+    coding: [conditionCharacteristicCoding],
+  },
+  valueCodeableConcept: {
+    coding: [
+      {
+        system: 'http://snomed.info/sct',
+        code: '45647484-1',
+        display: 'Value entered on the Is it in good condition? (optional)',
+      },
+    ],
+    text: undefined,
+  },
+};
+
+export const availabilityCharacteristic = {
+  code: {
+    coding: [availabilityCharacteristicCoding],
+  },
+  valueCodeableConcept: {
+    coding: [
+      {
+        system: 'http://snomed.info/sct',
+        code: '34536373-1',
+        display: 'Value entered on the It is there code',
+      },
+    ],
+    text: undefined,
+  },
+};
+
+export const attractiveCharacteristic = {
+  code: {
+    coding: [attractiveCharacteristicCoding],
+  },
+  valueBoolean: undefined,
+};
+
 /**
  * finds a characteristic that has the given coding as one of its characteristic.codings
  *
@@ -96,14 +182,18 @@ export function getCharacteristicWithCoding(
 /**
  * use query wrapper to fetch a commodity resource that has a binary resource.
  *
- * @param resourceId - id for the group resource
  * @param baseUrl - fhir base url.
+ * @param resourceId - id for the group resource
  */
 export function useGetGroupAndBinary(baseUrl: string, resourceId?: string) {
   // TODO - read group - get binary reference, also fetch binary.
-  const groupQuery = useQuery([groupResourceType, resourceId], () => {
-    return new FHIRServiceClass<IGroup>(baseUrl, groupResourceType).read(resourceId!);
-  }, { enabled: !!resourceId });
+  const groupQuery = useQuery(
+    [groupResourceType, resourceId],
+    () => {
+      return new FHIRServiceClass<IGroup>(baseUrl, groupResourceType).read(resourceId as string);
+    },
+    { enabled: !!resourceId }
+  );
 
   const photoCharacteristic = getCharacteristicWithCoding(
     groupQuery.data?.characteristic ?? [],

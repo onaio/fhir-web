@@ -24,21 +24,37 @@ import {
 } from '../../../constants';
 import type { TFunction } from '@opensrp/i18n';
 import {
+  accountabilityCharacteristic,
   accountabilityCharacteristicCode,
+  accountabilityCharacteristicCoding,
+  appropriateUsageCharacteristic,
   appropriateUsageCharacteristicCode,
+  appropriateUsageCharacteristicCoding,
+  attractiveCharacteristic,
   attractiveCharacteristicCode,
+  attractiveCharacteristicCoding,
+  availabilityCharacteristic,
   availabilityCharacteristicCode,
+  availabilityCharacteristicCoding,
   characteristicUnitMeasureCode,
+  conditionCharacteristic,
   conditionCharacteristicCode,
+  conditionCharacteristicCoding,
+  getCharacteristicWithCoding,
   photoUploadCharacteristicCode,
   snomedCodeSystem,
   supplyMgSnomedCode,
+  unitOfMeasureCharacteristicCoding,
+  unitOfMeasureCharacteristic,
 } from '../../../helpers/utils';
 import { TypeOfGroup } from '../../ProductForm/utils';
 import { GroupFormFields } from '../../ProductForm/types';
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { IBinary } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBinary';
 import { UploadFile } from 'antd';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+
+export type EusmGroupFormFields = GroupFormFields<{ group: IGroup; binary?: IBinary }>;
 
 export const defaultCharacteristic = {
   code: {
@@ -87,203 +103,166 @@ export const validationRulesFactory = (t: TFunction) => {
  * @param characteristic - group characteristic
  */
 function getValueFromCharacteristic(characteristic: GroupCharacteristic) {
-  if (characteristic.hasOwnProperty('valueCodeableConcept')) {
-    return characteristic.valueCodeableConcept?.text;
+  if (characteristic['valueCodeableConcept']) {
+    return characteristic.valueCodeableConcept.text;
   }
-  if (characteristic.hasOwnProperty('valueBoolean')) {
+  if (characteristic['valueBoolean']) {
     return characteristic.valueBoolean;
   }
-  if (characteristic.hasOwnProperty('valueQuantity')) {
-    return characteristic.valueQuantity?.value;
+  if (characteristic['valueQuantity']) {
+    return characteristic.valueQuantity.value;
   }
-  if (characteristic.hasOwnProperty('valueReference')) {
-    return characteristic.valueReference?.reference;
+  if (characteristic['valueReference']) {
+    return characteristic.valueReference.reference;
   }
 }
 
 /**
- * @param codingCode
- * @param values
- * @param existingCharacteristic
+ * Generates a group's characteristic payload
+ *
+ * @param existingCharacteristic - characteristic that exist for the group
+ * @param values - form filled values.
  */
-function createCharacteristicForCode(
-  codingCode: string,
-  values: GroupFormFields,
-  existingCharacteristic?: GroupCharacteristic
+function generateCharacteristicPayload(
+  existingCharacteristic: GroupCharacteristic[],
+  values: EusmGroupFormFields
 ) {
-  const exists = !!existingCharacteristic;
-  switch (codingCode) {
-    case characteristicUnitMeasureCode:
+  const knownCodes = [
+    accountabilityCharacteristicCoding,
+    appropriateUsageCharacteristicCoding,
+    conditionCharacteristicCoding,
+    availabilityCharacteristicCoding,
+    attractiveCharacteristicCoding,
+    unitOfMeasureCharacteristicCoding,
+  ] as Coding[];
+  const newCharacteristics = cloneDeep(existingCharacteristic);
+  for (const coding of knownCodes) {
+    updateCharacteristicForCode(newCharacteristics, coding, values);
+  }
+  return newCharacteristics;
+}
+
+/**
+ * Updates the existing characteristics with the form field values.
+ *
+ * @param existingCharacteristics - array of existing characteristics to be mutably updated
+ * @param codingCode - coding code of interest
+ * @param values - form filled values
+ */
+function updateCharacteristicForCode(
+  existingCharacteristics: GroupCharacteristic[],
+  codingCode: Coding,
+  values: EusmGroupFormFields
+) {
+  const checkCharacteristic = getCharacteristicWithCoding(existingCharacteristics, codingCode);
+
+  switch (codingCode.code) {
+    case characteristicUnitMeasureCode: {
       const { unitOfMeasure } = values;
       if (unitOfMeasure === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        (newCharacteristic.valueCodeableConcept ?? {}).text = unitOfMeasure;
-        return newCharacteristic;
+      if (checkCharacteristic) {
+        (checkCharacteristic.valueCodeableConcept ?? {}).text = unitOfMeasure;
       } else
-        return JSON.parse(`{
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "767524001",
-            "display": "Unit of measure"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "767525000",
-            "display": "Unit"
-          } ],
-          "text": "${unitOfMeasure}"
-        },
-      }`);
-    case accountabilityCharacteristicCode:
+        existingCharacteristics.push({
+          ...unitOfMeasureCharacteristic,
+          valueCodeableConcept: {
+            ...unitOfMeasureCharacteristic.valueCodeableConcept,
+            text: unitOfMeasure,
+          },
+        });
+      break;
+    }
+    case accountabilityCharacteristicCode: {
       const { accountabilityPeriod } = values;
       if (accountabilityPeriod === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        (newCharacteristic.valueQuantity ?? {}).value = accountabilityPeriod;
-        return newCharacteristic;
-      } else
-        return JSON.parse(`{
-        "code": {
-          "coding": [
-            {
-              "system": "http://snomed.info/sct",
-              "code": "67869606",
-              "display": "Accountability period (in months)"
-            }
-          ]
-        },
-        "valueQuantity": {
-          "value": ${accountabilityPeriod}
-        }
-      }`);
-    case appropriateUsageCharacteristicCode:
+      if (checkCharacteristic) {
+        (checkCharacteristic.valueQuantity ?? {}).value = accountabilityPeriod;
+      } else {
+        existingCharacteristics.push({
+          ...accountabilityCharacteristic,
+          valueQuantity: {
+            value: accountabilityPeriod,
+          },
+        });
+      }
+      break;
+    }
+    case appropriateUsageCharacteristicCode: {
       const { appropriateUsage } = values;
       if (appropriateUsage === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        (newCharacteristic.valueCodeableConcept ?? {}).text = appropriateUsage;
-        return newCharacteristic;
+      if (checkCharacteristic) {
+        (checkCharacteristic.valueCodeableConcept ?? {}).text = appropriateUsage;
       } else
-        return JSON.parse(`{
-          "code": {
-            "coding": [
-              {
-                "system": "http://snomed.info/sct",
-                "code": "56758595",
-                "display": "Is it being used appropriately? (optional)"
-              }
-            ]
+        existingCharacteristics.push({
+          ...appropriateUsageCharacteristic,
+          valueCodeableConcept: {
+            ...appropriateUsageCharacteristic.valueCodeableConcept,
+            text: appropriateUsage,
           },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "system": "http://snomed.info/sct",
-                "code": "56758595-1",
-                "display": "Value entered on the Is it being used appropriately? (optional)"
-              }
-            ],
-            "text": "${appropriateUsage}"
-          }
-        }`);
-    case conditionCharacteristicCode:
+        });
+      break;
+    }
+    case conditionCharacteristicCode: {
       const { condition } = values;
       if (condition === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        (newCharacteristic.valueCodeableConcept ?? {}).text = condition;
-        return newCharacteristic;
+      if (checkCharacteristic) {
+        (checkCharacteristic.valueCodeableConcept ?? {}).text = condition;
       } else
-        return JSON.parse(`{
-            "code": {
-              "coding": [
-                {
-                  "system": "http://snomed.info/sct",
-                  "code": "45647484",
-                  "display": "Is it in good condition? (optional)"
-                }
-              ]
-            },
-            "valueCodeableConcept": {
-              "coding": [
-                {
-                  "system": "http://snomed.info/sct",
-                  "code": "45647484-1",
-                  "display": "Value entered on the Is it in good condition? (optional)"
-                }
-              ],
-              "text": "${condition}"
-            }
-          }`);
-    case availabilityCharacteristicCode:
+        existingCharacteristics.push({
+          ...conditionCharacteristic,
+          valueCodeableConcept: {
+            ...conditionCharacteristic.valueCodeableConcept,
+            text: condition,
+          },
+        });
+      break;
+    }
+    case availabilityCharacteristicCode: {
       const { availability } = values;
       if (availability === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        (newCharacteristic.valueCodeableConcept ?? {}).text = availability;
-        return newCharacteristic;
+      if (checkCharacteristic) {
+        (checkCharacteristic.valueCodeableConcept ?? {}).text = availability;
       } else
-        return JSON.parse(`{
-              "code": {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "34536373",
-                    "display": "Is it there code"
-                  }
-                ]
-              },
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://snomed.info/sct",
-                    "code": "34536373-1",
-                    "display": "Value entered on the It is there code"
-                  }
-                ],
-                "text": "${availability}"
-              }
-            }`);
-    case attractiveCharacteristicCode:
+        existingCharacteristics.push({
+          ...availabilityCharacteristic,
+          valueCodeableConcept: {
+            ...availabilityCharacteristic.valueCodeableConcept,
+            text: availability,
+          },
+        });
+      break;
+    }
+    case attractiveCharacteristicCode: {
       const { isAttractiveItem } = values;
       if (isAttractiveItem === undefined) {
         return;
       }
-      if (exists) {
-        const newCharacteristic = cloneDeep(existingCharacteristic);
-        newCharacteristic.valueBoolean = isAttractiveItem;
-        return newCharacteristic;
+      if (checkCharacteristic) {
+        checkCharacteristic.valueBoolean = isAttractiveItem;
       } else
-        return JSON.parse(`{
-                "code": {
-                  "coding": [
-                    {
-                      "system": "http://snomed.info/sct",
-                      "code": "23435363",
-                      "display": "Attractive Item code"
-                    }
-                  ]
-                },
-                "valueBoolean": ${isAttractiveItem}
-              }`);
+        existingCharacteristics.push({
+          ...attractiveCharacteristic,
+          valueBoolean: isAttractiveItem,
+        });
+      break;
+    }
   }
 }
 
 /**
- * @param file
+ * Converts a file object to a base 64 string
+ *
+ * @param file - file object
  */
 function fileToBase64(file?: File): Promise<string | undefined> {
   if (!file) {
@@ -306,12 +285,14 @@ function fileToBase64(file?: File): Promise<string | undefined> {
 }
 
 /**
- * @param values
- * @param initialValues
+ *  generates the binary payload for uploaded image
+ *
+ * @param values - current form field values
+ * @param initialValues - initial form field values.
  */
 export async function getProductImagePayload(
-  values: GroupFormFields,
-  initialValues: GroupFormFields
+  values: EusmGroupFormFields,
+  initialValues: EusmGroupFormFields
 ) {
   const initialImage = initialValues.productImage?.[0].originFileObj;
   const currentImage = values.productImage?.[0].originFileObj;
@@ -344,14 +325,14 @@ export async function getProductImagePayload(
 }
 
 /**
- * Converts group resource to initial values
+ * Converts group resource to initial values consumable by productForm
  *
  * @param obj - the group resource
- * @param binary
+ * @param binary - binary associated with the group
  */
-export const getGroupFormFields = (obj?: IGroup, binary?: IBinary) => {
+export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFormFields => {
   if (!obj) {
-    return { initialObject: { code: defaultCode }, active: true } as GroupFormFields;
+    return { initialObject: { group: { code: defaultCode } }, active: true } as EusmGroupFormFields;
   }
   const { id, name, active, identifier, type } = obj;
 
@@ -364,30 +345,31 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary) => {
       // if we have a code hit in one of the codings.
       const codingSystem = coding.system?.toLowerCase();
       const codingCode = coding.code;
-      // TODO - can we graph-map this.
-      if (codingSystem === snomedCodeSystem && codingCode === characteristicUnitMeasureCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[unitOfMeasure] = val;
-      }
-      if (codingSystem === snomedCodeSystem && codingCode === accountabilityCharacteristicCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[accountabilityPeriod] = val;
-      }
-      if (codingSystem === snomedCodeSystem && codingCode === appropriateUsageCharacteristicCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[appropriateUsage] = val;
-      }
-      if (codingSystem === snomedCodeSystem && codingCode === conditionCharacteristicCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[condition] = val;
-      }
-      if (codingSystem === snomedCodeSystem && codingCode === availabilityCharacteristicCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[availability] = val;
-      }
-      if (codingSystem === snomedCodeSystem && codingCode === attractiveCharacteristicCode) {
-        const val = getValueFromCharacteristic(characteristic);
-        formFieldsFromCharacteristics[isAttractiveItem] = val;
+      if (codingSystem === snomedCodeSystem) {
+        if (codingCode === characteristicUnitMeasureCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[unitOfMeasure] = val;
+        }
+        if (codingCode === accountabilityCharacteristicCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[accountabilityPeriod] = val;
+        }
+        if (codingCode === appropriateUsageCharacteristicCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[appropriateUsage] = val;
+        }
+        if (codingCode === conditionCharacteristicCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[condition] = val;
+        }
+        if (codingCode === availabilityCharacteristicCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[availability] = val;
+        }
+        if (codingCode === attractiveCharacteristicCode) {
+          const val = getValueFromCharacteristic(characteristic);
+          formFieldsFromCharacteristics[isAttractiveItem] = val;
+        }
       }
     }
   }
@@ -396,14 +378,11 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary) => {
 
   if (binary?.data && binary.contentType) {
     productImageFromUrl = base64ToFile(binary.data, binary.contentType);
-
-    productImageFromUrl = productImageFromUrl
-      ? [{ uid: binary.id, originFileObj: productImageFromUrl } as UploadFile]
-      : [];
+    productImageFromUrl = [{ uid: binary.id, originFileObj: productImageFromUrl } as UploadFile];
   }
 
-  const formFields: GroupFormFields = {
-    initialObject: obj,
+  const formFields: EusmGroupFormFields = {
+    initialObject: { group: obj, binary },
     id,
     identifier: get(identifierObj, '0.value'),
     active,
@@ -412,15 +391,16 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary) => {
     ...formFieldsFromCharacteristics,
     productImage: productImageFromUrl,
   };
-  // TODO - question of photo url - what should be its type in GroupFormFields
 
   return formFields;
 };
 
 // process photo url
 /**
- * @param base64String
- * @param mimeType
+ * Converts a base 64 string to a File object
+ *
+ * @param base64String - b64 encoded string
+ * @param mimeType - mime type for the file
  */
 function base64ToFile(base64String: string, mimeType: string) {
   const byteCharacters = atob(base64String);
@@ -443,26 +423,19 @@ function base64ToFile(base64String: string, mimeType: string) {
  * @param initialValues - initial form values
  */
 export const generateGroupPayload = async (
-  values: GroupFormFields,
-  initialValues: GroupFormFields
+  values: EusmGroupFormFields,
+  initialValues: EusmGroupFormFields
 ): Promise<{ group: IGroup; binary?: IBinary; binaryChanged: boolean }> => {
-  const {
-    id,
-    identifier: rawIdentifier,
-    active,
-    name,
-    type,
-    unitOfMeasure,
-    isAttractiveItem,
-  } = values;
+  const { id, identifier: rawIdentifier, active, name, type } = values;
   const { initialObject } = initialValues;
+  const initialGroupObject = initialValues.initialObject?.group;
   let payload: IGroup = {
     resourceType: groupResourceType,
     active: !!active,
   };
   // preserve resource details that we are not interested in editing.
   if (initialObject) {
-    const { meta, ...rest } = initialObject;
+    const { meta, ...rest } = initialGroupObject ?? {};
     payload = {
       ...rest,
       ...payload,
@@ -493,63 +466,10 @@ export const generateGroupPayload = async (
     payload.type = type as TypeOfGroup;
   }
 
-  const existingCharacteristics = initialObject?.characteristic ?? [];
+  const existingCharacteristics = initialGroupObject?.characteristic ?? [];
 
-  // prepare existing characteristics so that they are not
-  const knownCodes = [
-    accountabilityCharacteristicCode,
-    appropriateUsageCharacteristicCode,
-    conditionCharacteristicCode,
-    availabilityCharacteristicCode,
-    attractiveCharacteristicCode,
-    photoUploadCharacteristicCode,
-    characteristicUnitMeasureCode,
-  ];
-  const knownCodeProcessedStor = knownCodes.reduce((acc, code) => {
-    acc[code] = false;
-    return acc;
-  }, {} as Record<string, boolean>);
-  const characteristicByCodingCode: Record<string, GroupCharacteristic> = {};
-  let newCharacteristics: GroupCharacteristic[] = [];
+  let newCharacteristics = generateCharacteristicPayload(existingCharacteristics, values);
 
-  for (const obj of existingCharacteristics) {
-    const characteristicCoding = obj.code.coding ?? [];
-    for (const coding of characteristicCoding) {
-      const thisCode = coding.code ?? '';
-      characteristicByCodingCode[thisCode] = obj;
-      if (knownCodes.includes(thisCode)) {
-        break;
-      }
-    }
-  }
-
-  for (const [currCode, currCharacteristic] of Object.entries(characteristicByCodingCode)) {
-    if (knownCodes.includes(currCode)) {
-      const updatedCharacteristicforCode = createCharacteristicForCode(
-        currCode,
-        values,
-        currCharacteristic
-      );
-      knownCodeProcessedStor[currCode] = true;
-      if (updatedCharacteristicforCode) {
-        newCharacteristics.push(updatedCharacteristicforCode);
-      }
-    } else {
-      newCharacteristics.push(currCharacteristic);
-    }
-  }
-
-  // add characteristics for not-yet processed codes
-  for (const [code, processed] of Object.entries(knownCodeProcessedStor)) {
-    if (!processed) {
-      const updatedCharacteristicforCode = createCharacteristicForCode(code, values);
-
-      knownCodeProcessedStor[code] = true;
-      if (updatedCharacteristicforCode) {
-        newCharacteristics.push(updatedCharacteristicforCode);
-      }
-    }
-  }
   // image characteristic
   const { changed, payload: binaryPayload } = await getProductImagePayload(values, initialValues);
 
@@ -628,7 +548,7 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
 /**
  * @param baseUrl - the api base url
  * @param listId - list resource id to add the group to
- * @param initialBinary
+ * @param initialBinary - initial binary object associated with group
  */
 export const updateListReferencesFactory =
   (baseUrl: string, listId: string, initialBinary?: IBinary) =>
@@ -642,7 +562,6 @@ export const updateListReferencesFactory =
     }
 
     const commoditiesListResource = await getOrCreateList(baseUrl, listId);
-    // TODO - make data immutable across the application
     const payload = cloneDeep(commoditiesListResource);
 
     if (binaryChanged) {
@@ -651,6 +570,7 @@ export const updateListReferencesFactory =
         const toRemoveBinaryRef = `${binaryResourceType}/${initialBinary.id}`;
         payload.entry = payload.entry?.filter((entry) => entry.item !== toRemoveBinaryRef);
       }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const toAddBinaryRef = `${binaryResourceType}/${binary!.id}`;
       payload.entry?.push({
         item: {

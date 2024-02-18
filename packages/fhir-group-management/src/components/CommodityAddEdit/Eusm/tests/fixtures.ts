@@ -320,48 +320,14 @@ export const createdCommodity = {
     {
       code: {
         coding: [
-          { system: 'http://snomed.info/sct', code: '23435363', display: 'Attractive Item code' },
-        ],
-      },
-      valueBoolean: true,
-    },
-    {
-      code: {
-        coding: [
-          { system: 'http://snomed.info/sct', code: '34536373', display: 'Is it there code' },
-        ],
-      },
-      valueCodeableConcept: {
-        coding: [
           {
             system: 'http://snomed.info/sct',
-            code: '34536373-1',
-            display: 'Value entered on the It is there code',
-          },
-        ],
-        text: 'adimika',
-      },
-    },
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://snomed.info/sct',
-            code: '45647484',
-            display: 'Is it in good condition? (optional)',
+            code: '67869606',
+            display: 'Accountability period (in months)',
           },
         ],
       },
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: 'http://snomed.info/sct',
-            code: '45647484-1',
-            display: 'Value entered on the Is it in good condition? (optional)',
-          },
-        ],
-        text: 'as good as it can be',
-      },
+      valueQuantity: { value: 12 },
     },
     {
       code: {
@@ -389,12 +355,46 @@ export const createdCommodity = {
         coding: [
           {
             system: 'http://snomed.info/sct',
-            code: '67869606',
-            display: 'Accountability period (in months)',
+            code: '45647484',
+            display: 'Is it in good condition? (optional)',
           },
         ],
       },
-      valueQuantity: { value: 12 },
+      valueCodeableConcept: {
+        coding: [
+          {
+            system: 'http://snomed.info/sct',
+            code: '45647484-1',
+            display: 'Value entered on the Is it in good condition? (optional)',
+          },
+        ],
+        text: 'as good as it can be',
+      },
+    },
+    {
+      code: {
+        coding: [
+          { system: 'http://snomed.info/sct', code: '34536373', display: 'Is it there code' },
+        ],
+      },
+      valueCodeableConcept: {
+        coding: [
+          {
+            system: 'http://snomed.info/sct',
+            code: '34536373-1',
+            display: 'Value entered on the It is there code',
+          },
+        ],
+        text: 'adimika',
+      },
+    },
+    {
+      code: {
+        coding: [
+          { system: 'http://snomed.info/sct', code: '23435363', display: 'Attractive Item code' },
+        ],
+      },
+      valueBoolean: true,
     },
     {
       code: {

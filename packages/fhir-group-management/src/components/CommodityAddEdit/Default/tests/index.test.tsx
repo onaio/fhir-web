@@ -11,13 +11,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
-import {
-  commodity1,
-  createdCommodity,
-  editedCommodity1,
-  editedList,
-  newList,
-} from './fixtures';
+import { commodity1, createdCommodity, editedCommodity1, editedList, newList } from './fixtures';
 import { groupResourceType, listResourceType, unitOfMeasure } from '../../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
