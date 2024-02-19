@@ -385,6 +385,7 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFor
     initialObject: { group: obj, binary },
     id,
     identifier: get(identifierObj, '0.value'),
+    materialNumber: get(identifierObj, '0.value'),
     active,
     name,
     type,
@@ -426,7 +427,7 @@ export const generateGroupPayload = async (
   values: EusmGroupFormFields,
   initialValues: EusmGroupFormFields
 ): Promise<{ group: IGroup; binary?: IBinary; binaryChanged: boolean }> => {
-  const { id, identifier: rawIdentifier, active, name, type } = values;
+  const { id, materialNumber, active, name, type } = values;
   const { initialObject } = initialValues;
   const initialGroupObject = initialValues.initialObject?.group;
   let payload: IGroup = {
@@ -451,16 +452,14 @@ export const generateGroupPayload = async (
     payload.id = v4();
   }
 
-  let identifier = rawIdentifier;
-  if (!rawIdentifier) {
-    identifier = v4();
+  if (materialNumber) {
+    payload.identifier = [
+      {
+        value: materialNumber,
+        use: IdentifierUseCodes.OFFICIAL,
+      },
+    ];
   }
-  payload.identifier = [
-    {
-      value: identifier,
-      use: IdentifierUseCodes.OFFICIAL,
-    },
-  ];
 
   if (type) {
     payload.type = type as TypeOfGroup;

@@ -136,7 +136,7 @@ export const commodity1 = {
 export const editedCommodity1 = {
   resourceType: 'Group',
   id: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
-  identifier: [{ value: '52cffa51-fa81-49aa-9944-5b45d9e4c117', use: 'official' }],
+  identifier: [{ value: 'Bed nets', use: 'official' }],
   active: true,
   type: 'substance',
   actual: false,
@@ -314,7 +314,7 @@ export const createdCommodity = {
   active: true,
   name: 'Dettol',
   id: '9b782015-8392-4847-b48c-50c11638656b',
-  identifier: [{ value: '9b782015-8392-4847-b48c-50c11638656b', use: 'official' }],
+  identifier: [{ value: 'SKU001', use: 'official' }],
   type: 'substance',
   characteristic: [
     {

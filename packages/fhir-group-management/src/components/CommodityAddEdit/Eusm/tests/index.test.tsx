@@ -271,8 +271,8 @@ it('can create new commodity', async () => {
   fireEvent.click(screen.getByRole('button', { name: /Save/i }));
 
   await waitFor(() => {
-    expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
     expect(errorNoticeMock).not.toHaveBeenCalled();
+    expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
   });
 
   expect(nock.isDone()).toBeTruthy();
@@ -317,9 +317,9 @@ it('edits resource', async () => {
     screen.getByText('Edit Commodity | Bed nets');
   });
 
-  const nameField = screen.getByLabelText('Material number');
-  userEvent.clear(nameField);
-  userEvent.type(nameField, 'Bed nets');
+  const materialNumberField = screen.getByLabelText('Material number');
+  userEvent.clear(materialNumberField);
+  userEvent.type(materialNumberField, 'Bed nets');
 
   // set attractive item
   const yesRadioBtn = document.querySelector('#isAttractiveItem input[value="true"]')!;
