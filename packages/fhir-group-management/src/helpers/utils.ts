@@ -207,7 +207,7 @@ export function useGetGroupAndBinary(baseUrl: string, resourceId?: string) {
     () => {
       return new FHIRServiceClass<IGroup>(baseUrl, binaryResourceType).read(referenceId);
     },
-    { enabled: !!referenceId }
+    { enabled: !!referenceId, cacheTime: 0 }
   );
   return { groupQuery, binaryQuery };
 }
