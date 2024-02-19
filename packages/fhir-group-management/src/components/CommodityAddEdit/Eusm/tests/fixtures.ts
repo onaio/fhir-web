@@ -5,12 +5,12 @@ export const commodity1 = {
   id: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
   identifier: [
     {
-      use: 'official',
-      value: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
-    },
-    {
       use: 'secondary',
       value: '606109db-5632-48c5-8710-b726e1b3addf',
+    },
+    {
+      use: 'official',
+      value: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
     },
   ],
   active: true,
@@ -136,7 +136,10 @@ export const commodity1 = {
 export const editedCommodity1 = {
   resourceType: 'Group',
   id: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
-  identifier: [{ value: 'Bed nets', use: 'official' }],
+  identifier: [
+    { use: 'secondary', value: '606109db-5632-48c5-8710-b726e1b3addf' },
+    { use: 'official', value: 'Bed nets' },
+  ],
   active: true,
   type: 'substance',
   actual: false,
@@ -303,6 +306,24 @@ export const listEdited1 = {
   entry: [
     { item: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' } },
     { item: { reference: 'Group/9b782015-8392-4847-b48c-50c11638656b' } },
+  ],
+};
+
+export const editResourceList = {
+  resourceType: 'List',
+  id: 'list-resource-id',
+  identifier: [{ use: 'official', value: 'list-resource-id' }],
+  status: 'current',
+  mode: 'working',
+  title: 'Supply Chain commodities',
+  code: {
+    coding: [{ system: 'http://ona.io', code: 'supply-chain', display: 'Supply Chain Commodity' }],
+    text: 'Supply Chain Commodity',
+  },
+  entry: [
+    { item: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' } },
+    { item: { reference: 'Group/9b782015-8392-4847-b48c-50c11638656b' } },
+    { item: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' } },
   ],
 };
 

@@ -294,8 +294,8 @@ export async function getProductImagePayload(
   values: EusmGroupFormFields,
   initialValues: EusmGroupFormFields
 ) {
-  const initialImage = initialValues.productImage?.[0].originFileObj;
-  const currentImage = values.productImage?.[0].originFileObj;
+  const initialImage = initialValues.productImage?.[0]?.originFileObj;
+  const currentImage = values.productImage?.[0]?.originFileObj;
   // TODO - replace btoa with typed arrays.
   const currentImageb64 = await fileToBase64(currentImage);
   const initialImageb64 = await fileToBase64(initialImage);
@@ -452,13 +452,19 @@ export const generateGroupPayload = async (
     payload.id = v4();
   }
 
+  // process identifiers
+  const existingIdentifiers = initialGroupObject?.identifier ?? [];
+  const newIdentifiers = existingIdentifiers.filter(
+    (identifier) => identifier.use !== IdentifierUseCodes.OFFICIAL
+  );
   if (materialNumber) {
-    payload.identifier = [
-      {
-        value: materialNumber,
-        use: IdentifierUseCodes.OFFICIAL,
-      },
-    ];
+    newIdentifiers.push({
+      use: IdentifierUseCodes.OFFICIAL,
+      value: materialNumber,
+    });
+  }
+  if (newIdentifiers.length) {
+    payload.identifier = newIdentifiers;
   }
 
   if (type) {
@@ -473,7 +479,7 @@ export const generateGroupPayload = async (
   const { changed, payload: binaryPayload } = await getProductImagePayload(values, initialValues);
 
   if (changed) {
-    const nonImageCharacterisitcs = newCharacteristics.filter(
+    newCharacteristics = newCharacteristics.filter(
       (stic) =>
         (stic.code.coding ?? [])
           .map((coding) => coding.code)
@@ -496,7 +502,7 @@ export const generateGroupPayload = async (
           reference: binaryResourceUrl,
         },
       };
-      newCharacteristics = [...nonImageCharacterisitcs, productImageCharacteristic];
+      newCharacteristics = [...newCharacteristics, productImageCharacteristic];
     }
   }
 
@@ -553,37 +559,47 @@ export const updateListReferencesFactory =
   (baseUrl: string, listId: string, initialBinary?: IBinary) =>
   async (
     formResponses: { group: IGroup; binary?: IBinary; binaryChanged: boolean },
-    edited: boolean
+    editingGroup: boolean
   ) => {
     const { group, binary, binaryChanged } = formResponses;
-    if (edited && !binaryChanged) {
+
+    if (editingGroup && !binaryChanged) {
       return;
     }
 
     const commoditiesListResource = await getOrCreateList(baseUrl, listId);
     const payload = cloneDeep(commoditiesListResource);
 
+    let existingEntries = payload.entry ?? [];
+
     if (binaryChanged) {
       if (initialBinary) {
         // we are removing a reference in the list resource.
         const toRemoveBinaryRef = `${binaryResourceType}/${initialBinary.id}`;
-        payload.entry = payload.entry?.filter((entry) => entry.item !== toRemoveBinaryRef);
+        existingEntries = existingEntries.filter(
+          (entry) => entry.item.reference !== toRemoveBinaryRef
+        );
       }
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const toAddBinaryRef = `${binaryResourceType}/${binary!.id}`;
-      payload.entry?.push({
-        item: {
-          reference: toAddBinaryRef,
-        },
-      });
+      if (binary) {
+        const toAddBinaryRef = `${binaryResourceType}/${binary.id}`;
+        existingEntries.push({
+          item: {
+            reference: toAddBinaryRef,
+          },
+        });
+      }
     }
-    if (payload.entry) {
-      payload.entry.push({
+    if (!editingGroup) {
+      existingEntries.push({
         item: {
           reference: `${groupResourceType}/${group.id}`,
         },
       });
     }
+    if (existingEntries.length) {
+      payload.entry = existingEntries;
+    }
+
     const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
     return serve.update(payload);
   };

@@ -49,7 +49,6 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
   if (groupQuery.error && !groupQuery.data) {
     return <BrokenPage errorMessage={(groupQuery.error as Error).message} />;
   }
-
   const initialValues = getGroupFormFields(groupQuery.data, binaryQuery.data);
 
   const pageTitle = groupQuery.data

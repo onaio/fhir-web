@@ -25,6 +25,8 @@ import { binaryResourceType, groupResourceType, listResourceType } from '../../.
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { fillSearchableSelect } from '../../Default/tests/index.test';
+import { photoUploadCharacteristicCode } from '../../../../helpers/utils';
+import { cloneDeep } from 'lodash';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -304,7 +306,39 @@ it('edits resource', async () => {
 
   nock(props.fhirBaseURL)
     .put(`/${groupResourceType}/${editedCommodity1.id}`, editedCommodity1)
-    .replyWithError('Failed to update Commodity')
+    .reply(201, editedCommodity1)
+    .persist();
+
+  const withEditEntriesList = {
+    ...newList,
+    entry: [
+      {
+        item: {
+          reference: `${binaryResourceType}/${binary1.id}`,
+        },
+      },
+      {
+        item: {
+          reference: `${groupResourceType}/${commodity1.id}`,
+        },
+      },
+    ],
+  };
+
+  const withEditEntriesListResponse = {
+    ...newList,
+    entry: [
+      { item: { reference: 'Group/52cffa51-fa81-49aa-9944-5b45d9e4c117' } },
+      { item: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' } },
+    ],
+  };
+
+  // list resource
+  nock(props.fhirBaseURL)
+    .get(`/${listResourceType}/${props.listId}`)
+    .reply(200, withEditEntriesList)
+    .put(`/${listResourceType}/${props.listId}`, withEditEntriesListResponse)
+    .reply(201, withEditEntriesListResponse)
     .persist();
 
   render(
@@ -347,15 +381,77 @@ it('edits resource', async () => {
   userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
   await waitFor(() => {
-    expect(successNoticeMock).not.toHaveBeenCalled();
-    expect(errorNoticeMock.mock.calls).toEqual([
-      [
-        `request to http://test.server.org/Group/${commodity1.id} failed, reason: Failed to update Commodity`,
-      ],
-    ]);
+    expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
+    expect(errorNoticeMock.mock.calls).toEqual([]);
   });
 
+  expect(nock.pendingMocks()).toEqual([]);
   expect(nock.isDone()).toBeTruthy();
+});
+
+it('can remove product image', async () => {
+  const history = createMemoryHistory();
+  history.push(`/add/${commodity1.id}`);
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  const errorNoticeMock = jest
+    .spyOn(notifications, 'sendErrorNotification')
+    .mockImplementation(() => undefined);
+
+  nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/${commodity1.id}`)
+    .reply(200, commodity1)
+    .persist();
+
+  nock(props.fhirBaseURL).get(`/${binaryResourceType}/${binary1.id}`).reply(200, binary1).persist();
+
+  const imageLessList = cloneDeep(listEdited1);
+  imageLessList.entry = imageLessList.entry.filter(
+    (entry) => entry.item.reference !== `${binaryResourceType}/${binary1.id}`
+  );
+  nock(props.fhirBaseURL)
+    .get(`/${listResourceType}/${props.listId}`)
+    .reply(200, listEdited1)
+    .put(`/${listResourceType}/${props.listId}`, imageLessList)
+    .reply(201, imageLessList)
+    .persist();
+
+  const commodityLessImage = cloneDeep(commodity1);
+  commodityLessImage.characteristic = (commodity1.characteristic ?? []).filter(
+    (stic) =>
+      (stic.code.coding ?? []).map((coding) => coding.code).indexOf(photoUploadCharacteristicCode) <
+      0
+  );
+
+  nock(props.fhirBaseURL)
+    .put(`/${groupResourceType}/${commodity1.id}`, commodityLessImage)
+    .reply(200, commodityLessImage)
+    .persist();
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitFor(() => {
+    screen.getByText('Edit Commodity | Bed nets');
+  });
+
+  const removeFileIcon = screen.getByTitle('Remove file');
+  userEvent.click(removeFileIcon);
+
+  userEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
+    expect(errorNoticeMock.mock.calls).toEqual([]);
+  });
+
+  expect(nock.pendingMocks()).toEqual([]);
 });
 
 test('cancel handler is called on cancel', async () => {
