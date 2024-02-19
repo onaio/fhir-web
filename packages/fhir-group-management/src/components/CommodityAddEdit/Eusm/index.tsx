@@ -37,7 +37,12 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
 
   const { groupQuery, binaryQuery } = useGetGroupAndBinary(fhirBaseUrl, resourceId);
 
-  if (!groupQuery.isIdle && groupQuery.isLoading) {
+  // TODO - Had to include binaryQuery loading status since the antd form upload widget
+  // does not update when the component updates initial values.
+  if (
+    (!groupQuery.isIdle && groupQuery.isLoading) ||
+    (!binaryQuery.isIdle && binaryQuery.isLoading)
+  ) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
 
