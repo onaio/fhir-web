@@ -242,7 +242,7 @@ describe('App - authenticated', () => {
       `${LIST_COMMODITY_URL}?${viewDetailsQuery}=1`
     );
     wrapper.update();
-    expect(wrapper.find('ViewDetails')).toHaveLength(1);
+    expect(wrapper.find('ViewDetailsWrapper')).toHaveLength(1);
 
     // go to new resource page
     (wrapper.find('Router').prop('history') as RouteComponentProps['history']).push(
