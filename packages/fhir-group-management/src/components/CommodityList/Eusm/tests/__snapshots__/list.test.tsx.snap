@@ -269,6 +269,10 @@ exports[`renders correctly when listing resources: table row 1 page 1 6`] = `
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"
     />
+    <div
+      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
+      role="separator"
+    />
     <span
       aria-label="more"
       class="anticon anticon-more ant-dropdown-trigger more-options"
