@@ -4,6 +4,7 @@ import LocationUnitGroupAddEdit from './components/LocationUnitGroupAddEdit';
 import Tree from './components/LocationTree';
 import { FormInstances } from './components/LocationForm/utils';
 
+
 export * as locationHierachyDucks from './ducks/location-hierarchy';
 export * as updatedLocationHierachyDucks from './ducks/locationHierarchy';
 export * from './ducks/types';
@@ -17,3 +18,4 @@ export * from './ducks/locationHierarchy/utils';
 export * from './helpers/dataLoaders';
 export * from './ducks/locationHierarchy/types';
 export * from './ducks/location-units';
+export * from '../../fhir-location-management/src/components/AllLocationListFlat'

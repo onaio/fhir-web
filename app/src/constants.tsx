@@ -28,6 +28,7 @@ export const URL_LOCATION_UNIT_EDIT = `${URL_LOCATION_UNIT}/edit/:id`;
 export const URL_LOCATION_UNIT_GROUP = `${URL_ADMIN}/location/group`;
 export const URL_LOCATION_UNIT_GROUP_ADD = `${URL_LOCATION_UNIT_GROUP}/add`;
 export const URL_LOCATION_UNIT_GROUP_EDIT = `${URL_LOCATION_UNIT_GROUP}/edit/:id`;
+export const URL_ALL_LOCATIONS = `${URL_ADMIN}/location/all`;
 export const URL_UPLOAD_JSON_VALIDATOR = `${URL_ADMIN}/form-config/json-validators/upload`;
 export const URL_JSON_VALIDATOR_LIST = `${URL_ADMIN}/form-config/json-validators`;
 export const URL_DRAFT_FILE_LIST = `${URL_ADMIN}/form-config/drafts`;
