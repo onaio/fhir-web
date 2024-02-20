@@ -11,6 +11,7 @@ import {
 import {
   URL_USER,
   URL_LOCATION_UNIT,
+  URL_ALL_LOCATIONS,
   URL_TEAMS,
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
@@ -97,6 +98,12 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
               title: t('Location Units'),
               url: URL_LOCATION_UNIT,
               key: 'location-unit',
+              permissions: ['Location.read'],
+            },
+            {
+              title: t('All Locations'),
+              url: URL_ALL_LOCATIONS,
+              key: 'all-locations',
               permissions: ['Location.read'],
             },
           ],
