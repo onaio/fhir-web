@@ -34,6 +34,7 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
   URL_TEAM_ASSIGNMENT,
+  URL_ALL_LOCATIONS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -81,6 +82,7 @@ import {
 import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  AllLocationListFlat as ListAllLocationsFlat,
 } from '@opensrp/fhir-location-management';
 import {
   teamAffiliationProps,
@@ -361,6 +363,15 @@ const FHIRApps = () => {
         {...locationUnitProps}
         permissions={['Location.read']}
         component={FHIRLocationUnitList}
+      />
+       <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={URL_ALL_LOCATIONS}
+        {...locationUnitProps}
+        permissions={['Location.read']}
+        component={ListAllLocationsFlat}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
