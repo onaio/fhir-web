@@ -28,6 +28,7 @@ export const getUnitMeasureCharacteristic = (obj: IGroup) => {
 // constants
 
 export const snomedCodeSystem = 'http://snomed.info/sct';
+export const smartRegisterCodeSystem = 'http://smartregister.org/';
 export const supplyMgSnomedCode = '386452003';
 export const characteristicUnitMeasureCode = '767524001';
 export const photoUploadCharacteristicCode = '1231415';
@@ -38,43 +39,43 @@ export const availabilityCharacteristicCode = '34536373';
 export const attractiveCharacteristicCode = '23435363';
 
 export const photoUploadCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: photoUploadCharacteristicCode,
   display: 'Product Image code',
 };
 
 export const accountabilityCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: accountabilityCharacteristicCode,
   display: 'Accountability period (in months)',
 };
 
 export const appropriateUsageCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: appropriateUsageCharacteristicCode,
   display: 'Is it being used appropriately? (optional)',
 };
 
 export const conditionCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: conditionCharacteristicCode,
   display: 'Is it in good condition? (optional)',
 };
 
 export const availabilityCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: availabilityCharacteristicCode,
   display: 'Is it there code',
 };
 
 export const attractiveCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: smartRegisterCodeSystem,
   code: attractiveCharacteristicCode,
   display: 'Attractive Item code',
 };
 
 export const unitOfMeasureCharacteristicCoding = {
-  system: 'http://snomed.info/sct',
+  system: snomedCodeSystem,
   code: '767524001',
   display: 'Unit of measure',
 };
@@ -86,7 +87,7 @@ export const unitOfMeasureCharacteristic = {
   valueCodeableConcept: {
     coding: [
       {
-        system: 'http://snomed.info/sct',
+        system: snomedCodeSystem,
         code: '767525000',
         display: 'Unit',
       },
@@ -111,7 +112,7 @@ export const appropriateUsageCharacteristic = {
   valueCodeableConcept: {
     coding: [
       {
-        system: 'http://snomed.info/sct',
+        system: smartRegisterCodeSystem,
         code: '56758595-1',
         display: 'Value entered on the Is it being used appropriately? (optional)',
       },
@@ -127,7 +128,7 @@ export const conditionCharacteristic = {
   valueCodeableConcept: {
     coding: [
       {
-        system: 'http://snomed.info/sct',
+        system: smartRegisterCodeSystem,
         code: '45647484-1',
         display: 'Value entered on the Is it in good condition? (optional)',
       },
@@ -143,7 +144,7 @@ export const availabilityCharacteristic = {
   valueCodeableConcept: {
     coding: [
       {
-        system: 'http://snomed.info/sct',
+        system: smartRegisterCodeSystem,
         code: '34536373-1',
         display: 'Value entered on the It is there code',
       },
