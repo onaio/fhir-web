@@ -52,7 +52,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '23435363',
                   display: 'Attractive Item code',
                 },
@@ -64,7 +64,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '34536373',
                   display: 'Is it there code',
                 },
@@ -73,7 +73,7 @@ export const firstTwentyEusmCommodities = {
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '34536373-1',
                   display: 'Value entered on the It is there code',
                 },
@@ -85,7 +85,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '45647484',
                   display: 'Is it in good condition? (optional)',
                 },
@@ -94,7 +94,7 @@ export const firstTwentyEusmCommodities = {
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '45647484-1',
                   display: 'Value entered on the Is it in good condition? (optional)',
                 },
@@ -106,7 +106,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '56758595',
                   display: 'Is it being used appropriately? (optional)',
                 },
@@ -115,7 +115,7 @@ export const firstTwentyEusmCommodities = {
             valueCodeableConcept: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '56758595-1',
                   display: 'Value entered on the Is it being used appropriately? (optional)',
                 },
@@ -127,7 +127,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '67869606',
                   display: 'Accountability period (in months)',
                 },
@@ -141,7 +141,7 @@ export const firstTwentyEusmCommodities = {
             code: {
               coding: [
                 {
-                  system: 'http://snomed.info/sct',
+                  system: 'http://smartregister.org/',
                   code: '1231415',
                   display: 'Product Image code',
                 },

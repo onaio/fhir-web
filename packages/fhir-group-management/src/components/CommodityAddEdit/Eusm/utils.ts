@@ -46,6 +46,7 @@ import {
   supplyMgSnomedCode,
   unitOfMeasureCharacteristicCoding,
   unitOfMeasureCharacteristic,
+  smartRegisterCodeSystem,
 } from '../../../helpers/utils';
 import { TypeOfGroup } from '../../ProductForm/utils';
 import { GroupFormFields } from '../../ProductForm/types';
@@ -350,6 +351,8 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFor
           const val = getValueFromCharacteristic(characteristic);
           formFieldsFromCharacteristics[unitOfMeasure] = val;
         }
+      }
+      if (codingSystem === smartRegisterCodeSystem) {
         if (codingCode === accountabilityCharacteristicCode) {
           const val = getValueFromCharacteristic(characteristic);
           formFieldsFromCharacteristics[accountabilityPeriod] = val;
@@ -492,8 +495,8 @@ export const generateGroupPayload = async (
         code: {
           coding: [
             {
-              system: 'http://snomed.info/sct',
-              code: '1231415',
+              system: smartRegisterCodeSystem,
+              code: photoUploadCharacteristicCode,
               display: 'Product Image code',
             },
           ],
