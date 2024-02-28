@@ -51,7 +51,25 @@ Object.defineProperty(window, 'location', {
   },
   writable: true,
 });
-window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' };
+
+/** Converts an object's binary to an arrayBuffer, useful when we
+ * later want to convert it to a base 64 ascii string
+ */
+function toArrayBuffer(buffer) {
+  const arrayBuffer = new ArrayBuffer(buffer.length);
+  const view = new Uint8Array(arrayBuffer);
+
+  for (let i = 0; i < buffer.length; ++i) {
+    view[i] = buffer[i];
+  }
+
+  return arrayBuffer;
+}
+
+(window.URL.createObjectURL = (obj) => {
+  return Buffer.from(toArrayBuffer(obj)).toString('base64url');
+}),
+  (window.__PRELOADED_STATE__ = { random: 'Preloaded state, baby!' });
 
 jest.mock('fhirclient', () => ({
   client: jest.fn().mockImplementation(() => {

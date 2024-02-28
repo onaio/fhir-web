@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly: A catch all 1`] = `"Create CommodityCommodity IdIdentifierEnter Commodity nameMaterial numberSelect Commodity statusActiveDisabledSelect Commodity TypeSelect Commodity typeSelect the unit of measureSelect the unit of measureAttractive item?yesnoIs it there?Is it in good condition?Is it being used appropriately?Accountability period (in months)Photo of the productUploadsaveCancel"`;
+
+exports[`renders correctly: active radio button 1`] = `
+<input
+  checked=""
+  class="ant-radio-input"
+  type="radio"
+  value="true"
+/>
+`;
+
+exports[`renders correctly: active radio button 2`] = `
+<input
+  checked=""
+  class="ant-radio-input"
+  type="radio"
+  value="true"
+/>
+`;
+
+exports[`renders correctly: attractive item no radio button 1`] = `
+<input
+  class="ant-radio-input"
+  type="radio"
+  value="false"
+/>
+`;
+
+exports[`renders correctly: attractive item yes radio button 1`] = `
+<input
+  class="ant-radio-input"
+  type="radio"
+  value="true"
+/>
+`;
+
+exports[`renders correctly: disabled radio button 1`] = `
+<input
+  class="ant-radio-input"
+  type="radio"
+  value="false"
+/>
+`;
+
+exports[`renders correctly: disabled radio button 2`] = `
+<input
+  class="ant-radio-input"
+  type="radio"
+  value="false"
+/>
+`;

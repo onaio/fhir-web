@@ -110,6 +110,31 @@ exports[`renders correctly when listing resources 7`] = `
     <span
       class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
+      Attractive item
+    </span>
+  </dt>
+  <dd
+    class="singleKeyValue-pair__value"
+  >
+    <span
+      class="ant-typography css-dev-only-do-not-override-k7429z"
+    >
+      No
+    </span>
+  </dd>
+</div>
+`;
+
+exports[`renders correctly when listing resources 8`] = `
+<div
+  class="singleKeyValue-pair"
+>
+  <dt
+    class="singleKeyValue-pair__label"
+  >
+    <span
+      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
+    >
       Is it there
     </span>
   </dt>
@@ -125,7 +150,7 @@ exports[`renders correctly when listing resources 7`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 8`] = `
+exports[`renders correctly when listing resources 9`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -150,7 +175,7 @@ exports[`renders correctly when listing resources 8`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 9`] = `
+exports[`renders correctly when listing resources 10`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -175,7 +200,7 @@ exports[`renders correctly when listing resources 9`] = `
 </div>
 `;
 
-exports[`renders correctly when listing resources 10`] = `
+exports[`renders correctly when listing resources 11`] = `
 <div
   class="singleKeyValue-pair"
 >
@@ -265,10 +290,6 @@ exports[`renders correctly when listing resources: table row 1 page 1 6`] = `
     >
       Edit
     </a>
-    <div
-      class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
-      role="separator"
-    />
     <div
       class="ant-divider css-dev-only-do-not-override-k7429z ant-divider-vertical"
       role="separator"

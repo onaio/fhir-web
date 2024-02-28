@@ -46,7 +46,7 @@ export const EusmViewDetails = (props: EusmViewDetailsProps) => {
   const {
     groupQuery: { data, isLoading, error },
     binaryQuery,
-  } = useGetGroupAndBinary(resourceId, fhirBaseURL);
+  } = useGetGroupAndBinary(fhirBaseURL, resourceId);
 
   if (isLoading) {
     return <Spin size="large" className="custom-spinner" />;
@@ -75,7 +75,7 @@ export const EusmViewDetails = (props: EusmViewDetailsProps) => {
     [t('Material Number')]: identifier,
     [t('Name')]: name,
     [t('Active')]: active ? t('Active') : t('Disabled'),
-    [t('Attractive item')]: attractive,
+    [t('Attractive item')]: attractive ? t('Yes') : t('No'),
     [t('Is it there')]: availability,
     [t('Is it in good condition')]: condition,
     [t('Is it being used appropriately')]: appropriateUsage,

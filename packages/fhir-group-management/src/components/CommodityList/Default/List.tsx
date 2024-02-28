@@ -8,7 +8,7 @@ import { useTranslation } from '../../../mls';
 import {
   BaseListView,
   BaseListViewProps,
-  TableData,
+  DefaultTableData,
 } from '../../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
 import {
@@ -81,7 +81,7 @@ export const DefaultCommodityList = (props: GroupListProps) => {
   const { addParam } = useSearchParams();
   const userRole = useUserRole();
 
-  const getItems = (record: TableData): MenuProps['items'] => {
+  const getItems = (record: DefaultTableData): MenuProps['items'] => {
     return [
       {
         key: '1',
@@ -154,7 +154,7 @@ export const DefaultCommodityList = (props: GroupListProps) => {
       title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
+      render: (_: unknown, record: DefaultTableData) => (
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Group.update']}>
             <>

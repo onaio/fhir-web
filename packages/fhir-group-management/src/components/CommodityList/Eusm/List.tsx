@@ -4,21 +4,20 @@ import { MoreOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL } from '../../../constants';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../../mls';
-import {
-  BaseListView,
-  BaseListViewProps,
-  TableData,
-} from '../../BaseComponents/BaseGroupsListView';
+import { BaseListView, BaseListViewProps } from '../../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
 import { useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../../helpers/utils';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
-import { ViewDetailsWrapper } from './ViewDetails';
+import { ViewDetailsWrapper, parseEusmCommodity } from './ViewDetails';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 interface GroupListProps {
   fhirBaseURL: string;
   listId: string; // commodities are added to list resource with this id
 }
+
+type TableData = ReturnType<typeof parseEusmCommodity>;
 
 /**
  * Shows the list of all group and there details
@@ -69,8 +68,8 @@ export const EusmCommodityList = (props: GroupListProps) => {
     },
     {
       title: t('Attractive Item'),
-      dataIndex: 'attractiveItem' as const,
-      key: 'attractiveItem' as const,
+      dataIndex: 'attractive' as const,
+      key: 'attractive' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,
     },
     {
@@ -98,7 +97,6 @@ export const EusmCommodityList = (props: GroupListProps) => {
               <Divider type="vertical" />
             </>
           </RbacCheck>
-          <Divider type="vertical" />
           <Dropdown
             menu={{ items: getItems(record) }}
             placement="bottomRight"
@@ -112,11 +110,12 @@ export const EusmCommodityList = (props: GroupListProps) => {
     },
   ];
 
-  const baseListViewProps: BaseListViewProps = {
+  const baseListViewProps: BaseListViewProps<TableData> = {
     getColumns: getColumns,
     createButtonLabel: t('Add Commodity'),
     createButtonUrl: ADD_EDIT_COMMODITY_URL,
     fhirBaseURL,
+    generateTableData: (group: IGroup) => parseEusmCommodity(group),
     pageTitle: t('Commodity List'),
     extraQueryFilters: {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
