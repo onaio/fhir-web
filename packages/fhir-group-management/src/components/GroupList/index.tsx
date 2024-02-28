@@ -5,7 +5,11 @@ import { parseGroup } from '../BaseComponents/GroupDetail';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../../mls';
-import { BaseListView, BaseListViewProps, TableData } from '../BaseComponents/BaseGroupsListView';
+import {
+  BaseListView,
+  BaseListViewProps,
+  DefaultTableData,
+} from '../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
 import { SingleKeyNestedValue, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
@@ -54,7 +58,7 @@ export const GroupList = (props: GroupListProps) => {
   const { t } = useTranslation();
   const { addParam } = useSearchParams();
 
-  const getItems = (record: TableData): MenuProps['items'] => [
+  const getItems = (record: DefaultTableData): MenuProps['items'] => [
     {
       key: '1',
       label: (
@@ -93,7 +97,7 @@ export const GroupList = (props: GroupListProps) => {
       title: t('Actions'),
       width: '10%',
       // eslint-disable-next-line react/display-name
-      render: (_: unknown, record: TableData) => (
+      render: (_: unknown, record: DefaultTableData) => (
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Group.update']}>
             <>

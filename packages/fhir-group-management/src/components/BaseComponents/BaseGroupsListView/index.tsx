@@ -19,15 +19,23 @@ import { useTranslation } from '../../../mls';
 import { TFunction } from '@opensrp/i18n';
 import { RbacCheck } from '@opensrp/rbac';
 
-export type TableData = ReturnType<typeof parseGroup> & Record<string, unknown>;
+export type DefaultTableData = ReturnType<typeof parseGroup> & Record<string, unknown>;
 
-export type BaseListViewProps = Partial<Pick<ViewDetailsProps, 'keyValueMapperRenderProp'>> & {
+export type ExtendableTableData = Pick<
+  ReturnType<typeof parseGroup>,
+  'id' | 'name' | 'active' | 'identifier' | 'lastUpdated'
+>;
+
+export type BaseListViewProps<TableData extends ExtendableTableData = DefaultTableData> = Partial<
+  Pick<ViewDetailsProps, 'keyValueMapperRenderProp'>
+> & {
   fhirBaseURL: string;
   getColumns: (t: TFunction) => Column<TableData>[];
   extraQueryFilters?: Record<string, string>;
   createButtonLabel: string;
   createButtonUrl?: string;
   pageTitle: string;
+  generateTableData?: (groups: IGroup) => TableData;
   viewDetailsRender?: (fhirBaseURL: string, resourceId?: string) => ReactNode;
 };
 
@@ -37,7 +45,9 @@ export type BaseListViewProps = Partial<Pick<ViewDetailsProps, 'keyValueMapperRe
  * @param  props - GroupList component props
  * @returns returns healthcare display
  */
-export const BaseListView = (props: BaseListViewProps) => {
+export function BaseListView<TableData extends ExtendableTableData = DefaultTableData>(
+  props: BaseListViewProps<TableData>
+) {
   const {
     fhirBaseURL,
     extraQueryFilters,
@@ -46,6 +56,7 @@ export const BaseListView = (props: BaseListViewProps) => {
     createButtonUrl,
     keyValueMapperRenderProp,
     pageTitle,
+    generateTableData = parseGroup,
     viewDetailsRender,
   } = props;
 
@@ -73,9 +84,9 @@ export const BaseListView = (props: BaseListViewProps) => {
 
   const tableData = (data?.records ?? []).map((org: IGroup, index: number) => {
     return {
-      ...parseGroup(org),
+      ...generateTableData(org),
       key: `${index}`,
-    };
+    } as TableData;
   });
 
   const columns = getColumns(t);
@@ -118,4 +129,4 @@ export const BaseListView = (props: BaseListViewProps) => {
       </Row>
     </div>
   );
-};
+}
