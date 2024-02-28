@@ -57,7 +57,7 @@ export const parseGroup = (obj: IGroup) => {
 export interface ViewDetailsProps {
   resourceId: string;
   fhirBaseURL: string;
-  keyValueMapperRenderProp: (obj: IGroup, t: TFunction) => JSX.Element;
+  keyValueMapperRenderProp?: (obj: IGroup, t: TFunction) => JSX.Element;
 }
 
 export type ViewDetailsWrapperProps = Pick<
@@ -89,7 +89,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   }
 
   const org = data as Group;
-  return keyValueMapperRenderProp(org, t);
+  return keyValueMapperRenderProp?.(org, t) ?? null;
 };
 
 /**

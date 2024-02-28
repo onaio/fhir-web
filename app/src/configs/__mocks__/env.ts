@@ -44,3 +44,5 @@ export const ENABLE_QUEST = true;
 export const BACKEND_ACTIVE = false;
 
 export const ENABLE_FHIR_USER_MANAGEMENT = true;
+
+export const COMMODITIES_LIST_RESOURCE_ID = 'ad';

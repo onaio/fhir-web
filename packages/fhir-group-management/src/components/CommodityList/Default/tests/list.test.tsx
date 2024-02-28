@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { CommodityList } from '..';
+import { CommodityList } from '../..';
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { groupResourceType, listResourceType, LIST_COMMODITY_URL } from '../../../constants';
+import { groupResourceType, listResourceType, LIST_COMMODITY_URL } from '../../../../constants';
 import { firstTwentyCommodities, listResource } from './fixtures';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
