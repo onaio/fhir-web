@@ -11,13 +11,13 @@ import {
 import {
   URL_USER,
   URL_LOCATION_UNIT,
-  URL_ALL_LOCATIONS,
   URL_TEAMS,
   URL_TEAM_ASSIGNMENT,
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
 } from '../constants';
+import { URL_ALL_LOCATIONS } from '@opensrp/fhir-location-management';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';

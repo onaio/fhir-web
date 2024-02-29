@@ -17,4 +17,3 @@ export * from './ducks/locationHierarchy/utils';
 export * from './helpers/dataLoaders';
 export * from './ducks/locationHierarchy/types';
 export * from './ducks/location-units';
-export * from '../../fhir-location-management/src/components/AllLocationListFlat';

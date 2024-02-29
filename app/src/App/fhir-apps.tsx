@@ -34,7 +34,6 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
   URL_TEAM_ASSIGNMENT,
-  URL_ALL_LOCATIONS,
 } from '../constants';
 import { providers } from '../configs/settings';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -83,6 +82,7 @@ import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
   AllLocationListFlat as ListAllLocationsFlat,
+  URL_ALL_LOCATIONS,
 } from '@opensrp/fhir-location-management';
 import {
   teamAffiliationProps,

@@ -59,9 +59,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  
-  useEffect(() => {
-  }, [data, isFetching, isLoading, error]);
+  useEffect(() => {}, [data, isFetching, isLoading, error]);
 
   const tableData: any[] = (data?.records ?? []).map((datum: Dictionary) => ({
     key: datum.id,
@@ -170,13 +168,6 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
           </div>
           <TableLayout {...tableProps} />
         </Col>
-        {detailId ? (
-          <LocationUnitDetail
-            fhirBaseUrl={fhirBaseURL}
-            onClose={() => setDetailId('')}
-            detailId={detailId}
-          />
-        ) : null}
       </Row>
     </div>
   );
