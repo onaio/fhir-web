@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
@@ -34,8 +34,12 @@ interface Props {
   LocationPageSize: number;
 }
 
-const getSearchParams = () => {
-  return { _include: 'Location:partof' };
+const getSearchParams = (search: string | null) => {
+  const baseSearchParam = {"_include": "Location:partof"};
+  if(search) {
+    return {"name:contains": search, ...baseSearchParam}
+  }
+  return baseSearchParam;
 };
 
 export type LocationListPropTypes = Props & RouteComponentProps<RouteParams>;
@@ -44,24 +48,20 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
   const history = useHistory();
-  const [detailId, setDetailId] = useState<string>('');
   const { addParam, sParams } = useSearchParams();
   const userRole = useUserRole();
-  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const {
-    queryValues: { data, isFetching, isLoading, error, refetch },
+    queryValues: { data, isFetching, isLoading, error},
     tablePaginationProps,
     searchFormProps,
-  } = useSimpleTabularView<ILocation>(fhirBaseURL, locationResourceType, getSearchParams());
+  } = useSimpleTabularView<ILocation>(fhirBaseURL, locationResourceType, getSearchParams);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  useEffect(() => {}, [data, isFetching, isLoading, error]);
-
-  const tableData: any[] = (data?.records ?? []).map((datum: Dictionary) => ({
+  const tableData = (data?.records ?? []).map((datum: Dictionary) => ({
     key: datum.id,
     id: datum.id,
     name: datum.name,
