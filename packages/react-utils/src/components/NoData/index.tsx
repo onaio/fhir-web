@@ -16,6 +16,7 @@ const EmptySvgIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
+    <title>Empty raw svg icon</title>
     <g clipPath="url(#clip0_22874_4831)">
       <circle cx="80" cy="79.5" r="79.5" fill="url(#paint0_linear_22874_4831)" />
       <path

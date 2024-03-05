@@ -21,9 +21,8 @@ interface RouteParams {
   locationId: string | undefined;
 }
 
-interface Props {
+export interface Props {
   fhirBaseURL: string;
-  LocationPageSize: number;
 }
 
 const getSearchParams = (search: string | null) => {
@@ -36,6 +35,11 @@ const getSearchParams = (search: string | null) => {
 
 export type LocationListPropTypes = Props & RouteComponentProps<RouteParams>;
 
+/* Function which shows the list of all locations
+ *
+ * @param {Object} props - AllLocationListFlat component props
+ * @returns {Function} returns paginated locations list display
+ */
 export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
