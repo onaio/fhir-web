@@ -93,7 +93,7 @@ const NoData = (props: NoDataProps) => {
   return (
     <Empty
       image={<EmptySvgIcon />}
-      imageStyle={{ height: 60 }}
+      imageStyle={{ height: 160 }}
       description={
         <>
           <h3 className="header-text">{t('No data available')}</h3>
