@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSimpleTabularView } from '@opensrp/react-utils';
+import { useSimpleTabularView, NoData } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import {
@@ -7,12 +7,7 @@ import {
   URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
-import {
-  BrokenPage,
-  TableLayout,
-  PageHeader,
-  SearchForm,
-} from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, PageHeader, SearchForm } from '@opensrp/react-utils';
 import { Dictionary } from '@onaio/utils';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from '../../mls';
@@ -32,9 +27,9 @@ interface Props {
 }
 
 const getSearchParams = (search: string | null) => {
-  const baseSearchParam = {"_include": "Location:partof"};
-  if(search) {
-    return {"name:contains": search, ...baseSearchParam}
+  const baseSearchParam = { _include: 'Location:partof' };
+  if (search) {
+    return { 'name:contains': search, ...baseSearchParam };
   }
   return baseSearchParam;
 };
@@ -48,7 +43,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const [_, setDetailId] = useState<string>();
 
   const {
-    queryValues: { data, isFetching, isLoading, error},
+    queryValues: { data, isFetching, isLoading, error },
     tablePaginationProps,
     searchFormProps,
   } = useSimpleTabularView<ILocation>(fhirBaseURL, locationResourceType, getSearchParams);
@@ -78,7 +73,8 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
           </Button>
         ),
       },
-    ]};
+    ];
+  };
 
   const columns = [
     {
@@ -129,11 +125,34 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
     },
   ];
 
+  const AddLocationBtn = () => (
+    <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_ADD)}>
+      <PlusOutlined />
+      {t('Add Location')}
+    </Button>
+  );
+
+  const getTableLocale = () => {
+    const urlQuery = history.location.search;
+    const nameSearchActive = urlQuery.includes('search=');
+    if (!tableData.length && (!isFetching || !isLoading)) {
+      const description = nameSearchActive
+        ? ''
+        : t('No data available to display, you can start adding data now ');
+      return {
+        emptyText: (
+          <NoData description={description}>{!nameSearchActive && <AddLocationBtn />}</NoData>
+        ),
+      };
+    }
+  };
+
   const tableProps = {
     datasource: tableData,
     columns,
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
+    locale: getTableLocale(),
   };
 
   return (
@@ -148,10 +167,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
             <SearchForm {...searchFormProps} />
             <RbacCheck permissions={['Location.create']}>
               <Link to={URL_LOCATION_UNIT_ADD}>
-                <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_ADD)}>
-                  <PlusOutlined />
-                  {t('Add Location')}
-                </Button>
+                <AddLocationBtn />
               </Link>
             </RbacCheck>
           </div>
