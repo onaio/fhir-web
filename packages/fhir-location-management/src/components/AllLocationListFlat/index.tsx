@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSimpleTabularView } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
@@ -9,9 +9,7 @@ import {
 } from '../../constants';
 import {
   BrokenPage,
-  useSearchParams,
   TableLayout,
-  viewDetailsQuery,
   PageHeader,
   SearchForm,
 } from '@opensrp/react-utils';
@@ -20,10 +18,9 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from '../../mls';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import { useHistory, Link } from 'react-router-dom';
-import { RbacCheck, useUserRole } from '@opensrp/rbac';
+import { RbacCheck } from '@opensrp/rbac';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import { LocationUnitDetail } from '../LocationUnitDetail';
 
 interface RouteParams {
   locationId: string | undefined;
@@ -48,8 +45,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
   const history = useHistory();
-  const { addParam, sParams } = useSearchParams();
-  const userRole = useUserRole();
+  const [_, setDetailId] = useState<string>();
 
   const {
     queryValues: { data, isFetching, isLoading, error},
@@ -76,20 +72,13 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
     return [
       {
         key: '1',
-        permissions: [],
         label: (
-          <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
-            View Details
+          <Button disabled type="link" onClick={() => setDetailId(record.id)}>
+            {t('View details')}
           </Button>
         ),
       },
-    ]
-      .filter((item) => userRole.hasPermissions(item.permissions))
-      .map((item) => {
-        const { permissions, ...rest } = item;
-        return rest;
-      });
-  };
+    ]};
 
   const columns = [
     {
