@@ -148,6 +148,11 @@ describe('routes', () => {
                 title: 'Location Units',
                 url: '/admin/location/unit',
               },
+              {
+                key: 'all-locations',
+                title: 'All Locations',
+                url: '/admin/location/all',
+              },
             ],
             enabled: true,
             key: 'location-management',

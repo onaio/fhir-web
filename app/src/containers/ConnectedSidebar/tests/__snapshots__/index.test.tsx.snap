@@ -45,6 +45,14 @@ Array [
           Location Units
         </Link>
       </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
+        </Link>
+      </MenuItem>
     </SubMenu>
     <SubMenu
       title="Team Management"
@@ -121,6 +129,14 @@ Array [
           to="/admin/location/unit"
         >
           Location Units
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
         </Link>
       </MenuItem>
     </SubMenu>
@@ -235,6 +251,14 @@ Object {
                 Location Units
               </Link>
             </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/location/all"
+              >
+                All Locations
+              </Link>
+            </MenuItem>
           </SubMenu>
           <SubMenu
             title="Team Management"
@@ -314,6 +338,14 @@ Array [
           to="/admin/location/unit"
         >
           Location Units
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
         </Link>
       </MenuItem>
     </SubMenu>
