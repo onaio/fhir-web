@@ -27,6 +27,8 @@ export interface FhirApiFilter {
 
 export type ExtraParams = URLParams | ((search: string | null) => URLParams);
 
+export type ExtractResources = <T>(bundle: IBundle) => T[];
+
 const defaultGetExtraParams = (search: string | null) => {
   if (search) {
     return { 'name:contains': search };
@@ -85,11 +87,13 @@ const loadResources = async (
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
  * @param extraParams - further custom search param filters during api requests
+ * @param extractResources - function to get desired resources
  */
 export function useSimpleTabularView<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
-  extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams
+  extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams,
+  extractResources: ExtractResources = getResourcesFromBundle
 ) {
   const location = useLocation();
   const history = useHistory();
@@ -115,7 +119,7 @@ export function useSimpleTabularView<T extends Resource>(
     queryKey: [resourceType, page, pageSize, search, extraParams] as TRQuery,
     queryFn,
     select: (data: IBundle) => ({
-      records: getResourcesFromBundle<T>(data),
+      records: extractResources<T>(data),
       total: data.total ?? 0,
     }),
     keepPreviousData: true,
