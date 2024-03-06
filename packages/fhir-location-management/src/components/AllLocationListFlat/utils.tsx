@@ -27,7 +27,7 @@ export function getResourceParentName(
     return '';
   }
   const parentId = partOfRef.split('/')[1];
-  const parentResource = resourcesById[parentId] as Dictionary;
+  const parentResource: Dictionary = resourcesById[parentId];
   const parentName = parentResource.name;
   return parentName || partOfDisplay || '';
 }
