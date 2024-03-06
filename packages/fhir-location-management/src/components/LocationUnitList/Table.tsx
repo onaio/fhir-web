@@ -7,7 +7,6 @@ import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
-import { TableLocale } from 'antd/es/table/interface';
 
 export interface TableData {
   id: string;
@@ -22,11 +21,10 @@ export interface TableData {
 export interface Props {
   data: TableData[];
   onViewDetails?: (row: TableData) => void;
-  locale?: TableLocale;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails, ...rest } = props;
+  const { onViewDetails } = props;
   const { t } = useTranslation();
   const columns: Column<TableData>[] = [
     {
@@ -95,7 +93,6 @@ const Table: React.FC<Props> = (props: Props) => {
           </>
         ),
       }}
-      {...rest}
     />
   );
 };
