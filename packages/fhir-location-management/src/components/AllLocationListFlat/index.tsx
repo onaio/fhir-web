@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSimpleTabularView, NoData } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
-import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import {
   locationResourceType,
   URL_LOCATION_UNIT_EDIT,
@@ -16,6 +15,8 @@ import { useHistory, Link } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
+import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
+import { getEntryFromBundle, getTableData } from './utils';
 
 interface RouteParams {
   locationId: string | undefined;
@@ -45,25 +46,27 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [_, setDetailId] = useState<string>();
+  const [tableData, setTableData] = useState<Dictionary<string>[]>([]);
 
   const {
     queryValues: { data, isFetching, isLoading, error },
     tablePaginationProps,
     searchFormProps,
-  } = useSimpleTabularView<ILocation>(fhirBaseURL, locationResourceType, getSearchParams);
+  } = useSimpleTabularView<BundleEntry>(
+    fhirBaseURL,
+    locationResourceType,
+    getSearchParams,
+    getEntryFromBundle
+  );
+
+  useEffect(() => {
+    const updatedTableData = getTableData(data?.records ?? []);
+    setTableData(updatedTableData);
+  }, [data]);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
-
-  const tableData = (data?.records ?? []).map((datum: Dictionary) => ({
-    key: datum.id,
-    id: datum.id,
-    name: datum.name,
-    type: datum.physicalType.coding[0].display,
-    status: datum.status,
-    parent: datum.partOf,
-  }));
 
   type TableData = typeof tableData[0];
 
