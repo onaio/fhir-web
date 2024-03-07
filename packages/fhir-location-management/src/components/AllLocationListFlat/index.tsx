@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSimpleTabularView, NoData } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -7,7 +7,6 @@ import {
   URL_LOCATION_UNIT_ADD,
 } from '../../constants';
 import { BrokenPage, TableLayout, PageHeader, SearchForm } from '@opensrp/react-utils';
-import { Dictionary } from '@onaio/utils';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from '../../mls';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
@@ -45,8 +44,6 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
   const history = useHistory();
-  const [_, setDetailId] = useState<string>();
-  const [tableData, setTableData] = useState<Dictionary<string>[]>([]);
 
   const {
     queryValues: { data, isFetching, isLoading, error },
@@ -59,10 +56,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
     getEntryFromBundle
   );
 
-  useEffect(() => {
-    const updatedTableData = getTableData(data?.records ?? []);
-    setTableData(updatedTableData);
-  }, [data]);
+  const tableData = useMemo(() => getTableData(data?.records ?? []), [data]);
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
@@ -70,12 +64,13 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
 
   type TableData = typeof tableData[0];
 
-  const getItems = (record: TableData): MenuProps['items'] => {
+  const getItems = (_: TableData): MenuProps['items'] => {
+    // Todo: replace _ above when handling onClick
     return [
       {
         key: '1',
         label: (
-          <Button disabled type="link" onClick={() => setDetailId(record.id)}>
+          <Button disabled type="link">
             {t('View details')}
           </Button>
         ),
@@ -145,7 +140,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
     if (!tableData.length && (!isFetching || !isLoading)) {
       const description = nameSearchActive
         ? ''
-        : t('No data available to display, you can start adding data now ');
+        : t('No data available to display, you can start adding data now');
       return {
         emptyText: (
           <NoData description={description}>{!nameSearchActive && <AddLocationBtn />}</NoData>

@@ -27,7 +27,8 @@ export function getResourceParentName(
     return '';
   }
   const parentId = partOfRef.split('/')[1];
-  const parentResource: Dictionary = resourcesById[parentId];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const parentResource: Dictionary = resourcesById[parentId] ?? {};
   const parentName = parentResource.name;
   return parentName || partOfDisplay || '';
 }
@@ -52,7 +53,7 @@ export function getTableData(data: BundleEntry[]) {
         key: resource.id,
         id: resource.id,
         name: resource.name,
-        type: resource.physicalType.coding[0].display,
+        type: resource.physicalType?.coding[0]?.display,
         status: resource.status,
         parent: getResourceParentName(resource, resourcesById),
       };
