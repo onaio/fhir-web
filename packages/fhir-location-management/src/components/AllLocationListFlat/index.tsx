@@ -167,7 +167,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
       <Helmet>
         <title>{t('All Locations List')}</title>
       </Helmet>
-      <PageHeader title={t('All Locations Flat')} />
+      <PageHeader title={t('All Locations')} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

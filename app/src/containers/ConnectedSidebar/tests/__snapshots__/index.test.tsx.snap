@@ -42,7 +42,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
         </Link>
       </MenuItem>
       <MenuItem>
@@ -128,7 +128,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
         </Link>
       </MenuItem>
       <MenuItem>
@@ -248,7 +248,7 @@ Object {
                 className="admin-link"
                 to="/admin/location/unit"
               >
-                Location Units
+                Hierarchy
               </Link>
             </MenuItem>
             <MenuItem>
@@ -337,7 +337,7 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
         </Link>
       </MenuItem>
       <MenuItem>

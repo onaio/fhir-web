@@ -95,7 +95,7 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
           children: [
             {
-              title: t('Location Units'),
+              title: t('Hierarchy'),
               url: URL_LOCATION_UNIT,
               key: 'location-unit',
               permissions: ['Location.read'],

@@ -145,7 +145,7 @@ describe('routes', () => {
             children: [
               {
                 key: 'location-unit',
-                title: 'Location Units',
+                title: 'Hierarchy',
                 url: '/admin/location/unit',
               },
               {
