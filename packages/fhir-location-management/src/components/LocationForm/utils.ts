@@ -3,12 +3,20 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../helpers/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import { get } from 'lodash';
-import { IfhirR4 } from '@smile-cdr/fhirts';
+import { get, isEmpty } from 'lodash';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { FHIRServiceClass } from '@opensrp/react-utils';
+import { FHIRServiceClass, getObjLike } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
+import {
+  externalId,
+  geometry,
+  latitude,
+  serviceType,
+  longitude,
+  locationGeoJsonExtensionUrl,
+} from '../../constants';
+import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
 
 export type ExtraFields = Dictionary;
 
@@ -21,6 +29,12 @@ export interface LocationFormFields {
   description?: string;
   alias?: string;
   isJurisdiction: boolean;
+  externalId?: string;
+  geometry?: string;
+  latitude?: number;
+  longitude?: number;
+  serviceType?: string;
+  initObj?: ILocation;
 }
 
 interface BaseSetting {
@@ -46,7 +60,7 @@ export interface ServiceTypeSetting extends BaseSetting {
   value: string;
 }
 
-export const defaultFormField: LocationFormFields = {
+export const defaultFormFields: LocationFormFields = {
   id: '',
   name: '',
   parentId: undefined,
@@ -63,13 +77,26 @@ export const defaultFormField: LocationFormFields = {
  * @param parentId - parent node id
  */
 export const getLocationFormFields = (
-  location?: IfhirR4.ILocation,
+  location?: ILocation,
   parentId?: string
 ): LocationFormFields => {
+  const { position, extension } = location ?? {};
+  // TODO - magic string
+  const geoJsonExtension = getObjLike<Extension>(extension, 'url', locationGeoJsonExtensionUrl)[0];
+  const geoJsonAttachment = geoJsonExtension.valueAttachment?.data;
+  let geometryGeoJSon;
+  if (geoJsonAttachment) {
+    // try and parse into an object.
+    geometryGeoJSon = atob(geoJsonAttachment);
+  }
   return {
-    ...(location ?? defaultFormField),
-    isJurisdiction: true, // TODO
+    ...defaultFormFields,
+    initObj: location,
+    isJurisdiction: true,
+    geometry: geometryGeoJSon,
     parentId: parentId ?? location?.partOf?.reference,
+    latitude: position?.latitude,
+    longitude: position?.longitude,
   } as LocationFormFields;
 };
 
@@ -85,7 +112,8 @@ export const generateLocationUnit = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode
 ) => {
-  const { id, name, status, description, alias, isJurisdiction } = formValues;
+  const { id, name, status, description, alias, isJurisdiction, geometry, latitude, longitude } =
+    formValues;
 
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
@@ -129,7 +157,49 @@ export const generateLocationUnit = (
     payload.id = v4();
   }
 
+  const position: ILocation['position'] = {};
+  if (longitude) {
+    position.longitude = longitude;
+  }
+  if (latitude) {
+    position.latitude = latitude;
+  }
+  if (!isEmpty(position)) {
+    payload.position = position;
+  }
+
+  const initialExtensions = initialValues.initObj?.extension ?? [];
+  const remainingExtensions = initialExtensions.filter(
+    (ext) => ext.url !== locationGeoJsonExtensionUrl
+  );
+  if (geometry) {
+    // add to extension array, modify extension if one exists
+    remainingExtensions.push({
+      url: locationGeoJsonExtensionUrl,
+      valueAttachment: {
+        data: btoa(geometry),
+      },
+    });
+  }
+  if (remainingExtensions.length) {
+    payload.extension = remainingExtensions;
+  }
+
   return payload;
+};
+
+/**
+ * given a value return a rejected promise if value is not as number
+ *
+ * @param value - value to parse into string
+ * @param message - error message to show
+ */
+const rejectIfNan = (value: string, message: string) => {
+  if (isNaN(Number(value))) {
+    return Promise.reject(message);
+  } else {
+    return Promise.resolve();
+  }
 };
 
 /**
@@ -163,6 +233,35 @@ export const validationRulesFactory = (t: TFunction) => ({
     },
   ] as Rule[],
   description: [{ type: 'string' }, { required: false }] as Rule[],
+  [externalId]: [
+    { type: 'string', message: t('External ID can only contain letters, numbers and spaces') },
+  ] as Rule[],
+  [serviceType]: [
+    {
+      required: false,
+    },
+  ] as Rule[],
+  [geometry]: [{ type: 'string', message: t('Location Unit must be an array') }] as Rule[],
+  [longitude]: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, t('Only decimal values allowed'));
+      },
+    }),
+  ] as Rule[],
+  [latitude]: [
+    () => ({
+      validator(_, value) {
+        if (!value) {
+          return Promise.resolve();
+        }
+        return rejectIfNan(value, t('Only decimal values allowed'));
+      },
+    }),
+  ] as Rule[],
 });
 
 /**

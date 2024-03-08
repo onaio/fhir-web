@@ -3,13 +3,13 @@ import { Form, Input, Space, Button, Radio } from 'antd';
 import { Redirect } from 'react-router';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
-  defaultFormField,
+  defaultFormFields,
   generateLocationUnit,
   LocationFormFields,
   postPutLocationUnit,
   validationRulesFactory,
 } from './utils';
-import { locationHierarchyResourceType, locationResourceType } from '../../constants';
+import { externalId, geometry, isJurisdiction, latitude, locationHierarchyResourceType, locationResourceType, longitude, serviceType } from '../../constants';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
@@ -35,7 +35,7 @@ export interface LocationFormProps
 }
 
 const defaultProps = {
-  initialValues: defaultFormField,
+  initialValues: defaultFormFields,
   successURLGenerator: () => '#',
   hidden: [],
   disabled: [],
@@ -250,6 +250,76 @@ const LocationForm = (props: LocationFormProps) => {
             options={locationCategoryOptions}
           ></Radio.Group>
         </FormItem>
+
+        <FormItem
+          hidden={isHidden(serviceType)}
+          name={serviceType}
+          id={serviceType}
+          label={t('Type')}
+          rules={validationRules.serviceType}
+        >
+          <CustomSelect<ServiceTypeSetting>
+            className="select"
+            placeholder={t('Select the service point type')}
+            disabled={disabled.includes(serviceType)}
+            loadData={(setData) => {
+              return loadSettings(SERVICE_TYPES_SETTINGS_ID, opensrpBaseURL, setData);
+            }}
+            getOptions={getServiceTypeOptions}
+          />
+        </FormItem>
+
+        <Form.Item
+          noStyle
+          shouldUpdate={(prevValues, currentValues) => prevValues[isJurisdiction] !== currentValues[isJurisdiction]}
+        >
+          {({ getFieldValue }) =>
+            getFieldValue(isJurisdiction) === true ? (
+              <FormItem
+                id={geometry}
+                hidden={isHidden(geometry)}
+                name={geometry}
+                rules={validationRules.geometry}
+                label={t('Geometry')}
+              >
+                <Input.TextArea
+                  disabled={disabled.includes(geometry)}
+                  rows={4}
+                  placeholder={t('</> JSON')}
+                />
+              </FormItem>
+
+            ) : <>
+              <FormItem
+                id={latitude}
+                hidden={isHidden(latitude)}
+                name={latitude}
+                label={t('Latitude')}
+                rules={validationRules.latitude}
+              >
+                <Input disabled={disabled.includes(latitude)} placeholder={t('E.g. -16.08306')} />
+              </FormItem>
+              <FormItem
+                id={longitude}
+                hidden={isHidden(longitude)}
+                name={longitude}
+                label={t('Longitude')}
+                rules={validationRules.longitude}
+              >
+                <Input disabled={disabled.includes(longitude)} placeholder={t('E.g. 49.54933')} />
+              </FormItem>
+            </>
+          }
+        </Form.Item>
+
+        {/* <FormItem
+          id={externalId}
+          hidden={isHidden(externalId)}
+          name={externalId}
+          label={t('External ID')}
+        >
+          <Input disabled={disabled.includes(externalId)} />
+        </FormItem> */}
 
         <FormItem
           id="description"
