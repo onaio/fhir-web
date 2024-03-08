@@ -12,7 +12,7 @@ import { useTranslation } from '../../mls';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import { useHistory, Link } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
-import type { MenuProps } from 'antd';
+import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 import { getEntryFromBundle, getTableData } from './utils';
