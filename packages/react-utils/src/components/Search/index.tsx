@@ -5,7 +5,6 @@ import { OnChangeType, DEBOUNCE_HANDLER_MS } from './utils';
 import { SearchOutlined } from '@ant-design/icons';
 import { InputProps } from 'antd/lib/input/';
 import { useTranslation } from '../../mls';
-import './index.css';
 
 /**
  * Interface for SearchForm props
@@ -22,7 +21,6 @@ export const defaultSearchProps: SearchFormProps = {
   onChangeHandler: () => {
     return;
   },
-  size: 'large',
   addonBefore: defaultPrefix,
   allowClear: true,
 };

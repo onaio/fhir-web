@@ -16,6 +16,7 @@ import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 import { getEntryFromBundle, getTableData } from './utils';
+import './index.css';
 
 interface RouteParams {
   locationId: string | undefined;
@@ -158,7 +159,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   };
 
   return (
-    <div className="content-section">
+    <div id="all-locations" className="content-section">
       <Helmet>
         <title>{t('All Locations List')}</title>
       </Helmet>
