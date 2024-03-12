@@ -1,0 +1,13 @@
+.header-text {
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    color: #000000;
+}
+
+.info-text {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0px;
+}

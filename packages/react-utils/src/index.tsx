@@ -22,3 +22,4 @@ export * from './components/ButtonLink';
 export * from './helpers/test-utils';
 export * from './components/PrivateRoute';
 export * from './components/fhirDataTypes';
+export * from './components/NoData';

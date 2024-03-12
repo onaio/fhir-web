@@ -81,6 +81,8 @@ import {
 import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  AllLocationListFlat as ListAllLocationsFlat,
+  URL_ALL_LOCATIONS,
 } from '@opensrp/fhir-location-management';
 import {
   teamAffiliationProps,
@@ -361,6 +363,15 @@ const FHIRApps = () => {
         {...locationUnitProps}
         permissions={['Location.read']}
         component={FHIRLocationUnitList}
+      />
+       <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={URL_ALL_LOCATIONS}
+        {...locationUnitProps}
+        permissions={['Location.read']}
+        component={ListAllLocationsFlat}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

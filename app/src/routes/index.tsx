@@ -17,6 +17,7 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
 } from '../constants';
+import { URL_ALL_LOCATIONS } from '@opensrp/fhir-location-management';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
@@ -94,9 +95,15 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
           children: [
             {
-              title: t('Location Units'),
+              title: t('Hierarchy'),
               url: URL_LOCATION_UNIT,
               key: 'location-unit',
+              permissions: ['Location.read'],
+            },
+            {
+              title: t('All Locations'),
+              url: URL_ALL_LOCATIONS,
+              key: 'all-locations',
               permissions: ['Location.read'],
             },
           ],
