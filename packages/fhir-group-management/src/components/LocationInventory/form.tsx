@@ -1,5 +1,6 @@
-import React from 'react';
-import { Form, Button, Input, DatePicker, Space } from 'antd';
+import React, { useMemo } from 'react';
+import { Form, Button, Input, DatePicker, Space, Select } from 'antd';
+import { SelectProps } from 'antd/lib/select';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
@@ -21,12 +22,15 @@ import {
   PONumber,
   groupResourceType,
 } from '../../constants';
+import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 const { Item: FormItem } = Form;
 
-interface LocationInventoryFormProps {
-  fhirBaseUrl: string;
+export interface LocationInventoryFormProps {
+  fhirBaseURL: string;
   initialValues: Dictionary;
+  products?: IGroup[];
   disabled: string[];
   cancelUrl?: string;
   successUrl?: string;
@@ -44,13 +48,18 @@ const defaultProps = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseUrl, initialValues } = props;
+  const { fhirBaseURL, initialValues, products } = props;
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
+  const projectOptions = useMemo(
+    () => products?.map((prod: IGroup) => ({ value: prod.id, label: prod.name })),
+    [products]
+  );
+
   const { mutate, isLoading } = useMutation(
     (values: Dictionary) => {
-      return postLocationInventory(fhirBaseUrl, values);
+      return postLocationInventory(fhirBaseURL, values);
     },
     {
       onError: (error: Error) => {
@@ -75,11 +84,16 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       initialValues={initialValues}
     >
       <FormItem id="productName" name={productName} label={t('Product name')}>
-        <Input type="text" />
+        <Select
+          placeholder={t('Select product')}
+          options={projectOptions}
+          showSearch={true}
+          filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
+        ></Select>
       </FormItem>
 
-      <FormItem id="quantity" name={quantity} label={t('Quantity')}>
-        <Input type="number" />
+      <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
+        <Input required={false} type="number" />
       </FormItem>
 
       <FormItem id="deliveryDate" name={deliveryDate} label={t('Delivery date')}>
@@ -94,7 +108,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <DatePicker />
       </FormItem>
 
-      <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date')}>
+      <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date (Optional)')}>
         <DatePicker />
       </FormItem>
 
