@@ -98,7 +98,6 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
-  BaseProps,
 } from './utils';
 import './App.css';
 import {
@@ -464,7 +463,6 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={ADD_LOCATION_INVENTORY}
         exact
-        {...BaseProps}
         permissions={['Group.create']}
         component={AddLocationInventory}
       />
