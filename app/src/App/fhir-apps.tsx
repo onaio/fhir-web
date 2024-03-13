@@ -94,6 +94,7 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
+  BaseProps,
 } from './utils';
 import './App.css';
 import {
@@ -112,6 +113,8 @@ import {
   GroupList,
   LIST_COMMODITY_URL,
   LIST_GROUP_URL,
+  ADD_LOCATION_INVENTORY,
+  AddLocationInventory,
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
@@ -436,6 +439,15 @@ const FHIRApps = () => {
         exact
         permissions={['Group.create']}
         component={CommodityAddEdit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={ADD_LOCATION_INVENTORY}
+        exact
+        {...BaseProps}
+        permissions={['Group.create']}
+        component={AddLocationInventory}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
