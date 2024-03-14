@@ -145,8 +145,13 @@ describe('routes', () => {
             children: [
               {
                 key: 'location-unit',
-                title: 'Location Units',
+                title: 'Hierarchy',
                 url: '/admin/location/unit',
+              },
+              {
+                key: 'all-locations',
+                title: 'All Locations',
+                url: '/admin/location/all',
               },
             ],
             enabled: true,

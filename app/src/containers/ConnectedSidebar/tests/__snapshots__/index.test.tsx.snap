@@ -42,7 +42,15 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
         </Link>
       </MenuItem>
     </SubMenu>
@@ -120,7 +128,15 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
         </Link>
       </MenuItem>
     </SubMenu>
@@ -232,7 +248,15 @@ Object {
                 className="admin-link"
                 to="/admin/location/unit"
               >
-                Location Units
+                Hierarchy
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link
+                className="admin-link"
+                to="/admin/location/all"
+              >
+                All Locations
               </Link>
             </MenuItem>
           </SubMenu>
@@ -313,7 +337,15 @@ Array [
           className="admin-link"
           to="/admin/location/unit"
         >
-          Location Units
+          Hierarchy
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link
+          className="admin-link"
+          to="/admin/location/all"
+        >
+          All Locations
         </Link>
       </MenuItem>
     </SubMenu>
