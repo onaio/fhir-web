@@ -1,8 +1,5 @@
 import React from 'react';
-import { Typography } from 'antd';
 import './index.css';
-
-const { Text } = Typography;
 
 type KeyValuePairs = Record<string, string | number | boolean | JSX.Element>;
 
@@ -34,12 +31,8 @@ export const SingleKeyNestedValue = (props: KeyValuePairs) => {
   return (
     <dl className="singleKeyValue">
       <div className="singleKeyValue-pair">
-        <dt className="singleKeyValue-pair__label">
-          <Text type={'secondary'}>{key}</Text>
-        </dt>
-        <dd className="singleKeyValue-pair__value">
-          <Text>{value}</Text>
-        </dd>
+        <dt className="singleKeyValue-pair__label">{key}</dt>
+        <dd className="singleKeyValue-pair__value">{value}</dd>
       </div>
     </dl>
   );

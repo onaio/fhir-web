@@ -3,12 +3,14 @@
   grid-template-columns: repeat(3, minmax(32px, 1fr));
 }
 
+.singleKeyValue-pair__value,
 .keyValueGrid-pair__value {
-  color: #000;
+  color: rgba(0, 0, 0, 0.85);
 }
 
+.singleKeyValue-pair__label,
 .keyValueGrid-pair__label {
-  color: #777;
+  color: rgba(0, 0, 0, 0.65);
 }
 
 .keyValueGrid-pair__value,
@@ -23,5 +25,6 @@
 dl.keyValueGrid,
 dl.singleKeyValue {
   margin-bottom: 0;
-  line-height: 1.2em;
+  line-height: 1.4em;
+  font-weight: 400;
 }
