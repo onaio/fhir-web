@@ -29,11 +29,12 @@ import {
  * @param extraParams - further custom search param filters during api requests
  * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  */
-export function useTabularViewWithLocalSearch<T extends Resource>(
+export function useTabularViewWithLocalSearch<T extends object>(
   fhirBaseUrl: string,
   resourceType: string,
   extraParams: URLParams | ((search: string | null) => URLParams) = {},
-  matchesSearch: (obj: T, search: string) => boolean = matchesOnName
+  matchesSearch: (obj: T, search: string) => boolean = matchesOnName,
+  dataTransformer: (response: IBundle) => T[] = getResourcesFromBundle
 ) {
   const location = useLocation();
   const history = useHistory();
@@ -58,7 +59,7 @@ export function useTabularViewWithLocalSearch<T extends Resource>(
   const rQuery = {
     queryKey: [resourceType, extraParams] as TRQuery,
     queryFn,
-    select: (data: IBundle) => getResourcesFromBundle<T>(data),
+    select: (data: IBundle) => dataTransformer(data),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   };

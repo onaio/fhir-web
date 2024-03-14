@@ -3,7 +3,7 @@ import { Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { URL_LOCATION_UNIT_EDIT, URL_LOCATION_VIEW_DETAILS } from '../../constants';
+import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
@@ -49,9 +49,15 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       key: '1',
       label: (
-        <Link to={`${URL_LOCATION_VIEW_DETAILS}/${record.id}`} className="m-0 p-1">
+        <Button
+          type="link"
+          data-testid="view-location"
+          onClick={() => {
+            onViewDetails?.(record);
+          }}
+        >
           {t('View details')}
-        </Link>
+        </Button>
       ),
     },
   ];

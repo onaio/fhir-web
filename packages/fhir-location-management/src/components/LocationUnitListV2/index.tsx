@@ -71,6 +71,8 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const history = useHistory();
   const [showWizard, setShowWizard] = useState(false);
 
+  // get parent location Id
+
   // get the root locations. the root node is the opensrp root location, its immediate children
   // are the user-defined root locations.
   const {
