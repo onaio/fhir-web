@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Form, Button, Input, DatePicker, Space, Select } from 'antd';
 import { SelectProps } from 'antd/lib/select';
-import { formItemLayout, tailLayout } from '@opensrp/react-utils';
+import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { Dictionary } from '@onaio/utils';
@@ -24,6 +24,10 @@ import {
 } from '../../constants';
 import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { FHIRServiceClass, AsyncSelect } from '@opensrp/react-utils';
+import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
+import { useQuery } from 'react-query';
+import { getValuesetSelectOptions } from './utils';
 
 const { Item: FormItem } = Form;
 
@@ -57,6 +61,13 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     [products]
   );
 
+  const valuesetResourceType = 'ValueSet';
+  const resourceId = '2826/$expand';
+  const groupQuery = () =>
+    useQuery([valuesetResourceType, resourceId], async () =>
+      new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(resourceId as string)
+    );
+
   const { mutate, isLoading } = useMutation(
     (values: Dictionary) => {
       return postLocationInventory(fhirBaseURL, values);
@@ -74,6 +85,19 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     }
   );
 
+  const unicefSectionProps: AsyncSelectProps = {
+    id: 'unicefSection',
+    name: unicefSection,
+    label: t('UNICEF section'),
+    dataLoader: groupQuery as any,
+    optionsGetter: getValuesetSelectOptions as any,
+    selectProps: {
+      placeholder: t('Select product'),
+      showSearch: true,
+      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
+    },
+  };
+
   return (
     <Form
       requiredMark={false}
@@ -89,7 +113,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
           options={projectOptions}
           showSearch={true}
           filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
-        ></Select>
+        />
       </FormItem>
 
       <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
@@ -112,9 +136,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <DatePicker />
       </FormItem>
 
-      <FormItem id="unicefSection" name={unicefSection} label={t('UNICEF section')}>
-        <Input />
-      </FormItem>
+      <AsyncSelect {...unicefSectionProps} />
 
       <FormItem id="serialNumber" name={serialNumber} label={t('Serial Number')}>
         <Input type="number" />
