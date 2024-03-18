@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, DatePicker, Space } from 'antd';
+import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import { SelectProps } from 'antd/lib/select';
 import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
@@ -12,7 +12,7 @@ import {
   sendInfoNotification,
 } from '@opensrp/notifications';
 import {
-  productName,
+  product,
   quantity,
   deliveryDate,
   accountabilityEndDate,
@@ -24,18 +24,31 @@ import {
   groupResourceType,
   valuesetResourceType,
   UNICEF_SECTION_ENDPOINT,
+  id,
+  identifier,
+  active,
+  name,
+  type,
+  actual,
 } from '../../constants';
 import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
 import { FHIRServiceClass, AsyncSelect } from '@opensrp/react-utils';
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
-import { getValuesetSelectOptions, projectOptions } from './utils';
+import {
+  getLocationInventoryPayload,
+  getValuesetSelectOptions,
+  handleDisabledFutureDates,
+  handleDisabledPastDates,
+  projectOptions,
+} from './utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { GroupFormFields } from './types';
 
 const { Item: FormItem } = Form;
 
 export interface LocationInventoryFormProps {
   fhirBaseURL: string;
-  initialValues: Dictionary;
+  initialValues: GroupFormFields;
   disabled: string[];
   cancelUrl?: string;
   successUrl?: string;
@@ -62,7 +75,8 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(
-    (values: Dictionary) => {
+    (values: GroupFormFields) => {
+      const payload = getLocationInventoryPayload(values);
       return postLocationInventory(fhirBaseURL, values);
     },
     {
@@ -84,7 +98,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     label: t('UNICEF section'),
     optionsGetter: getValuesetSelectOptions,
     selectProps: {
-      placeholder: t('Select section'),
+      placeholder: t('Select UNICEF section'),
       showSearch: true,
       filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
     },
@@ -118,7 +132,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
   const projectsSelectProps: AsyncSelectProps<IBundle> = {
     id: 'project',
-    name: productName,
+    name: product,
     label: t('Product name'),
     optionsGetter: projectOptions,
     selectProps: {
@@ -137,20 +151,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     <Form
       requiredMark={false}
       {...formItemLayout}
-      onFinish={(values: Dictionary) => {
+      onFinish={(values: GroupFormFields) => {
         mutate(values);
       }}
       initialValues={initialValues}
     >
-      {/* <FormItem id="productName" name={productName} label={t('Product name')}>
-        <Select
-          placeholder={t('Select product')}
-          options={projectOptions}
-          showSearch={true}
-          filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
-        />
-      </FormItem> */}
-
       <AsyncSelect {...projectsSelectProps} />
 
       <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
@@ -158,7 +163,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem id="deliveryDate" name={deliveryDate} label={t('Delivery date')}>
-        <DatePicker />
+        <DatePicker disabledDate={handleDisabledFutureDates} />
       </FormItem>
 
       <FormItem
@@ -166,11 +171,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={accountabilityEndDate}
         label={t('Accountability end date')}
       >
-        <DatePicker />
+        <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
 
       <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date (Optional)')}>
-        <DatePicker />
+        <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
 
       <AsyncSelect {...unicefSectionProps} />
@@ -184,6 +189,27 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       <FormItem id="poNumber" name={PONumber} label={t('PO number')}>
         <Input type="number" />
       </FormItem>
+
+      {/* start hidden fields */}
+      <FormItem hidden={true} id="id" name={id} label={t('Commodity Id')}>
+        <Input disabled={true} />
+      </FormItem>
+      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
+        <Input disabled={true} />
+      </FormItem>
+      <FormItem hidden={true} id="active" name={active} label={t('Active')}>
+        <Switch checked={initialValues.active} disabled={true} />
+      </FormItem>
+      <FormItem hidden={true} id="actual" name={actual} label={t('Actual')}>
+        <Switch checked={initialValues.actual} disabled={true} />
+      </FormItem>
+      <FormItem hidden={true} id="name" name={name} label={t('Name')}>
+        <Input disabled={true} />
+      </FormItem>
+      <FormItem hidden={true} id="type" name={type} label={t('Type')}>
+        <Input disabled={true} />
+      </FormItem>
+      {/* End hidden fields */}
 
       <FormItem {...tailLayout}>
         <Space>

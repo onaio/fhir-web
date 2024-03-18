@@ -31,12 +31,13 @@ export const accountabilityPeriod = 'accountabilityPeriod' as const;
 export const productImage = 'productImage' as const;
 
 // location inventory form constants
-export const productName = 'product_name' as const;
+export const product = 'product' as const;
 export const quantity = 'quantity' as const;
-export const deliveryDate = 'delivery_date' as const;
-export const accountabilityEndDate = 'accountability_end_date' as const;
-export const expiryDate = 'expiry_date' as const;
-export const unicefSection = 'unicef_section' as const;
-export const serialNumber = 'serial_number' as const;
+export const deliveryDate = 'deliveryDate' as const;
+export const accountabilityEndDate = 'accountabilityEndDate' as const;
+export const expiryDate = 'expiryDate' as const;
+export const unicefSection = 'unicefSection' as const;
+export const serialNumber = 'serialNumber' as const;
 export const donor = 'donor' as const;
-export const PONumber = 'po_number' as const;
+export const PONumber = 'poNumber' as const;
+export const actual = 'actual' as const;
