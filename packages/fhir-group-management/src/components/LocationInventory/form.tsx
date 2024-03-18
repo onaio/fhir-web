@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react';
-import { Form, Button, Input, DatePicker, Space, Select } from 'antd';
+import React from 'react';
+import { Form, Button, Input, DatePicker, Space } from 'antd';
 import { SelectProps } from 'antd/lib/select';
 import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { Dictionary } from '@onaio/utils';
+import { supplyMgSnomedCode, snomedCodeSystem } from '../../helpers/utils';
 import {
   sendSuccessNotification,
   sendErrorNotification,
@@ -21,20 +22,20 @@ import {
   donor,
   PONumber,
   groupResourceType,
+  valuesetResourceType,
+  UNICEF_SECTION_ENDPOINT,
 } from '../../constants';
 import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
-import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { FHIRServiceClass, AsyncSelect } from '@opensrp/react-utils';
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
-import { useQuery } from 'react-query';
-import { getValuesetSelectOptions } from './utils';
+import { getValuesetSelectOptions, projectOptions } from './utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 const { Item: FormItem } = Form;
 
 export interface LocationInventoryFormProps {
   fhirBaseURL: string;
   initialValues: Dictionary;
-  products?: IGroup[];
   disabled: string[];
   cancelUrl?: string;
   successUrl?: string;
@@ -45,6 +46,10 @@ const defaultProps = {
   disabled: [],
 };
 
+const productQueryFilters = {
+  code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
+};
+
 /**
  * Add location inventory form
  *
@@ -52,21 +57,9 @@ const defaultProps = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseURL, initialValues, products } = props;
+  const { fhirBaseURL, initialValues } = props;
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-
-  const projectOptions = useMemo(
-    () => products?.map((prod: IGroup) => ({ value: prod.id, label: prod.name })),
-    [products]
-  );
-
-  const valuesetResourceType = 'ValueSet';
-  const resourceId = '2826/$expand';
-  const groupQuery = () =>
-    useQuery([valuesetResourceType, resourceId], async () =>
-      new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(resourceId as string)
-    );
 
   const { mutate, isLoading } = useMutation(
     (values: Dictionary) => {
@@ -85,16 +78,58 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     }
   );
 
-  const unicefSectionProps: AsyncSelectProps = {
+  const unicefSectionProps: AsyncSelectProps<IValueSet> = {
     id: 'unicefSection',
     name: unicefSection,
     label: t('UNICEF section'),
-    dataLoader: groupQuery as any,
-    optionsGetter: getValuesetSelectOptions as any,
+    optionsGetter: getValuesetSelectOptions,
+    selectProps: {
+      placeholder: t('Select section'),
+      showSearch: true,
+      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
+    },
+    useQueryParams: {
+      key: [valuesetResourceType, UNICEF_SECTION_ENDPOINT],
+      queryFn: async () =>
+        new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(
+          UNICEF_SECTION_ENDPOINT as string
+        ),
+    },
+  };
+
+  const donorSelectProps: AsyncSelectProps<IValueSet> = {
+    id: 'donor',
+    name: donor,
+    label: t('Donor'),
+    optionsGetter: getValuesetSelectOptions,
+    selectProps: {
+      placeholder: t('Select donor'),
+      showSearch: true,
+      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
+    },
+    useQueryParams: {
+      key: [valuesetResourceType, UNICEF_SECTION_ENDPOINT],
+      queryFn: async () =>
+        new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(
+          UNICEF_SECTION_ENDPOINT as string
+        ),
+    },
+  };
+
+  const projectsSelectProps: AsyncSelectProps<IBundle> = {
+    id: 'project',
+    name: productName,
+    label: t('Product name'),
+    optionsGetter: projectOptions,
     selectProps: {
       placeholder: t('Select product'),
       showSearch: true,
       filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
+    },
+    useQueryParams: {
+      key: [groupResourceType],
+      queryFn: async () =>
+        new FHIRServiceClass<IBundle>(fhirBaseURL, groupResourceType).list(productQueryFilters),
     },
   };
 
@@ -107,14 +142,16 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem id="productName" name={productName} label={t('Product name')}>
+      {/* <FormItem id="productName" name={productName} label={t('Product name')}>
         <Select
           placeholder={t('Select product')}
           options={projectOptions}
           showSearch={true}
           filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
         />
-      </FormItem>
+      </FormItem> */}
+
+      <AsyncSelect {...projectsSelectProps} />
 
       <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
         <Input required={false} type="number" />
@@ -142,9 +179,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <Input type="number" />
       </FormItem>
 
-      <FormItem id="donor" name={donor} label={t('Donor')}>
-        <Input />
-      </FormItem>
+      <AsyncSelect {...donorSelectProps} />
 
       <FormItem id="poNumber" name={PONumber} label={t('PO number')}>
         <Input type="number" />
