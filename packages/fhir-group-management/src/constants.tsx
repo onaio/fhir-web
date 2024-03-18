@@ -5,10 +5,15 @@ export const LIST_GROUP_URL = '/groups/list';
 export const LIST_COMMODITY_URL = '/commodity/list';
 export const ADD_LOCATION_INVENTORY = '/location/inventory';
 
+// unicef and donor endpoints
+export const UNICEF_SECTION_ENDPOINT = '2826/$expand';
+export const DONOR_SECTION_ENDPOINT = '2826/$expand';
+
 // magic strings
 export const groupResourceType = 'Group';
 export const listResourceType = 'List';
 export const binaryResourceType = 'Binary';
+export const valuesetResourceType = 'ValueSet';
 
 // product form constants
 export const id = 'id' as const;
