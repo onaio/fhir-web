@@ -6,13 +6,24 @@ import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { FHIRServiceClass, IdentifierUseCodes, getResourcesFromBundle } from '@opensrp/react-utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { ValueSetConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetConcept';
-import { groupResourceType, listResourceType } from '../../constants';
+import {
+  PONumber,
+  accountabilityEndDate,
+  deliveryDate,
+  groupResourceType,
+  listResourceType,
+  product,
+  serialNumber,
+  unicefSection,
+} from '../../constants';
 import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
 import { cloneDeep } from 'lodash';
 import { GroupFormFields } from './types';
 import { GroupMember } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupMember';
 import { v4 } from 'uuid';
 import { Dayjs } from 'dayjs';
+import type { TFunction } from '@opensrp/i18n';
+import { Rule } from 'rc-field-form/lib/interface';
 
 /**
  * Check if date in past
@@ -252,3 +263,37 @@ export function createSupplyManagementList(id: string): IList {
     entry: [],
   };
 }
+
+/**
+ * factory for validation rules for GroupForm component
+ *
+ * @param t - the translator function
+ */
+export const validationRulesFactory = (t: TFunction) => {
+  return {
+    [product]: [
+      { type: 'string', message: t('Must be a valid string') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [unicefSection]: [
+      { type: 'string', message: t('Must be a valid string') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [deliveryDate]: [
+      { type: 'date', message: t('Must be a valid date') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [accountabilityEndDate]: [
+      { type: 'date', message: t('Must be a valid date') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [serialNumber]: [
+      { type: 'number', message: t('Must be a valid number') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+    [PONumber]: [
+      { type: 'integer', message: t('Must be a valid number') },
+      { required: true, message: t('Required') },
+    ] as Rule[],
+  };
+};

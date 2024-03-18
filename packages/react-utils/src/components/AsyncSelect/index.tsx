@@ -4,6 +4,7 @@ import { QueryFunction, QueryKey, UseQueryOptions, useQuery } from 'react-query'
 import { SelectProps, DefaultOptionType } from 'antd/lib/select';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useTranslation } from '../../mls';
+import { Rule } from 'rc-field-form/lib/interface';
 
 const { Item: FormItem } = Form;
 
@@ -18,6 +19,7 @@ export interface AsyncSelectProps<TData> {
     queryFn: QueryFunction<TData>;
     options?: UseQueryOptions<TData>;
   };
+  rules?: Rule[];
 }
 
 /**
@@ -26,7 +28,7 @@ export interface AsyncSelectProps<TData> {
  * @param props - AsyncSelect component props
  */
 export function AsyncSelect<TData>(props: AsyncSelectProps<TData>) {
-  const { optionsGetter, selectProps, name, label, useQueryParams } = props;
+  const { optionsGetter, selectProps, name, label, useQueryParams, id, rules } = props;
 
   const { t } = useTranslation();
 
@@ -48,7 +50,7 @@ export function AsyncSelect<TData>(props: AsyncSelectProps<TData>) {
   };
 
   return (
-    <FormItem name={name} label={label}>
+    <FormItem id={id} rules={rules} name={name} label={label}>
       <Select {...singleSelectProps} />
     </FormItem>
   );

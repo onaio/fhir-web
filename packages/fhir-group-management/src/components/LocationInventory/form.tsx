@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
+import { Form, Button, Input, DatePicker, Space, Switch, InputNumber } from 'antd';
 import { SelectProps } from 'antd/lib/select';
 import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
@@ -40,6 +40,7 @@ import {
   handleDisabledFutureDates,
   handleDisabledPastDates,
   projectOptions,
+  validationRulesFactory,
 } from './utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { GroupFormFields } from './types';
@@ -92,11 +93,14 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     }
   );
 
+  const validationRules = validationRulesFactory(t);
+
   const unicefSectionProps: AsyncSelectProps<IValueSet> = {
     id: 'unicefSection',
     name: unicefSection,
     label: t('UNICEF section'),
     optionsGetter: getValuesetSelectOptions,
+    rules: validationRules[unicefSection],
     selectProps: {
       placeholder: t('Select UNICEF section'),
       showSearch: true,
@@ -135,6 +139,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     name: product,
     label: t('Product name'),
     optionsGetter: projectOptions,
+    rules: validationRules[product],
     selectProps: {
       placeholder: t('Select product'),
       showSearch: true,
@@ -159,10 +164,15 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       <AsyncSelect {...projectsSelectProps} />
 
       <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
-        <Input required={false} type="number" />
+        <Input placeholder={t('Quantity')} type="number" />
       </FormItem>
 
-      <FormItem id="deliveryDate" name={deliveryDate} label={t('Delivery date')}>
+      <FormItem
+        id="deliveryDate"
+        rules={validationRules[deliveryDate]}
+        name={deliveryDate}
+        label={t('Delivery date')}
+      >
         <DatePicker disabledDate={handleDisabledFutureDates} />
       </FormItem>
 
@@ -170,6 +180,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         id="accounterbilityEndDate"
         name={accountabilityEndDate}
         label={t('Accountability end date')}
+        rules={validationRules[accountabilityEndDate]}
       >
         <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
@@ -180,14 +191,24 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
       <AsyncSelect {...unicefSectionProps} />
 
-      <FormItem id="serialNumber" name={serialNumber} label={t('Serial Number')}>
-        <Input type="number" />
+      <FormItem
+        id="serialNumber"
+        rules={validationRules[serialNumber]}
+        name={serialNumber}
+        label={t('Serial number')}
+      >
+        <InputNumber placeholder={t('Serial number')} style={{ width: '100%' }} />
       </FormItem>
 
       <AsyncSelect {...donorSelectProps} />
 
-      <FormItem id="poNumber" name={PONumber} label={t('PO number')}>
-        <Input type="number" />
+      <FormItem
+        id="poNumber"
+        rules={validationRules[PONumber]}
+        name={PONumber}
+        label={t('PO number')}
+      >
+        <InputNumber placeholder={t('PO number')} style={{ width: '100%' }} />
       </FormItem>
 
       {/* start hidden fields */}
