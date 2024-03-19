@@ -54,7 +54,7 @@ export const getNextUrlOnSearch = (
   match: RouteComponentProps['match']
 ) => {
   const searchText = event.target.value;
-  let nextUrl = match.path;
+  let nextUrl = match.url;
   const currentSParams = new URLSearchParams(location.search);
 
   if (searchText) {

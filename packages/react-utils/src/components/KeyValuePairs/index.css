@@ -28,3 +28,8 @@ dl.singleKeyValue {
   line-height: 1.4em;
   font-weight: 400;
 }
+
+/* override bootstrap more specif dt weight style*/
+dl dt {
+  font-weight: 400;
+}

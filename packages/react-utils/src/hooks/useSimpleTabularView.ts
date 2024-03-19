@@ -107,16 +107,17 @@ export function useSimpleTabularView<T extends Resource>(
 
   type TRQuery = [string, number, number, string, URLParams];
   type QueryKeyType = { queryKey: TRQuery };
+  const otherParams = typeof extraParams === 'function' ? extraParams(search) : extraParams;
 
   const queryFn = useCallback(
-    async ({ queryKey: [_, page, pageSize, search, extraParams] }: QueryKeyType) => {
-      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, extraParams);
+    async ({ queryKey: [_, page, pageSize, search, otherParams] }: QueryKeyType) => {
+      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, otherParams);
     },
     [fhirBaseUrl, resourceType]
   );
 
   const rQuery = {
-    queryKey: [resourceType, page, pageSize, search, extraParams] as TRQuery,
+    queryKey: [resourceType, page, pageSize, search, otherParams] as TRQuery,
     queryFn,
     select: (data: IBundle) => ({
       records: extractResources<T>(data),

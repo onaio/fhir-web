@@ -66,3 +66,16 @@ export const getFileNameFromCDHHeader = (CDHeader: string) => {
   const fileName = CDHeader.split('filename=')[1].split(';')[0];
   return fileName;
 };
+
+/**
+ * check if a date object is valid.
+ *
+ * @param date - date object under evaluation
+ */
+export function isValidDate(date?: Date) {
+  // Check if the provided date is a valid Date object
+  if (date) {
+    return !isNaN(new Date(date).getTime());
+  }
+  return false;
+}
