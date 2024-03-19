@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../../../mls';
+import { useTranslation } from '../../../mls';
 import {
   TableLayout,
   useTabularViewWithLocalSearch,
@@ -8,61 +8,20 @@ import {
 } from '@opensrp/react-utils';
 import { Alert, Button, Col, Divider, Row } from 'antd';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { listResourceType } from '../../../../constants';
+import { listResourceType } from '../../../constants';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { Coding, GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/models-r4';
-import { isEqual } from 'lodash';
 import { RbacCheck } from '@opensrp/rbac';
 import { Link, useHistory } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
+import { donorCharacteristicCoding, getCharacteristicWithCoding, groupResourceType, inventoryGroupCoding, poNumberIdentifierCoding, productCoding, sectionCharacteristicCoding, quantityCharacteristicCoding } from '@opensrp/fhir-helpers';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
   locationId: string;
 }
 
-// TODO - not accurate
-const poNumberIdentifierCoding = {
-  system: 'http://smartregister.org/',
-  code: '78991122',
-  display: 'Supply Inventory',
-};
 
-// TODO - centralize this declarations
-const sectionCharacteristicCoding = {
-  system: 'http://smartregister.org/',
-  code: '98734231',
-  display: 'Unicef Section',
-};
-
-const donorCharacteristicCoding = {
-  system: 'http://smartregister.org/',
-  code: '45647484',
-  display: 'Donor',
-};
-
-// TODO - move to fhir utils
-/**
- * finds a characteristic that has the given coding as one of its characteristic.codings
- *
- * @param characteristics - group characteristic
- * @param coding - coding to test for
- */
-export function getCharacteristicWithCoding(
-  characteristics: GroupCharacteristic[],
-  coding: Coding
-) {
-  for (const characteristic of characteristics) {
-    const codings = characteristic.code.coding ?? [];
-    for (const thisCoding of codings) {
-      if (isEqual(thisCoding, coding)) {
-        return characteristic;
-      }
-    }
-  }
-}
-
-/**
+/** Returns an object that can be easily consumed that represents an inventory resource
  * @param group
  */
 function parseInventoryGroup(group: IGroup) {
@@ -80,7 +39,6 @@ function parseInventoryGroup(group: IGroup) {
   const productReference = firstMember?.entity.reference;
   const startDate = firstMember?.period?.start as string | undefined;
   const endDate = firstMember?.period?.end as string | undefined;
-  const quantity = 1; // TODO - fix
   const poNumberIdentifier = identifier?.filter((id) => {
     return (id.type?.coding ?? []).indexOf(poNumberIdentifierCoding);
   });
@@ -94,9 +52,11 @@ function parseInventoryGroup(group: IGroup) {
     donorCharacteristicCoding
   );
 
+  const quantityCharacteristic = getCharacteristicWithCoding(characteristic ?? [], quantityCharacteristicCoding)
+
   return {
     productReference,
-    quantity,
+    quantity: quantityCharacteristic?.valueQuantity?.value,
     poNumber: poNumberIdentifier?.[0]?.value,
     deliveryDate: sanitizeDate(startDate),
     accountabilityEndDate: sanitizeDate(endDate),
@@ -105,8 +65,8 @@ function parseInventoryGroup(group: IGroup) {
   };
 }
 
-/**
- * @param group
+/** extracts required fields from a group product catalogue resource
+ * @param group - group resource to be parsed
  */
 function parseProductGroup(group: IGroup) {
   const { name, identifier } = group;
@@ -122,36 +82,22 @@ function parseProductGroup(group: IGroup) {
 
 type TableData = ReturnType<typeof parseInventoryGroup> & ReturnType<typeof parseProductGroup>;
 
-/**
- * @param res
+/** checks if Group resource has a coding that identifies it as an inventory
+ * @param res - group resource to be checked
  */
 function isInventory(res: IGroup) {
-  // TODO move to constants and magic strings
-  const inventoryGroupCoding = {
-    system: 'http://smartregister.org/',
-    code: '78991122',
-    display: 'Supply Inventory',
-  };
   return (res.code?.coding ?? []).indexOf(inventoryGroupCoding) !== -1;
 }
 
-/**
- * @param group
+/** checks if Group resource has a coding that identifies is as a product 
+ * @param group - group resource to be checked
  */
 function isProduct(group: IGroup) {
-  // TODO move to constants and magic strings
-  const snomedCodeSystem = 'http://snomed.info/sct';
-  const supplyMgSnomedCode = '386452003';
-  const productCoding = {
-    system: snomedCodeSystem,
-    code: supplyMgSnomedCode,
-    display: 'Supply management',
-  };
   return (group.code?.coding ?? []).indexOf(productCoding) !== -1;
 }
 
-/**
- * @param bundleResponse
+/** A data mapper that generates table data source from bundle response that fetches service point inventory
+ * @param bundleResponse - api response
  */
 function dataTransformer(bundleResponse: IBundle) {
   const entry = (bundleResponse.entry ?? []).map((x) => x.resource) as IGroup[];
@@ -175,7 +121,7 @@ function dataTransformer(bundleResponse: IBundle) {
       const thisResource = resource as IGroup;
       const tableDataEntry = parseProductGroup(thisResource);
       // todo - magic string
-      const productReference = `${'Group'}/${thisResource.id}`;
+      const productReference = `${groupResourceType}/${thisResource.id}`;
       if (!tableDataByProductRef[productReference]) {
         tableDataByProductRef[productReference] = tableDataEntry;
       }
@@ -188,19 +134,17 @@ function dataTransformer(bundleResponse: IBundle) {
   return Object.values(tableDataByProductRef as Record<string, TableData>);
 }
 
-/**
- * @param obj
- * @param search
+/** filter to implement custom search
+ * @param obj - obj to filter
+ * @param search - search string
  */
 function matchesSearch(obj: any, search: string) {
   return obj.productName.toLowerCase().includes(search.toLowerCase());
 }
 
-export const InventoryView = ({ fhirBaseUrl }: InventoryViewProps) => {
+export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
   const { t } = useTranslation();
   const history = useHistory();
-
-  // TODO - migrate to react-utils.
 
   const {
     queryValues: { data, isLoading, error },
@@ -210,6 +154,7 @@ export const InventoryView = ({ fhirBaseUrl }: InventoryViewProps) => {
     fhirBaseUrl,
     listResourceType,
     {
+      subject: locationId,
       _include: 'List:item',
       '_include:recurse': 'Group:member',
     },
@@ -218,7 +163,6 @@ export const InventoryView = ({ fhirBaseUrl }: InventoryViewProps) => {
   );
 
   if (error && !data) {
-    // TODO - change string
     return <Alert type="error">{t('An error occurred while fetching inventory')}</Alert>;
   }
 
@@ -305,12 +249,12 @@ export const InventoryView = ({ fhirBaseUrl }: InventoryViewProps) => {
   };
 
   return (
-    <Row className="list-view">
-      <Col>
+    <Row data-testid="inventory-tab" className="list-view">
+      <Col style={{ width: "100%" }}>
         <div className="main-content__header">
           <SearchForm data-testid="search-form" {...searchFormProps} />
           <RbacCheck permissions={['Group.create']}>
-            <Button type="primary" onClick={() => history.push('#')}>
+            <Button type="primary" disabled onClick={() => history.push('#')}>
               <PlusOutlined />
               {t('Add Inventory')}
             </Button>

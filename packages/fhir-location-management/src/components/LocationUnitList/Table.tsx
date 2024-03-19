@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Dropdown } from 'antd';
+import {  Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -20,11 +20,9 @@ export interface TableData {
 
 export interface Props {
   data: TableData[];
-  onViewDetails?: (row: TableData) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails } = props;
   const { t } = useTranslation();
   const columns: Column<TableData>[] = [
     {

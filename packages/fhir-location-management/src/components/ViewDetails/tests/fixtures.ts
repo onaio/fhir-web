@@ -1,3 +1,33 @@
+export const centralProvinceLoc = {
+	"resourceType": "Location",
+	"id": "d9d7aa7b-7488-48e7-bae8-d8ac5bd09334",
+	"meta": {
+		"versionId": "1",
+		"lastUpdated": "2023-12-01T07:44:56.087+00:00",
+		"source": "#9991af7e3e351524"
+	},
+	"identifier": [
+		{
+			"use": "official",
+			"value": "0b91d619-c6d0-4f6e-adcf-d570f0e70313"
+		}
+	],
+	"status": "active",
+	"name": "Central Province",
+	"physicalType": {
+		"coding": [
+			{
+				"system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+				"code": "jdn",
+				"display": "Jurisdiction"
+			}
+		]
+	},
+	"partOf": {
+		"reference": "Location/fe9e549b-a427-4db6-aad9-edade11b6e6a",
+		"display": "True Kenya"
+	}
+}
 export const kiambuCountyInclude = {
 	"resourceType": "Bundle",
 	"id": "8502b489-afdf-4373-a1c3-4376741a4f4a",
@@ -51,36 +81,7 @@ export const kiambuCountyInclude = {
 		},
 		{
 			"fullUrl": "https://fhir.labs.smartregister.org/fhir/Location/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334",
-			"resource": {
-				"resourceType": "Location",
-				"id": "d9d7aa7b-7488-48e7-bae8-d8ac5bd09334",
-				"meta": {
-					"versionId": "1",
-					"lastUpdated": "2023-12-01T07:44:56.087+00:00",
-					"source": "#9991af7e3e351524"
-				},
-				"identifier": [
-					{
-						"use": "official",
-						"value": "0b91d619-c6d0-4f6e-adcf-d570f0e70313"
-					}
-				],
-				"status": "active",
-				"name": "Central Province",
-				"physicalType": {
-					"coding": [
-						{
-							"system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
-							"code": "jdn",
-							"display": "Jurisdiction"
-						}
-					]
-				},
-				"partOf": {
-					"reference": "Location/fe9e549b-a427-4db6-aad9-edade11b6e6a",
-					"display": "True Kenya"
-				}
-			},
+			"resource": centralProvinceLoc,
 			"search": {
 				"mode": "include"
 			}

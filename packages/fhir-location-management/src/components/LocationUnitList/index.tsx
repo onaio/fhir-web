@@ -4,7 +4,6 @@ import { get } from 'lodash';
 import { Row, Col, Button, Spin, Alert } from 'antd';
 import { PageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
-import { LocationUnitDetail } from '../LocationUnitDetail';
 import { useHistory } from 'react-router-dom';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { URL_LOCATION_UNIT_ADD } from '../../constants';
@@ -64,7 +63,6 @@ export function parseTableData(hierarchy: TreeNode[]) {
 
 export const LocationUnitList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
   const { fhirBaseURL, fhirRootLocationId } = props;
-  const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -146,7 +144,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               }}
             />
           </Col>
-          <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
+          <Col className="bg-white p-3 border-left">
             <div className="mb-3 d-flex justify-content-between p-3">
               <h6 className="mt-4">
                 {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
@@ -174,9 +172,6 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
             <div className="bg-white p-3">
               <Table
                 data={tableDispData}
-                onViewDetails={async (row) => {
-                  setDetailId(row.id);
-                }}
               />
             </div>
           </Col>

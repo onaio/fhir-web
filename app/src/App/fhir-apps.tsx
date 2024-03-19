@@ -82,7 +82,7 @@ import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
   URL_LOCATION_VIEW_DETAILS,
-  ViewDetailsV2,
+  ViewDetails,
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
 } from '@opensrp/fhir-location-management';
@@ -399,7 +399,7 @@ const FHIRApps = () => {
         exact
         path={`${URL_LOCATION_VIEW_DETAILS}/:id`}
         permissions={['Location.read']}
-        component={ViewDetailsV2}
+        component={ViewDetails}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

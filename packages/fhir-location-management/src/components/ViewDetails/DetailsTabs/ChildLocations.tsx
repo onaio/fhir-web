@@ -1,8 +1,8 @@
 import React from 'react';
-import { useTranslation } from '../../../../mls';
+import { useTranslation } from '../../../mls';
 import { TableLayout, useSimpleTabularView, Column, SearchForm } from '@opensrp/react-utils';
 import { Alert, Button, Col, Row } from 'antd';
-import { locationResourceType } from '../../../../constants';
+import { URL_LOCATION_UNIT_ADD, locationResourceType, parentIdQueryParam } from '../../../constants';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { get } from 'lodash';
 import { RbacCheck } from '@opensrp/rbac';
@@ -18,16 +18,24 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
   const { t } = useTranslation();
   const history = useHistory();
 
+  function searchParams(search: string | null) {
+    let searchParams = {}
+    if (search) {
+      searchParams = { "name:contains": search }
+    }
+    return {
+      ...searchParams,
+      partof: locationId,
+    }
+  }
+
   const {
-    queryValues: { data, isFetching, isLoading, error, refetch },
+    queryValues: { data, isLoading, error },
     tablePaginationProps,
     searchFormProps,
-  } = useSimpleTabularView<ILocation>(fhirBaseUrl, locationResourceType, {
-    partof: locationId,
-  });
+  } = useSimpleTabularView<ILocation>(fhirBaseUrl, locationResourceType, searchParams);
 
   if (error && !data) {
-    // TODO - change string
     return <Alert type="error">{t('An error occurred while fetching child locations')}</Alert>;
   }
 
@@ -38,10 +46,6 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
     {
       title: t('Name'),
       dataIndex: 'name',
-    },
-    {
-      title: t('Parent'),
-      dataIndex: 'partOf' as const,
     },
     {
       title: t('Physical Type'),
@@ -62,15 +66,24 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
   };
 
   return (
-    <Row className="list-view">
-      <Col>
+    <Row data-testid="child-location-tab" className="list-view">
+      <Col style={{ width: "100%" }}>
         <div className="main-content__header">
           <SearchForm data-testid="search-form" {...searchFormProps} />
           <RbacCheck permissions={['Location.create']}>
-            <Button type="primary" onClick={() => history.push('#')}>
-              <PlusOutlined />
-              {t('Add Location')}
-            </Button>
+            <div>
+              <Button
+                type="primary"
+                onClick={() => {
+                  const queryParams = { [parentIdQueryParam]: locationId };
+                  const searchString = new URLSearchParams(queryParams).toString();
+                  history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
+                }}
+              >
+                <PlusOutlined />
+                {t('Add Location Unit')}
+              </Button>
+            </div>
           </RbacCheck>
         </div>
         <TableLayout {...tableProps} />

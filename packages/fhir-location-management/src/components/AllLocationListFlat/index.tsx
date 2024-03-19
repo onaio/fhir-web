@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { useSimpleTabularView, NoData } from '@opensrp/react-utils';
+import { useSimpleTabularView, NoData, searchQuery } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import {
   locationResourceType,
   URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_VIEW_DETAILS,
 } from '../../constants';
 import { BrokenPage, TableLayout, PageHeader, SearchForm } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
@@ -65,15 +66,15 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
 
   type TableData = typeof tableData[0];
 
-  const getItems = (_: TableData): MenuProps['items'] => {
+  const getItems = (record: TableData): MenuProps['items'] => {
     // Todo: replace _ above when handling onClick
     return [
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${record.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];
@@ -137,7 +138,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
 
   const getTableLocale = () => {
     const urlQuery = history.location.search;
-    const nameSearchActive = urlQuery.includes('search=');
+    const nameSearchActive = urlQuery.includes(`${searchQuery}=`);
     if (!tableData.length && (!isFetching || !isLoading)) {
       const description = nameSearchActive
         ? ''
