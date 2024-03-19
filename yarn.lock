@@ -3907,6 +3907,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@opensrp/fhir-helpers@workspace:^, @opensrp/fhir-helpers@workspace:packages/fhir-helpers":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/fhir-helpers@workspace:packages/fhir-helpers"
+  dependencies:
+    lodash: ^4.17.21
+  languageName: unknown
+  linkType: soft
+
 "@opensrp/fhir-location-management@0.0.1, @opensrp/fhir-location-management@^0.0.1, @opensrp/fhir-location-management@workspace:packages/fhir-location-management":
   version: 0.0.0-use.local
   resolution: "@opensrp/fhir-location-management@workspace:packages/fhir-location-management"
@@ -3915,6 +3923,7 @@ __metadata:
     "@onaio/redux-reducer-registry": ^0.0.9
     "@onaio/session-reducer": 0.0.12
     "@onaio/utils": ^0.0.1
+    "@opensrp/fhir-helpers": "workspace:^"
     "@opensrp/notifications": ^0.0.5
     "@opensrp/pkg-config": ^0.0.9
     "@opensrp/rbac": "workspace:^"
