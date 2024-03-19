@@ -29,9 +29,9 @@ export interface CommonGroupFormFields {
   [deliveryDate]: Date;
   [accountabilityEndDate]: Date;
   [expiryDate]: Date;
-  [serialNumber]: number;
-  [PONumber]: number;
-  [donor]: string;
+  [serialNumber]: string;
+  [PONumber]: string;
+  [donor]?: string;
   [unicefSection]: string;
   [product]: string;
 }
