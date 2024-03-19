@@ -22,8 +22,22 @@ import { GroupFormFields } from './types';
 import { GroupMember } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupMember';
 import { v4 } from 'uuid';
 import { Dayjs } from 'dayjs';
-import type { TFunction } from '@opensrp/i18n';
+import { TFunction } from '@opensrp/i18n';
 import { Rule } from 'rc-field-form/lib/interface';
+import { attractiveCharacteristicCode } from '../../helpers/utils';
+import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+import { ListEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/listEntry';
+
+const codeSystem = 'http://smartregister.org/codes';
+const unicefCharacteristicCode = '98734231';
+const donorCharacteristicCode = '45981276';
+const quantityCharacteristicCode = '33467722';
+const supplyInventoryCode = '78991122';
+const poNumberDisplay = 'PO Number';
+const poNumberCode = 'PONUM';
+const serialNumberDisplay = 'Serial Number';
+const serialNumberCode = 'SERNUM';
 
 /**
  * Check if date in past
@@ -83,10 +97,15 @@ export function getValuesetSelectOptions<TData extends IValueSet>(data: TData) {
  */
 export const projectOptions = (data: IBundle) => {
   const productsList = getResourcesFromBundle<IGroup>(data);
-  const options: DefaultOptionType[] = productsList.map((prod: IGroup) => ({
-    value: prod.id,
-    label: prod.name,
-  }));
+  const options: DefaultOptionType[] = productsList.map((prod: IGroup) => {
+    const attractive = prod.characteristic?.some(
+      (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
+    );
+    return {
+      value: JSON.stringify({ id: prod.id, attractive }),
+      label: prod.name,
+    };
+  });
   return options;
 };
 
@@ -99,14 +118,16 @@ export const projectOptions = (data: IBundle) => {
  * @returns returns group member
  */
 const getMember = (productId: string, startDate: Date, endDate: Date): GroupMember[] => {
+  const startDateToString = new Date(startDate).toISOString();
+  const endDateToString = new Date(endDate).toISOString();
   return [
     {
       entity: {
         reference: `Group/${productId}`,
       },
       period: {
-        start: startDate,
-        end: endDate,
+        start: startDateToString as any,
+        end: endDateToString as any,
       },
       inactive: false,
     },
@@ -118,16 +139,21 @@ const getMember = (productId: string, startDate: Date, endDate: Date): GroupMemb
  *
  * @param unicefSection - selected unicef section
  * @param donor - selected donor
+ * @param quantity - product quantity
  * @returns returns characteristivs
  */
-const generateCharacteristics = (unicefSection: ValueSetConcept, donor: ValueSetConcept) => {
-  return [
+const generateCharacteristics = (
+  unicefSection: ValueSetConcept,
+  donor?: ValueSetConcept,
+  quantity?: number
+): GroupCharacteristic[] => {
+  const characteristics: GroupCharacteristic[] = [
     {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
-            code: '98734231',
+            system: codeSystem,
+            code: unicefCharacteristicCode,
             display: 'Unicef Section',
           },
         ],
@@ -137,12 +163,14 @@ const generateCharacteristics = (unicefSection: ValueSetConcept, donor: ValueSet
         text: unicefSection.display,
       },
     },
-    {
+  ];
+  if (donor) {
+    characteristics.push({
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
-            code: '45647484',
+            system: codeSystem,
+            code: donorCharacteristicCode,
             display: 'Donor',
           },
         ],
@@ -151,7 +179,63 @@ const generateCharacteristics = (unicefSection: ValueSetConcept, donor: ValueSet
         coding: [donor],
         text: donor.display,
       },
+    });
+  }
+  if (quantity) {
+    characteristics.push({
+      code: {
+        coding: [
+          {
+            system: codeSystem,
+            code: quantityCharacteristicCode,
+            display: 'Quantity ',
+          },
+        ],
+      },
+      valueQuantity: { value: quantity },
+    });
+  }
+  return characteristics;
+};
+
+/**
+ * get identifier data for group resource
+ *
+ * @param poId - Po number
+ * @param serialId - serial number
+ * @returns returns group identifier
+ */
+const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
+  return [
+    {
+      use: IdentifierUseCodes.SECONDARY,
+      type: {
+        coding: [
+          {
+            system: codeSystem,
+            code: poNumberCode,
+            display: poNumberDisplay,
+          },
+        ],
+        text: poNumberDisplay,
+      },
+      value: poId,
     },
+    {
+      use: IdentifierUseCodes.OFFICIAL,
+      type: {
+        coding: [
+          {
+            system: codeSystem,
+            code: serialNumberCode,
+            display: serialNumberDisplay,
+          },
+        ],
+        text: serialNumberDisplay,
+      },
+      value: serialId,
+    },
+    { use: IdentifierUseCodes.USUAL, value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' },
   ];
 };
 
@@ -162,13 +246,24 @@ const generateCharacteristics = (unicefSection: ValueSetConcept, donor: ValueSet
  * @returns returns group resource payload
  */
 export const getLocationInventoryPayload = (values: GroupFormFields): IGroup => {
-  const donor = JSON.parse(values.donor);
+  const donor = values.donor ? JSON.parse(values.donor) : values.donor;
   const unicefSection = JSON.parse(values.unicefSection);
+  const product = JSON.parse(values.product);
   const payload: IGroup = {
     resourceType: groupResourceType,
     id: values.id || v4(),
-    member: getMember(values.product, values.deliveryDate, values.accountabilityEndDate),
+    identifier: generateIdentifier(values.poNumber, values.serialNumber),
+    member: getMember(product.id, values.deliveryDate, values.accountabilityEndDate),
     characteristic: generateCharacteristics(unicefSection, donor),
+    code: {
+      coding: [
+        {
+          system: codeSystem,
+          code: supplyInventoryCode,
+          display: 'Supply Inventory',
+        },
+      ],
+    },
   };
   if (values.active) payload.active = values.active;
   if (values.actual) payload.actual = values.actual;
@@ -199,11 +294,23 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
   return serve.read(listId).catch((err) => {
     if (err.statusCode === 404) {
-      const listResource = createSupplyManagementList(listId);
-      return serve.update(listResource);
+      return createList(baseUrl, listId);
     }
     throw err;
   });
+}
+
+
+/**
+ * Gets list resource for given id, create it if it does not exist
+ *
+ * @param baseUrl - api base url
+ * @param listId - list id
+ */
+export async function createList(baseUrl: string, listId: string) {
+  const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
+  const listResource = createSupplyManagementList(listId);
+  return serve.update(listResource);
 }
 
 /**
@@ -237,7 +344,7 @@ export const updateListReferencesFactory =
  *
  * @param id - externally defined id that will be the id of the new list resource
  */
-export function createSupplyManagementList(id: string): IList {
+export function createSupplyManagementList(id: string, entries?:ListEntry[]): IList {
   return {
     resourceType: listResourceType,
     id: id,
@@ -260,7 +367,7 @@ export function createSupplyManagementList(id: string): IList {
       ],
       text: 'Supply Chain Commodity',
     },
-    entry: [],
+    entry: entries || [],
   };
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, DatePicker, Space, Switch, InputNumber } from 'antd';
+import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import { SelectProps } from 'antd/lib/select';
 import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
@@ -78,6 +78,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
   const { mutate, isLoading } = useMutation(
     (values: GroupFormFields) => {
       const payload = getLocationInventoryPayload(values);
+      console.log('payload: ', payload);
       return postLocationInventory(fhirBaseURL, values);
     },
     {
@@ -197,7 +198,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={serialNumber}
         label={t('Serial number')}
       >
-        <InputNumber placeholder={t('Serial number')} style={{ width: '100%' }} />
+        <Input placeholder={t('Serial number')} />
       </FormItem>
 
       <AsyncSelect {...donorSelectProps} />
@@ -208,7 +209,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={PONumber}
         label={t('PO number')}
       >
-        <InputNumber placeholder={t('PO number')} style={{ width: '100%' }} />
+        <Input placeholder={t('PO number')} />
       </FormItem>
 
       {/* start hidden fields */}
