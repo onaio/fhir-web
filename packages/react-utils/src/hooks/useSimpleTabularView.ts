@@ -1,5 +1,4 @@
 import { ChangeEvent, useCallback } from 'react';
-import { FHIRServiceClass } from '../helpers/dataLoaders';
 import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
@@ -12,18 +11,13 @@ import {
   getNextUrlOnSearch,
   getNumberParam,
   getStringParam,
+  loadResources,
   pageQuery,
   pageSizeQuery,
   searchQuery,
   startingPage,
   startingPageSize,
 } from './utils';
-
-export interface FhirApiFilter {
-  page: number;
-  pageSize: number;
-  search: string | null;
-}
 
 export type ExtraParams = URLParams | ((search: string | null) => URLParams);
 
@@ -34,50 +28,6 @@ const defaultGetExtraParams = (search: string | null) => {
     return { 'name:contains': search };
   }
   return {};
-};
-
-/**
- * Unified function that gets a list of FHIR resources from a FHIR hapi server
- *
- * @param baseUrl - base url
- * @param resourceType - resource type as endpoint
- * @param params - our params
- * @param extraParams - any extra user-defined params
- */
-const loadResources = async (
-  baseUrl: string,
-  resourceType: string,
-  params: FhirApiFilter,
-  extraParams: ExtraParams
-) => {
-  const { page, pageSize, search } = params;
-  let filterParams: URLParams = {};
-
-  let otherParams = extraParams;
-  if (typeof extraParams === 'function') {
-    otherParams = extraParams(search);
-  }
-
-  filterParams = {
-    _total: 'accurate',
-    ...filterParams,
-    ...otherParams,
-    _getpagesoffset: (page - 1) * pageSize,
-    _count: pageSize,
-  };
-  const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
-  const res = await service.list(filterParams);
-  if (res.total === undefined) {
-    // patient endpoint does not include total after _search response like other resource endpoints do
-    const countFilter = {
-      ...filterParams,
-      _summary: 'count',
-    };
-    const { total } = await service.list(countFilter);
-    res.total = total;
-    return res;
-  }
-  return res;
 };
 
 /**
@@ -105,19 +55,30 @@ export function useSimpleTabularView<T extends Resource>(
     (getConfig('defaultTablesPageSize') as number | undefined) ?? startingPageSize;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
 
-  type TRQuery = [string, number, number, string, URLParams];
+  type TRQuery = [string, URLParams];
   type QueryKeyType = { queryKey: TRQuery };
-  const otherParams = typeof extraParams === 'function' ? extraParams(search) : extraParams;
+
+  // curate filter search params
+  let otherParams: URLParams =
+    typeof extraParams === 'function' ? extraParams(search) : extraParams;
+  otherParams = {
+    ...otherParams,
+    _total: 'accurate',
+    _getpagesoffset: (page - 1) * pageSize,
+    _count: pageSize,
+  };
 
   const queryFn = useCallback(
-    async ({ queryKey: [_, page, pageSize, search, otherParams] }: QueryKeyType) => {
-      return loadResources(fhirBaseUrl, resourceType, { page, pageSize, search }, otherParams);
+    async ({ queryKey: [_, otherParams] }: QueryKeyType) => {
+      return loadResources(fhirBaseUrl, resourceType, otherParams).then((res) => {
+        return res;
+      });
     },
     [fhirBaseUrl, resourceType]
   );
 
   const rQuery = {
-    queryKey: [resourceType, page, pageSize, search, otherParams] as TRQuery,
+    queryKey: [resourceType, otherParams] as TRQuery,
     queryFn,
     select: (data: IBundle) => ({
       records: extractResources<T>(data),

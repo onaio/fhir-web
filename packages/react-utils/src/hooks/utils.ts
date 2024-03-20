@@ -1,6 +1,9 @@
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
+import { URLParams } from 'opensrp-server-service/dist/types';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { FHIRServiceClass } from '../helpers/dataLoaders';
 
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
@@ -81,4 +84,27 @@ export const matchesOnName = <T extends IResource>(obj: T, search: string) => {
     return false;
   }
   return name.toLowerCase().includes(search.toLowerCase());
+};
+
+/**
+ * Unified function that gets a list of FHIR resources from a FHIR hapi server
+ *
+ * @param baseUrl - base url
+ * @param resourceType - resource type as endpoint
+ * @param params - our params
+ */
+export const loadResources = async (baseUrl: string, resourceType: string, params: URLParams) => {
+  const service = new FHIRServiceClass<IBundle>(baseUrl, resourceType);
+  const res = await service.list(params);
+  if (res.total === undefined) {
+    // patient endpoint does not include total after _search response like other resource endpoints do
+    const countFilter = {
+      ...params,
+      _summary: 'count',
+    };
+    const { total } = await service.list(countFilter);
+    res.total = total;
+    return res;
+  }
+  return res;
 };
