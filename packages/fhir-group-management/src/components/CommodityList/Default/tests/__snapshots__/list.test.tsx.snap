@@ -7,20 +7,12 @@ exports[`renders correctly when listing resources 3`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Commodity Id
-    </span>
+    Commodity Id
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      e50eb835-7827-4001-b233-e1dda721d4e8
-    </span>
+    e50eb835-7827-4001-b233-e1dda721d4e8
   </dd>
 </div>
 `;
@@ -32,20 +24,12 @@ exports[`renders correctly when listing resources 4`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+    Name
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Amoxicillin 250mg Tablets
-    </span>
+    Amoxicillin 250mg Tablets
   </dd>
 </div>
 `;
@@ -57,20 +41,12 @@ exports[`renders correctly when listing resources 5`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+    Active
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Disabled
-    </span>
+    Disabled
   </dd>
 </div>
 `;
