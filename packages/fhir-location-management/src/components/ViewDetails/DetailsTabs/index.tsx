@@ -15,45 +15,53 @@ export interface ViewDetailTabProps {
   location: ILocation;
 }
 
-/** Tabs component that shows resource records associated with a particular location
+/**
+ * Tabs component that shows resource records associated with a particular location
+ *
  * @param props - component props
  */
 export function ViewDetailsTabs(props: ViewDetailTabProps) {
   const { fhirBaseUrl, location } = props;
   const { t } = useTranslation();
-  const projectCode = getConfig("projectCode")
-  const userRole = useUserRole()
-  const {sParams, addParam} = useSearchParams()
+  const projectCode = getConfig('projectCode');
+  const userRole = useUserRole();
+  const { sParams, addParam } = useSearchParams();
 
-  const {id, physicalType} = parseLocationDetails(location)
-  const locationId = id as string
+  const { id, physicalType } = parseLocationDetails(location);
+  const locationId = id as string;
 
-  const viewDetailsQuery = "view-details"
+  const viewDetailsQuery = 'view-details';
   const locationKey = 'locations';
   const inventoryKey = 'inventory';
 
-  const defaultActiveKey = 'locations'
-  const activeKey = sParams.get(viewDetailsQuery) ?? defaultActiveKey
+  const defaultActiveKey = 'locations';
+  const activeKey = sParams.get(viewDetailsQuery) ?? defaultActiveKey;
 
   const items = [
     {
       label: t('Locations'),
       key: locationKey,
       children: <ChildLocations fhirBaseUrl={fhirBaseUrl} locationId={locationId} />,
-      enabled: userRole.hasPermissions("Location.read") && physicalType.code === PhysicalTypeCodes.JURISDICTION
+      enabled:
+        userRole.hasPermissions('Location.read') &&
+        physicalType.code === PhysicalTypeCodes.JURISDICTION,
     },
     {
       label: t('Inventory'),
       key: inventoryKey,
       children: <InventoryView fhirBaseUrl={fhirBaseUrl} locationId={locationId} />,
-      enabled: userRole.hasPermissions('Group.read') && projectCode === "eusm" && physicalType.code == PhysicalTypeCodes.BUILDING
+      enabled:
+        userRole.hasPermissions('Group.read') &&
+        projectCode === 'eusm' &&
+        physicalType.code === PhysicalTypeCodes.BUILDING,
     },
-  ].filter(item => item.enabled)
+  ].filter((item) => item.enabled);
 
   return (
     <Tabs
+      data-testid="details-tab"
       onChange={(activeKey: string) => {
-        addParam(viewDetailsQuery, activeKey)
+        addParam(viewDetailsQuery, activeKey);
       }}
       style={{ width: '100%' }}
       defaultActiveKey={activeKey}

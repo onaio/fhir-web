@@ -2,7 +2,11 @@ import React from 'react';
 import { useTranslation } from '../../../mls';
 import { TableLayout, useSimpleTabularView, Column, SearchForm } from '@opensrp/react-utils';
 import { Alert, Button, Col, Row } from 'antd';
-import { URL_LOCATION_UNIT_ADD, locationResourceType, parentIdQueryParam } from '../../../constants';
+import {
+  URL_LOCATION_UNIT_ADD,
+  locationResourceType,
+  parentIdQueryParam,
+} from '../../../constants';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { get } from 'lodash';
 import { RbacCheck } from '@opensrp/rbac';
@@ -13,22 +17,29 @@ export interface InventoryViewProps {
   fhirBaseUrl: string;
   locationId: string;
 }
+/**
+ * util to generate filter params from locationId and search values
+ *
+ * @param locationId - locationId to add to search parameters
+ */
+const searchParamsFactory = (locationId: string) => {
+  return (search: string | null) => {
+    let searchParams = {};
+    if (search) {
+      searchParams = { 'name:contains': search };
+    }
+    return {
+      ...searchParams,
+      partof: locationId,
+    };
+  };
+};
 
 export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
   const { t } = useTranslation();
   const history = useHistory();
 
-  function searchParams(search: string | null) {
-    let searchParams = {}
-    if (search) {
-      searchParams = { "name:contains": search }
-    }
-    return {
-      ...searchParams,
-      partof: locationId,
-    }
-  }
-
+  const searchParams = searchParamsFactory(locationId);
   const {
     queryValues: { data, isLoading, error },
     tablePaginationProps,
@@ -67,7 +78,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
 
   return (
     <Row data-testid="child-location-tab" className="list-view">
-      <Col style={{ width: "100%" }}>
+      <Col style={{ width: '100%' }}>
         <div className="main-content__header">
           <SearchForm data-testid="search-form" {...searchFormProps} />
           <RbacCheck permissions={['Location.create']}>
@@ -93,7 +104,9 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
 };
 
 /**
- * @param locations
+ * converts location object to a tableData entry
+ *
+ * @param locations - location object
  */
 export function parseTableData(locations: ILocation[]) {
   return locations.map((loc) => ({

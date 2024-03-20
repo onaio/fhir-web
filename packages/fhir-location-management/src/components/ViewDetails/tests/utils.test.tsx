@@ -1,38 +1,15 @@
-import React from 'react';
 import { store } from '@opensrp/store';
-import { LocationUnitList } from '../..';
 import { authenticateUser } from '@onaio/session-reducer';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import {
-  render,
-  cleanup,
-  waitForElementToBeRemoved,
-  screen,
-  within,
-  fireEvent,
-  waitFor,
-} from '@testing-library/react';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
-import { fhirHierarchy, onaOfficeSubLocation } from '../../../../ducks/tests/fixtures';
-import { Provider } from 'react-redux';
-import { RoleContext } from '@opensrp/rbac';
-import { superUserRole } from '@opensrp/react-utils';
-import { locationHierarchyResourceType } from '../../../../constants';
-import { locationResourceType } from '../../../../constants';
-import userEvent from '@testing-library/user-event';
-import { rootlocationFixture } from '../../../RootLocationWizard/tests/fixtures';
-import * as notifications from '@opensrp/notifications';
-import { getParentLocations } from '../index';
+import { cleanup } from '@testing-library/react';
+import { locationResourceType } from '@opensrp/fhir-helpers';
 import {
   centralProvinceInclude,
   kiambuCountyInclude,
   rootFhirLocationInclude,
   trueKenyaInclude,
 } from './fixtures';
-
-const history = createBrowserHistory();
+import { getLocationsAncestors } from '../utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -53,31 +30,6 @@ jest.setTimeout(10000);
 nock.disableNetConnect();
 
 describe('location-management/src/components/LocationUnitList', () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        // react-query will retry failed request, this can cause some weird
-        // behavior when testing a rejected request
-        retry: false,
-        cacheTime: 0,
-      },
-    },
-  });
-
-  const AppWrapper = (props) => {
-    return (
-      <Provider store={store}>
-        <RoleContext.Provider value={superUserRole}>
-          <Router history={history}>
-            <QueryClientProvider client={queryClient}>
-              <LocationUnitList {...props} />
-            </QueryClientProvider>
-          </Router>
-        </RoleContext.Provider>
-      </Provider>
-    );
-  };
-
   beforeAll(() => {
     store.dispatch(
       authenticateUser(
@@ -108,7 +60,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       .query({ _id: trueKenyaInclude.entry[0].resource.id, _include: 'Location:partof' })
       .reply(200, trueKenyaInclude);
 
-    const response = await getParentLocations(
+    const response = await getLocationsAncestors(
       props.fhirBaseURL,
       kiambuCountyInclude.entry[0].resource.id
     );
@@ -133,7 +85,7 @@ describe('location-management/src/components/LocationUnitList', () => {
       .query({ _id: rootFhirLocationInclude.entry[0].resource.id, _include: 'Location:partof' })
       .reply(200, rootFhirLocationInclude);
 
-    const response = await getParentLocations(
+    const response = await getLocationsAncestors(
       props.fhirBaseURL,
       centralProvinceInclude.entry[0].resource.id
     );

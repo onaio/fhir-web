@@ -170,9 +170,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               </RbacCheck>
             </div>
             <div className="bg-white p-3">
-              <Table
-                data={tableDispData}
-              />
+              <Table data={tableDispData} />
             </div>
           </Col>
         </Row>

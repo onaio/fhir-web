@@ -13,16 +13,27 @@ import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { RbacCheck } from '@opensrp/rbac';
 import { Link, useHistory } from 'react-router-dom';
 import { PlusOutlined } from '@ant-design/icons';
-import { donorCharacteristicCoding, getCharacteristicWithCoding, groupResourceType, inventoryGroupCoding, poNumberIdentifierCoding, productCoding, sectionCharacteristicCoding, quantityCharacteristicCoding } from '@opensrp/fhir-helpers';
+import {
+  donorCharacteristicCoding,
+  getCharacteristicWithCoding,
+  groupResourceType,
+  inventoryGroupCoding,
+  poNumberIdentifierCoding,
+  productCoding,
+  sectionCharacteristicCoding,
+  quantityCharacteristicCoding,
+} from '@opensrp/fhir-helpers';
+import { hasCode } from '../utils';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
   locationId: string;
 }
 
-
-/** Returns an object that can be easily consumed that represents an inventory resource
- * @param group
+/**
+ * Returns an object that can be easily consumed that represents an inventory resource
+ *
+ * @param group - inventory group resource to be parsed
  */
 function parseInventoryGroup(group: IGroup) {
   const { member, characteristic, identifier } = group;
@@ -52,7 +63,10 @@ function parseInventoryGroup(group: IGroup) {
     donorCharacteristicCoding
   );
 
-  const quantityCharacteristic = getCharacteristicWithCoding(characteristic ?? [], quantityCharacteristicCoding)
+  const quantityCharacteristic = getCharacteristicWithCoding(
+    characteristic ?? [],
+    quantityCharacteristicCoding
+  );
 
   return {
     productReference,
@@ -65,7 +79,9 @@ function parseInventoryGroup(group: IGroup) {
   };
 }
 
-/** extracts required fields from a group product catalogue resource
+/**
+ * extracts required fields from a group product catalogue resource
+ *
  * @param group - group resource to be parsed
  */
 function parseProductGroup(group: IGroup) {
@@ -82,64 +98,73 @@ function parseProductGroup(group: IGroup) {
 
 type TableData = ReturnType<typeof parseInventoryGroup> & ReturnType<typeof parseProductGroup>;
 
-/** checks if Group resource has a coding that identifies it as an inventory
+/**
+ * checks if Group resource has a coding that identifies it as an inventory
+ *
  * @param res - group resource to be checked
  */
 function isInventory(res: IGroup) {
-  return (res.code?.coding ?? []).indexOf(inventoryGroupCoding) !== -1;
+  return hasCode(res.code?.coding ?? [], inventoryGroupCoding);
 }
 
-/** checks if Group resource has a coding that identifies is as a product 
- * @param group - group resource to be checked
+/**
+ * checks if Group resource has a coding that identifies is as a product
+ *
+ * @param res - group resource to be checked
  */
-function isProduct(group: IGroup) {
-  return (group.code?.coding ?? []).indexOf(productCoding) !== -1;
+function isProduct(res: IGroup) {
+  return hasCode(res.code?.coding ?? [], productCoding);
 }
 
-/** A data mapper that generates table data source from bundle response that fetches service point inventory
+/**
+ * A data mapper that generates table data source from bundle response that fetches service point inventory
+ *
  * @param bundleResponse - api response
  */
 function dataTransformer(bundleResponse: IBundle) {
   const entry = (bundleResponse.entry ?? []).map((x) => x.resource) as IGroup[];
-  const tableDataByProductRef: Record<string, Record<string, unknown>> = {};
+  const tableDataByProductRef: Record<string, Record<string, unknown> | undefined> = {};
 
   for (const resource of entry) {
     if (isInventory(resource)) {
       const tableDataEntry = parseInventoryGroup(resource as IGroup);
       const { productReference } = tableDataEntry;
       if (productReference) {
-        if (tableDataByProductRef[productReference]) {
+        if (tableDataByProductRef[productReference] !== undefined) {
           tableDataByProductRef[productReference] = {
             ...tableDataByProductRef[productReference],
             ...tableDataEntry,
           };
+        } else {
+          tableDataByProductRef[productReference] = tableDataEntry;
         }
-        tableDataByProductRef[productReference] = { ...tableDataEntry };
       }
     }
     if (isProduct(resource)) {
       const thisResource = resource as IGroup;
       const tableDataEntry = parseProductGroup(thisResource);
-      // todo - magic string
       const productReference = `${groupResourceType}/${thisResource.id}`;
-      if (!tableDataByProductRef[productReference]) {
+      if (tableDataByProductRef[productReference] === undefined) {
         tableDataByProductRef[productReference] = tableDataEntry;
+      } else {
+        tableDataByProductRef[productReference] = {
+          ...tableDataByProductRef[productReference],
+          ...tableDataEntry,
+        };
       }
-      tableDataByProductRef[productReference] = {
-        ...tableDataByProductRef[productReference],
-        ...tableDataEntry,
-      };
     }
   }
   return Object.values(tableDataByProductRef as Record<string, TableData>);
 }
 
-/** filter to implement custom search
+/**
+ * filter to implement custom search
+ *
  * @param obj - obj to filter
  * @param search - search string
  */
-function matchesSearch(obj: any, search: string) {
-  return obj.productName.toLowerCase().includes(search.toLowerCase());
+function matchesSearch(obj: TableData, search: string) {
+  return (obj.productName ?? '').toLowerCase().includes(search.toLowerCase());
 }
 
 export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
@@ -171,7 +196,6 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
       title: t('Product name'),
       dataIndex: 'productName' as const,
       key: 'productName' as const,
-      render: (item: TableData) => item.productName,
       sorter: (rec1: TableData, rec2: TableData) => {
         if (rec1.productName && rec2.productName) {
           if (rec1.productName > rec2.productName) {
@@ -250,7 +274,7 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
 
   return (
     <Row data-testid="inventory-tab" className="list-view">
-      <Col style={{ width: "100%" }}>
+      <Col style={{ width: '100%' }}>
         <div className="main-content__header">
           <SearchForm data-testid="search-form" {...searchFormProps} />
           <RbacCheck permissions={['Group.create']}>

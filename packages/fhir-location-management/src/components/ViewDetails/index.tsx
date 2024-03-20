@@ -1,22 +1,16 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import {
-  locationResourceType,
-} from '../../constants';
+import { locationResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
-import {
-  BrokenPage,
-  PageHeader,
-  Resource404} from '@opensrp/react-utils';
+import { BrokenPage, PageHeader, Resource404 } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { ViewDetailsTabs } from './DetailsTabs';
 import { getLocationsAncestors } from './utils';
 import { LocationPathBreadCrumb } from './LocationPathBreadCrumb';
 import { LocationDetails } from './LocationDetails';
-
 
 interface RouteParams {
   id: string;
@@ -51,9 +45,9 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     return <Resource404 />;
   }
 
-  const normalizedData = data ?? [];
+  const normalizedData = data;
   const theInterestingLoc = normalizedData[normalizedData.length - 1];
-  const pageTitle = t(`view details | {{locName}}`, { locName: theInterestingLoc.name });
+  const pageTitle = t(`View details | {{locName}}`, { locName: theInterestingLoc.name });
 
   return (
     <section className="content-section">
@@ -79,4 +73,3 @@ export const ViewDetails = (props: ViewDetailsProps) => {
     </section>
   );
 };
-

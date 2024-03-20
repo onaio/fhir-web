@@ -3,39 +3,29 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import {
-  render,
-  cleanup,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { render, cleanup, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { locationResourceType } from '@opensrp/fhir-helpers';
 import userEvent from '@testing-library/user-event';
-import {
-  centralProvinceInclude,
-  rootFhirLocationInclude,
-} from './fixtures';
+import { centralProvinceInclude, rootFhirLocationInclude } from './fixtures';
 import { centralProvinceLoc } from './fixtures';
 import { ViewDetails } from '..';
 import { createMemoryHistory } from 'history';
 import { setConfig } from '@opensrp/pkg-config';
+import { Switch, Route } from 'react-router';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
 
-
-setConfig("projectCode", "eusm");
+setConfig('projectCode', 'eusm');
 jest.setTimeout(10000);
 nock.disableNetConnect();
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
 };
-const history = createBrowserHistory();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -59,7 +49,6 @@ const AppWrapper = (props: any) => {
   );
 };
 
-
 beforeAll(() => {
   store.dispatch(
     authenticateUser(
@@ -79,25 +68,23 @@ afterEach(() => {
   cleanup();
 });
 
-
 afterAll(() => {
-  nock.enableNetConnect()
-})
-
+  nock.enableNetConnect();
+});
 
 test('renders correctly', async () => {
   const history = createMemoryHistory();
   history.push(`view/${centralProvinceLoc.id}`);
 
   nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _id: centralProvinceInclude.entry[0].resource.id, _include: 'Location:partof' })
-  .reply(200, centralProvinceInclude);
+    .get(`/${locationResourceType}/_search`)
+    .query({ _id: centralProvinceInclude.entry[0].resource.id, _include: 'Location:partof' })
+    .reply(200, centralProvinceInclude);
 
-nock(props.fhirBaseURL)
-  .get(`/${locationResourceType}/_search`)
-  .query({ _id: rootFhirLocationInclude.entry[0].resource.id, _include: 'Location:partof' })
-  .reply(200, rootFhirLocationInclude);
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/_search`)
+    .query({ _id: rootFhirLocationInclude.entry[0].resource.id, _include: 'Location:partof' })
+    .reply(200, rootFhirLocationInclude);
 
   render(
     <Router history={history}>
@@ -107,28 +94,29 @@ nock(props.fhirBaseURL)
 
   // pageTitle - confirm page has loaded.
   await waitFor(() => {
-    screen.getByTitle(/view details | Central Province/i)
-  })
+    screen.getByText(/View details | Central ProvincegeByText/i);
+  });
   // path breadcrumb
-  const navLinks = document.querySelectorAll("nav ol li")
-  for(const link of navLinks){
-    expect(link).toMatchSnapshot("breadcrumb path link")
+  const navLinks = document.querySelectorAll('nav ol li');
+  for (const link of navLinks) {
+    expect(link).toMatchSnapshot('breadcrumb path link');
   }
 
   // location details
-  const detailSection  = document.querySelector('["data-testid"=details-section')
-  expect(detailSection?.textContent).toEqual()
+  const detailSection = document.querySelector('[data-testid="details-section"]');
+  expect(detailSection?.textContent).toEqual(
+    'Central ProvinceEdit detailsID: d9d7aa7b-7488-48e7-bae8-d8ac5bd09334Version: 1Date Last Updated12/1/2023, 7:44:56 AMLocation NameCentral ProvinceStatusactivealiasLatitude & LongitudePhysical TypeJurisdictionGeometryDescription'
+  );
 
-  // view location details
-  const childLocationTab = document.querySelector('["data-testid"=child-location-tab]')!
-  expect(childLocationTab?.textContent).toEqual()
-  
+  // details tab is shown
+  screen.getByTestId('details-tab');
+
   // edit location
-  const editLocationBtn = screen.getByText(/Edit details/i)
-  userEvent.click(editLocationBtn)
-  expect(history.location.pathname).toEqual()
+  const editLocationBtn = screen.getByText(/Edit details/i);
+  userEvent.click(editLocationBtn);
+  expect(history.location.pathname).toEqual(
+    '/admin/location/unit/edit/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334'
+  );
 
   expect(nock.isDone()).toBeTruthy();
 });
-
-

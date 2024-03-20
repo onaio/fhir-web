@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Divider, Dropdown } from 'antd';
+import { Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';

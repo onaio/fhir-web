@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly: breadcrumb path link 1`] = `
+<li>
+  <span>
+    Root FHIR Location
+  </span>
+</li>
+`;
+
+exports[`renders correctly: breadcrumb path link 2`] = `
+<li
+  aria-hidden="true"
+  class="ant-breadcrumb-separator"
+>
+  &gt;
+</li>
+`;
+
+exports[`renders correctly: breadcrumb path link 3`] = `
+<li>
+  <a
+    href="/admin/location/unit/view/fe9e549b-a427-4db6-aad9-edade11b6e6a"
+  >
+    True Kenya
+  </a>
+</li>
+`;
+
+exports[`renders correctly: breadcrumb path link 4`] = `
+<li
+  aria-hidden="true"
+  class="ant-breadcrumb-separator"
+>
+  &gt;
+</li>
+`;
+
+exports[`renders correctly: breadcrumb path link 5`] = `
+<li>
+  <span>
+    Central Province
+  </span>
+</li>
+`;

@@ -1,21 +1,19 @@
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import {
-  locationResourceType,
-} from '../../constants';
+import { locationResourceType } from '../../constants';
 import {
   FHIRServiceClass,
   getObjLike,
   getResourcesFromBundle,
   isValidDate,
 } from '@opensrp/react-utils';
-import { get, reverse } from 'lodash';
+import { get, isEqual, reverse } from 'lodash';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { eusmServicePointCodeSystemUri, locationGeometryExtensionUri } from '@opensrp/fhir-helpers';
 
-
-/** fetches the location as well as all of its parent locations.
- * 
+/**
+ * fetches the location as well as all of its parent locations.
+ *
  * @param fhirBaseUrl - fhir base url.
  * @param locationId - location of interest.
  */
@@ -44,8 +42,9 @@ export async function getLocationsAncestors(fhirBaseUrl: string, locationId: str
   return rootFirstLocations;
 }
 
-/** Fetches a location and its parent at a time.
- * 
+/**
+ * Fetches a location and its parent at a time.
+ *
  * @param fhirBaseUrl - base url for the location.
  * @param locationId - id of the location of interest.
  */
@@ -73,9 +72,9 @@ async function fetchLocAndParent(fhirBaseUrl: string, locationId?: string) {
   return { child, parent };
 }
 
-
-
-/** parse a location resource into an obj for easier consumption
+/**
+ * parse a location resource into an obj for easier consumption
+ *
  * @param node - the location resource
  */
 export function parseLocationDetails(node: ILocation) {
@@ -89,7 +88,7 @@ export function parseLocationDetails(node: ILocation) {
   }
 
   const geoJSonExtens = getObjLike(extension, 'url', locationGeometryExtensionUri)[0];
-  const geoJsonExtensionData = geoJSonExtens?.valueAttachment?.data;
+  const geoJsonExtensionData = geoJSonExtens.valueAttachment?.data;
   let geometry;
   if (geoJsonExtensionData) {
     geometry = btoa(geoJsonExtensionData);
@@ -98,7 +97,11 @@ export function parseLocationDetails(node: ILocation) {
   const servicePointTypeCodings = (type?.flatMap((concept) => concept.coding) ?? []).filter(
     (x) => x !== undefined
   ) as Coding[];
-  const servicePointCode = getObjLike(servicePointTypeCodings, 'system', eusmServicePointCodeSystemUri)[0];
+  const servicePointCode = getObjLike(
+    servicePointTypeCodings,
+    'system',
+    eusmServicePointCodeSystemUri
+  )[0];
 
   return {
     identifier,
@@ -107,13 +110,25 @@ export function parseLocationDetails(node: ILocation) {
     partOf: node.partOf?.display ?? '-',
     description: description,
     status: status,
-    physicalType: { code: get(node, 'physicalType.coding.0.code'), display: get(node, 'physicalType.coding.0.display') },
+    physicalType: {
+      code: get(node, 'physicalType.coding.0.code'),
+      display: get(node, 'physicalType.coding.0.display'),
+    },
     lastUpdated: updatedLast?.toLocaleString(),
     geometry,
     longitude: position?.longitude,
     latitude: position?.latitude,
     version: meta?.versionId,
     alias,
-    servicePointType: servicePointCode?.display,
+    servicePointType: servicePointCode.display,
   };
 }
+
+export const hasCode = (codeList: Coding[], coding: Coding) => {
+  for (const code of codeList) {
+    if (isEqual(code, coding)) {
+      return true;
+    }
+  }
+  return false;
+};
