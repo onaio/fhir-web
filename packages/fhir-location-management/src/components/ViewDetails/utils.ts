@@ -88,7 +88,7 @@ export function parseLocationDetails(node: ILocation) {
   }
 
   const geoJSonExtens = getObjLike(extension, 'url', locationGeometryExtensionUri)[0];
-  const geoJsonExtensionData = geoJSonExtens.valueAttachment?.data;
+  const geoJsonExtensionData = geoJSonExtens?.valueAttachment?.data;
   let geometry;
   if (geoJsonExtensionData) {
     geometry = btoa(geoJsonExtensionData);
@@ -120,7 +120,7 @@ export function parseLocationDetails(node: ILocation) {
     latitude: position?.latitude,
     version: meta?.versionId,
     alias,
-    servicePointType: servicePointCode.display,
+    servicePointType: servicePointCode?.display,
   };
 }
 
