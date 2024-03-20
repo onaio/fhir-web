@@ -3,7 +3,6 @@ export const eusmServicePointCodeSystemUri =
   'http://smartregister.org/CodeSystem/eusm-service-point-type';
 export const snomedCodeSystemUri = 'http://snomed.info/sct';
 
-// TODO - not accurate
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,
   code: 'PONUM',
