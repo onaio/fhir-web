@@ -10,6 +10,7 @@ import { debounce } from 'lodash';
 import { getResourcesFromBundle } from '../../helpers/utils';
 import { useTranslation } from '../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
+export type { FhirApiFilter } from './utils';
 
 export type SelectOption<T extends IResource> = {
   label: string;
