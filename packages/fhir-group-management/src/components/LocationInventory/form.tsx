@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import { SelectProps } from 'antd/lib/select';
-import { AsyncSelectProps, formItemLayout, tailLayout } from '@opensrp/react-utils';
+import { AsyncSelectProps, FhirSelect, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { Dictionary } from '@onaio/utils';
@@ -39,11 +39,11 @@ import {
   getValuesetSelectOptions,
   handleDisabledFutureDates,
   handleDisabledPastDates,
-  projectOptions,
+  processProjectOptions,
   validationRulesFactory,
 } from './utils';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { GroupFormFields } from './types';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 const { Item: FormItem } = Form;
 
@@ -53,11 +53,13 @@ export interface LocationInventoryFormProps {
   disabled: string[];
   cancelUrl?: string;
   successUrl?: string;
+  editMode: boolean;
 }
 
 const defaultProps = {
   initialValues: {},
   disabled: [],
+  editMode: false,
 };
 
 const productQueryFilters = {
@@ -71,13 +73,13 @@ const productQueryFilters = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseURL, initialValues } = props;
+  const { fhirBaseURL, initialValues, editMode} = props;
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(
     (values: GroupFormFields) => {
-      const payload = getLocationInventoryPayload(values);
+      const payload = getLocationInventoryPayload(values, editMode);
       console.log('payload: ', payload);
       return postLocationInventory(fhirBaseURL, values);
     },
@@ -135,24 +137,6 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     },
   };
 
-  const projectsSelectProps: AsyncSelectProps<IBundle> = {
-    id: 'project',
-    name: product,
-    label: t('Product name'),
-    optionsGetter: projectOptions,
-    rules: validationRules[product],
-    selectProps: {
-      placeholder: t('Select product'),
-      showSearch: true,
-      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
-    },
-    useQueryParams: {
-      key: [groupResourceType],
-      queryFn: async () =>
-        new FHIRServiceClass<IBundle>(fhirBaseURL, groupResourceType).list(productQueryFilters),
-    },
-  };
-
   return (
     <Form
       requiredMark={false}
@@ -162,7 +146,15 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <AsyncSelect {...projectsSelectProps} />
+      <FormItem id="project" name={product} label={t('Product name')}>
+        <FhirSelect<IGroup>
+          baseUrl={fhirBaseURL}
+          resourceType={groupResourceType}
+          transformOption={processProjectOptions}
+          extraQueryParams={productQueryFilters}
+          showSearch={true}
+        />
+      </FormItem>
 
       <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
         <Input placeholder={t('Quantity')} type="number" />
