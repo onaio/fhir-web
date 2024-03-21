@@ -94,6 +94,7 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
+  fhirCreateEditLocationProps,
 } from './utils';
 import './App.css';
 import {
@@ -443,6 +444,7 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={ADD_LOCATION_INVENTORY}
+        {...fhirCreateEditLocationProps}
         exact
         permissions={['Group.create']}
         component={AddLocationInventory}
