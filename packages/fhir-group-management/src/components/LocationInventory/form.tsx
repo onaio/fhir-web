@@ -4,7 +4,6 @@ import { SelectProps } from 'antd/lib/select';
 import { AsyncSelectProps, FhirSelect, formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
-import { Dictionary } from '@onaio/utils';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../helpers/utils';
 import {
   sendSuccessNotification,
@@ -39,11 +38,13 @@ import {
   getValuesetSelectOptions,
   handleDisabledFutureDates,
   handleDisabledPastDates,
+  postLocationInventory,
   processProjectOptions,
   validationRulesFactory,
 } from './utils';
 import { GroupFormFields } from './types';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { useHistory } from 'react-router';
 
 const { Item: FormItem } = Form;
 
@@ -54,6 +55,7 @@ export interface LocationInventoryFormProps {
   cancelUrl?: string;
   successUrl?: string;
   editMode: boolean;
+  listResourceId: string;
 }
 
 const defaultProps = {
@@ -73,15 +75,15 @@ const productQueryFilters = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseURL, initialValues, editMode} = props;
+  const { fhirBaseURL, initialValues, editMode, listResourceId } = props;
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const history = useHistory();
 
   const { mutate, isLoading } = useMutation(
-    (values: GroupFormFields) => {
+    async (values: GroupFormFields) => {
       const payload = getLocationInventoryPayload(values, editMode);
-      console.log('payload: ', payload);
-      return postLocationInventory(fhirBaseURL, values);
+      return postLocationInventory(fhirBaseURL, payload, editMode, listResourceId);
     },
     {
       onError: (error: Error) => {
@@ -153,6 +155,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
           transformOption={processProjectOptions}
           extraQueryParams={productQueryFilters}
           showSearch={true}
+          placeholder={t('Select product')}
         />
       </FormItem>
 
@@ -190,7 +193,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={serialNumber}
         label={t('Serial number')}
       >
-        <Input placeholder={t('Serial number')} />
+        <Input type="number" placeholder={t('Serial number')} />
       </FormItem>
 
       <AsyncSelect {...donorSelectProps} />
@@ -201,7 +204,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={PONumber}
         label={t('PO number')}
       >
-        <Input placeholder={t('PO number')} />
+        <Input type="number" placeholder={t('PO number')} />
       </FormItem>
 
       {/* start hidden fields */}
@@ -227,11 +230,12 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
       <FormItem {...tailLayout}>
         <Space>
-          {/* todo: might remove cancel btn */}
           <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
             {isLoading ? t('Saving') : t('save')}
           </Button>
-          <Button id="cancel-button">{t('Cancel')}</Button>
+          <Button id="cancel-button" onClick={() => history.goBack()}>
+            {t('Cancel')}
+          </Button>
         </Space>
       </FormItem>
     </Form>
@@ -241,14 +245,3 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 AddLocationInventoryForm.defaultProps = defaultProps;
 
 export { AddLocationInventoryForm };
-
-// to remove
-/**
- * @param fhirBaseUrl - base url
- * @param values - values
- */
-function postLocationInventory(fhirBaseUrl: string, values: Dictionary): Promise<unknown> {
-  console.log(values);
-  console.log(fhirBaseUrl);
-  throw new Error('Function not implemented.');
-}
