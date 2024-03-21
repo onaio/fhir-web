@@ -111,12 +111,18 @@ export const processProjectOptions = (project: IGroup) => {
  * @param productId - selected products id
  * @param startDate - selected start date
  * @param endDate - selected end date
+ * @param expiryDate - selected expiry date
  * @returns returns group member
  */
-const getMember = (productId: string, startDate: Date, endDate: Date, expiryDate?: Date): GroupMember[] => {
+const getMember = (
+  productId: string,
+  startDate: Date,
+  endDate: Date,
+  expiryDate?: Date
+): GroupMember[] => {
   const startDateToString = new Date(startDate).toISOString();
   const endDateToString = new Date(endDate).toISOString();
-  const expiryDateToString = expiryDate? new Date(expiryDate).toISOString : '';
+  const expiryDateToString = expiryDate ? new Date(expiryDate).toISOString : '';
   return [
     {
       entity: {
@@ -231,7 +237,7 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
         text: serialNumberDisplay,
       },
       value: serialId,
-    }
+    },
   ];
 };
 
@@ -239,11 +245,12 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
  * get payload data for group resource
  *
  * @param values - form values
+ * @param editMode - editing form?
  * @returns returns group resource payload
  */
-export const getLocationInventoryPayload = (values: GroupFormFields, editMode:boolean): IGroup => {
+export const getLocationInventoryPayload = (values: GroupFormFields, editMode: boolean): IGroup => {
   const donor = values.donor ? JSON.parse(values.donor) : values.donor;
-  const unicefSection = JSON.parse(values.unicefSection);
+  const unicefSection = values.unicefSection ? JSON.parse(values.unicefSection) : {};
   const product = JSON.parse(values.product);
   const payload: IGroup = {
     resourceType: groupResourceType,
@@ -253,7 +260,7 @@ export const getLocationInventoryPayload = (values: GroupFormFields, editMode:bo
     type: 'substance',
     identifier: generateIdentifier(values.poNumber, values.serialNumber),
     member: getMember(product.id, values.deliveryDate, values.accountabilityEndDate),
-    characteristic: generateCharacteristics(unicefSection, donor),
+    characteristic: generateCharacteristics(unicefSection, donor, values.quantity),
     code: {
       coding: [
         {
@@ -264,7 +271,7 @@ export const getLocationInventoryPayload = (values: GroupFormFields, editMode:bo
       ],
     },
   };
-  if(editMode) {
+  if (editMode) {
     if (values.active) payload.active = values.active;
     if (values.actual) payload.actual = values.actual;
     if (values.type) payload.type = values.type;
@@ -294,7 +301,7 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
   return serve.read(listId).catch((err) => {
     if (err.statusCode === 404) {
-      return createList(baseUrl, listId);
+      return createListResource(baseUrl, listId);
     }
     throw err;
   });
@@ -305,11 +312,40 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
  *
  * @param baseUrl - api base url
  * @param listId - list id
+ * @param entries - resource entries
  */
-export async function createList(baseUrl: string, listId: string) {
+export async function createListResource(baseUrl: string, listId: string, entries?: ListEntry[]) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
-  const listResource = createSupplyManagementList(listId);
+  const listResource = createSupplyManagementList(listId, entries);
   return serve.update(listResource);
+}
+
+/**
+ * save location resource and it's list resources
+ *
+ * @param baseUrl - api base url
+ * @param payload - location inventory payload
+ * @param editMode - editing data?
+ * @param listResourceId - env location list resource uuid
+ */
+export async function postLocationInventory(
+  baseUrl: string,
+  payload: IGroup,
+  editMode: boolean,
+  listResourceId: string
+) {
+  const groupResource = await postPutGroup(baseUrl, payload);
+  if (!editMode) {
+    const groupResourceId = groupResource.id as string;
+    const listId = v4();
+    const entries = [{ item: { reference: `${groupResourceType}/${groupResourceId}` } }];
+    await createListResource(baseUrl, listId, entries);
+    if (listResourceId) {
+      const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
+      await combinedListResource(groupResourceId, listId, editMode);
+    }
+  }
+  return groupResource;
 }
 
 /**
@@ -342,7 +378,7 @@ export const updateListReferencesFactory =
  * This is so that the list resource can then be used when configuring the fhir mobile client
  *
  * @param id - externally defined id that will be the id of the new list resource
- * @param entries
+ * @param entries - list of resource entries
  */
 export function createSupplyManagementList(id: string, entries?: ListEntry[]): IList {
   return {
