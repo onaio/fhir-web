@@ -3,8 +3,7 @@ import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import { DefaultOptionType } from 'antd/lib/select';
 import { Dictionary } from '@onaio/utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { FHIRServiceClass, IdentifierUseCodes, getResourcesFromBundle } from '@opensrp/react-utils';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { FHIRServiceClass, IdentifierUseCodes, SelectOption } from '@opensrp/react-utils';
 import { ValueSetConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetConcept';
 import {
   PONumber,
@@ -90,23 +89,20 @@ export function getValuesetSelectOptions<TData extends IValueSet>(data: TData) {
 }
 
 /**
- * get options from products bundle data
+ * get single product option
  *
- * @param data - products bundle data
- * @returns returns select options
+ * @param project - product data
+ * @returns returns single select option
  */
-export const projectOptions = (data: IBundle) => {
-  const productsList = getResourcesFromBundle<IGroup>(data);
-  const options: DefaultOptionType[] = productsList.map((prod: IGroup) => {
-    const attractive = prod.characteristic?.some(
-      (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
-    );
-    return {
-      value: JSON.stringify({ id: prod.id, attractive }),
-      label: prod.name,
-    };
-  });
-  return options;
+export const processProjectOptions = (project: IGroup) => {
+  const attractive = project.characteristic?.some(
+    (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
+  );
+  return {
+    value: JSON.stringify({ id: project.id, attractive }),
+    label: project.name,
+    ref: project,
+  } as SelectOption<IGroup>;
 };
 
 /**
@@ -117,9 +113,10 @@ export const projectOptions = (data: IBundle) => {
  * @param endDate - selected end date
  * @returns returns group member
  */
-const getMember = (productId: string, startDate: Date, endDate: Date): GroupMember[] => {
+const getMember = (productId: string, startDate: Date, endDate: Date, expiryDate?: Date): GroupMember[] => {
   const startDateToString = new Date(startDate).toISOString();
   const endDateToString = new Date(endDate).toISOString();
+  const expiryDateToString = expiryDate? new Date(expiryDate).toISOString : '';
   return [
     {
       entity: {
@@ -127,7 +124,7 @@ const getMember = (productId: string, startDate: Date, endDate: Date): GroupMemb
       },
       period: {
         start: startDateToString as any,
-        end: endDateToString as any,
+        end: (endDateToString || expiryDateToString) as any,
       },
       inactive: false,
     },
@@ -234,8 +231,7 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
         text: serialNumberDisplay,
       },
       value: serialId,
-    },
-    { use: IdentifierUseCodes.USUAL, value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' },
+    }
   ];
 };
 
@@ -245,13 +241,16 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
  * @param values - form values
  * @returns returns group resource payload
  */
-export const getLocationInventoryPayload = (values: GroupFormFields): IGroup => {
+export const getLocationInventoryPayload = (values: GroupFormFields, editMode:boolean): IGroup => {
   const donor = values.donor ? JSON.parse(values.donor) : values.donor;
   const unicefSection = JSON.parse(values.unicefSection);
   const product = JSON.parse(values.product);
   const payload: IGroup = {
     resourceType: groupResourceType,
     id: values.id || v4(),
+    active: true,
+    actual: false,
+    type: 'substance',
     identifier: generateIdentifier(values.poNumber, values.serialNumber),
     member: getMember(product.id, values.deliveryDate, values.accountabilityEndDate),
     characteristic: generateCharacteristics(unicefSection, donor),
@@ -265,11 +264,12 @@ export const getLocationInventoryPayload = (values: GroupFormFields): IGroup => 
       ],
     },
   };
-  if (values.active) payload.active = values.active;
-  if (values.actual) payload.actual = values.actual;
-  if (values.type) payload.type = values.type;
-  if (values.identifier) payload.identifier = JSON.parse(values.identifier);
-  if (values.name) payload.name = values.name;
+  if(editMode) {
+    if (values.active) payload.active = values.active;
+    if (values.actual) payload.actual = values.actual;
+    if (values.type) payload.type = values.type;
+    if (values.name) payload.name = values.name;
+  }
   return payload;
 };
 
@@ -299,7 +299,6 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
     throw err;
   });
 }
-
 
 /**
  * Gets list resource for given id, create it if it does not exist
@@ -343,8 +342,9 @@ export const updateListReferencesFactory =
  * This is so that the list resource can then be used when configuring the fhir mobile client
  *
  * @param id - externally defined id that will be the id of the new list resource
+ * @param entries
  */
-export function createSupplyManagementList(id: string, entries?:ListEntry[]): IList {
+export function createSupplyManagementList(id: string, entries?: ListEntry[]): IList {
   return {
     resourceType: listResourceType,
     id: id,
@@ -395,11 +395,11 @@ export const validationRulesFactory = (t: TFunction) => {
       { required: true, message: t('Required') },
     ] as Rule[],
     [serialNumber]: [
-      { type: 'number', message: t('Must be a valid number') },
+      { type: 'string', message: t('Must be a valid string') },
       { required: true, message: t('Required') },
     ] as Rule[],
     [PONumber]: [
-      { type: 'integer', message: t('Must be a valid number') },
+      { type: 'string', message: t('Must be a valid string') },
       { required: true, message: t('Required') },
     ] as Rule[],
   };
