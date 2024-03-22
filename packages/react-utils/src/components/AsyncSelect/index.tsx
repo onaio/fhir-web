@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { Form, Select } from 'antd';
+import { Alert, Button, Form, Select } from 'antd';
 import { QueryFunction, QueryKey, UseQueryOptions, useQuery } from 'react-query';
 import { SelectProps, DefaultOptionType } from 'antd/lib/select';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { useTranslation } from '../../mls';
 import { Rule } from 'rc-field-form/lib/interface';
+import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 
 const { Item: FormItem } = Form;
 
@@ -41,12 +42,23 @@ export function AsyncSelect<TData>(props: AsyncSelectProps<TData>) {
   if (error) {
     sendErrorNotification(t(`Failed to get data for ${label}`));
   }
-  const options = useMemo(() => (data ? optionsGetter(data) : undefined), [data]);
+  const options = useMemo(() => (data ? optionsGetter(data) : undefined), [data, optionsGetter]);
   const singleSelectProps = {
+    dropdownRender: (menu: React.ReactNode) => (
+      <>
+        {!error && data && menu}
+        {error ? (
+          <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
+        ) : (
+          <Button type="text" icon={<VerticalAlignBottomOutlined />} disabled={true}>
+            {t('Loading options')}
+          </Button>
+        )}
+      </>
+    ),
     ...selectProps,
     options,
     loading: isLoading,
-    disabled: Boolean(error),
   };
 
   return (
