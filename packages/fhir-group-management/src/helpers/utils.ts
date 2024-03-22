@@ -25,10 +25,10 @@ export const getUnitMeasureCharacteristic = (obj: IGroup) => {
   }
 };
 
-// constants
+// constants - TODO - move to fhir-helpers.
 
 export const snomedCodeSystem = 'http://snomed.info/sct';
-export const smartRegisterCodeSystem = 'http://smartregister.org/';
+export const smartRegisterCodeSystem = 'http://smartregister.org/codes';
 export const supplyMgSnomedCode = '386452003';
 export const characteristicUnitMeasureCode = '767524001';
 export const photoUploadCharacteristicCode = '1231415';
