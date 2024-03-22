@@ -6,8 +6,8 @@ export const LIST_COMMODITY_URL = '/commodity/list';
 export const ADD_LOCATION_INVENTORY = '/location/inventory';
 
 // unicef and donor endpoints
-export const UNICEF_SECTION_ENDPOINT = '2826/$expand';
-export const DONOR_SECTION_ENDPOINT = '2826/$expand';
+export const UNICEF_SECTION_ENDPOINT = 'eusm-unicef-sections/$expand';
+export const DONOR_SECTION_ENDPOINT = 'eusm-donor-section/$expand';
 
 // magic strings
 export const groupResourceType = 'Group';
