@@ -92,21 +92,29 @@ const filterValidPackageFolders = (packageFolders, allValidPackages) => {
 const supportedProjectCodes = ['eusm', 'core', 'echis'];
 
 const extractionRunner = (argvConfigs, packageSemiPaths) => {
-  const { locales, projectCode, verbose, useKeysAsDefaultValue, createOldCatalogs } = argvConfigs;
+  const {
+    locales,
+    projectCode,
+    verbose,
+    useKeysAsDefaultValue,
+    createOldCatalogs,
+    outputNamespace,
+  } = argvConfigs;
   let count = 0;
   packageSemiPaths.forEach((packageSemiPath) => {
     const packageName = path.basename(packageSemiPath);
+    const namespace = outputNamespace ?? packageName;
     const inputFilesGlob = `${path.resolve(
       REPO_ROOT_PATH,
       packageSemiPath
     )}/!(node_modules|dist|build)/**/!(*.test).@(tsx|ts|js|jsx)`;
     const outputPath = path.resolve(
       REPO_ROOT_PATH,
-      `packages/i18n/locales/${projectCode}/${packageName}/$LOCALE.json`
+      `packages/i18n/locales/${projectCode}/$NAMESPACE/$LOCALE.json`
     );
     const parserConfigs = {
       ...defaultParserConfigs,
-      defaultNamespace: packageName,
+      defaultNamespace: namespace,
       locales,
       verbose: !!verbose,
       useKeysAsDefaultValue: !!useKeysAsDefaultValue,
@@ -176,6 +184,13 @@ yargs(hideBin(process.argv))
             describe: 'Retain removed translations in separate json files',
             type: 'boolean',
           },
+          'output-namespace': {
+            default: false,
+            describe:
+              'Manually override the namespace/package under which the translations will be written to',
+            type: 'string',
+            alias: 'n',
+          },
         })
         .array(['locales', 'packageFolders']);
     },
@@ -187,6 +202,7 @@ yargs(hideBin(process.argv))
         createOldCatalogs,
         projectCode,
         verbose,
+        outputNamespace,
       } = argv;
       const AllPackageFolders = await getPackagesFolderPaths();
 
@@ -199,12 +215,19 @@ yargs(hideBin(process.argv))
         packageFoldersToExtract = filterValidPackageFolders(packageFolders, AllPackageFolders);
       }
 
+      if (outputNamespace && packageFolders.length > 1) {
+        throw Error(
+          'Can only provide a namespace override when extracting from a single package only'
+        );
+      }
+
       const parserConfigs = {
         locales,
         useKeysAsDefaultValue,
         createOldCatalogs,
         verbose,
         projectCode,
+        outputNamespace,
       };
       extractionRunner(parserConfigs, packageFoldersToExtract);
     }
