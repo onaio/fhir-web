@@ -79,7 +79,7 @@ export const EusmViewDetails = (props: EusmViewDetailsProps) => {
     [t('Is it there')]: availability,
     [t('Is it in good condition')]: condition,
     [t('Is it being used appropriately')]: appropriateUsage,
-    [t('accountability period(in months)')]: accountabilityPeriod,
+    [t('Accountability period (in months)')]: accountabilityPeriod,
   };
 
   return (

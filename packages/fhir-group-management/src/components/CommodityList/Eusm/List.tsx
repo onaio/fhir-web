@@ -67,7 +67,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
       key: 'name' as const,
     },
     {
-      title: t('Attractive Item'),
+      title: t('Attractive item'),
       dataIndex: 'attractive' as const,
       key: 'attractive' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,
@@ -112,7 +112,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
 
   const baseListViewProps: BaseListViewProps<TableData> = {
     getColumns: getColumns,
-    createButtonLabel: t('Add Commodity'),
+    createButtonLabel: t('Add commodity'),
     createButtonUrl: ADD_EDIT_COMMODITY_URL,
     fhirBaseURL,
     generateTableData: (group: IGroup) => parseEusmCommodity(group),

@@ -219,7 +219,7 @@ test('Can delete commodity', async () => {
 
   const deleteBtn = queryByRole('button', { name: 'Delete' }) as Element;
   fireEvent.click(deleteBtn);
-  const promptText = queryByText(/Are you sure you want to delete this Commodity\?/);
+  const promptText = queryByText(/Are you sure you want to delete this commodity\?/);
   expect(promptText).toBeInTheDocument();
   // simulate yes
   const yesBtn = queryByRole('button', { name: 'Yes' }) as Element;
@@ -276,7 +276,7 @@ test('Failed commodity deletion', async () => {
 
   const deleteBtn = queryByRole('button', { name: 'Delete' }) as Element;
   fireEvent.click(deleteBtn);
-  const promptText = queryByText(/Are you sure you want to delete this Commodity\?/);
+  const promptText = queryByText(/Are you sure you want to delete this commodity\?/);
   expect(promptText).toBeInTheDocument();
   // simulate yes
   const yesBtn = queryByRole('button', { name: 'Yes' }) as Element;
