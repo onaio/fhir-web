@@ -17,6 +17,7 @@ import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 import { getEntryFromBundle, getTableData } from './utils';
 import './index.css';
+import type { URLParams } from '@opensrp/server-service';
 
 interface RouteParams {
   locationId: string | undefined;
@@ -24,10 +25,11 @@ interface RouteParams {
 
 export interface Props {
   fhirBaseURL: string;
+  extraParamFilters?: URLParams;
 }
 
-const getSearchParams = (search: string | null) => {
-  const baseSearchParam = { _include: 'Location:partof' };
+const getSearchParamsFactory = (ourParams: URLParams) => (search: string | null) => {
+  const baseSearchParam = { ...ourParams, _include: 'Location:partof' };
   if (search) {
     return { 'name:contains': search, ...baseSearchParam };
   }
@@ -42,9 +44,10 @@ export type LocationListPropTypes = Props & RouteComponentProps<RouteParams>;
  * @returns {Function} returns paginated locations list display
  */
 export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
-  const { fhirBaseURL } = props;
+  const { fhirBaseURL, extraParamFilters } = props;
   const { t } = useTranslation();
   const history = useHistory();
+  const getSearchParams = getSearchParamsFactory(extraParamFilters ?? {});
 
   const {
     queryValues: { data, isFetching, isLoading, error },
