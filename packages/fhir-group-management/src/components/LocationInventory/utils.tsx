@@ -20,10 +20,13 @@ import { cloneDeep } from 'lodash';
 import { GroupFormFields } from './types';
 import { GroupMember } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupMember';
 import { v4 } from 'uuid';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { TFunction } from '@opensrp/i18n';
 import { Rule } from 'rc-field-form/lib/interface';
-import { attractiveCharacteristicCode } from '../../helpers/utils';
+import {
+  attractiveCharacteristicCode,
+  accountabilityCharacteristicCode,
+} from '../../helpers/utils';
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { ListEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/listEntry';
@@ -63,6 +66,20 @@ export const handleDisabledFutureDates = (current?: Dayjs) => {
 };
 
 /**
+ * get select options value
+ *
+ * @param record - valuesets
+ * @returns returns select option value stringfied
+ */
+const getValueSetOptionsValue = (record: ValueSetContains) => {
+  return JSON.stringify({
+    code: record.code,
+    display: record.display,
+    system: record.system,
+  });
+};
+
+/**
  * get options from valueset data
  *
  * @param data - valueset data
@@ -82,26 +99,53 @@ export function getValuesetSelectOptions<TData extends IValueSet>(data: TData) {
   });
   const valuesets = Object.values(valuesetsByCode);
   const options: DefaultOptionType[] = valuesets.map((record) => ({
-    value: JSON.stringify({ code: record.code, display: record.display, system: record.system }),
+    value: getValueSetOptionsValue(record),
     label: record.display,
   }));
   return options;
 }
 
 /**
- * get single product option
+ * check if product is an atrractive item
  *
- * @param project - product data
- * @returns returns single select option
+ * @param product - product data
  */
-export const processProjectOptions = (project: IGroup) => {
-  const attractive = project.characteristic?.some(
+export const isAttractiveProduct = (product?: IGroup) => {
+  if (!product) {
+    return false;
+  }
+  const isAttractive = product.characteristic?.some(
     (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
   );
+  return isAttractive as boolean;
+};
+
+/**
+ * check if product is an accounterbility period
+ *
+ * @param product - product data
+ */
+export const productAccountabilityMonths = (product?: IGroup) => {
+  if (!product) {
+    return undefined;
+  }
+  const characteristic = product.characteristic?.filter(
+    (char) => char.code.coding?.[0]?.code === accountabilityCharacteristicCode
+  );
+  return characteristic?.[0]?.valueQuantity?.value;
+};
+
+/**
+ * get single product option
+ *
+ * @param product - product data
+ * @returns returns single select option
+ */
+export const processProductOptions = (product: IGroup) => {
   return {
-    value: JSON.stringify({ id: project.id, attractive }),
-    label: project.name,
-    ref: project,
+    value: product.id,
+    label: product.name,
+    ref: product,
   } as SelectOption<IGroup>;
 };
 
@@ -116,20 +160,22 @@ export const processProjectOptions = (project: IGroup) => {
  */
 const getMember = (
   productId: string,
-  startDate: Date,
-  endDate: Date,
-  expiryDate?: Date
+  startDate: Dayjs,
+  endDate: Dayjs,
+  expiryDate?: Dayjs
 ): GroupMember[] => {
-  const startDateToString = new Date(startDate).toISOString();
-  const endDateToString = new Date(endDate).toISOString();
-  const expiryDateToString = expiryDate ? new Date(expiryDate).toISOString : '';
+  const startDateToString = new Date(startDate.toDate()).toISOString();
+  const endDateToString = new Date(endDate.toDate()).toISOString();
+  const expiryDateToString = expiryDate ? new Date(expiryDate.toDate()).toISOString : '';
   return [
     {
       entity: {
         reference: `Group/${productId}`,
       },
       period: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         start: startDateToString as any,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         end: (endDateToString || expiryDateToString) as any,
       },
       inactive: false,
@@ -143,14 +189,27 @@ const getMember = (
  * @param unicefSection - selected unicef section
  * @param donor - selected donor
  * @param quantity - product quantity
+ * @param listResourceObj - resource object available on edit
  * @returns returns characteristivs
  */
 const generateCharacteristics = (
   unicefSection: ValueSetConcept,
   donor?: ValueSetConcept,
-  quantity?: number
+  quantity?: number,
+  listResourceObj?: IGroup
 ): GroupCharacteristic[] => {
+  const knownCodes = [
+    unicefCharacteristicCode,
+    donorCharacteristicCode,
+    quantityCharacteristicCode,
+  ];
+  const unknownCharacteristics =
+    listResourceObj?.characteristic?.filter((char) => {
+      const code = char.code.coding?.[0].code;
+      return !(code && knownCodes.includes(code));
+    }) || [];
   const characteristics: GroupCharacteristic[] = [
+    ...unknownCharacteristics,
     {
       code: {
         coding: [
@@ -206,10 +265,21 @@ const generateCharacteristics = (
  *
  * @param poId - Po number
  * @param serialId - serial number
+ * @param listResourceObj - resource object available on edit
  * @returns returns group identifier
  */
-const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
-  return [
+const generateIdentifier = (
+  poId: string,
+  serialId?: string,
+  listResourceObj?: IGroup
+): Identifier[] => {
+  const knownCodes = [poNumberCode, serialNumberCode];
+  const unknownIdentifiers =
+    listResourceObj?.identifier?.filter((identifier) => {
+      const code = identifier.type?.coding?.[0].code;
+      return !(code && knownCodes.includes(code));
+    }) || [];
+  const identifiers = [
     {
       use: IdentifierUseCodes.SECONDARY,
       type: {
@@ -224,7 +294,10 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
       },
       value: poId,
     },
-    {
+    ...unknownIdentifiers,
+  ];
+  if (serialId) {
+    identifiers.push({
       use: IdentifierUseCodes.OFFICIAL,
       type: {
         coding: [
@@ -237,8 +310,9 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
         text: serialNumberDisplay,
       },
       value: serialId,
-    },
-  ];
+    });
+  }
+  return identifiers;
 };
 
 /**
@@ -246,21 +320,25 @@ const generateIdentifier = (poId: string, serialId: string): Identifier[] => {
  *
  * @param values - form values
  * @param editMode - editing form?
+ * @param listResourceObj - resource object available on edit
  * @returns returns group resource payload
  */
-export const getLocationInventoryPayload = (values: GroupFormFields, editMode: boolean): IGroup => {
+export const getLocationInventoryPayload = (
+  values: GroupFormFields,
+  editMode: boolean,
+  listResourceObj?: IGroup
+): IGroup => {
   const donor = values.donor ? JSON.parse(values.donor) : values.donor;
   const unicefSection = values.unicefSection ? JSON.parse(values.unicefSection) : {};
-  const product = JSON.parse(values.product);
   const payload: IGroup = {
     resourceType: groupResourceType,
     id: values.id || v4(),
     active: true,
     actual: false,
     type: 'substance',
-    identifier: generateIdentifier(values.poNumber, values.serialNumber),
-    member: getMember(product.id, values.deliveryDate, values.accountabilityEndDate),
-    characteristic: generateCharacteristics(unicefSection, donor, values.quantity),
+    identifier: generateIdentifier(values.poNumber, values.serialNumber, listResourceObj),
+    member: getMember(values.product, values.deliveryDate, values.accountabilityEndDate),
+    characteristic: generateCharacteristics(unicefSection, donor, values.quantity, listResourceObj),
     code: {
       coding: [
         {
@@ -396,7 +474,7 @@ export function createSupplyManagementList(id: string, entries?: ListEntry[]): I
     code: {
       coding: [
         {
-          system: 'http://ona.io',
+          system: 'https://ona.io',
           code: 'supply-chain',
           display: 'Supply Chain Commodity',
         },
@@ -406,6 +484,57 @@ export function createSupplyManagementList(id: string, entries?: ListEntry[]): I
     entry: entries || [],
   };
 }
+
+export const getInventoryInitialValues = (inventory: IGroup): GroupFormFields => {
+  const initialValues = {
+    id: inventory.id as string,
+    active: inventory.active,
+    type: inventory.type,
+    actual: inventory.actual,
+    name: inventory.name,
+  } as GroupFormFields;
+  inventory.identifier?.forEach((identifier) => {
+    const code = identifier.type?.coding?.[0].code;
+    if (code === poNumberCode) {
+      initialValues.poNumber = identifier.value as string;
+    }
+    if (code === serialNumberCode) {
+      initialValues.serialNumber = identifier.value as string;
+    }
+  });
+  inventory.characteristic?.forEach((characteristic) => {
+    const code = characteristic.code.coding?.[0].code;
+    if (code === unicefCharacteristicCode) {
+      const coding = characteristic.valueCodeableConcept?.coding?.[0];
+      if (coding) {
+        initialValues.unicefSection = getValueSetOptionsValue(coding);
+      }
+    }
+    if (code === donorCharacteristicCode) {
+      const coding = characteristic.valueCodeableConcept?.coding?.[0];
+      if (coding) {
+        initialValues.donor = getValueSetOptionsValue(coding);
+      }
+    }
+    if (code === quantityCharacteristicCode) {
+      initialValues.quantity = characteristic.valueQuantity?.value;
+    }
+  });
+  const member = inventory.member?.[0];
+  const reference = member?.entity.reference;
+  const { start, end } = member?.period || {};
+  if (end) {
+    initialValues.accountabilityEndDate = dayjs(end);
+  }
+  if (start) {
+    initialValues.deliveryDate = dayjs(start);
+  }
+  if (reference) {
+    const productId = reference.split('/')[1];
+    initialValues.product = productId;
+  }
+  return initialValues;
+};
 
 /**
  * factory for validation rules for GroupForm component
