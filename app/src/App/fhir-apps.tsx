@@ -452,6 +452,15 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={`${ADD_LOCATION_INVENTORY}/:id`}
+        {...fhirCreateEditLocationProps}
+        exact
+        permissions={['Group.create']}
+        component={AddLocationInventory}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={`${LIST_GROUP_URL}/:id`}
         permissions={['Group.read']}
         component={GroupList}
