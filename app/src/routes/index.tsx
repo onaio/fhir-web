@@ -17,7 +17,7 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
 } from '../constants';
-import { URL_ALL_LOCATIONS } from '@opensrp/fhir-location-management';
+import { URL_ALL_LOCATIONS, URL_SERVICE_POINT_LOCATIONS } from '@opensrp/fhir-location-management';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
@@ -107,6 +107,14 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
               permissions: ['Location.read'],
             },
           ],
+        },
+        {
+          title: t('Inventory'),
+          key: 'inventory',
+          isHomePageLink: true,
+          url: URL_SERVICE_POINT_LOCATIONS,
+          permissions: ['Location.read', 'Group.read'],
+          enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
         },
         {
           title: t('Care Teams Management'),
