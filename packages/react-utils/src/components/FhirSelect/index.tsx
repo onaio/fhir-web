@@ -131,6 +131,7 @@ export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<R
   const propsToSelect = {
     style: { minWidth: '200px' },
     ...restProps,
+    placeholder,
     onChange: changeHandler,
     loading: isLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
