@@ -112,8 +112,8 @@ function CommodityForm<
 
   /** options for the isAttractive form field radio buttons */
   const attractiveOptions = [
-    { label: t('yes'), value: true },
-    { label: t('no'), value: false },
+    { label: t('Yes'), value: true },
+    { label: t('No'), value: false },
   ];
 
   const unitsOfMeasureOptions = getUnitOfMeasureOptions();
@@ -143,7 +143,7 @@ function CommodityForm<
         hidden={hidden.includes(name)}
         name={name}
         rules={validationRules[name]}
-        label={t('Enter Commodity name')}
+        label={t('Enter commodity name')}
       >
         <Input disabled={disabled.includes(name)} placeholder={t('Name')} />
       </FormItem>
@@ -166,7 +166,7 @@ function CommodityForm<
         rules={validationRules[active]}
         name={active}
         hidden={hidden.includes(active)}
-        label={t('Select Commodity status')}
+        label={t('Select commodity status')}
       >
         <Radio.Group disabled={disabled.includes(active)} options={statusOptions}></Radio.Group>
       </FormItem>
@@ -176,11 +176,11 @@ function CommodityForm<
         name={type}
         hidden={hidden.includes(type)}
         rules={validationRules[type]}
-        label={t('Select Commodity Type')}
+        label={t('Select commodity Type')}
       >
         <Select
           disabled={disabled.includes(type)}
-          placeholder={t('Select Commodity type')}
+          placeholder={t('Select commodity type')}
           options={typeOptions}
           showSearch={true}
           filterOption={groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption']}
@@ -206,7 +206,7 @@ function CommodityForm<
       <FormItem
         id={isAttractiveItem}
         name={isAttractiveItem}
-        label={t('Attractive item?')}
+        label={t('Attractive item')}
         hidden={hidden.includes(isAttractiveItem)}
         rules={validationRules[isAttractiveItem]}
       >
@@ -217,7 +217,7 @@ function CommodityForm<
         id={availability}
         name={availability}
         hidden={hidden.includes(availability)}
-        label={t('Is it there?')}
+        label={t('Is it there')}
         rules={validationRules[availability]}
       >
         <Input.TextArea
@@ -233,7 +233,7 @@ function CommodityForm<
         id={condition}
         name={condition}
         hidden={hidden.includes(condition)}
-        label={t('Is it in good condition?')}
+        label={t('Is it in good condition')}
         rules={validationRules[condition]}
       >
         <Input.TextArea
@@ -249,7 +249,7 @@ function CommodityForm<
         id={appropriateUsage}
         name={appropriateUsage}
         hidden={hidden.includes(appropriateUsage)}
-        label={t('Is it being used appropriately?')}
+        label={t('Is it being used appropriately')}
         rules={validationRules[appropriateUsage]}
       >
         <Input.TextArea

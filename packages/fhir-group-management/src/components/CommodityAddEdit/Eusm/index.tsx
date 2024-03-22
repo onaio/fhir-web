@@ -52,8 +52,8 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
   const initialValues = getGroupFormFields(groupQuery.data, binaryQuery.data);
 
   const pageTitle = groupQuery.data
-    ? t('Edit Commodity | {{name}}', { name: groupQuery.data.name ?? '' })
-    : t('Create Commodity');
+    ? t('Edit commodity | {{name}}', { name: groupQuery.data.name ?? '' })
+    : t('Create commodity');
 
   const postSuccess = updateListReferencesFactory(fhirBaseUrl, listId, binaryQuery.data);
 

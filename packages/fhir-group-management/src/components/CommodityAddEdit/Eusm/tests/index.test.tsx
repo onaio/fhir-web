@@ -116,37 +116,37 @@ test('renders correctly', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
     // id,
     screen.getByLabelText('Commodity Id');
     // identifier
     screen.getByLabelText('Identifier');
     // name
-    screen.getByLabelText('Enter Commodity name');
+    screen.getByLabelText('Enter commodity name');
     // active
-    screen.getByText('Select Commodity status');
+    screen.getByText('Select commodity status');
     const activeRadioBtn = document.querySelector('#active input[value="true"]');
     const disabledRadioBtn = document.querySelector('#active input[value="false"]');
     expect(activeRadioBtn).toMatchSnapshot('active radio button');
     expect(disabledRadioBtn).toMatchSnapshot('disabled radio button');
 
     // type
-    screen.getByLabelText('Select Commodity Type');
+    screen.getByLabelText('Select commodity Type');
     // material number
     screen.getByLabelText('Material number');
     // attractive item
-    screen.getByText('Attractive item?');
+    screen.getByText('Attractive item');
     const yesRadioBtn = document.querySelector('#isAttractiveItem input[value="true"]');
     const noRadioBtn = document.querySelector('#isAttractiveItem input[value="false"]');
     expect(yesRadioBtn).toMatchSnapshot('attractive item yes radio button');
     expect(noRadioBtn).toMatchSnapshot('attractive item no radio button');
 
     // availability
-    screen.getByLabelText('Is it there?');
+    screen.getByLabelText('Is it there');
     // condition
-    screen.getByLabelText('Is it in good condition?');
+    screen.getByLabelText('Is it in good condition');
     // appropriate usage
-    screen.getByLabelText('Is it being used appropriately?');
+    screen.getByLabelText('Is it being used appropriately');
     // accountability
     screen.getByLabelText('Accountability period (in months)');
     screen.getByLabelText('Photo of the product');
@@ -176,7 +176,7 @@ test('form validation works', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
   });
 
   const submitBtn = screen.getByRole('button', {
@@ -232,7 +232,7 @@ it('can create new commodity', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
   });
 
   const nameField = screen.getByPlaceholderText('Name');
@@ -245,13 +245,13 @@ it('can create new commodity', async () => {
   const yesRadioBtn = document.querySelector('#isAttractiveItem input[value="true"]')!;
   fireEvent.click(yesRadioBtn);
 
-  const availabilityField = screen.getByLabelText('Is it there?');
+  const availabilityField = screen.getByLabelText('Is it there');
   userEvent.type(availabilityField, 'adimika');
 
-  const conditionField = screen.getByLabelText('Is it in good condition?');
+  const conditionField = screen.getByLabelText('Is it in good condition');
   userEvent.type(conditionField, 'as good as it can be');
 
-  const appropriateUsageField = screen.getByLabelText('Is it being used appropriately?');
+  const appropriateUsageField = screen.getByLabelText('Is it being used appropriately');
   userEvent.type(appropriateUsageField, 'Define appropriately used.');
 
   const accountabilityField = screen.getByLabelText('Accountability period (in months)');
@@ -348,7 +348,7 @@ it('edits resource', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Edit Commodity | Bed nets');
+    screen.getByText('Edit commodity | Bed nets');
   });
 
   const materialNumberField = screen.getByLabelText('Material number');
@@ -359,15 +359,15 @@ it('edits resource', async () => {
   const yesRadioBtn = document.querySelector('#isAttractiveItem input[value="true"]')!;
   fireEvent.click(yesRadioBtn);
 
-  const availabilityField = screen.getByLabelText('Is it there?');
+  const availabilityField = screen.getByLabelText('Is it there');
   userEvent.clear(availabilityField);
   userEvent.type(availabilityField, 'could be better');
 
-  const conditionField = screen.getByLabelText('Is it in good condition?');
+  const conditionField = screen.getByLabelText('Is it in good condition');
   userEvent.clear(conditionField);
   userEvent.type(conditionField, 'as good as it can be');
 
-  const appropriateUsageField = screen.getByLabelText('Is it being used appropriately?');
+  const appropriateUsageField = screen.getByLabelText('Is it being used appropriately');
   userEvent.clear(appropriateUsageField);
   userEvent.type(appropriateUsageField, 'Define appropriately used.');
 
@@ -438,7 +438,7 @@ it('can remove product image', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Edit Commodity | Bed nets');
+    screen.getByText('Edit commodity | Bed nets');
   });
 
   const removeFileIcon = screen.getByTitle('Remove file');
@@ -465,7 +465,7 @@ test('cancel handler is called on cancel', async () => {
   );
 
   // test view is loaded.
-  screen.getByText('Create Commodity');
+  screen.getByText('Create commodity');
   const cancelBtn = screen.getByRole('button', { name: /Cancel/ });
 
   fireEvent.click(cancelBtn);

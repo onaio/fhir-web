@@ -210,7 +210,7 @@ exports[`renders correctly when listing resources 11`] = `
     <span
       class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
     >
-      accountability period(in months)
+      Accountability period (in months)
     </span>
   </dt>
   <dd
