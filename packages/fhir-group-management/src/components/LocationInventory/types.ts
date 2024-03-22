@@ -10,25 +10,24 @@ import {
   donor,
   PONumber,
   id,
-  identifier,
   active,
   name,
   type,
   actual,
 } from '../../constants';
 import { Group } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/group';
+import { Dayjs } from 'dayjs';
 
 export interface CommonGroupFormFields {
   [id]?: string;
-  [identifier]?: string;
   [active]?: boolean;
   [actual]?: boolean;
   [name]?: string;
   [type]?: Group.TypeEnum;
   [quantity]?: number;
-  [deliveryDate]: Date;
-  [accountabilityEndDate]: Date;
-  [expiryDate]: Date;
+  [deliveryDate]: Dayjs;
+  [accountabilityEndDate]: Dayjs;
+  [expiryDate]?: Dayjs;
   [serialNumber]: string;
   [PONumber]: string;
   [donor]?: string;

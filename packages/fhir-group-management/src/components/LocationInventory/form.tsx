@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import { SelectProps } from 'antd/lib/select';
-import { AsyncSelectProps, FhirSelect, formItemLayout, tailLayout } from '@opensrp/react-utils';
+import {
+  AsyncSelectProps,
+  FhirSelect,
+  formItemLayout,
+  tailLayout,
+  FHIRServiceClass,
+  AsyncSelect,
+  SelectOption as ProductSelectOption,
+} from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../helpers/utils';
+import { Rule } from 'rc-field-form/lib/interface';
 import {
   sendSuccessNotification,
   sendErrorNotification,
@@ -24,44 +33,43 @@ import {
   valuesetResourceType,
   UNICEF_SECTION_ENDPOINT,
   id,
-  identifier,
   active,
   name,
   type,
   actual,
 } from '../../constants';
 import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
-import { FHIRServiceClass, AsyncSelect } from '@opensrp/react-utils';
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import {
   getLocationInventoryPayload,
   getValuesetSelectOptions,
   handleDisabledFutureDates,
   handleDisabledPastDates,
+  isAttractiveProduct,
   postLocationInventory,
-  processProjectOptions,
+  processProductOptions,
+  productAccountabilityMonths,
   validationRulesFactory,
 } from './utils';
 import { GroupFormFields } from './types';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useHistory } from 'react-router';
+import { Dayjs } from 'dayjs';
 
 const { Item: FormItem } = Form;
 
 export interface LocationInventoryFormProps {
   fhirBaseURL: string;
   initialValues: GroupFormFields;
-  disabled: string[];
+  listResourceId: string;
   cancelUrl?: string;
   successUrl?: string;
-  editMode: boolean;
-  listResourceId: string;
+  locationResourceId?: string;
+  listResourceObj?: IGroup;
 }
 
 const defaultProps = {
   initialValues: {},
-  disabled: [],
-  editMode: false,
 };
 
 const productQueryFilters = {
@@ -75,14 +83,20 @@ const productQueryFilters = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseURL, initialValues, editMode, listResourceId } = props;
+  const { fhirBaseURL, initialValues, locationResourceId, listResourceId, listResourceObj } = props;
+  const [attractiveProduct, setAttractiveProduct] = useState<boolean>(
+    isAttractiveProduct(listResourceObj)
+  );
+  const [accounterbilityMonths, setAccounterbilityMonths] = useState<number>();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const history = useHistory();
+  const [form] = Form.useForm();
+  const editMode = !!locationResourceId;
 
   const { mutate, isLoading } = useMutation(
     async (values: GroupFormFields) => {
-      const payload = getLocationInventoryPayload(values, editMode);
+      const payload = getLocationInventoryPayload(values, editMode, listResourceObj);
       return postLocationInventory(fhirBaseURL, payload, editMode, listResourceId);
     },
     {
@@ -91,14 +105,40 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       },
       onSuccess: () => {
         sendSuccessNotification(t('Location inventory created successfully'));
-        queryClient.invalidateQueries([groupResourceType]).catch(() => {
-          sendInfoNotification(t('Failed to refresh data, please refresh the page'));
-        });
+        if (editMode) {
+          queryClient.invalidateQueries([fhirBaseURL, locationResourceId]).catch(() => {
+            sendInfoNotification(t('Failed to refresh data, please refresh the page'));
+          });
+        } else {
+          form.resetFields();
+        }
       },
     }
   );
 
+  const productChangeHandler = (
+    fullOption: ProductSelectOption<IGroup> | ProductSelectOption<IGroup>[]
+  ) => {
+    const product = Array.isArray(fullOption) ? fullOption[0] : fullOption;
+    const endDate = productAccountabilityMonths(product.ref);
+    setAttractiveProduct(isAttractiveProduct(product.ref));
+    if (endDate) {
+      setAccounterbilityMonths(endDate);
+    }
+  };
+
+  const delveryDateChangeHandler = (selectedDate: Dayjs | null) => {
+    if (accounterbilityMonths && selectedDate) {
+      const newDate = selectedDate.add(accounterbilityMonths, 'month');
+      form.setFieldValue(accountabilityEndDate, newDate);
+    }
+  };
+
   const validationRules = validationRulesFactory(t);
+  let serialNumebrRule: Rule[] = [{ required: false }];
+  if (attractiveProduct) {
+    serialNumebrRule = validationRules[serialNumber];
+  }
 
   const unicefSectionProps: AsyncSelectProps<IValueSet> = {
     id: 'unicefSection',
@@ -141,6 +181,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
   return (
     <Form
+      form={form}
       requiredMark={false}
       {...formItemLayout}
       onFinish={(values: GroupFormFields) => {
@@ -152,14 +193,16 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <FhirSelect<IGroup>
           baseUrl={fhirBaseURL}
           resourceType={groupResourceType}
-          transformOption={processProjectOptions}
+          transformOption={processProductOptions}
           extraQueryParams={productQueryFilters}
           showSearch={true}
           placeholder={t('Select product')}
+          getFullOptionOnChange={productChangeHandler}
+          disabled={editMode}
         />
       </FormItem>
 
-      <FormItem id="quantity" name={quantity} label={t('Quantity (Optional)')}>
+      <FormItem id="quantity" name={quantity} label={t('Quantity')}>
         <Input placeholder={t('Quantity')} type="number" />
       </FormItem>
 
@@ -169,7 +212,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={deliveryDate}
         label={t('Delivery date')}
       >
-        <DatePicker disabledDate={handleDisabledFutureDates} />
+        <DatePicker onChange={delveryDateChangeHandler} disabledDate={handleDisabledFutureDates} />
       </FormItem>
 
       <FormItem
@@ -181,7 +224,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
 
-      <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date (Optional)')}>
+      <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date')}>
         <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
 
@@ -189,11 +232,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
       <FormItem
         id="serialNumber"
-        rules={validationRules[serialNumber]}
+        rules={serialNumebrRule}
         name={serialNumber}
         label={t('Serial number')}
       >
-        <Input type="number" placeholder={t('Serial number')} />
+        <Input disabled={!attractiveProduct} type="number" placeholder={t('Serial number')} />
       </FormItem>
 
       <AsyncSelect {...donorSelectProps} />
@@ -209,9 +252,6 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
       {/* start hidden fields */}
       <FormItem hidden={true} id="id" name={id} label={t('Commodity Id')}>
-        <Input disabled={true} />
-      </FormItem>
-      <FormItem hidden={true} id="identifier" name={identifier} label={t('Identifier')}>
         <Input disabled={true} />
       </FormItem>
       <FormItem hidden={true} id="active" name={active} label={t('Active')}>
