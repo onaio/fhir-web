@@ -7,7 +7,7 @@ import { PageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 
 export type LocationRouteProps = { id?: string };
 
@@ -42,7 +42,7 @@ export const NewEditLocationUnit = (props: NewEditLocationUnitProps) => {
   const location = useLocation();
   const params = useParams<LocationRouteProps>();
   const sParams = new URLSearchParams(location.search);
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   const cancelHandler = () => {
     const cancelURL = cancelURLGenerator();

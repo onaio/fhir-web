@@ -6,7 +6,7 @@ import './tree.css';
 import { TreeNode } from '../../helpers/types';
 import { Key } from 'rc-tree/lib/interface';
 import { slice } from 'lodash';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 
 interface TreeProp {
   data: TreeNode[];
@@ -33,7 +33,7 @@ export const Tree: React.FC<TreeProp> = (props: TreeProp) => {
   const [expandedKeys, setExpandedKeys] = useState<Key[]>([]);
   const [searchExpandedKeys, setSearchExpandedKeys] = useState<Key[]>([]);
   const [searchValue, setSearchValue] = useState<string>('');
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   useEffect(() => {
     const updateExpandedKeys = (keys: Key[]) => setExpandedKeys([...expandedKeys, ...keys]);

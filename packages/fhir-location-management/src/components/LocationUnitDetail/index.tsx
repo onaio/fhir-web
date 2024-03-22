@@ -11,7 +11,7 @@ import {
 import { useQuery } from 'react-query';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { locationResourceType } from '../../constants';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 
 export interface LUDProps {
   onClose: MouseEventHandler<HTMLElement>;
@@ -21,7 +21,7 @@ export interface LUDProps {
 
 export const LocationUnitDetail: React.FC<LUDProps> = (props: LUDProps) => {
   const { onClose, fhirBaseUrl, detailId } = props;
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   // fetch location details for the the selected location
   const serve = new FHIRServiceClass<ILocation>(fhirBaseUrl, locationResourceType);

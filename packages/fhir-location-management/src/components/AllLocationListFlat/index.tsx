@@ -5,10 +5,12 @@ import {
   locationResourceType,
   URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
+  inventoryNamespace,
+  namespace,
 } from '../../constants';
 import { BrokenPage, TableLayout, PageHeader, SearchForm } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import { useHistory, Link } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
@@ -26,6 +28,7 @@ interface RouteParams {
 export interface Props {
   fhirBaseURL: string;
   extraParamFilters?: URLParams;
+  i18nNamespace: typeof namespace | typeof inventoryNamespace;
 }
 
 const getSearchParamsFactory = (ourParams: URLParams) => (search: string | null) => {
@@ -44,8 +47,8 @@ export type LocationListPropTypes = Props & RouteComponentProps<RouteParams>;
  * @returns {Function} returns paginated locations list display
  */
 export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
-  const { fhirBaseURL, extraParamFilters } = props;
-  const { t } = useTranslation();
+  const { fhirBaseURL, extraParamFilters, i18nNamespace } = props;
+  const { t } = useMls(i18nNamespace);
   const history = useHistory();
   const getSearchParams = getSearchParamsFactory(extraParamFilters ?? {});
 
@@ -164,7 +167,7 @@ export const AllLocationListFlat: React.FC<LocationListPropTypes> = (props) => {
   return (
     <div id="all-locations" className="content-section">
       <Helmet>
-        <title>{t('All Locations List')}</title>
+        <title>{t('All Locations')}</title>
       </Helmet>
       <PageHeader title={t('All Locations')} />
       <Row className="list-view">

@@ -21,7 +21,7 @@ import {
   setSelectedNode,
   getSelectedNode,
 } from '../../ducks/location-tree-state';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
 import { RootLocationWizard } from '../RootLocationWizard';
 
@@ -67,7 +67,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t } = useMls();
   const history = useHistory();
   const [showWizard, setShowWizard] = useState(false);
 
