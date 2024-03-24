@@ -4,7 +4,6 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_UPLOAD_DRAFT_FILE,
   URL_MANIFEST_RELEASE_LIST,
-  URL_LOCATION_UNIT,
 } from '../constants';
 import {
   OPENSRP_API_BASE_URL,
@@ -39,9 +38,6 @@ export const locationUnitProps = {
 };
 
 export const newLocationUnitProps = {
-  successURLGenerator: () => URL_LOCATION_UNIT,
-  cancelURLGenerator: () => URL_LOCATION_UNIT,
-  hidden: ['serviceType', 'latitude', 'longitude'],
   ...locationUnitProps,
 };
 

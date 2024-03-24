@@ -79,8 +79,10 @@ import {
   AffiliationList as FhirTeamAssignment,
 } from '@opensrp/fhir-team-management';
 import {
+  EusmAddEditLocationUnit,
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  URL_SERVICE_POINT_ADD_EDIT,
 } from '@opensrp/fhir-location-management';
 import {
   teamAffiliationProps,
@@ -370,6 +372,15 @@ const FHIRApps = () => {
         {...newLocationUnitProps}
         permissions={['Location.create']}
         component={FHIRNewEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={URL_SERVICE_POINT_ADD_EDIT}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
