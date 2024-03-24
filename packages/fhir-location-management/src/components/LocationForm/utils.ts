@@ -3,7 +3,7 @@ import { Rule } from 'rc-field-form/lib/interface';
 import { TreeNode } from '../../helpers/types';
 import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
-import { get, isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass, getObjLike } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
@@ -17,6 +17,8 @@ import {
   locationGeoJsonExtensionUrl,
 } from '../../constants';
 import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export type ExtraFields = Dictionary;
 
@@ -37,29 +39,6 @@ export interface LocationFormFields {
   initObj?: ILocation;
 }
 
-interface BaseSetting {
-  key: string;
-  description: string;
-  uuid: string;
-  settingsId: string;
-  settingIdentifier: string;
-  settingMetadataId: string;
-  v1Settings: false;
-  resolveSettings: false;
-  documentId: string;
-  serverVersion: number;
-}
-
-/** describes a single settings object as received from location settings api */
-export interface LocationSetting extends BaseSetting {
-  label: string;
-}
-
-/** describes a single settings object as received from service types settings api */
-export interface ServiceTypeSetting extends BaseSetting {
-  value: string;
-}
-
 export const defaultFormFields: LocationFormFields = {
   id: '',
   name: '',
@@ -69,6 +48,11 @@ export const defaultFormFields: LocationFormFields = {
   description: undefined,
   alias: undefined,
 };
+
+// TODO move to fhir-helpers
+const physicalTypeValueSetSystem = 'http://terminology.hl7.org/CodeSystem/location-physical-type';
+export const eusmServicePointCodeSystemUri =
+  'http://smartregister.org/CodeSystem/eusm-service-point-type';
 
 /**
  * helps compute the default values of the location form field values
@@ -80,7 +64,7 @@ export const getLocationFormFields = (
   location?: ILocation,
   parentId?: string
 ): LocationFormFields => {
-  const { position, extension } = location ?? {};
+  const { position, extension, physicalType } = location ?? {};
   // TODO - magic string
   const geoJsonExtension = getObjLike<Extension>(extension, 'url', locationGeoJsonExtensionUrl)[0];
   const geoJsonAttachment = geoJsonExtension.valueAttachment?.data;
@@ -89,6 +73,13 @@ export const getLocationFormFields = (
     // try and parse into an object.
     geometryGeoJSon = atob(geoJsonAttachment);
   }
+
+  const physicalTypeCoding = getObjLike(
+    physicalType?.coding ?? [],
+    'system',
+    physicalTypeValueSetSystem
+  )[0];
+
   return {
     ...defaultFormFields,
     initObj: location,
@@ -97,7 +88,18 @@ export const getLocationFormFields = (
     parentId: parentId ?? location?.partOf?.reference,
     latitude: position?.latitude,
     longitude: position?.longitude,
+    serviceType: physicalTypeCoding.code,
   } as LocationFormFields;
+};
+
+// TODO - dry out fhir-helpers
+export const hasCode = (codeList: Coding[], coding: Coding) => {
+  for (const code of codeList) {
+    if (isEqual(code, coding)) {
+      return true;
+    }
+  }
+  return false;
 };
 
 /**
@@ -114,10 +116,7 @@ export const generateLocationUnit = (
 ) => {
   const { id, name, status, description, alias, isJurisdiction, geometry, latitude, longitude } =
     formValues;
-
-  const uuid = get(initialValues, 'identifier.0.value');
-  const thisLocationsIdentifier = uuid ? uuid : v4();
-
+  const { physicalType, type, ...restOfInitObj } = initialValues.initObj ?? {};
   let partOf: ILocation['partOf'];
   if (parentNode) {
     // this is a user defined location
@@ -127,29 +126,49 @@ export const generateLocationUnit = (
     };
   }
 
+  // sanitize fields that we will provide data for.
+  const initialObTypeConcepts = (type ?? []).filter((concept) => {
+    for (const coding of concept.coding ?? []) {
+      if (
+        [physicalTypeValueSetSystem, eusmServicePointCodeSystemUri].includes(
+          coding.system as string
+        )
+      ) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  /** if coding exists in type and physical  */
+  const physicalTypeCoding = {
+    system: physicalTypeValueSetSystem,
+    code: isJurisdiction ? 'jdn' : 'bu',
+    display: isJurisdiction ? 'Jurisdiction' : 'Building',
+  };
   const payload = {
+    ...restOfInitObj,
     resourceType: 'Location',
     status,
     name,
     alias,
     description,
     partOf: partOf,
-    identifier: [
-      {
-        use: 'official',
-        value: thisLocationsIdentifier,
-      },
-    ],
-    physicalType: {
-      coding: [
-        {
-          system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
-          code: isJurisdiction ? 'jdn' : 'bu',
-          display: isJurisdiction ? 'Jurisdiction' : 'Building',
-        },
-      ],
-    },
+    type: [...initialObTypeConcepts],
   } as ILocation;
+
+  if (isJurisdiction) {
+    const physicalTypeConcept: CodeableConcept = { coding: [physicalTypeCoding] };
+    (payload.type as CodeableConcept[]).push(physicalTypeConcept);
+    payload.physicalType = physicalTypeConcept;
+  }
+
+  try {
+    const coding = JSON.parse(serviceType) as Coding;
+    (payload.type as CodeableConcept[]).push({ coding: [coding] });
+  } catch {
+    void 0;
+  }
 
   if (id) {
     payload.id = id;
@@ -202,12 +221,17 @@ const rejectIfNan = (value: string, message: string) => {
   }
 };
 
+export type LocationFormFieldsType = Omit<keyof LocationFormFields, 'initObj'>;
+export interface ValidationFactory {
+  (t: TFunction): { [key: string]: Rule[] };
+}
+
 /**
  * factory for validation rules for LocationForm component
  *
  * @param t - language translator
  */
-export const validationRulesFactory = (t: TFunction) => ({
+export const defaultValidationRulesFactory = (t: TFunction) => ({
   id: [{ type: 'string' }] as Rule[],
   parentId: [
     { type: 'string', message: t(`Parent ID can only contain letters, numbers and spaces`) },
@@ -261,6 +285,22 @@ export const validationRulesFactory = (t: TFunction) => ({
         return rejectIfNan(value, t('Only decimal values allowed'));
       },
     }),
+  ] as Rule[],
+});
+
+/**
+ * factory for validation rules for LocationForm component
+ *
+ * @param t - language translator
+ */
+export const eusmServicePointValidationRules = (t: TFunction) => ({
+  ...defaultValidationRulesFactory(t),
+  id: [{ type: 'string' }] as Rule[],
+  [serviceType]: [
+    {
+      required: true,
+      message: t(`service type is required`),
+    },
   ] as Rule[],
 });
 
