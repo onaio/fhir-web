@@ -107,7 +107,7 @@ describe('location-management/src/components/AllLocationListFlat', () => {
 
     render(<AppWrapper {...props} />);
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-    expect(screen.getByText(/All Locations/)).toBeInTheDocument();
+    expect(screen.getByText(/Locations/)).toBeInTheDocument();
     expect(screen.getByTitle(/Empty raw svg icon/)).toBeInTheDocument();
     expect(
       screen.getByText(/No data available to display, you can start adding data now/)
@@ -128,7 +128,7 @@ describe('location-management/src/components/AllLocationListFlat', () => {
 
     render(<AppWrapper {...props} />);
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-    expect(screen.getByText(/All Locations/)).toBeInTheDocument();
+    expect(screen.getByText(/Locations/)).toBeInTheDocument();
 
     // check table contnets
     const table = document.querySelector('table');
