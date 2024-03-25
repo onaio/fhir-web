@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
-import { SelectProps } from 'antd/lib/select';
 import {
-  AsyncSelectProps,
   FhirSelect,
   formItemLayout,
   tailLayout,
-  FHIRServiceClass,
-  AsyncSelect,
   SelectOption as ProductSelectOption,
+  ValueSetAsyncSelect,
 } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
@@ -30,19 +27,15 @@ import {
   donor,
   PONumber,
   groupResourceType,
-  valuesetResourceType,
-  UNICEF_SECTION_ENDPOINT,
+  unicefSectionValueSetId,
   id,
   active,
   name,
   type,
   actual,
 } from '../../constants';
-import { groupSelectfilterFunction, SelectOption } from '../ProductForm/utils';
-import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import {
   getLocationInventoryPayload,
-  getValuesetSelectOptions,
   handleDisabledFutureDates,
   handleDisabledPastDates,
   isAttractiveProduct,
@@ -140,45 +133,6 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     serialNumebrRule = validationRules[serialNumber];
   }
 
-  const unicefSectionProps: AsyncSelectProps<IValueSet> = {
-    id: 'unicefSection',
-    name: unicefSection,
-    label: t('UNICEF section'),
-    optionsGetter: getValuesetSelectOptions,
-    rules: validationRules[unicefSection],
-    selectProps: {
-      placeholder: t('Select UNICEF section'),
-      showSearch: true,
-      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
-    },
-    useQueryParams: {
-      key: [valuesetResourceType, UNICEF_SECTION_ENDPOINT],
-      queryFn: async () =>
-        new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(
-          UNICEF_SECTION_ENDPOINT as string
-        ),
-    },
-  };
-
-  const donorSelectProps: AsyncSelectProps<IValueSet> = {
-    id: 'donor',
-    name: donor,
-    label: t('Donor'),
-    optionsGetter: getValuesetSelectOptions,
-    selectProps: {
-      placeholder: t('Select donor'),
-      showSearch: true,
-      filterOption: groupSelectfilterFunction as SelectProps<SelectOption[]>['filterOption'],
-    },
-    useQueryParams: {
-      key: [valuesetResourceType, UNICEF_SECTION_ENDPOINT],
-      queryFn: async () =>
-        new FHIRServiceClass<IValueSet>(fhirBaseURL, valuesetResourceType).read(
-          UNICEF_SECTION_ENDPOINT as string
-        ),
-    },
-  };
-
   return (
     <Form
       form={form}
@@ -228,7 +182,19 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <DatePicker disabledDate={handleDisabledPastDates} />
       </FormItem>
 
-      <AsyncSelect {...unicefSectionProps} />
+      <FormItem
+        id={unicefSection}
+        name={unicefSection}
+        label={t('UNICEF section')}
+        rules={validationRules[unicefSection]}
+      >
+        <ValueSetAsyncSelect
+          placeholder={t('Select UNICEF section')}
+          showSearch={true}
+          valueSetId={unicefSectionValueSetId}
+          fhirBaseUrl={fhirBaseURL}
+        />
+      </FormItem>
 
       <FormItem
         id="serialNumber"
@@ -239,7 +205,14 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <Input disabled={!attractiveProduct} type="number" placeholder={t('Serial number')} />
       </FormItem>
 
-      <AsyncSelect {...donorSelectProps} />
+      <FormItem id={donor} name={donor} label={t('Donor')}>
+        <ValueSetAsyncSelect
+          placeholder={t('Select donor')}
+          showSearch={true}
+          valueSetId={unicefSectionValueSetId}
+          fhirBaseUrl={fhirBaseURL}
+        />
+      </FormItem>
 
       <FormItem
         id="poNumber"

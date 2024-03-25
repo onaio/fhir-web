@@ -40,7 +40,7 @@ const debouncedFn = debounce((callback) => callback(), 500);
 
 /**
  * Problem: When we want to api resources as options we need to fetch all resources on the api first
- * and add support for searching/filtering on the frontend. This leads to slow views and esentially means
+ * and add support for searching/filtering on the frontend. This leads to slow views and essentially means
  * we have to pull more data than sometimes we need.
  *
  * The solution: This component is a wrapper around the antd select component. It adds support for optional api side
