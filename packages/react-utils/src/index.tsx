@@ -15,7 +15,6 @@ export * from './helpers/fhir-utils';
 export * from './hooks/useSimpleTabularView';
 export * from './hooks/useTabularViewWithLocalSearch';
 export * from './hooks/useSearchParams';
-export * from './components/FhirSelect';
 export * from './hooks/utils';
 export * from './components/PageHeader';
 export * from './components/ButtonLink';
