@@ -18,10 +18,6 @@ import {
   FHIR_API_BASE_URL,
   KEYCLOAK_USERS_PAGE_SIZE,
 } from '../configs/env';
-import {
-  eusmPhysicalLocationsFilterParams,
-  inventoryNamespace,
-} from '@opensrp/fhir-location-management';
 
 export const BaseProps = {
   baseURL: OPENSRP_API_BASE_URL,
@@ -40,11 +36,6 @@ export const teamManagementProps = {
 
 export const locationUnitProps = {
   fhirRootLocationId: FHIR_ROOT_LOCATION_ID,
-};
-
-export const servicePointListProps = {
-  extraParamFilters: eusmPhysicalLocationsFilterParams,
-  i18nNamespace: inventoryNamespace,
 };
 
 export const newLocationUnitProps = {

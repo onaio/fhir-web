@@ -84,6 +84,7 @@ import {
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
   URL_SERVICE_POINT_LOCATIONS,
+  EusmLocationListFlat,
 } from '@opensrp/fhir-location-management';
 import {
   teamAffiliationProps,
@@ -95,7 +96,6 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
-  servicePointListProps,
 } from './utils';
 import './App.css';
 import {
@@ -378,11 +378,9 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
-        key="service-points"
         path={URL_SERVICE_POINT_LOCATIONS}
-        {...servicePointListProps}
         permissions={['Location.read']}
-        component={ListAllLocationsFlat}
+        component={EusmLocationListFlat}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
