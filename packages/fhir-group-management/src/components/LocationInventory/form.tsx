@@ -48,6 +48,7 @@ import { GroupFormFields } from './types';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useHistory } from 'react-router';
 import { Dayjs } from 'dayjs';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 const { Item: FormItem } = Form;
 
@@ -55,10 +56,11 @@ export interface LocationInventoryFormProps {
   fhirBaseURL: string;
   initialValues: GroupFormFields;
   listResourceId: string;
+  servicePointObj: ILocation;
   cancelUrl?: string;
   successUrl?: string;
-  locationResourceId?: string;
-  listResourceObj?: IGroup;
+  inventoryId?: string;
+  inventoryResourceObj?: IGroup;
 }
 
 const defaultProps = {
@@ -76,21 +78,28 @@ const productQueryFilters = {
  * @returns returns form to add location inventories
  */
 const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
-  const { fhirBaseURL, initialValues, locationResourceId, listResourceId, listResourceObj } = props;
+  const {
+    fhirBaseURL,
+    initialValues,
+    inventoryId,
+    listResourceId,
+    inventoryResourceObj,
+    servicePointObj,
+  } = props;
   const [attractiveProduct, setAttractiveProduct] = useState<boolean>(
-    isAttractiveProduct(listResourceObj)
+    isAttractiveProduct(inventoryResourceObj)
   );
   const [accounterbilityMonths, setAccounterbilityMonths] = useState<number>();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const history = useHistory();
   const [form] = Form.useForm();
-  const editMode = !!locationResourceId;
+  const editMode = !!inventoryId;
 
   const { mutate, isLoading } = useMutation(
     async (values: GroupFormFields) => {
-      const payload = getLocationInventoryPayload(values, editMode, listResourceObj);
-      return postLocationInventory(fhirBaseURL, payload, editMode, listResourceId);
+      const payload = getLocationInventoryPayload(values, editMode, inventoryResourceObj);
+      return postLocationInventory(fhirBaseURL, payload, editMode, listResourceId, servicePointObj);
     },
     {
       onError: (error: Error) => {
@@ -99,7 +108,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       onSuccess: () => {
         sendSuccessNotification(t('Location inventory created successfully'));
         if (editMode) {
-          queryClient.invalidateQueries([fhirBaseURL, locationResourceId]).catch(() => {
+          queryClient.invalidateQueries([fhirBaseURL, inventoryId]).catch(() => {
             sendInfoNotification(t('Failed to refresh data, please refresh the page'));
           });
         } else {

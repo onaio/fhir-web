@@ -30,6 +30,7 @@ import {
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { ListEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/listEntry';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 const codeSystem = 'http://smartregister.org/codes';
 const unicefCharacteristicCode = '98734231';
@@ -40,6 +41,7 @@ const poNumberDisplay = 'PO Number';
 const poNumberCode = 'PONUM';
 const serialNumberDisplay = 'Serial Number';
 const serialNumberCode = 'SERNUM';
+const listSupplyInventoryCode = '22138876';
 
 /**
  * Check if date in past
@@ -391,11 +393,17 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
  * @param baseUrl - api base url
  * @param listId - list id
  * @param entries - resource entries
+ * @param listResource - a list resource
  */
-export async function createListResource(baseUrl: string, listId: string, entries?: ListEntry[]) {
+export async function createListResource(
+  baseUrl: string,
+  listId: string,
+  entries?: ListEntry[],
+  listResource?: IList
+) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
-  const listResource = createSupplyManagementList(listId, entries);
-  return serve.update(listResource);
+  const listResourceToUse = listResource || createLocationServicePointList(listId, entries);
+  return serve.update(listResourceToUse);
 }
 
 /**
@@ -405,19 +413,21 @@ export async function createListResource(baseUrl: string, listId: string, entrie
  * @param payload - location inventory payload
  * @param editMode - editing data?
  * @param listResourceId - env location list resource uuid
+ * @param servicePointObj - inventory service point object
  */
 export async function postLocationInventory(
   baseUrl: string,
   payload: IGroup,
   editMode: boolean,
-  listResourceId: string
+  listResourceId: string,
+  servicePointObj: ILocation
 ) {
   const groupResource = await postPutGroup(baseUrl, payload);
   if (!editMode) {
     const groupResourceId = groupResource.id as string;
     const listId = v4();
-    const entries = [{ item: { reference: `${groupResourceType}/${groupResourceId}` } }];
-    await createListResource(baseUrl, listId, entries);
+    const inventoryList = createLocationInventoryList(listId, groupResourceId, servicePointObj);
+    await createListResource(baseUrl, listId, undefined, inventoryList);
     if (listResourceId) {
       const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
       await combinedListResource(groupResourceId, listId, editMode);
@@ -452,13 +462,11 @@ export const updateListReferencesFactory =
   };
 
 /**
- * Creates a very specific list resource that will curate a set of commodities to be used on the client.
- * This is so that the list resource can then be used when configuring the fhir mobile client
+ * Creates an object of list resource keys
  *
  * @param id - externally defined id that will be the id of the new list resource
- * @param entries - list of resource entries
  */
-export function createSupplyManagementList(id: string, entries?: ListEntry[]): IList {
+function createCommonListResource(id: string): IList {
   return {
     resourceType: listResourceType,
     id: id,
@@ -469,22 +477,82 @@ export function createSupplyManagementList(id: string, entries?: ListEntry[]): I
       },
     ],
     status: 'current',
-    mode: 'working',
-    title: 'Supply Chain commodities',
     code: {
       coding: [
         {
-          system: 'https://ona.io',
-          code: 'supply-chain',
-          display: 'Supply Chain Commodity',
+          system: codeSystem,
+          code: listSupplyInventoryCode,
+          display: 'Supply Inventory List',
         },
       ],
-      text: 'Supply Chain Commodity',
+      text: 'Supply Inventory List',
     },
+  };
+}
+
+/**
+ * Creates a location inventory and service point list resource that will curate a set of commodities to be used on the client.
+ * This is so that the list resource can then be used when configuring the fhir mobile client
+ *
+ * @param id - externally defined id that will be the id of the new list resource
+ * @param entries - list of resource entries
+ */
+export function createLocationServicePointList(id: string, entries?: ListEntry[]): IList {
+  const commonResources = createCommonListResource(id);
+  return {
+    ...commonResources,
+    mode: 'working',
+    title: 'Supply Chain commodities',
     entry: entries || [],
   };
 }
 
+/**
+ * Creates a location inventory  list resource that will curate a set of commodities to be used on the client.
+ * This is so that the list resource can then be used when configuring the fhir mobile client
+ *
+ * @param id - externally defined id that will be the id of the new list resource
+ * @param InventoryResourceId - location inventory id
+ * @param servicePoint - service point object
+ */
+export function createLocationInventoryList(
+  id: string,
+  InventoryResourceId: string,
+  servicePoint: ILocation
+): IList {
+  const commonResources = createCommonListResource(id);
+  const { name, id: servicePointId } = servicePoint;
+  const now = new Date();
+  const stringDate = now.toISOString();
+  return {
+    ...commonResources,
+    title: name,
+    subject: { reference: `Location/${servicePointId}` },
+    entry: [
+      {
+        flag: {
+          coding: [
+            {
+              system: codeSystem,
+              code: listSupplyInventoryCode,
+              display: 'Supply Inventory List',
+            },
+          ],
+          text: 'Supply Inventory List',
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        date: stringDate as any,
+        item: { reference: `Group/${InventoryResourceId}` },
+      },
+    ],
+  };
+}
+
+/**
+ * generates form initial values
+ *
+ * @param inventory - location inventory group resource
+ */
 export const getInventoryInitialValues = (inventory: IGroup): GroupFormFields => {
   const initialValues = {
     id: inventory.id as string,

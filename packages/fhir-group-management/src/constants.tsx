@@ -14,6 +14,7 @@ export const groupResourceType = 'Group';
 export const listResourceType = 'List';
 export const binaryResourceType = 'Binary';
 export const valuesetResourceType = 'ValueSet';
+export const locationResourceType = 'Location';
 
 // product form constants
 export const id = 'id' as const;

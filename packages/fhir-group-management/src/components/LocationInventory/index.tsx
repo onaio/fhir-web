@@ -4,12 +4,13 @@ import { Helmet } from 'react-helmet';
 import { BrokenPage, FHIRServiceClass, PageHeader } from '@opensrp/react-utils';
 import { AddLocationInventoryForm } from './form';
 import { useParams } from 'react-router';
-import { groupResourceType } from '../../constants';
+import { groupResourceType, locationResourceType } from '../../constants';
 import { useQuery } from 'react-query';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { getInventoryInitialValues } from './utils';
 import { GroupFormFields } from './types';
 import { Spin } from 'antd';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 interface AddLocationInventoryProps {
   fhirBaseURL: string;
@@ -17,7 +18,8 @@ interface AddLocationInventoryProps {
 }
 
 export interface RouteParams {
-  id?: string;
+  servicePointId: string;
+  inventoryId?: string;
 }
 
 /**
@@ -29,33 +31,50 @@ export interface RouteParams {
 export const AddLocationInventory = (props: AddLocationInventoryProps) => {
   const { fhirBaseURL, listId } = props;
   const { t } = useTranslation();
-  const { id: locationResourceId } = useParams<RouteParams>();
-  const pageTitle = locationResourceId
-    ? t('Edit locations Inventory')
-    : t('Add locations Inventory');
+  const { inventoryId, servicePointId } = useParams<RouteParams>();
+  const pageTitle = inventoryId ? t('Edit locations Inventory') : t('Add locations Inventory');
 
-  const { data, error, isLoading } = useQuery(
-    [fhirBaseURL, locationResourceId],
+  const inventoryResource = useQuery(
+    [fhirBaseURL, inventoryId],
     async () =>
       await new FHIRServiceClass<IGroup>(fhirBaseURL, groupResourceType).read(
-        locationResourceId as string
+        inventoryId as string
       ),
     {
-      enabled: !!locationResourceId,
+      enabled: !!inventoryId,
     }
   );
-  const initialValues = useMemo(() => (data ? getInventoryInitialValues(data) : {}), [data]);
 
-  if (error && !data) {
+  const servicePoint = useQuery(
+    [fhirBaseURL, servicePointId],
+    async () =>
+      await new FHIRServiceClass<ILocation>(fhirBaseURL, locationResourceType).read(
+        servicePointId as string
+      )
+  );
+
+  const error = inventoryResource.error || servicePoint.error;
+  const isLoading = inventoryResource.isLoading || servicePoint.isLoading;
+
+  const initialValues = useMemo(
+    () => (inventoryResource.data ? getInventoryInitialValues(inventoryResource.data) : {}),
+    [inventoryResource.data]
+  );
+
+  if (
+    (inventoryResource.error && !inventoryResource.data) ||
+    (servicePoint.error && !servicePoint.data)
+  ) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
   const formProps = {
     fhirBaseURL,
     listResourceId: listId as string,
-    locationResourceId,
+    inventoryId,
     initialValues: initialValues as GroupFormFields,
-    listResourceObj: data,
+    inventoryResourceObj: inventoryResource.data,
+    servicePointObj: servicePoint.data as ILocation,
   };
 
   return (

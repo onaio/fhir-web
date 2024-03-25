@@ -462,7 +462,7 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        path={ADD_LOCATION_INVENTORY}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId`}
         {...fhirCreateEditLocationProps}
         exact
         permissions={['Group.create']}
@@ -471,7 +471,7 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        path={`${ADD_LOCATION_INVENTORY}/:id`}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId/:inventoryId`}
         {...fhirCreateEditLocationProps}
         exact
         permissions={['Group.create']}
