@@ -66,12 +66,15 @@
   }
 }
 
+.list-view {
+  padding-bottom: 16px;
+}
+
 @media only screen and (min-width: 0px) {
   .list-view {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    padding-bottom: 32px;
   }
   .main-content {
     background-color: #fff;
@@ -114,9 +117,17 @@
 
 .content-section {
   padding: 0 24px;
-}
 
-.content-section > div {
-  padding: 0;
-  padding-top: 24px;
+  .header {
+    padding: 0;
+    padding-top: 24px;
+    padding-left: 16px;
+
+    .page-header {
+      margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+    }
+  }
 }

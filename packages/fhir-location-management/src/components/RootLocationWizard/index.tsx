@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert, Button, Card, Col, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { Helmet } from 'react-helmet';
 import { PageHeader, loadAllResources } from '@opensrp/react-utils';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import { URL_LOCATION_UNIT, locationResourceType } from '../../constants';
 import { useHistory } from 'react-router';
 import { postPutLocationUnit } from '../LocationForm/utils';
@@ -22,7 +22,7 @@ export interface RootLocationWizardProps {
 
 export const RootLocationWizard = (props: RootLocationWizardProps) => {
   const { rootLocationId, fhirBaseUrl } = props;
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   const {
     data: LocationCount,
@@ -85,7 +85,7 @@ const CardBodyContent = ({
   rootLocationId,
   error,
 }: CardBodyContentProps) => {
-  const { t } = useTranslation();
+  const { t } = useMls();
   const createRootConfirmProps = {
     fhirBaseUrl,
     rootLocationId,
@@ -133,7 +133,7 @@ interface CreateRootConfirmProps {
 const CreateRootConfirm = (props: CreateRootConfirmProps) => {
   const { fhirBaseUrl, rootLocationId } = props;
   const history = useHistory();
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   const onOk = () => history.push(URL_LOCATION_UNIT);
 

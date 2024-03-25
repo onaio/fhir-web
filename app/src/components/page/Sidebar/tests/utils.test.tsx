@@ -35,7 +35,7 @@ describe('getActiveKey', () => {
           url: URL_LOCATION_UNIT,
 
           children: [
-            { title: 'Location Units', url: URL_LOCATION_UNIT, key: 'location-unit' },
+            { title: 'Hierarchy', url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
               enabled: !ENABLE_FHIR_LOCATIONS,
               title: 'Location Unit Group',
@@ -87,7 +87,7 @@ describe('getPathKey', () => {
           url: URL_LOCATION_UNIT,
 
           children: [
-            { title: 'Location Units', url: URL_LOCATION_UNIT, key: 'location-unit' },
+            { title: 'Hierarchy', url: URL_LOCATION_UNIT, key: 'location-unit' },
             {
               enabled: !ENABLE_FHIR_LOCATIONS,
               title: 'Location Unit Group',

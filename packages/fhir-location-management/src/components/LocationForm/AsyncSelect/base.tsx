@@ -2,7 +2,7 @@ import { Alert, Select } from 'antd';
 import { useMemo } from 'react';
 import React from 'react';
 import { SelectProps, DefaultOptionType } from 'antd/lib/select';
-import { useTranslation } from '../../../mls';
+import { useMls } from '../../../mls';
 import { UseQueryOptions, useQuery } from 'react-query';
 
 export type RawValueType = string | number | (string | number)[];
@@ -24,7 +24,7 @@ function AsyncSelect<QueryResponse = unknown, QueryProcessedData = unknown>(
 ) {
   const { optionsGetter, queryParams: useQueryParams, ...restProps } = props;
 
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   const { data, isLoading, error } = useQuery(useQueryParams);
 

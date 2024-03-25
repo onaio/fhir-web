@@ -21,7 +21,6 @@ export const defaultSearchProps: SearchFormProps = {
   onChangeHandler: () => {
     return;
   },
-  size: 'large',
   addonBefore: defaultPrefix,
   allowClear: true,
 };

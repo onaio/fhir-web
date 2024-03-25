@@ -1182,3 +1182,85 @@ export const fhirHierarchy = {
 
 export const serializedSample =
   '["{\\"config\\":{\\"childrenPropertyName\\":\\"children\\"},\\"model\\":{\\"nodeId\\":\\"Location/2252\\",\\"label\\":\\"Root FHIR Location\\",\\"node\\":{\\"resourceType\\":\\"Location\\",\\"id\\":\\"2252\\",\\"meta\\":{\\"versionId\\":\\"3\\",\\"lastUpdated\\":\\"2021-10-14T13:10:14.524+00:00\\",\\"source\\":\\"#5887f723a045b500\\"},\\"identifier\\":[{\\"use\\":\\"official\\",\\"value\\":\\"eff94f33-c356-4634-8795-d52340706ba9\\"}],\\"status\\":\\"active\\",\\"name\\":\\"Root FHIR Location\\",\\"alias\\":[\\"Root Location\\"],\\"description\\":\\"This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.\\",\\"physicalType\\":{\\"coding\\":[{\\"system\\":\\"http://terminology.hl7.org/CodeSystem/location-physical-type\\",\\"code\\":\\"jdn\\",\\"display\\":\\"Jurisdiction\\"}]}},\\"children\\":[{\\"nodeId\\":\\"Location/303\\",\\"label\\":\\"Ona Office Sub Location\\",\\"node\\":{\\"resourceType\\":\\"Location\\",\\"id\\":\\"303\\",\\"meta\\":{\\"versionId\\":\\"4\\",\\"lastUpdated\\":\\"2021-10-14T13:12:22.740+00:00\\",\\"source\\":\\"#13bbc7f09daa1751\\"},\\"identifier\\":[{\\"use\\":\\"official\\",\\"value\\":\\"93bc9c3d-6321-41b0-9b93-1275d7114e22\\"}],\\"status\\":\\"active\\",\\"name\\":\\"Ona Office Sub Location\\",\\"alias\\":[\\"ona office\\"],\\"description\\":\\"The Sub location\\",\\"physicalType\\":{\\"coding\\":[{\\"system\\":\\"http://terminology.hl7.org/CodeSystem/location-physical-type\\",\\"code\\":\\"jdn\\",\\"display\\":\\"Jurisdiction\\"}]},\\"partOf\\":{\\"reference\\":\\"Location/2252\\",\\"display\\":\\"Root FHIR Location\\"}},\\"parent\\":\\"Location/2252\\",\\"children\\":[]}]},\\"children\\":[{\\"config\\":{\\"$ref\\":\\"$[\\\\\\"config\\\\\\"]\\"},\\"model\\":{\\"$ref\\":\\"$[\\\\\\"model\\\\\\"][\\\\\\"children\\\\\\"][0]\\"},\\"children\\":[],\\"parent\\":{\\"$ref\\":\\"$\\"}}]}"]';
+
+export const flatLocations = {
+  resourceType: 'Bundle',
+  id: '7363bc54-d734-4f0b-9444-5e87514754ec',
+  meta: {
+    lastUpdated: '2024-03-05T14:57:02.776+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org/fhir/Location/_search?_count=1&_getpagesoffset=0&_include=Location%3Apartof&_total=accurate',
+    },
+    {
+      relation: 'next',
+      url: 'https://fhir.labs.smartregister.org/fhir?_getpages=7363bc54-d734-4f0b-9444-5e87514754ec&_getpagesoffset=5&_count=1&_pretty=true&_include=Location%3Apartof&_bundletype=searchset',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/Location/3509',
+      resource: {
+        resourceType: 'Location',
+        id: '3509',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-10-13T08:04:47.087+00:00',
+          source: '#ca825ff8d77152b4',
+        },
+        status: 'active',
+        name: 'Good Health Clinic',
+        description: 'HL7 Headquarters',
+        mode: 'instance',
+        type: [
+          {
+            coding: [
+              {
+                system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
+                code: 'SLEEP',
+                display: 'Sleep disorders unit',
+              },
+            ],
+          },
+        ],
+        telecom: [
+          {
+            system: 'phone',
+            value: '(+1) 734-677-7777',
+          },
+          {
+            system: 'fax',
+            value: '(+1) 734-677-6622',
+          },
+          {
+            system: 'email',
+            value: 'hq@HL7.org',
+          },
+        ],
+        address: {
+          line: ['3300 Washtenaw Avenue, Suite 227'],
+          city: 'Ann Arbor',
+          state: 'MI',
+          postalCode: '48104',
+          country: 'USA',
+        },
+        physicalType: {
+          coding: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+              code: 'bu',
+              display: 'Building',
+            },
+          ],
+        },
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
