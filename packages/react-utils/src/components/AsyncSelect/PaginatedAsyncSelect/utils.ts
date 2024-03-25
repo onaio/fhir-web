@@ -1,7 +1,7 @@
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { FHIRServiceClass } from '../../helpers/dataLoaders';
-import { FhirApiFilter } from '../../hooks/useSimpleTabularView';
+import { FHIRServiceClass } from '../../../helpers/dataLoaders';
+import { FhirApiFilter } from '../../../hooks/useSimpleTabularView';
 
 /**
  * Unified function that gets a list of FHIR resources from a FHIR hapi server

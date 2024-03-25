@@ -2,8 +2,8 @@ import React from 'react';
 import { DefaultOptionType, SelectProps } from 'antd/lib/select';
 import { ValueSetContains } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetContains';
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
-import { AsyncSelect, RawValueType } from './base';
-import { FHIRServiceClass } from '../../helpers/dataLoaders';
+import { BaseAsyncSelect, RawValueType } from '../BaseAsyncSelect';
+import { FHIRServiceClass } from '../../../helpers/dataLoaders';
 
 export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
   valueSetId: string;
@@ -37,7 +37,7 @@ export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
     ...selectProps,
   };
 
-  return <AsyncSelect<IValueSet, DefaultOptionType> {...asyncSelectProps} />;
+  return <BaseAsyncSelect<IValueSet, DefaultOptionType> {...asyncSelectProps} />;
 }
 
 /**

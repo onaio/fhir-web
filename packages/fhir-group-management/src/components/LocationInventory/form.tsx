@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import {
-  FhirSelect,
+  PaginatedAsyncSelect,
   formItemLayout,
   tailLayout,
   SelectOption as ProductSelectOption,
@@ -144,7 +144,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       initialValues={initialValues}
     >
       <FormItem id="project" name={product} label={t('Product name')}>
-        <FhirSelect<IGroup>
+        <PaginatedAsyncSelect<IGroup>
           baseUrl={fhirBaseURL}
           resourceType={groupResourceType}
           transformOption={processProductOptions}

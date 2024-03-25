@@ -5,7 +5,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
 import { cleanup, fireEvent, render, waitFor, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ValueSetAsyncSelect, valueSetResourceType } from '../valueSetAsyncSelect';
+import { ValueSetAsyncSelect, valueSetResourceType } from '..';
 import { eusmServicePoint } from './fixtures';
 import userEvent from '@testing-library/user-event';
 

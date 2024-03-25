@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import React from 'react';
 import * as reactQuery from 'react-query';
-import { FhirSelect } from '../index';
+import { PaginatedAsyncSelect } from '../index';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import nock from 'nock';
 import { store } from '@opensrp/store';
@@ -98,7 +98,7 @@ test('works correctly nominal case', async () => {
 
   const { queryByText, getByRole, getByTitle } = render(
     <QueryWrapper>
-      <FhirSelect<IOrganization> {...props}></FhirSelect>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
     </QueryWrapper>
   );
 
@@ -224,7 +224,7 @@ test('handles error in request', async () => {
 
   const { queryByText } = render(
     <QueryWrapper>
-      <FhirSelect<IOrganization> {...props}></FhirSelect>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
     </QueryWrapper>
   );
 

@@ -22,7 +22,7 @@ import {
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
 import { compositionResourceType, PRACTITIONER, SUPERVISOR } from '../../../constants';
-import { FhirSelect } from '@opensrp/react-utils';
+import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
@@ -244,13 +244,13 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               rules={[{ required: true, message: t('Application Id is required') }]}
               data-testid="fhirCoreAppId"
             >
-              <FhirSelect<IComposition>
+              <PaginatedAsyncSelect<IComposition>
                 baseUrl={baseUrl}
                 resourceType={compositionResourceType}
                 transformOption={getCompositionOptions}
                 extraQueryParams={compositionUrlFilter}
                 showSearch={true}
-              ></FhirSelect>
+              ></PaginatedAsyncSelect>
             </Form.Item>
           ) : null}
 
