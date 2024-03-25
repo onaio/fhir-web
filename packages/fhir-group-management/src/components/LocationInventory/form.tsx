@@ -175,7 +175,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={deliveryDate}
         label={t('Delivery date')}
       >
-        <DatePicker onChange={delveryDateChangeHandler} disabledDate={handleDisabledFutureDates} />
+        <DatePicker
+          placeholder={t('Delivery date')}
+          onChange={delveryDateChangeHandler}
+          disabledDate={handleDisabledFutureDates}
+        />
       </FormItem>
 
       <FormItem
@@ -184,11 +188,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         label={t('Accountability end date')}
         rules={validationRules[accountabilityEndDate]}
       >
-        <DatePicker disabledDate={handleDisabledPastDates} />
+        <DatePicker placeholder={t('End date')} disabledDate={handleDisabledPastDates} />
       </FormItem>
 
-      <FormItem id="expiryDate" name={expiryDate} label={t('Expiry date')}>
-        <DatePicker disabledDate={handleDisabledPastDates} />
+      <FormItem hidden id="expiryDate" name={expiryDate} label={t('Expiry date')}>
+        <DatePicker placeholder={t('Expiry date')} disabledDate={handleDisabledPastDates} />
       </FormItem>
 
       <FormItem
@@ -233,7 +237,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       {/* start hidden fields */}
-      <FormItem hidden={true} id="id" name={id} label={t('Commodity Id')}>
+      <FormItem hidden={true} id="id" name={id} label={t('product Id')}>
         <Input disabled={true} />
       </FormItem>
       <FormItem hidden={true} id="active" name={active} label={t('Active')}>
