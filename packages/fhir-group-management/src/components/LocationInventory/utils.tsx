@@ -158,7 +158,7 @@ export const processProductOptions = (product: IGroup) => {
  * @param expiryDate - selected expiry date
  * @returns returns group member
  */
-const getMember = (
+export const getMember = (
   productId: string,
   startDate: Dayjs,
   endDate: Dayjs,
@@ -192,7 +192,7 @@ const getMember = (
  * @param listResourceObj - resource object available on edit
  * @returns returns characteristivs
  */
-const generateCharacteristics = (
+export const generateCharacteristics = (
   unicefSection: ValueSetConcept,
   donor?: ValueSetConcept,
   quantity?: number,
@@ -268,7 +268,7 @@ const generateCharacteristics = (
  * @param listResourceObj - resource object available on edit
  * @returns returns group identifier
  */
-const generateIdentifier = (
+export const generateIdentifier = (
   poId: string,
   serialId?: string,
   listResourceObj?: IGroup
