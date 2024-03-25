@@ -15,6 +15,7 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 interface AddLocationInventoryProps {
   fhirBaseURL: string;
   listId?: string;
+  commodityListId?: string;
 }
 
 export interface RouteParams {
@@ -29,7 +30,7 @@ export interface RouteParams {
  * @returns returns form to add location inventories
  */
 export const AddLocationInventory = (props: AddLocationInventoryProps) => {
-  const { fhirBaseURL, listId } = props;
+  const { fhirBaseURL, listId, commodityListId } = props;
   const { t } = useTranslation();
   const { inventoryId, servicePointId } = useParams<RouteParams>();
   const pageTitle = inventoryId ? t('Edit locations Inventory') : t('Add locations Inventory');
@@ -75,6 +76,7 @@ export const AddLocationInventory = (props: AddLocationInventoryProps) => {
     initialValues: initialValues as GroupFormFields,
     inventoryResourceObj: inventoryResource.data,
     servicePointObj: servicePoint.data as ILocation,
+    commodityListId,
   };
 
   return (

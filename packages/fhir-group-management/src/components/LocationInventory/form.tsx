@@ -49,6 +49,7 @@ import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useHistory } from 'react-router';
 import { Dayjs } from 'dayjs';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import { Dictionary } from '@onaio/utils';
 
 const { Item: FormItem } = Form;
 
@@ -61,14 +62,22 @@ export interface LocationInventoryFormProps {
   successUrl?: string;
   inventoryId?: string;
   inventoryResourceObj?: IGroup;
+  commodityListId?: string;
 }
 
 const defaultProps = {
   initialValues: {},
 };
 
-const productQueryFilters = {
-  code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
+const getProductQueryFilters = (listId?: string) => {
+  const listFilter: Dictionary = {};
+  if (listId) {
+    listFilter['_has:List:item:_id'] = listId;
+  }
+  return {
+    code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
+    ...listFilter,
+  };
 };
 
 /**
@@ -85,6 +94,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     listResourceId,
     inventoryResourceObj,
     servicePointObj,
+    commodityListId,
   } = props;
   const [attractiveProduct, setAttractiveProduct] = useState<boolean>(
     isAttractiveProduct(inventoryResourceObj)
@@ -141,6 +151,8 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
   if (attractiveProduct) {
     serialNumebrRule = validationRules[serialNumber];
   }
+
+  const productQueryFilters = getProductQueryFilters(commodityListId);
 
   return (
     <Form

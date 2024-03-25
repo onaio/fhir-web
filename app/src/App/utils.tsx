@@ -119,4 +119,5 @@ export const commmodityProps = {
 export const fhirCreateEditLocationProps = {
   ...BaseProps,
   listId: FHIR_INVENTORY_LIST_ID,
+  commodityListId: COMMODITIES_LIST_RESOURCE_ID,
 }
