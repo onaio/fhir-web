@@ -373,7 +373,7 @@ const FHIRApps = () => {
         path={URL_ALL_LOCATIONS}
         permissions={['Location.read']}
         component={ListAllLocationsFlat}
-      />{' '}
+      />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
