@@ -229,7 +229,7 @@ test('works correctly - physical location', async () => {
   const inventoryTab = document.querySelector('[data-testid="inventory-tab"]')!;
   // check records shown in table.
   let tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(['Bed nets606109db-5632-48c5-8710-b726e1b3addfHealthGAVIEdit']);
+  expect(tableData).toEqual(['Bed nets2/1/20242/1/2024HealthEdit']);
 
   // validate search works.
   const childLocationSearch = inventoryTab.querySelector('[data-testid="search-form"]')!;
@@ -248,7 +248,9 @@ test('works correctly - physical location', async () => {
   const addLocationCta = screen.queryByText(/Add Inventory/i)!;
   userEvent.click(addLocationCta);
 
-  expect(history.location.pathname).toEqual('/profile/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334');
+  expect(history.location.pathname).toEqual(
+    '/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334'
+  );
 
   expect(nock.isDone()).toBeTruthy();
 });
