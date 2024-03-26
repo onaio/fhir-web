@@ -31,7 +31,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '23435363',
             display: 'Attractive Item code',
           },
@@ -43,7 +43,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '34536373',
             display: 'Is it there code',
           },
@@ -52,7 +52,7 @@ export const commodity1 = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '34536373-1',
             display: 'Value entered on the It is there code',
           },
@@ -64,7 +64,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484',
             display: 'Is it in good condition? (optional)',
           },
@@ -73,7 +73,7 @@ export const commodity1 = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484-1',
             display: 'Value entered on the Is it in good condition? (optional)',
           },
@@ -85,7 +85,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595',
             display: 'Is it being used appropriately? (optional)',
           },
@@ -94,7 +94,7 @@ export const commodity1 = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595-1',
             display: 'Value entered on the Is it being used appropriately? (optional)',
           },
@@ -106,7 +106,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '67869606',
             display: 'Accountability period (in months)',
           },
@@ -120,7 +120,7 @@ export const commodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '1231415',
             display: 'Product Image code',
           },
@@ -152,7 +152,7 @@ export const editedCommodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '23435363',
             display: 'Attractive Item code',
           },
@@ -163,13 +163,17 @@ export const editedCommodity1 = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/', code: '34536373', display: 'Is it there code' },
+          {
+            system: 'http://smartregister.org/codes',
+            code: '34536373',
+            display: 'Is it there code',
+          },
         ],
       },
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '34536373-1',
             display: 'Value entered on the It is there code',
           },
@@ -181,7 +185,7 @@ export const editedCommodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484',
             display: 'Is it in good condition? (optional)',
           },
@@ -190,7 +194,7 @@ export const editedCommodity1 = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484-1',
             display: 'Value entered on the Is it in good condition? (optional)',
           },
@@ -202,7 +206,7 @@ export const editedCommodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595',
             display: 'Is it being used appropriately? (optional)',
           },
@@ -211,7 +215,7 @@ export const editedCommodity1 = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595-1',
             display: 'Value entered on the Is it being used appropriately? (optional)',
           },
@@ -223,7 +227,7 @@ export const editedCommodity1 = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '67869606',
             display: 'Accountability period (in months)',
           },
@@ -234,7 +238,11 @@ export const editedCommodity1 = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/', code: '1231415', display: 'Product Image code' },
+          {
+            system: 'http://smartregister.org/codes',
+            code: '1231415',
+            display: 'Product Image code',
+          },
         ],
       },
       valueReference: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' },
@@ -271,11 +279,15 @@ export const editedCommodity = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/', code: '767524001', display: 'Unit of measure' },
+          {
+            system: 'http://smartregister.org/codes',
+            code: '767524001',
+            display: 'Unit of measure',
+          },
         ],
       },
       valueCodeableConcept: {
-        coding: [{ system: 'http://smartregister.org/', code: '767525000', display: 'Unit' }],
+        coding: [{ system: 'http://smartregister.org/codes', code: '767525000', display: 'Unit' }],
         text: 'Strips',
       },
     },
@@ -346,7 +358,7 @@ export const createdCommodity = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '67869606',
             display: 'Accountability period (in months)',
           },
@@ -358,7 +370,7 @@ export const createdCommodity = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595',
             display: 'Is it being used appropriately? (optional)',
           },
@@ -367,7 +379,7 @@ export const createdCommodity = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '56758595-1',
             display: 'Value entered on the Is it being used appropriately? (optional)',
           },
@@ -379,7 +391,7 @@ export const createdCommodity = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484',
             display: 'Is it in good condition? (optional)',
           },
@@ -388,7 +400,7 @@ export const createdCommodity = {
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '45647484-1',
             display: 'Value entered on the Is it in good condition? (optional)',
           },
@@ -399,13 +411,17 @@ export const createdCommodity = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/', code: '34536373', display: 'Is it there code' },
+          {
+            system: 'http://smartregister.org/codes',
+            code: '34536373',
+            display: 'Is it there code',
+          },
         ],
       },
       valueCodeableConcept: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '34536373-1',
             display: 'Value entered on the It is there code',
           },
@@ -417,7 +433,7 @@ export const createdCommodity = {
       code: {
         coding: [
           {
-            system: 'http://smartregister.org/',
+            system: 'http://smartregister.org/codes',
             code: '23435363',
             display: 'Attractive Item code',
           },
@@ -428,7 +444,11 @@ export const createdCommodity = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/', code: '1231415', display: 'Product Image code' },
+          {
+            system: 'http://smartregister.org/codes',
+            code: '1231415',
+            display: 'Product Image code',
+          },
         ],
       },
       valueReference: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' },

@@ -1,6 +1,6 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { locationResourceType } from '../../constants';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
@@ -23,7 +23,7 @@ interface ViewDetailsProps {
 export const ViewDetails = (props: ViewDetailsProps) => {
   const { fhirBaseURL } = props;
   const { id: locationId } = useParams<RouteParams>();
-  const { t } = useTranslation();
+  const { t } = useMls();
 
   // recursively fetch path of this location
   const { data, isLoading, error } = useQuery<ILocation[], Error, ILocation[]>(

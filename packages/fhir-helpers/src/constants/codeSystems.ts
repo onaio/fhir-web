@@ -2,6 +2,8 @@ export const smartregisterSystemUri = 'http://smartregister.org/codes';
 export const eusmServicePointCodeSystemUri =
   'http://smartregister.org/CodeSystem/eusm-service-point-type';
 export const snomedCodeSystemUri = 'http://snomed.info/sct';
+export const hl7PhysicalTypeCodeSystemUri =
+  'http://terminology.hl7.org/CodeSystem/location-physical-type';
 
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,

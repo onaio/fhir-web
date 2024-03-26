@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly: A catch all 1`] = `"Create CommodityCommodity IdIdentifierEnter Commodity nameMaterial numberSelect Commodity statusActiveDisabledSelect Commodity TypeSelect Commodity typeSelect the unit of measureSelect the unit of measureAttractive item?yesnoIs it there?Is it in good condition?Is it being used appropriately?Accountability period (in months)Photo of the productUploadsaveCancel"`;
+exports[`renders correctly: A catch all 1`] = `"Create commodityCommodity IdIdentifierEnter commodity nameMaterial numberSelect commodity statusActiveDisabledSelect commodity TypeSelect commodity typeSelect the unit of measureSelect the unit of measureAttractive itemYesNoIs it thereIs it in good conditionIs it being used appropriatelyAccountability period (in months)Photo of the productUploadsaveCancel"`;
 
 exports[`renders correctly: active radio button 1`] = `
 <input

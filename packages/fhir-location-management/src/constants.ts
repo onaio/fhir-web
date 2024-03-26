@@ -10,7 +10,12 @@ export const URL_LOCATION_UNIT_ADD = `${URL_LOCATION_UNIT}/add`;
 export const URL_LOCATION_UNIT_EDIT = `${URL_LOCATION_UNIT}/edit`;
 export const URL_LOCATION_VIEW_DETAILS = `${URL_LOCATION_UNIT}/view`;
 export const URL_ALL_LOCATIONS = `${URL_ADMIN}/location/all`;
+export const URL_SERVICE_POINT_LOCATIONS = `${URL_ADMIN}/location/service-point`;
 
 // Magic strings
 export const MATCH_SEARCH_MODE = 'match';
 export const parentIdQueryParam = 'parentId';
+
+// i18n namespaces
+export const namespace = 'fhir-location-management' as const;
+export const inventoryNamespace = 'fhir-service-point' as const;

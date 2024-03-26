@@ -104,7 +104,7 @@ test('test error on attached binary request', async () => {
     'Is it thereyes',
     'Is it in good conditionYes, no tears, and inocuated',
     'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',
-    'accountability period(in months)12',
+    'Accountability period (in months)12',
   ]);
 
   // image section
@@ -140,7 +140,7 @@ test('test missing binary in commodity', async () => {
     'Is it thereyes',
     'Is it in good conditionYes, no tears, and inocuated',
     'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',
-    'accountability period(in months)12',
+    'Accountability period (in months)12',
   ]);
 
   // image section

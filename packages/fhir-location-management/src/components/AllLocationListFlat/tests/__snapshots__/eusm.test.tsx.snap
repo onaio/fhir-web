@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Show data as expected: table data 1`] = `"Good Health Clinic"`;
+
+exports[`Show data as expected: table data 2`] = `"Building"`;
+
+exports[`Show data as expected: table data 3`] = `"active"`;
+
+exports[`Show data as expected: table data 4`] = `""`;
+
+exports[`Show data as expected: table data 5`] = `"Edit"`;
+
+exports[`Show data as expected: table header 1`] = `"NameTypeStatusParentActions"`;

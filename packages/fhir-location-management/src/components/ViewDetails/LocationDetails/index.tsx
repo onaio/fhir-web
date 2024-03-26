@@ -1,5 +1,5 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { useTranslation } from '../../../mls';
+import { useMls } from '../../../mls';
 import React from 'react';
 import { SingleKeyNestedValue } from '@opensrp/react-utils';
 import { Descriptions, Divider, Typography } from 'antd';
@@ -31,7 +31,7 @@ const GeometryRender = ({ geometry }: { geometry?: string }) => {
 };
 
 export const LocationDetails = ({ location }: { location: ILocation }) => {
-  const { t } = useTranslation();
+  const { t } = useMls();
   const {
     id,
     name,

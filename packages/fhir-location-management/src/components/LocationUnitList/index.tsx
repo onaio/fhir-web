@@ -20,7 +20,7 @@ import {
   setSelectedNode,
   getSelectedNode,
 } from '../../ducks/location-tree-state';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
 import { RootLocationWizard } from '../RootLocationWizard';
 
@@ -65,7 +65,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   const { fhirBaseURL, fhirRootLocationId } = props;
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { t } = useMls();
   const history = useHistory();
   const [showWizard, setShowWizard] = useState(false);
 
@@ -144,7 +144,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               }}
             />
           </Col>
-          <Col className="bg-white p-3 border-left">
+          <Col className="bg-white p-3 border-left" span={18}>
             <div className="mb-3 d-flex justify-content-between p-3">
               <h6 className="mt-4">
                 {selectedNode ? selectedNode.model.node.name : t('Location Unit')}

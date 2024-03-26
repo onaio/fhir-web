@@ -143,7 +143,7 @@ exports[`renders correctly when listing resources 11`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    accountability period(in months)
+    Accountability period (in months)
   </dt>
   <dd
     class="singleKeyValue-pair__value"

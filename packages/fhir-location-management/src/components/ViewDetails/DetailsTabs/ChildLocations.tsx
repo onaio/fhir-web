@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../../mls';
+import { useMls } from '../../../mls';
 import { TableLayout, useSimpleTabularView, Column, SearchForm } from '@opensrp/react-utils';
 import { Alert, Button, Col, Row } from 'antd';
 import {
@@ -36,7 +36,7 @@ const searchParamsFactory = (locationId: string) => {
 };
 
 export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
-  const { t } = useTranslation();
+  const { t } = useMls();
   const history = useHistory();
 
   const searchParams = searchParamsFactory(locationId);

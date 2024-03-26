@@ -1,4 +1,4 @@
-import { useTranslation } from '../../../mls';
+import { useMls } from '../../../mls';
 import React from 'react';
 import { Tabs } from 'antd';
 import { InventoryView } from './Inventory';
@@ -22,7 +22,7 @@ export interface ViewDetailTabProps {
  */
 export function ViewDetailsTabs(props: ViewDetailTabProps) {
   const { fhirBaseUrl, location } = props;
-  const { t } = useTranslation();
+  const { t } = useMls();
   const projectCode = getConfig('projectCode');
   const userRole = useUserRole();
   const { sParams, addParam } = useSearchParams();

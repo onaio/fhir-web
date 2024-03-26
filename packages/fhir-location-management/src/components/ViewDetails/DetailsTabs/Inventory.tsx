@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from '../../../mls';
+import { useMls } from '../../../mls';
 import {
   TableLayout,
   useTabularViewWithLocalSearch,
@@ -168,7 +168,7 @@ function matchesSearch(obj: TableData, search: string) {
 }
 
 export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
-  const { t } = useTranslation();
+  const { t } = useMls();
   const history = useHistory();
 
   const {
