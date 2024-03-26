@@ -24,6 +24,7 @@ import {
   quantityCharacteristicCoding,
 } from '@opensrp/fhir-helpers';
 import { hasCode } from '../utils';
+import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
@@ -47,7 +48,7 @@ function parseInventoryGroup(group: IGroup) {
 
   // invariant one member representing the product
   const firstMember = member?.[0];
-  const productReference = firstMember?.entity.reference;
+  const productReference = (firstMember?.entity as Reference | undefined)?.reference;
   const startDate = firstMember?.period?.start as string | undefined;
   const endDate = firstMember?.period?.end as string | undefined;
   const poNumberIdentifier = identifier?.filter((id) => {
