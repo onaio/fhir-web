@@ -159,11 +159,11 @@ function dataTransformer(bundleResponse: IBundle) {
         };
       }
     }
-    if(productReference) {
+    if (productReference) {
       tableDataByProductRef[productReference] = {
         ...tableDataByProductRef[productReference],
-        id: resource.id
-      }
+        id: resource.id,
+      };
     }
   }
   return Object.values(tableDataByProductRef as Record<string, TableData>);
