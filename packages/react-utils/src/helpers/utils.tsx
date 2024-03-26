@@ -79,3 +79,9 @@ export function isValidDate(date?: Date) {
   }
   return false;
 }
+/** describes basic filters for paginated fhir api response */
+export interface FhirApiFilter {
+  page: number;
+  pageSize: number;
+  search: string | null;
+}
