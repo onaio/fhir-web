@@ -28,7 +28,7 @@ import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
 import { useMls } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import { ValueSetAsyncSelect } from './AsyncSelect/ValueSetAsyncSelect';
+import { ValueSetAsyncSelect } from '@opensrp/react-utils';
 
 const { Item: FormItem } = Form;
 
