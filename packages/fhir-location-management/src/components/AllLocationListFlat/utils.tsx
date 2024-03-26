@@ -3,6 +3,7 @@ import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry'
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { Dictionary } from '@onaio/utils';
 import { MATCH_SEARCH_MODE } from '../../constants';
+import { PhysicalTypeCodes, hl7PhysicalTypeCodeSystemUri } from '@opensrp/fhir-helpers';
 
 /**
  * @param bundle - a fhir resource bundle api response
@@ -63,11 +64,6 @@ export function getTableData(data: BundleEntry[]) {
   return tableData;
 }
 
-// TODO - move to fhir-helpers
-const locationValueSet = 'http://hl7.org/fhir/ValueSet/location-physical-type';
-enum PhysicalType {
-  BIULDING = 'bu',
-}
 export const eusmPhysicalLocationsFilterParams = {
-  type: `${locationValueSet}|${PhysicalType.BIULDING}`,
+  type: `${hl7PhysicalTypeCodeSystemUri}|${PhysicalTypeCodes.BUILDING}`,
 };

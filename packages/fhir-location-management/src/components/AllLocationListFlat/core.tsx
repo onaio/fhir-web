@@ -1,5 +1,9 @@
 import React from 'react';
-import { URL_LOCATION_UNIT_EDIT, URL_LOCATION_UNIT_ADD } from '../../constants';
+import {
+  URL_LOCATION_UNIT_EDIT,
+  URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_VIEW_DETAILS,
+} from '../../constants';
 import { useMls } from '../../mls';
 import { Button, Divider, Dropdown } from 'antd';
 import { useHistory, Link } from 'react-router-dom';
@@ -25,14 +29,13 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
   const history = useHistory();
 
   const getItems = (_: Dictionary): MenuProps['items'] => {
-    // Todo: replace _ above when handling onClick
     return [
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${_.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];

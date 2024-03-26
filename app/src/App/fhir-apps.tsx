@@ -81,6 +81,8 @@ import {
 import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  URL_LOCATION_VIEW_DETAILS,
+  ViewDetails,
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
   URL_SERVICE_POINT_LOCATIONS,
@@ -399,6 +401,14 @@ const FHIRApps = () => {
         {...editLocationProps}
         permissions={['Location.update']}
         component={FHIRNewEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_LOCATION_VIEW_DETAILS}/:id`}
+        permissions={['Location.read']}
+        component={ViewDetails}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

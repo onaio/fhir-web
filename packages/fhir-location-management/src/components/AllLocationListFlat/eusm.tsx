@@ -9,6 +9,7 @@ import './index.css';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 import { eusmPhysicalLocationsFilterParams } from './utils';
+import { URL_LOCATION_VIEW_DETAILS } from '../../constants';
 
 export type EusmLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -30,9 +31,9 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${_.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];

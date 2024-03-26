@@ -152,22 +152,7 @@ describe('location-management/src/components/LocationUnitList', () => {
     // view details
     const hamburger = document.querySelector('.more-options');
     fireEvent.click(hamburger);
-    // should see the popup with view details
-    expect(document.querySelector('[data-testid="view-location"]')).toBeInTheDocument();
-    fireEvent.click(document.querySelector('[data-testid="view-location"]'));
-
-    // should load single location
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-
-    // see location details in view details
-    const viewDetailsSection = document.querySelector('[data-testid="view-details"]');
-    viewDetailsSection.querySelectorAll('[data-testid="single-key-value"]').forEach((keyValue) => {
-      expect(keyValue).toMatchSnapshot('key value');
-    });
-
-    // close view details section
-    fireEvent.click(viewDetailsSection.querySelector('button.float-right'));
-    expect(document.querySelector('[data-testid="view-details"]')).not.toBeInTheDocument();
+    screen.getByText('View details');
 
     // lets expand on tree search and select a node
     const antTree = document.querySelector('.ant-tree-list');

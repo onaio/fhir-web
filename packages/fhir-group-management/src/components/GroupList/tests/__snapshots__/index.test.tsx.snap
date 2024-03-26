@@ -7,20 +7,12 @@ exports[`renders correctly when listing resources 3`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Id
-    </span>
+    Id
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      49778
-    </span>
+    49778
   </dd>
 </div>
 `;
@@ -32,20 +24,12 @@ exports[`renders correctly when listing resources 4`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+    Name
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Jan27Test
-    </span>
+    Jan27Test
   </dd>
 </div>
 `;
@@ -57,20 +41,12 @@ exports[`renders correctly when listing resources 5`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+    Active
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Inactive
-    </span>
+    Inactive
   </dd>
 </div>
 `;
@@ -82,20 +58,12 @@ exports[`renders correctly when listing resources 6`] = `
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Last updated
-    </span>
+    Last updated
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      4/27/2022
-    </span>
+    4/27/2022
   </dd>
 </div>
 `;

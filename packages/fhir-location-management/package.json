@@ -35,6 +35,7 @@
     "@onaio/redux-reducer-registry": "^0.0.9",
     "@onaio/session-reducer": "0.0.12",
     "@onaio/utils": "^0.0.1",
+    "@opensrp/fhir-helpers": "workspace:^",
     "@opensrp/notifications": "^0.0.5",
     "@opensrp/pkg-config": "^0.0.9",
     "@opensrp/rbac": "workspace:^",
