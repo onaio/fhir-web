@@ -7,8 +7,8 @@ import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { debounce } from 'lodash';
-import { getResourcesFromBundle } from '../../helpers/utils';
-import { useTranslation } from '../../mls';
+import { getResourcesFromBundle } from '../../../helpers/utils';
+import { useTranslation } from '../../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
 
 export type SelectOption<T extends IResource> = {
@@ -26,7 +26,7 @@ export type AbstractedSelectOptions<ResourceT extends IResource> = Omit<
   'loading' | 'options' | 'searchValue'
 >;
 
-export interface FhirSelectProps<ResourceT extends IResource>
+export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   extends AbstractedSelectOptions<ResourceT> {
   resourceType: string;
   baseUrl: string;
@@ -40,7 +40,7 @@ const debouncedFn = debounce((callback) => callback(), 500);
 
 /**
  * Problem: When we want to api resources as options we need to fetch all resources on the api first
- * and add support for searching/filtering on the frontend. This leads to slow views and esentially means
+ * and add support for searching/filtering on the frontend. This leads to slow views and essentially means
  * we have to pull more data than sometimes we need.
  *
  * The solution: This component is a wrapper around the antd select component. It adds support for optional api side
@@ -48,7 +48,9 @@ const debouncedFn = debounce((callback) => callback(), 500);
  *
  * @param props - component props
  */
-export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<ResourceT>) {
+export function PaginatedAsyncSelect<ResourceT extends IResource>(
+  props: PaginatedAsyncSelectProps<ResourceT>
+) {
   const {
     resourceType,
     baseUrl,
@@ -131,6 +133,7 @@ export function FhirSelect<ResourceT extends IResource>(props: FhirSelectProps<R
   const propsToSelect = {
     style: { minWidth: '200px' },
     ...restProps,
+    placeholder,
     onChange: changeHandler,
     loading: isLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,

@@ -16,6 +16,7 @@ import {
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   FHIR_API_BASE_URL,
   KEYCLOAK_USERS_PAGE_SIZE,
+  FHIR_INVENTORY_LIST_ID,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -109,4 +110,10 @@ export const patientProps = {
 
 export const commmodityProps = {
   listId: COMMODITIES_LIST_RESOURCE_ID,
+};
+
+export const fhirCreateEditLocationProps = {
+  ...BaseProps,
+  listId: FHIR_INVENTORY_LIST_ID,
+  commodityListId: COMMODITIES_LIST_RESOURCE_ID,
 };

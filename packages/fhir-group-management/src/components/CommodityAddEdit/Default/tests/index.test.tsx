@@ -104,7 +104,7 @@ it('renders correctly', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
     // id,
     screen.getByLabelText('Commodity Id');
     // identifier
@@ -113,13 +113,13 @@ it('renders correctly', async () => {
     screen.getByPlaceholderText('Name');
     // active
     // active
-    screen.getByText('Select Commodity status');
+    screen.getByText('Select commodity status');
     const activeRadioBtn = document.querySelector('#active input[value="true"]');
     const disabledRadioBtn = document.querySelector('#active input[value="false"]');
     expect(activeRadioBtn).toMatchSnapshot('active radio button');
     expect(disabledRadioBtn).toMatchSnapshot('disabled radio button');
     // type
-    screen.getByLabelText('Select Commodity Type');
+    screen.getByLabelText('Select commodity Type');
     // unit of measure
     screen.getByLabelText('Select the unit of measure');
     // submit btn
@@ -144,7 +144,7 @@ it('form validation works', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
   });
 
   const submitBtn = screen.getByRole('button', {
@@ -195,7 +195,7 @@ it('submits new group', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Create Commodity');
+    screen.getByText('Create commodity');
   });
 
   const nameField = screen.getByPlaceholderText('Name');
@@ -263,7 +263,7 @@ it('edits resource', async () => {
   );
 
   await waitFor(() => {
-    screen.getByText('Edit Commodity | Paracetamol 100mg Tablets');
+    screen.getByText('Edit commodity | Paracetamol 100mg Tablets');
   });
 
   const nameField = screen.getByPlaceholderText('Name');
@@ -323,7 +323,7 @@ test('cancel handler is called on cancel', async () => {
   );
 
   // test view is loaded.
-  screen.getByText('Create Commodity');
+  screen.getByText('Create commodity');
   const cancelBtn = screen.getByRole('button', { name: /Cancel/ });
 
   fireEvent.click(cancelBtn);

@@ -5,7 +5,11 @@ import { PaginationProps } from 'antd/lib/pagination/Pagination';
 
 export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as const;
 
-export const supportedProjectCode = ['eusm', 'core', 'echis'] as const;
+export const eusmProjectCode = 'eusm' as const;
+export const coreProjectCode = 'core' as const;
+export const echisProjectCode = 'echis' as const;
+
+export const supportedProjectCode = [eusmProjectCode, coreProjectCode, echisProjectCode] as const;
 export const supportedRbacStrategies = ['keycloak'] as const;
 
 export type LanguageCode = typeof supportedLanguageCodes[number];

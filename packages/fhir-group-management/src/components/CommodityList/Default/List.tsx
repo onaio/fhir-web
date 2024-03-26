@@ -101,7 +101,7 @@ export const DefaultCommodityList = (props: GroupListProps) => {
         permissions: ['Group.delete'],
         label: (
           <Popconfirm
-            title={t('Are you sure you want to delete this Commodity?')}
+            title={t('Are you sure you want to delete this commodity?')}
             okText={t('Yes')}
             cancelText={t('No')}
             onConfirm={async () => {
@@ -181,7 +181,7 @@ export const DefaultCommodityList = (props: GroupListProps) => {
   const baseListViewProps: BaseListViewProps = {
     getColumns: getColumns,
     keyValueMapperRenderProp: keyValueDetailRender,
-    createButtonLabel: t('Add Commodity'),
+    createButtonLabel: t('Add commodity'),
     createButtonUrl: ADD_EDIT_COMMODITY_URL,
     fhirBaseURL,
     pageTitle: t('Commodity List'),

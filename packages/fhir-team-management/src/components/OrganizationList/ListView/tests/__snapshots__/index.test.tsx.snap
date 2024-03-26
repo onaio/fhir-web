@@ -65,20 +65,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team id
-    </span>
+    Team id
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      205
-    </span>
+    205
   </dd>
 </div>
 `;
@@ -90,20 +82,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team identifier
-    </span>
+    Team identifier
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      205
-    </span>
+    205
   </dd>
 </div>
 `;
@@ -115,20 +99,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team status
-    </span>
+    Team status
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+    Active
   </dd>
 </div>
 `;
@@ -140,26 +116,18 @@ exports[`renders correctly when listing organizations: single key value pairs de
   <dt
     class="singleKeyValue-pair__label"
   >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team practitioners
-    </span>
+    Team practitioners
   </dt>
   <dd
     class="singleKeyValue-pair__value"
   >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+    <ul
+      id="practitioner-teams"
     >
-      <ul
-        id="practitioner-teams"
-      >
-        <li>
-          Allay Allan
-        </li>
-      </ul>
-    </span>
+      <li>
+        Allay Allan
+      </li>
+    </ul>
   </dd>
 </div>
 `;

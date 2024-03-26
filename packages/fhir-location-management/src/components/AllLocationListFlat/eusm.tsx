@@ -9,7 +9,7 @@ import './index.css';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 import { eusmPhysicalLocationsFilterParams } from './utils';
-import { URL_SERVICE_POINT_ADD_EDIT } from '../../constants';
+import { URL_LOCATION_VIEW_DETAILS, URL_SERVICE_POINT_ADD_EDIT } from '../../constants';
 
 export type EusmLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -31,9 +31,9 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${_.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];
@@ -69,7 +69,10 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <Link to={`${URL_SERVICE_POINT_ADD_EDIT}/${record.id.toString()}`} className="m-0 p-1">
+              <Link
+                to={`${URL_SERVICE_POINT_ADD_EDIT}/${record.id.toString()}`}
+                className="m-0 p-1"
+              >
                 {t('Edit')}
               </Link>
               <Divider type="vertical" />
@@ -97,7 +100,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
     </RbacCheck>
   );
 
-  const baseProps = {
+  const baseProps: BaseAllLocationListFlatProps = {
     ...props,
     pageTitle: t('Service points'),
     addLocationBtnRender,

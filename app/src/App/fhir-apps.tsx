@@ -83,9 +83,11 @@ import {
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
   URL_SERVICE_POINT_ADD_EDIT,
+  URL_SERVICE_POINT_LIST,
+  URL_LOCATION_VIEW_DETAILS,
+  ViewDetails,
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
-  URL_SERVICE_POINT_LIST,
   EusmLocationListFlat,
 } from '@opensrp/fhir-location-management';
 import {
@@ -98,6 +100,7 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
+  fhirCreateEditLocationProps,
 } from './utils';
 import './App.css';
 import {
@@ -116,6 +119,8 @@ import {
   GroupList,
   LIST_COMMODITY_URL,
   LIST_GROUP_URL,
+  ADD_LOCATION_INVENTORY,
+  AddLocationInventory,
 } from '@opensrp/fhir-group-management';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
@@ -423,6 +428,14 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_LOCATION_VIEW_DETAILS}/:id`}
+        permissions={['Location.read']}
+        component={ViewDetails}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={`${ADD_EDIT_HEALTHCARE_SERVICE_URL}/:id`}
         permissions={['HealthcareService.update']}
         component={HealthCareAddEdit}
@@ -465,6 +478,24 @@ const FHIRApps = () => {
         exact
         permissions={['Group.create']}
         component={CommodityAddEdit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId`}
+        {...fhirCreateEditLocationProps}
+        exact
+        permissions={['Group.create']}
+        component={AddLocationInventory}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId/:inventoryId`}
+        {...fhirCreateEditLocationProps}
+        exact
+        permissions={['Group.create']}
+        component={AddLocationInventory}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
