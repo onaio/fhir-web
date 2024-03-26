@@ -89,7 +89,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
 
   const addLocationBtnRender = () => (
     <RbacCheck permissions={['Location.create']}>
-      <Button type="primary" onClick={() => history.push('#')}>
+      <Button disabled type="primary" onClick={() => history.push('#')}>
         <PlusOutlined />
         {t('Add Service point')}
       </Button>

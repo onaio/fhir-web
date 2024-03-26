@@ -30,7 +30,7 @@ import {
 } from '../configs/settings';
 import React from 'react';
 import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
-import { getConfig } from '@opensrp/pkg-config';
+import { getConfig, eusmProjectCode } from '@opensrp/pkg-config';
 
 /** Interface for menu items */
 export interface Route {
@@ -115,7 +115,8 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           isHomePageLink: true,
           url: URL_SERVICE_POINT_LOCATIONS,
           permissions: ['Location.read', 'Group.read'],
-          enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT && getConfig('projectCode') === 'eusm',
+          enabled:
+            COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT && getConfig('projectCode') === eusmProjectCode,
         },
         {
           title: t('Care Teams Management'),
