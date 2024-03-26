@@ -68,6 +68,16 @@ exports[`LocationForm renders correctly: description label 1`] = `
 </label>
 `;
 
+exports[`LocationForm renders correctly: geometry label 1`] = `
+<label
+  className=""
+  htmlFor="location-form_geometry"
+  title="Geometry"
+>
+  Geometry
+</label>
+`;
+
 exports[`LocationForm renders correctly: isJurisdiction field 1`] = `
 Array [
   <input
@@ -89,6 +99,28 @@ Array [
 ]
 `;
 
+exports[`LocationForm renders correctly: isJurisdiction field 2`] = `
+<textarea
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="location-form_geometry"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onCompositionEnd={[Function]}
+  onCompositionStart={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  placeholder="</> JSON"
+  rows={4}
+  style={
+    Object {
+      "resize": undefined,
+    }
+  }
+  value=""
+/>
+`;
+
 exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
 <label
   className=""
@@ -98,6 +130,14 @@ exports[`LocationForm renders correctly: isJurisdiction label 1`] = `
   Physical type
 </label>
 `;
+
+exports[`LocationForm renders correctly: latitude field 1`] = `null`;
+
+exports[`LocationForm renders correctly: latitude label 1`] = `null`;
+
+exports[`LocationForm renders correctly: longitude field 1`] = `null`;
+
+exports[`LocationForm renders correctly: longitude label 1`] = `null`;
 
 exports[`LocationForm renders correctly: name field 1`] = `
 <input
