@@ -64,40 +64,48 @@ export const getLocationFormFields = (
   location?: ILocation,
   parentId?: string
 ): LocationFormFields => {
-  if(location){
+  if (location) {
     const { position, extension, physicalType, name, status, type } = location;
-    // TODO - magic string
-    const geoJsonExtension = getObjLike<Extension>(extension, 'url', locationGeoJsonExtensionUrl)[0] as Extension | undefined;
+
+    const geoJsonExtension = getObjLike<Extension>(
+      extension,
+      'url',
+      locationGeoJsonExtensionUrl
+    )[0] as Extension | undefined;
     const geoJsonAttachment = geoJsonExtension?.valueAttachment?.data;
     let geometryGeoJSon;
     if (geoJsonAttachment) {
       // try and parse into an object.
       geometryGeoJSon = atob(geoJsonAttachment);
     }
-  
+
     const physicalTypeCoding = getObjLike(
       physicalType?.coding ?? [],
       'system',
       physicalTypeValueSetSystem
     )[0] as Coding | undefined;
 
-    const servicePointTypeCodings = type?.flatMap(concept => concept.coding ?? [])
-    const serviceTypeCode = getObjLike(servicePointTypeCodings, "system", eusmServicePointCodeSystemUri)?.[0]
-  
+    const servicePointTypeCodings = type?.flatMap((concept) => concept.coding ?? []);
+    const serviceTypeCode = getObjLike(
+      servicePointTypeCodings,
+      'system',
+      eusmServicePointCodeSystemUri
+    )[0] as Coding | undefined;
+
     return {
       ...defaultFormFields,
       initObj: location,
-      isJurisdiction: physicalTypeCoding?.code !== "bu",
+      isJurisdiction: physicalTypeCoding?.code !== 'bu',
       name,
       status,
       geometry: geometryGeoJSon,
-      parentId: parentId ?? location?.partOf?.reference,
+      parentId: parentId ?? location.partOf?.reference,
       latitude: position?.latitude,
       longitude: position?.longitude,
       serviceType: serviceTypeCode ? JSON.stringify(servicePointTypeCodings) : undefined,
     } as LocationFormFields;
   }
-  return defaultFormFields
+  return defaultFormFields;
 };
 
 // TODO - dry out fhir-helpers
