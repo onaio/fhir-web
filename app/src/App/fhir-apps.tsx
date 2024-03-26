@@ -406,6 +406,15 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
+        path={`${URL_SERVICE_POINT_ADD_EDIT}/:id`}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
         path={URL_LOCATION_UNIT_EDIT}
         {...editLocationProps}
         permissions={['Location.update']}
