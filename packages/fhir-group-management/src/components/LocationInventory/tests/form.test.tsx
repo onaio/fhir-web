@@ -190,7 +190,7 @@ it('edits product as expected', async () => {
 
   await waitFor(() => {
     expect(errorNoticeMock).not.toHaveBeenCalled();
-    expect(successNoticeMock.mock.calls).toEqual([['Location inventory created successfully']]);
+    expect(successNoticeMock.mock.calls).toEqual([['Location inventory updated successfully']]);
   });
 
   expect(nock.isDone()).toBeTruthy();

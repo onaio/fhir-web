@@ -116,7 +116,10 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         sendErrorNotification(error.message);
       },
       onSuccess: () => {
-        sendSuccessNotification(t('Location inventory created successfully'));
+        const successMessage = editMode
+          ? t('Location inventory updated successfully')
+          : t('Location inventory created successfully');
+        sendSuccessNotification(successMessage);
         if (editMode) {
           queryClient.invalidateQueries([fhirBaseURL, inventoryId]).catch(() => {
             sendInfoNotification(t('Failed to refresh data, please refresh the page'));
