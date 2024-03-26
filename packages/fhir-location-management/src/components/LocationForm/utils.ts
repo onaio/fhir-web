@@ -9,6 +9,8 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
+import { getAdministrativeLevelTypeCoding } from '@opensrp/fhir-helpers';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export type ExtraFields = Dictionary;
 
@@ -85,7 +87,7 @@ export const generateLocationUnit = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode
 ) => {
-  const { id, name, status, description, alias, isJurisdiction } = formValues;
+  const { id, name, status, description, alias, isJurisdiction, parentId } = formValues;
 
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
@@ -98,6 +100,13 @@ export const generateLocationUnit = (
       display: parentNode.model.node.name,
     };
   }
+
+  let admLevel = 0;
+  if (parentId && parentNode) {
+    admLevel = parentNode.model.administrativeLevel;
+  }
+  // todo: handle edit incase of several types
+  const admLevelTypeCoding = [getAdministrativeLevelTypeCoding(admLevel)] as Coding;
 
   const payload = {
     resourceType: 'Location',
@@ -121,6 +130,7 @@ export const generateLocationUnit = (
         },
       ],
     },
+    type: [{ coding: admLevelTypeCoding }],
   } as ILocation;
 
   if (id) {
