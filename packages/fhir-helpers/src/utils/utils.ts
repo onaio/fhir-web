@@ -10,7 +10,7 @@ import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 export function getCharacteristicWithCoding(
   characteristics: GroupCharacteristic[],
   coding: Coding
-) {
+): GroupCharacteristic | undefined {
   return getCharacteristicWithCode(characteristics, coding.system, coding.code)[0];
 }
 

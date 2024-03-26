@@ -80,12 +80,12 @@ function parseInventoryGroup(group: IGroup) {
   return {
     id,
     productReference,
-    quantity: quantityCharacteristic.valueQuantity?.value,
+    quantity: quantityCharacteristic?.valueQuantity?.value,
     poNumber: poNumberIdentifier?.[0]?.value,
     deliveryDate: sanitizeDate(startDate),
     accountabilityEndDate: sanitizeDate(endDate),
-    unicefSection: sectionCharacteristic.valueCodeableConcept?.text,
-    donor: donorCharacteristic.valueCodeableConcept?.text,
+    unicefSection: sectionCharacteristic?.valueCodeableConcept?.text,
+    donor: donorCharacteristic?.valueCodeableConcept?.text,
     serialNumber: serialNumberIdentifier?.[0]?.value,
   };
 }

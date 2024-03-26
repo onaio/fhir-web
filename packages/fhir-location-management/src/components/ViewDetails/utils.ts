@@ -10,6 +10,7 @@ import {
 import { get, isEqual, reverse } from 'lodash';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { eusmServicePointCodeSystemUri, locationGeometryExtensionUri } from '@opensrp/fhir-helpers';
+import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
 
 /**
  * fetches the location as well as all of its parent locations.
@@ -87,7 +88,9 @@ export function parseLocationDetails(node: ILocation) {
     updatedLast = undefined;
   }
 
-  const geoJSonExtens = getObjLike(extension, 'url', locationGeometryExtensionUri)[0];
+  const geoJSonExtens = getObjLike(extension, 'url', locationGeometryExtensionUri)[0] as
+    | Extension
+    | undefined;
   const geoJsonExtensionData = geoJSonExtens?.valueAttachment?.data;
   let geometry;
   if (geoJsonExtensionData) {
@@ -101,7 +104,7 @@ export function parseLocationDetails(node: ILocation) {
     servicePointTypeCodings,
     'system',
     eusmServicePointCodeSystemUri
-  )[0];
+  )[0] as Coding | undefined;
 
   return {
     identifier,
