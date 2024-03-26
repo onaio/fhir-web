@@ -10,7 +10,7 @@ export const URL_LOCATION_UNIT_ADD = `${URL_LOCATION_UNIT}/add`;
 export const URL_LOCATION_UNIT_EDIT = `${URL_LOCATION_UNIT}/edit`;
 export const URL_ALL_LOCATIONS = `${URL_ADMIN}/location/all`;
 export const URL_SERVICE_POINT_ADD_EDIT = `${URL_ADMIN}/service-points/add-edit`;
-export const URL_SERVICE_POINT_LIST = `${URL_ADMIN}/location/service-point`;
+export const URL_SERVICE_POINT_LIST = `${URL_ADMIN}/service-points`;
 
 // magic strings
 export const serviceType = 'serviceType' as const;

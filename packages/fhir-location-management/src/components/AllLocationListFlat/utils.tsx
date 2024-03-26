@@ -66,7 +66,7 @@ export function getTableData(data: BundleEntry[]) {
 // TODO - move to fhir-helpers
 const locationPhysicalTypeCodeSystem =
   'http://terminology.hl7.org/CodeSystem/location-physical-type';
-enum PhysicalType {
+export enum PhysicalType {
   BIULDING = 'bu',
 }
 export const eusmPhysicalLocationsFilterParams = {
