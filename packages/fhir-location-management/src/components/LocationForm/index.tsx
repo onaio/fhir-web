@@ -16,7 +16,7 @@ import { TreeNode } from '../../helpers/types';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 const { Item: FormItem } = Form;
@@ -105,7 +105,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [successUrl, setSuccessUrl] = useState<string>();
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
+  const { t } = useMls();
   const validationRules = validationRulesFactory(t);
 
   const isHidden = (fieldName: string) => hidden.includes(fieldName);

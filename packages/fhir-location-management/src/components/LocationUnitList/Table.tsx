@@ -5,7 +5,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { URL_LOCATION_UNIT_EDIT } from '../../constants';
 import { Column, TableLayout } from '@opensrp/react-utils';
-import { useTranslation } from '../../mls';
+import { useMls } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
 
 export interface TableData {
@@ -25,7 +25,7 @@ export interface Props {
 
 const Table: React.FC<Props> = (props: Props) => {
   const { onViewDetails } = props;
-  const { t } = useTranslation();
+  const { t } = useMls();
   const columns: Column<TableData>[] = [
     {
       title: t('Name'),

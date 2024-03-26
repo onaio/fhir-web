@@ -62,3 +62,12 @@ export function getTableData(data: BundleEntry[]) {
   });
   return tableData;
 }
+
+// TODO - move to fhir-helpers
+const locationValueSet = 'http://hl7.org/fhir/ValueSet/location-physical-type';
+enum PhysicalType {
+  BIULDING = 'bu',
+}
+export const eusmPhysicalLocationsFilterParams = {
+  type: `${locationValueSet}|${PhysicalType.BIULDING}`,
+};
