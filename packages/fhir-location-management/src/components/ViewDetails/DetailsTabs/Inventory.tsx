@@ -22,9 +22,11 @@ import {
   productCoding,
   sectionCharacteristicCoding,
   quantityCharacteristicCoding,
+  serialNumberIdentifierCoding,
 } from '@opensrp/fhir-helpers';
 import { hasCode } from '../utils';
 import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
+import { ADD_LOCATION_INVENTORY } from '@opensrp/fhir-group-management';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
@@ -37,13 +39,12 @@ export interface InventoryViewProps {
  * @param group - inventory group resource to be parsed
  */
 function parseInventoryGroup(group: IGroup) {
-  const { member, characteristic, identifier } = group;
-
+  const { member, characteristic, identifier, id } = group;
   const sanitizeDate = (dateString?: string) => {
     if (!dateString) return;
     const sampleDate = new Date(dateString);
     if (isNaN(sampleDate.getTime())) return;
-    return sampleDate;
+    return sampleDate.toLocaleDateString();
   };
 
   // invariant one member representing the product
@@ -69,14 +70,23 @@ function parseInventoryGroup(group: IGroup) {
     quantityCharacteristicCoding
   );
 
+  const serialNumberIdentifier = identifier?.filter((id) => {
+    const hasCoding = id.type?.coding?.some(
+      (coding) => coding.code === serialNumberIdentifierCoding.code
+    );
+    return hasCoding;
+  });
+
   return {
+    id,
     productReference,
-    quantity: quantityCharacteristic?.valueQuantity?.value,
+    quantity: quantityCharacteristic.valueQuantity?.value,
     poNumber: poNumberIdentifier?.[0]?.value,
     deliveryDate: sanitizeDate(startDate),
     accountabilityEndDate: sanitizeDate(endDate),
-    unicefSection: sectionCharacteristic?.valueCodeableConcept?.text,
-    donor: donorCharacteristic?.valueCodeableConcept?.text,
+    unicefSection: sectionCharacteristic.valueCodeableConcept?.text,
+    donor: donorCharacteristic.valueCodeableConcept?.text,
+    serialNumber: serialNumberIdentifier?.[0]?.value,
   };
 }
 
@@ -86,14 +96,9 @@ function parseInventoryGroup(group: IGroup) {
  * @param group - group resource to be parsed
  */
 function parseProductGroup(group: IGroup) {
-  const { name, identifier } = group;
-
-  const serialNumberIdentifier = identifier?.filter((id) => {
-    return (id.type?.coding ?? []).indexOf(poNumberIdentifierCoding);
-  });
+  const { name } = group;
   return {
     productName: name,
-    serialNumber: serialNumberIdentifier?.[0]?.value,
   };
 }
 
@@ -125,11 +130,11 @@ function isProduct(res: IGroup) {
 function dataTransformer(bundleResponse: IBundle) {
   const entry = (bundleResponse.entry ?? []).map((x) => x.resource) as IGroup[];
   const tableDataByProductRef: Record<string, Record<string, unknown> | undefined> = {};
-
+  let productReference;
   for (const resource of entry) {
     if (isInventory(resource)) {
       const tableDataEntry = parseInventoryGroup(resource as IGroup);
-      const { productReference } = tableDataEntry;
+      productReference = tableDataEntry.productReference;
       if (productReference) {
         if (tableDataByProductRef[productReference] !== undefined) {
           tableDataByProductRef[productReference] = {
@@ -144,7 +149,7 @@ function dataTransformer(bundleResponse: IBundle) {
     if (isProduct(resource)) {
       const thisResource = resource as IGroup;
       const tableDataEntry = parseProductGroup(thisResource);
-      const productReference = `${groupResourceType}/${thisResource.id}`;
+      productReference = `${groupResourceType}/${thisResource.id}`;
       if (tableDataByProductRef[productReference] === undefined) {
         tableDataByProductRef[productReference] = tableDataEntry;
       } else {
@@ -153,6 +158,12 @@ function dataTransformer(bundleResponse: IBundle) {
           ...tableDataEntry,
         };
       }
+    }
+    if (productReference) {
+      tableDataByProductRef[productReference] = {
+        ...tableDataByProductRef[productReference],
+        id: resource.id,
+      };
     }
   }
   return Object.values(tableDataByProductRef as Record<string, TableData>);
@@ -191,6 +202,8 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
   if (error && !data) {
     return <Alert type="error">{t('An error occurred while fetching inventory')}</Alert>;
   }
+
+  const baseInventoryPath = `${ADD_LOCATION_INVENTORY}/${locationId}`;
 
   const columns: Column<TableData>[] = [
     {
@@ -249,11 +262,11 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     {
       title: t('Actions'),
       // eslint-disable-next-line react/display-name
-      render: (_: unknown) => (
+      render: ({ id }: TableData) => (
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Group.update']}>
             <>
-              <Link to={`#`} className="m-0 p-1">
+              <Link to={`${baseInventoryPath}/${id}`} className="m-0 p-1">
                 {t('Edit')}
               </Link>
               <Divider type="vertical" />
@@ -279,7 +292,7 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
         <div className="main-content__header">
           <SearchForm data-testid="search-form" {...searchFormProps} />
           <RbacCheck permissions={['Group.create']}>
-            <Button type="primary" disabled onClick={() => history.push('#')}>
+            <Button type="primary" onClick={() => history.push(baseInventoryPath)}>
               <PlusOutlined />
               {t('Add Inventory')}
             </Button>

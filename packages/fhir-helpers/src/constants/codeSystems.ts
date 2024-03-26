@@ -19,7 +19,7 @@ export const sectionCharacteristicCoding = {
 
 export const donorCharacteristicCoding = {
   system: smartregisterSystemUri,
-  code: '45647484',
+  code: '45981276',
   display: 'Donor',
 };
 
