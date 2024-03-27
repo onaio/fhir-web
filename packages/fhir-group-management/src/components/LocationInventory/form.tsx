@@ -33,6 +33,7 @@ import {
   name,
   type,
   actual,
+  unicefDonorValueSetId,
 } from '../../constants';
 import {
   getLocationInventoryPayload,
@@ -237,7 +238,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <ValueSetAsyncSelect
           placeholder={t('Select donor')}
           showSearch={true}
-          valueSetId={unicefSectionValueSetId}
+          valueSetId={unicefDonorValueSetId}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>
