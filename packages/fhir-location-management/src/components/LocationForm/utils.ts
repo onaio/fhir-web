@@ -91,7 +91,8 @@ export const getResourceType = (
   let admLevel = 0;
   if (parentId && parentNode) {
     admLevel = parentNode.model?.administrativeLevel;
-    admLevel = admLevel + 1;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    admLevel = admLevel === undefined ? 0 : admLevel + 1;
   }
   const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
   const newCoding = { coding: [admLevelTypeCoding] };
