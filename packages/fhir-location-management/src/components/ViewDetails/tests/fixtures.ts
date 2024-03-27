@@ -224,6 +224,17 @@ export const centralProvinceInclude = {
             },
           ],
         },
+        type: [
+          {
+            coding: [
+              {
+                system: 'https://smartregister.org/codes/administrative-level',
+                code: '1',
+                display: 'Level 1',
+              },
+            ],
+          },
+        ],
         partOf: {
           reference: 'Location/fe9e549b-a427-4db6-aad9-edade11b6e6a',
           display: 'True Kenya',
