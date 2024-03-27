@@ -1,5 +1,6 @@
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { administrativeLevelSystemUri } from '../constants/codeSystems';
 
 /**
  * finds a characteristic that has the given coding as one of its characteristic.codings
@@ -57,7 +58,7 @@ export function getCharacteristicWithCode(
  */
 export function getAdministrativeLevelTypeCoding(admLevel: number): Coding {
   return {
-    system: 'https://smartregister.org/codes/administrative-level',
+    system: administrativeLevelSystemUri,
     code: `${admLevel}`,
     display: `Level ${admLevel}`,
   };

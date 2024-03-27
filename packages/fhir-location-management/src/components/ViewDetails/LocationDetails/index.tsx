@@ -44,6 +44,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     version,
     alias,
     description,
+    administrativeLevel,
   } = parseLocationDetails(location);
 
   const otherDetailsMap = {
@@ -53,6 +54,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     [t('Latitude & Longitude')]: latitude && longitude ? `${latitude}, ${longitude}` : undefined,
     [t('Physical Type')]: physicalType.display,
     [t('Geometry')]: geometry ? <GeometryRender geometry={geometry} /> : undefined,
+    [t('Administrative Level')]: administrativeLevel,
     [t('Description')]: description,
   };
   const dateCreatedKeyPairing = {
