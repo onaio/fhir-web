@@ -1,5 +1,6 @@
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { administrativeLevelSystemUri } from '../constants/codeSystems';
 
 /**
  * finds a characteristic that has the given coding as one of its characteristic.codings
@@ -48,4 +49,17 @@ export function getCharacteristicWithCode(
     }
   }
   return matchedCharacteristics;
+}
+
+/**
+ * Generates administrative level type coding
+ *
+ * @param admLevel - administrative level
+ */
+export function getAdministrativeLevelTypeCoding(admLevel: number): Coding {
+  return {
+    system: administrativeLevelSystemUri,
+    code: `${admLevel}`,
+    display: `Level ${admLevel}`,
+  };
 }

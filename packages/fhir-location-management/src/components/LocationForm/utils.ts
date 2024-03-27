@@ -9,6 +9,8 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
+import { getAdministrativeLevelTypeCoding } from '@opensrp/fhir-helpers';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 export type ExtraFields = Dictionary;
 
@@ -21,6 +23,7 @@ export interface LocationFormFields {
   description?: string;
   alias?: string;
   isJurisdiction: boolean;
+  type?: CodeableConcept[];
 }
 
 interface BaseSetting {
@@ -74,6 +77,37 @@ export const getLocationFormFields = (
 };
 
 /**
+ * generates payload resource type
+ *
+ * @param initialValues - initial values
+ * @param parentNode - parent node of created location
+ * @param parentId - location parent id
+ */
+export const getResourceType = (
+  initialValues: LocationFormFields,
+  parentNode?: TreeNode,
+  parentId?: string
+): CodeableConcept[] => {
+  const oldTypes = initialValues.type;
+  let admLevel = 0;
+  if (parentId && parentNode) {
+    admLevel = parentNode.model?.administrativeLevel;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    admLevel = admLevel === undefined ? 0 : admLevel + 1;
+  }
+  const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
+  const newCoding = { coding: [admLevelTypeCoding] };
+  const incomingNewTypes =
+    oldTypes?.filter((resType) => {
+      const levelCoding = resType.coding?.some(
+        (coding) => coding.system === admLevelTypeCoding.system
+      );
+      return !levelCoding;
+    }) || [];
+  return [...incomingNewTypes, newCoding];
+};
+
+/**
  * util method to generate a location unit payload from form values
  *
  * @param formValues - values from the form
@@ -85,7 +119,7 @@ export const generateLocationUnit = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode
 ) => {
-  const { id, name, status, description, alias, isJurisdiction } = formValues;
+  const { id, name, status, description, alias, isJurisdiction, parentId } = formValues;
 
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
@@ -121,6 +155,7 @@ export const generateLocationUnit = (
         },
       ],
     },
+    type: getResourceType(initialValues, parentNode, parentId),
   } as ILocation;
 
   if (id) {

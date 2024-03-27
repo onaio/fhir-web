@@ -9,7 +9,11 @@ import {
 } from '@opensrp/react-utils';
 import { get, isEqual, reverse } from 'lodash';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
-import { eusmServicePointCodeSystemUri, locationGeometryExtensionUri } from '@opensrp/fhir-helpers';
+import {
+  administrativeLevelSystemUri,
+  eusmServicePointCodeSystemUri,
+  locationGeometryExtensionUri,
+} from '@opensrp/fhir-helpers';
 import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
 
 /**
@@ -97,14 +101,17 @@ export function parseLocationDetails(node: ILocation) {
     geometry = btoa(geoJsonExtensionData);
   }
 
-  const servicePointTypeCodings = (type?.flatMap((concept) => concept.coding) ?? []).filter(
-    (x) => x !== undefined
-  ) as Coding[];
+  const typeCodingFlatMap = type?.flatMap((concept) => concept.coding) ?? [];
+  const servicePointTypeCodings = typeCodingFlatMap.filter((x) => x !== undefined) as Coding[];
   const servicePointCode = getObjLike(
     servicePointTypeCodings,
     'system',
     eusmServicePointCodeSystemUri
   )[0] as Coding | undefined;
+
+  const admLevelCoding = typeCodingFlatMap.filter(
+    (coding) => coding?.system === administrativeLevelSystemUri
+  );
 
   return {
     identifier,
@@ -124,6 +131,7 @@ export function parseLocationDetails(node: ILocation) {
     version: meta?.versionId,
     alias,
     servicePointType: servicePointCode?.display,
+    administrativeLevel: admLevelCoding[0]?.code,
   };
 }
 
