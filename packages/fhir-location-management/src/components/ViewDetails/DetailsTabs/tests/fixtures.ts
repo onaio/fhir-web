@@ -79,6 +79,17 @@ export const centralProviceChildLocations = {
             },
           ],
         },
+        type: [
+          {
+            coding: [
+              {
+                system: 'https://smartregister.org/codes/administrative-level',
+                code: '1',
+                display: 'Level 1',
+              },
+            ],
+          },
+        ],
         partOf: {
           reference: 'Location/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334',
           display: 'Central Province',

@@ -105,7 +105,7 @@ test('renders correctly', async () => {
   // location details
   const detailSection = document.querySelector('[data-testid="details-section"]');
   expect(detailSection?.textContent).toEqual(
-    'Central ProvinceEdit detailsID: d9d7aa7b-7488-48e7-bae8-d8ac5bd09334Version: 1Date Last Updated12/1/2023, 7:44:56 AMLocation NameCentral ProvinceStatusactivealiasLatitude & LongitudePhysical TypeJurisdictionGeometryDescription'
+    'Central ProvinceEdit detailsID: d9d7aa7b-7488-48e7-bae8-d8ac5bd09334Version: 1Date Last Updated12/1/2023, 7:44:56 AMLocation NameCentral ProvinceStatusactivealiasLatitude & LongitudePhysical TypeJurisdictionGeometryAdministrative Level1Description'
   );
 
   // details tab is shown
