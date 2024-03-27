@@ -55,10 +55,10 @@ export function getCharacteristicWithCode(
  *
  * @param admLevel - administrative level
  */
-export function getAdministrativeLevelTypeCoding(admLevel: number) {
+export function getAdministrativeLevelTypeCoding(admLevel: number): Coding {
   return {
     system: 'https://smartregister.org/codes/administrative-level',
-    code: admLevel,
+    code: `${admLevel}`,
     display: `Level ${admLevel}`,
   };
 }
