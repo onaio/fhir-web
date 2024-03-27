@@ -88,6 +88,7 @@ export const getResourceType = (
   parentNode?: TreeNode,
   parentId?: string
 ): CodeableConcept[] => {
+  const oldTypes = initialValues.type;
   let admLevel = 0;
   if (parentId && parentNode) {
     admLevel = parentNode.model?.administrativeLevel;
@@ -96,29 +97,14 @@ export const getResourceType = (
   }
   const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
   const newCoding = { coding: [admLevelTypeCoding] };
-  const newType = [newCoding];
-  const isEditMode = !!initialValues.id;
-
-  if (!isEditMode) {
-    return newType;
-  }
-
-  const oldTypes = initialValues.type;
-  const oldParentId = initialValues.parentId;
-  if (!oldTypes || oldParentId === parentId) {
-    return newType;
-  }
-
-  const incomingTypes =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    oldTypes.filter((resType) => {
+  const incomingNewTypes =
+    oldTypes?.filter((resType) => {
       const levelCoding = resType.coding?.some(
         (coding) => coding.system === admLevelTypeCoding.system
       );
       return !levelCoding;
     }) || [];
-
-  return [...incomingTypes, newCoding];
+  return [...incomingNewTypes, newCoding];
 };
 
 /**
