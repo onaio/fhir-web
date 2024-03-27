@@ -19,6 +19,17 @@ export const createdLocation1 = {
       },
     ],
   },
+  type: [
+    {
+      coding: [
+        {
+          system: 'https://smartregister.org/codes/administrative-level',
+          code: '1',
+          display: 'Level 1',
+        },
+      ],
+    },
+  ],
 } as unknown as ILocation;
 
 export const createdLocation2 = {
@@ -38,5 +49,16 @@ export const createdLocation2 = {
       },
     ],
   },
+  type: [
+    {
+      coding: [
+        {
+          system: 'https://smartregister.org/codes/administrative-level',
+          code: '0',
+          display: 'Level 0',
+        },
+      ],
+    },
+  ],
   id: '303',
 };
