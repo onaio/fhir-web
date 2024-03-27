@@ -1,4 +1,8 @@
-import { getCharacteristicWithCode, getCharacteristicWithCoding } from '../utils';
+import {
+  getCharacteristicWithCode,
+  getCharacteristicWithCoding,
+  getAdministrativeLevelTypeCoding,
+} from '../utils';
 import { characteristics } from './fixtures';
 
 test('getCharacteristicWithCode works correctly', () => {
@@ -29,4 +33,13 @@ test('getCharacteristicWithCoding works correctly', () => {
     display: 'Donor',
   });
   expect(response).toEqual(characteristics[1]);
+});
+
+test('getAdministrativeLevelTypeCoding works correctly', () => {
+  const level = 1;
+  expect(getAdministrativeLevelTypeCoding(level)).toEqual({
+    system: 'https://smartregister.org/codes/administrative-level',
+    code: `${level}`,
+    display: `Level ${level}`,
+  });
 });

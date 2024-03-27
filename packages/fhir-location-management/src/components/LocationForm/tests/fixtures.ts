@@ -62,3 +62,27 @@ export const createdLocation2 = {
   ],
   id: '303',
 };
+
+export const parentNode1 = {
+  children: [],
+  model: {
+    nodeId: 'Location/8af08722-01bf-4d96-90b7-23fcd068fe38',
+    label: 'Level 1',
+    node: {},
+    parent: 'Location/137703',
+    administrativeLevel: 1,
+    children: [],
+  },
+};
+
+export const parentNode2 = {
+  children: [],
+  model: {
+    nodeId: 'Location/8af08722-01bf-4d96-90b7-23fcd068fe38',
+    label: 'Level 2',
+    node: {},
+    parent: 'Location/137703',
+    administrativeLevel: 2,
+    children: [],
+  },
+};
