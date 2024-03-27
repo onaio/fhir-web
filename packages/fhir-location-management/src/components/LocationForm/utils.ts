@@ -10,7 +10,7 @@ import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
 import { getAdministrativeLevelTypeCoding } from '@opensrp/fhir-helpers';
-import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 export type ExtraFields = Dictionary;
 
@@ -23,6 +23,7 @@ export interface LocationFormFields {
   description?: string;
   alias?: string;
   isJurisdiction: boolean;
+  type?: CodeableConcept[];
 }
 
 interface BaseSetting {
@@ -76,6 +77,50 @@ export const getLocationFormFields = (
 };
 
 /**
+ * generates payload resource type
+ *
+ * @param initialValues - initial values
+ * @param parentNode - parent node of created location
+ * @param parentId - location parent id
+ */
+export const getResourceType = (
+  initialValues: LocationFormFields,
+  parentNode?: TreeNode,
+  parentId?: string
+): CodeableConcept[] => {
+  let admLevel = 0;
+  if (parentId && parentNode) {
+    admLevel = parentNode.model?.administrativeLevel;
+    admLevel = admLevel + 1;
+  }
+  const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
+  const newCoding = { coding: [admLevelTypeCoding] };
+  const newType = [newCoding];
+  const isEditMode = !!initialValues.id;
+
+  if (!isEditMode) {
+    return newType;
+  }
+
+  const oldTypes = initialValues.type;
+  const oldParentId = initialValues.parentId;
+  if (!oldTypes || oldParentId === parentId) {
+    return newType;
+  }
+
+  const incomingTypes =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    oldTypes.filter((resType) => {
+      const levelCoding = resType.coding?.some(
+        (coding) => coding.system === admLevelTypeCoding.system
+      );
+      return !levelCoding;
+    }) || [];
+
+  return [...incomingTypes, newCoding];
+};
+
+/**
  * util method to generate a location unit payload from form values
  *
  * @param formValues - values from the form
@@ -101,13 +146,6 @@ export const generateLocationUnit = (
     };
   }
 
-  let admLevel = 0;
-  if (parentId && parentNode) {
-    admLevel = parentNode.model.administrativeLevel;
-  }
-  // todo: handle edit incase of several types
-  const admLevelTypeCoding = [getAdministrativeLevelTypeCoding(admLevel)] as Coding;
-
   const payload = {
     resourceType: 'Location',
     status,
@@ -130,7 +168,7 @@ export const generateLocationUnit = (
         },
       ],
     },
-    type: [{ coding: admLevelTypeCoding }],
+    type: getResourceType(initialValues, parentNode, parentId),
   } as ILocation;
 
   if (id) {

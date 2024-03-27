@@ -14,7 +14,7 @@ import { HTTPError } from '@opensrp/server-service';
  * Parse the raw child hierarchy node map
  *
  * @param rawNodeMap - Object of raw hierarchy nodes
- * @param admLevel
+ * @param admLevel - location administrative level
  * @returns Array of Parsed hierarchy nodes
  */
 const parseFhirChildren = (rawNodeMap: ChildNodeList[], admLevel = 0) => {
