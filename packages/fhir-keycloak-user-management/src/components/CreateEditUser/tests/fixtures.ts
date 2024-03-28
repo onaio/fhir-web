@@ -43,12 +43,27 @@ export const keycloakUser = {
   },
 };
 
+export const practitionerSecondaryCoding = {
+  coding: [
+    {
+      system: 'http://hl7.org/fhir/identifier-type',
+      code: 'KUID',
+      display: 'Keycloak user ID',
+    },
+  ],
+  text: 'Keycloak user ID',
+};
+
 export const newPractitioner = {
   resourceType: 'Practitioner',
   id: 'acb9d47e-7247-448f-be93-7a193a5312da',
   identifier: [
     { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
-    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+    {
+      use: 'secondary',
+      type: practitionerSecondaryCoding,
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
   ],
   active: true,
   name: [{ use: 'official', family: 'plotus', given: ['flotus', ''] }],
@@ -59,7 +74,11 @@ export const newPractitionerRole = {
   id: 'acb9d47e-7247-448f-be93-7a193a5312da',
   identifier: [
     { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
-    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+    {
+      use: 'secondary',
+      type: practitionerSecondaryCoding,
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
   ],
   active: true,
   practitioner: {
@@ -79,7 +98,11 @@ export const newGroup = {
   id: 'acb9d47e-7247-448f-be93-7a193a5312da',
   identifier: [
     { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
-    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+    {
+      use: 'secondary',
+      type: practitionerSecondaryCoding,
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
   ],
   active: true,
   type: 'practitioner',
@@ -124,6 +147,7 @@ export const practitioner = {
           },
           {
             use: 'secondary',
+            type: practitionerSecondaryCoding,
             value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
           },
         ],
@@ -153,7 +177,11 @@ export const updatedPractitioner = {
   id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
   identifier: [
     { use: 'official', value: 'c1d36d9a-b771-410b-959e-af2c04d132a2' },
-    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+    {
+      use: 'secondary',
+      type: practitionerSecondaryCoding,
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
   ],
   active: true,
   name: [{ use: 'official', family: 'kenyaplotus', given: ['Demoflotus', ''] }],
@@ -234,6 +262,7 @@ export const updatedGroup = {
     },
     {
       use: 'secondary',
+      type: practitionerSecondaryCoding,
       value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
     },
   ],
@@ -323,7 +352,11 @@ export const updatedPractitionerRole = {
   id: '38f12000-a066-45ef-8668-65d10e295279',
   identifier: [
     { use: 'official', value: '38f12000-a066-45ef-8668-65d10e295279' },
-    { use: 'secondary', value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b' },
+    {
+      use: 'secondary',
+      type: practitionerSecondaryCoding,
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
   ],
   active: true,
   practitioner: {

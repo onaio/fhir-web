@@ -53,3 +53,9 @@ export const quantityCharacteristicCoding = {
   code: '33467722',
   display: 'Quantity',
 };
+
+export const keycloakIdentifierCoding = {
+  system: 'http://hl7.org/fhir/identifier-type',
+  code: 'KUID',
+  display: 'Keycloak user ID',
+};
