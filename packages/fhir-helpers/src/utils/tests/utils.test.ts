@@ -38,7 +38,7 @@ test('getCharacteristicWithCoding works correctly', () => {
 test('getAdministrativeLevelTypeCoding works correctly', () => {
   const level = 1;
   expect(getAdministrativeLevelTypeCoding(level)).toEqual({
-    system: 'https://smartregister.org/codes/administrative-level',
+    system: 'https://smartregister.org/CodeSystem/administrative-level',
     code: `${level}`,
     display: `Level ${level}`,
   });

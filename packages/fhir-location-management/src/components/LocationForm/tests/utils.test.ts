@@ -17,7 +17,7 @@ test('generateLocationUnit works correctly', () => {
     {
       coding: [
         {
-          system: 'https://smartregister.org/codes/administrative-level',
+          system: 'https://smartregister.org/CodeSystem/administrative-level',
           code: '2',
           display: 'Level 2',
         },
@@ -30,7 +30,7 @@ test('generateLocationUnit works correctly', () => {
     {
       coding: [
         {
-          system: 'https://smartregister.org/codes/administrative-level',
+          system: 'https://smartregister.org/CodeSystem/administrative-level',
           code: '0',
           display: 'Level 0',
         },
@@ -44,7 +44,7 @@ test('generateLocationUnit works correctly', () => {
     {
       coding: [
         {
-          system: 'https://smartregister.org/codes/administrative-level',
+          system: 'https://smartregister.org/CodeSystem/administrative-level',
           code: '2',
           display: 'Level 2',
         },
@@ -59,7 +59,7 @@ test('generateLocationUnit works correctly', () => {
     {
       coding: [
         {
-          system: 'https://smartregister.org/codes/administrative-level',
+          system: 'https://smartregister.org/CodeSystem/administrative-level',
           code: '2',
           display: 'Level 2',
         },
@@ -82,7 +82,7 @@ test('generateLocationUnit works correctly', () => {
     {
       coding: [
         {
-          system: 'https://smartregister.org/codes/administrative-level',
+          system: 'https://smartregister.org/CodeSystem/administrative-level',
           code: '3',
           display: 'Level 3',
         },
