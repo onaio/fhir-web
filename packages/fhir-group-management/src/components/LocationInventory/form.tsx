@@ -168,7 +168,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem id="project" name={product} label={t('Product name')}>
+      <FormItem id={product} name={product} label={t('Product name')}>
         <PaginatedAsyncSelect<IGroup>
           baseUrl={fhirBaseURL}
           resourceType={groupResourceType}
@@ -181,12 +181,12 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         />
       </FormItem>
 
-      <FormItem id="quantity" name={quantity} label={t('Quantity')}>
-        <Input placeholder={t('Quantity')} type="number" />
+      <FormItem id={quantity} name={quantity} label={t('Quantity')}>
+        <Input min={0} placeholder={t('Quantity')} type="number" />
       </FormItem>
 
       <FormItem
-        id="deliveryDate"
+        id={deliveryDate}
         rules={validationRules[deliveryDate]}
         name={deliveryDate}
         label={t('Delivery date')}
@@ -199,7 +199,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem
-        id="accounterbilityEndDate"
+        id={accountabilityEndDate}
         name={accountabilityEndDate}
         label={t('Accountability end date')}
         rules={validationRules[accountabilityEndDate]}
@@ -226,7 +226,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem
-        id="serialNumber"
+        id={serialNumber}
         rules={serialNumebrRule}
         name={serialNumber}
         label={t('Serial number')}
@@ -244,7 +244,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem
-        id="poNumber"
+        id={PONumber}
         rules={validationRules[PONumber]}
         name={PONumber}
         label={t('PO number')}
