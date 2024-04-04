@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -14,8 +15,25 @@ import {
   formValues,
   locationResourcePayload,
   locationInventoryList,
-  locationServicePointList,
+  AllInventoryList,
+  productsList,
+  unicefDonorsValueSet,
+  unicefSectionValueSet,
+  createdInventoryGroup1,
 } from './fixtures';
+import {
+  donor,
+  groupResourceType,
+  listResourceType,
+  product,
+  unicefDonorValueSetId,
+  unicefSection,
+  unicefSectionValueSetId,
+} from '../../../constants';
+import { valueSetResourceType } from '@opensrp/react-utils';
+
+import dayjs from 'dayjs';
+import { fillSearchableSelect } from '../../CommodityAddEdit/Default/tests/test-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -53,6 +71,7 @@ const props = {
   inventoryResourceObj: undefined,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   servicePointObj: servicePointDatum as any,
+  commodityListId: 'products-resource-id',
 };
 
 beforeAll(() => {
@@ -108,35 +127,47 @@ test('form validation works', async () => {
   const errorNodes = [...document.querySelectorAll('.ant-form-item-explain-error')];
   const errorMsgs = errorNodes.map((node) => node.textContent);
 
-  expect(errorMsgs).toEqual(['Required', 'Required', 'Required', 'Required']);
+  expect(errorMsgs).toEqual([
+    'Delivery date is required',
+    'Accountability end date is required',
+    'UNICEF section is required',
+    'PO number is required',
+  ]);
 });
 
-it('creates new product as expected', async () => {
-  props.initialValues = formValues;
-
-  nock(props.fhirBaseURL)
-    .put(`/Group/${mockResourceId}`)
-    .reply(201, locationResourcePayload)
+test('creates new inventory as expected', async () => {
+  const thisProps = {
+    ...props,
+    initialValues: {
+      // TODO - hack -> Could not yet find a way to reliably mock dates when simulating datepicker
+      deliveryDate: dayjs('2024-03-25T08:24:51.149Z'),
+      accountabilityEndDate: dayjs('2024-03-26T08:24:53.645Z'),
+    },
+  };
+  const preFetchScope = nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, productsList)
+    .get(`/${valueSetResourceType}/${unicefSectionValueSetId}/$expand`)
+    .reply(200, unicefSectionValueSet)
+    .get(`/${valueSetResourceType}/${unicefDonorValueSetId}/$expand`)
+    .reply(200, unicefDonorsValueSet)
     .persist();
 
-  nock(props.fhirBaseURL)
-    .put(`/List/${mockResourceId}`)
+  const postCreationalScope = nock(props.fhirBaseURL)
+    .put(`/${groupResourceType}/${mockResourceId}`, createdInventoryGroup1)
+    .reply(201, createdInventoryGroup1)
+    .put(`/${listResourceType}/${mockResourceId}`, locationInventoryList)
     .reply(201, locationInventoryList)
-    .persist();
-
-  nock(props.fhirBaseURL)
     .get(`/List/${listResourceId}`)
     .reply(404, { message: 'Not found' })
-    .persist();
-
-  nock(props.fhirBaseURL)
-    .put(`/List/${listResourceId}`)
-    .reply(201, locationServicePointList)
-    .persist();
-
-  nock(props.fhirBaseURL)
-    .put(`/List/${listResourceId}`)
-    .reply(201, locationServicePointList)
+    .put(`/List/${listResourceId}`, AllInventoryList)
+    .reply(201, AllInventoryList)
     .persist();
 
   const successNoticeMock = jest
@@ -147,17 +178,73 @@ it('creates new product as expected', async () => {
     .spyOn(notifications, 'sendErrorNotification')
     .mockImplementation(() => undefined);
 
-  render(<AppWrapper {...props}></AppWrapper>);
+  render(<AppWrapper {...thisProps}></AppWrapper>);
+
+  await waitFor(() => {
+    expect(preFetchScope.isDone()).toBeTruthy();
+  });
+
+  // simulate value selection for product
+  const productSelectComponent = document.querySelector(`input#${product}`)!;
+  fireEvent.mouseDown(productSelectComponent);
+
+  const optionTexts = [
+    ...document.querySelectorAll(
+      `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(optionTexts).toEqual([
+    'Yellow sunshine',
+    'Fig tree',
+    'Lumpy nuts',
+    'Happy Feet',
+    'Lilly Flowers',
+    'Smartphone TEST',
+  ]);
+  fireEvent.click(document.querySelector(`[title="${'Lumpy nuts'}"]`)!);
+
+  const quantity = screen.getByLabelText('Quantity');
+  userEvent.type(quantity, '20');
+
+  const serialNumber = screen.getByLabelText('Serial number');
+  userEvent.type(serialNumber, 'yk254');
+
+  const unicefSectionSelectionCriteria = {
+    selectId: unicefSection,
+    fullOptionText: 'Health',
+    searchOptionText: 'heal',
+    beforeFilterOptions: ['Health', 'WASH'],
+    afterFilterOptions: ['Health'],
+  };
+  fillSearchableSelect(unicefSectionSelectionCriteria);
+
+  const unicefDonorSelectionCriteria = {
+    selectId: donor,
+    fullOptionText: 'ADB',
+    searchOptionText: 'ad',
+    beforeFilterOptions: ['ADB', 'NatCom Belgium', 'BMGF'],
+    afterFilterOptions: ['ADB'],
+  };
+  fillSearchableSelect(unicefDonorSelectionCriteria);
+
+  const poNumber = screen.getByLabelText('PO number');
+  userEvent.type(poNumber, '578643');
 
   fireEvent.click(screen.getByRole('button', { name: /Save/i }));
 
   await waitFor(() => {
+    expect(postCreationalScope.isDone()).toBeTruthy();
     expect(errorNoticeMock).not.toHaveBeenCalled();
     expect(successNoticeMock.mock.calls).toEqual([['Location inventory created successfully']]);
   });
+
+  expect(nock.isDone()).toBeTruthy();
 });
 
-it('edits product as expected', async () => {
+test('edits inventory as expected', async () => {
   props.initialValues = formValues;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props.inventoryId = mockResourceId as any;
