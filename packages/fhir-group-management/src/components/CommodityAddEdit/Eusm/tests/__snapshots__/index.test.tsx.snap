@@ -11,15 +11,6 @@ exports[`renders correctly: active radio button 1`] = `
 />
 `;
 
-exports[`renders correctly: active radio button 2`] = `
-<input
-  checked=""
-  class="ant-radio-input"
-  type="radio"
-  value="true"
-/>
-`;
-
 exports[`renders correctly: attractive item no radio button 1`] = `
 <input
   class="ant-radio-input"
@@ -37,14 +28,6 @@ exports[`renders correctly: attractive item yes radio button 1`] = `
 `;
 
 exports[`renders correctly: disabled radio button 1`] = `
-<input
-  class="ant-radio-input"
-  type="radio"
-  value="false"
-/>
-`;
-
-exports[`renders correctly: disabled radio button 2`] = `
 <input
   class="ant-radio-input"
   type="radio"
