@@ -18,7 +18,6 @@ export interface LocationHierarchyTreeNode extends CommonHierarchyNode {
 // describes the tree node (LocationHierarchyTreeNode) after parsing it
 export interface ParsedHierarchyNode extends CommonHierarchyNode {
   children?: Array<ParsedHierarchyNode>;
-  administrativeLevel?: number;
 }
 
 // the root node has a different interface to all other children
