@@ -542,7 +542,7 @@ export function createLocationInventoryList(
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         date: stringDate as any,
-        item: { reference: `Group/${InventoryResourceId}` },
+        item: { reference: `${groupResourceType}/${InventoryResourceId}` },
       },
     ],
   };
