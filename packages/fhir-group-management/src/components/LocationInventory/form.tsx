@@ -10,7 +10,6 @@ import {
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../helpers/utils';
-import { Rule } from 'rc-field-form/lib/interface';
 import {
   sendSuccessNotification,
   sendErrorNotification,
@@ -169,7 +168,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
           resourceType={groupResourceType}
           transformOption={processProductOptions}
           extraQueryParams={productQueryFilters}
-          showSearch={true}
+          showSearch={false}
           placeholder={t('Select product')}
           getFullOptionOnChange={productChangeHandler}
           disabled={editMode}
@@ -222,11 +221,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
       <FormItem
         id={serialNumber}
-        rules={serialNumebrRule}
+        rules={validationRules[serialNumber]}
         name={serialNumber}
         label={t('Serial number')}
       >
-        <Input disabled={!attractiveProduct} type="number" placeholder={t('Serial number')} />
+        <Input disabled={!attractiveProduct} placeholder={t('Serial number')} />
       </FormItem>
 
       <FormItem id={donor} name={donor} label={t('Donor')}>
@@ -244,7 +243,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         name={PONumber}
         label={t('PO number')}
       >
-        <Input type="number" placeholder={t('PO number')} />
+        <Input placeholder={t('PO number')} />
       </FormItem>
 
       {/* start hidden fields */}
@@ -268,7 +267,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       <FormItem {...tailLayout}>
         <Space>
           <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
-            {isLoading ? t('Saving') : t('save')}
+            {isLoading ? t('Saving') : t('Save')}
           </Button>
           <Button id="cancel-button" onClick={() => history.goBack()}>
             {t('Cancel')}
