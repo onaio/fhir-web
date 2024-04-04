@@ -9,7 +9,11 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
-import { getAdministrativeLevelTypeCoding } from '@opensrp/fhir-helpers';
+import {
+  getAdministrativeLevelTypeCoding,
+  administrativeLevelSystemUri,
+  getLocationAdmLevel,
+} from '@opensrp/fhir-helpers';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 export type ExtraFields = Dictionary;
@@ -87,24 +91,38 @@ export const getResourceType = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode,
   parentId?: string
-): CodeableConcept[] => {
+) => {
+  const isEditMode = !!initialValues.id;
+  const oldParentId = initialValues.parentId;
   const oldTypes = initialValues.type;
-  let admLevel = 0;
+
+  let admLevel: number | undefined = 0;
   if (parentId && parentNode) {
-    admLevel = parentNode.model?.administrativeLevel;
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    admLevel = admLevel === undefined ? 0 : admLevel + 1;
+    const resourceType = parentNode.model?.node?.type;
+    const level = getLocationAdmLevel(resourceType);
+    admLevel = level ? parseInt(level) + 1 : undefined;
   }
-  const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
-  const newCoding = { coding: [admLevelTypeCoding] };
-  const incomingNewTypes =
+
+  const selectedParentId = parentId ?? parentNode?.model?.nodeId;
+  if (isEditMode && selectedParentId === oldParentId && admLevel === undefined) {
+    return oldTypes ? { type: oldTypes } : {};
+  }
+
+  const newTypes =
     oldTypes?.filter((resType) => {
       const levelCoding = resType.coding?.some(
-        (coding) => coding.system === admLevelTypeCoding.system
+        (coding) => coding.system === administrativeLevelSystemUri
       );
       return !levelCoding;
     }) || [];
-  return [...incomingNewTypes, newCoding];
+
+  if (admLevel !== undefined) {
+    const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
+    const newCoding = { coding: [admLevelTypeCoding] };
+    newTypes.push(newCoding);
+  }
+
+  return newTypes.length > 0 ? { type: newTypes } : {};
 };
 
 /**
@@ -123,6 +141,7 @@ export const generateLocationUnit = (
 
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
+  const resourceTypesObj = getResourceType(initialValues, parentNode, parentId);
 
   let partOf: ILocation['partOf'];
   if (parentNode) {
@@ -155,7 +174,7 @@ export const generateLocationUnit = (
         },
       ],
     },
-    type: getResourceType(initialValues, parentNode, parentId),
+    ...resourceTypesObj,
   } as ILocation;
 
   if (id) {

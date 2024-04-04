@@ -1,6 +1,7 @@
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { administrativeLevelSystemUri } from '../constants/codeSystems';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 /**
  * finds a characteristic that has the given coding as one of its characteristic.codings
@@ -62,4 +63,27 @@ export function getAdministrativeLevelTypeCoding(admLevel: number): Coding {
     code: `${admLevel}`,
     display: `Level ${admLevel}`,
   };
+}
+
+/**
+ * get administrative level type coding from resource type
+ *
+ * @param type - resource type
+ */
+export function getLocationAdmLevelCoding(type?: CodeableConcept[]) {
+  const typeCodingFlatMap = type?.flatMap((concept) => concept.coding) ?? [];
+  const admLevelCoding = typeCodingFlatMap.filter(
+    (coding) => coding?.system === administrativeLevelSystemUri
+  );
+  return admLevelCoding[0];
+}
+
+/**
+ * get administrative level from resource type
+ *
+ * @param type - resource type
+ */
+export function getLocationAdmLevel(type: CodeableConcept[]) {
+  const coding = getLocationAdmLevelCoding(type);
+  return coding?.code;
 }

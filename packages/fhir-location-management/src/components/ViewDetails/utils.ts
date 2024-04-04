@@ -10,11 +10,12 @@ import {
 import { get, isEqual, reverse } from 'lodash';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import {
-  administrativeLevelSystemUri,
   eusmServicePointCodeSystemUri,
+  getLocationAdmLevel,
   locationGeometryExtensionUri,
 } from '@opensrp/fhir-helpers';
 import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 /**
  * fetches the location as well as all of its parent locations.
@@ -109,9 +110,7 @@ export function parseLocationDetails(node: ILocation) {
     eusmServicePointCodeSystemUri
   )[0] as Coding | undefined;
 
-  const admLevelCoding = typeCodingFlatMap.filter(
-    (coding) => coding?.system === administrativeLevelSystemUri
-  );
+  const administrativeLevel = getLocationAdmLevel(type as CodeableConcept[]);
 
   return {
     identifier,
@@ -131,7 +130,7 @@ export function parseLocationDetails(node: ILocation) {
     version: meta?.versionId,
     alias,
     servicePointType: servicePointCode?.display,
-    administrativeLevel: admLevelCoding[0]?.code,
+    administrativeLevel,
   };
 }
 
