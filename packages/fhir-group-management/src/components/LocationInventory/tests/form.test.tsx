@@ -15,7 +15,7 @@ import {
   formValues,
   locationResourcePayload,
   locationInventoryList,
-  AllInventoryList,
+  allInventoryList,
   productsList,
   unicefDonorsValueSet,
   unicefSectionValueSet,
@@ -166,8 +166,10 @@ test('creates new inventory as expected', async () => {
     .reply(201, locationInventoryList)
     .get(`/List/${listResourceId}`)
     .reply(404, { message: 'Not found' })
-    .put(`/List/${listResourceId}`, AllInventoryList)
-    .reply(201, AllInventoryList)
+    .put(`/List/${listResourceId}`, { ...allInventoryList, entry: [] })
+    .reply(201, { ...allInventoryList, entry: [] })
+    .put(`/List/${listResourceId}`, allInventoryList)
+    .reply(201, allInventoryList)
     .persist();
 
   const successNoticeMock = jest

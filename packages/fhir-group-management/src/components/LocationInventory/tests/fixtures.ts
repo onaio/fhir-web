@@ -229,15 +229,10 @@ export const locationInventoryList = {
   ],
 };
 
-export const AllInventoryList = {
+export const allInventoryList = {
   resourceType: 'List',
   id: 'list-resource-id',
-  identifier: [
-    {
-      use: 'official',
-      value: 'list-resource-id',
-    },
-  ],
+  identifier: [{ use: 'official', value: 'list-resource-id' }],
   status: 'current',
   code: {
     coding: [
@@ -251,7 +246,10 @@ export const AllInventoryList = {
   },
   mode: 'working',
   title: 'Supply Chain commodities',
-  entry: [],
+  entry: [
+    { item: { reference: 'Group/67bb848e-f049-41f4-9c75-3b726664db67' } },
+    { item: { reference: 'List/67bb848e-f049-41f4-9c75-3b726664db67' } },
+  ],
 };
 
 export const productsList = {
