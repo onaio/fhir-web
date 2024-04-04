@@ -150,12 +150,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     }
   };
 
-  const validationRules = validationRulesFactory(t);
-  let serialNumebrRule: Rule[] = [{ required: false }];
-  if (attractiveProduct) {
-    serialNumebrRule = validationRules[serialNumber];
-  }
-
+  const validationRules = validationRulesFactory(t, attractiveProduct);
   const productQueryFilters = getProductQueryFilters(commodityListId);
 
   return (
