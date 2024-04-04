@@ -2,6 +2,8 @@ import {
   getCharacteristicWithCode,
   getCharacteristicWithCoding,
   getAdministrativeLevelTypeCoding,
+  getLocationAdmLevelCoding,
+  getLocationAdmLevel,
 } from '../utils';
 import { characteristics } from './fixtures';
 
@@ -42,4 +44,21 @@ test('getAdministrativeLevelTypeCoding works correctly', () => {
     code: `${level}`,
     display: `Level ${level}`,
   });
+});
+
+test('getLocationAdmLevelCoding works correctly', () => {
+  const admLevelTypeCoding = getAdministrativeLevelTypeCoding(1);
+  const coding = { coding: [admLevelTypeCoding] };
+  expect(getLocationAdmLevelCoding()).toEqual(undefined);
+  expect(getLocationAdmLevelCoding([coding])).toEqual(admLevelTypeCoding);
+});
+
+test('getLocationAdmLevel works correctly', () => {
+  const admLevelTypeCoding = getAdministrativeLevelTypeCoding(1);
+  const coding = { coding: [admLevelTypeCoding] };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  expect(getLocationAdmLevel(undefined as any)).toEqual(undefined);
+  expect(getLocationAdmLevel([coding])).toEqual('1');
+  admLevelTypeCoding.system = 'https://example.com';
+  expect(getLocationAdmLevel([{ coding: [admLevelTypeCoding] }])).toEqual(undefined);
 });

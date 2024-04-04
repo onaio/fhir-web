@@ -19,17 +19,6 @@ export const createdLocation1 = {
       },
     ],
   },
-  type: [
-    {
-      coding: [
-        {
-          system: 'https://smartregister.org/CodeSystem/administrative-level',
-          code: '1',
-          display: 'Level 1',
-        },
-      ],
-    },
-  ],
 } as unknown as ILocation;
 
 export const createdLocation2 = {
@@ -49,17 +38,6 @@ export const createdLocation2 = {
       },
     ],
   },
-  type: [
-    {
-      coding: [
-        {
-          system: 'https://smartregister.org/CodeSystem/administrative-level',
-          code: '0',
-          display: 'Level 0',
-        },
-      ],
-    },
-  ],
   id: '303',
 };
 
@@ -68,7 +46,19 @@ export const parentNode1 = {
   model: {
     nodeId: 'Location/8af08722-01bf-4d96-90b7-23fcd068fe38',
     label: 'Level 1',
-    node: {},
+    node: {
+      type: [
+        {
+          coding: [
+            {
+              system: 'https://smartregister.org/CodeSystem/administrative-level',
+              code: '1',
+              display: 'Level 1',
+            },
+          ],
+        },
+      ],
+    },
     parent: 'Location/137703',
     administrativeLevel: 1,
     children: [],
@@ -80,7 +70,19 @@ export const parentNode2 = {
   model: {
     nodeId: 'Location/8af08722-01bf-4d96-90b7-23fcd068fe38',
     label: 'Level 2',
-    node: {},
+    node: {
+      type: [
+        {
+          coding: [
+            {
+              system: 'https://smartregister.org/CodeSystem/administrative-level',
+              code: '2',
+              display: 'Level 2',
+            },
+          ],
+        },
+      ],
+    },
     parent: 'Location/137703',
     administrativeLevel: 2,
     children: [],
