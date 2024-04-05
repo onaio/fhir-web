@@ -9,6 +9,12 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FHIRServiceClass } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
+import {
+  getAdministrativeLevelTypeCoding,
+  administrativeLevelSystemUri,
+  getLocationAdmLevel,
+} from '@opensrp/fhir-helpers';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 export type ExtraFields = Dictionary;
 
@@ -21,6 +27,7 @@ export interface LocationFormFields {
   description?: string;
   alias?: string;
   isJurisdiction: boolean;
+  type?: CodeableConcept[];
 }
 
 interface BaseSetting {
@@ -74,6 +81,51 @@ export const getLocationFormFields = (
 };
 
 /**
+ * generates payload resource type
+ *
+ * @param initialValues - initial values
+ * @param parentNode - parent node of created location
+ * @param parentId - location parent id
+ */
+export const getResourceType = (
+  initialValues: LocationFormFields,
+  parentNode?: TreeNode,
+  parentId?: string
+) => {
+  const isEditMode = !!initialValues.id;
+  const oldParentId = initialValues.parentId;
+  const oldTypes = initialValues.type;
+
+  let admLevel: number | undefined = 0;
+  if (parentId && parentNode) {
+    const resourceType = parentNode.model?.node?.type;
+    const level = getLocationAdmLevel(resourceType);
+    admLevel = level ? parseInt(level) + 1 : undefined;
+  }
+
+  const selectedParentId = parentId ?? parentNode?.model?.nodeId;
+  if (isEditMode && selectedParentId === oldParentId && admLevel === undefined) {
+    return oldTypes ? { type: oldTypes } : {};
+  }
+
+  const newTypes =
+    oldTypes?.filter((resType) => {
+      const levelCoding = resType.coding?.some(
+        (coding) => coding.system === administrativeLevelSystemUri
+      );
+      return !levelCoding;
+    }) || [];
+
+  if (admLevel !== undefined) {
+    const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
+    const newCoding = { coding: [admLevelTypeCoding] };
+    newTypes.push(newCoding);
+  }
+
+  return newTypes.length > 0 ? { type: newTypes } : {};
+};
+
+/**
  * util method to generate a location unit payload from form values
  *
  * @param formValues - values from the form
@@ -85,10 +137,11 @@ export const generateLocationUnit = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode
 ) => {
-  const { id, name, status, description, alias, isJurisdiction } = formValues;
+  const { id, name, status, description, alias, isJurisdiction, parentId } = formValues;
 
   const uuid = get(initialValues, 'identifier.0.value');
   const thisLocationsIdentifier = uuid ? uuid : v4();
+  const resourceTypesObj = getResourceType(initialValues, parentNode, parentId);
 
   let partOf: ILocation['partOf'];
   if (parentNode) {
@@ -121,6 +174,7 @@ export const generateLocationUnit = (
         },
       ],
     },
+    ...resourceTypesObj,
   } as ILocation;
 
   if (id) {

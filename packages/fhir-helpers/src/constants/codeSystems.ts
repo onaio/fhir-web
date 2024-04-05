@@ -4,6 +4,8 @@ export const eusmServicePointCodeSystemUri =
 export const snomedCodeSystemUri = 'http://snomed.info/sct';
 export const hl7PhysicalTypeCodeSystemUri =
   'http://terminology.hl7.org/CodeSystem/location-physical-type';
+export const administrativeLevelSystemUri =
+  'https://smartregister.org/CodeSystem/administrative-level';
 
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,
