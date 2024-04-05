@@ -230,6 +230,10 @@ test('works correctly - physical location', async () => {
   // check records shown in table.
   let tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
   expect(tableData).toEqual(['Bed nets2/1/20242/1/2024HealthEdit']);
+  const link = inventoryTab.querySelectorAll('a');
+  expect(link[0].href).toEqual(
+    'http://localhost/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334/1277894c-91b5-49f6-a0ac-cdf3f72cc3d5'
+  );
 
   // validate search works.
   const childLocationSearch = inventoryTab.querySelector('[data-testid="search-form"]')!;
