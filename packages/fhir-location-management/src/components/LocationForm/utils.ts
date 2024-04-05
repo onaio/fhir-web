@@ -29,7 +29,7 @@ export interface LocationFormFields {
   status: LocationUnitStatus;
   parentId?: string;
   description?: string;
-  alias?: string;
+  alias?: string[];
   isJurisdiction: boolean;
   externalId?: string;
   geometry?: string;
@@ -65,7 +65,7 @@ export const getLocationFormFields = (
   parentId?: string
 ): LocationFormFields => {
   if (location) {
-    const { position, extension, physicalType, name, status, type } = location;
+    const { position, extension, physicalType, name, status, type, description, alias } = location;
 
     const geoJsonExtension = getObjLike<Extension>(
       extension,
@@ -103,6 +103,8 @@ export const getLocationFormFields = (
       latitude: position?.latitude,
       longitude: position?.longitude,
       serviceType: serviceTypeCode ? JSON.stringify(servicePointTypeCodings) : undefined,
+      alias,
+      description,
     } as LocationFormFields;
   }
   return defaultFormFields;
