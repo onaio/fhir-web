@@ -314,6 +314,13 @@ export const defaultValidationRulesFactory = (t: TFunction) => ({
 export const eusmServicePointValidationRules = (t: TFunction) => ({
   ...defaultValidationRulesFactory(t),
   id: [{ type: 'string' }] as Rule[],
+  parentId: [
+    { type: 'string', message: t(`Parent ID can only contain letters, numbers and spaces`) },
+    {
+      required: true,
+      message: t('Please choose a parent location for this service point'),
+    },
+  ] as Rule[],
   [serviceType]: [
     {
       required: true,
