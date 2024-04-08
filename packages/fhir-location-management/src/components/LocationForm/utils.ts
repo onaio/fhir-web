@@ -5,7 +5,7 @@ import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { isEmpty, isEqual } from 'lodash';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { FHIRServiceClass, getObjLike } from '@opensrp/react-utils';
+import { FHIRServiceClass, getObjLike, getSelectValueForCoding } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
 import {
@@ -71,7 +71,8 @@ export const getLocationFormFields = (
   parentId?: string
 ): LocationFormFields => {
   if (location) {
-    const { position, extension, physicalType, name, status, type, description, alias } = location;
+    const { position, extension, physicalType, name, status, type, description, alias, id } =
+      location;
 
     const geoJsonExtension = getObjLike<Extension>(
       extension,
@@ -108,9 +109,10 @@ export const getLocationFormFields = (
       parentId: parentId ?? location.partOf?.reference,
       latitude: position?.latitude,
       longitude: position?.longitude,
-      serviceType: serviceTypeCode ? JSON.stringify(servicePointTypeCodings) : undefined,
+      serviceType: getSelectValueForCoding(serviceTypeCode),
       alias,
       description,
+      id,
     } as LocationFormFields;
   }
   return defaultFormFields;

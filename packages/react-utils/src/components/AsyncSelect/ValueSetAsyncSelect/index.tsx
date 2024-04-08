@@ -4,6 +4,7 @@ import { ValueSetContains } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSe
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import { BaseAsyncSelect, RawValueType } from '../BaseAsyncSelect';
 import { FHIRServiceClass } from '../../../helpers/dataLoaders';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
   valueSetId: string;
@@ -63,6 +64,21 @@ const getValueSetOptionsValue = (record: ValueSetContains) => {
     system: record.system,
   });
 };
+
+/**
+ * generate literal that represents the value to a dropdown select
+ *
+ * @param coding - coding to derive the literal value from
+ */
+export function getSelectValueForCoding(coding?: Coding) {
+  if (coding) {
+    return JSON.stringify({
+      code: coding.code,
+      display: coding.display,
+      system: coding.system,
+    });
+  }
+}
 
 /**
  * get options from valueSet data

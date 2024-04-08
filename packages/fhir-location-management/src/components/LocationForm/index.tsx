@@ -151,7 +151,6 @@ const LocationForm = (props: LocationFormProps) => {
       <Form
         {...formItemLayout}
         form={form}
-        name="location-form"
         scrollToFirstError
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
