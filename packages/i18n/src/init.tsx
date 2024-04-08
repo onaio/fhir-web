@@ -15,13 +15,13 @@
 import { initReactI18next, I18nextProvider, I18nextProviderProps } from 'react-i18next';
 import { getConfig } from '@opensrp/pkg-config';
 import i18next from 'i18next';
-import LanguageDetector, {DetectorOptions} from "i18next-browser-languagedetector";
+import LanguageDetector from 'i18next-browser-languagedetector';
 import { resources } from './resources';
 import React from 'react';
 
 const lngLocalStorageKey = 'i18nextLng';
-const locaStorageCache = 'localStorage';
-const domain = window.location.hostname
+const locaStorageCacheName = 'localStorage';
+const customLanguageDetectorName = 'customLanguageDetector';
 const newInstance = i18next.createInstance();
 
 const languageCode = getConfig('languageCode');
@@ -30,34 +30,27 @@ const fallbackLng = `en-core`;
 const configuredLng = `${languageCode}-${projectCode}`;
 
 const languageDetectorOptions = {
+  order: [locaStorageCacheName],
   lookupLocalStorage: lngLocalStorageKey,
-  caches: [locaStorageCache]
-}
+  caches: [locaStorageCacheName],
+  lookupQuerystring: 'lng',
+};
 
-const setLngToLocalStorage = (lng:string) => localStorage.setItem(lngLocalStorageKey, lng);
-const getLngFromLocalStorage = () => {
-  const lng = localStorage.getItem(lngLocalStorageKey)
-  return lng;
-}
+const languageDetector = new LanguageDetector(null, languageDetectorOptions);
+const cachedLang = languageDetector.detect();
 
-const cacheUserLanguage = (lng:string, options:DetectorOptions) => {
-  const { caches } = options;
-  if (caches?.includes(locaStorageCache)) {
-    const storedLng = getLngFromLocalStorage()
-    setLngToLocalStorage(lng)
-  }
+// register own custom language that returns configured language if no language is cached
+if (!cachedLang) {
+  languageDetectorOptions.order.push(customLanguageDetectorName);
+  const customLanguageDetector = {
+    name: customLanguageDetectorName,
+    lookup() {
+      return configuredLng;
+    },
+  };
+  languageDetector.addDetector(customLanguageDetector);
+  languageDetector.detect(); // this will now use our registored detector
 }
-
-const customLanguageDetector = {
-  name: "customLanguageDetector",
-  cacheUserLanguage: cacheUserLanguage,
-  lookup() {
-    // options -> are passed in options
-    return 'en';
-  },
-}
-const languageDetector = new LanguageDetector();
-languageDetector.addDetector(customLanguageDetector);
 
 newInstance
   .use(languageDetector)
@@ -66,7 +59,6 @@ newInstance
   .init({
     detection: languageDetectorOptions,
     resources,
-    lng: configuredLng,
     fallbackLng: fallbackLng,
     interpolation: { escapeValue: false },
     returnEmptyString: false,
