@@ -171,6 +171,17 @@ test('#1277 - works ok for new locations', async () => {
         },
       ],
     },
+    type: [
+      {
+        coding: [
+          {
+            system: 'https://smartregister.org/CodeSystem/administrative-level',
+            code: '0',
+            display: 'Level 0',
+          },
+        ],
+      },
+    ],
     id: '13cafa46-7251-429a-8d19-8da0583c0c5a',
   };
 

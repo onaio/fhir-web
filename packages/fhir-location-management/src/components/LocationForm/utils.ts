@@ -19,6 +19,11 @@ import {
 import { Extension } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/extension';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import {
+  getAdministrativeLevelTypeCoding,
+  administrativeLevelSystemUri,
+  getLocationAdmLevel,
+} from '@opensrp/fhir-helpers';
 
 export type ExtraFields = Dictionary;
 
@@ -30,13 +35,14 @@ export interface LocationFormFields {
   parentId?: string;
   description?: string;
   alias?: string[];
-  isJurisdiction: boolean;
+  isJurisdiction?: boolean;
   externalId?: string;
   geometry?: string;
   latitude?: number;
   longitude?: number;
   serviceType?: string;
   initObj?: ILocation;
+  type?: CodeableConcept[];
 }
 
 export const defaultFormFields: LocationFormFields = {
@@ -121,6 +127,26 @@ export const hasCode = (codeList: Coding[], coding: Coding) => {
 };
 
 /**
+ * generates payload resource type
+ *
+ * @param parentNode - parent node of created location
+ * @param parentId - location parent id
+ */
+export const getResourceType = (parentNode?: TreeNode, parentId?: string) => {
+  let admLevel: number | undefined = 0;
+  if (parentId && parentNode) {
+    const resourceType = parentNode.model?.node?.type;
+    const level = getLocationAdmLevel(resourceType);
+    admLevel = level ? parseInt(level) + 1 : undefined;
+  }
+
+  if (admLevel !== undefined) {
+    const admLevelTypeCoding = getAdministrativeLevelTypeCoding(admLevel);
+    return admLevelTypeCoding;
+  }
+};
+
+/**
  * util method to generate a location unit payload from form values
  *
  * @param formValues - values from the form
@@ -132,9 +158,23 @@ export const generateLocationUnit = (
   initialValues: LocationFormFields,
   parentNode?: TreeNode
 ) => {
-  const { id, name, status, description, alias, isJurisdiction, geometry, latitude, longitude } =
-    formValues;
+  const {
+    id,
+    name,
+    status,
+    description,
+    alias,
+    isJurisdiction,
+    geometry,
+    latitude,
+    longitude,
+    parentId,
+    serviceType,
+  } = formValues;
   const { physicalType, type, ...restOfInitObj } = initialValues.initObj ?? {};
+
+  const adminLevelTypeCoding = getResourceType(parentNode, parentId);
+
   let partOf: ILocation['partOf'];
   if (parentNode) {
     // this is a user defined location
@@ -148,9 +188,11 @@ export const generateLocationUnit = (
   const initialObTypeConcepts = (type ?? []).filter((concept) => {
     for (const coding of concept.coding ?? []) {
       if (
-        [physicalTypeValueSetSystem, eusmServicePointCodeSystemUri].includes(
-          coding.system as string
-        )
+        [
+          physicalTypeValueSetSystem,
+          eusmServicePointCodeSystemUri,
+          administrativeLevelSystemUri,
+        ].includes(coding.system as string)
       ) {
         return false;
       }
@@ -175,15 +217,23 @@ export const generateLocationUnit = (
     type: [...initialObTypeConcepts],
   } as ILocation;
 
-  if (isJurisdiction) {
+  // update payload.type codings
+  // jurisdiction or structure
+  if (isJurisdiction !== undefined) {
     const physicalTypeConcept: CodeableConcept = { coding: [physicalTypeCoding] };
     (payload.type as CodeableConcept[]).push(physicalTypeConcept);
     payload.physicalType = physicalTypeConcept;
   }
-
+  // admin level coding
+  if (adminLevelTypeCoding) {
+    (payload.type as CodeableConcept[]).push({ coding: [adminLevelTypeCoding] });
+  }
+  // service point coding.
   try {
-    const coding = JSON.parse(serviceType) as Coding;
-    (payload.type as CodeableConcept[]).push({ coding: [coding] });
+    if (serviceType) {
+      const coding = JSON.parse(serviceType) as Coding;
+      (payload.type as CodeableConcept[]).push({ coding: [coding] });
+    }
   } catch {
     void 0;
   }

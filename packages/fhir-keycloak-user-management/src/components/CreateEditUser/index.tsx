@@ -29,6 +29,8 @@ import { TFunction } from 'i18n/dist/types';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
 import { HumanNameUseCodes } from '@opensrp/fhir-team-management';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
+import { keycloakIdentifierCoding } from '@opensrp/fhir-helpers';
 
 export const getPractitioner = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType);
@@ -51,6 +53,17 @@ export const getPractitionerRole = (baseUrl: string, userId: string) => {
     .then((res: IBundle) => getResourcesFromBundle<IPractitionerRole>(res)[0]);
 };
 
+export const getPractitionerSecondaryIdentifier = (keycloakID: string): Identifier => {
+  return {
+    use: IdentifierUseCodes.SECONDARY,
+    type: {
+      coding: [keycloakIdentifierCoding],
+      text: 'Keycloak user ID',
+    },
+    value: keycloakID,
+  };
+};
+
 export const createEditGroupResource = (
   keycloakUserEnabled: boolean,
   keycloakID: string,
@@ -60,13 +73,13 @@ export const createEditGroupResource = (
   existingGroupID?: string
 ) => {
   const newGroupResourceID = v4();
-
+  const secondaryIdentifier = getPractitionerSecondaryIdentifier(keycloakID);
   const payload: IGroup = {
     resourceType: groupResourceType,
     id: existingGroupID ?? newGroupResourceID,
     identifier: [
       { use: IdentifierUseCodes.OFFICIAL, value: existingGroupID ?? newGroupResourceID },
-      { use: IdentifierUseCodes.SECONDARY, value: keycloakID },
+      secondaryIdentifier,
     ],
     active: keycloakUserEnabled,
     type: 'practitioner',
@@ -143,7 +156,7 @@ export const createEditPractitionerRoleResource = (
     HumanNameUseCodes.OFFICIAL,
     true
   )[0];
-
+  const secondaryIdentifier = getPractitionerSecondaryIdentifier(keycloakID);
   const payload: IPractitionerRole = {
     resourceType: practitionerRoleResourceType,
     id: existingPractitionerRoleID ?? newPractitionerRoleResourceID,
@@ -152,7 +165,7 @@ export const createEditPractitionerRoleResource = (
         use: IdentifierUseCodes.OFFICIAL,
         value: existingPractitionerRoleID ?? newPractitionerRoleResourceID,
       },
-      { use: IdentifierUseCodes.SECONDARY, value: keycloakID },
+      secondaryIdentifier,
     ],
     active: keycloakUserEnabled,
     practitioner: {
@@ -222,10 +235,7 @@ export const practitionerUpdater =
     }
 
     if (!secondaryIdentifier) {
-      secondaryIdentifier = {
-        use: IdentifierUseCodes.SECONDARY,
-        value: userId,
-      };
+      secondaryIdentifier = getPractitionerSecondaryIdentifier(userId);
     }
 
     const payload: IPractitioner = {

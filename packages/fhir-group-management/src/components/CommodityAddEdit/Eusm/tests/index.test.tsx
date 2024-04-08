@@ -24,9 +24,9 @@ import {
 import { binaryResourceType, groupResourceType, listResourceType } from '../../../../constants';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
-import { fillSearchableSelect } from '../../Default/tests/index.test';
 import { photoUploadCharacteristicCode } from '../../../../helpers/utils';
 import { cloneDeep } from 'lodash';
+import { fillSearchableSelect } from '../../Default/tests/test-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,

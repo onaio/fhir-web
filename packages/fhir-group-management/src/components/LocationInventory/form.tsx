@@ -10,7 +10,6 @@ import {
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../helpers/utils';
-import { Rule } from 'rc-field-form/lib/interface';
 import {
   sendSuccessNotification,
   sendErrorNotification,
@@ -33,6 +32,7 @@ import {
   name,
   type,
   actual,
+  unicefDonorValueSetId,
 } from '../../constants';
 import {
   getLocationInventoryPayload,
@@ -149,12 +149,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     }
   };
 
-  const validationRules = validationRulesFactory(t);
-  let serialNumebrRule: Rule[] = [{ required: false }];
-  if (attractiveProduct) {
-    serialNumebrRule = validationRules[serialNumber];
-  }
-
+  const validationRules = validationRulesFactory(t, attractiveProduct);
   const productQueryFilters = getProductQueryFilters(commodityListId);
 
   return (
@@ -167,25 +162,25 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem id="project" name={product} label={t('Product name')}>
+      <FormItem id={product} name={product} label={t('Product name')}>
         <PaginatedAsyncSelect<IGroup>
           baseUrl={fhirBaseURL}
           resourceType={groupResourceType}
           transformOption={processProductOptions}
           extraQueryParams={productQueryFilters}
-          showSearch={true}
+          showSearch={false}
           placeholder={t('Select product')}
           getFullOptionOnChange={productChangeHandler}
           disabled={editMode}
         />
       </FormItem>
 
-      <FormItem id="quantity" name={quantity} label={t('Quantity')}>
-        <Input placeholder={t('Quantity')} type="number" />
+      <FormItem id={quantity} name={quantity} label={t('Quantity')}>
+        <Input min={0} placeholder={t('Quantity')} type="number" />
       </FormItem>
 
       <FormItem
-        id="deliveryDate"
+        id={deliveryDate}
         rules={validationRules[deliveryDate]}
         name={deliveryDate}
         label={t('Delivery date')}
@@ -198,7 +193,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem
-        id="accounterbilityEndDate"
+        id={accountabilityEndDate}
         name={accountabilityEndDate}
         label={t('Accountability end date')}
         rules={validationRules[accountabilityEndDate]}
@@ -225,30 +220,30 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       </FormItem>
 
       <FormItem
-        id="serialNumber"
-        rules={serialNumebrRule}
+        id={serialNumber}
+        rules={validationRules[serialNumber]}
         name={serialNumber}
         label={t('Serial number')}
       >
-        <Input disabled={!attractiveProduct} type="number" placeholder={t('Serial number')} />
+        <Input disabled={!attractiveProduct} placeholder={t('Serial number')} />
       </FormItem>
 
       <FormItem id={donor} name={donor} label={t('Donor')}>
         <ValueSetAsyncSelect
           placeholder={t('Select donor')}
           showSearch={true}
-          valueSetId={unicefSectionValueSetId}
+          valueSetId={unicefDonorValueSetId}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>
 
       <FormItem
-        id="poNumber"
+        id={PONumber}
         rules={validationRules[PONumber]}
         name={PONumber}
         label={t('PO number')}
       >
-        <Input type="number" placeholder={t('PO number')} />
+        <Input placeholder={t('PO number')} />
       </FormItem>
 
       {/* start hidden fields */}
@@ -272,7 +267,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       <FormItem {...tailLayout}>
         <Space>
           <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
-            {isLoading ? t('Saving') : t('save')}
+            {isLoading ? t('Saving') : t('Save')}
           </Button>
           <Button id="cancel-button" onClick={() => history.goBack()}>
             {t('Cancel')}

@@ -542,7 +542,7 @@ export function createLocationInventoryList(
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         date: stringDate as any,
-        item: { reference: `Group/${InventoryResourceId}` },
+        item: { reference: `${groupResourceType}/${InventoryResourceId}` },
       },
     ],
   };
@@ -608,32 +608,34 @@ export const getInventoryInitialValues = (inventory: IGroup): GroupFormFields =>
  * factory for validation rules for GroupForm component
  *
  * @param t - the translator function
+ * @param isAttractiveProduct - tells us if serial number should be required
  */
-export const validationRulesFactory = (t: TFunction) => {
-  return {
+export const validationRulesFactory = (t: TFunction, isAttractiveProduct: boolean) => {
+  const rules = {
     [product]: [
       { type: 'string', message: t('Must be a valid string') },
-      { required: true, message: t('Required') },
+      { required: true, message: t('Product is required') },
     ] as Rule[],
     [unicefSection]: [
       { type: 'string', message: t('Must be a valid string') },
-      { required: true, message: t('Required') },
+      { required: true, message: t('UNICEF section is required') },
     ] as Rule[],
     [deliveryDate]: [
       { type: 'date', message: t('Must be a valid date') },
-      { required: true, message: t('Required') },
+      { required: true, message: t('Delivery date is required') },
     ] as Rule[],
     [accountabilityEndDate]: [
       { type: 'date', message: t('Must be a valid date') },
-      { required: true, message: t('Required') },
+      { required: true, message: t('Accountability end date is required') },
     ] as Rule[],
-    [serialNumber]: [
-      { type: 'string', message: t('Must be a valid string') },
-      { required: true, message: t('Required') },
-    ] as Rule[],
+    [serialNumber]: [{ type: 'string', message: t('Must be a valid string') }] as Rule[],
     [PONumber]: [
       { type: 'string', message: t('Must be a valid string') },
-      { required: true, message: t('Required') },
+      { required: true, message: t('PO number is required') },
     ] as Rule[],
   };
+  if (isAttractiveProduct) {
+    rules[serialNumber].push({ required: true, message: t('Serial number is required') });
+  }
+  return rules;
 };
