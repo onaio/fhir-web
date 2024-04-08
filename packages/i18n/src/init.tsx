@@ -39,7 +39,7 @@ const languageDetectorOptions = {
 const languageDetector = new LanguageDetector(null, languageDetectorOptions);
 const cachedLang = languageDetector.detect();
 
-// register own custom language that returns configured language if no language is cached
+// register custom detector that returns configured language if no language is cached
 if (!cachedLang) {
   languageDetectorOptions.order.push(customLanguageDetectorName);
   const customLanguageDetector = {
@@ -49,7 +49,7 @@ if (!cachedLang) {
     },
   };
   languageDetector.addDetector(customLanguageDetector);
-  languageDetector.detect(); // this will now use our registored detector
+  languageDetector.detect(); // use registered detector
 }
 
 newInstance
