@@ -31,6 +31,7 @@ export const createdLocation1 = {
   id: '9b782015-8392-4847-b48c-50c11638656b',
   position: { longitude: '115.48', latitude: '37.14' },
 } as unknown as ILocation;
+
 export const createdLocation1WithGeometry = {
   resourceType: 'Location',
   status: 'inactive',

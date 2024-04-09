@@ -129,17 +129,19 @@ export const hasCode = (codeList: Coding[], coding: Coding) => {
 };
 
 /**
- * generates payload resource type
+ * get adminLevel coding for filled form data. The admin level is computed as
+ * parentNode's admin level + 1. i.e. if the parent node has an admin level.
  *
  * @param parentNode - parent node of created location
- * @param parentId - location parent id
  */
-export const getResourceType = (parentNode?: TreeNode, parentId?: string) => {
-  let admLevel: number | undefined = 0;
-  if (parentId && parentNode) {
+export const getResourceType = (parentNode?: TreeNode) => {
+  let admLevel: number | undefined;
+  if (parentNode) {
     const resourceType = parentNode.model?.node?.type;
     const level = getLocationAdmLevel(resourceType);
     admLevel = level ? parseInt(level) + 1 : undefined;
+  } else {
+    admLevel = 0;
   }
 
   if (admLevel !== undefined) {
@@ -170,12 +172,11 @@ export const generateLocationUnit = (
     geometry,
     latitude,
     longitude,
-    parentId,
     serviceType,
   } = formValues;
   const { physicalType, type, ...restOfInitObj } = initialValues.initObj ?? {};
 
-  const adminLevelTypeCoding = getResourceType(parentNode, parentId);
+  const adminLevelTypeCoding = getResourceType(parentNode);
 
   let partOf: ILocation['partOf'];
   if (parentNode) {
