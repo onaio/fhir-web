@@ -263,6 +263,7 @@ Below is a list of currently supported environment variables:
   - **Required**(`keycloak`).
   - default: `keycloak`
 
-- \*\*REACT_APP_FHIR_INVENTORY_LIST_ID
+- **REACT_APP_FHIR_INVENTORY_LIST_ID**
+
   - Id of List that will hold all created inventories for a given web instance
   - **Optional**_(`string`)_
