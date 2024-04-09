@@ -171,15 +171,6 @@ test('#1277 - works ok for new locations', async () => {
           },
         ],
       },
-      {
-        coding: [
-          {
-            system: 'https://smartregister.org/CodeSystem/administrative-level',
-            code: '0',
-            display: 'Level 0',
-          },
-        ],
-      },
     ],
     physicalType: {
       coding: [
