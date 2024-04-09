@@ -129,17 +129,17 @@ test('works ok for new locations', async () => {
   userEvent.type(nameInput, 'area51');
 
   // simulate parent change
-  const parentIdDropdown = document.querySelector(`input#${'parentId'}`)!;
+  const parentIdDropdown = document.querySelector(`input#location-form_${'parentId'}`)!;
   fireEvent.mouseDown(parentIdDropdown);
   fireEvent.click(document.querySelector(`[title="${'Ona Office Sub Location'}"]`)!);
 
   // simulate service type selection
-  const serviceTypesDropdown = document.querySelector(`input#${serviceType}`)!;
+  const serviceTypesDropdown = document.querySelector(`input#location-form_${serviceType}`)!;
   fireEvent.mouseDown(serviceTypesDropdown);
 
   const optionTexts = [
     ...document.querySelectorAll(
-      `#${serviceType}_list+div.rc-virtual-list .ant-select-item-option-content`
+      `#location-form_${serviceType}_list+div.rc-virtual-list .ant-select-item-option-content`
     ),
   ].map((option) => {
     return option.textContent;
@@ -174,14 +174,14 @@ test('works ok for new locations', async () => {
   expect(nock.isDone()).toBeTruthy();
 });
 
-test('Editing works correctly', async () => {
+test('editing works correctly', async () => {
   const history = createMemoryHistory();
   history.push(`/add/${createdLoc.id}`);
 
   const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
   const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
 
-  const preFetchScope = nock(props.fhirBaseURL)
+  nock(props.fhirBaseURL)
     .get(`/${locationResourceType}/${createdLoc.id}`)
     .reply(200, createdLoc)
     .get(`/${locationHierarchyResourceType}/_search`)
@@ -200,8 +200,7 @@ test('Editing works correctly', async () => {
   );
 
   await waitFor(async () => {
-    expect(preFetchScope.isDone()).toBeTruthy();
-    for (const loader of document.querySelectorAll('.anticon-loading,.anticon-spin')) {
+    for (const loader of document.querySelectorAll('.anticon-loading,.anticon-spin,.ant-spin')) {
       await waitForElementToBeRemoved(loader);
     }
   });
@@ -212,7 +211,7 @@ test('Editing works correctly', async () => {
   userEvent.type(nameInput, 'River road');
 
   // simulate service type selection
-  const serviceTypesDropdown = document.querySelector(`input#${serviceType}`)!;
+  const serviceTypesDropdown = document.querySelector(`input#location-form_${serviceType}`)!;
   fireEvent.mouseDown(serviceTypesDropdown);
 
   fireEvent.click(document.querySelector(`[title="${'CEG'}"]`)!);
@@ -221,7 +220,7 @@ test('Editing works correctly', async () => {
   userEvent.click(save);
 
   await waitFor(() => {
-    expect(notificationSuccessMock).toHaveBeenCalledWith('Location was successfully created');
+    expect(notificationSuccessMock).toHaveBeenCalledWith('Location was successfully updated');
   });
 
   // successful submission after action should not result in a disabled

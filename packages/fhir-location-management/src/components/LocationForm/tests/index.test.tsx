@@ -9,7 +9,7 @@ import { getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
-import { createdLocation1, createdLocation2 } from './fixtures';
+import { createdLocation1, createdLocation1WithGeometry, createdLocation2 } from './fixtures';
 import nock, { RequestBodyMatcher } from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
@@ -246,7 +246,7 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('#isJurisdiction .ant-form-item input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });
@@ -254,12 +254,12 @@ describe('LocationForm', () => {
     // simulate latitude change
     wrapper
       .find('#latitude .ant-form-item input')
-      .simulate('change', { target: { name: 'latitude', value: '37°14′N' } });
+      .simulate('change', { target: { name: 'latitude', value: '37.14' } });
 
     // simulate latitude change
     wrapper
       .find('#longitude .ant-form-item input')
-      .simulate('change', { target: { name: 'longitude', value: '115°48′W' } });
+      .simulate('change', { target: { name: 'longitude', value: '115.48' } });
 
     // simulate name change
     wrapper
@@ -295,7 +295,10 @@ describe('LocationForm', () => {
     document.body.appendChild(container);
 
     nock(formProps.fhirBaseURL)
-      .put(`/Location/${createdLocation1.id}`, createdLocation1 as unknown as RequestBodyMatcher)
+      .put(
+        `/Location/${createdLocation1WithGeometry.id}`,
+        createdLocation1WithGeometry as unknown as RequestBodyMatcher
+      )
       .reply(201, {})
       .persist();
 
@@ -336,13 +339,13 @@ describe('LocationForm', () => {
     // set isJurisdiction to jurisdiction
     wrapper
       .find('#isJurisdiction .ant-form-item input')
-      .last()
+      .first()
       .simulate('change', {
         target: { checked: true },
       });
 
     // simulate latitude change
-    wrapper.find('#geometry .ant-form-item input').simulate('change', {
+    wrapper.find('#geometry .ant-form-item textarea').simulate('change', {
       target: {
         name: 'geometry',
         value: `{
