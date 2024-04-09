@@ -57,28 +57,15 @@ export const selectFilterFunction = (inputValue: string, option?: DefaultOptionT
  * @param record - valueSets
  * @returns returns select option value stringified
  */
-const getValueSetOptionsValue = (record: ValueSetContains) => {
-  return JSON.stringify({
-    code: record.code,
-    display: record.display,
-    system: record.system,
-  });
-};
-
-/**
- * generate literal that represents the value to a dropdown select
- *
- * @param coding - coding to derive the literal value from
- */
-export function getSelectValueForCoding(coding?: Coding) {
-  if (coding) {
+export const getValueSetOptionsValue = (record?: ValueSetContains | Coding) => {
+  if (record) {
     return JSON.stringify({
-      code: coding.code,
-      display: coding.display,
-      system: coding.system,
+      code: record.code,
+      display: record.display,
+      system: record.system,
     });
   }
-}
+};
 
 /**
  * get options from valueSet data

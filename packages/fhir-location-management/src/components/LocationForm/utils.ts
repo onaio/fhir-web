@@ -5,7 +5,7 @@ import { DataNode } from 'rc-tree-select/lib/interface';
 import { v4 } from 'uuid';
 import { isEmpty, isEqual } from 'lodash';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { FHIRServiceClass, getObjLike, getSelectValueForCoding } from '@opensrp/react-utils';
+import { FHIRServiceClass, getObjLike, getValueSetOptionsValue } from '@opensrp/react-utils';
 import { LocationUnitStatus } from '../../helpers/types';
 import type { TFunction } from '@opensrp/i18n';
 import {
@@ -23,6 +23,8 @@ import {
   getAdministrativeLevelTypeCoding,
   administrativeLevelSystemUri,
   getLocationAdmLevel,
+  hl7PhysicalTypeCodeSystemUri,
+  eusmServicePointCodeSystemUri,
 } from '@opensrp/fhir-helpers';
 
 export type ExtraFields = Dictionary;
@@ -55,11 +57,6 @@ export const defaultFormFields: LocationFormFields = {
   alias: undefined,
 };
 
-// TODO move to fhir-helpers
-const physicalTypeValueSetSystem = 'http://terminology.hl7.org/CodeSystem/location-physical-type';
-export const eusmServicePointCodeSystemUri =
-  'http://smartregister.org/CodeSystem/eusm-service-point-type';
-
 /**
  * helps compute the default values of the location form field values
  *
@@ -89,7 +86,7 @@ export const getLocationFormFields = (
     const physicalTypeCoding = getObjLike(
       physicalType?.coding ?? [],
       'system',
-      physicalTypeValueSetSystem
+      hl7PhysicalTypeCodeSystemUri
     )[0] as Coding | undefined;
 
     const servicePointTypeCodings = type?.flatMap((concept) => concept.coding ?? []);
@@ -109,7 +106,7 @@ export const getLocationFormFields = (
       parentId: parentId ?? location.partOf?.reference,
       latitude: position?.latitude,
       longitude: position?.longitude,
-      serviceType: getSelectValueForCoding(serviceTypeCode),
+      serviceType: getValueSetOptionsValue(serviceTypeCode),
       alias,
       description,
       id,
@@ -192,7 +189,7 @@ export const generateLocationUnit = (
     for (const coding of concept.coding ?? []) {
       if (
         [
-          physicalTypeValueSetSystem,
+          hl7PhysicalTypeCodeSystemUri,
           eusmServicePointCodeSystemUri,
           administrativeLevelSystemUri,
         ].includes(coding.system as string)
@@ -205,7 +202,7 @@ export const generateLocationUnit = (
 
   /** if coding exists in type and physical  */
   const physicalTypeCoding = {
-    system: physicalTypeValueSetSystem,
+    system: hl7PhysicalTypeCodeSystemUri,
     code: isJurisdiction ? 'jdn' : 'bu',
     display: isJurisdiction ? 'Jurisdiction' : 'Building',
   };
