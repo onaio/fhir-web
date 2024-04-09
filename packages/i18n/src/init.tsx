@@ -15,9 +15,13 @@
 import { initReactI18next, I18nextProvider, I18nextProviderProps } from 'react-i18next';
 import { getConfig } from '@opensrp/pkg-config';
 import i18next from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 import { resources } from './resources';
 import React from 'react';
 
+const lngLocalStorageKey = 'i18nextLng';
+const locaStorageCacheName = 'localStorage';
+const customLanguageDetectorName = 'customLanguageDetector';
 const newInstance = i18next.createInstance();
 
 const languageCode = getConfig('languageCode');
@@ -25,12 +29,36 @@ const projectCode = getConfig('projectCode');
 const fallbackLng = `en-core`;
 const configuredLng = `${languageCode}-${projectCode}`;
 
+const languageDetectorOptions = {
+  order: [locaStorageCacheName],
+  lookupLocalStorage: lngLocalStorageKey,
+  caches: [locaStorageCacheName],
+  lookupQuerystring: 'lng',
+};
+
+const languageDetector = new LanguageDetector(null, languageDetectorOptions);
+const cachedLang = languageDetector.detect();
+
+// register custom detector that returns configured language if no language is cached
+if (!cachedLang) {
+  languageDetectorOptions.order.push(customLanguageDetectorName);
+  const customLanguageDetector = {
+    name: customLanguageDetectorName,
+    lookup() {
+      return configuredLng;
+    },
+  };
+  languageDetector.addDetector(customLanguageDetector);
+  languageDetector.detect(); // use registered detector
+}
+
 newInstance
+  .use(languageDetector)
   .use(initReactI18next)
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
+    detection: languageDetectorOptions,
     resources,
-    lng: configuredLng,
     fallbackLng: fallbackLng,
     interpolation: { escapeValue: false },
     returnEmptyString: false,
