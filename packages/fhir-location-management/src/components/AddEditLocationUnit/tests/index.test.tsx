@@ -161,7 +161,17 @@ test('#1277 - works ok for new locations', async () => {
     status: 'active',
     name: 'area51',
     partOf: { reference: 'Location/2252', display: 'Root FHIR Location' },
-    identifier: [{ use: 'official', value: '13cafa46-7251-429a-8d19-8da0583c0c5a' }],
+    type: [
+      {
+        coding: [
+          {
+            system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+            code: 'jdn',
+            display: 'Jurisdiction',
+          },
+        ],
+      },
+    ],
     physicalType: {
       coding: [
         {
@@ -171,17 +181,6 @@ test('#1277 - works ok for new locations', async () => {
         },
       ],
     },
-    type: [
-      {
-        coding: [
-          {
-            system: 'https://smartregister.org/CodeSystem/administrative-level',
-            code: '0',
-            display: 'Level 0',
-          },
-        ],
-      },
-    ],
     id: '13cafa46-7251-429a-8d19-8da0583c0c5a',
   };
 

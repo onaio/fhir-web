@@ -258,10 +258,12 @@ Below is a list of currently supported environment variables:
   - default: `ONE_TO_MANY`
 
 - **REACT_APP_AUTHZ_STRATEGY**
+
   - defines which authorization strategy to use. This affects how roles and permissions fetched from the Authorization server are parsed and used in the web app.Currently only keycloak is supported which means Role based acces will only work when using keycloak as the IAM server.
   - **Required**(`keycloak`).
   - default: `keycloak`
 
-- **REACT_APP_FHIR_INVENTORY_LIST_ID
+- **REACT_APP_FHIR_INVENTORY_LIST_ID**
+
   - Id of List that will hold all created inventories for a given web instance
   - **Optional**_(`string`)_

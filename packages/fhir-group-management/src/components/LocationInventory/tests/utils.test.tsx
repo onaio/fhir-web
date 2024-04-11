@@ -1,7 +1,6 @@
 import {
   handleDisabledPastDates,
   handleDisabledFutureDates,
-  getValuesetSelectOptions,
   isAttractiveProduct,
   productAccountabilityMonths,
   getMember,
@@ -10,7 +9,6 @@ import {
 } from '../utils';
 import dayjs from 'dayjs';
 import {
-  expandedValueSets,
   unicefValuesetConcept,
   donorValuesetConcept,
   productCharacteristics,
@@ -45,27 +43,6 @@ describe('fhir-group-management/src/components/LocationInventory/utils', () => {
     expect(handleDisabledFutureDates(now)).toEqual(true);
     expect(handleDisabledFutureDates(future)).toEqual(true);
     expect(handleDisabledFutureDates(past)).toEqual(false);
-  });
-
-  it('getValuesetSelectOptions works as expected', () => {
-    expect(getValuesetSelectOptions(expandedValueSets)).toEqual([
-      {
-        label: 'No complications',
-        value: JSON.stringify({
-          code: 'ANC.End.26',
-          display: 'No complications',
-          system: 'http://smartregister.org/CodeSystem/eusm-unicef-sections',
-        }),
-      },
-      {
-        label: 'Postpartum haemorrhage',
-        value: JSON.stringify({
-          code: 'ANC.End.27',
-          display: 'Postpartum haemorrhage',
-          system: 'http://smartregister.org/CodeSystem/eusm-unicef-sections',
-        }),
-      },
-    ]);
   });
 
   it('get attractive items works as expected', () => {

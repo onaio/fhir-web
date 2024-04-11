@@ -6,12 +6,16 @@ import { PageHeader, loadAllResources } from '@opensrp/react-utils';
 import { useMls } from '../../mls';
 import { URL_LOCATION_UNIT, locationResourceType } from '../../constants';
 import { useHistory } from 'react-router';
-import { postPutLocationUnit } from '../LocationForm/utils';
-import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
+import {
+  LocationFormFields,
+  generateLocationUnit,
+  postPutLocationUnit,
+} from '../LocationForm/utils';
 import { useQuery } from 'react-query';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { RbacCheck } from '@opensrp/rbac';
 import { Trans } from '@opensrp/i18n';
+import { LocationUnitStatus } from '../../helpers/types';
 
 const { Text } = Typography;
 
@@ -136,17 +140,7 @@ const CreateRootConfirm = (props: CreateRootConfirmProps) => {
   const { t } = useMls();
 
   const onOk = () => history.push(URL_LOCATION_UNIT);
-
-  const rootLocationPayload = {
-    ...rootLocationTemplate,
-    id: rootLocationId,
-    identifier: [
-      {
-        use: 'official',
-        value: rootLocationId,
-      },
-    ],
-  } as ILocation;
+  const rootLocationPayload = getRootLocationPayload(rootLocationId);
 
   return (
     <RbacCheck
@@ -179,20 +173,29 @@ const CreateRootConfirm = (props: CreateRootConfirmProps) => {
   );
 };
 
-const rootLocationTemplate = {
-  resourceType: 'Location',
-  status: 'active',
-  name: 'Root FHIR Location',
-  alias: ['Root Location'],
-  description:
-    'This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.',
-  physicalType: {
-    coding: [
-      {
-        system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
-        code: 'jdn',
-        display: 'Jurisdiction',
-      },
-    ],
-  },
-};
+/**
+ * generates the root fhir location payload
+ *
+ * @param id - id of this location.
+ */
+export function getRootLocationPayload(id: string) {
+  const rootLocationFormFields: LocationFormFields = {
+    isJurisdiction: true,
+    id,
+    initObj: {
+      resourceType: locationResourceType,
+      identifier: [
+        {
+          use: 'official',
+          value: id,
+        },
+      ],
+    },
+    name: 'Root FHIR Location',
+    status: LocationUnitStatus.ACTIVE,
+    alias: ['Root Location'],
+    description:
+      'This is the Root Location that all other locations are part of. Any locations that are directly part of this should be displayed as the root location.',
+  };
+  return generateLocationUnit(rootLocationFormFields, rootLocationFormFields);
+}

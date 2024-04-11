@@ -10,7 +10,6 @@ import { useHistory, Link } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
 import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import './index.css';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 

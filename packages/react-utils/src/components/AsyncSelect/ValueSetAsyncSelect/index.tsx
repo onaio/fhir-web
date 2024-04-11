@@ -4,6 +4,7 @@ import { ValueSetContains } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSe
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import { BaseAsyncSelect, RawValueType } from '../BaseAsyncSelect';
 import { FHIRServiceClass } from '../../../helpers/dataLoaders';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
   valueSetId: string;
@@ -56,12 +57,14 @@ export const selectFilterFunction = (inputValue: string, option?: DefaultOptionT
  * @param record - valueSets
  * @returns returns select option value stringified
  */
-const getValueSetOptionsValue = (record: ValueSetContains) => {
-  return JSON.stringify({
-    code: record.code,
-    display: record.display,
-    system: record.system,
-  });
+export const getValueSetOptionsValue = (record?: ValueSetContains | Coding) => {
+  if (record) {
+    return JSON.stringify({
+      code: record.code,
+      display: record.display,
+      system: record.system,
+    });
+  }
 };
 
 /**

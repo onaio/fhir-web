@@ -26,8 +26,9 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   const { t } = useMls();
 
   // recursively fetch path of this location
+  const locationAncestorQueryNamespace = 'location-parents';
   const { data, isLoading, error } = useQuery<ILocation[], Error, ILocation[]>(
-    [locationResourceType, locationId],
+    [locationAncestorQueryNamespace, locationResourceType, locationId],
     () => {
       return getLocationsAncestors(fhirBaseURL, locationId);
     }

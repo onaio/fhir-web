@@ -79,13 +79,15 @@ import {
   AffiliationList as FhirTeamAssignment,
 } from '@opensrp/fhir-team-management';
 import {
+  EusmAddEditLocationUnit,
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  URL_SERVICE_POINT_ADD_EDIT,
+  URL_SERVICE_POINT_LIST,
   URL_LOCATION_VIEW_DETAILS,
   ViewDetails,
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
-  URL_SERVICE_POINT_LOCATIONS,
   EusmLocationListFlat,
 } from '@opensrp/fhir-location-management';
 import {
@@ -383,7 +385,7 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
-        path={URL_SERVICE_POINT_LOCATIONS}
+        path={URL_SERVICE_POINT_LIST}
         permissions={['Location.read']}
         component={EusmLocationListFlat}
       />
@@ -395,6 +397,24 @@ const FHIRApps = () => {
         {...newLocationUnitProps}
         permissions={['Location.create']}
         component={FHIRNewEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={URL_SERVICE_POINT_ADD_EDIT}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_SERVICE_POINT_ADD_EDIT}/:id`}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

@@ -9,7 +9,7 @@ import { getLocationFormFields } from '../utils';
 import { createBrowserHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import { Form } from 'antd';
-import { createdLocation1, createdLocation2 } from './fixtures';
+import { createdLocation1, createdLocation1WithGeometry, createdLocation2 } from './fixtures';
 import nock, { RequestBodyMatcher } from 'nock';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { locationHierarchyResourceType } from '../CustomTreeSelect';
@@ -118,6 +118,15 @@ describe('LocationForm', () => {
       'isJurisdiction label'
     );
     expect(toJson(wrapper.find('#isJurisdiction input'))).toMatchSnapshot('isJurisdiction field');
+
+    expect(toJson(wrapper.find('#geometry label').first())).toMatchSnapshot('geometry label');
+    expect(toJson(wrapper.find('#geometry textarea'))).toMatchSnapshot('isJurisdiction field');
+
+    expect(toJson(wrapper.find('#latitude label').first())).toMatchSnapshot('latitude label');
+    expect(toJson(wrapper.find('#latitude input'))).toMatchSnapshot('latitude field');
+
+    expect(toJson(wrapper.find('#longitude label').first())).toMatchSnapshot('longitude label');
+    expect(toJson(wrapper.find('#longitude input'))).toMatchSnapshot('longitude field');
 
     expect(toJson(wrapper.find('#description label'))).toMatchSnapshot('description label');
     expect(toJson(wrapper.find('#description textarea'))).toMatchSnapshot('description field');
@@ -237,10 +246,20 @@ describe('LocationForm', () => {
     // set isJurisdiction to structure
     wrapper
       .find('#isJurisdiction .ant-form-item input')
-      .first()
+      .last()
       .simulate('change', {
         target: { checked: true },
       });
+
+    // simulate latitude change
+    wrapper
+      .find('#latitude .ant-form-item input')
+      .simulate('change', { target: { name: 'latitude', value: '37.14' } });
+
+    // simulate latitude change
+    wrapper
+      .find('#longitude .ant-form-item input')
+      .simulate('change', { target: { name: 'longitude', value: '115.48' } });
 
     // simulate name change
     wrapper
@@ -257,6 +276,89 @@ describe('LocationForm', () => {
           'The secret Nevada base, known as Area 51, is often the subject of alien conspiracy theories.',
       },
     });
+
+    wrapper.find('form').simulate('submit');
+
+    await act(async () => {
+      await flushPromises();
+    });
+
+    await waitFor(() => {
+      expect(notificationSuccessMock).toHaveBeenCalledWith('Location was successfully created');
+    });
+    wrapper.update();
+    wrapper.unmount();
+  });
+
+  it('Can add geometry', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+
+    nock(formProps.fhirBaseURL)
+      .put(
+        `/Location/${createdLocation1WithGeometry.id}`,
+        createdLocation1WithGeometry as unknown as RequestBodyMatcher
+      )
+      .reply(201, {})
+      .persist();
+
+    const someMockURL = '/someURL';
+    const successURLGeneratorMock = jest.fn(() => someMockURL);
+    const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
+
+    const wrapper = mount(
+      <AppWrapper>
+        <LocationForm successURLGenerator={successURLGeneratorMock} {...formProps} />
+      </AppWrapper>,
+      { attachTo: container }
+    );
+
+    await act(async () => {
+      await flushPromises();
+    });
+    wrapper.update();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formInstance = (wrapper.find(Form).props() as any).form;
+
+    // change parent Id
+    formInstance.setFieldsValue({
+      parentId: 'Location/303',
+    });
+
+    wrapper.update();
+
+    // simulate active check to be suspended
+    wrapper
+      .find('#status .ant-form-item input')
+      .last()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // set isJurisdiction to jurisdiction
+    wrapper
+      .find('#isJurisdiction .ant-form-item input')
+      .first()
+      .simulate('change', {
+        target: { checked: true },
+      });
+
+    // simulate latitude change
+    wrapper.find('#geometry .ant-form-item textarea').simulate('change', {
+      target: {
+        name: 'geometry',
+        value: `{
+        "type": "Point",
+        "coordinates": [-122.4194, 37.7749]
+      }`,
+      },
+    });
+
+    // simulate name change
+    wrapper
+      .find('#name .ant-form-item input')
+      .simulate('change', { target: { name: 'name', value: 'area51' } });
 
     wrapper.find('form').simulate('submit');
 

@@ -20,6 +20,7 @@ const GeometryRender = ({ geometry }: { geometry?: string }) => {
     <pre
       style={{
         maxHeight: '60px',
+        maxWidth: '120px',
         overflow: 'auto',
         border: '1px solid #ddd',
         padding: '4px',
