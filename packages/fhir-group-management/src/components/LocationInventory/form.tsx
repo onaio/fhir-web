@@ -26,13 +26,13 @@ import {
   donor,
   PONumber,
   groupResourceType,
-  unicefSectionValueSetId,
   id,
   active,
   name,
   type,
   actual,
-  unicefDonorValueSetId,
+  unicefSectionValueSetURL,
+  unicefDonorValueSetURL,
 } from '../../constants';
 import {
   getLocationInventoryPayload,
@@ -214,7 +214,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <ValueSetAsyncSelect
           placeholder={t('Select UNICEF section')}
           showSearch={true}
-          valueSetId={unicefSectionValueSetId}
+          valueSetURL={unicefSectionValueSetURL}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>
@@ -232,7 +232,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <ValueSetAsyncSelect
           placeholder={t('Select donor')}
           showSearch={true}
-          valueSetId={unicefDonorValueSetId}
+          valueSetURL={unicefDonorValueSetURL}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>

@@ -11,7 +11,7 @@ import {
   ValidationFactory,
 } from './utils';
 import {
-  eusmServicePointValueSetId,
+  eusmServicePointValueSetURL,
   geometry,
   isJurisdiction,
   latitude,
@@ -296,7 +296,7 @@ const LocationForm = (props: LocationFormProps) => {
                   rules={validationRules.serviceType}
                 >
                   <ValueSetAsyncSelect
-                    valueSetId={eusmServicePointValueSetId}
+                    valueSetURL={eusmServicePointValueSetURL}
                     fhirBaseUrl={fhirBaseURL}
                   />
                 </FormItem>

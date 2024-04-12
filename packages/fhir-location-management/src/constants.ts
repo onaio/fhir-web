@@ -28,6 +28,7 @@ export const locationGeoJsonExtensionUrl =
 
 // fhir resource ids
 export const eusmServicePointValueSetId = 'eusm-service-point-type';
+export const eusmServicePointValueSetURL = `http://smartregister.org/ValueSet/${eusmServicePointValueSetId}`;
 
 // i18n namespaces
 export const namespace = 'fhir-location-management' as const;
