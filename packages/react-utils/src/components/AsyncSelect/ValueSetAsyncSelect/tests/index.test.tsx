@@ -53,7 +53,7 @@ const queryClient = new QueryClient({
 
 const commonProps = {
   fhirBaseUrl: 'http://test.server.org/fhir',
-  valueSetId: 'eusmServicePointValueSetId',
+  valueSetURL: 'http://smartregister.org/ValueSet/eusmServicePointValueSetId',
 };
 
 const AppWrapper = (props: { children: React.ReactNode }) => {
@@ -66,7 +66,7 @@ test('works correctly when api errors out', async () => {
     id: 'select',
   };
   nock(props.fhirBaseUrl)
-    .get(`/${valueSetResourceType}/${props.valueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${props.valueSetURL}`)
     .reply(500, 'Ran into an error');
   render(
     <AppWrapper>
@@ -99,7 +99,7 @@ test('chooses correctly dropdown', async () => {
     showSearch: true,
   };
   nock(props.fhirBaseUrl)
-    .get(`/${valueSetResourceType}/${props.valueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${props.valueSetURL}`)
     .reply(200, eusmServicePoint);
 
   render(

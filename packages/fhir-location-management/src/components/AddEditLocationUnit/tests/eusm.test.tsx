@@ -9,7 +9,7 @@ import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import {
-  eusmServicePointValueSetId,
+  eusmServicePointValueSetURL,
   locationHierarchyResourceType,
   serviceType,
 } from '../../../constants';
@@ -105,7 +105,7 @@ test('works ok for new locations', async () => {
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy)
-    .get(`/${valueSetResourceType}/${eusmServicePointValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURL}`)
     .reply(200, servicePointTypeValueSet)
     .persist();
 
@@ -187,7 +187,7 @@ test('editing works correctly', async () => {
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy)
-    .get(`/${valueSetResourceType}/${eusmServicePointValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURL}`)
     .reply(200, servicePointTypeValueSet)
     .persist();
 

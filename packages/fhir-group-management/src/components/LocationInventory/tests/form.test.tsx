@@ -26,9 +26,9 @@ import {
   groupResourceType,
   listResourceType,
   product,
-  unicefDonorValueSetId,
+  unicefDonorValueSetURL,
   unicefSection,
-  unicefSectionValueSetId,
+  unicefSectionValueSetURL,
 } from '../../../constants';
 import { valueSetResourceType } from '@opensrp/react-utils';
 
@@ -153,9 +153,9 @@ test('creates new inventory as expected', async () => {
       '_has:List:item:_id': props.commodityListId,
     })
     .reply(200, productsList)
-    .get(`/${valueSetResourceType}/${unicefSectionValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefSectionValueSetURL}`)
     .reply(200, unicefSectionValueSet)
-    .get(`/${valueSetResourceType}/${unicefDonorValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefDonorValueSetURL}`)
     .reply(200, unicefDonorsValueSet)
     .persist();
 
