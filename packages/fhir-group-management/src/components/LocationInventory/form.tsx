@@ -31,8 +31,6 @@ import {
   name,
   type,
   actual,
-  unicefSectionValueSetURL,
-  unicefDonorValueSetURL,
 } from '../../constants';
 import {
   getLocationInventoryPayload,
@@ -50,6 +48,7 @@ import { useHistory } from 'react-router';
 import { Dayjs } from 'dayjs';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { Dictionary } from '@onaio/utils';
+import { unicefSectionValueSetURI, unicefDonorValueSetURI } from '@opensrp/fhir-helpers';
 
 const { Item: FormItem } = Form;
 
@@ -214,7 +213,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <ValueSetAsyncSelect
           placeholder={t('Select UNICEF section')}
           showSearch={true}
-          valueSetURL={unicefSectionValueSetURL}
+          valueSetURL={unicefSectionValueSetURI}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>
@@ -232,7 +231,7 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         <ValueSetAsyncSelect
           placeholder={t('Select donor')}
           showSearch={true}
-          valueSetURL={unicefDonorValueSetURL}
+          valueSetURL={unicefDonorValueSetURI}
           fhirBaseUrl={fhirBaseURL}
         />
       </FormItem>

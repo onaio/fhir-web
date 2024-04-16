@@ -8,18 +8,18 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import {
-  eusmServicePointValueSetURL,
-  locationHierarchyResourceType,
-  serviceType,
-} from '../../../constants';
+import { locationHierarchyResourceType, serviceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { createdLoc, editedLoc, servicePointTypeValueSet } from './fixtures';
-import { locationResourceType, valueSetResourceType } from '@opensrp/fhir-helpers';
+import {
+  locationResourceType,
+  valueSetResourceType,
+  eusmServicePointValueSetURI,
+} from '@opensrp/fhir-helpers';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -105,7 +105,7 @@ test('works ok for new locations', async () => {
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy)
-    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURL}`)
+    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURI}`)
     .reply(200, servicePointTypeValueSet)
     .persist();
 
@@ -187,7 +187,7 @@ test('editing works correctly', async () => {
     .get(`/${locationHierarchyResourceType}/_search`)
     .query({ _id: props.fhirRootLocationId })
     .reply(200, fhirHierarchy)
-    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURL}`)
+    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURI}`)
     .reply(200, servicePointTypeValueSet)
     .persist();
 

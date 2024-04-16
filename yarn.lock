@@ -3873,6 +3873,7 @@ __metadata:
   dependencies:
     "@ant-design/icons": ^4.7.0
     "@onaio/redux-reducer-registry": ^0.0.9
+    "@opensrp/fhir-helpers": "workspace:^"
     "@opensrp/notifications": ^0.0.5
     "@opensrp/pkg-config": ^0.0.9
     "@opensrp/rbac": "workspace:^"

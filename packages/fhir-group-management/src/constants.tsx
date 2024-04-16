@@ -5,13 +5,6 @@ export const LIST_GROUP_URL = '/groups/list';
 export const LIST_COMMODITY_URL = '/commodity/list';
 export const ADD_LOCATION_INVENTORY = '/location/inventory';
 
-// unicef and donor endpoints
-const baseValuSetURL = 'http://smartregister.org/ValueSet/';
-export const unicefSectionValueSetId = 'eusm-unicef-sections';
-export const unicefDonorValueSetId = 'eusm-donors';
-export const unicefSectionValueSetURL = `${baseValuSetURL}${unicefSectionValueSetId}`;
-export const unicefDonorValueSetURL = `${baseValuSetURL}${unicefDonorValueSetId}`;
-
 // magic strings
 export const groupResourceType = 'Group';
 export const listResourceType = 'List';
