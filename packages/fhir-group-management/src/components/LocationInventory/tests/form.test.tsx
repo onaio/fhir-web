@@ -26,11 +26,10 @@ import {
   groupResourceType,
   listResourceType,
   product,
-  unicefDonorValueSetId,
   unicefSection,
-  unicefSectionValueSetId,
 } from '../../../constants';
 import { valueSetResourceType } from '@opensrp/react-utils';
+import { unicefDonorValueSetURI, unicefSectionValueSetURI } from '@opensrp/fhir-helpers';
 
 import dayjs from 'dayjs';
 import { fillSearchableSelect } from '../../CommodityAddEdit/Default/tests/test-utils';
@@ -153,9 +152,9 @@ test('creates new inventory as expected', async () => {
       '_has:List:item:_id': props.commodityListId,
     })
     .reply(200, productsList)
-    .get(`/${valueSetResourceType}/${unicefSectionValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefSectionValueSetURI}`)
     .reply(200, unicefSectionValueSet)
-    .get(`/${valueSetResourceType}/${unicefDonorValueSetId}/$expand`)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefDonorValueSetURI}`)
     .reply(200, unicefDonorsValueSet)
     .persist();
 

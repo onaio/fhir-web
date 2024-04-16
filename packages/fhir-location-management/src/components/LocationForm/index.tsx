@@ -11,7 +11,6 @@ import {
   ValidationFactory,
 } from './utils';
 import {
-  eusmServicePointValueSetId,
   geometry,
   isJurisdiction,
   latitude,
@@ -29,6 +28,7 @@ import { useQueryClient } from 'react-query';
 import { useMls } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import { ValueSetAsyncSelect } from '@opensrp/react-utils';
+import { eusmServicePointValueSetURI } from '@opensrp/fhir-helpers';
 
 const { Item: FormItem } = Form;
 
@@ -296,7 +296,7 @@ const LocationForm = (props: LocationFormProps) => {
                   rules={validationRules.serviceType}
                 >
                   <ValueSetAsyncSelect
-                    valueSetId={eusmServicePointValueSetId}
+                    valueSetURL={eusmServicePointValueSetURI}
                     fhirBaseUrl={fhirBaseURL}
                   />
                 </FormItem>

@@ -7,6 +7,11 @@ export const hl7PhysicalTypeCodeSystemUri =
 export const administrativeLevelSystemUri =
   'https://smartregister.org/CodeSystem/administrative-level';
 
+const baseValuSetURI = 'http://smartregister.org/ValueSet';
+export const unicefSectionValueSetURI = `${baseValuSetURI}/eusm-unicef-sections`;
+export const unicefDonorValueSetURI = `${baseValuSetURI}/eusm-donors`;
+export const eusmServicePointValueSetURI = `${baseValuSetURI}/eusm-service-point-type`;
+
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,
   code: 'PONUM',

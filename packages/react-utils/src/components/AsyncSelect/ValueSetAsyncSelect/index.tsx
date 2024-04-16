@@ -7,7 +7,7 @@ import { FHIRServiceClass } from '../../../helpers/dataLoaders';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
-  valueSetId: string;
+  valueSetURL: string;
   fhirBaseUrl: string;
 }
 
@@ -20,13 +20,13 @@ export const valueSetResourceType = 'ValueSet';
  * @param props - AsyncSelect component props
  */
 export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
-  const { valueSetId, fhirBaseUrl, ...selectProps } = props;
+  const { valueSetURL, fhirBaseUrl, ...selectProps } = props;
 
   const queryParams = {
-    queryKey: [valueSetResourceType, valueSetId],
+    queryKey: [valueSetResourceType, valueSetURL],
     queryFn: async () =>
       new FHIRServiceClass<IValueSet>(fhirBaseUrl, valueSetResourceType).read(
-        `${valueSetId}/$expand`
+        `$expand?url=${valueSetURL}`
       ),
     select: (data: IValueSet) => getValueSetSelectOptions(data),
   };
