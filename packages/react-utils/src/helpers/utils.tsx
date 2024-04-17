@@ -1,4 +1,5 @@
 import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { DefaultOptionType } from 'antd/lib/select';
 
 /**
  * From T, convert a set of keys to optional, that are in the union K.
@@ -103,3 +104,13 @@ export function dateToLocaleString(stringDate?: string | Date, dateOnly = false)
 
   return toDateObj.toLocaleString();
 }
+
+/**
+ * filter practitioners select on search
+ *
+ * @param inputValue search term
+ * @param option select option to filter against
+ */
+export const defaultSelectFilterFunction = (inputValue: string, option?: DefaultOptionType) => {
+  return !!option?.label?.toString()?.toLowerCase().includes(inputValue.toLowerCase());
+};

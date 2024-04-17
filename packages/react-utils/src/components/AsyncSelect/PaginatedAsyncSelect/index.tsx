@@ -7,7 +7,7 @@ import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { debounce } from 'lodash';
-import { getResourcesFromBundle } from '../../../helpers/utils';
+import { getResourcesFromBundle, defaultSelectFilterFunction } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
 
@@ -34,6 +34,7 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   filterPageSize?: number;
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
+  getAllpagesData?: boolean;
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -59,6 +60,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     filterPageSize: pageSize = 20,
     extraQueryParams = {},
     getFullOptionOnChange,
+    getAllpagesData,
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -135,9 +137,8 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     ...restProps,
     placeholder,
     onChange: changeHandler,
-    loading: isLoading,
+    loading: isLoading || (getAllpagesData && hasNextPage),
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
-    filterOption: false,
     options: options,
     searchValue,
     dropdownRender: (menu: React.ReactNode) => (
@@ -147,31 +148,45 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
         {error ? (
           <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
         ) : (
-          <Space direction="vertical">
-            {data && (
-              <small style={{ padding: '4px 16px' }}>
-                {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
-                  recordsFetchedNum,
-                  remainingRecords,
-                })}
-              </small>
+          <>
+            {!getAllpagesData && (
+              <Space direction="vertical">
+                {data && (
+                  <small style={{ padding: '4px 16px' }}>
+                    {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
+                      recordsFetchedNum,
+                      remainingRecords,
+                    })}
+                  </small>
+                )}
+                <Button
+                  type="text"
+                  icon={<VerticalAlignBottomOutlined />}
+                  disabled={!hasNextPage || isFetchingNextPage || isFetching}
+                  loading={isFetchingNextPage}
+                  onClick={() => fetchNextPage()}
+                >
+                  {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
+                </Button>
+              </Space>
             )}
-            <Button
-              type="text"
-              icon={<VerticalAlignBottomOutlined />}
-              disabled={!hasNextPage || isFetchingNextPage || isFetching}
-              loading={isFetchingNextPage}
-              onClick={() => fetchNextPage()}
-            >
-              {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
-            </Button>
-          </Space>
+          </>
         )}
       </>
     ),
   };
-  if (props.showSearch) {
-    propsToSelect.onSearch = searchHandler;
+
+  if (getAllpagesData) {
+    if (!isLoading && !isFetchingNextPage && hasNextPage) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchNextPage();
+    }
+    propsToSelect.filterOption = defaultSelectFilterFunction;
+  } else {
+    if (props.showSearch) {
+      propsToSelect.onSearch = searchHandler;
+    }
+    propsToSelect.filterOption = false;
   }
   return <Select {...propsToSelect}></Select>;
 }
