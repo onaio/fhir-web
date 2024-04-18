@@ -14,6 +14,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { organizationsPage1, organizationsPage1Summary, organizationsPage2 } from './fixtures';
 import flushPromises from 'flush-promises';
+import userEvent from '@testing-library/user-event';
 
 const organizationResourceType = 'Organization';
 
@@ -237,4 +238,69 @@ test('handles error in request', async () => {
   fireEvent.mouseDown(input);
 
   expect(queryByText(/Unable to load dropdown options./)).toBeInTheDocument();
+});
+
+test('Gets all pages on load', async () => {
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '5' })
+    .reply(200, { ...organizationsPage1, total: 10 });
+
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '5', _count: '5' })
+    .reply(200, { ...organizationsPage2, total: 10 });
+
+  const changeMock = jest.fn();
+  const fullOptionHandlerMock = jest.fn();
+
+  const props = {
+    ...commonProps,
+    onChange: changeMock,
+    getFullOptionOnChange: fullOptionHandlerMock,
+    showSearch: true,
+    getAllpagesData: true,
+  };
+
+  render(
+    <QueryWrapper>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
+    </QueryWrapper>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // click on input. - should see all records
+  const input = document.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(input);
+
+  // find antd select options
+  let selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  await flushPromises();
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    '高雄榮民總醫院',
+    'Blok Operacyjny Chirurgii Naczyń',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Test',
+    'Hospital Krel Tarron',
+    'clinFHIR Sample creator',
+    'Health Level Seven International',
+    'Health Level Seven International',
+  ]);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const selectComponent = document.querySelector(`input`)!;
+  // filter searching works
+  userEvent.type(selectComponent, 'Hospital');
+  selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Hospital Krel Tarron',
+  ]);
 });

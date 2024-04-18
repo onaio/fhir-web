@@ -177,7 +177,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   };
 
   if (getAllpagesData) {
-    if (!isLoading && !isFetchingNextPage && hasNextPage) {
+    if (!error && !isLoading && !isFetchingNextPage && hasNextPage) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchNextPage();
     }
