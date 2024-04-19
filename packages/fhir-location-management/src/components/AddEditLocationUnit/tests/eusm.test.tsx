@@ -234,9 +234,9 @@ test('editing works correctly', async () => {
 });
 
 test('Back search param works correctly', async () => {
-  const back_to_url = '/location/view';
+  const backToPath = '/location/view';
   const history = createMemoryHistory();
-  history.push(`/add/${createdLoc.id}?back_to=${back_to_url}`);
+  history.push(`/add/${createdLoc.id}?back_to=${backToPath}`);
 
   nock(props.fhirBaseURL)
     .get(`/${locationResourceType}/${createdLoc.id}`)
@@ -264,5 +264,5 @@ test('Back search param works correctly', async () => {
 
   const cancel = screen.getByRole('button', { name: 'Cancel' });
   userEvent.click(cancel);
-  expect(history.location.pathname).toEqual(back_to_url);
+  expect(history.location.pathname).toEqual(backToPath);
 });
