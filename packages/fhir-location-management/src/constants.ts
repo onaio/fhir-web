@@ -13,6 +13,7 @@ export const URL_LOCATION_VIEW_DETAILS = `${URL_LOCATION_UNIT}/view`;
 export const URL_ALL_LOCATIONS = `${URL_ADMIN}/location/all`;
 export const URL_SERVICE_POINT_ADD_EDIT = `${URL_ADMIN}/service-points/add-edit`;
 export const URL_SERVICE_POINT_LIST = `${URL_ADMIN}/service-points`;
+export const BACK_SEARCH_PARAM = 'back_to';
 
 // magic strings
 export const serviceType = 'serviceType' as const;

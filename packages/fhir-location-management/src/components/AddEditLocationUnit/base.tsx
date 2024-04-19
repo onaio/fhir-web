@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
 import { useMls } from '../../mls';
-import { parentIdQueryParam } from '../../constants';
+import { parentIdQueryParam, BACK_SEARCH_PARAM } from '../../constants';
 
 export type LocationRouteProps = { id?: string };
 
@@ -48,8 +48,9 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
   const sParams = new URLSearchParams(location.search);
   const { t } = useMls();
 
+  const backToUrl = sParams.get(BACK_SEARCH_PARAM) ?? undefined;
   const cancelHandler = () => {
-    const cancelURL = cancelURLGenerator();
+    const cancelURL = backToUrl ? backToUrl : cancelURLGenerator();
     history.push(cancelURL);
   };
 
