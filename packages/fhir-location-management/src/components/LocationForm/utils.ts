@@ -112,7 +112,7 @@ export const getLocationFormFields = (
       id,
     } as LocationFormFields;
   }
-  return defaultFormFields;
+  return { ...defaultFormFields, parentId };
 };
 
 // TODO - dry out fhir-helpers
