@@ -168,6 +168,9 @@ test('works correctly - jurisdiction location', async () => {
   userEvent.click(addLocationCta);
 
   expect(history.location.pathname).toEqual('/admin/location/unit/add');
+  expect(history.location.search).toEqual(
+    '?parentId=Location%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334'
+  );
 
   expect(nock.isDone()).toBeTruthy();
 });
