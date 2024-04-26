@@ -93,6 +93,7 @@ export function useSimpleTabularView<T extends Resource>(
   const { data, ...restQueryValues } = useQuery(rQuery);
 
   const searchFormProps = {
+    wrapperClassName: 'long-search-bar',
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: ChangeEvent<HTMLInputElement>) {
       const nextUrl = getNextUrlOnSearch(event, location, match);

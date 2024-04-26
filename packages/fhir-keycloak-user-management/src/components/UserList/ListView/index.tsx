@@ -72,6 +72,7 @@ export const UserList = (props: OrganizationListProps) => {
   const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, t, userRole, history);
 
   const searchFormProps = {
+    wrapperClassName: 'long-search-bar',
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
       const searchText = event.target.value;

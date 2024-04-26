@@ -11,6 +11,7 @@ import { useTranslation } from '../../mls';
  */
 export interface SearchFormProps extends InputProps {
   onChangeHandler: OnChangeType;
+  wrapperClassName?: string;
 }
 
 const defaultPrefix = <SearchOutlined style={{ fontSize: '16px', fontWeight: 'bold' }} />;
@@ -31,7 +32,7 @@ export const defaultSearchProps: SearchFormProps = {
  * @param props - the component's props
  */
 const SearchForm = (props: SearchFormProps) => {
-  const { onChangeHandler, ...passedOnProps } = props;
+  const { onChangeHandler, wrapperClassName, ...passedOnProps } = props;
   // HACK to preserve defaultProps back compatibility
   const { t } = useTranslation();
   passedOnProps['placeholder'] = props.placeholder ?? t('Search');
@@ -51,7 +52,7 @@ const SearchForm = (props: SearchFormProps) => {
   };
 
   return (
-    <div className="search-input-wrapper">
+    <div className={`search-input-wrapper ${wrapperClassName ? wrapperClassName : ''}`}>
       <Input onChange={debouncedOnChangeHandler} {...passedOnProps}></Input>
     </div>
   );

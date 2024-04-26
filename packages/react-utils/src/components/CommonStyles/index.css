@@ -23,3 +23,7 @@
 .flex-grow-1 {
   flex-grow: 1;
 }
+
+.long-search-bar {
+  width: 55%;
+}
