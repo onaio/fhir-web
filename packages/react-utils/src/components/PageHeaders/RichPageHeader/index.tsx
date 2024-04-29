@@ -2,7 +2,8 @@ import React from 'react';
 import { PageHeader, PageHeaderProps } from '@ant-design/pro-layout';
 import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Breadcrumb, { BreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb';
+import { Breadcrumb } from 'antd';
+import { BreadcrumbProps } from 'antd/es/breadcrumb';
 
 export interface RichPageHeaderProps {
   pageHeaderProps?: PageHeaderProps;
