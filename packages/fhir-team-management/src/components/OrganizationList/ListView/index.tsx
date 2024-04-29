@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -120,7 +120,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
+      <SimplePageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">

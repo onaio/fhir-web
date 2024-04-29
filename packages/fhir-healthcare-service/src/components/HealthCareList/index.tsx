@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
 import { Link, useHistory } from 'react-router-dom';
@@ -122,7 +122,7 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
+      <SimplePageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

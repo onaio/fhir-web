@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
@@ -105,7 +105,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   return (
     <Row className="content-section">
       {/** If email is provided render edit user otherwise add user */}
-      <PageHeader
+      <SimplePageHeader
         title={
           props.initialValues.id
             ? t('Edit User | {{username}}', { username: initialValues.username })

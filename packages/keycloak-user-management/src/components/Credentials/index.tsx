@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Col, Row, Input } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
@@ -132,7 +132,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 
   return (
     <Row className="content-section">
-      <PageHeader title={heading} />
+      <SimplePageHeader title={heading} />
       <Col className="bg-white p-3" span={24}>
         <div className="form-container">
           <Form

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Breadcrumb, Button, Descriptions, Divider, Tabs, Tag } from 'antd';
+import { Alert, Button, Descriptions, Divider, Tabs, Tag } from 'antd';
 import { Spin } from 'antd';
 import { useTranslation } from '../../../mls';
 import { useHistory, useParams } from 'react-router';
@@ -7,6 +7,8 @@ import {
   BrokenPage,
   FHIRServiceClass,
   Resource404,
+  RichPageHeader,
+  RichPageHeaderProps,
   getResourcesFromBundle,
 } from '@opensrp/react-utils';
 import { PageHeader } from '@ant-design/pro-layout';
@@ -24,7 +26,6 @@ import { PractitionerDetailsView } from './ViewDetailResources/PractitionerDetai
 import { CareTeamDetailsView } from './ViewDetailResources/CareTeamDetails';
 import { OrganizationDetailsView } from './ViewDetailResources/OrganizationDetailsView';
 import { PractitionerDetail } from './types';
-import { Link } from 'react-router-dom';
 import { practitionerDetailsResourceType } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
@@ -105,16 +106,28 @@ export const UserDetails = (props: UserDetailProps) => {
     [t('Verified')]: emailVerified ? t('True') : t('False'),
   };
   const attributesArray = Object.entries(attributes ?? {});
+  const breadCrumbProps = {
+    items: [
+      {
+        title: t('Users'),
+        path: URL_USER,
+      },
+      {
+        title: t('View details'),
+      },
+    ],
+  };
+  const pageHeaderProps = {
+    subTitle: user.username,
+  };
+  const richPageHeaderProps: RichPageHeaderProps = {
+    pageHeaderProps,
+    breadCrumbProps,
+  };
 
   return (
     <div className="details-full-view">
-      <PageHeader
-        className="site-page-header"
-        onBack={() => history.goBack()}
-        title={t('View details')}
-        breadcrumbRender={() => <UserProfileBreadCrumb />}
-        subTitle={user.username}
-      />
+      <RichPageHeader {...richPageHeaderProps} />
       <div className="content-body">
         <div className="content-box" data-testid="user-profile">
           <PageHeader
@@ -236,33 +249,5 @@ export const UserDetails = (props: UserDetailProps) => {
         </RbacCheck>
       </div>
     </div>
-  );
-};
-
-const UserProfileBreadCrumb = () => {
-  const { t } = useTranslation();
-  const breadCrumbItems = [
-    {
-      title: t('Users'),
-      path: URL_USER,
-    },
-    {
-      title: t('View details'),
-    },
-  ];
-
-  return (
-    <Breadcrumb
-      items={breadCrumbItems}
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      itemRender={(route, _, items, __) => {
-        const last = items.indexOf(route) === items.length - 1;
-        return last ? (
-          <span>{route.title}</span>
-        ) : (
-          <Link to={route.path ? route.path : '#'}>{route.title}</Link>
-        );
-      }}
-    ></Breadcrumb>
   );
 };

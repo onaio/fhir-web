@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   FormFields,
@@ -54,7 +54,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
   return (
     <Row className="content-section user-group">
       {/** If email is provided render edit group otherwise add group */}
-      <PageHeader
+      <SimplePageHeader
         title={
           initialValues.id
             ? t('Edit Care Team | {{name}}', { name: initialValues.name })

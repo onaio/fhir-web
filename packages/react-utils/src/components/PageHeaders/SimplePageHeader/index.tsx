@@ -1,13 +1,13 @@
 import React from 'react';
 import { Typography } from 'antd';
 
-export interface PageHeaderProps {
+export interface SimplePageHeaderProps {
   title: string;
 }
 
 const { Title } = Typography;
 
-const PageHeader = (props: PageHeaderProps) => {
+const SimplePageHeader = (props: SimplePageHeaderProps) => {
   const { title } = props;
 
   return (
@@ -19,4 +19,4 @@ const PageHeader = (props: PageHeaderProps) => {
   );
 };
 
-export { PageHeader };
+export { SimplePageHeader };

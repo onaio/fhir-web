@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
 import { Row, Col, Button, Spin, Alert } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
@@ -132,7 +132,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <PageHeader title={pageTitle} />
+        <SimplePageHeader title={pageTitle} />
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
@@ -190,7 +190,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
       <Helmet>
         <title>{t('User Groups')}</title>
       </Helmet>
-      <PageHeader title={t('User Groups')} />
+      <SimplePageHeader title={t('User Groups')} />
       <Row className="list-view">
         <Col className={'main-content'}>
           <div className="main-content__header">

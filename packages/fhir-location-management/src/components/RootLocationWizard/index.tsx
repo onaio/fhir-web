@@ -2,7 +2,7 @@
 import React from 'react';
 import { Alert, Button, Card, Col, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { Helmet } from 'react-helmet';
-import { PageHeader, loadAllResources } from '@opensrp/react-utils';
+import { SimplePageHeader, loadAllResources } from '@opensrp/react-utils';
 import { useMls } from '../../mls';
 import { URL_LOCATION_UNIT, locationResourceType } from '../../constants';
 import { useHistory } from 'react-router';
@@ -49,7 +49,7 @@ export const RootLocationWizard = (props: RootLocationWizardProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
+      <SimplePageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">

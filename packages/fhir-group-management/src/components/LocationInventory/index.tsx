@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
-import { BrokenPage, FHIRServiceClass, PageHeader } from '@opensrp/react-utils';
+import { BrokenPage, FHIRServiceClass, SimplePageHeader } from '@opensrp/react-utils';
 import { AddLocationInventoryForm } from './form';
 import { useParams } from 'react-router';
 import { groupResourceType, locationResourceType } from '../../constants';
@@ -84,7 +84,7 @@ export const AddLocationInventory = (props: AddLocationInventoryProps) => {
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
+      <SimplePageHeader title={pageTitle} />
       <div className="bg-white p-5">
         {isLoading ? (
           <Spin size="large" className="custom-spinner"></Spin>

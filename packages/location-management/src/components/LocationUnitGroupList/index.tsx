@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Input, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -68,7 +68,7 @@ const LocationUnitGroupList: React.FC<Props> = (props: Props) => {
       <Helmet>
         <title>{t('Location Unit Group')}</title>
       </Helmet>
-      <PageHeader title={t('Location Unit Group Management')} />
+      <SimplePageHeader title={t('Location Unit Group Management')} />
       <Row>
         <Col className="bg-white p-3 border-left" span={detail ? 19 : 24}>
           <div className="mb-3 d-flex justify-content-between p-3">

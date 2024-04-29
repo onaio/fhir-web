@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
 import type { MenuProps } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { SimplePageHeader } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
@@ -180,7 +180,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       <Helmet>
         <title>{t('FHIR Care Team')}</title>
       </Helmet>
-      <PageHeader title={t('FHIR Care Team')} />
+      <SimplePageHeader title={t('FHIR Care Team')} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">

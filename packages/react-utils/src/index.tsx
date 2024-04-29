@@ -16,7 +16,7 @@ export * from './hooks/useSimpleTabularView';
 export * from './hooks/useTabularViewWithLocalSearch';
 export * from './hooks/useSearchParams';
 export * from './hooks/utils';
-export * from './components/PageHeader';
+export * from './components/PageHeaders';
 export * from './components/ButtonLink';
 export * from './helpers/test-utils';
 export * from './components/PrivateRoute';

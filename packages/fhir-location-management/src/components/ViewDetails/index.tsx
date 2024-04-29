@@ -5,7 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
-import { BrokenPage, PageHeader, Resource404 } from '@opensrp/react-utils';
+import { BrokenPage, SimplePageHeader, Resource404 } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { ViewDetailsTabs } from './DetailsTabs';
 import { getLocationsAncestors } from './utils';
@@ -55,7 +55,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
       <Helmet>
         <title>{pageTitle} </title>
       </Helmet>
-      <PageHeader title={pageTitle} />
+      <SimplePageHeader title={pageTitle} />
       <div
         style={{
           display: 'flex',
