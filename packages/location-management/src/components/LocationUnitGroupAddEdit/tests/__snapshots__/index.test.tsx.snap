@@ -10,7 +10,7 @@ Array [
       Edit Location Unit Group
     </title>
   </HelmetWrapper>,
-  <PageHeader
+  <SimplePageHeader
     title="Edit Location Unit Group | "
   />,
   <Col
@@ -35,7 +35,7 @@ Array [
       Add Location Unit Group
     </title>
   </HelmetWrapper>,
-  <PageHeader
+  <SimplePageHeader
     title="Add Location Unit Group"
   />,
   <Col

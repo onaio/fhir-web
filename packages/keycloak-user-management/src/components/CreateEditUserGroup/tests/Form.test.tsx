@@ -243,7 +243,9 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Edit User Group | Admin"`);
+    expect(wrapper.find('SimplePageHeader').text()).toMatchInlineSnapshot(
+      `"Edit User Group | Admin"`
+    );
     wrapper.unmount();
   });
 
