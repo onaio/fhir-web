@@ -186,6 +186,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
             <SearchForm
+              wrapperClassName="elongate-search-bar"
               defaultValue={getQueryParams(props.location)[SEARCH_QUERY_PARAM]}
               onChange={createChangeHandler(SEARCH_QUERY_PARAM, props)}
               size={'middle'}
