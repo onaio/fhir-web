@@ -1,5 +1,147 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`components/forms/UserForm adds user: email input 1`] = `
+<input
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="email"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm adds user: email label 1`] = `
+<label
+  className=""
+  htmlFor="email"
+  title="Email"
+>
+  Email
+</label>
+`;
+
+exports[`components/forms/UserForm adds user: enabled input 1`] = `
+Array [
+  <input
+    checked={true}
+    className="ant-radio-input"
+    disabled={false}
+    name="enabled"
+    onChange={[Function]}
+    type="radio"
+    value={true}
+  />,
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    name="enabled"
+    onChange={[Function]}
+    type="radio"
+    value={false}
+  />,
+]
+`;
+
+exports[`components/forms/UserForm adds user: firstName input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="firstName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm adds user: firstName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="firstName"
+  title="First Name"
+>
+  First Name
+</label>
+`;
+
+exports[`components/forms/UserForm adds user: lastName input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="lastName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm adds user: lastName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="lastName"
+  title="Last Name"
+>
+  Last Name
+</label>
+`;
+
+exports[`components/forms/UserForm adds user: practitionerToggle input 1`] = `null`;
+
+exports[`components/forms/UserForm adds user: practitionerToggle label 1`] = `null`;
+
+exports[`components/forms/UserForm adds user: userGroups input 1`] = `null`;
+
+exports[`components/forms/UserForm adds user: userGroups label 1`] = `
+<label
+  className=""
+  htmlFor="userGroups"
+  title="Keycloak User Group"
+>
+  Keycloak User Group
+</label>
+`;
+
+exports[`components/forms/UserForm adds user: username input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm adds user: username label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="username"
+  title="Username"
+>
+  Username
+</label>
+`;
+
 exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 <input
   aria-required="true"

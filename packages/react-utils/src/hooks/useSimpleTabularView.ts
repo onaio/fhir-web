@@ -15,7 +15,6 @@ import {
   pageQuery,
   pageSizeQuery,
   searchQuery,
-  
   startingPage,
   startingPageSize,
 } from './utils';
