@@ -69,7 +69,6 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       dateData={dateCreatedKeyPairing}
       headerActions={<Link to={`${URL_LOCATION_UNIT_EDIT}/${id}`}>{t('Edit details')}</Link>}
       bodyData={otherDetailsMap}
-      status={{ title: 'Active', color: 'green' }}
     />
   );
 };

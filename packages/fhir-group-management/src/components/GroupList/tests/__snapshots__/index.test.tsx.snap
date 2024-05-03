@@ -2,16 +2,12 @@
 
 exports[`renders correctly when listing resources 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     49778
   </dd>
 </div>
@@ -19,16 +15,12 @@ exports[`renders correctly when listing resources 3`] = `
 
 exports[`renders correctly when listing resources 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Jan27Test
   </dd>
 </div>
@@ -36,16 +28,12 @@ exports[`renders correctly when listing resources 4`] = `
 
 exports[`renders correctly when listing resources 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Active
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Inactive
   </dd>
 </div>
@@ -53,16 +41,12 @@ exports[`renders correctly when listing resources 5`] = `
 
 exports[`renders correctly when listing resources 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Last updated
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     4/27/2022
   </dd>
 </div>

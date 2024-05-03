@@ -2,16 +2,12 @@
 
 exports[`renders correctly when listing resources 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Product Id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     52cffa51-fa81-49aa-9944-5b45d9e4c117
   </dd>
 </div>
@@ -19,16 +15,12 @@ exports[`renders correctly when listing resources 3`] = `
 
 exports[`renders correctly when listing resources 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Material Number
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     52cffa51-fa81-49aa-9944-5b45d9e4c117
   </dd>
 </div>
@@ -36,16 +28,12 @@ exports[`renders correctly when listing resources 4`] = `
 
 exports[`renders correctly when listing resources 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Bed nets
   </dd>
 </div>
@@ -53,16 +41,12 @@ exports[`renders correctly when listing resources 5`] = `
 
 exports[`renders correctly when listing resources 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Active
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Active
   </dd>
 </div>
@@ -70,16 +54,12 @@ exports[`renders correctly when listing resources 6`] = `
 
 exports[`renders correctly when listing resources 7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Attractive item
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     No
   </dd>
 </div>
@@ -87,16 +67,12 @@ exports[`renders correctly when listing resources 7`] = `
 
 exports[`renders correctly when listing resources 8`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Is it there
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     yes
   </dd>
 </div>
@@ -104,16 +80,12 @@ exports[`renders correctly when listing resources 8`] = `
 
 exports[`renders correctly when listing resources 9`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Is it in good condition
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Yes, no tears, and inocuated
   </dd>
 </div>
@@ -121,16 +93,12 @@ exports[`renders correctly when listing resources 9`] = `
 
 exports[`renders correctly when listing resources 10`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Is it being used appropriately
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Hanged at correct height and covers averagely sized beds
   </dd>
 </div>
@@ -138,16 +106,12 @@ exports[`renders correctly when listing resources 10`] = `
 
 exports[`renders correctly when listing resources 11`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Accountability period (in months)
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     12
   </dd>
 </div>

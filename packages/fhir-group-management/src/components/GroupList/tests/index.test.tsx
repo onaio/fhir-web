@@ -185,7 +185,7 @@ test('renders correctly when listing resources', async () => {
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
-    'div[data-testid="key-value"] .singleKeyValue-pair'
+    'div[data-testid="key-value"] .singleKeyValue-pair__default'
   );
   keyValuePairs.forEach((pair) => {
     expect(pair).toMatchSnapshot();

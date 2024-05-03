@@ -230,7 +230,7 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // see details in viewDetails
-  document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
+  document.querySelectorAll('.singleKeyValue-pair__default').forEach((pair) => {
     expect(pair).toMatchSnapshot('single key value pairs detail section');
   });
 

@@ -132,10 +132,10 @@ export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
       {Object.entries(data).map(([key, value]) => {
         const keyValuePairing = { [key]: value };
         return (
-          <>
+          <React.Fragment key={key}>
             <SingleFlatKeyValue {...keyValuePairing} />
             <br></br>
-          </>
+          </React.Fragment>
         );
       })}
     </div>

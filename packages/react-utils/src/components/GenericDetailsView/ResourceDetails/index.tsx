@@ -12,6 +12,7 @@ const { Text } = Typography;
 export interface ResourceDetailsProps {
   title: React.ReactNode;
   headerLeftData: Record<string, React.ReactNode>;
+  headerLeftDataClasses?: string;
   dateData?: Record<string, string | undefined>;
   headerActions?: React.ReactNode;
   status?: {
@@ -23,7 +24,16 @@ export interface ResourceDetailsProps {
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
-  const { title, headerLeftData, dateData, headerActions, bodyData, footer, status } = props;
+  const {
+    title,
+    headerLeftData,
+    dateData,
+    headerActions,
+    bodyData,
+    footer,
+    status,
+    headerLeftDataClasses,
+  } = props;
   return (
     <div data-testid="details-section" className="details-section">
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -40,7 +50,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
 
         <div className="header-bottom">
-          <ListFlatKeyValues data={headerLeftData} />
+          <ListFlatKeyValues classnames={headerLeftDataClasses} data={headerLeftData} />
           {dateData && (
             <div style={{ textAlign: 'right' }}>
               <SingleKeyNestedValue theme="light" data={dateData} />

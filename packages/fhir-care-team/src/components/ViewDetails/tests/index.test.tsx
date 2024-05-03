@@ -77,7 +77,7 @@ test('works correctly', async () => {
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
-    'div[data-testid="key-value"] .singleKeyValue-pair'
+    'div[data-testid="key-value"] .singleKeyValue-pair__default'
   );
   keyValuePairs.forEach((pair) => {
     expect(pair).toMatchSnapshot();
@@ -105,7 +105,7 @@ test('Closes on clicking cancel (X) ', async () => {
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
-    'div[data-testid="key-value"] .singleKeyValue-pair'
+    'div[data-testid="key-value"] .singleKeyValue-pair__default'
   );
   keyValuePairs.forEach((pair) => {
     expect(pair).toMatchSnapshot();
@@ -145,7 +145,7 @@ test('1157 - view details errors out for careTeam 3500', async () => {
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
-    'div[data-testid="key-value"] .singleKeyValue-pair'
+    'div[data-testid="key-value"] .singleKeyValue-pair__default'
   );
   keyValuePairs.forEach((pair) => {
     expect(pair).toMatchSnapshot();

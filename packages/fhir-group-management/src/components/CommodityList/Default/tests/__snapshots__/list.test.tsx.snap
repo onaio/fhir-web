@@ -2,16 +2,12 @@
 
 exports[`renders correctly when listing resources 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Commodity Id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     e50eb835-7827-4001-b233-e1dda721d4e8
   </dd>
 </div>
@@ -19,16 +15,12 @@ exports[`renders correctly when listing resources 3`] = `
 
 exports[`renders correctly when listing resources 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Amoxicillin 250mg Tablets
   </dd>
 </div>
@@ -36,16 +28,12 @@ exports[`renders correctly when listing resources 4`] = `
 
 exports[`renders correctly when listing resources 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Active
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Disabled
   </dd>
 </div>
