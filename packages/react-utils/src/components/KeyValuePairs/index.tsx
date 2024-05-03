@@ -1,6 +1,8 @@
 import React from 'react';
 import './index.css';
-import { Descriptions } from 'antd';
+import { Descriptions, Typography } from 'antd';
+
+const { Text } = Typography;
 
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
@@ -8,6 +10,10 @@ export type KeyValuePairs = Record<string, string | number | boolean | JSX.Eleme
 export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
+}
+export interface ListFlatKeyValuesProps {
+  data: KeyValuePairs;
+  classnames?: string;
 }
 
 const singleKeyValueClass: SingleKeyValueClass = {
@@ -74,7 +80,6 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
   );
 };
 
-
 /**
  * Dryed out util for displaying keyValue ui under antD Description component
  *
@@ -93,5 +98,46 @@ export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
         );
       })}
     </Descriptions>
+  );
+};
+
+/**
+ * Use for displaying single key value pair on same line
+ *
+ * @param obj - obj with info to be displayed
+ */
+export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
+  const firstPair = Object.entries(obj)[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (firstPair === undefined) return null;
+  const [key, value] = firstPair;
+
+  return (
+    <Text>
+      {key}: {value}
+    </Text>
+  );
+};
+
+/**
+ * Use for displaying multiple key value pair
+ * Each key value pair is displayed on it's own line
+ *
+ * @param props - data and styling class for the component
+ */
+export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
+  const { data, classnames } = props;
+  return (
+    <div className={classnames}>
+      {Object.entries(data).map(([key, value]) => {
+        const keyValuePairing = { [key]: value };
+        return (
+          <>
+            <SingleFlatKeyValue {...keyValuePairing} />
+            <br></br>
+          </>
+        );
+      })}
+    </div>
   );
 };

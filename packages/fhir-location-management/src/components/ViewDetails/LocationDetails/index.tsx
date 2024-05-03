@@ -1,7 +1,11 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useMls } from '../../../mls';
 import React from 'react';
-import { KeyValuesDescriptions, SingleKeyNestedValue } from '@opensrp/react-utils';
+import {
+  KeyValuesDescriptions,
+  ListFlatKeyValues,
+  SingleKeyNestedValue,
+} from '@opensrp/react-utils';
 import { Divider, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
@@ -61,6 +65,10 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
   const dateCreatedKeyPairing = {
     [t('Date Last Updated')]: lastUpdated,
   };
+  const headerLeftData = {
+    ID: id,
+    Version: version,
+  };
   return (
     <div
       data-testid="details-section"
@@ -89,11 +97,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
             width: '100%',
           }}
         >
-          <div style={{}}>
-            <Text>ID23: {id}</Text>
-            <br></br>
-            <Text>Version: {version}</Text>
-          </div>
+          <ListFlatKeyValues data={headerLeftData} />
           <div style={{ textAlign: 'right' }}>
             <SingleKeyNestedValue theme="light" data={dateCreatedKeyPairing} />
           </div>
