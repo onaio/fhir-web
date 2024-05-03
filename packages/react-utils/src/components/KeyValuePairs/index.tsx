@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import { Descriptions } from 'antd';
 
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
@@ -32,7 +33,7 @@ export const KeyValueGrid = (props: KeyValuePairs) => {
 /**
  * Use for single key value pair
  *
- * @param props - key value pair map
+ * @param props - component data and theme
  */
 export const SingleKeyNestedValue = (props: SingleKeyNestedValueProps) => {
   const { data, theme = 'default' } = props;
@@ -70,5 +71,27 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
         ) : null;
       })}
     </>
+  );
+};
+
+
+/**
+ * Dryed out util for displaying keyValue ui under antD Description component
+ *
+ * @param props - component data and theme
+ */
+export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
+  const { data, theme } = props;
+  return (
+    <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}>
+      {Object.entries(data).map(([key, value]) => {
+        const keyValuePairing = { [key]: value };
+        return (
+          <Descriptions.Item key={key}>
+            <SingleKeyNestedValue theme={theme} data={keyValuePairing} />
+          </Descriptions.Item>
+        );
+      })}
+    </Descriptions>
   );
 };

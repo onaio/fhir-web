@@ -1,8 +1,8 @@
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useMls } from '../../../mls';
 import React from 'react';
-import { SingleKeyNestedValue } from '@opensrp/react-utils';
-import { Descriptions, Divider, Typography } from 'antd';
+import { KeyValuesDescriptions, SingleKeyNestedValue } from '@opensrp/react-utils';
+import { Divider, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
 import { URL_LOCATION_UNIT_EDIT } from '../../../constants';
@@ -95,7 +95,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
             <Text>Version: {version}</Text>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <SingleKeyNestedValue data={dateCreatedKeyPairing} />
+            <SingleKeyNestedValue theme="light" data={dateCreatedKeyPairing} />
           </div>
         </div>
       </div>
@@ -104,18 +104,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
           margin: '0',
         }}
       />
-      <div>
-        <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}>
-          {Object.entries(otherDetailsMap).map(([key, value]) => {
-            const keyValuePairing = { [key]: value };
-            return (
-              <Descriptions.Item key={key}>
-                <SingleKeyNestedValue data={keyValuePairing} />
-              </Descriptions.Item>
-            );
-          })}
-        </Descriptions>
-      </div>
+      <KeyValuesDescriptions theme="default" data={otherDetailsMap} />
     </div>
   );
 };
