@@ -6,7 +6,7 @@ const { Text } = Typography;
 
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
-export type KeyValuePairs = Record<string, string | number | boolean | JSX.Element | undefined>;
+export type KeyValuePairs = Record<string, React.ReactNode>;
 export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
