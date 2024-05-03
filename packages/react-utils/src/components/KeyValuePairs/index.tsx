@@ -1,7 +1,18 @@
 import React from 'react';
 import './index.css';
 
-type KeyValuePairs = Record<string, string | number | boolean | JSX.Element>;
+export type SingleKeyValueClassOptions = 'light' | 'default';
+export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
+export type KeyValuePairs = Record<string, string | number | boolean | JSX.Element | undefined>;
+export interface SingleKeyNestedValueProps {
+  theme?: SingleKeyValueClassOptions;
+  data: KeyValuePairs;
+}
+
+const singleKeyValueClass: SingleKeyValueClass = {
+  light: 'singleKeyValue-pair__light',
+  default: 'singleKeyValue-pair__default',
+};
 
 export const KeyValueGrid = (props: KeyValuePairs) => {
   return (
@@ -23,16 +34,18 @@ export const KeyValueGrid = (props: KeyValuePairs) => {
  *
  * @param props - key value pair map
  */
-export const SingleKeyNestedValue = (props: KeyValuePairs) => {
-  const firstPair = Object.entries(props)[0];
+export const SingleKeyNestedValue = (props: SingleKeyNestedValueProps) => {
+  const { data, theme = 'default' } = props;
+  const firstPair = Object.entries(data)[0];
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
+  const keyValueClass = singleKeyValueClass[theme];
   return (
     <dl className="singleKeyValue">
-      <div className="singleKeyValue-pair">
-        <dt className="singleKeyValue-pair__label">{key}</dt>
-        <dd className="singleKeyValue-pair__value">{value}</dd>
+      <div className={keyValueClass}>
+        <dt>{key}</dt>
+        <dd>{value}</dd>
       </div>
     </dl>
   );
@@ -48,7 +61,7 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
     <>
       {Object.entries(obj).map(([key, value]) => {
         const props = {
-          [key]: value,
+          data: { [key]: value } as KeyValuePairs,
         };
         return value ? (
           <div key={key} data-testid="key-value">

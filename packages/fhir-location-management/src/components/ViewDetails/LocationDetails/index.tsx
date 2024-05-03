@@ -90,12 +90,12 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
           }}
         >
           <div style={{}}>
-            <Text>ID: {id}</Text>
+            <Text>ID23: {id}</Text>
             <br></br>
             <Text>Version: {version}</Text>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <SingleKeyNestedValue {...dateCreatedKeyPairing} />
+            <SingleKeyNestedValue data={dateCreatedKeyPairing} />
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
             const keyValuePairing = { [key]: value };
             return (
               <Descriptions.Item key={key}>
-                <SingleKeyNestedValue {...keyValuePairing} />
+                <SingleKeyNestedValue data={keyValuePairing} />
               </Descriptions.Item>
             );
           })}
