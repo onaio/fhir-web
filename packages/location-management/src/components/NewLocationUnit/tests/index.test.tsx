@@ -194,7 +194,7 @@ describe('NewLocationUnit', () => {
     expect(helmet.title).toEqual('Add Location Unit');
 
     // rendered page including title
-    expect(wrapper.find('SimplePageHeader').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
+    expect(wrapper.find('RichPageHeader').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
 
     expect(wrapper.find('LocationForm').text()).toMatchSnapshot('form rendered');
   });
@@ -235,7 +235,7 @@ describe('NewLocationUnit', () => {
     expect(helmet.title).toEqual('Add Location Unit');
 
     // rendered page including title
-    expect(wrapper.find('SimplePageHeader').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
+    expect(wrapper.find('RichPageHeader').text()).toMatchInlineSnapshot(`"Add Location Unit"`);
 
     wrapper.unmount();
   });

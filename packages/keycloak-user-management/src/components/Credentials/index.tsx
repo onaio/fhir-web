@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Col, Row, Input } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { RouteComponentProps, useHistory } from 'react-router';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { KeycloakService, HTTPError } from '@opensrp/keycloak-service';
@@ -129,66 +129,73 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
   };
   const history = useHistory();
   const heading = `${t('User Credentials')} | ${username}`;
+  const headerProps = {
+    pageHeaderProps: {
+      title: heading,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section">
-      <SimplePageHeader title={heading} />
-      <Col className="bg-white p-3" span={24}>
-        <div className="form-container">
-          <Form
-            {...layout}
-            onFinish={(values: UserCredentialsFormFields) =>
-              submitForm(values, userId, serviceClass, keycloakBaseURL, t)
-            }
-          >
-            <Form.Item
-              name="password"
-              label={t('Password')}
-              rules={[
-                {
-                  required: true,
-                  message: t('Password is required'),
-                },
-              ]}
-              hasFeedback
+    <BodyLayout headerProps={headerProps}>
+      <Row>
+        <Col className="bg-white p-3" span={24}>
+          <div className="form-container">
+            <Form
+              {...layout}
+              onFinish={(values: UserCredentialsFormFields) =>
+                submitForm(values, userId, serviceClass, keycloakBaseURL, t)
+              }
             >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              name="confirm"
-              label={t('Confirm Password')}
-              dependencies={['password']}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: t('Confirm Password is required'),
-                },
-                ({ getFieldValue }) => ({
-                  validator(rule, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(t('The two passwords that you entered do not match!'));
+              <Form.Item
+                name="password"
+                label={t('Password')}
+                rules={[
+                  {
+                    required: true,
+                    message: t('Password is required'),
                   },
-                }),
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" className="reset-password">
-                {t('Set password')}
-              </Button>
-              <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
-                {t('Cancel')}
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      </Col>
-    </Row>
+                ]}
+                hasFeedback
+              >
+                <Input.Password />
+              </Form.Item>
+
+              <Form.Item
+                name="confirm"
+                label={t('Confirm Password')}
+                dependencies={['password']}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: t('Confirm Password is required'),
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(rule, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(t('The two passwords that you entered do not match!'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
+              <Form.Item {...tailLayout}>
+                <Button type="primary" htmlType="submit" className="reset-password">
+                  {t('Set password')}
+                </Button>
+                <Button onClick={() => props.cancelUserHandler(history)} className="cancel-user">
+                  {t('Cancel')}
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </BodyLayout>
   );
 };
 

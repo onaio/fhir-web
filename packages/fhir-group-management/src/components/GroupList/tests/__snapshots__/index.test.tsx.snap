@@ -53,11 +53,24 @@ exports[`renders correctly when listing resources 6`] = `
 `;
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<h4
-  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
 >
-  Groups List
-</h4>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="Groups List"
+      >
+        Groups List
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`renders correctly when listing resources: Search 1 page 1 1`] = `

@@ -4,10 +4,10 @@ import { Spin } from 'antd';
 import { useTranslation } from '../../../mls';
 import { useHistory, useParams } from 'react-router';
 import {
+  BodyLayout,
   BrokenPage,
   FHIRServiceClass,
   Resource404,
-  RichPageHeader,
   RichPageHeaderProps,
   getResourcesFromBundle,
 } from '@opensrp/react-utils';
@@ -126,128 +126,116 @@ export const UserDetails = (props: UserDetailProps) => {
   };
 
   return (
-    <div className="details-full-view">
-      <RichPageHeader {...richPageHeaderProps} />
-      <div className="content-body">
-        <div className="content-box" data-testid="user-profile">
-          <PageHeader
-            ghost={false}
-            title={user.username}
-            subTitle={
-              enabled ? (
-                <Tag color="green">{t('Enabled')}</Tag>
-              ) : (
-                <Tag color="green">{t('Disabled')}</Tag>
-              )
-            }
-            extra={[
-              <RbacCheck permissions={['iam_user.delete']} key="user-delete-btn">
-                <UserDeleteBtn
-                  fhirBaseUrl={fhirBaseUrl}
-                  keycloakBaseUrl={keycloakBaseUrl}
-                  resourceId={resourceId}
-                  afterActions={userDeleteAfterAction}
-                />
-              </RbacCheck>,
-              <RbacCheck permissions={['iam_user.update']} key="edit-user">
-                <Button
-                  type="primary"
-                  onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}
-                >
-                  {t('Edit')}
-                </Button>
-              </RbacCheck>,
-            ]}
-          >
+    <BodyLayout headerProps={richPageHeaderProps}>
+      <div className="content-box" data-testid="user-profile">
+        <PageHeader
+          ghost={false}
+          title={user.username}
+          subTitle={
+            enabled ? (
+              <Tag color="green">{t('Enabled')}</Tag>
+            ) : (
+              <Tag color="green">{t('Disabled')}</Tag>
+            )
+          }
+          extra={[
+            <RbacCheck permissions={['iam_user.delete']} key="user-delete-btn">
+              <UserDeleteBtn
+                fhirBaseUrl={fhirBaseUrl}
+                keycloakBaseUrl={keycloakBaseUrl}
+                resourceId={resourceId}
+                afterActions={userDeleteAfterAction}
+              />
+            </RbacCheck>,
+            <RbacCheck permissions={['iam_user.update']} key="edit-user">
+              <Button type="primary" onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}>
+                {t('Edit')}
+              </Button>
+            </RbacCheck>,
+          ]}
+        >
+          <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
+            {Object.entries(userDetails).map(([key, value]) => {
+              return (
+                <Descriptions.Item key={key} label={key}>
+                  {value}
+                </Descriptions.Item>
+              );
+            })}
+          </Descriptions>
+          <Divider orientation="center">Attributes</Divider>
+          {attributesArray.length === 0 ? (
+            <Alert message={t('This user does not have any attributes')} type="info" />
+          ) : (
             <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-              {Object.entries(userDetails).map(([key, value]) => {
+              {attributesArray.map(([key, value]) => {
                 return (
                   <Descriptions.Item key={key} label={key}>
-                    {value}
+                    {JSON.stringify(value)}
                   </Descriptions.Item>
                 );
               })}
             </Descriptions>
-            <Divider orientation="center">Attributes</Divider>
-            {attributesArray.length === 0 ? (
-              <Alert message={t('This user does not have any attributes')} type="info" />
-            ) : (
-              <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-                {attributesArray.map(([key, value]) => {
-                  return (
-                    <Descriptions.Item key={key} label={key}>
-                      {JSON.stringify(value)}
-                    </Descriptions.Item>
-                  );
-                })}
-              </Descriptions>
-            )}
-          </PageHeader>
-        </div>
-        <RbacCheck permissions={['PractitionerDetail.read']}>
-          <div className="details-tab">
-            <Tabs
-              defaultActiveKey="1"
-              size={'small'}
-              items={[
-                {
-                  label: t('User groups'),
-                  key: 'Groups',
-                  children: (
-                    <KeycloakGroupDetails
-                      keycloakBaseUrl={keycloakBaseUrl}
-                      resourceId={resourceId}
-                    />
-                  ),
-                },
-                {
-                  label: t('User roles'),
-                  key: 'Roles',
-                  children: (
-                    <KeycloakRoleDetails
-                      keycloakBaseUrl={keycloakBaseUrl}
-                      resourceId={resourceId}
-                    />
-                  ),
-                },
-                {
-                  label: t('Practitioners'),
-                  key: 'Practitioners',
-                  children: (
-                    <PractitionerDetailsView
-                      loading={detailsLoading}
-                      practitionerDetails={practDetailsByResName}
-                      error={detailsError}
-                    />
-                  ),
-                },
-                {
-                  label: t('CareTeams'),
-                  key: 'CareTeams',
-                  children: (
-                    <CareTeamDetailsView
-                      loading={detailsLoading}
-                      practitionerDetails={practDetailsByResName}
-                      error={detailsError}
-                    />
-                  ),
-                },
-                {
-                  label: t('Organizations'),
-                  key: 'Organizations',
-                  children: (
-                    <OrganizationDetailsView
-                      loading={detailsLoading}
-                      practitionerDetails={practDetailsByResName}
-                      error={detailsError}
-                    />
-                  ),
-                },
-              ]}
-            />
-          </div>
-        </RbacCheck>
+          )}
+        </PageHeader>
       </div>
-    </div>
+      <RbacCheck permissions={['PractitionerDetail.read']}>
+        <div className="details-tab">
+          <Tabs
+            defaultActiveKey="1"
+            size={'small'}
+            items={[
+              {
+                label: t('User groups'),
+                key: 'Groups',
+                children: (
+                  <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+                ),
+              },
+              {
+                label: t('User roles'),
+                key: 'Roles',
+                children: (
+                  <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+                ),
+              },
+              {
+                label: t('Practitioners'),
+                key: 'Practitioners',
+                children: (
+                  <PractitionerDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+              },
+              {
+                label: t('CareTeams'),
+                key: 'CareTeams',
+                children: (
+                  <CareTeamDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+              },
+              {
+                label: t('Organizations'),
+                key: 'Organizations',
+                children: (
+                  <OrganizationDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+              },
+            ]}
+          />
+        </div>
+      </RbacCheck>
+    </BodyLayout>
   );
 };

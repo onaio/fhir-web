@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Divider, Dropdown, Popconfirm } from 'antd';
 import type { MenuProps } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
@@ -174,13 +174,19 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
   };
+  const pageTitle = t('FHIR Care Team');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
-        <title>{t('FHIR Care Team')}</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <SimplePageHeader title={t('FHIR Care Team')} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -198,6 +204,6 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
         </Col>
         {resourceId && <ViewDetails careTeamId={resourceId} fhirBaseURL={fhirBaseURL} />}
       </Row>
-    </div>
+    </BodyLayout>
   );
 };

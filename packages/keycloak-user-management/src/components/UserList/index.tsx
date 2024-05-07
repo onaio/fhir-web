@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Row, Col, Button, Space } from 'antd';
 import { KeycloakService } from '@opensrp/keycloak-service';
 import { Store } from 'redux';
@@ -178,10 +178,16 @@ const UserList = (props: UserListTypes): JSX.Element => {
     setUserDetails(null);
     setOpenDetails(false);
   };
+  const pageTitle = t('User Management');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
-      <SimplePageHeader title={t('User Management')} />
+    <BodyLayout headerProps={headerProps}>
       <Row className="list-view">
         <Col className="main-content" span={openDetails ? 19 : 24}>
           <div className="main-content__header">
@@ -255,7 +261,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
           </Col>
         ) : null}
       </Row>
-    </section>
+    </BodyLayout>
   );
 };
 

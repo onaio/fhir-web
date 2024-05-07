@@ -24,3 +24,4 @@ export * from './components/fhirDataTypes';
 export * from './components/NoData';
 export * from './components/AsyncSelect';
 export * from './components/GenericDetailsView';
+export * from './components/BodyLayout';

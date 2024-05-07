@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { locationUnitsReducer, locationUnitsReducerName } from '../../ducks/location-units';
 import Form from './Form';
@@ -16,24 +16,28 @@ export const LocationUnitGroupAddEdit: React.FC<Props> = (props: Props) => {
   const params: { id: string } = useParams();
   const { t } = useTranslation();
   const { opensrpBaseURL } = props;
+  const pageTitle = params.id
+    ? t('Edit Location Unit Group | {{title}}', { title })
+    : t('Add Location Unit Group');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section">
-      <Helmet>
-        <title>{params.id ? t('Edit Location Unit Group') : t('Add Location Unit Group')}</title>
-      </Helmet>
-      <SimplePageHeader
-        title={
-          params.id
-            ? t('Edit Location Unit Group | {{title}}', { title })
-            : t('Add Location Unit Group')
-        }
-      />
+    <BodyLayout headerProps={headerProps}>
+      <Row>
+        <Helmet>
+          <title>{params.id ? t('Edit Location Unit Group') : t('Add Location Unit Group')}</title>
+        </Helmet>
 
-      <Col className="bg-white p-4" span={24}>
-        <Form setEditTitle={setTitle} opensrpBaseURL={opensrpBaseURL} id={params.id} />
-      </Col>
-    </Row>
+        <Col className="bg-white p-4" span={24}>
+          <Form setEditTitle={setTitle} opensrpBaseURL={opensrpBaseURL} id={params.id} />
+        </Col>
+      </Row>
+    </BodyLayout>
   );
 };
 

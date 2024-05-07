@@ -2,7 +2,7 @@
 import React from 'react';
 import { Alert, Button, Card, Col, Popconfirm, Row, Space, Spin, Typography } from 'antd';
 import { Helmet } from 'react-helmet';
-import { SimplePageHeader, loadAllResources } from '@opensrp/react-utils';
+import { BodyLayout, loadAllResources } from '@opensrp/react-utils';
 import { useMls } from '../../mls';
 import { URL_LOCATION_UNIT, locationResourceType } from '../../constants';
 import { useHistory } from 'react-router';
@@ -43,13 +43,18 @@ export const RootLocationWizard = (props: RootLocationWizardProps) => {
   );
 
   const pageTitle = t('Location Unit Management');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <SimplePageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">
@@ -70,7 +75,7 @@ export const RootLocationWizard = (props: RootLocationWizardProps) => {
           </Card>
         </Col>
       </Row>
-    </section>
+    </BodyLayout>
   );
 };
 

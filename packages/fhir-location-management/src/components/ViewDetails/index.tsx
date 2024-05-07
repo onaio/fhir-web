@@ -5,7 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
-import { BrokenPage, SimplePageHeader, Resource404 } from '@opensrp/react-utils';
+import { BrokenPage, BodyLayout, Resource404 } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { ViewDetailsTabs } from './DetailsTabs';
 import { getLocationsAncestors } from './utils';
@@ -49,13 +49,18 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   const normalizedData = data;
   const theInterestingLoc = normalizedData[normalizedData.length - 1];
   const pageTitle = t(`View details | {{locName}}`, { locName: theInterestingLoc.name });
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle} </title>
       </Helmet>
-      <SimplePageHeader title={pageTitle} />
       <div
         style={{
           display: 'flex',
@@ -71,6 +76,6 @@ export const ViewDetails = (props: ViewDetailsProps) => {
         <LocationDetails location={theInterestingLoc} />
         <ViewDetailsTabs fhirBaseUrl={fhirBaseURL} location={theInterestingLoc} />
       </div>
-    </section>
+    </BodyLayout>
   );
 };

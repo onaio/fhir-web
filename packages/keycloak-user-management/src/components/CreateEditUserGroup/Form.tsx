@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Transfer } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import reducerRegistry from '@onaio/redux-reducer-registry';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { URL_USER_GROUPS } from '../../constants';
@@ -152,78 +152,87 @@ const UserGroupForm: React.FC<UserGroupFormProps> = (props: UserGroupFormProps) 
   }));
 
   const { name } = initialValues;
+  const pageTitle = props.initialValues.id
+    ? t('Edit User Group | {{name}}', { name })
+    : t('New User Group');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section user-group">
-      {/** If email is provided render edit group otherwise add group */}
-      <SimplePageHeader
-        title={
-          props.initialValues.id ? t('Edit User Group | {{name}}', { name }) : t('New User Group')
-        }
-      />
-      <Col className="bg-white p-3" span={24}>
-        <Form
-          {...layout}
-          form={form}
-          initialValues={{
-            ...initialValues,
-          }}
-          onFinish={(values: KeycloakUserGroup & { roles?: string[] }) => {
-            // remove roles array from payload
-            delete values.roles;
-            setIsSubmitting(true);
-            submitForm({ ...initialValues, ...values }, keycloakBaseURL, setIsSubmitting, t).catch(
-              () => sendErrorNotification(t('There was a problem submitting the form'))
-            );
-          }}
-        >
-          <Form.Item
-            name="name"
-            id="name"
-            label={t('Name')}
-            rules={[{ required: true, message: t('Name is required') }]}
+    <BodyLayout headerProps={headerProps}>
+      <Row className="content-section user-group">
+        {/** If email is provided render edit group otherwise add group */}
+        <Col className="bg-white p-3" span={24}>
+          <Form
+            {...layout}
+            form={form}
+            initialValues={{
+              ...initialValues,
+            }}
+            onFinish={(values: KeycloakUserGroup & { roles?: string[] }) => {
+              // remove roles array from payload
+              delete values.roles;
+              setIsSubmitting(true);
+              submitForm(
+                { ...initialValues, ...values },
+                keycloakBaseURL,
+                setIsSubmitting,
+                t
+              ).catch(() => sendErrorNotification(t('There was a problem submitting the form')));
+            }}
           >
-            <Input />
-          </Form.Item>
-          {initialValues.id ? (
-            <Form.Item name="roles" id="roles" label={t('Realm Roles')}>
-              <Transfer
-                dataSource={data}
-                titles={[t('Available Roles'), t('Assigned Roles')]}
-                listStyle={{
-                  minWidth: 300,
-                  minHeight: 300,
-                }}
-                targetKeys={
-                  targetKeys.length
-                    ? targetKeys
-                    : assignedRoles.map((role: KeycloakUserRole) => role.id)
-                }
-                selectedKeys={[...sourceSelectedKeys, ...targetSelectedKeys]}
-                render={(item) => <div>{item.title}</div>}
-                disabled={false}
-                onChange={onChange}
-                onSelectChange={onSelectChange}
-                locale={{
-                  notFoundContent: t('The list is empty'),
-                  searchPlaceholder: t('Search'),
-                }}
-              />
+            <Form.Item
+              name="name"
+              id="name"
+              label={t('Name')}
+              rules={[{ required: true, message: t('Name is required') }]}
+            >
+              <Input />
             </Form.Item>
-          ) : (
-            ''
-          )}
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" className="create-group">
-              {isSubmitting ? t('Saving') : t('Save')}
-            </Button>
-            <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-group">
-              {t('Cancel')}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
+            {initialValues.id ? (
+              <Form.Item name="roles" id="roles" label={t('Realm Roles')}>
+                <Transfer
+                  dataSource={data}
+                  titles={[t('Available Roles'), t('Assigned Roles')]}
+                  listStyle={{
+                    minWidth: 300,
+                    minHeight: 300,
+                  }}
+                  targetKeys={
+                    targetKeys.length
+                      ? targetKeys
+                      : assignedRoles.map((role: KeycloakUserRole) => role.id)
+                  }
+                  selectedKeys={[...sourceSelectedKeys, ...targetSelectedKeys]}
+                  render={(item) => <div>{item.title}</div>}
+                  disabled={false}
+                  onChange={onChange}
+                  onSelectChange={onSelectChange}
+                  locale={{
+                    notFoundContent: t('The list is empty'),
+                    searchPlaceholder: t('Search'),
+                  }}
+                />
+              </Form.Item>
+            ) : (
+              ''
+            )}
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" className="create-group">
+                {isSubmitting ? t('Saving') : t('Save')}
+              </Button>
+              <Button onClick={() => history.push(URL_USER_GROUPS)} className="cancel-group">
+                {t('Cancel')}
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </BodyLayout>
   );
 };
 UserGroupForm.defaultProps = defaultProps;

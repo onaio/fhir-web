@@ -289,7 +289,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit', () => {
       wrapper.update();
     });
     wrapperLocationUnitGroup.update();
-    expect(wrapperLocationUnitGroup.find('SimplePageHeader').text()).toEqual(
+    expect(wrapperLocationUnitGroup.find('RichPageHeader').text()).toEqual(
       `Edit Location Unit Group | ${fixtures.sampleLocationUnitGroupPayload.name}`
     );
   });

@@ -14,7 +14,7 @@ import { RouteComponentProps, useHistory } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { FormInstances, getLocationFormFields } from '../LocationForm/utils';
 import { Spin, Row, Col } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { getUser } from '@onaio/session-reducer';
 import { useTranslation } from '../../mls';
 import { Helmet } from 'react-helmet';
@@ -224,17 +224,24 @@ const EditLocationUnit = (props: EditLocationUnitProps) => {
     disabledTreeNodesCallback,
   };
   const pageTitle = t('Edit > {{name}}', { name: thisLocation.properties.name });
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section">
-      <Helmet>
-        <title>{pageTitle}</title>
-      </Helmet>
-      <SimplePageHeader title={pageTitle} />
-      <Col className="bg-white p-4" span={24}>
-        <LocationForm {...locationFormProps} />
-      </Col>
-    </Row>
+    <BodyLayout headerProps={headerProps}>
+      <Row>
+        <Helmet>
+          <title>{pageTitle}</title>
+        </Helmet>
+        <Col className="bg-white p-4" span={24}>
+          <LocationForm {...locationFormProps} />
+        </Col>
+      </Row>
+    </BodyLayout>
   );
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Row, Col, Button, Spin, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
@@ -184,13 +184,19 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
       ),
     },
   ];
+  const pageTitle = t('User Groups');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
-        <title>{t('User Groups')}</title>
+        <title>{pageTitle}</title>
       </Helmet>
-      <SimplePageHeader title={t('User Groups')} />
       <Row className="list-view">
         <Col className={'main-content'}>
           <div className="main-content__header">
@@ -249,7 +255,7 @@ export const UserGroupsList: React.FC<UserGroupListTypes> = (props: UserGroupLis
           </Col>
         ) : null}
       </Row>
-    </div>
+    </BodyLayout>
   );
 };
 

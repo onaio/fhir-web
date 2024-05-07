@@ -10,7 +10,7 @@ import {
 } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
-import { SimplePageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { useQuery } from 'react-query';
 import {
   FHIRServiceClass,
@@ -99,13 +99,18 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const pageTitle = organization.data
     ? t('Edit team | {{teamName}}', { teamName: organization.data.name ?? '' })
     : t('Create team');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <SimplePageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <OrganizationForm
           fhirBaseUrl={fhirBaseUrl}
@@ -118,7 +123,7 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
           configuredPractAssignmentStrategy={configuredPractAssignmentStrategy}
         />
       </div>
-    </section>
+    </BodyLayout>
   );
 };
 
