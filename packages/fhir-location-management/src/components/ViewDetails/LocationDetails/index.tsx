@@ -66,7 +66,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     <ResourceDetails
       title={name}
       headerLeftData={headerLeftData}
-      dateData={dateCreatedKeyPairing}
+      headerRightData={dateCreatedKeyPairing}
       headerActions={<Link to={`${URL_LOCATION_UNIT_EDIT}/${id}`}>{t('Edit details')}</Link>}
       bodyData={otherDetailsMap}
     />

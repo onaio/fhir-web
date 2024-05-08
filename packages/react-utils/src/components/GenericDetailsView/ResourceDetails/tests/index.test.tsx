@@ -7,7 +7,7 @@ const props = {
   title: 'Good Health Clinic',
   headerLeftData: { ID: 123, version: 5 },
   headerLeftDataClasses: 'left-data',
-  dateData: { 'Date created': 'Today, 9.30' },
+  headerRightData: { 'Date created': 'Today, 9.30' },
   headerActions: <a href="/patient/edit/123">Edit details</a>,
   status: {
     title: 'Active',
@@ -41,10 +41,10 @@ test('ResourceDetails component renders correctly', () => {
     'Administrative Level2',
   ]);
 
-  const dateElementValues = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
+  const headerRightData = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
     (keyValue) => keyValue.textContent
   );
-  expect(dateElementValues).toEqual(['Date createdToday, 9.30']);
+  expect(headerRightData).toEqual(['Date createdToday, 9.30']);
 
   const headerLeftElementValues = [...document.querySelectorAll('.left-data')].map(
     (keyValue) => keyValue.textContent

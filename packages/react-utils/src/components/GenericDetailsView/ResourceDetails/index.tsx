@@ -13,7 +13,7 @@ export interface ResourceDetailsProps {
   title: React.ReactNode;
   headerLeftData: Record<string, React.ReactNode>;
   headerLeftDataClasses?: string;
-  dateData?: Record<string, string | undefined>;
+  headerRightData?: Record<string, React.ReactNode | undefined>;
   headerActions?: React.ReactNode;
   status?: {
     title: string;
@@ -27,7 +27,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
   const {
     title,
     headerLeftData,
-    dateData,
+    headerRightData,
     headerActions,
     bodyData,
     footer,
@@ -51,9 +51,9 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
 
         <div className="header-bottom">
           <ListFlatKeyValues classnames={headerLeftDataClasses} data={headerLeftData} />
-          {dateData && (
+          {headerRightData && (
             <div style={{ textAlign: 'right' }}>
-              <SingleKeyNestedValue theme="light" data={dateData} />
+              <SingleKeyNestedValue theme="light" data={headerRightData} />
             </div>
           )}
         </div>
