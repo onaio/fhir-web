@@ -33,3 +33,20 @@ dl.singleKeyValue {
 dl dt {
   font-weight: 400;
 }
+
+.singleKeyValue-pair__default dt {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.singleKeyValue-pair__default  dd {
+  color: rgba(0, 0, 0, 0.85)
+}
+
+
+.singleKeyValue-pair__light dt {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.singleKeyValue-pair__light  dd {
+  color: rgba(0, 0, 0, 0.65)
+}

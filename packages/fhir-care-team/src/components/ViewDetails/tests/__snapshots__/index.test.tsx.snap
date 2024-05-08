@@ -2,16 +2,12 @@
 
 exports[`1157 - view details errors out for careTeam 3500 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     3500
   </dd>
 </div>
@@ -19,16 +15,12 @@ exports[`1157 - view details errors out for careTeam 3500 1`] = `
 
 exports[`1157 - view details errors out for careTeam 3500 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Peter James Charlmers Care team
   </dd>
 </div>
@@ -36,16 +28,12 @@ exports[`1157 - view details errors out for careTeam 3500 2`] = `
 
 exports[`1157 - view details errors out for careTeam 3500 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     active
   </dd>
 </div>
@@ -53,16 +41,12 @@ exports[`1157 - view details errors out for careTeam 3500 3`] = `
 
 exports[`1157 - view details errors out for careTeam 3500 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul>
       <li>
         <div
@@ -72,16 +56,12 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
             class="singleKeyValue"
           >
             <div
-              class="singleKeyValue-pair"
+              class="singleKeyValue-pair__default"
             >
-              <dt
-                class="singleKeyValue-pair__label"
-              >
+              <dt>
                 Patient
               </dt>
-              <dd
-                class="singleKeyValue-pair__value"
-              >
+              <dd>
                 <ul
                   id="care-team-participants"
                 >
@@ -101,16 +81,12 @@ exports[`1157 - view details errors out for careTeam 3500 4`] = `
 
 exports[`1157 - view details errors out for careTeam 3500 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Patient
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul
       id="care-team-participants"
     >
@@ -124,16 +100,12 @@ exports[`1157 - view details errors out for careTeam 3500 5`] = `
 
 exports[`1157 - view details errors out for careTeam 3500 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
       data-show="true"
@@ -155,16 +127,12 @@ exports[`1157 - view details errors out for careTeam 3500 6`] = `
 
 exports[`Closes on clicking cancel (X)  1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     142534
   </dd>
 </div>
@@ -172,16 +140,12 @@ exports[`Closes on clicking cancel (X)  1`] = `
 
 exports[`Closes on clicking cancel (X)  2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     99c4dde5-3aca-4a4b-8b33-b50142e05da6
   </dd>
 </div>
@@ -189,16 +153,12 @@ exports[`Closes on clicking cancel (X)  2`] = `
 
 exports[`Closes on clicking cancel (X)  3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Brown Bag
   </dd>
 </div>
@@ -206,16 +166,12 @@ exports[`Closes on clicking cancel (X)  3`] = `
 
 exports[`Closes on clicking cancel (X)  4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     active
   </dd>
 </div>
@@ -223,16 +179,12 @@ exports[`Closes on clicking cancel (X)  4`] = `
 
 exports[`Closes on clicking cancel (X)  5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul>
       <li>
         <div
@@ -242,16 +194,12 @@ exports[`Closes on clicking cancel (X)  5`] = `
             class="singleKeyValue"
           >
             <div
-              class="singleKeyValue-pair"
+              class="singleKeyValue-pair__default"
             >
-              <dt
-                class="singleKeyValue-pair__label"
-              >
+              <dt>
                 Practitioner
               </dt>
-              <dd
-                class="singleKeyValue-pair__value"
-              >
+              <dd>
                 <ul
                   id="care-team-participants"
                 >
@@ -271,16 +219,12 @@ exports[`Closes on clicking cancel (X)  5`] = `
 
 exports[`Closes on clicking cancel (X)  6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Practitioner
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul
       id="care-team-participants"
     >
@@ -294,16 +238,12 @@ exports[`Closes on clicking cancel (X)  6`] = `
 
 exports[`Closes on clicking cancel (X)  7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
       data-show="true"
@@ -325,16 +265,12 @@ exports[`Closes on clicking cancel (X)  7`] = `
 
 exports[`works correctly 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     131411
   </dd>
 </div>
@@ -342,16 +278,12 @@ exports[`works correctly 1`] = `
 
 exports[`works correctly 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     93bc9c3d-6321-41b0-9b93-1275d7114e22
   </dd>
 </div>
@@ -359,16 +291,12 @@ exports[`works correctly 2`] = `
 
 exports[`works correctly 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Care Team One
   </dd>
 </div>
@@ -376,16 +304,12 @@ exports[`works correctly 3`] = `
 
 exports[`works correctly 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     active
   </dd>
 </div>
@@ -393,16 +317,12 @@ exports[`works correctly 4`] = `
 
 exports[`works correctly 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul>
       <li>
         <div
@@ -412,16 +332,12 @@ exports[`works correctly 5`] = `
             class="singleKeyValue"
           >
             <div
-              class="singleKeyValue-pair"
+              class="singleKeyValue-pair__default"
             >
-              <dt
-                class="singleKeyValue-pair__label"
-              >
+              <dt>
                 Practitioner
               </dt>
-              <dd
-                class="singleKeyValue-pair__value"
-              >
+              <dd>
                 <ul
                   id="care-team-participants"
                 >
@@ -444,16 +360,12 @@ exports[`works correctly 5`] = `
 
 exports[`works correctly 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Practitioner
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul
       id="care-team-participants"
     >
@@ -470,16 +382,12 @@ exports[`works correctly 6`] = `
 
 exports[`works correctly 7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <div
       class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
       data-show="true"

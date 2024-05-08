@@ -1,0 +1,37 @@
+.details-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 16px;
+    background: #FAFAFA;
+    border-radius: 6px;
+}
+
+.details-section .header-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-top .title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.header-top .status {
+    padding: 2px 6px;
+    margin-left: 8px;
+}
+
+.details-section .header-bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.details-section .divider {
+    margin: 0;
+}
