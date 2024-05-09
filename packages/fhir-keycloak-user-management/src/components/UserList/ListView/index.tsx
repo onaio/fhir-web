@@ -14,7 +14,7 @@ import { getTableColumns } from './tableColumns';
 import { useHistory, useLocation, useRouteMatch } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useQuery } from 'react-query';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
@@ -96,13 +96,18 @@ export const UserList = (props: OrganizationListProps) => {
   };
 
   const title = t('User Management');
+  const headerProps = {
+    pageHeaderProps: {
+      title,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <PageHeader title={title} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -117,6 +122,6 @@ export const UserList = (props: OrganizationListProps) => {
           <TableLayout {...tableProps} />
         </Col>
       </Row>
-    </div>
+    </BodyLayout>
   );
 };

@@ -146,7 +146,7 @@ test('renders correctly when listing organizations', async () => {
     </title>
   `);
 
-  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -230,7 +230,7 @@ test('renders correctly when listing organizations', async () => {
   });
 
   // see details in viewDetails
-  document.querySelectorAll('.singleKeyValue-pair').forEach((pair) => {
+  document.querySelectorAll('.singleKeyValue-pair__default').forEach((pair) => {
     expect(pair).toMatchSnapshot('single key value pairs detail section');
   });
 

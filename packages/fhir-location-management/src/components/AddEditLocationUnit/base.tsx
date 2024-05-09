@@ -2,8 +2,8 @@ import React from 'react';
 import { RouteComponentProps, useHistory, useLocation, useParams } from 'react-router';
 import { LocationFormProps, LocationForm } from '../LocationForm';
 import { defaultValidationRulesFactory, getLocationFormFields } from '../LocationForm/utils';
-import { Row, Col, Spin } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { Col, Spin } from 'antd';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
@@ -101,16 +101,21 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
   const pageTitle = locData
     ? t('Edit > {{name}}', { name: initialValues.name })
     : t('Add Location Unit');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Col className="bg-white p-4" span={24}>
         <LocationForm {...locationFormProps} />
       </Col>
-    </Row>
+    </BodyLayout>
   );
 };

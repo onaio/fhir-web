@@ -9,7 +9,7 @@ import {
 import { Column } from '@opensrp/react-utils';
 import { IQuestionnaire } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IQuestionnaire';
 import { useSimpleTabularView } from '@opensrp/react-utils';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Row, Col, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Helmet } from 'react-helmet';
@@ -128,13 +128,18 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
   const pageTitle = t('Questionnaire list view');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section fhir-resource-container">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">
@@ -150,7 +155,7 @@ const QuestionnaireList = (props: QuestionnaireListProps) => {
           <TableLayout {...tableProps} />
         </Col>
       </Row>
-    </div>
+    </BodyLayout>
   );
 };
 

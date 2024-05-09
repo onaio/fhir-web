@@ -58,7 +58,7 @@ describe('components/forms/UserFroupForm', () => {
 
   it('renders correctly', async () => {
     const wrapper = mount(<UserGroupForm {...props} />);
-    expect(wrapper.find('Row').at(0).text()).toMatchSnapshot();
+    expect(wrapper.find('div').at(0).text()).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -243,7 +243,9 @@ describe('components/forms/UserFroupForm', () => {
       wrapper.update();
     });
 
-    expect(wrapper.find('PageHeader').text()).toMatchInlineSnapshot(`"Edit User Group | Admin"`);
+    expect(wrapper.find('RichPageHeader').text()).toMatchInlineSnapshot(
+      `"Edit User Group | Admin"`
+    );
     wrapper.unmount();
   });
 

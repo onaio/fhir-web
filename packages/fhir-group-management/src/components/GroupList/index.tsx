@@ -38,7 +38,7 @@ const keyValueDetailRender = (obj: IGroup, t: TFunction) => {
         };
         return value ? (
           <div key={key} data-testid="key-value">
-            <SingleKeyNestedValue {...props} />
+            <SingleKeyNestedValue data={props} />
           </div>
         ) : null;
       })}

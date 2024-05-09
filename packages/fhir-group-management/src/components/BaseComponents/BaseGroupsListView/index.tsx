@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button } from 'antd';
-import { PageHeader, useSimpleTabularView } from '@opensrp/react-utils';
+import { BodyLayout, useSimpleTabularView } from '@opensrp/react-utils';
 import { parseGroup, ViewDetailsProps, ViewDetailsWrapper } from '../GroupDetail';
 import { PlusOutlined } from '@ant-design/icons';
 import { groupResourceType } from '../../../constants';
@@ -97,13 +97,18 @@ export function BaseListView<TableData extends ExtendableTableData = DefaultTabl
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
   };
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -127,6 +132,6 @@ export function BaseListView<TableData extends ExtendableTableData = DefaultTabl
           />
         )}
       </Row>
-    </div>
+    </BodyLayout>
   );
 }
