@@ -398,13 +398,19 @@ export async function postLocationInventory(
     const locationInventoryListBundle = await new FHIRServiceClass<IBundle>(
       baseUrl,
       listResourceType
-    ).list({
-      subject: servicePointObj.id,
-      code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
-    });
-    let locationInventoryList = getResourcesFromBundle<IList>(locationInventoryListBundle)[0] as
-      | IList
-      | undefined;
+    )
+      .list({
+        subject: servicePointObj.id,
+        code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
+      })
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          return undefined;
+        }
+      });
+    let locationInventoryList = locationInventoryListBundle
+      ? getResourcesFromBundle<IList>(locationInventoryListBundle)[0]
+      : undefined;
     locationInventoryList = createUpdateLocationInventoryList(
       listId,
       groupResourceId,
