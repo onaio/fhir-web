@@ -1,5 +1,10 @@
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { FHIRServiceClass, IdentifierUseCodes, SelectOption } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  IdentifierUseCodes,
+  SelectOption,
+  getResourcesFromBundle,
+} from '@opensrp/react-utils';
 import { ValueSetConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetConcept';
 import {
   PONumber,
@@ -28,6 +33,11 @@ import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { ListEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/listEntry';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { getValueSetOptionsValue } from '@opensrp/react-utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import {
+  servicePointProfileInventoryListCoding,
+  smartregisterSystemUri,
+} from '@opensrp/fhir-helpers';
 
 const codeSystem = 'http://smartregister.org/codes';
 const unicefCharacteristicCode = '98734231';
@@ -379,12 +389,27 @@ export async function postLocationInventory(
   listResourceId: string,
   servicePointObj: ILocation
 ) {
+  // create group resource for inventory
   const groupResource = await postPutGroup(baseUrl, payload);
   if (!editMode) {
     const groupResourceId = groupResource.id as string;
     const listId = v4();
-    const inventoryList = createLocationInventoryList(listId, groupResourceId, servicePointObj);
-    await createListResource(baseUrl, listId, undefined, inventoryList);
+    // create group resource that links products to to a location.
+    const locationInventoryListBundle = await new FHIRServiceClass<IBundle>(
+      baseUrl,
+      listResourceType
+    ).list({
+      subject: servicePointObj.id,
+      code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
+    });
+    let locationInventoryList = getResourcesFromBundle<IList>(locationInventoryListBundle)[0] as
+      | IList
+      | undefined;
+    if (locationInventoryList === undefined) {
+      locationInventoryList = createLocationInventoryList(listId, groupResourceId, servicePointObj);
+    }
+    await createListResource(baseUrl, listId, undefined, locationInventoryList);
+
     if (listResourceId) {
       const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
       await combinedListResource(groupResourceId, listId, editMode);
@@ -465,8 +490,9 @@ export function createLocationServicePointList(id: string, entries?: ListEntry[]
 }
 
 /**
- * Creates a location inventory  list resource that will curate a set of commodities to be used on the client.
- * This is so that the list resource can then be used when configuring the fhir mobile client
+ * Creates a group resource that links a location to a series of products(group resources)
+ * We create one such group for each location that has inventory regardless
+ * of how many product groups are assigned to the location.
  *
  * @param id - externally defined id that will be the id of the new list resource
  * @param InventoryResourceId - location inventory id
