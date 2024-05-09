@@ -14,6 +14,7 @@ export interface SingleKeyNestedValueProps {
 export interface ListFlatKeyValuesProps {
   data: KeyValuePairs;
   classnames?: string;
+  theme?: SingleKeyValueClassOptions;
 }
 
 const singleKeyValueClass: SingleKeyValueClass = {
@@ -105,16 +106,20 @@ export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
  * Use for displaying single key value pair on same line
  *
  * @param obj - obj with info to be displayed
+ * @param props
  */
-export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
-  const firstPair = Object.entries(obj)[0];
+export const SingleFlatKeyValue = (props: SingleKeyNestedValueProps) => {
+  const { data, theme = 'default' } = props;
+  const firstPair = Object.entries(data)[0];
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
+  const keyClass = `singleFlat-key__${theme}`;
+  const valueClass = `singleFlat-value__${theme}`;
 
   return (
     <Text>
-      {key}: {value}
+      <span className={keyClass}>{key}</span>: <span className={valueClass}>{value}</span>
     </Text>
   );
 };
@@ -126,14 +131,14 @@ export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
  * @param props - data and styling class for the component
  */
 export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
-  const { data, classnames } = props;
+  const { data, classnames, theme } = props;
   return (
     <div className={classnames}>
       {Object.entries(data).map(([key, value]) => {
-        const keyValuePairing = { [key]: value };
+        const keyValuePairing = { data: { [key]: value } };
         return (
           <React.Fragment key={key}>
-            <SingleFlatKeyValue {...keyValuePairing} />
+            <SingleFlatKeyValue theme={theme} {...keyValuePairing} />
             <br></br>
           </React.Fragment>
         );

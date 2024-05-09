@@ -42,7 +42,7 @@ test('KeyValuesDescriptions renders okay', () => {
 });
 
 test('SingleFlatKeyValue renders okay ', () => {
-  const { getByText, queryByText } = render(<SingleFlatKeyValue {...props} />);
+  const { getByText, queryByText } = render(<SingleFlatKeyValue data={props} />);
 
   expect(getByText(/soap/)).toBeInTheDocument();
   expect(queryByText(/Soap Mactavish/i)).not.toBeInTheDocument();

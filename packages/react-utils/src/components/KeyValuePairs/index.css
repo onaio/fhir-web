@@ -34,19 +34,22 @@ dl dt {
   font-weight: 400;
 }
 
+.singleFlat-key__default,
 .singleKeyValue-pair__default dt {
   color: rgba(0, 0, 0, 0.65);
 }
 
+.singleFlat-value__default,
 .singleKeyValue-pair__default  dd {
   color: rgba(0, 0, 0, 0.85)
 }
 
-
+.singleFlat-key__light,
 .singleKeyValue-pair__light dt {
   color: rgba(0, 0, 0, 0.45);
 }
 
+.singleFlat-value__light,
 .singleKeyValue-pair__light  dd {
   color: rgba(0, 0, 0, 0.65)
 }
