@@ -13,17 +13,19 @@ export interface GenericDetailsViewProps<ResourceType> {
   bodyLayoutProps: PartialBodyLayoutProps;
   resourceDetailsPropsGetter: (data: ResourceType, t: TFunction) => ResourceDetailsProps;
   resourceQueryParams: UseQueryOptions<ResourceType, Error>;
+  resourceId: string;
+  children?: React.ReactNode;
 }
 
 /**
  * A generic component that combines details view different sections
  *
- * @param props - GenericDetailsView props
+ * @param props - GenericDetailsView component props
  */
 export function GenericDetailsView<ResourceType = IResource>(
   props: GenericDetailsViewProps<ResourceType>
 ) {
-  const { bodyLayoutProps, resourceDetailsPropsGetter, resourceQueryParams } = props;
+  const { bodyLayoutProps, resourceDetailsPropsGetter, resourceQueryParams, children } = props;
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery(resourceQueryParams);
@@ -43,6 +45,7 @@ export function GenericDetailsView<ResourceType = IResource>(
   return (
     <BodyLayout {...bodyLayoutProps}>
       {resourceDetailsProps && <ResourceDetails {...resourceDetailsProps} />}
+      {children}
     </BodyLayout>
   );
 }
