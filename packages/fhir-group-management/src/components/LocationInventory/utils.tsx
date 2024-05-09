@@ -435,7 +435,6 @@ export const updateListReferencesFactory =
     const payload = cloneDeep(commoditiesListResource);
 
     let existingEntries = payload.entry ?? [];
-    // Issue: the list resource does not need to be added
     if (!editingGroup) {
       existingEntries.push(
         { item: { reference: `${groupResourceType}/${groupResourceId}` } },
