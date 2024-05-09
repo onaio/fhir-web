@@ -348,6 +348,7 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
   return serve.read(listId).catch((err) => {
     if (err.statusCode === 404) {
+      // TODO - do we have to create the template here and then have to upload an updated version
       return createListResource(baseUrl, listId);
     }
     throw err;
