@@ -86,7 +86,9 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
               <Button
                 type="primary"
                 onClick={() => {
-                  const queryParams = { [parentIdQueryParam]: locationId };
+                  const queryParams = {
+                    [parentIdQueryParam]: `${locationResourceType}/${locationId}`,
+                  };
                   const searchString = new URLSearchParams(queryParams).toString();
                   history.push(`${URL_LOCATION_UNIT_ADD}?${searchString}`);
                 }}

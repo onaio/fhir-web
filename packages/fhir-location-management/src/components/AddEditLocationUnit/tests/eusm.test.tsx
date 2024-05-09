@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
-import { locationHierarchyResourceType, serviceType } from '../../../constants';
+import { locationHierarchyResourceType, parentIdQueryParam, serviceType } from '../../../constants';
 import { fhirHierarchy } from '../../../ducks/tests/fixtures';
 import { waitForElementToBeRemoved } from '@testing-library/dom';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -96,7 +96,7 @@ afterAll(() => {
 
 test('works ok for new locations', async () => {
   const history = createMemoryHistory();
-  history.push(`/add`);
+  history.push(`/add?${parentIdQueryParam}=Location/971`);
 
   const notificationSuccessMock = jest.spyOn(notifications, 'sendSuccessNotification');
   const notificationErrorMock = jest.spyOn(notifications, 'sendErrorNotification');
@@ -127,6 +127,10 @@ test('works ok for new locations', async () => {
   // simulate name change
   const nameInput = screen.getByLabelText('Name');
   userEvent.type(nameInput, 'area51');
+
+  // check parent is already set from url
+  const parentInputSelection = document.querySelector(`.ant-select-selection-item`)!;
+  expect(parentInputSelection.textContent).toEqual('Arundel mobile clinic');
 
   // simulate parent change
   const parentIdDropdown = document.querySelector(`input#location-form_${'parentId'}`)!;

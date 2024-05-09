@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
 import { useMls } from '../../mls';
+import { parentIdQueryParam } from '../../constants';
 
 export type LocationRouteProps = { id?: string };
 
@@ -81,7 +82,7 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
     return <Resource404 errorMessage={t('Unable to load the location or location hierarchy')} />;
   }
 
-  const parentId = sParams.get('parentId') ?? undefined;
+  const parentId = sParams.get(parentIdQueryParam) ?? undefined;
   const initialValues = getLocationFormFields(locData, parentId);
 
   const initialFormProps: LocationFormProps = {
