@@ -105,8 +105,7 @@ export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
 /**
  * Use for displaying single key value pair on same line
  *
- * @param obj - obj with info to be displayed
- * @param props
+ * @param props - data and styling class for the component
  */
 export const SingleFlatKeyValue = (props: SingleKeyNestedValueProps) => {
   const { data, theme = 'default' } = props;
