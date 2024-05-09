@@ -145,7 +145,7 @@ test('renders correctly when listing resources', async () => {
     'http://test-keycloak.server.org/users?max=15',
   ]);
 
-  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -319,7 +319,7 @@ test('View details navigates correctly', async () => {
     expect(spin).toBeNull();
   });
 
-  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
 
   // view details
 

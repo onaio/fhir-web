@@ -2,49 +2,71 @@
 
 exports[`location-management/src/components/LocationUnitGroupAddEdit/tests render with id without crashing 1`] = `
 Array [
-  <HelmetWrapper
-    defer={true}
-    encodeSpecialCharacters={true}
-  >
-    <title>
-      Edit Location Unit Group
-    </title>
-  </HelmetWrapper>,
-  <PageHeader
-    title="Edit Location Unit Group | "
+  <RichPageHeader
+    pageHeaderProps={
+      Object {
+        "onBack": undefined,
+        "title": "Edit Location Unit Group | ",
+      }
+    }
   />,
-  <Col
-    className="bg-white p-4"
-    span={24}
+  <div
+    className="content-body"
   >
-    <Form
-      id="54"
-      setEditTitle={[Function]}
-    />
-  </Col>,
+    <Row>
+      <HelmetWrapper
+        defer={true}
+        encodeSpecialCharacters={true}
+      >
+        <title>
+          Edit Location Unit Group
+        </title>
+      </HelmetWrapper>
+      <Col
+        className="bg-white p-4"
+        span={24}
+      >
+        <Form
+          id="54"
+          setEditTitle={[Function]}
+        />
+      </Col>
+    </Row>
+  </div>,
 ]
 `;
 
 exports[`location-management/src/components/LocationUnitGroupAddEdit/tests renders without crashing 1`] = `
 Array [
-  <HelmetWrapper
-    defer={true}
-    encodeSpecialCharacters={true}
-  >
-    <title>
-      Add Location Unit Group
-    </title>
-  </HelmetWrapper>,
-  <PageHeader
-    title="Add Location Unit Group"
+  <RichPageHeader
+    pageHeaderProps={
+      Object {
+        "onBack": undefined,
+        "title": "Add Location Unit Group",
+      }
+    }
   />,
-  <Col
-    className="bg-white p-4"
-    span={24}
+  <div
+    className="content-body"
   >
-    <Form
-      setEditTitle={[Function]}
-    />
-  </Col>,
+    <Row>
+      <HelmetWrapper
+        defer={true}
+        encodeSpecialCharacters={true}
+      >
+        <title>
+          Add Location Unit Group
+        </title>
+      </HelmetWrapper>
+      <Col
+        className="bg-white p-4"
+        span={24}
+      >
+        <Form
+          setEditTitle={[Function]}
+        />
+      </Col>
+    </Row>
+  </div>,
 ]
 `;

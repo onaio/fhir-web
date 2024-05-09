@@ -4,7 +4,7 @@ import { CommodityForm } from '../../ProductForm';
 import { useParams } from 'react-router';
 import { LIST_COMMODITY_URL, unitOfMeasure } from '../../../constants';
 import { Spin } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { BrokenPage } from '@opensrp/react-utils';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import {
@@ -56,13 +56,18 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
     : t('Create commodity');
 
   const postSuccess = updateListReferencesFactory(fhirBaseUrl, listId, binaryQuery.data);
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <CommodityForm<
           { group: IGroup; binary?: IBinary; binaryChanged: boolean },
@@ -90,6 +95,6 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           }}
         />
       </div>
-    </section>
+    </BodyLayout>
   );
 };

@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 import { healthCareServiceResourceType, LIST_HEALTHCARE_URL } from '../../constants';
 import { organizationResourceType } from '@opensrp/fhir-team-management';
 import { sendErrorNotification } from '@opensrp/notifications';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import {
@@ -65,13 +65,18 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
   const pageTitle = healthCareService.data
     ? t('Edit team | {{name}}', { name: healthCareService.data.name ?? '' })
     : t('Create team');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <div className="bg-white p-5">
         <HealthCareForm
           fhirBaseUrl={fhirBaseUrl}
@@ -81,6 +86,6 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
           successUrl={LIST_HEALTHCARE_URL}
         />
       </div>
-    </section>
+    </BodyLayout>
   );
 };

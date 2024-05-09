@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
 import { Row, Col, Button, Spin, Alert } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
@@ -114,6 +114,12 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   }
   const tableDispData = parseTableData(tableNodes);
   const pageTitle = t('Location Unit Management');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
     <>
@@ -128,11 +134,10 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
           showIcon
         />
       )}
-      <section className="content-section">
+      <BodyLayout headerProps={headerProps}>
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <PageHeader title={pageTitle} />
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree
@@ -174,7 +179,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
             </div>
           </Col>
         </Row>
-      </section>
+      </BodyLayout>
     </>
   );
 };

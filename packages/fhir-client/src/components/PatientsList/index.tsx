@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
@@ -82,13 +82,19 @@ export const PatientsList = (props: PatientListProps) => {
       }
     },
   };
+  const pageTitle = 'Patients';
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{t('Patients')}</title>
       </Helmet>
-      <PageHeader title={t('Patients')} />
       <Row className="list-view">
         <Col className={'main-content'} span={24}>
           <div className="main-content__header">
@@ -97,6 +103,6 @@ export const PatientsList = (props: PatientListProps) => {
           <TableLayout {...tableProps} />
         </Col>
       </Row>
-    </div>
+    </BodyLayout>
   );
 };
