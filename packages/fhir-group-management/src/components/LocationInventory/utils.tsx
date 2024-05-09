@@ -405,36 +405,46 @@ export async function postLocationInventory(
     let locationInventoryList = getResourcesFromBundle<IList>(locationInventoryListBundle)[0] as
       | IList
       | undefined;
-    if (locationInventoryList === undefined) {
-      locationInventoryList = createLocationInventoryList(listId, groupResourceId, servicePointObj);
-    }
+    locationInventoryList = createUpdateLocationInventoryList(
+      listId,
+      groupResourceId,
+      servicePointObj,
+      locationInventoryList
+    );
     await createListResource(baseUrl, listId, undefined, locationInventoryList);
 
     if (listResourceId) {
       const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
-      await combinedListResource(groupResourceId, listId, editMode);
+      await combinedListResource(groupResourceId, locationInventoryList.id as string, editMode);
     }
   }
   return groupResource;
 }
 
 /**
+ * Updates the global list that holds a reference to all other inventory groups
+ * as well as the product groups assigned in the inventory groups.
+ *
  * @param baseUrl - the api base url
- * @param listId - list resource id to add the group to
+ * @param globalInventoryListId - list resource id to add the group to
  */
 export const updateListReferencesFactory =
-  (baseUrl: string, listId: string) =>
-  async (groupResourceId: string, listResourceId: string, editingGroup: boolean) => {
-    const commoditiesListResource = await getOrCreateList(baseUrl, listId);
+  (baseUrl: string, globalInventoryListId: string) =>
+  async (groupResourceId: string, locationInventoryListId: string, editingGroup: boolean) => {
+    const commoditiesListResource = await getOrCreateList(baseUrl, globalInventoryListId);
     const payload = cloneDeep(commoditiesListResource);
 
-    const existingEntries = payload.entry ?? [];
+    let existingEntries = payload.entry ?? [];
+    // Issue: the list resource does not need to be added
     if (!editingGroup) {
       existingEntries.push(
         { item: { reference: `${groupResourceType}/${groupResourceId}` } },
-        { item: { reference: `${listResourceType}/${listResourceId}` } }
+        { item: { reference: `${listResourceType}/${locationInventoryListId}` } }
       );
     }
+    existingEntries = Array.from(
+      new Map(existingEntries.map((entry) => [entry.item.reference, entry])).values()
+    );
     if (existingEntries.length) {
       payload.entry = existingEntries;
     }
@@ -497,38 +507,43 @@ export function createLocationServicePointList(id: string, entries?: ListEntry[]
  * @param id - externally defined id that will be the id of the new list resource
  * @param InventoryResourceId - location inventory id
  * @param servicePoint - service point object
+ * @param currentLocationInventory - inventory for this location as subject if on exists
  */
-export function createLocationInventoryList(
+export function createUpdateLocationInventoryList(
   id: string,
   InventoryResourceId: string,
-  servicePoint: ILocation
+  servicePoint: ILocation,
+  currentLocationInventory?: IGroup
 ): IList {
+  const existingLocationInventory = currentLocationInventory ?? {};
   const commonResources = createCommonListResource(id);
   const { name, id: servicePointId } = servicePoint;
   const now = new Date();
   const stringDate = now.toISOString();
-  return {
+  const newEntry: ListEntry = {
+    flag: {
+      coding: [
+        {
+          system: codeSystem,
+          code: listSupplyInventoryCode,
+          display: 'Supply Inventory List',
+        },
+      ],
+      text: 'Supply Inventory List',
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    date: stringDate as any,
+    item: { reference: `${groupResourceType}/${InventoryResourceId}` },
+  };
+  const listPayload: IList = {
     ...commonResources,
+    entry: [],
     title: name,
     subject: { reference: `Location/${servicePointId}` },
-    entry: [
-      {
-        flag: {
-          coding: [
-            {
-              system: codeSystem,
-              code: listSupplyInventoryCode,
-              display: 'Supply Inventory List',
-            },
-          ],
-          text: 'Supply Inventory List',
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        date: stringDate as any,
-        item: { reference: `${groupResourceType}/${InventoryResourceId}` },
-      },
-    ],
+    ...existingLocationInventory,
   };
+  listPayload.entry?.push(newEntry);
+  return listPayload;
 }
 
 /**
