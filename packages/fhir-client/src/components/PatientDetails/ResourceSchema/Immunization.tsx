@@ -9,13 +9,17 @@ export const parseImmunization = (obj: IImmunization) => {
   return {
     status: get(obj, 'status'),
     vaccineCode: get(obj, 'vaccineCode'),
-    occurenceDateTime: get(obj, 'occurenceDateTime'),
+    occurrenceDateTime: get(obj, 'occurrenceDateTime'),
     reasonCode: getCodeableConcepts(get(obj, 'reasonCode')),
     id: get(obj, 'id'),
   };
 };
 
-const occuredDateTimeSortFn = sorterFn('occurenceDateTime', true);
+export const parseImmunizationList = (list: IImmunization[]) => {
+  return list.map(parseImmunization);
+};
+
+const occuredDateTimeSortFn = sorterFn('occurrenceDateTime', true);
 
 export type ImmunizationTableData = ReturnType<typeof parseImmunization>;
 
@@ -27,11 +31,11 @@ export const columns = (t: TFunction) => [
   {
     title: t('Status'),
     dataIndex: 'status',
-    sorter: sorterFn,
+    sorter: sorterFn('status'),
   },
   {
     title: t('Administration Date'),
-    dataIndex: 'occurenceDateTime',
+    dataIndex: 'occurrenceDateTime',
     sorter: occuredDateTimeSortFn,
     render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
@@ -47,3 +51,7 @@ export const columns = (t: TFunction) => [
     },
   },
 ];
+
+export const immunizationSearchParams = (patientId: string) => {
+  return { patient: patientId };
+};

@@ -13,6 +13,10 @@ export const parseCondition = (obj: ICondition) => {
   };
 };
 
+export const parseConditionList = (list: ICondition[]) => {
+  return list.map(parseCondition);
+};
+
 export type ConditionTableData = ReturnType<typeof parseCondition>;
 
 export const columns = (t: TFunction) => [

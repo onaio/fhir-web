@@ -17,13 +17,23 @@ export const parseEncounter = (encounter: IEncounter) => {
   };
 };
 
+export const parseEncounterList = (list: IEncounter[]) => {
+  return list.map(parseEncounter);
+};
+
 export type EncounterTableData = ReturnType<typeof parseEncounter>;
 
 export const columns = (t: TFunction) => [
   {
     title: t('Period'),
     dataIndex: 'period' as const,
-    render: (value: Period) => <FhirPeriod {...value} />,
+    render: (value: Period) => {
+      /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+      if (value) {
+        return <FhirPeriod {...value} />;
+      }
+      return '';
+    },
   },
   {
     title: t('Reason'),

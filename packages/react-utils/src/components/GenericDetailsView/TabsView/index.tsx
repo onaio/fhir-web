@@ -29,10 +29,6 @@ export function GenericTabsView(props: GenericTabsViewProps) {
     history.push(`${pathname}?${tabViewQuery}=${tabViewId}&${activeTabQuery}=${key}`);
   };
 
-  const changeView = () => {
-    history.push(`${pathname}?${tabViewQuery}=tabViewB&${activeTabQuery}=Groups`);
-  };
-
   const extraTabProps: Record<string, React.ReactNode> = {};
   if (activeTabKey && tabViewId === tabView) {
     extraTabProps['activeKey'] = activeTabKey;
@@ -46,7 +42,6 @@ export function GenericTabsView(props: GenericTabsViewProps) {
 
   return (
     <div className="details-tab">
-      <button onClick={changeView}>Change view</button>
       <Tabs {...tabProps} />
     </div>
   );
