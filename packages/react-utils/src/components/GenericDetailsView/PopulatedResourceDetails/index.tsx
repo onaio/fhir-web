@@ -30,7 +30,7 @@ export function PopulatedResourceDetails<ResourceType = IResource>(
   );
 
   if (isLoading) {
-    return <Spin size="large" className="custom-spinner" />;
+    return <Spin size="small" className="custom-spinner" />;
   }
 
   if (error) {

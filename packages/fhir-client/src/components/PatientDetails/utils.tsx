@@ -62,7 +62,7 @@ export function resourceDetailsPropsGetter(
  *
  * @param resourceId - Patient resource identifier
  */
-export const defaultSearchParamsFactory = (resourceId: string) => (_: string | null) => {
+export const defaultSearchParamsFactory = (resourceId: string) => {
   return { 'subject:Patient': resourceId };
 };
 

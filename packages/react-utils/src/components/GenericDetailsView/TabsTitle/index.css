@@ -1,0 +1,19 @@
+div[aria-selected="true"] {
+    .ant-badge-count {
+        background: #EBF7FF;
+    }
+    .ant-badge-count,
+    .current {
+        color: #1676FE;
+    }
+}
+
+div[aria-selected="false"] {
+    .ant-badge-count {
+        background: #F2F2F2;
+    }
+    .ant-badge-count,
+    .current {
+        color: #000000;
+    }
+}

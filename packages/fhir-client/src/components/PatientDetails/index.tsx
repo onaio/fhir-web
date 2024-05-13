@@ -8,6 +8,7 @@ import {
   PopulatedResourceDetails,
   TabTableProps,
   TabsTable,
+  TabsTitle,
   sideViewQuery,
   useSearchParams,
 } from '@opensrp/react-utils';
@@ -158,27 +159,62 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     size: 'small',
     items: [
       {
-        label: t('Care plan'),
+        label: (
+          <TabsTitle
+            fhirBaseURL={fhirBaseURL}
+            resourceType={carePlanResourceType}
+            title={t('Care plan')}
+            resourceFilters={defaultSearchParamsFactory(patientId)}
+          />
+        ),
         key: 'carePlan',
         children: <TabsTable<ICarePlan> {...carePlanTableData} />,
       },
       {
-        label: t('Condition'),
+        label: (
+          <TabsTitle
+            fhirBaseURL={fhirBaseURL}
+            resourceType={conditionResourceType}
+            title={t('Condition')}
+            resourceFilters={defaultSearchParamsFactory(patientId)}
+          />
+        ),
         key: 'condition',
         children: <TabsTable<ICondition> {...conditionTableData} />,
       },
       {
-        label: t('Task'),
+        label: (
+          <TabsTitle
+            fhirBaseURL={fhirBaseURL}
+            resourceType={taskResourceType}
+            title={t('Task')}
+            resourceFilters={taskSearchParams(patientId)}
+          />
+        ),
         key: 'task',
         children: <TabsTable<ITask> {...taskTableData} />,
       },
       {
-        label: t('Immunization'),
+        label: (
+          <TabsTitle
+            fhirBaseURL={fhirBaseURL}
+            resourceType={immunizationResourceType}
+            title={t('Immunization')}
+            resourceFilters={immunizationSearchParams(patientId)}
+          />
+        ),
         key: 'immunization',
         children: <TabsTable<IImmunization> {...immunizationTableData} />,
       },
       {
-        label: t('Patient encounter'),
+        label: (
+          <TabsTitle
+            fhirBaseURL={fhirBaseURL}
+            resourceType={encounterResourceType}
+            title={t('Patient encounter')}
+            resourceFilters={defaultSearchParamsFactory(patientId)}
+          />
+        ),
         key: 'patientEncounter',
         children: <TabsTable<IEncounter> {...patientEncounterTableData} />,
       },
