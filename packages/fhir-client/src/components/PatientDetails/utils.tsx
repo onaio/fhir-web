@@ -1,5 +1,5 @@
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { getPatientName } from '../PatientsList/utils';
+import { getPatientName, getPatientStatus } from '../PatientsList/utils';
 import type { TFunction } from '@opensrp/i18n';
 import { ResourceDetailsProps } from '@opensrp/react-utils';
 import { get } from 'lodash';
@@ -17,7 +17,7 @@ export function resourceDetailsPropsGetter(
   if (!resource) {
     return {} as ResourceDetailsProps;
   }
-  const { meta, gender, birthDate, id } = resource;
+  const { meta, gender, birthDate, id, active, deceasedBoolean } = resource;
   const patientName = getPatientName(resource);
   const splitName = patientName ? patientName.split(' ') : [];
   const headerRightData = {
@@ -37,10 +37,15 @@ export function resourceDetailsPropsGetter(
     [t('Address')]: get(resource, 'address.0.line.0') || 'N/A',
     [t('Country')]: get(resource, 'address.0.country'),
   };
+  const patientStatus = getPatientStatus(active as boolean, deceasedBoolean as boolean);
   return {
     title: patientName,
     headerRightData,
     headerLeftData,
     bodyData,
+    status: {
+      title: patientStatus,
+      color: 'green',
+    },
   };
 }

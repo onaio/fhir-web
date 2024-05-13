@@ -130,7 +130,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   };
 
   const tabViewProps: GenericTabsViewProps = {
-    tabViewId: 'tabViewA',
+    tabViewId: 'tabView',
     size: 'small',
     items: [
       {
