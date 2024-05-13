@@ -40,7 +40,7 @@ jobs:
       - name: Run all tests
         run: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
         env:
-          NODE_OPTIONS: --max_old_space_size=4096
+          NODE_OPTIONS: --max_old_space_size=5120
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2

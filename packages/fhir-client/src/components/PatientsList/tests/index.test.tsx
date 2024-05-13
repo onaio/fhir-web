@@ -117,7 +117,7 @@ test('renders correctly in list view', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {

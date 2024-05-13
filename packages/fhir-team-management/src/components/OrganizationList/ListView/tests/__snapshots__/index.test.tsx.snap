@@ -1,11 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly when listing organizations: Header title 1`] = `
-<h4
-  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
 >
-  Organization list
-</h4>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="Organization list"
+      >
+        Organization list
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`renders correctly when listing organizations: Search 1 page 1 1`] = `
@@ -60,16 +73,12 @@ exports[`renders correctly when listing organizations: Search 1 page 1 2`] = `
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Team id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     205
   </dd>
 </div>
@@ -77,16 +86,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Team identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     205
   </dd>
 </div>
@@ -94,16 +99,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Team status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     Active
   </dd>
 </div>
@@ -111,16 +112,12 @@ exports[`renders correctly when listing organizations: single key value pairs de
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
+  <dt>
     Team practitioners
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
+  <dd>
     <ul
       id="practitioner-teams"
     >

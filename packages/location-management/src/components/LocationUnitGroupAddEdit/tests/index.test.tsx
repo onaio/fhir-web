@@ -17,7 +17,7 @@ describe('location-management/src/components/LocationUnitGroupAddEdit/tests', ()
       </Provider>
     );
 
-    expect(wrapper.find('Row').first().prop('children')).toMatchSnapshot();
+    expect(wrapper.find('div').first().prop('children')).toMatchSnapshot();
   });
 
   it('render with id without crashing', () => {
@@ -29,6 +29,6 @@ describe('location-management/src/components/LocationUnitGroupAddEdit/tests', ()
       </Provider>
     );
 
-    expect(wrapper.find('Row').first().prop('children')).toMatchSnapshot();
+    expect(wrapper.find('div').first().prop('children')).toMatchSnapshot();
   });
 });

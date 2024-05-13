@@ -92,7 +92,7 @@ test('test error on attached binary request', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
     (keyValue) => keyValue.textContent
   );
   expect(commodityValues).toEqual([
@@ -128,7 +128,7 @@ test('test missing binary in commodity', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
     (keyValue) => keyValue.textContent
   );
   expect(commodityValues).toEqual([

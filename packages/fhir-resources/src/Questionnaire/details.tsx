@@ -76,7 +76,7 @@ export const QuestionnaireDetails = (props: QuestionnaireDetailsProps) => {
         </div>
         {description ? (
           <div className="resourceDetails-description">
-            <SingleKeyNestedValue Description={description} />
+            <SingleKeyNestedValue data={{ Description: description }} />
           </div>
         ) : null}
       </div>

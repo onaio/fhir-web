@@ -119,7 +119,7 @@ describe('components/Credentials', () => {
         <AppWrapper {...props} />
       </Router>
     );
-    expect(wrapper.find('Row').at(0).props()).toMatchSnapshot('row props');
+    expect(wrapper.find('div').at(0).props()).toMatchSnapshot('row props');
     wrapper.unmount();
   });
 

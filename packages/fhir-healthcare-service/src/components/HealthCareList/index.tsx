@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { healthCareServiceResourceType, ADD_EDIT_HEALTHCARE_SERVICE_URL } from '../../constants';
 import { Link, useHistory } from 'react-router-dom';
@@ -116,13 +116,18 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
   };
 
   const pageTitle = t('HealthCare service list');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -136,6 +141,6 @@ export const HealthCareList: React.FC<HealthCareListProps> = (props: HealthCareL
         </Col>
         <ViewDetailsWrapper resourceId={resourceId} fhirBaseURL={fhirBaseURL} />
       </Row>
-    </div>
+    </BodyLayout>
   );
 };
