@@ -14,6 +14,7 @@ export const parseEncounter = (encounter: IEncounter) => {
     classCode: getCodeableConcepts(get(encounter, 'class')),
     period: get(encounter, 'period'),
     duration: get(encounter, 'duration'),
+    id: get(encounter, 'id'),
   };
 };
 

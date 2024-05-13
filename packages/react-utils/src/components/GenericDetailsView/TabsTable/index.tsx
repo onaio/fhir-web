@@ -5,10 +5,12 @@ import { BrokenPage } from '../../BrokenPage';
 import TableLayout, { Column } from '../../TableLayout';
 import { Dictionary } from '@onaio/utils';
 import { SearchForm } from '../../Search';
-
-const getSearchParamsFactory = (resourceId: string) => (_: string | null) => {
-  return { 'subject:Patient': resourceId };
-};
+import { Col, Row, Space } from 'antd';
+import {
+  PopulatedResourceDetails,
+  PopulatedResourceDetailsProps,
+} from '../PopulatedResourceDetails';
+import { useSearchParams } from '../../../hooks/useSearchParams';
 
 export interface TabTableProps<T> {
   resourceId: string;
@@ -18,8 +20,13 @@ export interface TabTableProps<T> {
   tableDataGetter: (data: T[]) => Dictionary[];
   enableSearch?: boolean;
   extractResourceFn?: ExtractResources;
-  searchParamsFactory?: typeof getSearchParamsFactory | ((id: string) => Dictionary);
+  searchParamsFactory: (id: string) => Dictionary;
+  sideViewQueryParamsFactory?: (
+    id: string
+  ) => PopulatedResourceDetailsProps<T>['resourceQueryParams'];
+  extractSideViewDetails?: PopulatedResourceDetailsProps<T>['resourceDetailsPropsGetter'];
 }
+export const sideViewQuery = 'sideView';
 
 /**
  * Generic component to render table tabs table
@@ -35,9 +42,13 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
     extractResourceFn,
     tableColumns,
     enableSearch,
-    searchParamsFactory = getSearchParamsFactory,
+    searchParamsFactory,
+    sideViewQueryParamsFactory,
+    extractSideViewDetails,
   } = props;
   const getSearchParams = searchParamsFactory(resourceId);
+  const { sParams } = useSearchParams();
+  const tableRowDataId = sParams.get(sideViewQuery) ?? undefined;
 
   const {
     queryValues: { data, isFetching, isLoading, error },
@@ -58,10 +69,24 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
     pagination: tablePaginationProps,
   };
 
+  const showSideView = tableRowDataId && sideViewQueryParamsFactory && extractSideViewDetails;
+
   return (
-    <div>
-      {enableSearch && <SearchForm {...searchFormProps} />}
-      <TableLayout {...tableProps} />
-    </div>
+    <Row className="list-view">
+      <Col className="main-content">
+        {enableSearch && <SearchForm {...searchFormProps} />}
+        <TableLayout {...tableProps} />
+      </Col>
+      {showSideView && (
+        <Col className="view-details-content">
+          <Space direction="vertical">
+            <PopulatedResourceDetails<T>
+              resourceQueryParams={sideViewQueryParamsFactory(tableRowDataId)}
+              resourceDetailsPropsGetter={extractSideViewDetails}
+            />
+          </Space>
+        </Col>
+      )}
+    </Row>
   );
 }

@@ -1,13 +1,15 @@
 import React from 'react';
 import { RouteComponentProps, useParams } from 'react-router-dom';
 import {
+  BodyLayout,
   FHIRServiceClass,
-  GenericDetailsView,
-  GenericDetailsViewProps,
   GenericTabsView,
   GenericTabsViewProps,
+  PopulatedResourceDetails,
   TabTableProps,
   TabsTable,
+  sideViewQuery,
+  useSearchParams,
 } from '@opensrp/react-utils';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import {
@@ -20,7 +22,12 @@ import {
   taskResourceType,
 } from '../../constants';
 import { useTranslation } from '../../mls';
-import { resourceDetailsPropsGetter } from './utils';
+import {
+  defaultSearchParamsFactory,
+  extractEncounterDetails,
+  queryParamsFactory,
+  resourceDetailsPropsGetter,
+} from './utils';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
 import { parseCareplanList, columns as carePlanColumns } from './ResourceSchema/CarePlan';
 import {
@@ -35,6 +42,8 @@ import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmuni
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { Button } from 'antd';
 
 // Interface for route params
 interface RouteParams {
@@ -66,6 +75,8 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
       new FHIRServiceClass<IPatient>(fhirBaseURL, patientResourceType).read(patientId),
   };
 
+  const { addParamsToURL, removeURLParam } = useSearchParams();
+
   const breadCrumbProps = {
     items: [
       {
@@ -87,25 +98,28 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     breadCrumbProps,
   };
 
-  const carePlanTableData: TabTableProps<ICarePlan> = {
+  const defaultTableData = {
     resourceId: patientId,
     fhirBaseURL,
+    searchParamsFactory: defaultSearchParamsFactory,
+  };
+
+  const carePlanTableData: TabTableProps<ICarePlan> = {
+    ...defaultTableData,
     resourceType: carePlanResourceType,
     tableColumns: carePlanColumns(t),
     tableDataGetter: parseCareplanList,
   };
 
   const conditionTableData: TabTableProps<ICondition> = {
-    resourceId: patientId,
-    fhirBaseURL,
+    ...defaultTableData,
     resourceType: conditionResourceType,
     tableColumns: conditionColumns(t),
     tableDataGetter: parseConditionList,
   };
 
   const taskTableData: TabTableProps<ITask> = {
-    resourceId: patientId,
-    fhirBaseURL,
+    ...defaultTableData,
     resourceType: taskResourceType,
     tableColumns: taskColumns(t),
     tableDataGetter: parseTaskList,
@@ -113,8 +127,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   };
 
   const immunizationTableData: TabTableProps<IImmunization> = {
-    resourceId: patientId,
-    fhirBaseURL,
+    ...defaultTableData,
     resourceType: immunizationResourceType,
     tableColumns: immunizationColumns(t),
     tableDataGetter: parseImmunizationList,
@@ -122,11 +135,22 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   };
 
   const patientEncounterTableData: TabTableProps<IEncounter> = {
-    resourceId: patientId,
-    fhirBaseURL,
+    ...defaultTableData,
     resourceType: encounterResourceType,
-    tableColumns: encounterColumns(t),
+    tableColumns: [
+      ...encounterColumns(t),
+      {
+        title: t('Actions'),
+        render: (value: Coding) => (
+          <Button onClick={() => addParamsToURL({ [sideViewQuery]: value.id })} type="link">
+            {t('View')}
+          </Button>
+        ),
+      },
+    ],
     tableDataGetter: parseEncounterList,
+    sideViewQueryParamsFactory: queryParamsFactory<IEncounter>(fhirBaseURL, encounterResourceType),
+    extractSideViewDetails: extractEncounterDetails(patientId, () => removeURLParam(sideViewQuery)),
   };
 
   const tabViewProps: GenericTabsViewProps = {
@@ -161,17 +185,16 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     ],
   };
 
-  const genericDetailsViewProps: GenericDetailsViewProps<IPatient> = {
-    bodyLayoutProps: { headerProps },
+  const populatedResourceDetailsProps = {
     resourceQueryParams,
     resourceDetailsPropsGetter,
-    resourceId: patientId,
   };
 
   return (
-    <GenericDetailsView<IPatient> {...genericDetailsViewProps}>
+    <BodyLayout headerProps={headerProps}>
+      <PopulatedResourceDetails<IPatient> {...populatedResourceDetailsProps} />
       <GenericTabsView {...tabViewProps} />
-    </GenericDetailsView>
+    </BodyLayout>
   );
 };
 

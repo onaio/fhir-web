@@ -1,6 +1,5 @@
 import { Tabs, TabsProps } from 'antd';
 import React from 'react';
-import { useHistory } from 'react-router';
 import { useSearchParams } from '../../../hooks/useSearchParams';
 import { activeTabQuery, tabViewQuery } from '../../../constants';
 
@@ -18,15 +17,12 @@ export interface GenericListTabsViewProps {
  */
 export function GenericTabsView(props: GenericTabsViewProps) {
   const { tabViewId, ...restprops } = props;
-  const history = useHistory();
-  const { sParams } = useSearchParams();
-  const location = history.location;
-  const { pathname } = location;
+  const { sParams, addParamsToURL } = useSearchParams();
   const activeTabKey = sParams.get(activeTabQuery) ?? undefined;
   const tabView = sParams.get(tabViewQuery) ?? undefined;
 
   const onTabChangeHandler = (key: string) => {
-    history.push(`${pathname}?${tabViewQuery}=${tabViewId}&${activeTabQuery}=${key}`);
+    addParamsToURL({ [tabViewQuery]: tabViewId, [activeTabQuery]: key });
   };
 
   const extraTabProps: Record<string, React.ReactNode> = {};
