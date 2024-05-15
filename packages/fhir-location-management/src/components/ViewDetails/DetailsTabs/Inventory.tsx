@@ -129,38 +129,30 @@ function isProduct(res: IGroup) {
  */
 function dataTransformer(bundleResponse: IBundle) {
   const entry = (bundleResponse.entry ?? []).map((x) => x.resource) as IGroup[];
-  const tableDataByProductRef: Record<string, Record<string, unknown> | undefined> = {};
-  let productReference;
+  const inventoryById: Record<string, ReturnType<typeof parseInventoryGroup> | undefined> = {};
+  const productById: Record<string, ReturnType<typeof parseProductGroup> | undefined> = {};
   for (const resource of entry) {
     if (isInventory(resource)) {
-      const tableDataEntry = parseInventoryGroup(resource as IGroup);
-      productReference = tableDataEntry.productReference;
-      if (productReference) {
-        if (tableDataByProductRef[productReference] !== undefined) {
-          tableDataByProductRef[productReference] = {
-            ...tableDataByProductRef[productReference],
-            ...tableDataEntry,
-          };
-        } else {
-          tableDataByProductRef[productReference] = tableDataEntry;
-        }
-      }
+      inventoryById[resource.id as string] = parseInventoryGroup(resource as IGroup);
     }
     if (isProduct(resource)) {
-      const thisResource = resource as IGroup;
-      const tableDataEntry = parseProductGroup(thisResource);
-      productReference = `${groupResourceType}/${thisResource.id}`;
-      if (tableDataByProductRef[productReference] === undefined) {
-        tableDataByProductRef[productReference] = tableDataEntry;
-      } else {
-        tableDataByProductRef[productReference] = {
-          ...tableDataByProductRef[productReference],
-          ...tableDataEntry,
-        };
-      }
+      productById[`${groupResourceType}/${resource.id}`] = parseProductGroup(resource as IGroup);
     }
   }
-  return Object.values(tableDataByProductRef as Record<string, TableData>);
+  const tableData = [];
+  for (const inventory of Object.values(inventoryById)) {
+    let tableDataEntry = inventory;
+    const productReference = inventory?.productReference;
+    const correspondingProductReference = productReference ? productById[productReference] : {};
+    if (correspondingProductReference) {
+      tableDataEntry = {
+        ...tableDataEntry,
+        ...correspondingProductReference,
+      } as TableData;
+    }
+    tableData.push(tableDataEntry as TableData);
+  }
+  return tableData;
 }
 
 /**

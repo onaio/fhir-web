@@ -229,6 +229,108 @@ export const locationInventoryList = {
   ],
 };
 
+export const locationInventoryList1384 = {
+  resourceType: 'List',
+  id: '9f4edfe3-ac84-449f-8640-f0d297e75ff5',
+  identifier: [{ use: 'official', value: '9f4edfe3-ac84-449f-8640-f0d297e75ff5' }],
+  status: 'current',
+  code: {
+    coding: [
+      {
+        system: 'http://smartregister.org/codes',
+        code: '22138876',
+        display: 'Supply Inventory List',
+      },
+    ],
+    text: 'Supply Inventory List',
+  },
+  title: 'Service Point',
+  subject: { reference: 'Location/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d' },
+  entry: [
+    {
+      flag: {
+        coding: [
+          {
+            system: 'http://smartregister.org/codes',
+            code: '22138876',
+            display: 'Supply Inventory List',
+          },
+        ],
+        text: 'Supply Inventory List',
+      },
+      date: '2017-07-13T19:31:00.000Z',
+      item: { reference: 'Group/722cd036-3036-43d6-85e0-d25b22216764' },
+    },
+  ],
+};
+
+export const locationInventoryList1384Bundle = {
+  resourceType: 'Bundle',
+  id: 'df796c9e-002c-47ff-a88f-6b86edca9262',
+  meta: {
+    lastUpdated: '2024-04-03T07:56:54.936+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  entry: [
+    {
+      resource: locationInventoryList1384,
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
+export const updatedLocationInventoryList1 = {
+  resourceType: 'List',
+  id: '9f4edfe3-ac84-449f-8640-f0d297e75ff5',
+  identifier: [{ use: 'official', value: '9f4edfe3-ac84-449f-8640-f0d297e75ff5' }],
+  status: 'current',
+  code: {
+    coding: [
+      {
+        system: 'http://smartregister.org/codes',
+        code: '22138876',
+        display: 'Supply Inventory List',
+      },
+    ],
+    text: 'Supply Inventory List',
+  },
+  entry: [
+    {
+      flag: {
+        coding: [
+          {
+            system: 'http://smartregister.org/codes',
+            code: '22138876',
+            display: 'Supply Inventory List',
+          },
+        ],
+        text: 'Supply Inventory List',
+      },
+      date: '2017-07-13T19:31:00.000Z',
+      item: { reference: 'Group/722cd036-3036-43d6-85e0-d25b22216764' },
+    },
+    {
+      flag: {
+        coding: [
+          {
+            system: 'http://smartregister.org/codes',
+            code: '22138876',
+            display: 'Supply Inventory List',
+          },
+        ],
+        text: 'Supply Inventory List',
+      },
+      date: '2017-07-13T19:31:00.000Z',
+      item: { reference: 'Group/67bb848e-f049-41f4-9c75-3b726664db67' },
+    },
+  ],
+  title: 'Service Point',
+  subject: { reference: 'Location/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d' },
+};
+
 export const allInventoryList = {
   resourceType: 'List',
   id: 'list-resource-id',
