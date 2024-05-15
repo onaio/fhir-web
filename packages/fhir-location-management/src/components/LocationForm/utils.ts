@@ -333,7 +333,7 @@ export const defaultValidationRulesFactory = (t: TFunction) => ({
       required: false,
     },
   ] as Rule[],
-  [geometry]: [{ type: 'string', message: t('Location Unit must be an array') }] as Rule[],
+  [geometry]: [{ type: 'string' }] as Rule[],
   [longitude]: [
     () => ({
       validator(_, value) {

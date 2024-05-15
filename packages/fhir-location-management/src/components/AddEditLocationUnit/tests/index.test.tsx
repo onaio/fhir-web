@@ -231,7 +231,9 @@ test('data loading problem', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // errors out
-  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
+  expect(
+    screen.getByText('Unable to either load this location or the location hierarchy')
+  ).toBeInTheDocument();
 });
 
 test('data loading but undefined', async () => {
@@ -254,5 +256,7 @@ test('data loading but undefined', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // errors out
-  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
+  expect(
+    screen.getByText('Unable to either load this location or the location hierarchy')
+  ).toBeInTheDocument();
 });
