@@ -5,6 +5,7 @@ import { activeTabQuery, tabViewQuery } from '../../../constants';
 
 export interface GenericTabsViewProps extends TabsProps {
   tabViewId: string;
+  sideViewQueryName?: string;
 }
 export interface GenericListTabsViewProps {
   tabsData: GenericTabsViewProps[];
@@ -16,12 +17,18 @@ export interface GenericListTabsViewProps {
  * @param props - GenericTabsView component props
  */
 export function GenericTabsView(props: GenericTabsViewProps) {
-  const { tabViewId, ...restprops } = props;
-  const { sParams, addParamsToURL } = useSearchParams();
+  const { tabViewId, sideViewQueryName, ...restprops } = props;
+  const { sParams, addParamsToURL, removeURLParam } = useSearchParams();
   const activeTabKey = sParams.get(activeTabQuery) ?? undefined;
   const tabView = sParams.get(tabViewQuery) ?? undefined;
 
   const onTabChangeHandler = (key: string) => {
+    if (sideViewQueryName) {
+      const tableRowId = sParams.get(sideViewQueryName) ?? undefined;
+      if (tableRowId) {
+        removeURLParam(sideViewQueryName);
+      }
+    }
     addParamsToURL({ [tabViewQuery]: tabViewId, [activeTabQuery]: key });
   };
 

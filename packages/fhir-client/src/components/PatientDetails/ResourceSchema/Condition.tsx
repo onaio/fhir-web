@@ -10,6 +10,7 @@ export const parseCondition = (obj: ICondition) => {
     condition: getCodeableConcepts(get(obj, 'code')),
     severity: getCodeableConcepts(get(obj, 'severity')),
     verificationStatus: get(obj, 'verificationStatus'),
+    id: get(obj, 'id'),
   };
 };
 

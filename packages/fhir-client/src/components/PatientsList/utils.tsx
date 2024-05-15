@@ -5,9 +5,15 @@ import { parseFhirHumanName } from '@opensrp/react-utils';
 
 export enum PatientStatus {
   ACTIVE = 'Active',
-  INACTIVE = 'Inactive',
+  InACTIVE = 'Inactive',
   DECEASED = 'Deceased',
 }
+
+export const patientStatusColor = {
+  [PatientStatus.ACTIVE]: 'green',
+  [PatientStatus.InACTIVE]: 'red',
+  [PatientStatus.DECEASED]: 'red',
+};
 
 /**
  * util to extract patient name
@@ -86,5 +92,5 @@ export const getPatientStatus = (isActive: boolean, isDeceased: boolean) => {
   if (isActive) {
     return PatientStatus.ACTIVE;
   }
-  return PatientStatus.INACTIVE;
+  return PatientStatus.InACTIVE;
 };

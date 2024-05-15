@@ -25,7 +25,7 @@ import {
 import { useTranslation } from '../../mls';
 import {
   defaultSearchParamsFactory,
-  extractEncounterDetails,
+  sidePreviewDetailsExtractor,
   queryParamsFactory,
   resourceDetailsPropsGetter,
 } from './utils';
@@ -36,7 +36,11 @@ import {
   columns as immunizationColumns,
   immunizationSearchParams,
 } from './ResourceSchema/Immunization';
-import { parseEncounterList, columns as encounterColumns } from './ResourceSchema/Encounter';
+import {
+  parseEncounterList,
+  columns as encounterColumns,
+  encounterPreviewExtractor,
+} from './ResourceSchema/Encounter';
 import { parseConditionList, columns as conditionColumns } from './ResourceSchema/Condition';
 import { parseTaskList, columns as taskColumns, taskSearchParams } from './ResourceSchema/Task';
 import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
@@ -105,24 +109,33 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     searchParamsFactory: defaultSearchParamsFactory,
   };
 
+  const tableActionColumn = {
+    title: t('Actions'),
+    render: (value: Coding) => (
+      <Button onClick={() => addParamsToURL({ [sideViewQuery]: value.id })} type="link">
+        {t('View')}
+      </Button>
+    ),
+  };
+
   const carePlanTableData: TabTableProps<ICarePlan> = {
     ...defaultTableData,
     resourceType: carePlanResourceType,
-    tableColumns: carePlanColumns(t),
+    tableColumns: [...carePlanColumns(t), tableActionColumn],
     tableDataGetter: parseCareplanList,
   };
 
   const conditionTableData: TabTableProps<ICondition> = {
     ...defaultTableData,
     resourceType: conditionResourceType,
-    tableColumns: conditionColumns(t),
+    tableColumns: [...conditionColumns(t), tableActionColumn],
     tableDataGetter: parseConditionList,
   };
 
   const taskTableData: TabTableProps<ITask> = {
     ...defaultTableData,
     resourceType: taskResourceType,
-    tableColumns: taskColumns(t),
+    tableColumns: [...taskColumns(t), tableActionColumn],
     tableDataGetter: parseTaskList,
     searchParamsFactory: taskSearchParams,
   };
@@ -130,7 +143,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const immunizationTableData: TabTableProps<IImmunization> = {
     ...defaultTableData,
     resourceType: immunizationResourceType,
-    tableColumns: immunizationColumns(t),
+    tableColumns: [...immunizationColumns(t), tableActionColumn],
     tableDataGetter: parseImmunizationList,
     searchParamsFactory: immunizationSearchParams,
   };
@@ -138,24 +151,19 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const patientEncounterTableData: TabTableProps<IEncounter> = {
     ...defaultTableData,
     resourceType: encounterResourceType,
-    tableColumns: [
-      ...encounterColumns(t),
-      {
-        title: t('Actions'),
-        render: (value: Coding) => (
-          <Button onClick={() => addParamsToURL({ [sideViewQuery]: value.id })} type="link">
-            {t('View')}
-          </Button>
-        ),
-      },
-    ],
+    tableColumns: [...encounterColumns(t), tableActionColumn],
     tableDataGetter: parseEncounterList,
     sideViewQueryParamsFactory: queryParamsFactory<IEncounter>(fhirBaseURL, encounterResourceType),
-    extractSideViewDetails: extractEncounterDetails(patientId, () => removeURLParam(sideViewQuery)),
+    extractSideViewDetails: sidePreviewDetailsExtractor<IEncounter>(
+      patientId,
+      encounterPreviewExtractor,
+      () => removeURLParam(sideViewQuery)
+    ),
   };
 
   const tabViewProps: GenericTabsViewProps = {
     tabViewId: 'tabView',
+    sideViewQueryName: sideViewQuery,
     size: 'small',
     items: [
       {

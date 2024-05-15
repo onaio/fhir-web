@@ -1,11 +1,10 @@
 import React from 'react';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { getPatientName, getPatientStatus } from '../PatientsList/utils';
+import { getPatientName, getPatientStatus, patientStatusColor } from '../PatientsList/utils';
 import type { TFunction } from '@opensrp/i18n';
 import { FHIRServiceClass, ResourceDetailsProps } from '@opensrp/react-utils';
 import { get } from 'lodash';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
-import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -52,7 +51,7 @@ export function resourceDetailsPropsGetter(
     bodyData,
     status: {
       title: patientStatus,
-      color: 'green',
+      color: patientStatusColor[patientStatus],
     },
   };
 }
@@ -82,13 +81,22 @@ export function queryParamsFactory<T extends IResource>(fhirBaseURL: string, res
   };
 }
 
-export const extractEncounterDetails =
+type PreviewDataExtractor<T> = (resource: T, t: TFunction) => ResourceDetailsProps;
+
+/**
+ * @param patientId - patient resource Id
+ * @param dataExtractor - Function to extract preview data
+ * @param cancelHanlder - on cancel click handler
+ */
+export function sidePreviewDetailsExtractor<T extends IResource>(
+  patientId: string,
+  dataExtractor: PreviewDataExtractor<T>,
+  cancelHanlder: () => void
+) {
   // eslint-disable-next-line react/display-name
-  (patientId: string, cancelHanlder: () => void) => (resource: IEncounter, t: TFunction) => {
-    const { status, id } = resource;
-    const headerLeftData = {
-      [t('ID')]: id,
-    };
+  return (resource: T, t: TFunction) => {
+    const { resourceType, id } = resource;
+    const data = dataExtractor(resource, t);
     const headerActions = (
       <Button
         data-testid="close-button"
@@ -100,14 +108,14 @@ export const extractEncounterDetails =
       />
     );
     return {
-      title: 'Encounter',
-      headerLeftData,
-      bodyData: {},
       headerActions,
-      status: {
-        title: status ?? '',
-        color: 'green',
-      },
-      footer: <Link to={`${LIST_PATIENTS_URL}/${patientId}/${id}`}> {t('View full details')}</Link>,
+      footer: (
+        <Link to={`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`}>
+          {' '}
+          {t('View full details')}
+        </Link>
+      ),
+      ...data,
     };
   };
+}
