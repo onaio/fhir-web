@@ -5,7 +5,7 @@ import { getPatientName } from '../../PatientsList/utils';
 import { LIST_PATIENTS_URL } from '../../../constants';
 import { Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { Column } from '@opensrp/react-utils';
+import { Column, viewDetailsQuery } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 
 const { Text } = Typography;
@@ -73,7 +73,7 @@ export const columns = (t: TFunction) =>
       // eslint-disable-next-line react/display-name
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}/${record.id}`} className="m-0 p-1">
+          <Link to={`${LIST_PATIENTS_URL}?${viewDetailsQuery}=${record.id}`} className="m-0 p-1">
             {t('View')}
           </Link>
         </span>

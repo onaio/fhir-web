@@ -15,6 +15,7 @@ import {
 } from '../PatientDetails/ResourceSchema/Patient';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/lib/table/interface';
 import { get } from 'lodash';
+import { PatientListView } from '../PatientListView';
 
 interface PatientListProps {
   fhirBaseURL: string;
@@ -102,6 +103,7 @@ export const PatientsList = (props: PatientListProps) => {
           </div>
           <TableLayout {...tableProps} />
         </Col>
+		<PatientListView fhirBaseURL={fhirBaseURL} />
       </Row>
     </BodyLayout>
   );
