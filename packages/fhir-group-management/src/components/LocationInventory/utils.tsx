@@ -1,5 +1,10 @@
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { FHIRServiceClass, IdentifierUseCodes, SelectOption } from '@opensrp/react-utils';
+import {
+  FHIRServiceClass,
+  IdentifierUseCodes,
+  SelectOption,
+  getResourcesFromBundle,
+} from '@opensrp/react-utils';
 import { ValueSetConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetConcept';
 import {
   PONumber,
@@ -28,6 +33,11 @@ import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { ListEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/listEntry';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { getValueSetOptionsValue } from '@opensrp/react-utils';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import {
+  servicePointProfileInventoryListCoding,
+  smartregisterSystemUri,
+} from '@opensrp/fhir-helpers';
 
 const codeSystem = 'http://smartregister.org/codes';
 const unicefCharacteristicCode = '98734231';
@@ -338,6 +348,7 @@ export async function getOrCreateList(baseUrl: string, listId: string) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
   return serve.read(listId).catch((err) => {
     if (err.statusCode === 404) {
+      // TODO - do we have to create the template here and then have to upload an updated version
       return createListResource(baseUrl, listId);
     }
     throw err;
@@ -379,37 +390,67 @@ export async function postLocationInventory(
   listResourceId: string,
   servicePointObj: ILocation
 ) {
+  // create group resource for inventory
   const groupResource = await postPutGroup(baseUrl, payload);
   if (!editMode) {
     const groupResourceId = groupResource.id as string;
     const listId = v4();
-    const inventoryList = createLocationInventoryList(listId, groupResourceId, servicePointObj);
-    await createListResource(baseUrl, listId, undefined, inventoryList);
+    // create group resource that links products to to a location.
+    const locationInventoryListBundle = await new FHIRServiceClass<IBundle>(
+      baseUrl,
+      listResourceType
+    )
+      .list({
+        subject: servicePointObj.id,
+        code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
+      })
+      .catch((err) => {
+        if (err.statusCode === 404) {
+          return undefined;
+        }
+      });
+    let locationInventoryList = locationInventoryListBundle
+      ? getResourcesFromBundle<IList>(locationInventoryListBundle)[0]
+      : undefined;
+    locationInventoryList = createUpdateLocationInventoryList(
+      listId,
+      groupResourceId,
+      servicePointObj,
+      locationInventoryList
+    );
+    await createListResource(baseUrl, listId, undefined, locationInventoryList);
+
     if (listResourceId) {
       const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
-      await combinedListResource(groupResourceId, listId, editMode);
+      await combinedListResource(groupResourceId, locationInventoryList.id as string, editMode);
     }
   }
   return groupResource;
 }
 
 /**
+ * Updates the global list that holds a reference to all other inventory groups
+ * as well as the product groups assigned in the inventory groups.
+ *
  * @param baseUrl - the api base url
- * @param listId - list resource id to add the group to
+ * @param globalInventoryListId - list resource id to add the group to
  */
 export const updateListReferencesFactory =
-  (baseUrl: string, listId: string) =>
-  async (groupResourceId: string, listResourceId: string, editingGroup: boolean) => {
-    const commoditiesListResource = await getOrCreateList(baseUrl, listId);
+  (baseUrl: string, globalInventoryListId: string) =>
+  async (groupResourceId: string, locationInventoryListId: string, editingGroup: boolean) => {
+    const commoditiesListResource = await getOrCreateList(baseUrl, globalInventoryListId);
     const payload = cloneDeep(commoditiesListResource);
 
-    const existingEntries = payload.entry ?? [];
+    let existingEntries = payload.entry ?? [];
     if (!editingGroup) {
       existingEntries.push(
         { item: { reference: `${groupResourceType}/${groupResourceId}` } },
-        { item: { reference: `${listResourceType}/${listResourceId}` } }
+        { item: { reference: `${listResourceType}/${locationInventoryListId}` } }
       );
     }
+    existingEntries = Array.from(
+      new Map(existingEntries.map((entry) => [entry.item.reference, entry])).values()
+    );
     if (existingEntries.length) {
       payload.entry = existingEntries;
     }
@@ -465,44 +506,50 @@ export function createLocationServicePointList(id: string, entries?: ListEntry[]
 }
 
 /**
- * Creates a location inventory  list resource that will curate a set of commodities to be used on the client.
- * This is so that the list resource can then be used when configuring the fhir mobile client
+ * Creates a group resource that links a location to a series of products(group resources)
+ * We create one such group for each location that has inventory regardless
+ * of how many product groups are assigned to the location.
  *
  * @param id - externally defined id that will be the id of the new list resource
  * @param InventoryResourceId - location inventory id
  * @param servicePoint - service point object
+ * @param currentLocationInventory - inventory for this location as subject if on exists
  */
-export function createLocationInventoryList(
+export function createUpdateLocationInventoryList(
   id: string,
   InventoryResourceId: string,
-  servicePoint: ILocation
+  servicePoint: ILocation,
+  currentLocationInventory?: IGroup
 ): IList {
+  const existingLocationInventory = currentLocationInventory ?? {};
   const commonResources = createCommonListResource(id);
   const { name, id: servicePointId } = servicePoint;
   const now = new Date();
   const stringDate = now.toISOString();
-  return {
+  const newEntry: ListEntry = {
+    flag: {
+      coding: [
+        {
+          system: codeSystem,
+          code: listSupplyInventoryCode,
+          display: 'Supply Inventory List',
+        },
+      ],
+      text: 'Supply Inventory List',
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    date: stringDate as any,
+    item: { reference: `${groupResourceType}/${InventoryResourceId}` },
+  };
+  const listPayload: IList = {
     ...commonResources,
+    entry: [],
     title: name,
     subject: { reference: `Location/${servicePointId}` },
-    entry: [
-      {
-        flag: {
-          coding: [
-            {
-              system: codeSystem,
-              code: listSupplyInventoryCode,
-              display: 'Supply Inventory List',
-            },
-          ],
-          text: 'Supply Inventory List',
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        date: stringDate as any,
-        item: { reference: `${groupResourceType}/${InventoryResourceId}` },
-      },
-    ],
+    ...existingLocationInventory,
   };
+  listPayload.entry?.push(newEntry);
+  return listPayload;
 }
 
 /**

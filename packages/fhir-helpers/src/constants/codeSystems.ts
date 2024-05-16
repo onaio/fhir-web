@@ -37,7 +37,7 @@ export const inventoryGroupCoding = {
 };
 
 export const servicePointProfileInventoryListCoding = {
-  system: 'http://smartregister.org/',
+  system: smartregisterSystemUri,
   code: '22138876',
   display: 'Supply Inventory List',
 };
