@@ -97,13 +97,13 @@ export const PatientsList = (props: PatientListProps) => {
         <title>{t('Patients')}</title>
       </Helmet>
       <Row className="list-view">
-        <Col className={'main-content'} span={24}>
+        <Col className={'main-content'}>
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
           </div>
           <TableLayout {...tableProps} />
         </Col>
-		<PatientListView fhirBaseURL={fhirBaseURL} />
+        <PatientListView fhirBaseURL={fhirBaseURL} />
       </Row>
     </BodyLayout>
   );

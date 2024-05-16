@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ResourceDetails } from '..';
 import React from 'react';
 import { Button } from 'antd';
@@ -18,9 +18,13 @@ const props = {
     Alias: 'Clinic',
     'Administrative Level': 2,
   },
+  bodyDataFunction: () => <div>Additional Content</div>, // Added bodyDataFunction
   footer: (
     <div>
-      <Button type="link">view details</Button>
+      <Button type="link" onClick={() => console.log('View details clicked')}>
+        view details
+      </Button>{' '}
+      // Added onClick handler
     </div>
   ),
 };
@@ -50,4 +54,15 @@ test('ResourceDetails component renders correctly', () => {
     (keyValue) => keyValue.textContent
   );
   expect(headerLeftElementValues).toEqual(['ID: 123version: 5']);
+
+  // Test Status Tag
+  expect(screen.getByText(/Active/)).toBeInTheDocument();
+  expect(screen.getByText(/Active/).closest('.status')).toHaveStyle('background-color: green');
+
+  // Test BodyData Function
+  expect(screen.getByText(/Additional Content/)).toBeInTheDocument();
+
+  // Test Footer Button Click
+  fireEvent.click(screen.getByText('view details'));
+  expect(console.log).toHaveBeenCalledWith('View details clicked');
 });

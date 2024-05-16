@@ -4,4 +4,6 @@ exports[`components/UserList renders user list correctly: header actions col pro
 
 exports[`components/UserList renders user list correctly: table text 1`] = `"First NameLast NameUsernameActionsBenjaminMwalimumwalimuEditOnakenyaonaEditOnaAdminona-adminEditDemokenyaopensrpEdit"`;
 
+exports[`components/UserList search works correctly: full rendered text 1`] = `"User ManagementAdd UserFirst NameLast NameUsernameActionsBenjaminMwalimumwalimuEditOnakenyaonaEditOnaAdminona-adminEditDemokenyaopensrpEdit120 / page"`;
+
 exports[`components/UserList works correctly with store: full rendered text 1`] = `"User ManagementAdd UserFirst NameLast NameUsernameActionsBenjaminMwalimumwalimuEditOnakenyaonaEditOnaAdminona-adminEditDemokenyaopensrpEdit120 / page"`;

@@ -19,7 +19,7 @@ export interface ResourceDetailsProps {
     title: string;
     color: string;
   };
-  bodyData: Record<string, React.ReactNode>;
+  bodyData: Record<string, React.ReactNode> | (() => React.ReactNode);
   footer?: React.ReactNode;
 }
 
@@ -59,7 +59,12 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
       </div>
       <Divider className="divider" />
-      <KeyValuesDescriptions theme="default" data={bodyData} />
+      {typeof bodyData === 'function' ? (
+        bodyData()
+      ) : (
+        <KeyValuesDescriptions theme="default" data={bodyData} />
+      )}
+      {/*<KeyValuesDescriptions theme="default" data={bodyData} />*/}
       {footer && (
         <>
           <Divider className="divider" />
