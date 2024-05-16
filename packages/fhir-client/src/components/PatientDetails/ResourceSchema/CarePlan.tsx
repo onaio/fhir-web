@@ -53,8 +53,8 @@ export const carePlanSideViewData = (resoure: ICarePlan, t: TFunction) => {
   const bodyData = {
     [t('Category')]: <FhirCodesTooltips codings={categories} />,
     [t('Period')]: <FhirPeriod {...period} />,
-    [t('status')]: status,
-    [t('intent')]: intent,
+    [t('Status')]: status,
+    [t('Intent')]: intent,
   };
   return {
     title,

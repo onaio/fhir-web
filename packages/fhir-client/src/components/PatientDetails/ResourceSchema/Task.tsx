@@ -1,6 +1,11 @@
 import React from 'react';
 import { get } from 'lodash';
-import { FhirPeriod, sorterFn } from '../../../helpers/utils';
+import {
+  FhirCodesTooltips,
+  FhirPeriod,
+  getCodeableConcepts,
+  sorterFn,
+} from '../../../helpers/utils';
 import type { TFunction } from '@opensrp/i18n';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
@@ -10,6 +15,10 @@ export const parseTask = (obj: ITask) => {
     status: get(obj, 'status'),
     description: get(obj, 'description'),
     executionPeriod: get(obj, 'executionPeriod'),
+    authoredOn: get(obj, 'authoredOn'),
+    intent: get(obj, 'intent'),
+    code: get(obj, 'code'),
+    codeableCode: getCodeableConcepts(get(obj, 'vaccineCode')),
     id: get(obj, 'id'),
   };
 };
@@ -21,10 +30,6 @@ export const parseTaskList = (list: ITask[]) => {
 export type TaskTableData = ReturnType<typeof parseTask>;
 
 export const columns = (t: TFunction) => [
-  {
-    title: t('Id'),
-    dataIndex: 'id',
-  },
   {
     title: t('Status'),
     dataIndex: 'status',
@@ -43,4 +48,31 @@ export const columns = (t: TFunction) => [
 
 export const taskSearchParams = (patientId: string) => {
   return { patient: patientId };
+};
+
+export const taskSideViewData = (resoure: ITask, t: TFunction) => {
+  const { id, status, intent, executionPeriod, authoredOn, code, codeableCode } =
+    parseTask(resoure);
+  const headerLeftData = {
+    [t('ID')]: id,
+  };
+  const bodyData = {
+    [t('Period')]: <FhirPeriod {...executionPeriod} />,
+    [t('authoredOn')]: authoredOn,
+    [t('Status')]: status,
+    [t('Intent')]: intent,
+  };
+  let title: string | JSX.Element | undefined = code?.text;
+  if (codeableCode.length > 0) {
+    title = <FhirCodesTooltips codings={codeableCode} />;
+  }
+  return {
+    title,
+    headerLeftData,
+    bodyData,
+    status: {
+      title: status ?? '',
+      color: 'green',
+    },
+  };
 };

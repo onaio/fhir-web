@@ -46,7 +46,12 @@ import {
   encounterPreviewExtractor,
 } from './ResourceSchema/Encounter';
 import { parseConditionList, columns as conditionColumns } from './ResourceSchema/Condition';
-import { parseTaskList, columns as taskColumns, taskSearchParams } from './ResourceSchema/Task';
+import {
+  parseTaskList,
+  columns as taskColumns,
+  taskSearchParams,
+  taskSideViewData,
+} from './ResourceSchema/Task';
 import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
@@ -147,6 +152,9 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     tableColumns: [...taskColumns(t), tableActionColumn],
     tableDataGetter: parseTaskList,
     searchParamsFactory: taskSearchParams,
+    extractSideViewDetails: sidePreviewDetailsExtractor<ITask>(patientId, taskSideViewData, () =>
+      removeURLParam(sideViewQuery)
+    ),
   };
 
   const immunizationTableData: TabTableProps<IImmunization> = {
