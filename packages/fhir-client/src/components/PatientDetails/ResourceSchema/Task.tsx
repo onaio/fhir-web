@@ -9,6 +9,7 @@ import {
 import type { TFunction } from '@opensrp/i18n';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
+import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 
 export const parseTask = (obj: ITask) => {
   return {
@@ -31,9 +32,9 @@ export type TaskTableData = ReturnType<typeof parseTask>;
 
 export const columns = (t: TFunction) => [
   {
-    title: t('Status'),
-    dataIndex: 'status',
-    sorter: sorterFn('status'),
+    title: t('Task'),
+    dataIndex: 'codeableCode' as const,
+    render: (value: Coding[]) => <FhirCodesTooltips codings={value} />,
   },
   {
     title: t('Period'),

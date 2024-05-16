@@ -45,7 +45,11 @@ import {
   columns as encounterColumns,
   encounterPreviewExtractor,
 } from './ResourceSchema/Encounter';
-import { parseConditionList, columns as conditionColumns } from './ResourceSchema/Condition';
+import {
+  parseConditionList,
+  columns as conditionColumns,
+  conditionSideViewData,
+} from './ResourceSchema/Condition';
 import {
   parseTaskList,
   columns as taskColumns,
@@ -144,6 +148,11 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: conditionResourceType,
     tableColumns: [...conditionColumns(t), tableActionColumn],
     tableDataGetter: parseConditionList,
+    extractSideViewDetails: sidePreviewDetailsExtractor<ICondition>(
+      patientId,
+      conditionSideViewData,
+      () => removeURLParam(sideViewQuery)
+    ),
   };
 
   const taskTableData: TabTableProps<ITask> = {
