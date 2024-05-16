@@ -6,11 +6,10 @@ import TableLayout, { Column } from '../../TableLayout';
 import { Dictionary } from '@onaio/utils';
 import { SearchForm } from '../../Search';
 import { Col, Row, Space } from 'antd';
-import {
-  PopulatedResourceDetails,
-  PopulatedResourceDetailsProps,
-} from '../PopulatedResourceDetails';
+import { PopulatedResourceDetailsProps } from '../PopulatedResourceDetails';
+import { useTranslation } from '../../../mls';
 import { useSearchParams } from '../../../hooks/useSearchParams';
+import { ResourceDetails, ResourceDetailsProps } from '../ResourceDetails';
 
 export interface TabTableProps<T> {
   resourceId: string;
@@ -21,9 +20,6 @@ export interface TabTableProps<T> {
   enableSearch?: boolean;
   extractResourceFn?: ExtractResources;
   searchParamsFactory: (id: string) => Dictionary;
-  sideViewQueryParamsFactory?: (
-    id: string
-  ) => PopulatedResourceDetailsProps<T>['resourceQueryParams'];
   extractSideViewDetails?: PopulatedResourceDetailsProps<T>['resourceDetailsPropsGetter'];
 }
 export const sideViewQuery = 'sideView';
@@ -43,12 +39,12 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
     tableColumns,
     enableSearch,
     searchParamsFactory,
-    sideViewQueryParamsFactory,
     extractSideViewDetails,
   } = props;
   const getSearchParams = searchParamsFactory(resourceId);
   const { sParams } = useSearchParams();
   const tableRowDataId = sParams.get(sideViewQuery) ?? undefined;
+  const { t } = useTranslation();
 
   const {
     queryValues: { data, isFetching, isLoading, error },
@@ -69,7 +65,17 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
     pagination: tablePaginationProps,
   };
 
-  const showSideView = tableRowDataId && sideViewQueryParamsFactory && extractSideViewDetails;
+  const sideViewData = (data?.records || []).filter((row) => tableRowDataId === row.id)[0];
+  let parsedSideViewData;
+  let resourceDetailsProps;
+  /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+  if (sideViewData && extractSideViewDetails) {
+    parsedSideViewData = extractSideViewDetails(sideViewData, t);
+    resourceDetailsProps = {
+      descriptionProps: { column: { xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 } },
+      ...parsedSideViewData,
+    } as ResourceDetailsProps;
+  }
 
   return (
     <Row className="list-view">
@@ -77,14 +83,10 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
         {enableSearch && <SearchForm {...searchFormProps} />}
         <TableLayout {...tableProps} />
       </Col>
-      {showSideView && (
+      {tableRowDataId && resourceDetailsProps && (
         <Col className="view-details-content">
           <Space direction="vertical">
-            <PopulatedResourceDetails<T>
-              descriptionProps={{ column: { xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 } }}
-              resourceQueryParams={sideViewQueryParamsFactory(tableRowDataId)}
-              resourceDetailsPropsGetter={extractSideViewDetails}
-            />
+            <ResourceDetails {...resourceDetailsProps} />
           </Space>
         </Col>
       )}
