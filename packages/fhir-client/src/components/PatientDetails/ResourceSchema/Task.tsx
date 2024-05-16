@@ -1,11 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
-import {
-  FhirCodesTooltips,
-  FhirPeriod,
-  getCodeableConcepts,
-  sorterFn,
-} from '../../../helpers/utils';
+import { FhirCodesTooltips, FhirPeriod, getCodeableConcepts } from '../../../helpers/utils';
 import type { TFunction } from '@opensrp/i18n';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';

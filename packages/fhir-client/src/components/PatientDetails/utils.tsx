@@ -1,60 +1,27 @@
 import React from 'react';
-import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
-import { getPatientName, getPatientStatus, patientStatusColor } from '../PatientsList/utils';
 import type { TFunction } from '@opensrp/i18n';
 import { FHIRServiceClass, ResourceDetailsProps } from '@opensrp/react-utils';
-import { get } from 'lodash';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { LIST_PATIENTS_URL } from '../../constants';
+import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmunization';
+import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
+import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
+import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
+import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
+import {
+  LIST_PATIENTS_URL,
+  carePlanResourceType,
+  conditionResourceType,
+  encounterResourceType,
+  immunizationResourceType,
+  patientResourceType,
+  taskResourceType,
+} from '../../constants';
+import { Dictionary } from '@onaio/utils';
 
-/**
- * Extract resource details props from resource
- *
- * @param resource - Patient resource
- * @param t - translation function
- */
-export function resourceDetailsPropsGetter(
-  resource: IPatient | undefined,
-  t: TFunction
-): ResourceDetailsProps {
-  if (!resource) {
-    return {} as ResourceDetailsProps;
-  }
-  const { meta, gender, birthDate, id, active, deceasedBoolean } = resource;
-  const patientName = getPatientName(resource);
-  const splitName = patientName ? patientName.split(' ') : [];
-  const headerRightData = {
-    [t('Date created')]: meta?.lastUpdated,
-  };
-  const headerLeftData = {
-    [t('ID')]: id,
-    [t('Gender')]: gender,
-  };
-  const bodyData = {
-    [t('First name')]: splitName[0],
-    [t('Last name')]: splitName[1],
-    [t('UUID')]: get(resource, 'identifier.0.value'),
-    [t('Date of birth')]: birthDate,
-    [t('Phone')]: get(resource, 'telecom.0.value'),
-    [t('MRN')]: 'Unknown',
-    [t('Address')]: get(resource, 'address.0.line.0') || 'N/A',
-    [t('Country')]: get(resource, 'address.0.country'),
-  };
-  const patientStatus = getPatientStatus(active as boolean, deceasedBoolean as boolean);
-  return {
-    title: patientName,
-    headerRightData,
-    headerLeftData,
-    bodyData,
-    status: {
-      title: patientStatus,
-      color: patientStatusColor[patientStatus],
-    },
-  };
-}
+export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
 /**
  * Gets default patient resource search param
@@ -66,19 +33,44 @@ export const defaultSearchParamsFactory = (resourceId: string) => {
 };
 
 /**
+ * Gets resource search param
+ *
+ * @param baseResourceType - current page resource type
+ * @param lookupResourceType - lookup resource type
+ */
+export const searchParamsFactory = (baseResourceType: string, lookupResourceType: string) => {
+  return (resourceId: string) => {
+    const patientResourceParams: Record<string, Dictionary> = {
+      [carePlanResourceType]: { 'subject:Patient': resourceId },
+      [conditionResourceType]: { 'subject:Patient': resourceId },
+      [encounterResourceType]: { 'subject:Patient': resourceId },
+      [immunizationResourceType]: { patient: resourceId },
+      [taskResourceType]: { patient: resourceId },
+    };
+    const resourcesParams: Record<string, typeof patientResourceParams> = {
+      [patientResourceType]: patientResourceParams,
+    };
+    return resourcesParams[baseResourceType][lookupResourceType];
+  };
+};
+
+/**
  * Build resource query
  *
  * @param fhirBaseURL - base url
  * @param resourceType - resource type
+ * @param resourceId - resource id
  */
-export function queryParamsFactory<T extends IResource>(fhirBaseURL: string, resourceType: string) {
-  return (id: string) => {
-    const resourceQueryParams = {
-      queryKey: [resourceType, id],
-      queryFn: async () => new FHIRServiceClass<T>(fhirBaseURL, resourceType).read(id),
-    };
-    return resourceQueryParams;
+export function queryParamsFactory<T extends IResource = ResourceTypes>(
+  fhirBaseURL: string,
+  resourceType: string,
+  resourceId: string
+) {
+  const resourceQueryParams = {
+    queryKey: [resourceType, resourceId],
+    queryFn: async () => new FHIRServiceClass<T>(fhirBaseURL, resourceType).read(resourceId),
   };
+  return resourceQueryParams;
 }
 
 type PreviewDataExtractor<T> = (resource: T, t: TFunction) => ResourceDetailsProps;

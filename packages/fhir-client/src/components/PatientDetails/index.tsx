@@ -2,7 +2,6 @@ import React from 'react';
 import { RouteComponentProps, useParams } from 'react-router-dom';
 import {
   BodyLayout,
-  FHIRServiceClass,
   GenericTabsView,
   GenericTabsViewProps,
   PopulatedResourceDetails,
@@ -25,10 +24,10 @@ import {
 import { useTranslation } from '../../mls';
 import {
   defaultSearchParamsFactory,
+  queryParamsFactory,
+  searchParamsFactory,
   sidePreviewDetailsExtractor,
-  resourceDetailsPropsGetter,
 } from './utils';
-import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
 import {
   parseCareplanList,
   columns as carePlanColumns,
@@ -60,12 +59,16 @@ import { IImmunization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IImmuni
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
+import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Button } from 'antd';
+import { PatientDetailsProps } from './ResourceSchema/Patient';
 
 // Interface for route params
 interface RouteParams {
   id: string;
+  resourceType?: string;
+  resourceId?: string;
 }
 
 /** props for editing a user view */
@@ -84,14 +87,14 @@ export type PatientDetailPropTypes = PatientDetailProps & RouteComponentProps<Ro
  */
 const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPropTypes) => {
   const { fhirBaseURL } = props;
-  const { id: patientId } = useParams<RouteParams>();
+  const {
+    id: patientId,
+    resourceType = patientResourceType,
+    resourceId,
+  } = useParams<RouteParams>();
   const { t } = useTranslation();
-
-  const resourceQueryParams = {
-    queryKey: [patientResourceType, patientId],
-    queryFn: async () =>
-      new FHIRServiceClass<IPatient>(fhirBaseURL, patientResourceType).read(patientId),
-  };
+  const activeResourceId = resourceId ?? patientId;
+  const resourceQueryParams = queryParamsFactory(fhirBaseURL, resourceType, activeResourceId);
 
   const { addParamsToURL, removeURLParam } = useSearchParams();
 
@@ -119,7 +122,6 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
   const defaultTableData = {
     resourceId: patientId,
     fhirBaseURL,
-    searchParamsFactory: defaultSearchParamsFactory,
   };
 
   const tableActionColumn = {
@@ -136,6 +138,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: carePlanResourceType,
     tableColumns: [...carePlanColumns(t), tableActionColumn],
     tableDataGetter: parseCareplanList,
+    searchParamsFactory: searchParamsFactory(patientResourceType, carePlanResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<ICarePlan>(
       patientId,
       carePlanSideViewData,
@@ -148,6 +151,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: conditionResourceType,
     tableColumns: [...conditionColumns(t), tableActionColumn],
     tableDataGetter: parseConditionList,
+    searchParamsFactory: searchParamsFactory(patientResourceType, conditionResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<ICondition>(
       patientId,
       conditionSideViewData,
@@ -160,7 +164,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: taskResourceType,
     tableColumns: [...taskColumns(t), tableActionColumn],
     tableDataGetter: parseTaskList,
-    searchParamsFactory: taskSearchParams,
+    searchParamsFactory: searchParamsFactory(patientResourceType, taskResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<ITask>(patientId, taskSideViewData, () =>
       removeURLParam(sideViewQuery)
     ),
@@ -171,7 +175,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: immunizationResourceType,
     tableColumns: [...immunizationColumns(t), tableActionColumn],
     tableDataGetter: parseImmunizationList,
-    searchParamsFactory: immunizationSearchParams,
+    searchParamsFactory: searchParamsFactory(patientResourceType, immunizationResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<IImmunization>(
       patientId,
       immunizationSideViewData,
@@ -184,6 +188,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: encounterResourceType,
     tableColumns: [...encounterColumns(t), tableActionColumn],
     tableDataGetter: parseEncounterList,
+    searchParamsFactory: searchParamsFactory(patientResourceType, encounterResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<IEncounter>(
       patientId,
       encounterPreviewExtractor,
@@ -261,7 +266,7 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
 
   const populatedResourceDetailsProps = {
     resourceQueryParams,
-    resourceDetailsPropsGetter,
+    resourceDetailsPropsGetter: PatientDetailsProps,
   };
 
   return (
