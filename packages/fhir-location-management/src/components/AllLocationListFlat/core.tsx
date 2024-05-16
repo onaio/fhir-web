@@ -3,6 +3,8 @@ import {
   URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_VIEW_DETAILS,
+  BACK_SEARCH_PARAM,
+  URL_ALL_LOCATIONS,
 } from '../../constants';
 import { useMls } from '../../mls';
 import { Button, Divider, Dropdown } from 'antd';
@@ -89,9 +91,10 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
     },
   ];
 
+  const backToParam = `?${BACK_SEARCH_PARAM}=${URL_ALL_LOCATIONS}`;
   const addLocationBtnRender = () => (
     <RbacCheck permissions={['Location.create']}>
-      <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_ADD)}>
+      <Button type="primary" onClick={() => history.push(`${URL_LOCATION_UNIT_ADD}${backToParam}`)}>
         <PlusOutlined />
         {t('Add Location')}
       </Button>
