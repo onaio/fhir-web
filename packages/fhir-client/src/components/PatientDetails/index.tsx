@@ -26,7 +26,6 @@ import { useTranslation } from '../../mls';
 import {
   defaultSearchParamsFactory,
   sidePreviewDetailsExtractor,
-  queryParamsFactory,
   resourceDetailsPropsGetter,
 } from './utils';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
@@ -39,6 +38,7 @@ import {
   parseImmunizationList,
   columns as immunizationColumns,
   immunizationSearchParams,
+  immunizationSideViewData,
 } from './ResourceSchema/Immunization';
 import {
   parseEncounterList,
@@ -127,7 +127,6 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: carePlanResourceType,
     tableColumns: [...carePlanColumns(t), tableActionColumn],
     tableDataGetter: parseCareplanList,
-    sideViewQueryParamsFactory: queryParamsFactory<ICarePlan>(fhirBaseURL, carePlanResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<ICarePlan>(
       patientId,
       carePlanSideViewData,
@@ -156,6 +155,11 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     tableColumns: [...immunizationColumns(t), tableActionColumn],
     tableDataGetter: parseImmunizationList,
     searchParamsFactory: immunizationSearchParams,
+    extractSideViewDetails: sidePreviewDetailsExtractor<IImmunization>(
+      patientId,
+      immunizationSideViewData,
+      () => removeURLParam(sideViewQuery)
+    ),
   };
 
   const patientEncounterTableData: TabTableProps<IEncounter> = {
@@ -163,7 +167,6 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: encounterResourceType,
     tableColumns: [...encounterColumns(t), tableActionColumn],
     tableDataGetter: parseEncounterList,
-    sideViewQueryParamsFactory: queryParamsFactory<IEncounter>(fhirBaseURL, encounterResourceType),
     extractSideViewDetails: sidePreviewDetailsExtractor<IEncounter>(
       patientId,
       encounterPreviewExtractor,

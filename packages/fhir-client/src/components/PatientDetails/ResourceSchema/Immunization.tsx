@@ -8,9 +8,11 @@ import type { TFunction } from '@opensrp/i18n';
 export const parseImmunization = (obj: IImmunization) => {
   return {
     status: get(obj, 'status'),
-    vaccineCode: get(obj, 'vaccineCode'),
+    vaccineCode: getCodeableConcepts(get(obj, 'vaccineCode')),
     occurrenceDateTime: get(obj, 'occurrenceDateTime'),
     reasonCode: getCodeableConcepts(get(obj, 'reasonCode')),
+    dateRecorded: get(obj, 'recorded'),
+    protocolApplied: get(obj, 'protocolApplied'),
     id: get(obj, 'id'),
   };
 };
@@ -25,8 +27,11 @@ export type ImmunizationTableData = ReturnType<typeof parseImmunization>;
 
 export const columns = (t: TFunction) => [
   {
-    title: t('Id'),
-    dataIndex: 'id',
+    title: t('Vaccine Admnistered'),
+    dataIndex: 'vaccineCode',
+    render: (value: Coding[]) => {
+      return <FhirCodesTooltips codings={value} />;
+    },
   },
   {
     title: t('Status'),
@@ -39,19 +44,31 @@ export const columns = (t: TFunction) => [
     sorter: occuredDateTimeSortFn,
     render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
   },
-  {
-    title: t('Vaccine Admnistered'),
-    dataIndex: 'vaccineCode',
-  },
-  {
-    title: t('Reason'),
-    dataIndex: 'reasonCode',
-    render: (value: Coding[]) => {
-      return <FhirCodesTooltips codings={value} />;
-    },
-  },
 ];
 
 export const immunizationSearchParams = (patientId: string) => {
   return { patient: patientId };
+};
+
+export const immunizationSideViewData = (resoure: IImmunization, t: TFunction) => {
+  const { id, reasonCode, status, vaccineCode, protocolApplied, dateRecorded } =
+    parseImmunization(resoure);
+  const headerLeftData = {
+    [t('ID')]: id,
+  };
+  const bodyData = {
+    [t('Date recorded')]: dateRecorded,
+    [t('protocol applied')]: protocolApplied?.[0]?.doseNumberPositiveInt,
+    [t('status')]: status,
+    [t('Reason')]: <FhirCodesTooltips codings={reasonCode} />,
+  };
+  return {
+    title: <FhirCodesTooltips codings={vaccineCode} />,
+    headerLeftData,
+    bodyData,
+    status: {
+      title: status ?? '',
+      color: 'green',
+    },
+  };
 };
