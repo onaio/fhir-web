@@ -30,7 +30,11 @@ import {
   resourceDetailsPropsGetter,
 } from './utils';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
-import { parseCareplanList, columns as carePlanColumns } from './ResourceSchema/CarePlan';
+import {
+  parseCareplanList,
+  columns as carePlanColumns,
+  carePlanSideViewData,
+} from './ResourceSchema/CarePlan';
 import {
   parseImmunizationList,
   columns as immunizationColumns,
@@ -123,6 +127,12 @@ const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientDetailPr
     resourceType: carePlanResourceType,
     tableColumns: [...carePlanColumns(t), tableActionColumn],
     tableDataGetter: parseCareplanList,
+    sideViewQueryParamsFactory: queryParamsFactory<ICarePlan>(fhirBaseURL, carePlanResourceType),
+    extractSideViewDetails: sidePreviewDetailsExtractor<ICarePlan>(
+      patientId,
+      carePlanSideViewData,
+      () => removeURLParam(sideViewQuery)
+    ),
   };
 
   const conditionTableData: TabTableProps<ICondition> = {
