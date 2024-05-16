@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Spin } from 'antd';
+import { DescriptionsProps, Spin } from 'antd';
 import { UseQueryOptions, useQuery } from 'react-query';
 import { useTranslation } from '../../../mls';
 import { ResourceDetails, ResourceDetailsProps } from '../ResourceDetails';
@@ -10,6 +10,7 @@ import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 export interface PopulatedResourceDetailsProps<ResourceType> {
   resourceDetailsPropsGetter: (data: ResourceType, t: TFunction) => ResourceDetailsProps;
   resourceQueryParams: UseQueryOptions<ResourceType, Error>;
+  descriptionProps?: DescriptionsProps;
 }
 
 /**
@@ -20,7 +21,7 @@ export interface PopulatedResourceDetailsProps<ResourceType> {
 export function PopulatedResourceDetails<ResourceType = IResource>(
   props: PopulatedResourceDetailsProps<ResourceType>
 ) {
-  const { resourceDetailsPropsGetter, resourceQueryParams } = props;
+  const { resourceDetailsPropsGetter, resourceQueryParams, descriptionProps } = props;
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery(resourceQueryParams);
@@ -37,5 +38,11 @@ export function PopulatedResourceDetails<ResourceType = IResource>(
     return <BrokenPage errorMessage={t('There was a problem fetching the patient')} />;
   }
 
-  return <>{resourceDetailsProps && <ResourceDetails {...resourceDetailsProps} />}</>;
+  return (
+    <>
+      {resourceDetailsProps && (
+        <ResourceDetails descriptionProps={descriptionProps} {...resourceDetailsProps} />
+      )}
+    </>
+  );
 }

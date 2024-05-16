@@ -1,13 +1,13 @@
 import React from 'react';
 import './index.css';
-import { Descriptions, Typography } from 'antd';
+import { Descriptions, DescriptionsProps, Typography } from 'antd';
 
 const { Text } = Typography;
 
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
 export type KeyValuePairs = Record<string, React.ReactNode>;
-export interface SingleKeyNestedValueProps {
+export interface SingleKeyNestedValueProps extends DescriptionsProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
 }
@@ -87,9 +87,14 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
  * @param props - component data and theme
  */
 export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
-  const { data, theme } = props;
+  const {
+    data,
+    theme,
+    column = { xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 },
+    ...extraProps
+  } = props;
   return (
-    <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}>
+    <Descriptions size="small" column={column} {...extraProps}>
       {Object.entries(data).map(([key, value]) => {
         const keyValuePairing = { [key]: value };
         return (
