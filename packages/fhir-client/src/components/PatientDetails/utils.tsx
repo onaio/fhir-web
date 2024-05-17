@@ -10,16 +10,7 @@ import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
-import {
-  LIST_PATIENTS_URL,
-  carePlanResourceType,
-  conditionResourceType,
-  encounterResourceType,
-  immunizationResourceType,
-  patientResourceType,
-  taskResourceType,
-} from '../../constants';
-import { Dictionary } from '@onaio/utils';
+import { LIST_PATIENTS_URL } from '../../constants';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -30,28 +21,6 @@ export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEn
  */
 export const defaultSearchParamsFactory = (resourceId: string) => {
   return { 'subject:Patient': resourceId };
-};
-
-/**
- * Gets resource search param
- *
- * @param baseResourceType - current page resource type
- * @param lookupResourceType - lookup resource type
- */
-export const searchParamsFactory = (baseResourceType: string, lookupResourceType: string) => {
-  return (resourceId: string) => {
-    const patientResourceParams: Record<string, Dictionary> = {
-      [carePlanResourceType]: { 'subject:Patient': resourceId },
-      [conditionResourceType]: { 'subject:Patient': resourceId },
-      [encounterResourceType]: { 'subject:Patient': resourceId },
-      [immunizationResourceType]: { patient: resourceId },
-      [taskResourceType]: { patient: resourceId },
-    };
-    const resourcesParams: Record<string, typeof patientResourceParams> = {
-      [patientResourceType]: patientResourceParams,
-    };
-    return resourcesParams[baseResourceType][lookupResourceType];
-  };
 };
 
 /**
