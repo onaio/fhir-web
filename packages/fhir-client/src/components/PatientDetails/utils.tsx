@@ -10,7 +10,9 @@ import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
-import { LIST_PATIENTS_URL } from '../../constants';
+import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
+import { PatientDetailsProps } from './ResourceSchema/Patient';
+import { Dictionary } from '@onaio/utils';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -45,6 +47,8 @@ export function queryParamsFactory<T extends IResource = ResourceTypes>(
 type PreviewDataExtractor<T> = (resource: T, t: TFunction) => ResourceDetailsProps;
 
 /**
+ * get tab table side prevew data
+ *
  * @param patientId - patient resource Id
  * @param dataExtractor - Function to extract preview data
  * @param cancelHanlder - on cancel click handler
@@ -80,3 +84,16 @@ export function sidePreviewDetailsExtractor<T extends IResource>(
     };
   };
 }
+
+/**
+ * Gets resource detail props
+ *
+ * @param resourceType - resource tyoe
+ */
+export const getResourceDetailsProps = (resourceType: string) => {
+  const resourceDetailProps: Dictionary = {
+    [patientResourceType]: PatientDetailsProps,
+  };
+  const targetResourceDetailProps = resourceDetailProps[resourceType];
+  return targetResourceDetailProps ?? PatientDetailsProps;
+};

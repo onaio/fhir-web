@@ -5,6 +5,7 @@ import type { TFunction } from '@opensrp/i18n';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { Dictionary } from '@onaio/utils';
 
 export const parseTask = (obj: ITask) => {
   return {
@@ -14,7 +15,9 @@ export const parseTask = (obj: ITask) => {
     authoredOn: get(obj, 'authoredOn'),
     intent: get(obj, 'intent'),
     code: get(obj, 'code'),
-    codeableCode: getCodeableConcepts(get(obj, 'vaccineCode')),
+    codeableCode: getCodeableConcepts(get(obj, 'code')),
+    basedOn: get(obj, 'basedOn'),
+    priority: get(obj, 'priority'),
     id: get(obj, 'id'),
   };
 };
@@ -29,7 +32,12 @@ export const columns = (t: TFunction) => [
   {
     title: t('Task'),
     dataIndex: 'codeableCode' as const,
-    render: (value: Coding[]) => <FhirCodesTooltips codings={value} />,
+    render: (value: Coding[], tableData: Dictionary) => {
+      if (value.length > 0) {
+        return <FhirCodesTooltips codings={value} />;
+      }
+      return tableData.code?.text;
+    },
   },
   {
     title: t('Period'),
@@ -47,14 +55,13 @@ export const taskSearchParams = (patientId: string) => {
 };
 
 export const taskSideViewData = (resoure: ITask, t: TFunction) => {
-  const { id, status, intent, executionPeriod, authoredOn, code, codeableCode } =
-    parseTask(resoure);
+  const { id, status, intent, executionPeriod, priority, code, codeableCode } = parseTask(resoure);
   const headerLeftData = {
     [t('ID')]: id,
   };
   const bodyData = {
     [t('Period')]: <FhirPeriod {...executionPeriod} />,
-    [t('authoredOn')]: authoredOn,
+    [t('Priority')]: priority,
     [t('Status')]: status,
     [t('Intent')]: intent,
   };

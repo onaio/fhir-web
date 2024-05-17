@@ -4,8 +4,7 @@ import { BodyLayout, PopulatedResourceDetails } from '@opensrp/react-utils';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
-import { queryParamsFactory } from './utils';
-import { PatientDetailsProps } from './ResourceSchema/Patient';
+import { getResourceDetailsProps, queryParamsFactory } from './utils';
 import { PopulatedTableTabs } from './PopulatedTableTabs';
 
 // Interface for route params
@@ -35,7 +34,7 @@ export const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientD
 
   const { t } = useTranslation();
   const activeResourceId = resourceId ?? patientId;
-  const activeReourceType = resourceType ?? patientResourceType;
+  const activeResourceType = resourceType ?? patientResourceType;
   const isPatientDetailsPage = !(resourceType && resourceId);
   const pageTitle = t('View details');
   const viewDetailsItem = { title: t('View details') };
@@ -65,8 +64,8 @@ export const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientD
     },
   };
   const populatedResourceDetailsProps = {
-    resourceQueryParams: queryParamsFactory(fhirBaseURL, activeReourceType, activeResourceId),
-    resourceDetailsPropsGetter: PatientDetailsProps,
+    resourceQueryParams: queryParamsFactory(fhirBaseURL, activeResourceType, activeResourceId),
+    resourceDetailsPropsGetter: getResourceDetailsProps(activeResourceType),
   };
   const tableTabsProps = {
     fhirBaseURL,

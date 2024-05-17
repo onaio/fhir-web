@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
+import { ConditionStage } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/conditionStage';
 
 export const parseCondition = (obj: ICondition) => {
   return {
@@ -14,6 +15,7 @@ export const parseCondition = (obj: ICondition) => {
     clinicalStatus: getCodeableConcepts(get(obj, 'clinicalStatus')),
     recordedDate: get(obj, 'recordedDate'),
     onsetDateTime: get(obj, 'onsetDateTime'),
+    stage: get(obj, 'stage'),
     id: get(obj, 'id'),
   };
 };
@@ -48,23 +50,26 @@ export const columns = (t: TFunction) => [
   },
 ];
 
+const getStageValue = (stage?: ConditionStage[]) => {
+  if (!stage) return '';
+  const summary = stage[0]?.summary;
+  const summaryCoadable = getCodeableConcepts(summary);
+  if (summaryCoadable.length > 0) {
+    return <FhirCodesTooltips codings={summaryCoadable} />;
+  }
+  return summary?.text;
+};
+
 export const conditionSideViewData = (resoure: ICondition, t: TFunction) => {
-  const {
-    id,
-    condition,
-    verificationStatus,
-    category,
-    recordedDate,
-    clinicalStatus,
-    onsetDateTime,
-  } = parseCondition(resoure);
+  const { id, condition, verificationStatus, category, stage, clinicalStatus, onsetDateTime } =
+    parseCondition(resoure);
   const headerLeftData = {
     [t('ID')]: id,
   };
   const bodyData = {
     [t('Category')]: <FhirCodesTooltips codings={category} />,
-    [t('Created at')]: recordedDate,
-    [t('Started at')]: onsetDateTime,
+    [t('stage')]: getStageValue(stage),
+    [t('Onset date')]: onsetDateTime,
     [t('Clinical status')]: <FhirCodesTooltips codings={clinicalStatus} />,
   };
   return {
