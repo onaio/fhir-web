@@ -6,6 +6,7 @@ import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Dictionary } from '@onaio/utils';
+import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
 
 export const parseTask = (obj: ITask) => {
   return {
@@ -16,6 +17,8 @@ export const parseTask = (obj: ITask) => {
     intent: get(obj, 'intent'),
     code: get(obj, 'code'),
     codeableCode: getCodeableConcepts(get(obj, 'code')),
+    reasonCode: getCodeableConcepts(get(obj, 'reasonCode')),
+    businessStatus: getCodeableConcepts(get(obj, 'businessStatus')),
     basedOn: get(obj, 'basedOn'),
     priority: get(obj, 'priority'),
     id: get(obj, 'id'),
@@ -54,8 +57,15 @@ export const taskSearchParams = (patientId: string) => {
   return { patient: patientId };
 };
 
-export const taskSideViewData = (resoure: ITask, t: TFunction) => {
-  const { id, status, intent, executionPeriod, priority, code, codeableCode } = parseTask(resoure);
+const getTitle = (codeableCode: Coding[], code?: CodeableConcept) => {
+  if (codeableCode.length > 0) {
+    return <FhirCodesTooltips codings={codeableCode} />;
+  }
+  return code?.text;
+};
+
+export const taskSideViewData = (resource: ITask, t: TFunction) => {
+  const { id, status, intent, executionPeriod, priority, code, codeableCode } = parseTask(resource);
   const headerLeftData = {
     [t('ID')]: id,
   };
@@ -65,12 +75,8 @@ export const taskSideViewData = (resoure: ITask, t: TFunction) => {
     [t('Status')]: status,
     [t('Intent')]: intent,
   };
-  let title: string | JSX.Element | undefined = code?.text;
-  if (codeableCode.length > 0) {
-    title = <FhirCodesTooltips codings={codeableCode} />;
-  }
   return {
-    title,
+    title: getTitle(codeableCode, code),
     headerLeftData,
     bodyData,
     status: {
@@ -79,3 +85,44 @@ export const taskSideViewData = (resoure: ITask, t: TFunction) => {
     },
   };
 };
+
+/**
+ * Get details displayed on task detailed view
+ *
+ * @param resource - task object
+ * @param t - translation function
+ */
+export function taskDetailsProps(resource: ITask, t: TFunction) {
+  const {
+    id,
+    status,
+    description,
+    intent,
+    executionPeriod,
+    priority,
+    businessStatus,
+    authoredOn,
+    reasonCode,
+    code,
+    codeableCode,
+  } = parseTask(resource);
+  const bodyData = {
+    [t('Period')]: <FhirPeriod {...executionPeriod} />,
+    [t('Priority')]: priority,
+    [t('Status')]: status,
+    [t('Business status')]: <FhirCodesTooltips codings={businessStatus} />,
+    [t('Intent')]: intent,
+    [t('reason')]: <FhirCodesTooltips codings={reasonCode} />,
+    [t('Description')]: description,
+  };
+  return {
+    title: getTitle(codeableCode, code),
+    headerRightData: { [t('Date created')]: authoredOn },
+    headerLeftData: { [t('Id')]: id },
+    bodyData,
+    status: {
+      title: status,
+      color: 'green',
+    },
+  };
+}

@@ -17,6 +17,7 @@ import {
   encounterResourceType,
   immunizationResourceType,
   patientResourceType,
+  taskResourceType,
 } from '../../constants';
 import { patientDetailsProps } from './ResourceSchema/Patient';
 import { Dictionary } from '@onaio/utils';
@@ -24,6 +25,7 @@ import { conditionDetailsProps } from './ResourceSchema/Condition';
 import { carePlanDetailsProps } from './ResourceSchema/CarePlan';
 import { immunizationDetailProps } from './ResourceSchema/Immunization';
 import { encounterDetailProps } from './ResourceSchema/Encounter';
+import { taskDetailsProps } from './ResourceSchema/Task';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -108,6 +110,7 @@ export const getResourceDetailsProps = (resourceType: string) => {
     [conditionResourceType]: conditionDetailsProps,
     [immunizationResourceType]: immunizationDetailProps,
     [encounterResourceType]: encounterDetailProps,
+    [taskResourceType]: taskDetailsProps,
   };
   const targetResourceDetailProps = resourceDetailProps[resourceType];
   return targetResourceDetailProps ?? patientDetailsProps;
