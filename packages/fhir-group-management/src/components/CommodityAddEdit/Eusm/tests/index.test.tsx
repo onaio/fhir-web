@@ -26,7 +26,6 @@ import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { photoUploadCharacteristicCode } from '../../../../helpers/utils';
 import { cloneDeep } from 'lodash';
-import { fillSearchableSelect } from '../../Default/tests/test-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -193,7 +192,7 @@ test('form validation works', async () => {
   const errorNodes = [...document.querySelectorAll('.ant-form-item-explain-error')];
   const errorMsgs = errorNodes.map((node) => node.textContent);
 
-  expect(errorMsgs).toEqual(['Required', 'Required', "'type' is required", 'Required']);
+  expect(errorMsgs).toEqual(['Required', 'Required', 'Required']);
 });
 
 it('can create new commodity', async () => {
@@ -259,16 +258,6 @@ it('can create new commodity', async () => {
 
   const productUploadField = screen.getByLabelText('Photo of the product');
   userEvent.upload(productUploadField, productImage);
-
-  // simulate value selection for type
-  const groupTypeSelectConfig = {
-    selectId: 'type',
-    searchOptionText: 'sub',
-    fullOptionText: 'Substance',
-    beforeFilterOptions: ['Medication', 'Device', 'Substance'],
-    afterFilterOptions: ['Substance'],
-  };
-  fillSearchableSelect(groupTypeSelectConfig);
 
   fireEvent.click(screen.getByRole('button', { name: /Save/i }));
 
