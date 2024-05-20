@@ -39,7 +39,7 @@ import {
 } from '@opensrp/fhir-helpers';
 
 import dayjs from 'dayjs';
-import { fillSearchableSelect } from '../../CommodityAddEdit/Default/tests/test-utils';
+import { fillSearchableSelect } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
