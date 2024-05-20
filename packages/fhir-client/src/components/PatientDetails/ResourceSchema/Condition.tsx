@@ -15,6 +15,7 @@ export const parseCondition = (obj: ICondition) => {
     clinicalStatus: getCodeableConcepts(get(obj, 'clinicalStatus')),
     recordedDate: get(obj, 'recordedDate'),
     onsetDateTime: get(obj, 'onsetDateTime'),
+    abatementDateTime: get(obj, 'abatementDateTime'),
     stage: get(obj, 'stage'),
     id: get(obj, 'id'),
   };
@@ -60,6 +61,10 @@ const getStageValue = (stage?: ConditionStage[]) => {
   return summary?.text;
 };
 
+const getStatusTitle = (verificationStatus: Coding[]) => {
+  return (verificationStatus[0]?.display ?? verificationStatus[0]?.code) as string;
+};
+
 export const conditionSideViewData = (resoure: ICondition, t: TFunction) => {
   const { id, condition, verificationStatus, category, stage, clinicalStatus, onsetDateTime } =
     parseCondition(resoure);
@@ -77,8 +82,52 @@ export const conditionSideViewData = (resoure: ICondition, t: TFunction) => {
     headerLeftData,
     bodyData,
     status: {
-      title: (verificationStatus[0]?.display ?? verificationStatus[0]?.code) as string,
+      title: getStatusTitle(verificationStatus),
       color: 'green',
     },
   };
 };
+
+/**
+ * Get details desplayed on conditions detailed view
+ *
+ * @param resoure - conditions object
+ * @param t - translation function
+ */
+export function conditionDetailsProps(resoure: ICondition, t: TFunction) {
+  const {
+    id,
+    condition,
+    severity,
+    recordedDate,
+    verificationStatus,
+    category,
+    stage,
+    clinicalStatus,
+    onsetDateTime,
+    abatementDateTime,
+  } = parseCondition(resoure);
+  const headerRightData = {
+    [t('Date created')]: recordedDate,
+  };
+  const bodyData = {
+    [t('Condition')]: <FhirCodesTooltips codings={condition} />,
+    [t('Severity')]: <FhirCodesTooltips codings={severity} />,
+    [t('Category')]: <FhirCodesTooltips codings={category} />,
+    [t('stage')]: getStageValue(stage),
+    [t('Onset date')]: onsetDateTime,
+    [t('Abatement date')]: abatementDateTime,
+    [t('Clinical status')]: <FhirCodesTooltips codings={clinicalStatus} />,
+    [t('Verification status')]: getStatusTitle(verificationStatus),
+  };
+  return {
+    title: <FhirCodesTooltips codings={condition} />,
+    headerRightData,
+    headerLeftData: { [t('Id')]: id },
+    bodyData,
+    status: {
+      title: getStatusTitle(verificationStatus),
+      color: 'green',
+    },
+  };
+}

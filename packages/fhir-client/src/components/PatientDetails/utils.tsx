@@ -10,9 +10,15 @@ import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter
 import { ICondition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICondition';
 import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
-import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
-import { PatientDetailsProps } from './ResourceSchema/Patient';
+import {
+  LIST_PATIENTS_URL,
+  carePlanResourceType,
+  conditionResourceType,
+  patientResourceType,
+} from '../../constants';
+import { patientDetailsProps } from './ResourceSchema/Patient';
 import { Dictionary } from '@onaio/utils';
+import { conditionDetailsProps } from './ResourceSchema/Condition';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -92,8 +98,9 @@ export function sidePreviewDetailsExtractor<T extends IResource>(
  */
 export const getResourceDetailsProps = (resourceType: string) => {
   const resourceDetailProps: Dictionary = {
-    [patientResourceType]: PatientDetailsProps,
+    [patientResourceType]: patientDetailsProps,
+    [conditionResourceType]: conditionDetailsProps,
   };
   const targetResourceDetailProps = resourceDetailProps[resourceType];
-  return targetResourceDetailProps ?? PatientDetailsProps;
+  return targetResourceDetailProps ?? patientDetailsProps;
 };

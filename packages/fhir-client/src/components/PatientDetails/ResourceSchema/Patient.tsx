@@ -113,7 +113,7 @@ export const serverSideSortedColumns = (t: TFunction) => {
  * @param resource - Patient resource
  * @param t - translation function
  */
-export function PatientDetailsProps(
+export function patientDetailsProps(
   resource: IPatient | undefined,
   t: TFunction
 ): ResourceDetailsProps {
