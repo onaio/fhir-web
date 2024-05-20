@@ -20,6 +20,8 @@ import {
   unicefDonorsValueSet,
   unicefSectionValueSet,
   createdInventoryGroup1,
+  updatedLocationInventoryList1,
+  locationInventoryList1384Bundle,
 } from './fixtures';
 import {
   donor,
@@ -29,7 +31,12 @@ import {
   unicefSection,
 } from '../../../constants';
 import { valueSetResourceType } from '@opensrp/react-utils';
-import { unicefDonorValueSetURI, unicefSectionValueSetURI } from '@opensrp/fhir-helpers';
+import {
+  servicePointProfileInventoryListCoding,
+  smartregisterSystemUri,
+  unicefDonorValueSetURI,
+  unicefSectionValueSetURI,
+} from '@opensrp/fhir-helpers';
 
 import dayjs from 'dayjs';
 import { fillSearchableSelect } from '../../CommodityAddEdit/Default/tests/test-utils';
@@ -163,12 +170,140 @@ test('creates new inventory as expected', async () => {
     .reply(201, createdInventoryGroup1)
     .put(`/${listResourceType}/${mockResourceId}`, locationInventoryList)
     .reply(201, locationInventoryList)
-    .get(`/List/${listResourceId}`)
+    .get(`/${listResourceType}/_search`)
+    .query({
+      subject: props.servicePointObj.id,
+      code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
+    })
     .reply(404, { message: 'Not found' })
-    .put(`/List/${listResourceId}`, { ...allInventoryList, entry: [] })
+    .get(`/${listResourceType}/${listResourceId}`)
+    .reply(404, { message: 'Not found' })
+    .put(`/${listResourceType}/${listResourceId}`, { ...allInventoryList, entry: [] })
     .reply(201, { ...allInventoryList, entry: [] })
-    .put(`/List/${listResourceId}`, allInventoryList)
+    .put(`/${listResourceType}/${listResourceId}`, allInventoryList)
     .reply(201, allInventoryList)
+    .persist();
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  const errorNoticeMock = jest
+    .spyOn(notifications, 'sendErrorNotification')
+    .mockImplementation(() => undefined);
+
+  render(<AppWrapper {...thisProps}></AppWrapper>);
+
+  await waitFor(() => {
+    expect(preFetchScope.isDone()).toBeTruthy();
+  });
+
+  // simulate value selection for product
+  const productSelectComponent = document.querySelector(`input#${product}`)!;
+  fireEvent.mouseDown(productSelectComponent);
+
+  const optionTexts = [
+    ...document.querySelectorAll(
+      `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
+    ),
+  ].map((option) => {
+    return option.textContent;
+  });
+
+  expect(optionTexts).toEqual([
+    'Yellow sunshine',
+    'Fig tree',
+    'Lumpy nuts',
+    'Happy Feet',
+    'Lilly Flowers',
+    'Smartphone TEST',
+  ]);
+  fireEvent.click(document.querySelector(`[title="${'Lumpy nuts'}"]`)!);
+
+  const quantity = screen.getByLabelText('Quantity');
+  userEvent.type(quantity, '20');
+
+  const serialNumber = screen.getByLabelText('Serial number');
+  userEvent.type(serialNumber, 'yk254');
+
+  const unicefSectionSelectionCriteria = {
+    selectId: unicefSection,
+    fullOptionText: 'Health',
+    searchOptionText: 'heal',
+    beforeFilterOptions: ['Health', 'WASH'],
+    afterFilterOptions: ['Health'],
+  };
+  fillSearchableSelect(unicefSectionSelectionCriteria);
+
+  const unicefDonorSelectionCriteria = {
+    selectId: donor,
+    fullOptionText: 'ADB',
+    searchOptionText: 'ad',
+    beforeFilterOptions: ['ADB', 'NatCom Belgium', 'BMGF'],
+    afterFilterOptions: ['ADB'],
+  };
+  fillSearchableSelect(unicefDonorSelectionCriteria);
+
+  const poNumber = screen.getByLabelText('PO number');
+  userEvent.type(poNumber, '578643');
+
+  fireEvent.click(screen.getByRole('button', { name: /Save/i }));
+
+  await waitFor(() => {
+    expect(postCreationalScope.isDone()).toBeTruthy();
+    expect(errorNoticeMock).not.toHaveBeenCalled();
+    expect(successNoticeMock.mock.calls).toEqual([['Location inventory created successfully']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
+});
+
+test('#1384 - correctly updates location inventory', async () => {
+  const thisProps = {
+    ...props,
+    initialValues: {
+      // TODO - hack -> Could not yet find a way to reliably mock dates when simulating datepicker
+      deliveryDate: dayjs('2024-03-25T08:24:51.149Z'),
+      accountabilityEndDate: dayjs('2024-03-26T08:24:53.645Z'),
+    },
+  };
+  const preFetchScope = nock(props.fhirBaseURL)
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _getpagesoffset: 0,
+      _count: 20,
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, productsList)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefSectionValueSetURI}`)
+    .reply(200, unicefSectionValueSet)
+    .get(`/${valueSetResourceType}/$expand?url=${unicefDonorValueSetURI}`)
+    .reply(200, unicefDonorsValueSet)
+    .persist();
+
+  const updatedAllInventoryList = {
+    ...allInventoryList,
+    entry: [
+      ...allInventoryList.entry,
+      { item: { reference: 'List/9f4edfe3-ac84-449f-8640-f0d297e75ff5' } },
+    ],
+  };
+  const postCreationalScope = nock(props.fhirBaseURL)
+    .put(`/${groupResourceType}/${mockResourceId}`, createdInventoryGroup1)
+    .reply(201, createdInventoryGroup1)
+    .get(`/${listResourceType}/_search`)
+    .query({
+      subject: props.servicePointObj.id,
+      code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
+    })
+    .reply(200, locationInventoryList1384Bundle)
+    .get(`/${listResourceType}/${listResourceId}`)
+    .reply(200, allInventoryList)
+    .put(`/${listResourceType}/${updatedLocationInventoryList1.id}`, updatedLocationInventoryList1)
+    .reply(201, updatedLocationInventoryList1)
+    .put(`/${listResourceType}/${listResourceId}`, updatedAllInventoryList)
+    .reply(201, updatedAllInventoryList)
     .persist();
 
   const successNoticeMock = jest

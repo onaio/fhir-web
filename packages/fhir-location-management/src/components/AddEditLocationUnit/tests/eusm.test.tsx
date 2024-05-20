@@ -232,3 +232,37 @@ test('editing works correctly', async () => {
   expect(notificationErrorMock).not.toHaveBeenCalled();
   expect(nock.isDone()).toBeTruthy();
 });
+
+test('Back search param works correctly', async () => {
+  const backToPath = '/location/view';
+  const history = createMemoryHistory();
+  history.push(`/add/${createdLoc.id}?back_to=${backToPath}`);
+
+  nock(props.fhirBaseURL)
+    .get(`/${locationResourceType}/${createdLoc.id}`)
+    .reply(200, createdLoc)
+    .get(`/${locationHierarchyResourceType}/_search`)
+    .query({ _id: props.fhirRootLocationId })
+    .reply(200, fhirHierarchy)
+    .get(`/${valueSetResourceType}/$expand?url=${eusmServicePointValueSetURI}`)
+    .reply(200, servicePointTypeValueSet)
+    .persist();
+
+  nock(props.fhirBaseURL).put(`/Location/${editedLoc.id}`, editedLoc).reply(201, {}).persist();
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitFor(async () => {
+    for (const loader of document.querySelectorAll('.anticon-loading,.anticon-spin,.ant-spin')) {
+      await waitForElementToBeRemoved(loader);
+    }
+  });
+
+  const cancel = screen.getByRole('button', { name: 'Cancel' });
+  userEvent.click(cancel);
+  expect(history.location.pathname).toEqual(backToPath);
+});

@@ -2,9 +2,9 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useMls } from '../../../mls';
 import React from 'react';
 import { ResourceDetails } from '@opensrp/react-utils';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
-import { URL_LOCATION_UNIT_EDIT } from '../../../constants';
+import { BACK_SEARCH_PARAM, URL_LOCATION_UNIT_EDIT } from '../../../constants';
 
 const GeometryRender = ({ geometry }: { geometry?: string }) => {
   let formattedGeo = geometry ?? '';
@@ -44,6 +44,10 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     description,
     administrativeLevel,
   } = parseLocationDetails(location);
+
+  const loc = useLocation();
+  const currentPath = loc.pathname;
+  const backToParam = `${BACK_SEARCH_PARAM}=${currentPath}`;
 
   const otherDetailsMap = {
     [t('Location Name')]: name,
