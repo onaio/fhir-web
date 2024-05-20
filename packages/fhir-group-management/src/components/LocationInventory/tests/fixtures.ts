@@ -112,7 +112,7 @@ export const productCharacteristics = [
       coding: [
         {
           code: '33467722',
-          display: 'Quantity ',
+          display: 'Quantity',
           system: 'http://smartregister.org/codes',
         },
       ],
@@ -1309,7 +1309,7 @@ export const createdInventoryGroup1 = {
     {
       code: {
         coding: [
-          { system: 'http://smartregister.org/codes', code: '33467722', display: 'Quantity ' },
+          { system: 'http://smartregister.org/codes', code: '33467722', display: 'Quantity' },
         ],
       },
       valueQuantity: { value: '20' },
