@@ -89,7 +89,7 @@ export const conditionSideViewData = (resource: ICondition, t: TFunction) => {
 };
 
 /**
- * Get details desplayed on conditions detailed view
+ * Get details displayed on conditions detailed view
  *
  * @param resource - conditions object
  * @param t - translation function

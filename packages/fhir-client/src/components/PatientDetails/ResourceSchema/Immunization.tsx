@@ -79,7 +79,7 @@ export const immunizationSideViewData = (resource: IImmunization, t: TFunction) 
 };
 
 /**
- * Get details desplayed on immunization detailed view
+ * Get details displayed on immunization detailed view
  *
  * @param resource - immunization object
  * @param t - translation function

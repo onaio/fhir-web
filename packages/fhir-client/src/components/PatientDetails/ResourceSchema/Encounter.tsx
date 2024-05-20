@@ -11,10 +11,12 @@ export const parseEncounter = (encounter: IEncounter) => {
     type: getCodeableConcepts(get(encounter, 'type')),
     reason: getCodeableConcepts(get(encounter, 'reasonCode')),
     serviceType: getCodeableConcepts(get(encounter, 'serviceType')),
+    priority: getCodeableConcepts(get(encounter, 'priority')),
     status: get(encounter, 'status'),
     classCode: get(encounter, 'class'),
     period: get(encounter, 'period'),
-    duration: get(encounter, 'duration'),
+    duration: get(encounter, 'length'),
+    serviceProvider: get(encounter, 'serviceProvider'),
     id: get(encounter, 'id'),
     episodeOfCare: get(encounter, 'episodeOfCare'),
   };
@@ -75,3 +77,45 @@ export const encounterPreviewExtractor = (resource: IEncounter, t: TFunction) =>
     },
   };
 };
+
+/**
+ * Get details displayed on encounter detailed view
+ *
+ * @param resource - encounter object
+ * @param t - translation function
+ */
+export function encounterDetailProps(resource: IEncounter, t: TFunction) {
+  const {
+    reason,
+    period,
+    classCode,
+    id,
+    status,
+    serviceType,
+    episodeOfCare,
+    type,
+    serviceProvider,
+    priority,
+    duration,
+  } = parseEncounter(resource);
+  const bodyData = {
+    [t('Class')]: classCode.display ?? classCode.code,
+    [t('Type')]: <FhirCodesTooltips codings={type} />,
+    [t('Priority')]: <FhirCodesTooltips codings={priority} />,
+    [t('Reason')]: <FhirCodesTooltips codings={reason} />,
+    [t('Period')]: <FhirPeriod {...period} />,
+    [t('Service provider')]: serviceProvider,
+    [t('Encounter Duration')]: duration && `${duration.value} ${duration.unit}`,
+    [t('Service Type')]: <FhirCodesTooltips codings={serviceType} />,
+    [t('Episode of care')]: episodeOfCare?.[0]?.display ?? episodeOfCare?.[0]?.reference,
+  };
+  return {
+    title: classCode.display ?? classCode.code,
+    headerLeftData: { [t('Id')]: id },
+    bodyData,
+    status: {
+      title: status,
+      color: 'green',
+    },
+  };
+}
