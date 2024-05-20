@@ -65,9 +65,9 @@ const getStatusTitle = (verificationStatus: Coding[]) => {
   return (verificationStatus[0]?.display ?? verificationStatus[0]?.code) as string;
 };
 
-export const conditionSideViewData = (resoure: ICondition, t: TFunction) => {
+export const conditionSideViewData = (resource: ICondition, t: TFunction) => {
   const { id, condition, verificationStatus, category, stage, clinicalStatus, onsetDateTime } =
-    parseCondition(resoure);
+    parseCondition(resource);
   const headerLeftData = {
     [t('ID')]: id,
   };
@@ -91,10 +91,10 @@ export const conditionSideViewData = (resoure: ICondition, t: TFunction) => {
 /**
  * Get details desplayed on conditions detailed view
  *
- * @param resoure - conditions object
+ * @param resource - conditions object
  * @param t - translation function
  */
-export function conditionDetailsProps(resoure: ICondition, t: TFunction) {
+export function conditionDetailsProps(resource: ICondition, t: TFunction) {
   const {
     id,
     condition,
@@ -106,7 +106,7 @@ export function conditionDetailsProps(resoure: ICondition, t: TFunction) {
     clinicalStatus,
     onsetDateTime,
     abatementDateTime,
-  } = parseCondition(resoure);
+  } = parseCondition(resource);
   const headerRightData = {
     [t('Date created')]: recordedDate,
   };

@@ -19,6 +19,7 @@ import {
 import { patientDetailsProps } from './ResourceSchema/Patient';
 import { Dictionary } from '@onaio/utils';
 import { conditionDetailsProps } from './ResourceSchema/Condition';
+import { carePlanDetailsProps } from './ResourceSchema/CarePlan';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -94,10 +95,11 @@ export function sidePreviewDetailsExtractor<T extends IResource>(
 /**
  * Gets resource detail props
  *
- * @param resourceType - resource tyoe
+ * @param resourceType - resource type
  */
 export const getResourceDetailsProps = (resourceType: string) => {
   const resourceDetailProps: Dictionary = {
+    [carePlanResourceType]: carePlanDetailsProps,
     [patientResourceType]: patientDetailsProps,
     [conditionResourceType]: conditionDetailsProps,
   };

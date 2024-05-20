@@ -66,6 +66,7 @@ export const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientD
   const populatedResourceDetailsProps = {
     resourceQueryParams: queryParamsFactory(fhirBaseURL, activeResourceType, activeResourceId),
     resourceDetailsPropsGetter: getResourceDetailsProps(activeResourceType),
+    fhirBaseURL,
   };
   const tableTabsProps = {
     fhirBaseURL,

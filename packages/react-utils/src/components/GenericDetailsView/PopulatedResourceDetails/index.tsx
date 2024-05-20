@@ -8,9 +8,14 @@ import { TFunction } from '@opensrp/i18n';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 
 export interface PopulatedResourceDetailsProps<ResourceType> {
-  resourceDetailsPropsGetter: (data: ResourceType, t: TFunction) => ResourceDetailsProps;
+  resourceDetailsPropsGetter: (
+    data: ResourceType,
+    t: TFunction,
+    fhirBaseURL?: string
+  ) => ResourceDetailsProps;
   resourceQueryParams: UseQueryOptions<ResourceType, Error>;
   descriptionProps?: DescriptionsProps;
+  fhirBaseURL?: string;
 }
 
 /**
@@ -21,12 +26,12 @@ export interface PopulatedResourceDetailsProps<ResourceType> {
 export function PopulatedResourceDetails<ResourceType = IResource>(
   props: PopulatedResourceDetailsProps<ResourceType>
 ) {
-  const { resourceDetailsPropsGetter, resourceQueryParams, descriptionProps } = props;
+  const { resourceDetailsPropsGetter, resourceQueryParams, descriptionProps, fhirBaseURL } = props;
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery(resourceQueryParams);
   const resourceDetailsProps = useMemo(
-    () => (data ? resourceDetailsPropsGetter(data, t) : undefined),
+    () => (data ? resourceDetailsPropsGetter(data, t, fhirBaseURL) : undefined),
     [data, resourceDetailsPropsGetter] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
