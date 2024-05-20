@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { CommodityForm } from '../../ProductForm';
 import { useParams } from 'react-router';
-import { LIST_COMMODITY_URL, unitOfMeasure } from '../../../constants';
+import { LIST_COMMODITY_URL, type, unitOfMeasure } from '../../../constants';
 import { Spin } from 'antd';
 import { BodyLayout } from '@opensrp/react-utils';
 import { BrokenPage } from '@opensrp/react-utils';
@@ -74,6 +74,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           EusmGroupFormFields
         >
           hidden={[unitOfMeasure]}
+          disabled={[type]}
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
           cancelUrl={LIST_COMMODITY_URL}
