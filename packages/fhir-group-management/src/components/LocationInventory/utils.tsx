@@ -25,8 +25,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { TFunction } from '@opensrp/i18n';
 import { Rule } from 'rc-field-form/lib/interface';
 import {
-  attractiveCharacteristicCode,
   accountabilityCharacteristicCode,
+  attractiveCharacteristicCoding,
 } from '../../helpers/utils';
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
@@ -75,7 +75,7 @@ export const handleDisabledFutureDates = (current?: Dayjs) => {
 };
 
 /**
- * check if product is an atrractive item
+ * check if product is an attractive item
  *
  * @param product - product data
  */
@@ -83,10 +83,11 @@ export const isAttractiveProduct = (product?: IGroup) => {
   if (!product) {
     return false;
   }
-  const isAttractive = product.characteristic?.some(
-    (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
+  const attractiveCharacteristic = getCharacteristicWithCoding(
+    product.characteristic ?? [],
+    attractiveCharacteristicCoding
   );
-  return isAttractive as boolean;
+  return !!attractiveCharacteristic?.valueBoolean;
 };
 
 /**
