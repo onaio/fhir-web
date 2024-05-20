@@ -94,7 +94,7 @@ const getPlandefinitionTitle = (instantiatesCanonical?: Canonical[], fhirBaseURL
 /**
  * Get details desplayed on care plan detailed view
  *
- * @param resource - conditions object
+ * @param resource - care plan object
  * @param t - translation function
  * @param fhirBaseURL - fhir base URL
  */

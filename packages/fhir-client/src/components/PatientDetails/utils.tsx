@@ -14,12 +14,14 @@ import {
   LIST_PATIENTS_URL,
   carePlanResourceType,
   conditionResourceType,
+  immunizationResourceType,
   patientResourceType,
 } from '../../constants';
 import { patientDetailsProps } from './ResourceSchema/Patient';
 import { Dictionary } from '@onaio/utils';
 import { conditionDetailsProps } from './ResourceSchema/Condition';
 import { carePlanDetailsProps } from './ResourceSchema/CarePlan';
+import { immunizationDetailProps } from './ResourceSchema/Immunization';
 
 export type ResourceTypes = ICarePlan | ICondition | ITask | IImmunization | IEncounter;
 
@@ -102,6 +104,7 @@ export const getResourceDetailsProps = (resourceType: string) => {
     [carePlanResourceType]: carePlanDetailsProps,
     [patientResourceType]: patientDetailsProps,
     [conditionResourceType]: conditionDetailsProps,
+    [immunizationResourceType]: immunizationDetailProps,
   };
   const targetResourceDetailProps = resourceDetailProps[resourceType];
   return targetResourceDetailProps ?? patientDetailsProps;

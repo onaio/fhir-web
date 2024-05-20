@@ -9,10 +9,15 @@ export const parseImmunization = (obj: IImmunization) => {
   return {
     status: get(obj, 'status'),
     vaccineCode: getCodeableConcepts(get(obj, 'vaccineCode')),
+    statusReason: getCodeableConcepts(get(obj, 'statusReason')),
     occurrenceDateTime: get(obj, 'occurrenceDateTime'),
+    reportOrigin: getCodeableConcepts(get(obj, 'reportOrigin')),
     reasonCode: getCodeableConcepts(get(obj, 'reasonCode')),
     dateRecorded: get(obj, 'recorded'),
     protocolApplied: get(obj, 'protocolApplied'),
+    primarySource: get(obj, 'primarySource'),
+    doseQuantity: get(obj, 'doseQuantity'),
+    expirationDate: get(obj, 'expirationDate'),
     id: get(obj, 'id'),
   };
 };
@@ -50,9 +55,9 @@ export const immunizationSearchParams = (patientId: string) => {
   return { patient: patientId };
 };
 
-export const immunizationSideViewData = (resoure: IImmunization, t: TFunction) => {
+export const immunizationSideViewData = (resource: IImmunization, t: TFunction) => {
   const { id, reasonCode, status, vaccineCode, protocolApplied, dateRecorded } =
-    parseImmunization(resoure);
+    parseImmunization(resource);
   const headerLeftData = {
     [t('ID')]: id,
   };
@@ -72,3 +77,46 @@ export const immunizationSideViewData = (resoure: IImmunization, t: TFunction) =
     },
   };
 };
+
+/**
+ * Get details desplayed on immunization detailed view
+ *
+ * @param resource - immunization object
+ * @param t - translation function
+ */
+export function immunizationDetailProps(resource: IImmunization, t: TFunction) {
+  const {
+    id,
+    reasonCode,
+    status,
+    vaccineCode,
+    protocolApplied,
+    dateRecorded,
+    expirationDate,
+    occurrenceDateTime,
+    doseQuantity,
+    primarySource,
+    reportOrigin,
+  } = parseImmunization(resource);
+  const bodyData = {
+    [t('Vaccine Admnistered')]: <FhirCodesTooltips codings={vaccineCode} />,
+    [t('Administration Date')]: occurrenceDateTime,
+    [t('Vaccine expiry date')]: expirationDate,
+    [t('protocol applied')]: protocolApplied?.[0]?.doseNumberPositiveInt,
+    [t('Dose quantity')]: doseQuantity?.unit,
+    [t('status')]: status,
+    [t('Primary source')]: primarySource,
+    [t('Report origin')]: <FhirCodesTooltips codings={reportOrigin} />,
+    [t('Reason')]: <FhirCodesTooltips codings={reasonCode} />,
+  };
+  return {
+    title: <FhirCodesTooltips codings={vaccineCode} />,
+    headerRightData: { [t('Date created')]: dateRecorded },
+    headerLeftData: { [t('Id')]: id },
+    bodyData,
+    status: {
+      title: status,
+      color: 'green',
+    },
+  };
+}
