@@ -73,8 +73,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
           { group: IGroup; binary?: IBinary; binaryChanged: boolean },
           EusmGroupFormFields
         >
-          hidden={[unitOfMeasure]}
-          disabled={[type]}
+          hidden={[unitOfMeasure, type]}
           fhirBaseUrl={fhirBaseUrl}
           initialValues={initialValues}
           cancelUrl={LIST_COMMODITY_URL}
