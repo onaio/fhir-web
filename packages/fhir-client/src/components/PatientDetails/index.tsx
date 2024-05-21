@@ -5,7 +5,7 @@ import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
 import { getResourceDetailsProps, queryParamsFactory } from './utils';
-import { PopulatedTableTabs } from './PopulatedTableTabs';
+import { MemoizePopulatedTableTabs } from './PopulatedTableTabs';
 import './index.css';
 
 // Interface for route params
@@ -78,7 +78,7 @@ export const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientD
     <BodyLayout headerProps={headerProps}>
       <div className="details-content">
         <PopulatedResourceDetails<IPatient> {...populatedResourceDetailsProps} />
-        {isPatientDetailsPage && <PopulatedTableTabs {...tableTabsProps} />}
+        {isPatientDetailsPage && <MemoizePopulatedTableTabs {...tableTabsProps} />}
       </div>
     </BodyLayout>
   );

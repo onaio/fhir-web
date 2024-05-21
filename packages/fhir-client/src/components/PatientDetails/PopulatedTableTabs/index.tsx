@@ -216,3 +216,5 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
 
   return <GenericTabsView {...tabViewProps} />;
 };
+
+export const MemoizePopulatedTableTabs = React.memo(PopulatedTableTabs);
