@@ -35,7 +35,7 @@ const SearchForm = (props: SearchFormProps) => {
   const { onChangeHandler, wrapperClassName, ...passedOnProps } = props;
   // HACK to preserve defaultProps back compatibility
   const { t } = useTranslation();
-  passedOnProps['placeholder'] = props.placeholder ?? t('Search by name ...');
+  passedOnProps['placeholder'] = props.placeholder ?? t('Search ...');
 
   /**
    * inbuilt default onChangeHandler that debounces the passed changeHandler
