@@ -47,7 +47,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
 
   const loc = useLocation();
   const currentPath = loc.pathname;
-  const backToParam = `${BACK_SEARCH_PARAM}=${currentPath}`;
+  const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: currentPath }).toString();
 
   const otherDetailsMap = {
     [t('Location Name')]: name,
@@ -71,7 +71,9 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       title={name}
       headerLeftData={headerLeftData}
       headerRightData={dateCreatedKeyPairing}
-      headerActions={<Link to={`${URL_LOCATION_UNIT_EDIT}/${id}`}>{t('Edit details')}</Link>}
+      headerActions={
+        <Link to={`${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`}>{t('Edit details')}</Link>
+      }
       bodyData={otherDetailsMap}
     />
   );
