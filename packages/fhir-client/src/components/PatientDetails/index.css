@@ -1,0 +1,21 @@
+.details-content {
+  background: #FFFFFF;
+  top: 155px;
+  left: 286px;
+  padding: 16px;
+  gap: 14px;
+  border-radius: 12px;
+}
+
+.details-content .main-content {
+  padding: 0px;
+}
+
+.details-content .ant-tabs-tab-btn {
+  padding-left: 16px;
+}
+
+.details-content .view-details-content {
+    padding: 0px;
+}
+

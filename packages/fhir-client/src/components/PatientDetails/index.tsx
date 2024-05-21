@@ -6,6 +6,7 @@ import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
 import { getResourceDetailsProps, queryParamsFactory } from './utils';
 import { PopulatedTableTabs } from './PopulatedTableTabs';
+import './index.css';
 
 // Interface for route params
 interface RouteParams {
@@ -75,8 +76,10 @@ export const PatientDetails: React.FC<PatientDetailPropTypes> = (props: PatientD
 
   return (
     <BodyLayout headerProps={headerProps}>
-      <PopulatedResourceDetails<IPatient> {...populatedResourceDetailsProps} />
-      {isPatientDetailsPage && <PopulatedTableTabs {...tableTabsProps} />}
+      <div className="details-content">
+        <PopulatedResourceDetails<IPatient> {...populatedResourceDetailsProps} />
+        {isPatientDetailsPage && <PopulatedTableTabs {...tableTabsProps} />}
+      </div>
     </BodyLayout>
   );
 };
