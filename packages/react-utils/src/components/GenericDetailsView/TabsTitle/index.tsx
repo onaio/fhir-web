@@ -2,7 +2,7 @@ import React from 'react';
 import { FHIRServiceClass } from '../../../helpers/dataLoaders';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useQuery } from 'react-query';
-import { Badge } from 'antd';
+import { Badge, Spin } from 'antd';
 import './index.css';
 
 export interface TabsTitleProps {
@@ -19,11 +19,14 @@ export const TabsTitle = (props: TabsTitleProps) => {
     ...resourceFilters,
   };
   const filterString = Object.values(summaryFilters).join(',');
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [resourceType, filterString],
     queryFn: async () =>
       await new FHIRServiceClass<IBundle>(fhirBaseURL, resourceType).list(summaryFilters),
   });
+  if (isLoading) {
+    return <Spin size="small" className="custom-spinner" />;
+  }
   if (error || !data) {
     return <div>{title}</div>;
   }

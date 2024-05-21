@@ -40,7 +40,7 @@ export function PopulatedResourceDetails<ResourceType = IResource>(
   }
 
   if (error) {
-    return <BrokenPage errorMessage={t('There was a problem fetching the patient')} />;
+    return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
   return (
