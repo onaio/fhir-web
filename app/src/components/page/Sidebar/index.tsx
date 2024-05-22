@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Layout, Menu } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
@@ -10,6 +10,7 @@ import { COLLAPSED_LOGO_SRC, MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../..
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 import { RoleContext } from '@opensrp/rbac';
+import { BarsOutlined } from '@ant-design/icons';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -68,23 +69,24 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     const { activePaths } = getActivePath(location.pathname, routes);
     setCollapsedKeys(activePaths.concat(...collapsedKeys));
   }, [location.pathname, routes]); // eslint-disable-line react-hooks/exhaustive-deps
-  const logoSrc = collapsed ? COLLAPSED_LOGO_SRC : MAIN_LOGO_SRC;
-
   return (
     <Layout.Sider
       collapsible
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
+      trigger={null}
       width="275px"
       className="layout-sider"
     >
-      <div className="logo">
-        <Link to={URL_HOME}>
-          <img src={logoSrc} alt="The logo" />
+      <div className={`logo ${collapsed ? 'small-logo' : ''}`}>
+        {collapsed ?
+        <Button onClick={() => setCollapsed(false)} type='link'> <img src={COLLAPSED_LOGO_SRC} alt="The logo" />  </Button>:
+        <>
+          <Link hidden={collapsed} to={URL_HOME}>
+          <img src={MAIN_LOGO_SRC} alt="The logo" />
         </Link>
-        {OPENSRP_WEB_VERSION.length > 0 ? (
-          <p className="sidebar-version">{OPENSRP_WEB_VERSION}</p>
-        ) : null}
+        <Button className='collapse-icon'  onClick={() => setCollapsed(true)} type='link'><BarsOutlined /></Button>
+        </>}
       </div>
 
       <Menu
