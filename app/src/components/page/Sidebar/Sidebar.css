@@ -34,6 +34,10 @@
   background: #141414 !important;
 }
 
+.ant-menu-dark.ant-menu-submenu > .ant-menu {
+  background: #141414 !important;
+}
+
 .sidebar-icons {
   font-size: 18px !important;
   vertical-align: middle;
