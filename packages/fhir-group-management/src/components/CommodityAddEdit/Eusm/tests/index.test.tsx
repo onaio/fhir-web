@@ -26,7 +26,6 @@ import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { photoUploadCharacteristicCode } from '../../../../helpers/utils';
 import { cloneDeep } from 'lodash';
-import { fillSearchableSelect } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
