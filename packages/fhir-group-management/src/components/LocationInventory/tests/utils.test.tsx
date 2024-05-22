@@ -49,13 +49,30 @@ describe('fhir-group-management/src/components/LocationInventory/utils', () => {
     const noAttractiveCharacteristic = commodity1.characteristic?.filter(
       (char) => char.code.coding?.[0].code !== attractiveCharacteristicCode
     );
-    const newCommodity = {
+    const nonAttractiveItem = {
       ...commodity1,
       characteristic: noAttractiveCharacteristic,
     };
+    const attractiveItem = {
+      ...commodity1,
+      characteristic: [
+        {
+          code: {
+            coding: [
+              {
+                system: 'http://smartregister.org/codes',
+                code: '23435363',
+                display: 'Attractive Item code',
+              },
+            ],
+          },
+          valueBoolean: true,
+        },
+      ],
+    };
     expect(isAttractiveProduct()).toEqual(false);
-    expect(isAttractiveProduct(commodity1)).toEqual(true);
-    expect(isAttractiveProduct(newCommodity)).toEqual(false);
+    expect(isAttractiveProduct(attractiveItem)).toEqual(true);
+    expect(isAttractiveProduct(nonAttractiveItem)).toEqual(false);
   });
 
   it('get item accounterbility months works as expected', () => {
