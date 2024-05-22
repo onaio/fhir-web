@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
 import { getActivePath } from './utils';
-import { MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
+import { COLLAPSED_LOGO_SRC, MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 import { RoleContext } from '@opensrp/rbac';
@@ -24,6 +24,7 @@ const defaultSidebarProps: Partial<SidebarProps> = {
 
 /** The Sidebar component */
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
+  const [collapsed, setCollapsed] = useState(false);
   const { t } = useTranslation();
   const { extraData } = props;
   const { roles } = extraData;
@@ -67,12 +68,19 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     const { activePaths } = getActivePath(location.pathname, routes);
     setCollapsedKeys(activePaths.concat(...collapsedKeys));
   }, [location.pathname, routes]); // eslint-disable-line react-hooks/exhaustive-deps
+  const logoSrc = collapsed ? COLLAPSED_LOGO_SRC : MAIN_LOGO_SRC;
 
   return (
-    <Layout.Sider width="275px" className="layout-sider">
+    <Layout.Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={(value) => setCollapsed(value)}
+      width="275px"
+      className="layout-sider"
+    >
       <div className="logo">
         <Link to={URL_HOME}>
-          <img src={MAIN_LOGO_SRC} alt="The logo" />
+          <img src={logoSrc} alt="The logo" />
         </Link>
         {OPENSRP_WEB_VERSION.length > 0 ? (
           <p className="sidebar-version">{OPENSRP_WEB_VERSION}</p>
