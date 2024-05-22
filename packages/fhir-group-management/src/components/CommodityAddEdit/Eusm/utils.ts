@@ -48,12 +48,12 @@ import {
   unitOfMeasureCharacteristic,
   smartRegisterCodeSystem,
 } from '../../../helpers/utils';
-import { TypeOfGroup } from '../../ProductForm/utils';
 import { GroupFormFields } from '../../ProductForm/types';
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { IBinary } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBinary';
 import { UploadFile } from 'antd';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
 
 export type EusmGroupFormFields = GroupFormFields<{ group: IGroup; binary?: IBinary }>;
 
@@ -91,7 +91,7 @@ export const validationRulesFactory = (t: TFunction) => {
       { required: true, message: t('Required') },
     ] as Rule[],
     [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
-    [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup), required: true }] as Rule[],
+    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes), required: true }] as Rule[],
     [isAttractiveItem]: [{ type: 'boolean' }] as Rule[],
     [availability]: [{ type: 'string' }, { required: true, message: t('Required') }] as Rule[],
     [condition]: [{ type: 'string' }] as Rule[],
@@ -333,7 +333,11 @@ export async function getProductImagePayload(
  */
 export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFormFields => {
   if (!obj) {
-    return { initialObject: { group: { code: defaultCode } }, active: true } as EusmGroupFormFields;
+    return {
+      initialObject: { group: { code: defaultCode } },
+      active: true,
+      type: R4GroupTypeCodes.SUBSTANCE,
+    } as EusmGroupFormFields;
   }
   const { id, name, active, identifier, type } = obj;
 
@@ -391,7 +395,7 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFor
     materialNumber: get(identifierObj, '0.value'),
     active,
     name,
-    type,
+    type: type ?? R4GroupTypeCodes.SUBSTANCE,
     ...formFieldsFromCharacteristics,
     productImage: productImageFromUrl,
   };
@@ -471,7 +475,7 @@ export const generateGroupPayload = async (
   }
 
   if (type) {
-    payload.type = type as TypeOfGroup;
+    payload.type = type as R4GroupTypeCodes;
   }
 
   const existingCharacteristics = initialGroupObject?.characteristic ?? [];

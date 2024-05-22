@@ -269,26 +269,39 @@ function CommodityForm<
         <InputNumber disabled={disabled.includes(accountabilityPeriod)} min={0} />
       </FormItem>
 
-      <Form.Item
-        id={productImage}
-        hidden={hidden.includes(productImage)}
-        name={productImage}
-        label={t('Photo of the product')}
-        valuePropName="fileList"
-        getValueFromEvent={normalizeFileInputEvent}
-      >
-        <Upload
-          beforeUpload={() => false}
-          accept="image/*"
-          multiple={false}
-          listType="picture-card"
-          maxCount={1}
-        >
-          <button style={{ border: 0, background: 'none' }} type="button">
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </button>
-        </Upload>
+      <Form.Item noStyle dependencies={[productImage]}>
+        {({ getFieldValue }) => {
+          return (
+            <Form.Item
+              id={productImage}
+              hidden={hidden.includes(productImage)}
+              name={productImage}
+              label={t('Photo of the product')}
+              valuePropName="fileList"
+              getValueFromEvent={normalizeFileInputEvent}
+            >
+              <Upload
+                id={productImage}
+                beforeUpload={() => false}
+                accept="image/*"
+                multiple={false}
+                listType="picture-card"
+                maxCount={1}
+              >
+                {!getFieldValue(productImage)?.length ? (
+                  <button
+                    data-testid="upload-button"
+                    style={{ border: 0, background: 'none' }}
+                    type="button"
+                  >
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </button>
+                ) : null}
+              </Upload>
+            </Form.Item>
+          );
+        }}
       </Form.Item>
 
       <FormItem {...tailLayout}>

@@ -22,8 +22,9 @@ import {
   snomedCodeSystem,
   supplyMgSnomedCode,
 } from '../../../helpers/utils';
-import { TypeOfGroup, UnitOfMeasure } from '../../ProductForm/utils';
+import { UnitOfMeasure } from '../../ProductForm/utils';
 import { GroupFormFields } from '../../ProductForm/types';
+import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
 
 export const defaultCharacteristic = {
   code: {
@@ -55,7 +56,7 @@ export const validationRulesFactory = (t: TFunction) => {
       { required: true, message: t('Required') },
     ] as Rule[],
     [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
-    [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup), required: true }] as Rule[],
+    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes), required: true }] as Rule[],
     [unitOfMeasure]: [
       { type: 'enum', enum: Object.values(UnitOfMeasure), required: true },
     ] as Rule[],
@@ -133,7 +134,7 @@ export const generateGroupPayload = (
   ];
 
   if (type) {
-    payload.type = type as TypeOfGroup;
+    payload.type = type as R4GroupTypeCodes;
   }
 
   if (unitOfMeasure) {
