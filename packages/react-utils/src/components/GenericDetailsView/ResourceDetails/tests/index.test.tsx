@@ -18,13 +18,11 @@ const props = {
     Alias: 'Clinic',
     'Administrative Level': 2,
   },
-  bodyDataFunction: () => <div>Additional Content</div>, // Added bodyDataFunction
   footer: (
     <div>
       <Button type="link" onClick={() => console.log('View details clicked')}>
         view details
-      </Button>{' '}
-      // Added onClick handler
+      </Button>
     </div>
   ),
 };
@@ -59,10 +57,20 @@ test('ResourceDetails component renders correctly', () => {
   expect(screen.getByText(/Active/)).toBeInTheDocument();
   expect(screen.getByText(/Active/).closest('.status')).toHaveStyle('background-color: green');
 
-  // Test BodyData Function
-  expect(screen.getByText(/Additional Content/)).toBeInTheDocument();
-
   // Test Footer Button Click
   fireEvent.click(screen.getByText('view details'));
   expect(console.log).toHaveBeenCalledWith('View details clicked');
+});
+
+// New test case for bodyData as a render prop
+test('ResourceDetails component renders bodyData as a render prop', () => {
+  const renderPropProps = {
+    ...props,
+    bodyData: () => <div>Rendered Content from Prop</div>, // Using bodyData as a render prop
+  };
+
+  render(<ResourceDetails {...renderPropProps} />);
+
+  // Check if the rendered content from the bodyData render prop is in the document
+  expect(screen.getByText(/Rendered Content from Prop/)).toBeInTheDocument();
 });

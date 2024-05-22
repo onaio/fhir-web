@@ -1,5 +1,5 @@
-import { Divider, Tag, Typography } from 'antd';
 import React from 'react';
+import { Divider, Tag, Typography } from 'antd';
 import {
   KeyValuesDescriptions,
   ListFlatKeyValues,
@@ -21,6 +21,8 @@ export interface ResourceDetailsProps {
   };
   bodyData: Record<string, React.ReactNode> | (() => React.ReactNode);
   footer?: React.ReactNode;
+  theme?: 'default' | 'light';
+  column?: number;  // Add column prop here
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
@@ -33,7 +35,10 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     footer,
     status,
     headerLeftDataClasses,
+    theme = 'default',
+    column = 2,  // Default column value
   } = props;
+
   return (
     <div data-testid="details-section" className="details-section">
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -62,9 +67,8 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
       {typeof bodyData === 'function' ? (
         bodyData()
       ) : (
-        <KeyValuesDescriptions theme="default" data={bodyData} />
+        <KeyValuesDescriptions theme={theme} data={bodyData} column={column} />
       )}
-      {/*<KeyValuesDescriptions theme="default" data={bodyData} />*/}
       {footer && (
         <>
           <Divider className="divider" />

@@ -73,7 +73,13 @@ export const columns = (t: TFunction) =>
       // eslint-disable-next-line react/display-name
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}?${viewDetailsQuery}=${record.id}`} className="m-0 p-1">
+          <Link
+            to={{
+              pathname: LIST_PATIENTS_URL,
+              search: record.id ? `?${viewDetailsQuery}=${record.id}` : undefined,
+            }}
+            className="m-0 p-1"
+          >
             {t('View')}
           </Link>
         </span>

@@ -1,27 +1,29 @@
 import React from 'react';
-import { Col, Button, Descriptions } from 'antd';
+import { Col, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import {
   BrokenPage,
   FHIRServiceClass,
   ResourceDetails,
-  SingleKeyNestedValue,
   useSearchParams,
   viewDetailsQuery,
+  KeyValuesDescriptions,
 } from '@opensrp/react-utils';
 import { LIST_PATIENTS_URL, patientResourceType } from '../../constants';
 import { useTranslation } from '../../mls';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { getPatientName } from '../PatientsList/utils';
 import { Link } from 'react-router-dom';
+import { Resource404 } from '@opensrp/react-utils'; // Import the Resource404 component
 
 export interface PatientListViewProps {
   fhirBaseURL: string;
+  column?: number; // Added column prop
 }
 
-const PatientListView = (props: PatientListViewProps) => {
-  const { fhirBaseURL } = props;
+const PatientDetailsOverview = (props: PatientListViewProps) => {
+  const { fhirBaseURL, column = 2 } = props; // Default column value
   const { t } = useTranslation();
   const { removeParam, sParams } = useSearchParams();
   const patientId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -35,12 +37,18 @@ const PatientListView = (props: PatientListViewProps) => {
     enabled: !!patientId,
   });
 
-  if (error && !data) {
+  if (error) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
   if (!patientId || !data) {
-    return null;
+    return (
+      <Resource404
+        title={t('Patient Not Found')}
+        errorMessage={t('The patient you are looking for does not exist.')}
+        homeUrl={LIST_PATIENTS_URL}
+      />
+    );  // Return Resource404 component with relevant props
   }
 
   const { id, gender, birthDate, address, telecom, identifier, deceasedBoolean, active } = data;
@@ -61,6 +69,16 @@ const PatientListView = (props: PatientListViewProps) => {
       color: 'green',
     };
   }
+
+  const patientInfo = {
+    UUID: identifier && identifier.length > 0 ? identifier[0]?.value : '',
+    Phone: telecom && telecom.length > 0 ? telecom[0].value : '',
+    Address: address?.[0]?.line?.[0] ?? '',
+    'Date of Birth': birthDate,
+    MRN: 'Unknown',
+    Country: address && address.length > 0 ? address[0]?.country : '',
+  };
+
   const resourceDetailsProp = {
     title: getPatientName(data),
     headerLeftData: {
@@ -77,29 +95,7 @@ const PatientListView = (props: PatientListViewProps) => {
         onClick={() => removeParam(viewDetailsQuery)}
       />
     ),
-    bodyData: () => {
-      const patientInfo = {
-        UUID: identifier && identifier.length > 0 ? identifier[0]?.value : '',
-        Phone: telecom && telecom.length > 0 ? telecom[0].value : '',
-        Address: address?.[0]?.line?.[0] ?? '',
-        'Date of Birth': birthDate,
-        MRN: 'Unknown',
-        Country: address && address.length > 0 ? address[0]?.country : '',
-      };
-      return (
-        <Descriptions size="small" column={2}>
-          {Object.entries(patientInfo).map(([key, value]) => {
-            const keyValuePairing = { [key]: value };
-            return (
-              <Descriptions.Item key={key}>
-                <SingleKeyNestedValue data={keyValuePairing} />
-              </Descriptions.Item>
-            );
-          })}
-        </Descriptions>
-      );
-    },
-
+    bodyData: () => <KeyValuesDescriptions data={patientInfo} column={column} theme="default" />,
     footer: (
       <Link to={`${LIST_PATIENTS_URL}/${id}`} className="m-0 p-1">
         {t('View full details')}
@@ -109,9 +105,9 @@ const PatientListView = (props: PatientListViewProps) => {
 
   return (
     <Col className="view-details-content" span={8}>
-      <ResourceDetails {...resourceDetailsProp} />
+      <ResourceDetails {...resourceDetailsProp} column={column} />
     </Col>
   );
 };
 
-export { PatientListView };
+export { PatientDetailsOverview };
