@@ -7,6 +7,7 @@ import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Dictionary } from '@onaio/utils';
 import { CodeableConcept } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/codeableConcept';
+import { dateToLocaleString } from '@opensrp/react-utils';
 
 export const parseTask = (obj: ITask) => {
   return {
@@ -117,7 +118,7 @@ export function taskDetailsProps(resource: ITask, t: TFunction) {
   };
   return {
     title: getTitle(codeableCode, code),
-    headerRightData: { [t('Date created')]: authoredOn },
+    headerRightData: { [t('Date created')]: dateToLocaleString(authoredOn) },
     headerLeftData: { [t('Id')]: id },
     bodyData,
     status: {

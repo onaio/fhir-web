@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { FhirCodesTooltips, getCodeableConcepts, sorterFn } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
+import { dateToLocaleString } from '@opensrp/react-utils';
 
 export const parseImmunization = (obj: IImmunization) => {
   return {
@@ -47,7 +48,7 @@ export const columns = (t: TFunction) => [
     title: t('Administration Date'),
     dataIndex: 'occurrenceDateTime',
     sorter: occuredDateTimeSortFn,
-    render: (value: string) => t('{{val, datetime}}', { val: new Date(value) }),
+    render: (value: string) => t('{{val, datetime}}', { val: dateToLocaleString(value, true) }),
   },
 ];
 
@@ -62,7 +63,7 @@ export const immunizationSideViewData = (resource: IImmunization, t: TFunction) 
     [t('ID')]: id,
   };
   const bodyData = {
-    [t('Date recorded')]: dateRecorded,
+    [t('Date recorded')]: dateToLocaleString(dateRecorded, true),
     [t('protocol applied')]: protocolApplied?.[0]?.doseNumberPositiveInt,
     [t('status')]: status,
     [t('Reason')]: <FhirCodesTooltips codings={reasonCode} />,
@@ -100,8 +101,8 @@ export function immunizationDetailProps(resource: IImmunization, t: TFunction) {
   } = parseImmunization(resource);
   const bodyData = {
     [t('Vaccine Admnistered')]: <FhirCodesTooltips codings={vaccineCode} />,
-    [t('Administration Date')]: occurrenceDateTime,
-    [t('Vaccine expiry date')]: expirationDate,
+    [t('Administration Date')]: dateToLocaleString(occurrenceDateTime, true),
+    [t('Vaccine expiry date')]: dateToLocaleString(expirationDate, true),
     [t('protocol applied')]: protocolApplied?.[0]?.doseNumberPositiveInt,
     [t('Dose quantity')]: doseQuantity?.unit,
     [t('status')]: status,
@@ -111,7 +112,7 @@ export function immunizationDetailProps(resource: IImmunization, t: TFunction) {
   };
   return {
     title: <FhirCodesTooltips codings={vaccineCode} />,
-    headerRightData: { [t('Date created')]: dateRecorded },
+    headerRightData: { [t('Date created')]: dateToLocaleString(dateRecorded) },
     headerLeftData: { [t('Id')]: id },
     bodyData,
     status: {

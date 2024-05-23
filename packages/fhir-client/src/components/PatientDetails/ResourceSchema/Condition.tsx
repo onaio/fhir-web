@@ -5,6 +5,7 @@ import { FhirCodesTooltips, getCodeableConcepts } from '../../../helpers/utils';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import type { TFunction } from '@opensrp/i18n';
 import { ConditionStage } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/conditionStage';
+import { dateToLocaleString } from '@opensrp/react-utils';
 
 export const parseCondition = (obj: ICondition) => {
   return {
@@ -74,7 +75,7 @@ export const conditionSideViewData = (resource: ICondition, t: TFunction) => {
   const bodyData = {
     [t('Category')]: <FhirCodesTooltips codings={category} />,
     [t('stage')]: getStageValue(stage),
-    [t('Onset date')]: onsetDateTime,
+    [t('Onset date')]: dateToLocaleString(onsetDateTime),
     [t('Clinical status')]: <FhirCodesTooltips codings={clinicalStatus} />,
   };
   return {
@@ -108,15 +109,15 @@ export function conditionDetailsProps(resource: ICondition, t: TFunction) {
     abatementDateTime,
   } = parseCondition(resource);
   const headerRightData = {
-    [t('Date created')]: recordedDate,
+    [t('Date created')]: dateToLocaleString(recordedDate),
   };
   const bodyData = {
     [t('Condition')]: <FhirCodesTooltips codings={condition} />,
     [t('Severity')]: <FhirCodesTooltips codings={severity} />,
     [t('Category')]: <FhirCodesTooltips codings={category} />,
     [t('stage')]: getStageValue(stage),
-    [t('Onset date')]: onsetDateTime,
-    [t('Abatement date')]: abatementDateTime,
+    [t('Onset date')]: dateToLocaleString(onsetDateTime),
+    [t('Abatement date')]: dateToLocaleString(abatementDateTime),
     [t('Clinical status')]: <FhirCodesTooltips codings={clinicalStatus} />,
     [t('Verification status')]: getStatusTitle(verificationStatus),
   };

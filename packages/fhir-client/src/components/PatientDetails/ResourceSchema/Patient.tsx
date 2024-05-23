@@ -5,7 +5,7 @@ import { getPatientName, getPatientStatus, patientStatusColor } from '../../Pati
 import { LIST_PATIENTS_URL } from '../../../constants';
 import { Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { Column, ResourceDetailsProps } from '@opensrp/react-utils';
+import { Column, ResourceDetailsProps, dateToLocaleString } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 import { get } from 'lodash';
 
@@ -124,7 +124,7 @@ export function patientDetailsProps(
   const patientName = getPatientName(resource);
   const splitName = patientName ? patientName.split(' ') : [];
   const headerRightData = {
-    [t('Date created')]: meta?.lastUpdated,
+    [t('Date created')]: dateToLocaleString(meta?.lastUpdated),
   };
   const headerLeftData = {
     [t('ID')]: id,
@@ -134,7 +134,7 @@ export function patientDetailsProps(
     [t('First name')]: splitName[0],
     [t('Last name')]: splitName[1],
     [t('UUID')]: get(resource, 'identifier.0.value'),
-    [t('Date of birth')]: birthDate,
+    [t('Date of birth')]: dateToLocaleString(birthDate, true),
     [t('Phone')]: get(resource, 'telecom.0.value'),
     [t('MRN')]: 'Unknown',
     [t('Address')]: get(resource, 'address.0.line.0') || 'N/A',

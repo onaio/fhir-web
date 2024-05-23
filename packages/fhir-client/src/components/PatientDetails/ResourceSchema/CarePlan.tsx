@@ -9,7 +9,7 @@ import {
 } from '../../../helpers/utils';
 import { Period } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/period';
 import type { TFunction } from '@opensrp/i18n';
-import { FHIRServiceClass, ResourceItemLoader } from '@opensrp/react-utils';
+import { FHIRServiceClass, ResourceItemLoader, dateToLocaleString } from '@opensrp/react-utils';
 import { planDefinitionType } from '../../../constants';
 import { IPlanDefinition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPlanDefinition';
 import { Canonical } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/canonical';
@@ -111,7 +111,7 @@ export function carePlanDetailsProps(resource: ICarePlan, t: TFunction, fhirBase
     instantiatesCanonical,
   } = parseCareplan(resource);
   const headerRightData = {
-    [t('Date created')]: created,
+    [t('Date created')]: dateToLocaleString(created),
   };
 
   const bodyData = {
