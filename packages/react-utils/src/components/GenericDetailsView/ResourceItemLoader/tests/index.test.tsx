@@ -74,7 +74,7 @@ it('renders correctly', async () => {
   nock(fhirBaseURL).get(`/Patient/${id}`).reply(200, patientResourceDetails);
   render(<AppWrapper {...props}></AppWrapper>);
 
-  await waitForElementToBeRemoved(document.querySelector('.custom-spinner'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   expect(document.querySelector('body')?.innerHTML).toEqual(
     `<div>${patientResourceDetails.birthDate}</div>`
   );
@@ -87,7 +87,7 @@ it('shows null on error', async () => {
   });
   render(<AppWrapper {...props}></AppWrapper>);
 
-  await waitForElementToBeRemoved(document.querySelector('.custom-spinner'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(document.querySelector('body')?.innerHTML).toEqual('<div></div>');
 });

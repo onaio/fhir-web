@@ -89,7 +89,6 @@ export function sidePreviewDetailsExtractor<T extends IResource>(
       headerActions,
       footer: (
         <Link to={`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`}>
-          {' '}
           {t('View full details')}
         </Link>
       ),

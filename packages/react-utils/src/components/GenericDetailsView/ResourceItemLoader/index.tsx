@@ -18,7 +18,7 @@ export function ResourceItemLoader<T extends IResource>(props: ResourceItemLoade
   const { resourceQueryParams, itemGetter } = props;
   const { data, isLoading, error } = useQuery(resourceQueryParams);
   if (isLoading) {
-    return <Spin size="small" className="custom-spinner" />;
+    return <Spin size="small" />;
   }
   if (error || !data) {
     return null;

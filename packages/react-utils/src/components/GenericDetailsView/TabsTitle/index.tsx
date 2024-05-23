@@ -25,7 +25,7 @@ export const TabsTitle = (props: TabsTitleProps) => {
       await new FHIRServiceClass<IBundle>(fhirBaseURL, resourceType).list(summaryFilters),
   });
   if (isLoading) {
-    return <Spin size="small" className="custom-spinner" />;
+    return <Spin size="small" />;
   }
   if (error || !data) {
     return <div>{title}</div>;

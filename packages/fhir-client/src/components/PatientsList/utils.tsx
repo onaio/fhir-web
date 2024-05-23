@@ -11,7 +11,7 @@ export enum PatientStatus {
 
 export const patientStatusColor = {
   [PatientStatus.ACTIVE]: 'green',
-  [PatientStatus.InACTIVE]: 'red',
+  [PatientStatus.InACTIVE]: 'gray',
   [PatientStatus.DECEASED]: 'red',
 };
 

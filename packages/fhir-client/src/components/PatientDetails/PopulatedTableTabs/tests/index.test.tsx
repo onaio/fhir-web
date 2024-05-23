@@ -19,6 +19,7 @@ import {
   screen,
   fireEvent,
   render,
+  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import nock from 'nock';
@@ -144,16 +145,11 @@ it('renders correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
-
-  expect(screen.getByRole('tablist').textContent).toBe(
-    'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
-  );
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   // Care Plan tab
   const carePlanTableHeaders = document.querySelector('.ant-table-thead');
@@ -213,12 +209,11 @@ it('Condition tab renders correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   // Care Plan tab
   const conditionTableHeaders = document.querySelector('.ant-table-thead');
@@ -259,12 +254,11 @@ it('Task tab renders correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   // Care Plan tab
   const taskTableHeaders = document.querySelector('.ant-table-thead');
@@ -303,12 +297,11 @@ it('immunization encounter tab renders correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   const immunizationTableHeaders = document.querySelector('.ant-table-thead');
   const immunizationTableData = document.querySelectorAll('.ant-table-tbody td');
@@ -348,12 +341,11 @@ it('Patient encounter tab renders correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   const patientTableHeaders = document.querySelector('.ant-table-thead');
   const patientTableData = document.querySelectorAll('.ant-table-tbody td');
@@ -392,5 +384,3 @@ it('shows broken table page', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   expect(screen.getByText(/failed, reason: something awful happened/)).toBeInTheDocument();
 });
-
-// history.push('/tabs?tabView=tabView&activeTab=tabB')

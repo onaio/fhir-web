@@ -11,6 +11,7 @@ import {
   cleanup,
   screen,
   render,
+  waitFor,
   waitForElementToBeRemoved,
   fireEvent,
 } from '@testing-library/react';
@@ -141,12 +142,11 @@ it('renders patient details page correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // sometimes queries for title counts might not have resolve
-  // Avoids flakiness on this test
-  const titleEntrieCountSpinner = document.querySelector('.custom-spinner');
-  if (titleEntrieCountSpinner) {
-    await waitForElementToBeRemoved(titleEntrieCountSpinner);
-  }
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
+    );
+  });
 
   const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
   breadcrumb.forEach((list, i) => {
@@ -217,11 +217,6 @@ it('renders care plan resources correctly', async () => {
   );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-  // Canonical (PlanDefinition) loader might not be captured
-  const spinner = document.querySelector('.ant-spin');
-  if (spinner) {
-    await waitForElementToBeRemoved(spinner);
-  }
 
   const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
   breadcrumb.forEach((list, i) => {
@@ -231,6 +226,7 @@ it('renders care plan resources correctly', async () => {
     'View details131386'
   );
 
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
     (keyValue) => keyValue.textContent
   );

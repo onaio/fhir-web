@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Condition tab renders correctly 1`] = `"77386006confirmedID: 349d8947-3009-4fb3-b3d5-99ff30aa5614CategorystageOnset dateClinical statusactive View full details"`;
+exports[`Condition tab renders correctly 1`] = `"77386006confirmedID: 349d8947-3009-4fb3-b3d5-99ff30aa5614CategorystageOnset dateClinical statusactiveView full details"`;
 
-exports[`Patient encounter tab renders correctly 1`] = `"AMBfinishedID: a1f3a048-8863-42b7-9d2e-2e9efbbca9a8ReasonPeriodInvalid Date-Invalid DateService Type581Episode of care View full details"`;
+exports[`Patient encounter tab renders correctly 1`] = `"AMBfinishedID: a1f3a048-8863-42b7-9d2e-2e9efbbca9a8ReasonPeriodInvalid Date-Invalid DateService Type581Episode of careView full details"`;
 
-exports[`Task tab renders correctly 1`] = `"Hygiene VisitcompletedID: 14205Period9/30/2021-10/1/2021PriorityStatuscompletedIntentorder View full details"`;
+exports[`Task tab renders correctly 1`] = `"Hygiene VisitcompletedID: 14205Period9/30/2021-10/1/2021PriorityStatuscompletedIntentorderView full details"`;
 
-exports[`immunization encounter tab renders correctly 1`] = `"SARSCoV2  mRNA vaccinecompletedID: 979Date recorded2021-07-29T12:37:03+03:00protocol applied1statuscompletedReason View full details"`;
+exports[`immunization encounter tab renders correctly 1`] = `"SARSCoV2  mRNA vaccinecompletedID: 979Date recorded2021-07-29T12:37:03+03:00protocol applied1statuscompletedReasonView full details"`;

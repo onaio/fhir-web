@@ -75,7 +75,7 @@ it('renders correctly', async () => {
     .reply(200, resourceEntriesCount);
   render(<AppWrapper {...props}></AppWrapper>);
 
-  await waitForElementToBeRemoved(document.querySelector('.custom-spinner'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
   expect(document.querySelector('body')?.textContent).toEqual(
     `${props.title} ${resourceEntriesCount.total}`
   );
@@ -91,7 +91,7 @@ it('shows title only on error', async () => {
     });
   render(<AppWrapper {...props}></AppWrapper>);
 
-  await waitForElementToBeRemoved(document.querySelector('.custom-spinner'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(document.querySelector('body')?.textContent).toEqual(`${props.title}`);
 });

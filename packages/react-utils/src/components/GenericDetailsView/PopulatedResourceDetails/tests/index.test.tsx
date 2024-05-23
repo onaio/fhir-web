@@ -123,7 +123,7 @@ it('shows broken page on error', async () => {
     </Router>
   );
 
-  await waitForElementToBeRemoved(document.querySelector('.custom-spinner'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   expect(screen.getByText(/something awful happened/)).toBeInTheDocument();
 });
