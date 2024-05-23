@@ -1,19 +1,19 @@
 div[aria-selected="true"] {
     .ant-badge-count {
-        background: #EBF7FF;
+        background: var(--tab-title-count-badge-active__background);
     }
     .ant-badge-count,
     .current {
-        color: #1676FE;
+        color: var(--tab-title-count-badge-active__color);
     }
 }
 
 div[aria-selected="false"] {
     .ant-badge-count {
-        background: #F2F2F2;
+        background: var(--tab-title-count-badge-inactive__background);
     }
     .ant-badge-count,
     .current {
-        color: #000000;
+        color: var(--tab-title-count-badge-inactive__color);
     }
 }

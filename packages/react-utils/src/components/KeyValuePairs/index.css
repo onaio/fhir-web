@@ -10,7 +10,7 @@
 
 .singleKeyValue-pair__label,
 .keyValueGrid-pair__label {
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--resource-detail-key__default__color);
 }
 
 .keyValueGrid-pair__value,
@@ -36,20 +36,20 @@ dl dt {
 
 .singleFlat-key__default,
 .singleKeyValue-pair__default dt {
-  color: rgba(0, 0, 0, 0.65);
+  color: var(--resource-detail-key__default__color);
 }
 
 .singleFlat-value__default,
 .singleKeyValue-pair__default  dd {
-  color: rgba(0, 0, 0, 0.85)
+  color: var(--resource-detail-key__dark__color);
 }
 
 .singleFlat-key__light,
 .singleKeyValue-pair__light dt {
-  color: rgba(0, 0, 0, 0.45);
+  color: var(--resource-detail-key__light__color);
 }
 
 .singleFlat-value__light,
 .singleKeyValue-pair__light  dd {
-  color: rgba(0, 0, 0, 0.65)
+  color: var(--resource-detail-key__default__color)
 }

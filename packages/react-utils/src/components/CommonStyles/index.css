@@ -1,4 +1,19 @@
 /* common styles goes here */
+
+/* common colors */
+:root {
+  /* detail page tab count badge colors */
+  --tab-title-count-badge-active__color: #1676FE;
+  --tab-title-count-badge-active__background: #EBF7FF;
+  --tab-title-count-badge-inactive__color: #000000;
+  --tab-title-count-badge-inactive__background: #F2F2F2;
+
+  /* detail page resource details text colors */
+  --resource-detail-key__default__color: rgba(0, 0, 0, 0.65);
+  --resource-detail-key__light__color: rgba(0, 0, 0, 0.45);
+  --resource-detail-key__dark__color: rgba(0, 0, 0, 0.85);
+}
+
 .mr-0 {
   margin-right: 0px;
 }
