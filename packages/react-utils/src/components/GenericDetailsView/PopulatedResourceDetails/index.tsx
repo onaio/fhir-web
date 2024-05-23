@@ -14,7 +14,7 @@ export interface PopulatedResourceDetailsProps<ResourceType> {
     fhirBaseURL?: string
   ) => ResourceDetailsProps;
   resourceQueryParams: UseQueryOptions<ResourceType, Error>;
-  descriptionProps?: DescriptionsProps;
+  column?: DescriptionsProps['column'];
   fhirBaseURL?: string;
 }
 
@@ -26,7 +26,7 @@ export interface PopulatedResourceDetailsProps<ResourceType> {
 export function PopulatedResourceDetails<ResourceType = IResource>(
   props: PopulatedResourceDetailsProps<ResourceType>
 ) {
-  const { resourceDetailsPropsGetter, resourceQueryParams, descriptionProps, fhirBaseURL } = props;
+  const { resourceDetailsPropsGetter, resourceQueryParams, column, fhirBaseURL } = props;
   const { t } = useTranslation();
 
   const { data, isLoading, error } = useQuery(resourceQueryParams);
@@ -44,10 +44,6 @@ export function PopulatedResourceDetails<ResourceType = IResource>(
   }
 
   return (
-    <>
-      {resourceDetailsProps && (
-        <ResourceDetails descriptionProps={descriptionProps} {...resourceDetailsProps} />
-      )}
-    </>
+    <>{resourceDetailsProps && <ResourceDetails column={column} {...resourceDetailsProps} />}</>
   );
 }

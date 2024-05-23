@@ -72,7 +72,7 @@ export function TabsTable<T extends Resource>(props: TabTableProps<T>) {
   if (sideViewData && extractSideViewDetails) {
     parsedSideViewData = extractSideViewDetails(sideViewData, t);
     resourceDetailsProps = {
-      descriptionProps: { column: { xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 } },
+      column: { xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 },
       ...parsedSideViewData,
     } as ResourceDetailsProps;
   }

@@ -7,9 +7,10 @@ const { Text } = Typography;
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
 export type KeyValuePairs = Record<string, React.ReactNode>;
-export interface SingleKeyNestedValueProps extends DescriptionsProps {
+export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
+  column?: DescriptionsProps['column'];
 }
 export interface ListFlatKeyValuesProps {
   data: KeyValuePairs;
@@ -87,14 +88,9 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
  * @param props - component data and theme
  */
 export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
-  const {
-    data,
-    theme,
-    column = { xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 },
-    ...extraProps
-  } = props;
+  const { data, theme, column = { xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 } } = props;
   return (
-    <Descriptions size="small" column={column} {...extraProps}>
+    <Descriptions size="small" column={column}>
       {Object.entries(data).map(([key, value]) => {
         const keyValuePairing = { [key]: value };
         return (

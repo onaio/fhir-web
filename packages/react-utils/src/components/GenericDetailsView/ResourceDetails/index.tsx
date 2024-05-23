@@ -21,7 +21,7 @@ export interface ResourceDetailsProps {
   };
   bodyData: Record<string, React.ReactNode>;
   footer?: React.ReactNode;
-  descriptionProps?: DescriptionsProps;
+  column?: DescriptionsProps['column'];
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
@@ -34,7 +34,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     footer,
     status,
     headerLeftDataClasses,
-    descriptionProps,
+    column,
   } = props;
   return (
     <div data-testid="details-section" className="details-section">
@@ -65,7 +65,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
       </div>
       <Divider className="divider" />
-      <KeyValuesDescriptions {...descriptionProps} theme="default" data={bodyData} />
+      <KeyValuesDescriptions theme="default" data={bodyData} column={column} />
       {footer && (
         <>
           <Divider className="divider" />
