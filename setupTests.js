@@ -52,8 +52,11 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 
-/** Converts an object's binary to an arrayBuffer, useful when we
+/**
+ * Converts an object's binary to an arrayBuffer, useful when we
  * later want to convert it to a base 64 ascii string
+ *
+ * @param buffer
  */
 function toArrayBuffer(buffer) {
   const arrayBuffer = new ArrayBuffer(buffer.length);

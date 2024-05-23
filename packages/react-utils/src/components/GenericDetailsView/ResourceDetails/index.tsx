@@ -36,7 +36,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     status,
     headerLeftDataClasses,
     theme = 'default',
-    column = 2, // Default column value
+    column,
   } = props;
 
   return (

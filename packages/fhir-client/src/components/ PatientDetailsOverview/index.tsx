@@ -15,7 +15,6 @@ import { useTranslation } from '../../mls';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { getPatientName } from '../PatientsList/utils';
 import { Link } from 'react-router-dom';
-import { Resource404 } from '@opensrp/react-utils'; // Import the Resource404 component
 
 export interface PatientListViewProps {
   fhirBaseURL: string;
@@ -28,7 +27,7 @@ const PatientDetailsOverview = (props: PatientListViewProps) => {
   const { removeParam, sParams } = useSearchParams();
   const patientId = sParams.get(viewDetailsQuery) ?? undefined;
 
-  const { data, error } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [patientResourceType, patientId],
     queryFn: async () =>
       new FHIRServiceClass<IPatient>(fhirBaseURL, patientResourceType).read(
@@ -37,18 +36,17 @@ const PatientDetailsOverview = (props: PatientListViewProps) => {
     enabled: !!patientId,
   });
 
-  if (error) {
+  if (isLoading) {
+    return <div>{t('Loading...')}</div>;
+  }
+
+  if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  if (!patientId || !data) {
-    return (
-      <Resource404
-        title={t('Patient Not Found')}
-        errorMessage={t('The patient you are looking for does not exist.')}
-        homeUrl={LIST_PATIENTS_URL}
-      />
-    ); // Return Resource404 component with relevant props
+  // Ensure data is defined
+  if (!data) {
+    return null;
   }
 
   const { id, gender, birthDate, address, telecom, identifier, deceasedBoolean, active } = data;
