@@ -25,8 +25,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { TFunction } from '@opensrp/i18n';
 import { Rule } from 'rc-field-form/lib/interface';
 import {
-  attractiveCharacteristicCode,
   accountabilityCharacteristicCode,
+  attractiveCharacteristicCoding,
 } from '../../helpers/utils';
 import { GroupCharacteristic } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupCharacteristic';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
@@ -35,20 +35,16 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { getValueSetOptionsValue } from '@opensrp/react-utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import {
+  donorCharacteristicCoding,
+  getCharacteristicWithCoding,
+  inventoryGroupCoding,
+  poNumberIdentifierCoding,
+  quantityCharacteristicCoding,
+  sectionCharacteristicCoding,
+  serialNumberIdentifierCoding,
   servicePointProfileInventoryListCoding,
   smartregisterSystemUri,
 } from '@opensrp/fhir-helpers';
-
-const codeSystem = 'http://smartregister.org/codes';
-const unicefCharacteristicCode = '98734231';
-const donorCharacteristicCode = '45981276';
-const quantityCharacteristicCode = '33467722';
-const supplyInventoryCode = '78991122';
-const poNumberDisplay = 'PO Number';
-const poNumberCode = 'PONUM';
-const serialNumberDisplay = 'Serial Number';
-const serialNumberCode = 'SERNUM';
-const listSupplyInventoryCode = '22138876';
 
 /**
  * Check if date in past
@@ -75,7 +71,7 @@ export const handleDisabledFutureDates = (current?: Dayjs) => {
 };
 
 /**
- * check if product is an atrractive item
+ * check if product is an attractive item
  *
  * @param product - product data
  */
@@ -83,10 +79,11 @@ export const isAttractiveProduct = (product?: IGroup) => {
   if (!product) {
     return false;
   }
-  const isAttractive = product.characteristic?.some(
-    (char) => char.code.coding?.[0]?.code === attractiveCharacteristicCode
+  const attractiveCharacteristic = getCharacteristicWithCoding(
+    product.characteristic ?? [],
+    attractiveCharacteristicCoding
   );
-  return isAttractive as boolean;
+  return !!attractiveCharacteristic?.valueBoolean;
 };
 
 /**
@@ -168,9 +165,9 @@ export const generateCharacteristics = (
   listResourceObj?: IGroup
 ): GroupCharacteristic[] => {
   const knownCodes = [
-    unicefCharacteristicCode,
-    donorCharacteristicCode,
-    quantityCharacteristicCode,
+    sectionCharacteristicCoding.code,
+    donorCharacteristicCoding.code,
+    quantityCharacteristicCoding.code,
   ];
   const unknownCharacteristics =
     listResourceObj?.characteristic?.filter((char) => {
@@ -181,13 +178,7 @@ export const generateCharacteristics = (
     ...unknownCharacteristics,
     {
       code: {
-        coding: [
-          {
-            system: codeSystem,
-            code: unicefCharacteristicCode,
-            display: 'Unicef Section',
-          },
-        ],
+        coding: [sectionCharacteristicCoding],
       },
       valueCodeableConcept: {
         coding: [unicefSection],
@@ -198,13 +189,7 @@ export const generateCharacteristics = (
   if (donor) {
     characteristics.push({
       code: {
-        coding: [
-          {
-            system: codeSystem,
-            code: donorCharacteristicCode,
-            display: 'Donor',
-          },
-        ],
+        coding: [donorCharacteristicCoding],
       },
       valueCodeableConcept: {
         coding: [donor],
@@ -215,13 +200,7 @@ export const generateCharacteristics = (
   if (quantity) {
     characteristics.push({
       code: {
-        coding: [
-          {
-            system: codeSystem,
-            code: quantityCharacteristicCode,
-            display: 'Quantity ',
-          },
-        ],
+        coding: [quantityCharacteristicCoding],
       },
       valueQuantity: { value: quantity },
     });
@@ -242,7 +221,7 @@ export const generateIdentifier = (
   serialId?: string,
   listResourceObj?: IGroup
 ): Identifier[] => {
-  const knownCodes = [poNumberCode, serialNumberCode];
+  const knownCodes = [poNumberIdentifierCoding.code, serialNumberIdentifierCoding.code];
   const unknownIdentifiers =
     listResourceObj?.identifier?.filter((identifier) => {
       const code = identifier.type?.coding?.[0].code;
@@ -252,14 +231,8 @@ export const generateIdentifier = (
     {
       use: IdentifierUseCodes.SECONDARY,
       type: {
-        coding: [
-          {
-            system: codeSystem,
-            code: poNumberCode,
-            display: poNumberDisplay,
-          },
-        ],
-        text: poNumberDisplay,
+        coding: [poNumberIdentifierCoding],
+        text: poNumberIdentifierCoding.display,
       },
       value: poId,
     },
@@ -269,14 +242,8 @@ export const generateIdentifier = (
     identifiers.push({
       use: IdentifierUseCodes.OFFICIAL,
       type: {
-        coding: [
-          {
-            system: codeSystem,
-            code: serialNumberCode,
-            display: serialNumberDisplay,
-          },
-        ],
-        text: serialNumberDisplay,
+        coding: [serialNumberIdentifierCoding],
+        text: serialNumberIdentifierCoding.display,
       },
       value: serialId,
     });
@@ -309,13 +276,7 @@ export const getLocationInventoryPayload = (
     member: getMember(values.product, values.deliveryDate, values.accountabilityEndDate),
     characteristic: generateCharacteristics(unicefSection, donor, values.quantity, listResourceObj),
     code: {
-      coding: [
-        {
-          system: codeSystem,
-          code: supplyInventoryCode,
-          display: 'Supply Inventory',
-        },
-      ],
+      coding: [inventoryGroupCoding],
     },
   };
   if (editMode) {
@@ -476,14 +437,8 @@ function createCommonListResource(id: string): IList {
     ],
     status: 'current',
     code: {
-      coding: [
-        {
-          system: codeSystem,
-          code: listSupplyInventoryCode,
-          display: 'Supply Inventory List',
-        },
-      ],
-      text: 'Supply Inventory List',
+      coding: [servicePointProfileInventoryListCoding],
+      text: servicePointProfileInventoryListCoding.display,
     },
   };
 }
@@ -528,14 +483,8 @@ export function createUpdateLocationInventoryList(
   const stringDate = now.toISOString();
   const newEntry: ListEntry = {
     flag: {
-      coding: [
-        {
-          system: codeSystem,
-          code: listSupplyInventoryCode,
-          display: 'Supply Inventory List',
-        },
-      ],
-      text: 'Supply Inventory List',
+      coding: [servicePointProfileInventoryListCoding],
+      text: servicePointProfileInventoryListCoding.display,
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     date: stringDate as any,
@@ -567,28 +516,28 @@ export const getInventoryInitialValues = (inventory: IGroup): GroupFormFields =>
   } as GroupFormFields;
   inventory.identifier?.forEach((identifier) => {
     const code = identifier.type?.coding?.[0].code;
-    if (code === poNumberCode) {
+    if (code === poNumberIdentifierCoding.code) {
       initialValues.poNumber = identifier.value as string;
     }
-    if (code === serialNumberCode) {
+    if (code === serialNumberIdentifierCoding.code) {
       initialValues.serialNumber = identifier.value as string;
     }
   });
   inventory.characteristic?.forEach((characteristic) => {
     const code = characteristic.code.coding?.[0].code;
-    if (code === unicefCharacteristicCode) {
+    if (code === sectionCharacteristicCoding.code) {
       const coding = characteristic.valueCodeableConcept?.coding?.[0];
       if (coding) {
         initialValues.unicefSection = getValueSetOptionsValue(coding) as string;
       }
     }
-    if (code === donorCharacteristicCode) {
+    if (code === donorCharacteristicCoding.code) {
       const coding = characteristic.valueCodeableConcept?.coding?.[0];
       if (coding) {
         initialValues.donor = getValueSetOptionsValue(coding);
       }
     }
-    if (code === quantityCharacteristicCode) {
+    if (code === quantityCharacteristicCoding.code) {
       initialValues.quantity = characteristic.valueQuantity?.value;
     }
   });
