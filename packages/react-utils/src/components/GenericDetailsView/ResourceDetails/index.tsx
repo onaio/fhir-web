@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Tag, Typography } from 'antd';
+import { DescriptionsProps, Divider, Tag, Typography } from 'antd';
 import {
   KeyValuesDescriptions,
   ListFlatKeyValues,
@@ -22,7 +22,7 @@ export interface ResourceDetailsProps {
   bodyData: Record<string, React.ReactNode> | (() => React.ReactNode);
   footer?: React.ReactNode;
   theme?: 'default' | 'light';
-  column?: number;  // Add column prop here
+  column?: DescriptionsProps['column']; // Add column prop here
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
@@ -36,7 +36,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     status,
     headerLeftDataClasses,
     theme = 'default',
-    column = 2,  // Default column value
+    column = 2, // Default column value
   } = props;
 
   return (

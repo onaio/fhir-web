@@ -48,7 +48,7 @@ const PatientDetailsOverview = (props: PatientListViewProps) => {
         errorMessage={t('The patient you are looking for does not exist.')}
         homeUrl={LIST_PATIENTS_URL}
       />
-    );  // Return Resource404 component with relevant props
+    ); // Return Resource404 component with relevant props
   }
 
   const { id, gender, birthDate, address, telecom, identifier, deceasedBoolean, active } = data;

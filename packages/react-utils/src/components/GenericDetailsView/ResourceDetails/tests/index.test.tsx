@@ -20,12 +20,14 @@ const props = {
   },
   footer: (
     <div>
-      <Button type="link" onClick={() => console.log('View details clicked')}>
+      <Button type="link" onClick={() => mockFunction()}>
         view details
       </Button>
     </div>
   ),
 };
+
+const mockFunction = jest.fn();
 
 test('ResourceDetails component renders correctly', () => {
   render(<ResourceDetails {...props} />);
@@ -59,7 +61,7 @@ test('ResourceDetails component renders correctly', () => {
 
   // Test Footer Button Click
   fireEvent.click(screen.getByText('view details'));
-  expect(console.log).toHaveBeenCalledWith('View details clicked');
+  expect(mockFunction).toHaveBeenCalled();
 });
 
 // New test case for bodyData as a render prop

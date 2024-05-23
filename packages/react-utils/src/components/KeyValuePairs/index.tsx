@@ -1,17 +1,16 @@
 import React from 'react';
 import './index.css';
-import { Descriptions, Typography } from 'antd';
+import { Descriptions, DescriptionsProps, Typography } from 'antd';
 
 const { Text } = Typography;
 
 export type SingleKeyValueClassOptions = 'light' | 'default';
 export type SingleKeyValueClass = Record<SingleKeyValueClassOptions, string>;
 export type KeyValuePairs = Record<string, React.ReactNode>;
-
 export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
-  column?: number;  // Add column prop here
+  column?: DescriptionsProps['column']; // Add column prop here
 }
 
 export interface ListFlatKeyValuesProps {
@@ -39,9 +38,15 @@ export const KeyValueGrid = (props: KeyValuePairs) => {
   );
 };
 
+/**
+ * Use for single key value pair
+ *
+ * @param props - component data and theme
+ */
 export const SingleKeyNestedValue = (props: SingleKeyNestedValueProps) => {
   const { data, theme = 'default' } = props;
   const firstPair = Object.entries(data)[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
   const keyValueClass = singleKeyValueClass[theme];
@@ -55,6 +60,11 @@ export const SingleKeyNestedValue = (props: SingleKeyNestedValueProps) => {
   );
 };
 
+/**
+ * Dryed out util for displaying keyValue ui for an obj
+ *
+ * @param obj - obj with info to be displayed
+ */
 export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
   return (
     <>
@@ -72,10 +82,15 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
   );
 };
 
+/**
+ * Dryed out util for displaying keyValue ui under antD Description component
+ *
+ * @param props - component data and theme
+ */
 export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
-  const { data, theme, column = 3 } = props;  // Default column to 3 if not provided
+  const { data, theme } = props;
   return (
-    <Descriptions size="small" column={column}>  // Use column prop here
+    <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}>
       {Object.entries(data).map(([key, value]) => {
         const keyValuePairing = { [key]: value };
         return (
@@ -88,8 +103,14 @@ export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
   );
 };
 
+/**
+ * Use for displaying single key value pair on same line
+ *
+ * @param obj - obj with info to be displayed
+ */
 export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
   const firstPair = Object.entries(obj)[0];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
 
@@ -100,6 +121,12 @@ export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
   );
 };
 
+/**
+ * Use for displaying multiple key value pair
+ * Each key value pair is displayed on it's own line
+ *
+ * @param props - data and styling class for the component
+ */
 export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
   const { data, classnames } = props;
   return (
@@ -109,7 +136,7 @@ export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
         return (
           <React.Fragment key={key}>
             <SingleFlatKeyValue {...keyValuePairing} />
-            <br />
+            <br></br>
           </React.Fragment>
         );
       })}

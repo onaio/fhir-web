@@ -33,7 +33,11 @@ describe('PatientDetailsOverview', () => {
           <PatientDetailsOverview fhirBaseURL="https://example.com/fhir" />
         </MemoryRouter>
       </QueryClientProvider>,
-      { wrapper: ({ children }) => <div data-query-params={searchParams.toString()}>{children}</div> }
+      {
+        wrapper: ({ children }) => (
+          <div data-query-params={searchParams.toString()}>{children}</div>
+        ),
+      }
     );
   };
 
@@ -43,9 +47,7 @@ describe('PatientDetailsOverview', () => {
   });
 
   it('renders error state when an error occurs', async () => {
-    nock('https://example.com')
-      .get('/fhir/Patient/123')
-      .replyWithError('Error fetching data');
+    nock('https://example.com').get('/fhir/Patient/123').replyWithError('Error fetching data');
 
     renderComponent('123');
 
@@ -64,9 +66,7 @@ describe('PatientDetailsOverview', () => {
       active: true,
     };
 
-    nock('https://example.com')
-      .get('/fhir/Patient/1')
-      .reply(200, mockPatientData);
+    nock('https://example.com').get('/fhir/Patient/1').reply(200, mockPatientData);
 
     renderComponent('1');
 
@@ -81,15 +81,15 @@ describe('PatientDetailsOverview', () => {
   });
 
   it('renders Resource404 when patient is not found', async () => {
-    nock('https://example.com')
-      .get('/fhir/Patient/999')
-      .reply(404);
+    nock('https://example.com').get('/fhir/Patient/999').reply(404);
 
     renderComponent('999');
 
     await waitFor(() => {
       expect(screen.getByText(/patient not found/i)).toBeInTheDocument();
-      expect(screen.getByText(/the patient you are looking for does not exist/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/the patient you are looking for does not exist/i)
+      ).toBeInTheDocument();
     });
   });
 
@@ -105,9 +105,7 @@ describe('PatientDetailsOverview', () => {
       active: true,
     };
 
-    nock('https://example.com')
-      .get('/fhir/Patient/1')
-      .reply(200, mockPatientData);
+    nock('https://example.com').get('/fhir/Patient/1').reply(200, mockPatientData);
 
     renderComponent('1');
 
