@@ -69,7 +69,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
   const { fhirBaseURL, patientId } = props;
   const { t } = useTranslation();
 
-  const { addParamsToURL, removeURLParam } = useSearchParams();
+  const { addParams, removeParam } = useSearchParams();
 
   const defaultTableData = {
     resourceId: patientId,
@@ -80,7 +80,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
   const tableActionColumn = {
     title: t('Actions'),
     render: (value: Coding) => (
-      <Button onClick={() => addParamsToURL({ [sideViewQuery]: value.id })} type="link">
+      <Button onClick={() => addParams({ [sideViewQuery]: value.id })} type="link">
         {t('View')}
       </Button>
     ),
@@ -94,7 +94,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
     extractSideViewDetails: sidePreviewDetailsExtractor<ICarePlan>(
       patientId,
       carePlanSideViewData,
-      () => removeURLParam(sideViewQuery)
+      () => removeParam(sideViewQuery)
     ),
   };
 
@@ -106,7 +106,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
     extractSideViewDetails: sidePreviewDetailsExtractor<ICondition>(
       patientId,
       conditionSideViewData,
-      () => removeURLParam(sideViewQuery)
+      () => removeParam(sideViewQuery)
     ),
   };
 
@@ -117,7 +117,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
     tableDataGetter: parseTaskList,
     searchParamsFactory: taskSearchParams,
     extractSideViewDetails: sidePreviewDetailsExtractor<ITask>(patientId, taskSideViewData, () =>
-      removeURLParam(sideViewQuery)
+      removeParam(sideViewQuery)
     ),
   };
 
@@ -130,7 +130,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
     extractSideViewDetails: sidePreviewDetailsExtractor<IImmunization>(
       patientId,
       immunizationSideViewData,
-      () => removeURLParam(sideViewQuery)
+      () => removeParam(sideViewQuery)
     ),
   };
 
@@ -142,7 +142,7 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
     extractSideViewDetails: sidePreviewDetailsExtractor<IEncounter>(
       patientId,
       encounterPreviewExtractor,
-      () => removeURLParam(sideViewQuery)
+      () => removeParam(sideViewQuery)
     ),
   };
 
