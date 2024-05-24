@@ -20,6 +20,7 @@ import {
   valueSetResourceType,
   eusmServicePointValueSetURI,
 } from '@opensrp/fhir-helpers';
+import { fillSearchableSelect } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -138,32 +139,28 @@ test('works ok for new locations', async () => {
   fireEvent.click(document.querySelector(`[title="${'Ona Office Sub Location'}"]`)!);
 
   // simulate service type selection
-  const serviceTypesDropdown = document.querySelector(`input#location-form_${serviceType}`)!;
-  fireEvent.mouseDown(serviceTypesDropdown);
 
-  const optionTexts = [
-    ...document.querySelectorAll(
-      `#location-form_${serviceType}_list+div.rc-virtual-list .ant-select-item-option-content`
-    ),
-  ].map((option) => {
-    return option.textContent;
-  });
-
-  expect(optionTexts).toEqual([
-    'CSB2',
-    'BSD',
-    'CHRD1',
-    'CHRD2',
-    'CHRR',
-    'SDSP',
-    'DRSP',
-    'MSP',
-    'EPP',
-    'CEG',
-    'Warehouse',
-    'Water Point',
-  ]);
-  fireEvent.click(document.querySelector(`[title="${'Warehouse'}"]`)!);
+  const serviceTypeSelectionCriteria = {
+    selectId: `location-form_${serviceType}`,
+    fullOptionText: 'Warehouse',
+    searchOptionText: 'waRe',
+    beforeFilterOptions: [
+      'CSB2',
+      'BSD',
+      'CHRD1',
+      'CHRD2',
+      'CHRR',
+      'SDSP',
+      'DRSP',
+      'MSP',
+      'EPP',
+      'CEG',
+      'Warehouse',
+      'Water Point',
+    ],
+    afterFilterOptions: ['Warehouse'],
+  };
+  fillSearchableSelect(serviceTypeSelectionCriteria);
 
   const save = screen.getByRole('button', { name: 'Save' });
   userEvent.click(save);

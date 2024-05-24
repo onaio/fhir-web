@@ -16,7 +16,7 @@ import { groupResourceType, listResourceType, unitOfMeasure } from '../../../../
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import flushPromises from 'flush-promises';
-import { fillSearchableSelect } from './test-utils';
+import { fillSearchableSelect } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
