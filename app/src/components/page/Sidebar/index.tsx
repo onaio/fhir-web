@@ -77,6 +77,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       trigger={null}
       width="275px"
       className="layout-sider"
+      breakpoint='md'
     >
       <div className={`logo ${collapsed ? 'small-logo' : 'main-logo'}`}>
         <Link hidden={collapsed} to={URL_HOME}>
