@@ -224,6 +224,15 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
+        path={`${LIST_PATIENTS_URL}/:${'id'}/:resourceType/:resourceId`}
+        {...patientProps}
+        permissions={['Patient.read']}
+        component={PatientDetails}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
         path={URL_USER_ROLES}
         permissions={['iam_role.read']}
         component={UserRolesList}

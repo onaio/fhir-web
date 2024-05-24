@@ -70,6 +70,11 @@
   padding-bottom: 16px;
 }
 
+.view-details-content,
+.main-content {
+  border-radius: 6px;
+}
+
 @media only screen and (min-width: 0px) {
   .list-view {
     display: flex;
@@ -102,16 +107,16 @@
   .view-details-content {
     margin: 0;
     flex: 30%;
-    margin-left: 8px;
+    margin-left: 12px;
   }
 }
 
 @media only screen and (min-width: 1200px) {
   .main-content {
-    flex: 75%;
+    flex: 70%;
   }
   .view-details-content {
-    flex: 23%;
+    flex: 28%;
   }
 }
 

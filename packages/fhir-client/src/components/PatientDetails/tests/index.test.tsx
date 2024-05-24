@@ -5,17 +5,27 @@ import { Route, Router, Switch } from 'react-router';
 import * as reactQuery from 'react-query';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { patientDetails } from './fixtures';
+import { patientResourceDetails, planDefinitionResource } from './fixtures';
 import { LIST_PATIENTS_URL } from '../../../constants';
 import {
   cleanup,
   screen,
-  fireEvent,
   render,
+  waitFor,
   waitForElementToBeRemoved,
+  fireEvent,
 } from '@testing-library/react';
 import nock from 'nock';
 import { authenticateUser } from '@onaio/session-reducer';
+import {
+  patientCarePlans,
+  patientConditions,
+  patientEncounters,
+  patientImmunization,
+  patientTask,
+  resourceEntriesCount,
+} from '../PopulatedTableTabs/tests/fixtures';
+import { last } from 'lodash';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -39,143 +49,419 @@ jest.mock('fhirclient', () => {
 
 const props = {
   fhirBaseURL: 'http://test.server.org',
+  path: `${LIST_PATIENTS_URL}/:id`,
 };
 
-describe('Patients list view', () => {
-  beforeAll(() => {
-    store.dispatch(
-      authenticateUser(
-        true,
-        {
-          email: 'bob@example.com',
-          name: 'Bobbie',
-          username: 'RobertBaratheon',
-        },
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
-      )
+beforeAll(() => {
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+  nock.disableNetConnect();
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+  jest.resetAllMocks();
+  jest.clearAllMocks();
+  jest.restoreAllMocks();
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path={props.path}>
+            {(routeProps) => <PatientDetails {...{ ...props, ...routeProps }} />}
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
+
+it('renders patient details page correctly', async () => {
+  const patientId = patientResourceDetails.id;
+  const carePlanResource = patientCarePlans.entry[0].resource;
+  const carePlanId = carePlanResource.id;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}`);
+
+  nock(props.fhirBaseURL).get(`/Patient/${patientId}`).reply(200, patientResourceDetails);
+
+  nock(props.fhirBaseURL)
+    .get(`/CarePlan/_search`)
+    .query({ 'subject:Patient': patientId, _total: 'accurate', _getpagesoffset: 0, _count: 20 })
+    .reply(200, patientCarePlans);
+
+  nock(props.fhirBaseURL)
+    .get(`/CarePlan/_search`)
+    .query({ _summary: 'count', 'subject:Patient': patientId })
+    .reply(200, resourceEntriesCount);
+
+  nock(props.fhirBaseURL)
+    .get(`/Condition/_search`)
+    .query({ _summary: 'count', 'subject:Patient': patientId })
+    .reply(200, resourceEntriesCount);
+
+  nock(props.fhirBaseURL)
+    .get(`/Task/_search`)
+    .query({ _summary: 'count', patient: patientId })
+    .reply(200, resourceEntriesCount);
+
+  nock(props.fhirBaseURL)
+    .get(`/Immunization/_search`)
+    .query({ _summary: 'count', patient: patientId })
+    .reply(200, resourceEntriesCount);
+
+  nock(props.fhirBaseURL)
+    .get(`/Encounter/_search`)
+    .query({ _summary: 'count', 'subject:Patient': patientId })
+    .reply(200, resourceEntriesCount);
+
+  nock(props.fhirBaseURL).get(`/CarePlan/${carePlanId}`).reply(200, carePlanResource);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(() => {
+    expect(screen.getByRole('tablist').textContent).toBe(
+      'Care plan 1Condition 1Task 1Immunization 1Patient encounter 1'
     );
-    nock.disableNetConnect();
   });
 
-  afterAll(() => {
-    nock.enableNetConnect();
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`patient breadCrum-${i}`);
   });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual('View details1');
 
-  afterEach(() => {
-    nock.cleanAll();
-    cleanup();
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
-  });
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'First nameJohn',
+    'Last nameDoe',
+    'UUID',
+    'Date of birth1988-08-04',
+    'Phone+254722123456',
+    'MRNUnknown',
+    'Address213,One Pademore',
+    'CountryKenya',
+  ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const AppWrapper = (props: any) => {
-    return (
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Switch>
-            <Route exact path={`${LIST_PATIENTS_URL}/:id`}>
-              {(routeProps) => <PatientDetails {...{ ...props, ...routeProps }} />}
-            </Route>
-          </Switch>
-        </QueryClientProvider>
-      </Provider>
-    );
+  const headerRightData = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(headerRightData).toEqual(['Date created2021-03-10T13:27:48.632+00:00']);
+
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual(
+    'ID: 1Gender: maleDate created2021-03-10T13:27:48.632+00:00'
+  );
+
+  // partially check if tabs were loaded
+  const carePlanTableData = document.querySelectorAll('.ant-table-tbody td');
+  // side view
+  const viewBtn = last(carePlanTableData)?.querySelector('button') as Element;
+  fireEvent.click(viewBtn);
+  expect(history.location.search).toEqual('?sideView=131386');
+  const fullDetailBtn = document.querySelector('.details-section a');
+  fireEvent.click(fullDetailBtn as Element);
+  expect(history.location.pathname).toEqual(
+    `${LIST_PATIENTS_URL}/${patientId}/${carePlanResource.resourceType}/${carePlanId}`
+  );
+});
+
+it('renders care plan resources correctly', async () => {
+  const newProps = {
+    ...props,
+    path: `${LIST_PATIENTS_URL}/:id/:resourceType/:resourceId`,
   };
+  const patientId = patientResourceDetails.id;
+  const carePlanResource = patientCarePlans.entry[0].resource;
+  const carePlanId = carePlanResource.id;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}/${carePlanResource.resourceType}/${carePlanId}`);
 
-  it('renders correctly', async () => {
-    const history = createMemoryHistory();
-    history.push(`${LIST_PATIENTS_URL}/${patientDetails.id}`);
+  // nock(props.fhirBaseURL).get(`/Patient/${patientId}`).reply(200, patientResourceDetails);
 
-    nock(props.fhirBaseURL)
-      .get(`/Patient/${patientDetails.id}/$everything`)
-      .query({ _count: 1000 })
-      .reply(200, patientDetails);
+  nock(props.fhirBaseURL).get(`/CarePlan/${carePlanId}`).reply(200, carePlanResource);
 
-    render(
-      <Router history={history}>
-        <AppWrapper {...props}></AppWrapper>
-      </Router>
-    );
+  nock(props.fhirBaseURL)
+    .get(`/PlanDefinition/${planDefinitionResource.id}`)
+    .reply(200, planDefinitionResource);
 
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  render(
+    <Router history={history}>
+      <AppWrapper {...newProps}></AppWrapper>
+    </Router>
+  );
 
-    document.querySelectorAll('.patient-detail__key-value').forEach((keyValue) => {
-      expect(keyValue).toMatchSnapshot('Patient key value details');
-    });
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    // click on documentReference button
-    const docReferenceBtn = document.querySelector('li#DocumentReference');
-    fireEvent.click(docReferenceBtn);
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`other resource breadCrum-${i}`);
+  });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual(
+    'View details131386'
+  );
 
-    const firstAndOnlyReference = screen.getByText(/^1015$/);
-    expect(firstAndOnlyReference).toMatchSnapshot('reference collapse item');
-    fireEvent.click(firstAndOnlyReference);
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'Category',
+    'Period5/26/2022-5/14/2025',
+    'Statuscompleted',
+    'Intentplan',
+    'Canonical (PlanDefinition)Child Routine visit Plan',
+    'AddressN/A',
+    'DescriptionThis defines the schedule of care for patients under 5 years old',
+  ]);
 
-    const docReferenceValues = document.querySelectorAll('.fhir-ui__Value');
-    expect(docReferenceValues).toHaveLength(1);
-    docReferenceValues.forEach((reference) => {
-      expect(reference).toMatchSnapshot('Doc reference values');
-    });
+  const headerRightData = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(headerRightData).toEqual(['Date created2022-05-26T03:24:04+05:00']);
 
-    // click on immunizationRecommendation button
-    const immunizationRecommendationBtn = document.querySelector('li#ImmunizationRecommendation');
-    fireEvent.click(immunizationRecommendationBtn);
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual(
+    'Id: 131386Date created2022-05-26T03:24:04+05:00'
+  );
+});
 
-    document.querySelectorAll('tr').forEach((tr, idx) => {
-      tr.querySelectorAll('td').forEach((td) => {
-        expect(td).toMatchSnapshot(`table row ${idx} page 1`);
-      });
-    });
+it('renders task resources correctly', async () => {
+  const newProps = {
+    ...props,
+    path: `${LIST_PATIENTS_URL}/:id/:resourceType/:resourceId`,
+  };
+  const patientId = patientResourceDetails.id;
+  const resourceData = patientTask.entry[0].resource;
+  const { id, resourceType } = resourceData;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`);
 
-    // see sort direction in Observations.
-    const observationMenuItem = document.querySelector('li#Observation');
-    fireEvent.click(observationMenuItem);
+  nock(props.fhirBaseURL).get(`/Task/${id}`).reply(200, resourceData);
 
-    // generally see the table view
-    document.querySelectorAll('table tr').forEach((tr) => {
-      const tdsText = Array.from(tr.querySelectorAll('td'))
-        .map((td) => td.textContent)
-        .join(' | ');
-      expect(tdsText).toMatchSnapshot('Observation table row');
-    });
+  render(
+    <Router history={history}>
+      <AppWrapper {...newProps}></AppWrapper>
+    </Router>
+  );
 
-    // unsorted state. Observation Issue Date
-    const unsorted = Array.from(document.querySelectorAll('table tr td:nth-child(4)')).map(
-      (td) => td.textContent
-    );
-    expect(unsorted).toEqual(['4/16/2018', '4/11/2016', '3/29/2010', '4/7/2014', '4/2/2012']);
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    const sortCaret = document.querySelector('.anticon-caret-up');
-    fireEvent.click(sortCaret);
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`other resource breadCrum-${i}`);
+  });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual(
+    'View details14205'
+  );
 
-    const sorted = Array.from(document.querySelectorAll('table tr td:last-of-type')).map(
-      (td) => td.textContent
-    );
-    // there are 192 observations, table only shows the first 5.
-    expect(sorted).toEqual(['3/29/2010', '3/29/2010', '3/29/2010', '3/29/2010', '3/29/2010']);
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'Period9/30/2021-10/1/2021',
+    'Priority',
+    'Statuscompleted',
+    'Business status',
+    'Intentorder',
+    'reason',
+    'DescriptionHygiene Visit',
+  ]);
 
-    expect(nock.isDone()).toBeTruthy();
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual(
+    'Id: 14205Date created2016-03-10T22:39:32-04:00'
+  );
+});
+
+it('renders condition resources correctly', async () => {
+  const newProps = {
+    ...props,
+    path: `${LIST_PATIENTS_URL}/:id/:resourceType/:resourceId`,
+  };
+  const patientId = patientResourceDetails.id;
+  const resourceData = patientConditions.entry[0].resource;
+  const { id, resourceType } = resourceData;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`);
+
+  nock(props.fhirBaseURL).get(`/Condition/${id}`).reply(200, resourceData);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...newProps}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`other resource breadCrum-${i}`);
+  });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual(
+    'View details349d8947-3009-4fb3-b3d5-99ff30aa5614'
+  );
+
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'Condition77386006',
+    'Severity',
+    'Category',
+    'stage',
+    'Onset date',
+    'Abatement date',
+    'Clinical statusactive',
+    'Verification statusconfirmed',
+  ]);
+
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual(
+    'Id: 349d8947-3009-4fb3-b3d5-99ff30aa5614Date created2021-12-14T19:40:38+05:00'
+  );
+});
+
+it('renders immunization resources correctly', async () => {
+  const newProps = {
+    ...props,
+    path: `${LIST_PATIENTS_URL}/:id/:resourceType/:resourceId`,
+  };
+  const patientId = patientResourceDetails.id;
+  const resourceData = patientImmunization.entry[0].resource;
+  const { id, resourceType } = resourceData;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`);
+
+  nock(props.fhirBaseURL).get(`/Immunization/${id}`).reply(200, resourceData);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...newProps}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`other resource breadCrum-${i}`);
+  });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual(
+    'View details979'
+  );
+
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'Vaccine AdmnisteredSARSCoV2  mRNA vaccine',
+    'Administration Date2021-07-08',
+    'Vaccine expiry date2018-12-15',
+    'protocol applied1',
+    'Dose quantity',
+    'statuscompleted',
+    'Primary source',
+    'Report originrecord',
+    'Reason',
+  ]);
+
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual(
+    'Id: 979Date created2021-07-29T12:37:03+03:00'
+  );
+});
+
+it('renders patientEncounter resources correctly', async () => {
+  const newProps = {
+    ...props,
+    path: `${LIST_PATIENTS_URL}/:id/:resourceType/:resourceId`,
+  };
+  const patientId = patientResourceDetails.id;
+  const resourceData = patientEncounters.entry[0].resource;
+  const { id, resourceType } = resourceData;
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientId}/${resourceType}/${id}`);
+
+  nock(props.fhirBaseURL).get(`/Encounter/${id}`).reply(200, resourceData);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...newProps}></AppWrapper>
+    </Router>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  const breadcrumb = document.querySelectorAll('.ant-breadcrumb li');
+  breadcrumb.forEach((list, i) => {
+    expect(list.innerHTML).toMatchSnapshot(`other resource breadCrum-${i}`);
+  });
+  expect(document.querySelector('.ant-page-header-heading')?.textContent).toEqual(
+    'View detailsa1f3a048-8863-42b7-9d2e-2e9efbbca9a8'
+  );
+
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'ClassAMB',
+    'Type',
+    'Priority',
+    'Reason',
+    'PeriodInvalid Date-Invalid Date',
+    'Service provider',
+    'Encounter Duration',
+    'Service Type581',
+    'Episode of care',
+  ]);
+
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual('Id: a1f3a048-8863-42b7-9d2e-2e9efbbca9a8');
+});
+
+it('shows broken page if fhir api is down', async () => {
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}/${patientResourceDetails.id}`);
+
+  nock(props.fhirBaseURL).get(`/Patient/${patientResourceDetails.id}`).replyWithError({
+    message: 'something awful happened',
+    code: 'AWFUL_ERROR',
   });
 
-  it('shows broken page if fhir api is down', async () => {
-    const history = createMemoryHistory();
-    history.push(`${LIST_PATIENTS_URL}/${patientDetails.id}`);
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    nock(props.fhirBaseURL)
-      .get(`/Patient/${patientDetails.id}/$everything`)
-      .query({ _count: 1000 })
-      .replyWithError('Something went wrong');
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    render(
-      <Router history={history}>
-        <AppWrapper {...props}></AppWrapper>
-      </Router>
-    );
-
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-
-    expect(screen.getByText(/There was a problem fetching the patient/)).toBeInTheDocument();
-  });
+  expect(screen.getByText(/something awful happened/)).toBeInTheDocument();
 });
