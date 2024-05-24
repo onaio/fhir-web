@@ -58,7 +58,7 @@ export const FhirCodesTooltips = ({ codings }: { codings?: Coding[] }) => {
       {(codings ?? []).map((coding) => {
         return (
           <Tooltip key={coding.code} title={coding.system || ''}>
-            <span>{coding.display}</span>
+            <span>{coding.display || coding.code}</span>
           </Tooltip>
         );
       })}

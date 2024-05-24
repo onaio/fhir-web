@@ -1,181 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Patients list view renders correctly: Doc reference values 1`] = `
-<div
-  class="fhir-ui__Value"
->
-  <label
-    class="fhir-ui__Value-label"
-  >
-    Created at
-  </label>
-  <div>
-    <span>
-      2021-08-04
-    </span>
-  </div>
-</div>
-`;
+exports[`renders care plan resources correctly: other resource breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
 
-exports[`Patients list view renders correctly: Observation table row 1`] = `""`;
+exports[`renders care plan resources correctly: other resource breadCrum-1 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Observation table row 2`] = `"e9a84d1d-9316-4a5f-830f-868807969723 | 95.25851987455393 kg | final | 4/16/2018"`;
+exports[`renders care plan resources correctly: other resource breadCrum-2 1`] = `"<a href=\\"/fhir/Patient/1\\">Patient profile</a>"`;
 
-exports[`Patients list view renders correctly: Observation table row 3`] = `"47536fc4-90e6-43ca-9549-8e2e7b12dd7d | 101.76013218462178 kg | final | 4/11/2016"`;
+exports[`renders care plan resources correctly: other resource breadCrum-3 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Observation table row 4`] = `"a7a3dff7-a034-4add-a78a-a9ea685bcbf7 | 98.56912483160168 kg | final | 3/29/2010"`;
+exports[`renders care plan resources correctly: other resource breadCrum-4 1`] = `"<span>View details</span>"`;
 
-exports[`Patients list view renders correctly: Observation table row 5`] = `"7ccd9eaf-c475-4ec0-98cf-6598cd1743e6 | 101.76013218462178 kg | final | 4/7/2014"`;
+exports[`renders condition resources correctly: other resource breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
 
-exports[`Patients list view renders correctly: Observation table row 6`] = `"117b9082-f85f-4248-be78-1bd90645e358 | 101.76013218462178 kg | final | 4/2/2012"`;
+exports[`renders condition resources correctly: other resource breadCrum-1 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Patient key value details 1`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    UUID
-    : 
-  </span>
-  <span>
-    512a3be0-5653-496b-bf4a-20c6a0e71d88
-  </span>
-</div>
-`;
+exports[`renders condition resources correctly: other resource breadCrum-2 1`] = `"<a href=\\"/fhir/Patient/1\\">Patient profile</a>"`;
 
-exports[`Patients list view renders correctly: Patient key value details 2`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    ID
-    : 
-  </span>
-  <span>
-    cd3ac6b4-fa04-416e-9f8b-69584fd5d1c2
-  </span>
-</div>
-`;
+exports[`renders condition resources correctly: other resource breadCrum-3 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Patient key value details 3`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    Gender
-    : 
-  </span>
-  <span>
-    male
-  </span>
-</div>
-`;
+exports[`renders condition resources correctly: other resource breadCrum-4 1`] = `"<span>View details</span>"`;
 
-exports[`Patients list view renders correctly: Patient key value details 4`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    Birth Date
-    : 
-  </span>
-  <span>
-    1970-09-28
-  </span>
-</div>
-`;
+exports[`renders immunization resources correctly: other resource breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
 
-exports[`Patients list view renders correctly: Patient key value details 5`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    Phone
-    : 
-  </span>
-  <span>
-    555-136-8815
-  </span>
-</div>
-`;
+exports[`renders immunization resources correctly: other resource breadCrum-1 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Patient key value details 6`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    MRN
-    : 
-  </span>
-  <span>
-    Unknown
-  </span>
-</div>
-`;
+exports[`renders immunization resources correctly: other resource breadCrum-2 1`] = `"<a href=\\"/fhir/Patient/1\\">Patient profile</a>"`;
 
-exports[`Patients list view renders correctly: Patient key value details 7`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    Address
-    : 
-  </span>
-  <span>
-    836 Doyle Port
-  </span>
-</div>
-`;
+exports[`renders immunization resources correctly: other resource breadCrum-3 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: Patient key value details 8`] = `
-<div
-  class="patient-detail__key-value"
->
-  <span>
-    Country
-    : 
-  </span>
-  <span>
-    US
-  </span>
-</div>
-`;
+exports[`renders immunization resources correctly: other resource breadCrum-4 1`] = `"<span>View details</span>"`;
 
-exports[`Patients list view renders correctly: reference collapse item 1`] = `
-<span
-  class="ant-collapse-header-text"
->
-  1015
-    
-  <span
-    class="ant-tag css-dev-only-do-not-override-k7429z"
-  >
-    <span
-      title="status"
-    />
-    current
-  </span>
-</span>
-`;
+exports[`renders patient details page correctly: patient breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
 
-exports[`Patients list view renders correctly: table row 1 page 1 1`] = `
-<td
-  class="ant-table-cell"
->
-  7/8/2021
-</td>
-`;
+exports[`renders patient details page correctly: patient breadCrum-1 1`] = `"/"`;
 
-exports[`Patients list view renders correctly: table row 1 page 1 2`] = `
-<td
-  class="ant-table-cell"
->
-  2021-02-02
-</td>
-`;
+exports[`renders patient details page correctly: patient breadCrum-2 1`] = `"<span>View details</span>"`;
 
-exports[`Patients list view renders correctly: table row 1 page 1 3`] = `
-<td
-  class="ant-table-cell"
-/>
-`;
+exports[`renders patientEncounter resources correctly: other resource breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
+
+exports[`renders patientEncounter resources correctly: other resource breadCrum-1 1`] = `"/"`;
+
+exports[`renders patientEncounter resources correctly: other resource breadCrum-2 1`] = `"<a href=\\"/fhir/Patient/1\\">Patient profile</a>"`;
+
+exports[`renders patientEncounter resources correctly: other resource breadCrum-3 1`] = `"/"`;
+
+exports[`renders patientEncounter resources correctly: other resource breadCrum-4 1`] = `"<span>View details</span>"`;
+
+exports[`renders task resources correctly: other resource breadCrum-0 1`] = `"<a href=\\"/fhir/Patient\\">Patients</a>"`;
+
+exports[`renders task resources correctly: other resource breadCrum-1 1`] = `"/"`;
+
+exports[`renders task resources correctly: other resource breadCrum-2 1`] = `"<a href=\\"/fhir/Patient/1\\">Patient profile</a>"`;
+
+exports[`renders task resources correctly: other resource breadCrum-3 1`] = `"/"`;
+
+exports[`renders task resources correctly: other resource breadCrum-4 1`] = `"<span>View details</span>"`;

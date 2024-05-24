@@ -1,0 +1,19 @@
+div[aria-selected="true"] {
+    .ant-badge-count {
+        background: var(--tab-title-count-badge-active__background);
+    }
+    .ant-badge-count,
+    .current {
+        color: var(--tab-title-count-badge-active__color);
+    }
+}
+
+div[aria-selected="false"] {
+    .ant-badge-count {
+        background: var(--tab-title-count-badge-inactive__background);
+    }
+    .ant-badge-count,
+    .current {
+        color: var(--tab-title-count-badge-inactive__color);
+    }
+}

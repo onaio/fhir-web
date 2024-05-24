@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-import { Descriptions, Typography } from 'antd';
+import { Descriptions, DescriptionsProps, Typography } from 'antd';
 
 const { Text } = Typography;
 
@@ -10,10 +10,12 @@ export type KeyValuePairs = Record<string, React.ReactNode>;
 export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
+  column?: DescriptionsProps['column'];
 }
 export interface ListFlatKeyValuesProps {
   data: KeyValuePairs;
   classnames?: string;
+  theme?: SingleKeyValueClassOptions;
 }
 
 const singleKeyValueClass: SingleKeyValueClass = {
@@ -86,9 +88,9 @@ export const renderObjectAsKeyvalue = (obj: Record<string, unknown>) => {
  * @param props - component data and theme
  */
 export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
-  const { data, theme } = props;
+  const { data, theme, column = { xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 } } = props;
   return (
-    <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}>
+    <Descriptions size="small" column={column}>
       {Object.entries(data).map(([key, value]) => {
         const keyValuePairing = { [key]: value };
         return (
@@ -104,17 +106,20 @@ export const KeyValuesDescriptions = (props: SingleKeyNestedValueProps) => {
 /**
  * Use for displaying single key value pair on same line
  *
- * @param obj - obj with info to be displayed
+ * @param props - data and styling class for the component
  */
-export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
-  const firstPair = Object.entries(obj)[0];
+export const SingleFlatKeyValue = (props: SingleKeyNestedValueProps) => {
+  const { data, theme = 'default' } = props;
+  const firstPair = Object.entries(data)[0];
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (firstPair === undefined) return null;
   const [key, value] = firstPair;
+  const keyClass = `singleFlat-key__${theme}`;
+  const valueClass = `singleFlat-value__${theme}`;
 
   return (
     <Text>
-      {key}: {value}
+      <span className={keyClass}>{key}</span>: <span className={valueClass}>{value}</span>
     </Text>
   );
 };
@@ -126,14 +131,14 @@ export const SingleFlatKeyValue = (obj: KeyValuePairs) => {
  * @param props - data and styling class for the component
  */
 export const ListFlatKeyValues = (props: ListFlatKeyValuesProps) => {
-  const { data, classnames } = props;
+  const { data, classnames, theme } = props;
   return (
     <div className={classnames}>
       {Object.entries(data).map(([key, value]) => {
-        const keyValuePairing = { [key]: value };
+        const keyValuePairing = { data: { [key]: value } };
         return (
           <React.Fragment key={key}>
-            <SingleFlatKeyValue {...keyValuePairing} />
+            <SingleFlatKeyValue theme={theme} {...keyValuePairing} />
             <br></br>
           </React.Fragment>
         );

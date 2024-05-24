@@ -1,4 +1,4 @@
-import { Divider, Tag, Typography } from 'antd';
+import { DescriptionsProps, Divider, Tag, Typography } from 'antd';
 import React from 'react';
 import {
   KeyValuesDescriptions,
@@ -21,6 +21,7 @@ export interface ResourceDetailsProps {
   };
   bodyData: Record<string, React.ReactNode>;
   footer?: React.ReactNode;
+  column?: DescriptionsProps['column'];
 }
 
 export const ResourceDetails = (props: ResourceDetailsProps) => {
@@ -33,6 +34,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
     footer,
     status,
     headerLeftDataClasses,
+    column,
   } = props;
   return (
     <div data-testid="details-section" className="details-section">
@@ -50,7 +52,11 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
 
         <div className="header-bottom">
-          <ListFlatKeyValues classnames={headerLeftDataClasses} data={headerLeftData} />
+          <ListFlatKeyValues
+            theme="light"
+            classnames={headerLeftDataClasses}
+            data={headerLeftData}
+          />
           {headerRightData && (
             <div style={{ textAlign: 'right' }}>
               <SingleKeyNestedValue theme="light" data={headerRightData} />
@@ -59,7 +65,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
       </div>
       <Divider className="divider" />
-      <KeyValuesDescriptions theme="default" data={bodyData} />
+      <KeyValuesDescriptions theme="default" data={bodyData} column={column} />
       {footer && (
         <>
           <Divider className="divider" />

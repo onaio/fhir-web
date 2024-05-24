@@ -3,7 +3,7 @@
 }
 
 .details-full-view .site-page-header {
-  padding: 24px;
+  padding: 16px 24px;
   background: #fff;
 }
 
@@ -20,5 +20,5 @@
 
 .details-full-view .details-tab {
   background: #fff;
-  padding: 16px;
+  padding-top: 16px;
 }

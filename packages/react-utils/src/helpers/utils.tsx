@@ -85,3 +85,21 @@ export interface FhirApiFilter {
   pageSize: number;
   search: string | null;
 }
+
+/**
+ * convert string date to locale string
+ *
+ * @param stringDate - string date
+ * @param dateOnly - if to only return date only. Omit time
+ */
+export function dateToLocaleString(stringDate?: string | Date, dateOnly = false) {
+  const toDateObj = new Date(stringDate || '');
+  if (!isValidDate(toDateObj)) {
+    return '';
+  }
+  if (dateOnly) {
+    return toDateObj.toLocaleDateString();
+  }
+
+  return toDateObj.toLocaleString();
+}

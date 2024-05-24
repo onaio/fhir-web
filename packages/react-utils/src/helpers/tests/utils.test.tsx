@@ -1,4 +1,4 @@
-import { getResourcesFromBundle } from '../utils';
+import { dateToLocaleString, getResourcesFromBundle } from '../utils';
 import { careTeams } from './fixtures';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { downloadFile, getFileNameFromCDHHeader } from '../utils';
@@ -63,5 +63,17 @@ describe('helpers/utils/getFileNameFromCDHHeader', () => {
     expect(getFileNameFromCDHHeader(CDHeader1)).toEqual('test.pdf');
     expect(getFileNameFromCDHHeader(CDHeader2)).toEqual('test.csv');
     expect(getFileNameFromCDHHeader(CDHeader3)).toEqual('test.xhtml');
+  });
+});
+
+describe('helpers/utils/dateToLocaleString', () => {
+  it('Shoud return expected locale string date', () => {
+    const now = new Date('2021-03-10T13:27:48.632+00:00');
+    expect(dateToLocaleString()).toEqual('');
+    expect(dateToLocaleString('invalid')).toEqual('');
+    expect(dateToLocaleString(now)).toEqual('3/10/2021, 1:27:48 PM');
+    expect(dateToLocaleString('2021-03-10T13:27:48.632+00:00')).toEqual('3/10/2021, 1:27:48 PM');
+    expect(dateToLocaleString('2021-03-10T13:27:48.632+00:00', true)).toEqual('3/10/2021');
+    expect(dateToLocaleString('1988-08-04')).toEqual('8/4/1988, 12:00:00 AM');
   });
 });

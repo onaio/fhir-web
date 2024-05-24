@@ -6,3 +6,7 @@ export const TABLE_ACTIONS_KEY = '_actions';
 export const TABLE_PAGE = 1;
 export const TABLE_PAGE_SIZE = 5;
 export const TABLE_PAGE_SIZE_OPTIONS = ['5', '10', '20', '50', '100'];
+
+// query parameters
+export const tabViewQuery = 'tabView';
+export const activeTabQuery = 'activeTab';
