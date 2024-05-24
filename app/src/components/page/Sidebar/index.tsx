@@ -6,11 +6,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
 import { getActivePath } from './utils';
-import { COLLAPSED_LOGO_SRC, MAIN_LOGO_SRC, OPENSRP_WEB_VERSION } from '../../../configs/env';
+import { COLLAPSED_LOGO_SRC, MAIN_LOGO_SRC } from '../../../configs/env';
 import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 import { RoleContext } from '@opensrp/rbac';
-import { BarsOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons';
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -78,15 +78,19 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       width="275px"
       className="layout-sider"
     >
-      <div className={`logo ${collapsed ? 'small-logo' : ''}`}>
-        {collapsed ?
-        <Button onClick={() => setCollapsed(false)} type='link'> <img src={COLLAPSED_LOGO_SRC} alt="The logo" />  </Button>:
-        <>
-          <Link hidden={collapsed} to={URL_HOME}>
+      <div className={`logo ${collapsed ? 'small-logo' : 'main-logo'}`}>
+        <Link hidden={collapsed} to={URL_HOME}>
           <img src={MAIN_LOGO_SRC} alt="The logo" />
         </Link>
-        <Button className='collapse-icon'  onClick={() => setCollapsed(true)} type='link'><BarsOutlined /></Button>
-        </>}
+        <Button
+          hidden={!collapsed}
+          onClick={() => setCollapsed(false)} type='link'
+        >
+          <img src={COLLAPSED_LOGO_SRC} alt="The logo" />
+        </Button>:
+        {!collapsed &&
+          <Button className='collapse-icon'  onClick={() => setCollapsed(true)} type='link'><LeftOutlined /></Button>
+        }
       </div>
 
       <Menu

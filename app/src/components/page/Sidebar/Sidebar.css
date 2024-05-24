@@ -3,26 +3,40 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  padding: 0px 16px;
+  padding-left: 16px;
+
+  img {
+    max-height: 40px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .ant-btn-link:hover {
+    color: #fff;
+  }
 }
 
-.small-logo {
-  padding-inline: calc(50% - 8px - 4px);
-}
-
-.logo img {
-  max-height: 40px;
-  width: auto;
-  max-width: 100%;
+.main-logo img {
   height: 26px;
 }
 
-.small-logo button {
-  display: contents;
+.small-logo {
+  button {
+    display: contents;
+  }
+
+  img {
+    height: 38px;
+    min-width: 38px;
+  }
 }
 
 .collapse-icon {
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0 16px;
+  margin-right: 19px;
   margin-left: auto;
+  width: 6px;
 }
 
 .menu-dark,
