@@ -80,15 +80,16 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
       breakpoint='md'
     >
       <div className={`logo ${collapsed ? 'small-logo' : 'main-logo'}`}>
-        <Link hidden={collapsed} to={URL_HOME}>
+        <Link id="main-logo" hidden={collapsed} to={URL_HOME}>
           <img src={MAIN_LOGO_SRC} alt="The logo" />
         </Link>
         <Button
+          id="collapsed-logo"
           hidden={!collapsed}
           onClick={() => setCollapsed(false)} type='link'
         >
           <img src={COLLAPSED_LOGO_SRC} alt="The logo" />
-        </Button>:
+        </Button>
         {!collapsed &&
           <Button className='collapse-icon'  onClick={() => setCollapsed(true)} type='link'><LeftOutlined /></Button>
         }

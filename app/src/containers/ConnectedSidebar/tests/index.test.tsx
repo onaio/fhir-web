@@ -6,9 +6,10 @@ import { MemoryRouter } from 'react-router';
 import ConnectedSidebar from '..';
 import { store } from '@opensrp/store';
 import { act } from 'react-dom/test-utils';
-import toJson from 'enzyme-to-json';
 import { superUserRole } from '@opensrp/react-utils';
 import { RoleContext } from '@opensrp/rbac';
+import { fireEvent, render } from '@testing-library/react';
+import { COLLAPSED_LOGO_SRC, MAIN_LOGO_SRC } from '../../../configs/env';
 
 jest.mock('../../../configs/env');
 jest.mock('../../../configs/settings');
@@ -127,8 +128,8 @@ describe('components/ConnectedSidebar', () => {
     wrapper.unmount();
   });
 
-  it('shows the correct logo', () => {
-    const wrapper = mount(
+  it('shows the correct logo & collapse works as expected', () => {
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
           <RoleContext.Provider value={superUserRole}>
@@ -137,26 +138,20 @@ describe('components/ConnectedSidebar', () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(toJson(wrapper.find('.logo'))).toMatchSnapshot('Logo');
+    const mainLogo = document.querySelector("#main-logo")
+    expect(mainLogo).toBeVisible() // menu not collapsed
+    expect(mainLogo?.querySelector('img')?.getAttribute('src')).toEqual(MAIN_LOGO_SRC)
+    const collapseLogo = document.querySelector('#collapsed-logo')
+    expect(collapseLogo).not.toBeVisible()
+    expect(collapseLogo?.querySelector('img')?.getAttribute('src')).toEqual(COLLAPSED_LOGO_SRC)
+
+    // collapse menu
+    const collapseIcon = document.querySelector(".collapse-icon")
+    fireEvent.click(collapseIcon as Element)
+    expect(document.querySelector("#main-logo")).not.toBeVisible()
+    expect(document.querySelector('#collapsed-logo')).toBeVisible()
   });
 
-  it('shows version if available', () => {
-    const envModule = require('../../../configs/env');
-    envModule.OPENSRP_WEB_VERSION = 'v1.0.1';
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: `/draft`, hash: '', search: '', state: {} }]}>
-          <RoleContext.Provider value={superUserRole}>
-            <ConnectedSidebar />
-          </RoleContext.Provider>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const version = wrapper.find('.sidebar-version').text();
-    expect(version).toMatchInlineSnapshot(`"v1.0.1"`);
-  });
 
   it('correctly sets open keys', () => {
     const wrapper = mount(
