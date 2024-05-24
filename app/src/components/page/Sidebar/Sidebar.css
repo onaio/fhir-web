@@ -12,7 +12,7 @@
   }
 
   .ant-btn-link:hover {
-    color: #fff;
+    color: var(--menu-item-text_hover__dark-theme__color);
   }
 }
 
@@ -32,7 +32,7 @@
 }
 
 .collapse-icon {
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--menu-item-text__dark-theme__color);
   padding: 0 16px;
   margin-right: 19px;
   margin-left: auto;
@@ -45,11 +45,11 @@
 }
 
 .menu-dark ul:last-child {
-  background: #141414 !important;
+  background: var(--sub-menu-items__background) !important;
 }
 
 .ant-menu-dark.ant-menu-submenu > .ant-menu {
-  background: #141414 !important;
+  background: var(--sub-menu-items__background) !important;
 }
 
 .sidebar-icons {
