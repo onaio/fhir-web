@@ -146,10 +146,16 @@ describe('components/ConnectedSidebar', () => {
     expect(collapseLogo?.querySelector('img')?.getAttribute('src')).toEqual(COLLAPSED_LOGO_SRC)
 
     // collapse menu
-    const collapseIcon = document.querySelector(".collapse-icon")
-    fireEvent.click(collapseIcon as Element)
+    fireEvent.click(document.querySelector(".collapse-icon") as Element)
     expect(document.querySelector("#main-logo")).not.toBeVisible()
     expect(document.querySelector('#collapsed-logo')).toBeVisible()
+    expect(document.querySelector(".collapse-icon")).not.toBeInTheDocument()
+
+    // uncollapse menu
+    fireEvent.click(document.querySelector('#collapsed-logo') as Element)
+    expect(document.querySelector("#main-logo")).toBeVisible()
+    expect(document.querySelector('#collapsed-logo')).not.toBeVisible()
+    expect(document.querySelector(".collapse-icon")).toBeInTheDocument()
   });
 
 
