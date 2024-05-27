@@ -55,7 +55,11 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         </div>
 
         <div className="header-bottom">
-          <ListFlatKeyValues classnames={headerLeftDataClasses} data={headerLeftData} />
+          <ListFlatKeyValues
+            theme="light"
+            classnames={headerLeftDataClasses}
+            data={headerLeftData}
+          />
           {headerRightData && (
             <div style={{ textAlign: 'right' }}>
               <SingleKeyNestedValue theme="light" data={headerRightData} />

@@ -1,12 +1,13 @@
 import React from 'react';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { sorterFn } from '../../../helpers/utils';
-import { getPatientName } from '../../PatientsList/utils';
+import { getPatientName, getPatientStatus, patientStatusColor } from '../../PatientsList/utils';
 import { LIST_PATIENTS_URL } from '../../../constants';
 import { Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { Column, viewDetailsQuery } from '@opensrp/react-utils';
+import { Column, viewDetailsQuery, ResourceDetailsProps, dateToLocaleString } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
+import { get } from 'lodash';
 
 const { Text } = Typography;
 
@@ -111,3 +112,49 @@ export const serverSideSortedColumns = (t: TFunction) => {
     return newColumn;
   });
 };
+
+/**
+ * Extract resource details props from resource
+ *
+ * @param resource - Patient resource
+ * @param t - translation function
+ */
+export function patientDetailsProps(
+  resource: IPatient | undefined,
+  t: TFunction
+): ResourceDetailsProps {
+  if (!resource) {
+    return {} as ResourceDetailsProps;
+  }
+  const { meta, gender, birthDate, id, active, deceasedBoolean } = resource;
+  const patientName = getPatientName(resource);
+  const splitName = patientName ? patientName.split(' ') : [];
+  const headerRightData = {
+    [t('Date created')]: dateToLocaleString(meta?.lastUpdated),
+  };
+  const headerLeftData = {
+    [t('ID')]: id,
+    [t('Gender')]: gender,
+  };
+  const bodyData = {
+    [t('First name')]: splitName[0],
+    [t('Last name')]: splitName[1],
+    [t('UUID')]: get(resource, 'identifier.0.value'),
+    [t('Date of birth')]: dateToLocaleString(birthDate, true),
+    [t('Phone')]: get(resource, 'telecom.0.value'),
+    [t('MRN')]: 'Unknown',
+    [t('Address')]: get(resource, 'address.0.line.0') || 'N/A',
+    [t('Country')]: get(resource, 'address.0.country'),
+  };
+  const patientStatus = getPatientStatus(active as boolean, deceasedBoolean as boolean);
+  return {
+    title: patientName,
+    headerRightData,
+    headerLeftData,
+    bodyData,
+    status: {
+      title: patientStatus,
+      color: patientStatusColor[patientStatus],
+    },
+  };
+}

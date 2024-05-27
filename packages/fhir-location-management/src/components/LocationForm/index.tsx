@@ -296,6 +296,7 @@ const LocationForm = (props: LocationFormProps) => {
                   rules={validationRules.serviceType}
                 >
                   <ValueSetAsyncSelect
+                    showSearch={true}
                     valueSetURL={eusmServicePointValueSetURI}
                     fhirBaseUrl={fhirBaseURL}
                   />

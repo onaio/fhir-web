@@ -3,6 +3,18 @@ import get from 'lodash/get';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { parseFhirHumanName } from '@opensrp/react-utils';
 
+export enum PatientStatus {
+  ACTIVE = 'Active',
+  InACTIVE = 'Inactive',
+  DECEASED = 'Deceased',
+}
+
+export const patientStatusColor = {
+  [PatientStatus.ACTIVE]: 'green',
+  [PatientStatus.InACTIVE]: 'gray',
+  [PatientStatus.DECEASED]: 'red',
+};
+
 /**
  * util to extract patient name
  *
@@ -66,3 +78,19 @@ export function buildObservationValueString(obj: Dictionary): string {
   }
   return quantValue;
 }
+
+/**
+ * Function to get patient status based on active and deceased status
+ *
+ * @param {boolean} isActive - Patient active status
+ * @param {boolean} isDeceased - Patient deceased status
+ */
+export const getPatientStatus = (isActive: boolean, isDeceased: boolean) => {
+  if (isDeceased) {
+    return PatientStatus.DECEASED;
+  }
+  if (isActive) {
+    return PatientStatus.ACTIVE;
+  }
+  return PatientStatus.InACTIVE;
+};
