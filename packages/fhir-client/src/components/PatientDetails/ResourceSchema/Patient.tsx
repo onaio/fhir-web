@@ -5,7 +5,12 @@ import { getPatientName, getPatientStatus, patientStatusColor } from '../../Pati
 import { LIST_PATIENTS_URL } from '../../../constants';
 import { Tag, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import { Column, viewDetailsQuery, ResourceDetailsProps, dateToLocaleString } from '@opensrp/react-utils';
+import {
+  Column,
+  viewDetailsQuery,
+  ResourceDetailsProps,
+  dateToLocaleString,
+} from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 import { get } from 'lodash';
 
