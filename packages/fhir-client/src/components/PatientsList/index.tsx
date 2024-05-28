@@ -15,7 +15,7 @@ import {
 } from '../PatientDetails/ResourceSchema/Patient';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/lib/table/interface';
 import { get } from 'lodash';
-import { PatientDetailsOverview } from '../ PatientDetailsOverview';
+import { PatientDetailsOverview } from '../PatientDetailsOverview';
 
 interface PatientListProps {
   fhirBaseURL: string;
