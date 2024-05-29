@@ -70,7 +70,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: Dictionary) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Location.update']}>
+          <RbacCheck permissions={['Location.update', 'Location.create']} matchStrategy="any">
             <>
               <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}`} className="m-0 p-1">
                 {t('Edit')}

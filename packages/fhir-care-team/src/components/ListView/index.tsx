@@ -119,7 +119,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       },
       {
         key: '2',
-        permissions: [],
+        permissions: ['CareTeam.read'],
         label: (
           <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
             View Details
@@ -147,7 +147,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['CareTeam.update']}>
+          <RbacCheck permissions={['CareTeam.update', 'CareTeam.create']} matchStrategy="any">
             <>
               <Link to={`${URL_EDIT_CARE_TEAM}/${record.id.toString()}`} className="m-0 p-1">
                 {t('Edit')}
