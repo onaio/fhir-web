@@ -139,7 +139,10 @@ export const UserDetails = (props: UserDetailProps) => {
             )
           }
           extra={[
-            <RbacCheck permissions={['iam_user.delete']} key="user-delete-btn">
+            <RbacCheck
+              permissions={['iam_user.delete', 'Practitioner.delete']}
+              key="user-delete-btn"
+            >
               <UserDeleteBtn
                 fhirBaseUrl={fhirBaseUrl}
                 keycloakBaseUrl={keycloakBaseUrl}
@@ -147,7 +150,7 @@ export const UserDetails = (props: UserDetailProps) => {
                 afterActions={userDeleteAfterAction}
               />
             </RbacCheck>,
-            <RbacCheck permissions={['iam_user.update']} key="edit-user">
+            <RbacCheck permissions={['iam_user.update', 'Practitioner.update']} key="edit-user">
               <Button type="primary" onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}>
                 {t('Edit')}
               </Button>

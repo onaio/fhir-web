@@ -54,7 +54,7 @@ export const getTableColumns = (
     const items = [
       {
         key: '1',
-        permissions: ['iam_user.read'],
+        permissions: ['iam_user.read', 'Practitioner.read'],
         label: (
           <Button onClick={() => history.push(`${USER_DETAILS_URL}/${record.id}`)} type="link">
             {t('View Details')}
@@ -63,7 +63,7 @@ export const getTableColumns = (
       },
       {
         key: '3',
-        permissions: ['iam_user.update'],
+        permissions: ['iam_user.update', 'Practitioner.update'],
         label: (
           <Button
             type="link"
@@ -81,7 +81,7 @@ export const getTableColumns = (
     if (user_id && record.id !== user_id) {
       items.push({
         key: '2',
-        permissions: ['iam_user.delete'],
+        permissions: ['iam_user.delete', 'Practitioner.delete'],
         label: (
           <UserDeleteBtn
             keycloakBaseUrl={keycloakBaseUrl}
@@ -103,9 +103,10 @@ export const getTableColumns = (
     title: t('Actions'),
     // eslint-disable-next-line react/display-name
     render: (_, record) => {
+      const items = getItems(record);
       return (
         <>
-          <RbacCheck permissions={['iam_user.update']}>
+          <RbacCheck permissions={['iam_user.update', 'Practitioner.update']}>
             <>
               <Link to={`${URL_USER_EDIT}/${record.id}`} key="actions">
                 {t('Edit')}
@@ -117,7 +118,8 @@ export const getTableColumns = (
             placement="bottomRight"
             arrow
             trigger={['click']}
-            menu={{ items: getItems(record) }}
+            menu={{ items }}
+            disabled={!items || items.length < 1}
           >
             <MoreOutlined data-testid="action-dropdown" className="more-options" />
           </Dropdown>

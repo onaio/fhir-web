@@ -113,7 +113,7 @@ export const UserList = (props: OrganizationListProps) => {
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <RbacCheck permissions={['iam_user.create']}>
+            <RbacCheck permissions={['iam_user.create', 'Practitioner.create']}>
               <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
                 <PlusOutlined />
                 {t('Add User')}
