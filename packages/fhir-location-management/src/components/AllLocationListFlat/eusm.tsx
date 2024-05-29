@@ -66,7 +66,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: Dictionary) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Location.update', 'Location.create']} matchStrategy="any">
+          <RbacCheck permissions={['Location.update']}>
             <>
               <Link
                 to={`${URL_SERVICE_POINT_ADD_EDIT}/${record.id.toString()}`}

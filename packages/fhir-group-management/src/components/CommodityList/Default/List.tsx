@@ -156,7 +156,7 @@ export const DefaultCommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: DefaultTableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Group.update', 'Group.create']} matchStrategy="any">
+          <RbacCheck permissions={['Group.update']}>
             <>
               <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
                 {t('Edit')}
