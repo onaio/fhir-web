@@ -161,7 +161,7 @@ it('renders patient details page correctly', async () => {
     'First nameJohn',
     'Last nameDoe',
     'UUID',
-    'Date of birth1988-08-04',
+    'Date of birth8/4/1988',
     'Phone+254722123456',
     'MRNUnknown',
     'Address213,One Pademore',
@@ -171,11 +171,11 @@ it('renders patient details page correctly', async () => {
   const headerRightData = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
     (keyValue) => keyValue.textContent
   );
-  expect(headerRightData).toEqual(['Date created2021-03-10T13:27:48.632+00:00']);
+  expect(headerRightData).toEqual(['Date created3/10/2021, 1:27:48 PM']);
 
   const headerLeftElementValues = document.querySelector('.header-bottom');
   expect(headerLeftElementValues?.textContent).toEqual(
-    'ID: 1Gender: maleDate created2021-03-10T13:27:48.632+00:00'
+    'ID: 1Gender: maleDate created3/10/2021, 1:27:48 PM'
   );
 
   // partially check if tabs were loaded
@@ -243,11 +243,11 @@ it('renders care plan resources correctly', async () => {
   const headerRightData = [...document.querySelectorAll('.singleKeyValue-pair__light')].map(
     (keyValue) => keyValue.textContent
   );
-  expect(headerRightData).toEqual(['Date created2022-05-26T03:24:04+05:00']);
+  expect(headerRightData).toEqual(['Date created5/25/2022, 10:24:04 PM']);
 
   const headerLeftElementValues = document.querySelector('.header-bottom');
   expect(headerLeftElementValues?.textContent).toEqual(
-    'Id: 131386Date created2022-05-26T03:24:04+05:00'
+    'Id: 131386Date created5/25/2022, 10:24:04 PM'
   );
 });
 
@@ -295,7 +295,7 @@ it('renders task resources correctly', async () => {
 
   const headerLeftElementValues = document.querySelector('.header-bottom');
   expect(headerLeftElementValues?.textContent).toEqual(
-    'Id: 14205Date created2016-03-10T22:39:32-04:00'
+    'Id: 14205Date created3/11/2016, 2:39:32 AM'
   );
 });
 
@@ -344,7 +344,7 @@ it('renders condition resources correctly', async () => {
 
   const headerLeftElementValues = document.querySelector('.header-bottom');
   expect(headerLeftElementValues?.textContent).toEqual(
-    'Id: 349d8947-3009-4fb3-b3d5-99ff30aa5614Date created2021-12-14T19:40:38+05:00'
+    'Id: 349d8947-3009-4fb3-b3d5-99ff30aa5614Date created12/14/2021, 2:40:38 PM'
   );
 });
 
@@ -382,8 +382,8 @@ it('renders immunization resources correctly', async () => {
   );
   expect(bodyElementValues).toEqual([
     'Vaccine AdmnisteredSARSCoV2  mRNA vaccine',
-    'Administration Date2021-07-08',
-    'Vaccine expiry date2018-12-15',
+    'Administration Date7/8/2021',
+    'Vaccine expiry date12/15/2018',
     'protocol applied1',
     'Dose quantity',
     'statuscompleted',
@@ -393,9 +393,7 @@ it('renders immunization resources correctly', async () => {
   ]);
 
   const headerLeftElementValues = document.querySelector('.header-bottom');
-  expect(headerLeftElementValues?.textContent).toEqual(
-    'Id: 979Date created2021-07-29T12:37:03+03:00'
-  );
+  expect(headerLeftElementValues?.textContent).toEqual('Id: 979Date created7/29/2021, 9:37:03 AM');
 });
 
 it('renders patientEncounter resources correctly', async () => {
