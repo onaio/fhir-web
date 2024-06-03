@@ -74,6 +74,7 @@ export const columns = (t: TFunction, showPatientOverview: ShowPatientOverview) 
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
           <Button
+            data-testid={record.id}
             onClick={() => showPatientOverview(record.id as string)}
             type="link"
             className="m-0 p-1"

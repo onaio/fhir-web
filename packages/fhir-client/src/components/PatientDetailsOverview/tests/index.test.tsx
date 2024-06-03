@@ -1,10 +1,21 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import {
+  cleanup,
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { MemoryRouter } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 import { PatientDetailsOverview } from '..';
 import nock from 'nock';
+import { store } from '@opensrp/store';
+import { createMemoryHistory } from 'history';
+import { authenticateUser } from '@onaio/session-reducer';
+import { Provider } from 'react-redux';
+import { LIST_PATIENTS_URL } from '../../../constants';
+import { patientResourceDetails } from '../../PatientDetails/tests/fixtures';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,105 +26,133 @@ const queryClient = new QueryClient({
   },
 });
 
-describe('PatientDetailsOverview', () => {
-  beforeEach(() => {
-    queryClient.clear();
-    nock.cleanAll();
-  });
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
-  const renderComponent = (patientId) => {
-    const searchParams = new URLSearchParams();
-    if (patientId) {
-      searchParams.set('viewDetails', patientId);
-    }
-
-    return render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <PatientDetailsOverview fhirBaseURL="https://example.com/fhir" />
-        </MemoryRouter>
-      </QueryClientProvider>,
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
       {
-        wrapper: ({ children }) => (
-          <div data-query-params={searchParams.toString()}>{children}</div>
-        ),
-      }
-    );
-  };
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-  it('renders loading state when fetching patient data', async () => {
-    renderComponent('123');
-    expect(screen.getByText(/Fetching Patient details/i)).toBeInTheDocument();
-  });
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-  it('renders error state when an error occurs', async () => {
-    nock('https://example.com').get('/fhir/Patient/123').replyWithError('Error fetching data');
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+});
 
-    renderComponent('123');
+const { id: patientId } = patientResourceDetails;
+const props = {
+  fhirBaseURL: 'http://test.server.org',
+};
 
-    await waitFor(() => {
-      expect(screen.getByText(/Error fetching data/i)).toBeInTheDocument();
-    });
-  });
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = (props: any) => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Switch>
+          <Route exact path={`${LIST_PATIENTS_URL}`}>
+            {(routeProps) => <PatientDetailsOverview {...{ ...props, ...routeProps }} />}
+          </Route>
+        </Switch>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
 
-  it('renders patient details when data is fetched successfully', async () => {
-    const mockPatientData = {
-      id: '1',
-      gender: 'Male',
-      birthDate: '1990-01-01',
-      address: [{ line: ['123 Street'], country: 'Country' }],
-      telecom: [{ value: '1234567890' }],
-      identifier: [{ value: '123456' }],
-      deceasedBoolean: false,
-      active: true,
-    };
+it('renders error state when an error occurs', async () => {
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}?viewDetails=${patientId}`);
+  nock(props.fhirBaseURL).get(`/Patient/${patientId}`).replyWithError('Error fetching data');
 
-    nock('https://example.com').get('/fhir/Patient/1').reply(200, mockPatientData);
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    renderComponent('1');
+  await waitForElementToBeRemoved(document.querySelector('.ant-alert-content'));
+  expect(screen.getByText(/error fetching data/i)).toBeInTheDocument();
+});
 
-    await waitFor(() => {
-      expect(screen.getByText(/123456/i)).toBeInTheDocument(); // patient ID
-      expect(screen.getByText(/Male/i)).toBeInTheDocument(); // gender
-      expect(screen.getByText(/1234567890/i)).toBeInTheDocument(); // phone number
-      expect(screen.getByText(/123 Street/i)).toBeInTheDocument(); // address
-      expect(screen.getByText(/1990-01-01/i)).toBeInTheDocument(); // date of birth
-      expect(screen.getByText(/View full details/i)).toBeInTheDocument(); // link to full details
-    });
-  });
+it('renders patient details when data is fetched successfully', async () => {
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}?viewDetails=${patientId}`);
+  nock(props.fhirBaseURL).get(`/Patient/${patientId}`).reply(200, patientResourceDetails);
 
-  it('renders "BrokenPage" when patient is not found', async () => {
-    nock('https://example.com').get('/fhir/Patient/999').reply(404);
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    renderComponent('999');
+  await waitForElementToBeRemoved(document.querySelector('.ant-alert-content'));
+  const bodyElementValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
+    (keyValue) => keyValue.textContent
+  );
+  expect(bodyElementValues).toEqual([
+    'UUID',
+    'Phone+254722123456',
+    'Address213,One Pademore',
+    'Date of birth1988-08-04',
+    'MRNUnknown',
+    'CountryKenya',
+  ]);
 
-    await waitFor(() => {
-      expect(screen.getByText(/patient not found/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/The patient you are looking for does not exist/i)
-      ).toBeInTheDocument();
-    });
-  });
+  const headerLeftElementValues = document.querySelector('.header-bottom');
+  expect(headerLeftElementValues?.textContent).toEqual('ID: 1Gender: male');
+  expect(history.location.search).toEqual(`?viewDetails=${patientId}`);
 
-  it('clicking close button calls removeParam function', async () => {
-    const mockPatientData = {
-      id: '1',
-      gender: 'Male',
-      birthDate: '1990-01-01',
-      address: [{ line: ['123 Street'], country: 'Country' }],
-      telecom: [{ value: '1234567890' }],
-      identifier: [{ value: '123456' }],
-      deceasedBoolean: false,
-      active: true,
-    };
+  const closeBtn = screen.findByTestId('cancel');
+  fireEvent.click(await closeBtn);
+  expect(history.location.pathname).toEqual(LIST_PATIENTS_URL);
+  expect(history.location.search).toEqual('');
+});
 
-    nock('https://example.com').get('/fhir/Patient/1').reply(200, mockPatientData);
+it('Navigate to details page', async () => {
+  const history = createMemoryHistory();
+  history.push(`${LIST_PATIENTS_URL}?viewDetails=${patientId}`);
+  nock(props.fhirBaseURL).get(`/Patient/${patientId}`).reply(200, patientResourceDetails);
 
-    renderComponent('1');
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
 
-    await waitFor(() => screen.getByText(/View full details/i));
+  await waitForElementToBeRemoved(document.querySelector('.ant-alert-content'));
+  const FullDetailsLink = screen.findByRole('link', { name: 'View full details' });
+  fireEvent.click(await FullDetailsLink);
+  expect(history.location.pathname).toEqual(`${LIST_PATIENTS_URL}/${patientId}`);
+});
 
-    userEvent.click(screen.getByTestId('cancel'));
-    expect(window.location.search).not.toContain('viewDetails');
-  });
+it('renders null when patient Id not found', async () => {
+  const history = createMemoryHistory();
+  history.push(LIST_PATIENTS_URL);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  expect(document.querySelector('body')).toMatchInlineSnapshot(`
+    <body>
+      <div />
+    </body>
+  `);
 });
