@@ -179,9 +179,10 @@ Object {
       className="ant-layout-sider-children"
     >
       <div
-        className="logo"
+        className="logo main-logo"
       >
         <Link
+          id="main-logo"
           to="/"
         >
           <img
@@ -189,6 +190,24 @@ Object {
             src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
           />
         </Link>
+        <Button
+          hidden={true}
+          id="collapsed-logo"
+          onClick={[Function]}
+          type="link"
+        >
+          <img
+            alt="The logo"
+            src="https://github.com/OpenSRP/web/raw/main/app/src/assets/images/opensrp2-logo-small.png"
+          />
+        </Button>
+        <Button
+          className="collapse-icon"
+          onClick={[Function]}
+          type="link"
+        >
+          <ForwardRef(LeftOutlined) />
+        </Button>
       </div>
       <Menu
         className="menu-dark"
@@ -371,29 +390,4 @@ Array [
     </MenuItem>
   </SubMenu>,
 ]
-`;
-
-exports[`components/ConnectedSidebar shows the correct logo: Logo 1`] = `
-<div
-  className="logo"
->
-  <Link
-    to="/"
-  >
-    <LinkAnchor
-      href="/"
-      navigate={[Function]}
-    >
-      <a
-        href="/"
-        onClick={[Function]}
-      >
-        <img
-          alt="The logo"
-          src="https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png"
-        />
-      </a>
-    </LinkAnchor>
-  </Link>
-</div>
 `;
