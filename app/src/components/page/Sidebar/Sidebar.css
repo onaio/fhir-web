@@ -52,7 +52,13 @@
   background: var(--sub-menu-items__background) !important;
 }
 
-.sidebar-icons {
+.ant-menu-inline-collapsed {
+  .ant-menu-submenu-title, .ant-menu-item  {
+    padding-inline: 20px !important;
+  }
+}
+
+.menu-dark li svg {
   font-size: 18px !important;
   vertical-align: middle;
 }
