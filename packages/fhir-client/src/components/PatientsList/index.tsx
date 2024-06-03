@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col } from 'antd';
-import { BodyLayout } from '@opensrp/react-utils';
+import { BodyLayout, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
@@ -30,6 +30,7 @@ interface PatientListProps {
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
+  const { addParams } = useSearchParams();
 
   const [fhirSortFilters, setFhirSortFilters] = useState<Record<'_sort', string>>();
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
@@ -53,9 +54,12 @@ export const PatientsList = (props: PatientListProps) => {
 
   type TableData = typeof tableData[0];
 
+  const showPatientOverview = (id: string) => {
+    addParams({ [viewDetailsQuery]: id });
+  };
   const tableProps = {
     datasource: tableData,
-    columns: serverSideSortedColumns(t) as Column<TableData>[],
+    columns: serverSideSortedColumns(t, showPatientOverview) as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
     onChange: (

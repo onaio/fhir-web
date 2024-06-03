@@ -1,6 +1,6 @@
 import React from 'react';
-import { Col, Button } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { Col, Button, Alert } from 'antd';
+import { CloseOutlined, SyncOutlined } from '@ant-design/icons';
 import { useQuery } from 'react-query';
 import {
   BrokenPage,
@@ -18,11 +18,10 @@ import { Link } from 'react-router-dom';
 
 export interface PatientListViewProps {
   fhirBaseURL: string;
-  column?: number; // Added column prop
 }
 
 const PatientDetailsOverview = (props: PatientListViewProps) => {
-  const { fhirBaseURL, column = 2 } = props; // Default column value
+  const { fhirBaseURL } = props; // Default column value
   const { t } = useTranslation();
   const { removeParam, sParams } = useSearchParams();
   const patientId = sParams.get(viewDetailsQuery) ?? undefined;
@@ -36,74 +35,82 @@ const PatientDetailsOverview = (props: PatientListViewProps) => {
     enabled: !!patientId,
   });
 
-  if (isLoading) {
-    return <div>{t('Loading...')}</div>;
+  if (!patientId) {
+    return null;
   }
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  // Ensure data is defined
-  if (!data) {
-    return null;
-  }
+  const getPreviewProps = (resourceData: IPatient) => {
+    const { id, gender, birthDate, address, telecom, identifier, deceasedBoolean, active } =
+      resourceData;
 
-  const { id, gender, birthDate, address, telecom, identifier, deceasedBoolean, active } = data;
-
-  let status = {
-    title: t('Inactive'),
-    color: 'gray',
-  };
-
-  if (deceasedBoolean) {
-    status = {
-      title: t('Deceased'),
-      color: 'red',
+    let status = {
+      title: t('Inactive'),
+      color: 'gray',
     };
-  } else if (active) {
-    status = {
-      title: t('Active'),
-      color: 'green',
+
+    if (deceasedBoolean) {
+      status = {
+        title: t('Deceased'),
+        color: 'red',
+      };
+    } else if (active) {
+      status = {
+        title: t('Active'),
+        color: 'green',
+      };
+    }
+
+    const patientInfo = {
+      UUID: identifier && identifier.length > 0 ? identifier[0]?.value : '',
+      Phone: telecom && telecom.length > 0 ? telecom[0].value : '',
+      Address: address?.[0]?.line?.[0] ?? '',
+      'Date of Birth': birthDate,
+      MRN: 'Unknown',
+      Country: address && address.length > 0 ? address[0]?.country : '',
     };
-  }
 
-  const patientInfo = {
-    UUID: identifier && identifier.length > 0 ? identifier[0]?.value : '',
-    Phone: telecom && telecom.length > 0 ? telecom[0].value : '',
-    Address: address?.[0]?.line?.[0] ?? '',
-    'Date of Birth': birthDate,
-    MRN: 'Unknown',
-    Country: address && address.length > 0 ? address[0]?.country : '',
-  };
-
-  const resourceDetailsProp = {
-    title: getPatientName(data),
-    headerLeftData: {
-      [t('ID')]: id,
-      [t('Gender')]: gender,
-    },
-    status,
-    headerActions: (
-      <Button
-        data-testid="cancel"
-        icon={<CloseOutlined />}
-        shape="circle"
-        type="text"
-        onClick={() => removeParam(viewDetailsQuery)}
-      />
-    ),
-    bodyData: () => <KeyValuesDescriptions data={patientInfo} column={column} theme="default" />,
-    footer: (
-      <Link to={`${LIST_PATIENTS_URL}/${id}`} className="m-0 p-1">
-        {t('View full details')}
-      </Link>
-    ),
+    const resourceDetailsProp = {
+      title: getPatientName(data),
+      headerLeftData: {
+        [t('ID')]: id,
+        [t('Gender')]: gender,
+      },
+      status,
+      headerActions: (
+        <Button
+          data-testid="cancel"
+          icon={<CloseOutlined />}
+          shape="circle"
+          type="text"
+          onClick={() => removeParam(viewDetailsQuery)}
+        />
+      ),
+      bodyData: () => <KeyValuesDescriptions data={patientInfo} column={2} theme="default" />,
+      footer: (
+        <Link to={`${LIST_PATIENTS_URL}/${id}`} className="m-0 p-1">
+          {t('View full details')}
+        </Link>
+      ),
+    };
+    return resourceDetailsProp;
   };
 
   return (
     <Col className="view-details-content" span={8}>
-      <ResourceDetails {...resourceDetailsProp} column={column} />
+      {isLoading ? (
+        <Alert
+          description={t('Fetching Patient details')}
+          type="info"
+          showIcon
+          icon={<SyncOutlined spin />}
+        ></Alert>
+      ) : (
+        <>{data && <ResourceDetails {...getPreviewProps(data)} />}</>
+      )}
     </Col>
   );
 };

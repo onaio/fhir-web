@@ -6,4 +6,4 @@ exports[`Patient encounter tab renders correctly 1`] = `"AMBfinishedID: a1f3a048
 
 exports[`Task tab renders correctly 1`] = `"Hygiene VisitcompletedID: 14205Period9/30/2021-10/1/2021PriorityStatuscompletedIntentorderView full details"`;
 
-exports[`immunization encounter tab renders correctly 1`] = `"SARSCoV2  mRNA vaccinecompletedID: 979Date recorded2021-07-29T12:37:03+03:00protocol applied1statuscompletedReasonView full details"`;
+exports[`immunization encounter tab renders correctly 1`] = `"SARSCoV2  mRNA vaccinecompletedID: 979Date recorded7/29/2021protocol applied1statuscompletedReasonView full details"`;

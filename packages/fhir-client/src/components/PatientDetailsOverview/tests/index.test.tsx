@@ -21,7 +21,7 @@ describe('PatientDetailsOverview', () => {
     nock.cleanAll();
   });
 
-  const renderComponent = (patientId?: string) => {
+  const renderComponent = (patientId) => {
     const searchParams = new URLSearchParams();
     if (patientId) {
       searchParams.set('viewDetails', patientId);
@@ -43,7 +43,7 @@ describe('PatientDetailsOverview', () => {
 
   it('renders loading state when fetching patient data', async () => {
     renderComponent('123');
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+    expect(screen.getByText(/Fetching Patient details/i)).toBeInTheDocument();
   });
 
   it('renders error state when an error occurs', async () => {
@@ -51,7 +51,9 @@ describe('PatientDetailsOverview', () => {
 
     renderComponent('123');
 
-    await waitFor(() => expect(screen.getByText(/error fetching data/i)).toBeInTheDocument());
+    await waitFor(() => {
+      expect(screen.getByText(/Error fetching data/i)).toBeInTheDocument();
+    });
   });
 
   it('renders patient details when data is fetched successfully', async () => {
@@ -71,16 +73,16 @@ describe('PatientDetailsOverview', () => {
     renderComponent('1');
 
     await waitFor(() => {
-      expect(screen.getByText(/123456/i)).toBeInTheDocument(); // check if patient ID is rendered
-      expect(screen.getByText(/male/i)).toBeInTheDocument(); // check if gender is rendered
-      expect(screen.getByText(/1234567890/i)).toBeInTheDocument(); // check if phone number is rendered
-      expect(screen.getByText(/123 street/i)).toBeInTheDocument(); // check if address is rendered
-      expect(screen.getByText(/1990-01-01/i)).toBeInTheDocument(); // check if date of birth is rendered
-      expect(screen.getByText(/view full details/i)).toBeInTheDocument(); // check if link to full details is rendered
+      expect(screen.getByText(/123456/i)).toBeInTheDocument(); // patient ID
+      expect(screen.getByText(/Male/i)).toBeInTheDocument(); // gender
+      expect(screen.getByText(/1234567890/i)).toBeInTheDocument(); // phone number
+      expect(screen.getByText(/123 Street/i)).toBeInTheDocument(); // address
+      expect(screen.getByText(/1990-01-01/i)).toBeInTheDocument(); // date of birth
+      expect(screen.getByText(/View full details/i)).toBeInTheDocument(); // link to full details
     });
   });
 
-  it('renders Resource404 when patient is not found', async () => {
+  it('renders "BrokenPage" when patient is not found', async () => {
     nock('https://example.com').get('/fhir/Patient/999').reply(404);
 
     renderComponent('999');
@@ -88,7 +90,7 @@ describe('PatientDetailsOverview', () => {
     await waitFor(() => {
       expect(screen.getByText(/patient not found/i)).toBeInTheDocument();
       expect(
-        screen.getByText(/the patient you are looking for does not exist/i)
+        screen.getByText(/The patient you are looking for does not exist/i)
       ).toBeInTheDocument();
     });
   });
@@ -109,7 +111,7 @@ describe('PatientDetailsOverview', () => {
 
     renderComponent('1');
 
-    await waitFor(() => screen.getByText(/view full details/i));
+    await waitFor(() => screen.getByText(/View full details/i));
 
     userEvent.click(screen.getByTestId('cancel'));
     expect(window.location.search).not.toContain('viewDetails');
