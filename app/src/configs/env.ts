@@ -15,6 +15,11 @@ export const MAIN_LOGO_SRC = setEnv(
   'https://github.com/OpenSRP/web/raw/main/app/src/assets/images/opensrp-logo-color.png'
 );
 
+export const COLLAPSED_LOGO_SRC = setEnv(
+  'REACT_APP_COLLAPSED_LOGO_SRC',
+  'https://github.com/OpenSRP/web/raw/main/app/src/assets/images/opensrp2-logo-small.png'
+);
+
 export const DATE_FORMAT = setEnv('REACT_APP_DATE_FORMAT', 'YYYY-MM-DD');
 
 export const DEFAULT_TIME = setEnv('REACT_APP_DEFAULT_TIME', 'T00:00:00+00:00');

@@ -110,6 +110,12 @@ Below is a list of currently supported environment variables:
   - **Optional**(`string`)
   - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png`
 
+- **REACT_APP_COLLAPSED_LOGO_SRC**
+
+  - Configures the collapsed menu logo src url.
+  - **Optional**(`string`)
+  - default: `https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp2-logo-small.png`
+
 - **REACT_APP_SUPPORTED_LANGUAGES**
 
   - Use alongside the language switcher, customize the options available for language switching.

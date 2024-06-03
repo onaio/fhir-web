@@ -2,6 +2,11 @@
 
 /* common colors */
 :root {
+  /* side menu */
+  --menu-item-text__dark-theme__color: rgba(255, 255, 255, 0.7);
+  --menu-item-text_hover__dark-theme__color: #FFFFFF;
+  --sub-menu-items__background: #141414;
+
   /* detail page tab count badge colors */
   --tab-title-count-badge-active__color: #1676FE;
   --tab-title-count-badge-active__background: #EBF7FF;
