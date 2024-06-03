@@ -26,6 +26,8 @@ import nock from 'nock';
 import { authenticateUser } from '@onaio/session-reducer';
 import { patientResourceDetails } from '../../tests/fixtures';
 import { last } from 'lodash';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -87,7 +89,11 @@ const AppWrapper = (props: any) => {
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route exact path={`${LIST_PATIENTS_URL}/:id`}>
-            {(routeProps) => <PopulatedTableTabs {...{ ...props, ...routeProps }} />}
+            {(routeProps) => (
+              <RoleContext.Provider value={superUserRole}>
+                <PopulatedTableTabs {...{ ...props, ...routeProps }} />
+              </RoleContext.Provider>
+            )}
           </Route>
         </Switch>
       </QueryClientProvider>

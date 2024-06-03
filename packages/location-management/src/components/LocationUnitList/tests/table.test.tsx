@@ -5,6 +5,8 @@ import { history } from '@onaio/connected-reducer-registry';
 import Table, { TableData } from '../Table';
 import flushPromises from 'flush-promises';
 import { act } from 'react-dom/test-utils';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 describe('location-management/src/components/LocationUnitList', () => {
   const tableData: TableData[] = [];
@@ -18,9 +20,11 @@ describe('location-management/src/components/LocationUnitList', () => {
 
   it('renders without crashing', async () => {
     const wrapper = mount(
-      <Router history={history}>
-        <Table data={tableData} />
-      </Router>
+      <RoleContext.Provider value={superUserRole}>
+        <Router history={history}>
+          <Table data={tableData} />
+        </Router>
+      </RoleContext.Provider>
     );
 
     await act(async () => {
@@ -36,7 +40,9 @@ describe('location-management/src/components/LocationUnitList', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} onViewDetails={onViewDetails} />
+        <RoleContext.Provider value={superUserRole}>
+          <Table data={tableData} onViewDetails={onViewDetails} />
+        </RoleContext.Provider>
       </Router>
     );
 
@@ -56,7 +62,9 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('Test Table View Detai prop is undefined', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <RoleContext.Provider value={superUserRole}>
+          <Table data={tableData} />
+        </RoleContext.Provider>
       </Router>
     );
 
@@ -69,7 +77,9 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('Test Table Edit', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <RoleContext.Provider value={superUserRole}>
+          <Table data={tableData} />
+        </RoleContext.Provider>
       </Router>
     );
 
@@ -80,7 +90,9 @@ describe('location-management/src/components/LocationUnitList', () => {
   it('Should show table pagination options', () => {
     const wrapper = mount(
       <Router history={history}>
-        <Table data={tableData} />
+        <RoleContext.Provider value={superUserRole}>
+          <Table data={tableData} />
+        </RoleContext.Provider>
       </Router>
     );
     expect(wrapper.find('.ant-table-pagination')).toBeTruthy();
