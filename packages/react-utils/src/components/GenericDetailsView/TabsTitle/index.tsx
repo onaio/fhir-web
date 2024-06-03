@@ -10,10 +10,11 @@ export interface TabsTitleProps {
   fhirBaseURL: string;
   resourceType: string;
   resourceFilters: Record<string, string>;
+  hasResourcePermissions?: boolean;
 }
 
-export const TabsTitle = (props: TabsTitleProps) => {
-  const { title, resourceType, fhirBaseURL, resourceFilters } = props;
+const TabsTitle = (props: TabsTitleProps) => {
+  const { title, resourceType, fhirBaseURL, resourceFilters, hasResourcePermissions } = props;
   const summaryFilters = {
     _summary: 'count',
     ...resourceFilters,
@@ -23,6 +24,7 @@ export const TabsTitle = (props: TabsTitleProps) => {
     queryKey: [resourceType, filterString],
     queryFn: async () =>
       await new FHIRServiceClass<IBundle>(fhirBaseURL, resourceType).list(summaryFilters),
+    enabled: hasResourcePermissions,
   });
   if (isLoading) {
     return <Spin size="small" />;
@@ -37,3 +39,10 @@ export const TabsTitle = (props: TabsTitleProps) => {
     </div>
   );
 };
+
+const defaultProps = {
+  hasResourcePermissions: true,
+};
+TabsTitle.defaultProps = defaultProps;
+
+export { TabsTitle };

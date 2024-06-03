@@ -29,6 +29,7 @@ export interface CareTeamFormProps {
   fhirBaseURL: string;
   practitioners: IPractitioner[];
   organizations: IOrganization[];
+  disabled?: string[];
 }
 
 /**
@@ -37,7 +38,7 @@ export interface CareTeamFormProps {
  * @param {object} props - component props
  */
 const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => {
-  const { fhirBaseURL, initialValues, practitioners, organizations } = props;
+  const { fhirBaseURL, initialValues, practitioners, organizations, disabled } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const { t } = useTranslation();
@@ -123,6 +124,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 showSearch
                 options={practOptions}
                 filterOption={selectFilterFunction}
+                disabled={disabled?.includes(practitionerParticipants)}
               />
             </Form.Item>
 
@@ -139,6 +141,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 showSearch
                 placeholder={t('Select a managing Organization')}
                 filterOption={selectFilterFunction}
+                disabled={disabled?.includes(managingOrganizations)}
               />
             </Form.Item>
 

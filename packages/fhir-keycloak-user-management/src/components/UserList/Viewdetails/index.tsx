@@ -30,7 +30,7 @@ import { practitionerDetailsResourceType } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
-import { RbacCheck } from '@opensrp/rbac';
+import { RbacCheck, useUserRole } from '@opensrp/rbac';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
@@ -44,7 +44,10 @@ export const UserDetails = (props: UserDetailProps) => {
   const { id: resourceId } = params;
   const { t } = useTranslation();
   const history = useHistory();
+  const userRole = useUserRole();
 
+  const hasPractitionerRead = userRole.hasPermissions(['PractitionerDetail.read']);
+  const hasGroupRead = userRole.hasPermissions(['iam_group.read']);
   const userDeleteAfterAction = () => {
     history.push(URL_USER);
   };
@@ -182,63 +185,65 @@ export const UserDetails = (props: UserDetailProps) => {
           )}
         </PageHeader>
       </div>
-      <RbacCheck permissions={['PractitionerDetail.read']}>
-        <div className="details-tab">
-          <Tabs
-            defaultActiveKey="1"
-            size={'small'}
-            items={[
-              {
-                label: t('User groups'),
-                key: 'Groups',
-                children: (
-                  <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-                ),
-              },
-              {
-                label: t('User roles'),
-                key: 'Roles',
-                children: (
-                  <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-                ),
-              },
-              {
-                label: t('Practitioners'),
-                key: 'Practitioners',
-                children: (
-                  <PractitionerDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-              {
-                label: t('CareTeams'),
-                key: 'CareTeams',
-                children: (
-                  <CareTeamDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-              {
-                label: t('Organizations'),
-                key: 'Organizations',
-                children: (
-                  <OrganizationDetailsView
-                    loading={detailsLoading}
-                    practitionerDetails={practDetailsByResName}
-                    error={detailsError}
-                  />
-                ),
-              },
-            ]}
-          />
-        </div>
-      </RbacCheck>
+      <div className="details-tab">
+        <Tabs
+          defaultActiveKey="1"
+          size={'small'}
+          items={[
+            {
+              label: t('User groups'),
+              key: 'Groups',
+              children: (
+                <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+              ),
+              disabled: !hasGroupRead,
+            },
+            {
+              label: t('User roles'),
+              key: 'Roles',
+              children: (
+                <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+              ),
+            },
+            {
+              label: t('Practitioners'),
+              key: 'Practitioners',
+              children: (
+                <PractitionerDetailsView
+                  loading={detailsLoading}
+                  practitionerDetails={practDetailsByResName}
+                  error={detailsError}
+                />
+              ),
+              disabled: !hasPractitionerRead,
+            },
+            {
+              label: t('CareTeams'),
+              key: 'CareTeams',
+              children: (
+                <CareTeamDetailsView
+                  loading={detailsLoading}
+                  practitionerDetails={practDetailsByResName}
+                  error={detailsError}
+                />
+              ),
+              disabled: !hasPractitionerRead,
+            },
+            {
+              label: t('Organizations'),
+              key: 'Organizations',
+              children: (
+                <OrganizationDetailsView
+                  loading={detailsLoading}
+                  practitionerDetails={practDetailsByResName}
+                  error={detailsError}
+                />
+              ),
+              disabled: !hasPractitionerRead,
+            },
+          ]}
+        />
+      </div>
     </BodyLayout>
   );
 };
