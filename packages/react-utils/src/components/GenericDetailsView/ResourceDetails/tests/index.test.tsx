@@ -57,7 +57,7 @@ test('ResourceDetails component renders correctly', () => {
 
   // Test Status Tag
   expect(screen.getByText(/Active/)).toBeInTheDocument();
-  expect(document.querySelector('.ant-tag-green')).toBeInTheDocument()
+  expect(document.querySelector('.ant-tag-green')).toBeInTheDocument();
 
   // Test Footer Button Click
   fireEvent.click(screen.getByText('view details'));
