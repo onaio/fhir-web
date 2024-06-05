@@ -106,7 +106,7 @@ export function dateToLocaleString(stringDate?: string | Date, dateOnly = false)
 }
 
 /**
- * filter practitioners select on search
+ * filter select on search
  *
  * @param inputValue search term
  * @param option select option to filter against

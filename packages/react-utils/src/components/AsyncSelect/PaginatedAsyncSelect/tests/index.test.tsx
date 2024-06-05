@@ -241,15 +241,21 @@ test('handles error in request', async () => {
 });
 
 test('Gets all pages on load', async () => {
+  const total = 10;
   nock(commonProps.baseUrl)
     .get(`/${organizationResourceType}/_search`)
-    .query({ _getpagesoffset: '0', _count: '5' })
-    .reply(200, { ...organizationsPage1, total: 10 });
+    .query({ _summary: 'count' })
+    .reply(200, {
+      id: '765f5e8d-65fa-459d-b5a0-79d44e9220bd',
+      resourceType: 'Bundle',
+      total,
+      type: 'searchset',
+    });
 
   nock(commonProps.baseUrl)
     .get(`/${organizationResourceType}/_search`)
-    .query({ _getpagesoffset: '5', _count: '5' })
-    .reply(200, { ...organizationsPage2, total: 10 });
+    .query({ _count: total })
+    .reply(200, { ...organizationsPage1, total });
 
   const changeMock = jest.fn();
   const fullOptionHandlerMock = jest.fn();
@@ -286,11 +292,6 @@ test('Gets all pages on load', async () => {
     'Volunteer virtual hospital 志工虛擬醫院',
     'Volunteer virtual hospital 志工虛擬醫院',
     'Volunteer virtual hospital 志工虛擬醫院',
-    'Test',
-    'Hospital Krel Tarron',
-    'clinFHIR Sample creator',
-    'Health Level Seven International',
-    'Health Level Seven International',
   ]);
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const selectComponent = document.querySelector(`input`)!;
@@ -301,6 +302,57 @@ test('Gets all pages on load', async () => {
     'Volunteer virtual hospital 志工虛擬醫院',
     'Volunteer virtual hospital 志工虛擬醫院',
     'Volunteer virtual hospital 志工虛擬醫院',
-    'Hospital Krel Tarron',
   ]);
+});
+
+test('Shows error when loading all pages', async () => {
+  const total = 10;
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, {
+      id: '765f5e8d-65fa-459d-b5a0-79d44e9220bd',
+      resourceType: 'Bundle',
+      total,
+      type: 'searchset',
+    });
+
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _count: total })
+    .replyWithError('failed');
+
+  const changeMock = jest.fn();
+  const fullOptionHandlerMock = jest.fn();
+
+  const props = {
+    ...commonProps,
+    onChange: changeMock,
+    getFullOptionOnChange: fullOptionHandlerMock,
+    showSearch: true,
+    getAllpagesData: true,
+  };
+
+  render(
+    <QueryWrapper>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
+    </QueryWrapper>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // click on input. - should see all records
+  const input = document.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(input);
+
+  // find antd select options
+  const selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  await flushPromises();
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([]);
+  expect(document.querySelector('.ant-alert-message')?.textContent).toEqual(
+    'Unable to load dropdown options.'
+  );
 });

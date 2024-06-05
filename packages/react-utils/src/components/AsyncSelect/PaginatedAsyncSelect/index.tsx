@@ -10,6 +10,7 @@ import { debounce } from 'lodash';
 import { getResourcesFromBundle, defaultSelectFilterFunction } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
+import { loadAllResources } from '../../../helpers/fhir-utils';
 
 export type SelectOption<T extends IResource> = {
   label: string;
@@ -35,6 +36,7 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
   getAllpagesData?: boolean;
+  localFilterFn?: typeof defaultSelectFilterFunction;
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -61,6 +63,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     extraQueryParams = {},
     getFullOptionOnChange,
     getAllpagesData,
+    localFilterFn = defaultSelectFilterFunction,
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -76,33 +79,43 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     });
   }, [searchValue]);
 
+  let queryFn = async ({ pageParam = page }) => {
+    const response = await loadResources(
+      baseUrl,
+      resourceType,
+      { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
+      extraQueryParams
+    );
+    return response;
+  };
+
+  if (getAllpagesData) {
+    queryFn = async () => {
+      const response = await loadAllResources(baseUrl, resourceType, extraQueryParams);
+      return response;
+    };
+  }
+
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isFetching, error } =
     useInfiniteQuery({
       queryKey: [resourceType, debouncedSearchValue, page, pageSize],
-      queryFn: async ({ pageParam = page }) => {
-        const response = await loadResources(
-          baseUrl,
-          resourceType,
-          { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
-          extraQueryParams
-        );
-        return response;
-      },
+      queryFn,
       getNextPageParam: (lastGroup: IBundle, allGroups: IBundle[]) => {
+        if (getAllpagesData) {
+          return false;
+        }
         const totalFetched = getTotalRecordsInBundles(allGroups);
         const total = lastGroup.total as number;
         if (totalFetched < total) {
           return page + 1;
-        } else {
-          return false;
         }
+        return false;
       },
       getPreviousPageParam: () => {
-        if (page === 1) {
+        if (page === 1 || getAllpagesData) {
           return undefined;
-        } else {
-          return page - 1;
         }
+        return page - 1;
       },
       refetchOnWindowFocus: false,
     });
@@ -137,7 +150,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     ...restProps,
     placeholder,
     onChange: changeHandler,
-    loading: isLoading || (getAllpagesData && hasNextPage),
+    loading: isLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
     options: options,
     searchValue,
@@ -177,11 +190,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   };
 
   if (getAllpagesData) {
-    if (!error && !isLoading && !isFetchingNextPage && hasNextPage) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchNextPage();
-    }
-    propsToSelect.filterOption = defaultSelectFilterFunction;
+    propsToSelect.filterOption = localFilterFn;
   } else {
     if (props.showSearch) {
       propsToSelect.onSearch = searchHandler;
