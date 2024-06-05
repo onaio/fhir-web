@@ -26,6 +26,8 @@ import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { photoUploadCharacteristicCode } from '../../../../helpers/utils';
 import { cloneDeep } from 'lodash';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -66,14 +68,16 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <CommodityAddEdit {...props} />
-          </Route>
-          <Route exact path="/add/:id">
-            <CommodityAddEdit {...props} />
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path="/add">
+              <CommodityAddEdit {...props} />
+            </Route>
+            <Route exact path="/add/:id">
+              <CommodityAddEdit {...props} />
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );

@@ -36,6 +36,7 @@ import {
 } from './utils';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
+import { useUserRole } from '@opensrp/rbac';
 
 const { Item: FormItem } = Form;
 interface OrganizationFormProps {
@@ -72,6 +73,11 @@ const OrganizationForm = (props: OrganizationFormProps) => {
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
+
+  const userRole = useUserRole();
+  if (!userRole.hasPermissions(['Practitioner.read', 'Practitioner.create'])) {
+    disabled.push(members);
+  }
 
   const { mutate, isLoading } = useMutation(
     (values: OrganizationFormFields) => {
@@ -175,6 +181,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
           placeholder={t('Select user (practitioners only)')}
           options={practitionersSelectOptions}
           filterOption={practitionersFilterFunction as SelectProps<SelectOption[]>['filterOption']}
+          disabled={disabled.includes(members)}
         />
       </FormItem>
 

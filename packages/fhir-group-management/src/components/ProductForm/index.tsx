@@ -36,6 +36,7 @@ import {
   normalizeFileInputEvent,
   SelectOption,
 } from './utils';
+import { useUserRole } from '@opensrp/rbac';
 
 const { Item: FormItem } = Form;
 
@@ -82,6 +83,11 @@ function CommodityForm<
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
+
+  const userRole = useUserRole();
+  if (!userRole.hasPermissions(['Binary.create'])) {
+    disabled.push(productImage);
+  }
 
   const { mutate, isLoading } = useMutation(
     (values: FormFields) => {
@@ -287,6 +293,7 @@ function CommodityForm<
                 multiple={false}
                 listType="picture-card"
                 maxCount={1}
+                disabled={disabled.includes(productImage)}
               >
                 {!getFieldValue(productImage)?.length ? (
                   <button

@@ -23,13 +23,14 @@ import {
   practitionersRoleBundle,
   practitionerRoleBundle392,
 } from './fixtures';
-import { getResourcesFromBundle } from '@opensrp/react-utils';
+import { getResourcesFromBundle, superUserRole } from '@opensrp/react-utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { getOrgFormFields } from '../utils';
 import * as notifications from '@opensrp/notifications';
 import userEvents from '@testing-library/user-event';
 import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
+import { RoleContext } from '@opensrp/rbac';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -63,7 +64,9 @@ describe('OrganizationForm', () => {
   const AppWrapper = (props: { children: React.ReactNode }) => {
     return (
       <Router history={history}>
-        <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+        <RoleContext.Provider value={superUserRole}>
+          <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+        </RoleContext.Provider>
       </Router>
     );
   };

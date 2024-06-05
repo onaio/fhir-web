@@ -113,7 +113,7 @@ export function BaseListView<TableData extends ExtendableTableData = DefaultTabl
         <Col className="main-content">
           <div className="main-content__header">
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <RbacCheck permissions={['Group.create']}>
+            <RbacCheck permissions={['Group.create', 'List.create', 'List.update']}>
               {createButtonUrl ? (
                 <Button type="primary" onClick={() => history.push(createButtonUrl)}>
                   <PlusOutlined />

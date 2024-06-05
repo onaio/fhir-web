@@ -89,7 +89,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Group.update']}>
+          <RbacCheck permissions={['Group.update', 'List.create', 'List.update']}>
             <>
               <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
                 {t('Edit')}

@@ -20,6 +20,7 @@ import {
   sendSuccessNotification,
 } from '@opensrp/notifications';
 import { useTranslation } from '../../mls';
+import { useUserRole } from '@opensrp/rbac';
 
 interface AffiliationModalProps {
   baseUrl: string;
@@ -42,7 +43,9 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
 
   const locationName = location?.name as string;
   const locationId = location?.id;
+  const userRole = useUserRole();
 
+  const hasOrgRead = userRole.hasPermissions(['Organization.read']);
   const orgSelectOptions = getOrgSelectOptions(allOrgs);
   const currentAffiliations = affiliationsByLoc[`${locationResourceType}/${locationId}`];
   const defaultOrgsValues = getOrgOptionsFromAffiliations(currentAffiliations);
@@ -128,6 +131,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
         defaultValue={defaultOrgsValues as unknown as string[]}
         filterOption={orgsFilterFunction}
         onChange={handleChange}
+        disabled={!hasOrgRead}
       ></Select>
     </Modal>
   );
