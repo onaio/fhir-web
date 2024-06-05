@@ -224,6 +224,7 @@ describe('dataloaders/FHIRService', () => {
         {
           headers: {
             'cache-control': 'no-cache',
+            'content-type': 'application/fhir+json',
           },
           url: 'CareTeam',
         },
@@ -253,6 +254,7 @@ describe('dataloaders/FHIRService', () => {
         {
           headers: {
             'cache-control': 'no-cache',
+            'content-type': 'application/fhir+json',
           },
           url: 'CareTeam/_search?_count=100',
         },
@@ -312,7 +314,13 @@ describe('dataloaders/FHIRService', () => {
           status: 'active',
           subject: { reference: 'Group/306' },
         },
-        { signal },
+        {
+          signal,
+          headers: {
+            'content-type': 'application/fhir+json',
+            'cache-control': 'no-cache',
+          },
+        },
       ],
     ]);
     expect(result).toEqual(fixtures.careTeam1);
