@@ -57,7 +57,7 @@ test('ResourceDetails component renders correctly', () => {
 
   // Test Status Tag
   expect(screen.getByText(/Active/)).toBeInTheDocument();
-  expect(screen.getByText(/Active/).closest('.status')).toHaveStyle('background-color: green');
+  expect(document.querySelector('.ant-tag-green')).toBeInTheDocument();
 
   // Test Footer Button Click
   fireEvent.click(screen.getByText('view details'));

@@ -68,7 +68,7 @@ const PatientDetailsOverview = (props: PatientListViewProps) => {
       UUID: identifier && identifier.length > 0 ? identifier[0]?.value : '',
       Phone: telecom && telecom.length > 0 ? telecom[0].value : '',
       Address: address?.[0]?.line?.[0] ?? '',
-      'Date of Birth': birthDate,
+      'Date of birth': birthDate,
       MRN: 'Unknown',
       Country: address && address.length > 0 ? address[0]?.country : '',
     };
