@@ -136,7 +136,7 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           children: [
             { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS', permissions: ['Organization.read'] },
             {
-              permissions: ['OrganizationAffiliation.read'],
+              permissions: ['OrganizationAffiliation.read', 'Location.read'],
               title: t('Team Assignment'),
               url: URL_TEAM_ASSIGNMENT,
               key: 'team-assignment',

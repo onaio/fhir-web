@@ -119,7 +119,7 @@ export const CareTeamList: React.FC<CareTeamListPropTypes> = (props: CareTeamLis
       },
       {
         key: '2',
-        permissions: [],
+        permissions: ['CareTeam.read'],
         label: (
           <Button type="link" onClick={() => addParam(viewDetailsQuery, record.id)}>
             View Details

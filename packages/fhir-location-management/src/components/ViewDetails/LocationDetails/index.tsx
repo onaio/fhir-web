@@ -5,6 +5,7 @@ import { ResourceDetails } from '@opensrp/react-utils';
 import { Link, useLocation } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
 import { BACK_SEARCH_PARAM, URL_LOCATION_UNIT_EDIT } from '../../../constants';
+import { RbacCheck } from '@opensrp/rbac';
 
 const GeometryRender = ({ geometry }: { geometry?: string }) => {
   let formattedGeo = geometry ?? '';
@@ -72,7 +73,9 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       headerLeftData={headerLeftData}
       headerRightData={dateCreatedKeyPairing}
       headerActions={
-        <Link to={`${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`}>{t('Edit details')}</Link>
+        <RbacCheck permissions={['Location.update']}>
+          <Link to={`${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`}>{t('Edit details')}</Link>
+        </RbacCheck>
       }
       bodyData={otherDetailsMap}
     />

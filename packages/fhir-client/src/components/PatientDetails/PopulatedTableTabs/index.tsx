@@ -51,6 +51,7 @@ import { ITask } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ITask';
 import { ICarePlan } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICarePlan';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { Button } from 'antd';
+import { useUserRole } from '@opensrp/rbac';
 
 /** Populated table tabs wrapper props */
 export interface PopulatedTableTabsProps {
@@ -68,8 +69,14 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
 ) => {
   const { fhirBaseURL, patientId } = props;
   const { t } = useTranslation();
+  const userRole = useUserRole();
 
   const { addParams, removeParam } = useSearchParams();
+  const hasCareTeamRead = userRole.hasPermissions(['CareTeam.read']);
+  const hasConditionRead = userRole.hasPermissions(['Condition.read']);
+  const hasTaskRead = userRole.hasPermissions(['Task.read']);
+  const hasImmunizationRead = userRole.hasPermissions(['Immunization.read']);
+  const hasEncounterRead = userRole.hasPermissions(['Encounter.read']);
 
   const defaultTableData = {
     resourceId: patientId,
@@ -158,10 +165,12 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
             resourceType={carePlanResourceType}
             title={t('Care plan')}
             resourceFilters={defaultSearchParamsFactory(patientId)}
+            hasResourcePermissions={hasCareTeamRead}
           />
         ),
         key: 'carePlan',
         children: <TabsTable<ICarePlan> {...carePlanTableData} />,
+        disabled: !hasCareTeamRead,
       },
       {
         label: (
@@ -170,10 +179,12 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
             resourceType={conditionResourceType}
             title={t('Condition')}
             resourceFilters={defaultSearchParamsFactory(patientId)}
+            hasResourcePermissions={hasConditionRead}
           />
         ),
         key: 'condition',
         children: <TabsTable<ICondition> {...conditionTableData} />,
+        disabled: !hasConditionRead,
       },
       {
         label: (
@@ -182,10 +193,12 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
             resourceType={taskResourceType}
             title={t('Task')}
             resourceFilters={taskSearchParams(patientId)}
+            hasResourcePermissions={hasTaskRead}
           />
         ),
         key: 'task',
         children: <TabsTable<ITask> {...taskTableData} />,
+        disabled: !hasTaskRead,
       },
       {
         label: (
@@ -194,10 +207,12 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
             resourceType={immunizationResourceType}
             title={t('Immunization')}
             resourceFilters={immunizationSearchParams(patientId)}
+            hasResourcePermissions={hasImmunizationRead}
           />
         ),
         key: 'immunization',
         children: <TabsTable<IImmunization> {...immunizationTableData} />,
+        disabled: !hasImmunizationRead,
       },
       {
         label: (
@@ -206,10 +221,12 @@ export const PopulatedTableTabs: React.FC<PopulatedTableTabsProps> = (
             resourceType={encounterResourceType}
             title={t('Patient encounter')}
             resourceFilters={defaultSearchParamsFactory(patientId)}
+            hasResourcePermissions={hasEncounterRead}
           />
         ),
         key: 'patientEncounter',
         children: <TabsTable<IEncounter> {...patientEncounterTableData} />,
+        disabled: !hasEncounterRead,
       },
     ],
   };

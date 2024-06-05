@@ -34,6 +34,12 @@ export const FhirResources = [
   'PlanDefinition',
   'Questionnaire',
   'PractitionerDetail',
+  'List',
+  'Binary',
+  'Condition',
+  'Task',
+  'Immunization',
+  'Encounter',
 ] as const;
 export type FhirResource = typeof FhirResources[number];
 

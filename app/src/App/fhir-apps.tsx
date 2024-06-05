@@ -343,7 +343,7 @@ const FHIRApps = () => {
         exact
         path={URL_TEAM_ASSIGNMENT}
         {...teamAffiliationProps}
-        permissions={['OrganizationAffiliation.read']}
+        permissions={['OrganizationAffiliation.read', 'Location.read']}
         component={FhirTeamAssignment}
       />
       <PrivateComponent

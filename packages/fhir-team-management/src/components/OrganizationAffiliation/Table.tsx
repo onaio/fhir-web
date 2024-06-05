@@ -124,7 +124,9 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       width: '10%',
       // eslint-disable-next-line react/display-name
       render: (_, record) => (
-        <RbacCheck permissions={['OrganizationAffiliation.update']}>
+        <RbacCheck
+          permissions={['OrganizationAffiliation.update', 'OrganizationAffiliation.create']}
+        >
           <Button
             type="link"
             className="action-button"

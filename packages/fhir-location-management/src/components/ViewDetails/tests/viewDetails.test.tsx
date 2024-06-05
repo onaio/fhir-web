@@ -14,6 +14,8 @@ import { ViewDetails } from '..';
 import { createMemoryHistory } from 'history';
 import { setConfig } from '@opensrp/pkg-config';
 import { Switch, Route } from 'react-router';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -39,11 +41,13 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path={`/view/:id`}>
-            <ViewDetails {...props} />
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path={`/view/:id`}>
+              <ViewDetails {...props} />
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );
