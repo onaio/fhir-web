@@ -1,4 +1,5 @@
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
+import UploadIcon from '@2fd/ant-design-icons/lib/Upload';
 import {
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FHIR_GROUP,
@@ -31,6 +32,7 @@ import {
 import React from 'react';
 import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
 import { getConfig, eusmProjectCode } from '@opensrp/pkg-config';
+import { DATA_IMPORT_LIST_URL } from '@opensrp/fhir-import';
 
 /** Interface for menu items */
 export interface Route {
@@ -190,6 +192,15 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
       permissions: ['Patient.read'],
       enabled: ENABLE_PATIENTS_MODULE,
       url: LIST_PATIENTS_URL,
+      isHomePageLink: true,
+    },
+    {
+      otherProps: { icon: <UploadIcon /> },
+      title: t('Data Imports'),
+      key: 'data-import',
+      enabled: true,
+      permissions: ['Patient.read'],
+      url: DATA_IMPORT_LIST_URL,
       isHomePageLink: true,
     },
   ];

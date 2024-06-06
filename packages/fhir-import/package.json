@@ -1,0 +1,47 @@
+{
+  "name": "@opensrp/fhir-import",
+  "version": "0.0.6",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/opensrp/web",
+  "scripts": {
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/opensrp/web/issues"
+  },
+  "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
+    "react": "^17.0.0",
+    "react-dom": "17.0.0",
+    "react-query": "^3.15.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0"
+  },
+  "dependencies": {
+    "@2fd/ant-design-icons": "^2.6.0",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/rbac": "workspace:^",
+    "@opensrp/react-utils": "^0.0.12"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0"
+}
