@@ -1,0 +1,408 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`1157 - view details errors out for careTeam 3500 1`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    CareTeam ID
+  </dt>
+  <dd>
+    3500
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 2`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Name
+  </dt>
+  <dd>
+    Peter James Charlmers Care team
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 3`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    status
+  </dt>
+  <dd>
+    active
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 4`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Participants
+  </dt>
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
+          >
+            <div
+              class="singleKeyValue-pair__default"
+            >
+              <dt>
+                Patient
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
+                >
+                  <li>
+                    Peter James Chalmers
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 5`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Patient
+  </dt>
+  <dd>
+    <ul
+      id="care-team-participants"
+    >
+      <li>
+        Peter James Chalmers
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`1157 - view details errors out for careTeam 3500 6`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Managing organizations
+  </dt>
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          No managing organizations found
+        </div>
+      </div>
+    </div>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  1`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    CareTeam ID
+  </dt>
+  <dd>
+    142534
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  2`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Identifier
+  </dt>
+  <dd>
+    99c4dde5-3aca-4a4b-8b33-b50142e05da6
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  3`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Name
+  </dt>
+  <dd>
+    Brown Bag
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  4`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    status
+  </dt>
+  <dd>
+    active
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  5`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Participants
+  </dt>
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
+          >
+            <div
+              class="singleKeyValue-pair__default"
+            >
+              <dt>
+                Practitioner
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
+                >
+                  <li>
+                    AeHIN Demo
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  6`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Practitioner
+  </dt>
+  <dd>
+    <ul
+      id="care-team-participants"
+    >
+      <li>
+        AeHIN Demo
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`Closes on clicking cancel (X)  7`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Managing organizations
+  </dt>
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          No managing organizations found
+        </div>
+      </div>
+    </div>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 1`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    CareTeam ID
+  </dt>
+  <dd>
+    131411
+  </dd>
+</div>
+`;
+
+exports[`works correctly 2`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Identifier
+  </dt>
+  <dd>
+    93bc9c3d-6321-41b0-9b93-1275d7114e22
+  </dd>
+</div>
+`;
+
+exports[`works correctly 3`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Name
+  </dt>
+  <dd>
+    Care Team One
+  </dd>
+</div>
+`;
+
+exports[`works correctly 4`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    status
+  </dt>
+  <dd>
+    active
+  </dd>
+</div>
+`;
+
+exports[`works correctly 5`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Participants
+  </dt>
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
+          >
+            <div
+              class="singleKeyValue-pair__default"
+            >
+              <dt>
+                Practitioner
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
+                >
+                  <li>
+                    Ward test hey N test Tester family
+                  </li>
+                  <li>
+                    Ward test hey N test Tester family
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 6`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Practitioner
+  </dt>
+  <dd>
+    <ul
+      id="care-team-participants"
+    >
+      <li>
+        Ward test hey N test Tester family
+      </li>
+      <li>
+        Ward test hey N test Tester family
+      </li>
+    </ul>
+  </dd>
+</div>
+`;
+
+exports[`works correctly 7`] = `
+<div
+  class="singleKeyValue-pair__default"
+>
+  <dt>
+    Managing organizations
+  </dt>
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
+    >
+      <div
+        class="ant-alert-content"
+      >
+        <div
+          class="ant-alert-description"
+        >
+          No managing organizations found
+        </div>
+      </div>
+    </div>
+  </dd>
+</div>
+`;
