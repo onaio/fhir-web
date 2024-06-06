@@ -3,7 +3,7 @@ import { Typography, Steps, Button, Space } from 'antd';
 import UploadIcon from '@2fd/ant-design-icons/lib/Upload'
 import ArrowDownThick from '@2fd/ant-design-icons/lib/ArrowDownThick'
 import { OpenSRPService, downloadFile, getFileNameFromCDHHeader } from '@opensrp/react-utils';
-
+import {IMPORT_DOMAIN_URI} from '../../constants';
 
 const { Title, Text } = Typography;
 
@@ -43,7 +43,7 @@ export const InstructionStepOne =
     <ol>
         <li>Click the button below to download the bulk upload template file(s) <br></br>
             <Button type="primary" onClick={async () => {
-                const service = new OpenSRPService("/$import/templates", "http://localhost:3001")
+                const service = new OpenSRPService("/$import/templates", IMPORT_DOMAIN_URI)
                 const response = await service.download();
 
                 // get filename from content-disposition header

@@ -12,7 +12,7 @@ import {
   viewDetailsQuery,
   useSearchParams,
 } from '@opensrp/react-utils';
-import { dataImportRQueryKey } from '../../constants';
+import { dataImportRQueryKey, IMPORT_DOMAIN_URI } from '../../constants';
 import { useTranslation } from '../../mls';
 import { OpenSRPService, BodyLayout, ResourceDetails, Resource404, KeyValuesDescriptions } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
@@ -41,9 +41,9 @@ export const ImportDetailViewDetails = (props: RouteComponentProps) => {
 
   const { data, isLoading, error } = useQuery(
     [dataImportRQueryKey, workflowId], () => {
-      const service = new OpenSRPService(`/$import`, "http://localhost:3001")
+      const service = new OpenSRPService(`/$import`, IMPORT_DOMAIN_URI)
       return service.read(workflowId).then(res => {
-        console.log({ res }); return res
+        return res
       })
     }, {
     enabled: !!workflowId,
@@ -112,7 +112,7 @@ export const ImportDetailViewDetails = (props: RouteComponentProps) => {
             title: data.status,
             color: getStatusColor(data.status)
           }}
-          bodyData={() => <KeyValuesDescriptions data={ResourceDetails} column={2} />}
+          bodyData={() => <KeyValuesDescriptions data={otherDetailsMap} column={2} />}
         />
         <Tabs
           data-testid="details-tab"
@@ -123,8 +123,8 @@ export const ImportDetailViewDetails = (props: RouteComponentProps) => {
             key: "logOutput",
             children: <div className="terminal-output">
               <pre>
-                {data.statusReason.stdout}
-                {data.statusReason.stderr}
+                {data.statusReason?.stdout}
+                {data.statusReason?.stderr}
               </pre>
             </div>,
           }]}

@@ -20,7 +20,8 @@ import {
   DATA_IMPORT_LIST_URL,
   DATA_IMPORT_DETAIL_URL,
   DATA_IMPORT_CREATE_URL,
-  dataImportRQueryKey
+  dataImportRQueryKey,
+  IMPORT_DOMAIN_URI
 } from '../../constants';
 import { ImportDetailViewDetails } from '../ImportDetailOverView';
 import { Dictionary } from '@onaio/utils';
@@ -63,7 +64,7 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const { data, isFetching, isLoading, error } = useQuery(dataImportRQueryKey, () => {
-    const service = new OpenSRPService("/$import", "http://localhost:3001")
+    const service = new OpenSRPService("/$import", IMPORT_DOMAIN_URI)
     return service.list().then(res => {
       return res
     })
@@ -92,7 +93,7 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
       title: t('status'),
       dataIndex: 'status' as const,
       render: (_: any) => {
-        <ImportStatusTag statusString={_} />
+        return <ImportStatusTag statusString={_} />
       }
     },
     {

@@ -3,6 +3,7 @@ export const DATA_IMPORT_DETAIL_URL = "/importDetail"
 export const DATA_IMPORT_CREATE_URL = "/importCreate"
 
 export const IMPORT_ENDPOINT = "/$import"
+export const IMPORT_DOMAIN_URI=""
 export const IMPORT_TEMPLATE_ENDPOINT = `${IMPORT_ENDPOINT}/templates`
 
 

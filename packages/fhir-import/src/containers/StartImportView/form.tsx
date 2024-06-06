@@ -6,7 +6,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import { useHistory } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { OpenSRPService, formItemLayout, tailLayout } from "@opensrp/react-utils";
-import { locations, users, organizations, careteams, inventory, orgToLocationAssignment, userToOrganizationAssignment, product, productImages, DATA_IMPORT_LIST_URL } from '../../constants';
+import { locations, users, organizations, careteams, inventory, orgToLocationAssignment, userToOrganizationAssignment, product, productImages, DATA_IMPORT_LIST_URL, IMPORT_DOMAIN_URI } from '../../constants';
 import { useTranslation } from '../../mls';
 import { sendErrorNotification, sendSuccessNotification, sendInfoNotification } from '@opensrp/notifications';
 import FormItem from 'antd/es/form/FormItem';
@@ -63,7 +63,7 @@ export const DataImportForm = (props: DataImportFormProps) => {
 
     const { mutate, isLoading } = useMutation(
         async (values: FormFields) => {
-            const service = new OpenSRPService<any>("/$import", "http://localhost:3001", customFetchOptions)
+            const service = new OpenSRPService<any>("/$import", IMPORT_DOMAIN_URI, customFetchOptions)
             const formData = new FormData()
 
             Object.entries(values).forEach(([key, value]) => {
@@ -92,11 +92,11 @@ export const DataImportForm = (props: DataImportFormProps) => {
         formFieldName: users,
         label: "Users",
         UploadBtnText: "Attach users file"
-    },{
+    }, {
         formFieldName: locations,
         label: "Locations",
         UploadBtnText: "Attach locations file"
-    },  {
+    }, {
         formFieldName: organizations,
         label: "Organizations",
         UploadBtnText: "Attach organizations file"
@@ -112,17 +112,17 @@ export const DataImportForm = (props: DataImportFormProps) => {
         formFieldName: userToOrganizationAssignment,
         label: "User careteam assignment",
         UploadBtnText: "Attach assignment file"
-    },{
+    }, {
         formFieldName: inventory,
         label: "Inventory",
         UploadBtnText: "Attach inventory file"
     }]
 
-    return <Space direction='vertical' style={{width: "100%"}}>
+    return <Space direction='vertical' style={{ width: "100%" }}>
         <Title level={4}><UploadIcon />Select files to upload</Title>
         <Text type='secondary'>Supported file formats CSV</Text>
         <Form
-        className='import-form'
+            className='import-form'
             colon={false}
             onFinish={(values: any) => {
                 mutate(values);
