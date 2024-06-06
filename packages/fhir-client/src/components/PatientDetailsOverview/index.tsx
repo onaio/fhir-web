@@ -21,7 +21,7 @@ export interface PatientListViewProps {
 }
 
 const PatientDetailsOverview = (props: PatientListViewProps) => {
-  const { fhirBaseURL } = props; // Default column value
+  const { fhirBaseURL } = props;
   const { t } = useTranslation();
   const { removeParam, sParams } = useSearchParams();
   const patientId = sParams.get(viewDetailsQuery) ?? undefined;
