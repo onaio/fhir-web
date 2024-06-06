@@ -2,9 +2,7 @@ import React from 'react';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { sorterFn } from '../../../helpers/utils';
 import { getPatientName, getPatientStatus, patientStatusColor } from '../../PatientsList/utils';
-import { LIST_PATIENTS_URL } from '../../../constants';
-import { Tag, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Tag, Typography } from 'antd';
 import { Column, ResourceDetailsProps, dateToLocaleString } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
 import { get } from 'lodash';
@@ -31,10 +29,11 @@ export const parsePatient = (patient: IPatient) => {
 };
 
 export type PatientTableData = ReturnType<typeof parsePatient>;
+type ShowPatientOverview = (id: string) => void;
 
 const dobSorterFn = sorterFn(dob, true);
 
-export const columns = (t: TFunction) =>
+export const columns = (t: TFunction, showPatientOverview: ShowPatientOverview) =>
   [
     {
       title: t('Name'),
@@ -74,9 +73,14 @@ export const columns = (t: TFunction) =>
       // eslint-disable-next-line react/display-name
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}/${record.id}`} className="m-0 p-1">
+          <Button
+            data-testid={record.id}
+            onClick={() => showPatientOverview(record.id as string)}
+            type="link"
+            className="m-0 p-1"
+          >
             {t('View')}
-          </Link>
+          </Button>
         </span>
       ),
     },
@@ -96,9 +100,10 @@ export const sortMap = {
  * to locally on the ui.
  *
  * @param t - the translator function
+ * @param showPatientOverview - show the patient overview
  */
-export const serverSideSortedColumns = (t: TFunction) => {
-  return columns(t).map((column: ReturnType<typeof columns>[0]) => {
+export const serverSideSortedColumns = (t: TFunction, showPatientOverview: ShowPatientOverview) => {
+  return columns(t, showPatientOverview).map((column: ReturnType<typeof columns>[0]) => {
     const newColumn = { ...column };
     if (typeof column.sorter === 'function') {
       newColumn.sorter = true;

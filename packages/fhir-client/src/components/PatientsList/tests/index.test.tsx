@@ -12,6 +12,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { patients, sortedAscPatients, sortedDescPatients } from './fixtures';
 import userEvents from '@testing-library/user-event';
 import { LIST_PATIENTS_URL, patientResourceType } from '../../../constants';
+import { patientResourceDetails } from '../../PatientDetails/tests/fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -124,6 +125,17 @@ test('renders correctly in list view', async () => {
       expect(td).toMatchSnapshot(`table row ${idx} page 1`);
     });
   });
+
+  // partial side View test
+  nock(props.fhirBaseURL).get(`/Patient/${1}`).reply(200, patientResourceDetails);
+  const patientOneView = screen.getByTestId('1');
+  fireEvent.click(patientOneView as Element);
+  await waitForElementToBeRemoved(document.querySelector('.ant-alert-content'));
+  expect(history.location.search).toEqual('?viewDetails=1');
+  const closeBtn = screen.findByTestId('cancel');
+  fireEvent.click(await closeBtn);
+  expect(history.location.pathname).toEqual(LIST_PATIENTS_URL);
+  expect(history.location.search).toEqual('');
 
   // test search
   // works with search as well.

@@ -28,6 +28,21 @@
   margin: 0 0 16px 0;
 }
 
+.main-content__table{
+	gap: 14px;
+	border-radius: 12px;
+	background: #FFFFFF;
+	padding: 16px;
+
+	.main-content{
+		padding: 0;
+	}
+	
+	.view-details-content{
+		padding-top: 0px;
+	}
+  }
+
 .flex-right {
   display: flex;
   justify-content: flex-end;
@@ -68,6 +83,7 @@
 
 .list-view {
   padding-bottom: 16px;
+  background: #FFFFFF;
 }
 
 .view-details-content,
@@ -108,6 +124,8 @@
     margin: 0;
     flex: 30%;
     margin-left: 12px;
+
+	
   }
 }
 

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { ResourceDetails } from '..';
 import React from 'react';
 import { Button } from 'antd';
@@ -20,10 +20,14 @@ const props = {
   },
   footer: (
     <div>
-      <Button type="link">view details</Button>
+      <Button type="link" onClick={() => mockFunction()}>
+        view details
+      </Button>
     </div>
   ),
 };
+
+const mockFunction = jest.fn();
 
 test('ResourceDetails component renders correctly', () => {
   render(<ResourceDetails {...props} />);
@@ -50,4 +54,25 @@ test('ResourceDetails component renders correctly', () => {
     (keyValue) => keyValue.textContent
   );
   expect(headerLeftElementValues).toEqual(['ID: 123version: 5']);
+
+  // Test Status Tag
+  expect(screen.getByText(/Active/)).toBeInTheDocument();
+  expect(document.querySelector('.ant-tag-green')).toBeInTheDocument();
+
+  // Test Footer Button Click
+  fireEvent.click(screen.getByText('view details'));
+  expect(mockFunction).toHaveBeenCalled();
+});
+
+// New test case for bodyData as a render prop
+test('ResourceDetails component renders bodyData as a render prop', () => {
+  const renderPropProps = {
+    ...props,
+    bodyData: () => <div>Rendered Content from Prop</div>, // Using bodyData as a render prop
+  };
+
+  render(<ResourceDetails {...renderPropProps} />);
+
+  // Check if the rendered content from the bodyData render prop is in the document
+  expect(screen.getByText(/Rendered Content from Prop/)).toBeInTheDocument();
 });
