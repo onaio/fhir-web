@@ -10,7 +10,7 @@ export type KeyValuePairs = Record<string, React.ReactNode>;
 export interface SingleKeyNestedValueProps {
   theme?: SingleKeyValueClassOptions;
   data: KeyValuePairs;
-  column?: DescriptionsProps['column']; // Add column prop here
+  column?: DescriptionsProps['column']; 
 }
 
 export interface ListFlatKeyValuesProps {
