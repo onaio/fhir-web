@@ -1,5 +1,6 @@
 FROM alpine/git AS sources
 
+# TODO - update the tag here
 RUN git clone --depth=1 --branch=v2.0.1 https://github.com/onaio/express-server.git /usr/src/express-server
 
 FROM node:16.18-alpine as build
@@ -32,6 +33,7 @@ RUN yarn && yarn tsc && npm prune -production --legacy-peer-deps
 # Remove unused dependencies
 RUN rm -rf ./node_modules/typescript
 
+# TODO - change image to use one with python or install python here
 FROM node:16.18-alpine as final
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
@@ -56,7 +58,9 @@ RUN chown -R node /usr/src/web
 
 WORKDIR /usr/src/app
 
-COPY --from=nodejsbuild /usr/src/express-server/dist /usr/src/app
+# TODO install pip requirements
+
+COPY --from=nodejsbuild /usr/src/express-server/build /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
 
 RUN chown -R node /usr/src/app
