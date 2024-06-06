@@ -84,7 +84,7 @@ describe('Care Teams list view', () => {
   });
 
   it('renders correctly', async () => {
-    nock("http://localhost:3001")
+    nock("IMPORT_DOMAIN_URI")
       .get(`/$import`)
       .reply(200, [])
       .persist();

@@ -5,7 +5,7 @@ export interface WorkflowDescription {
   "dateStarted": number;
   "dateEnded": number;
   "dateCreated": number;
-  "statusReason": any;
+  "statusReason"?: any;
   filename: string;
 }
 
