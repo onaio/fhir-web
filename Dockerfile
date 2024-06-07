@@ -5,7 +5,7 @@ RUN git clone --branch=bulk-upload-bull https://github.com/onaio/express-server.
 
 WORKDIR /usr/src/express-server
 
-RUN git checkout 7cbe1625
+RUN git checkout 378f2884
 
 FROM node:16.18-alpine as build
 
