@@ -1,7 +1,11 @@
 FROM alpine/git AS sources
 
 # TODO - update the tag here
-RUN git clone --depth=1 --branch=bulk-upload-bull https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --branch=bulk-upload-bull https://github.com/onaio/express-server.git /usr/src/express-server
+
+WORKDIR /usr/src/express-server
+
+RUN git checkout c9ce15a0
 
 FROM node:16.18-alpine as build
 
@@ -21,7 +25,6 @@ USER root
 RUN chown -R node .
 USER node
 RUN yarn lerna run build
-
 
 FROM node:16.18-alpine as nodejsbuild
 
