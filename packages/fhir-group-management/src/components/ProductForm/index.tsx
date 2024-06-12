@@ -212,7 +212,7 @@ function CommodityForm<
       <FormItem
         id={isAttractiveItem}
         name={isAttractiveItem}
-        label={t('Attractive item')}
+        label={t('Is it an Asset')}
         hidden={hidden.includes(isAttractiveItem)}
         rules={validationRules[isAttractiveItem]}
       >
