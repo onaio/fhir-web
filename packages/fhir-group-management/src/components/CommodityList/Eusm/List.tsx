@@ -67,7 +67,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
       key: 'name' as const,
     },
     {
-      title: t('Attractive item'),
+      title: t('Is it an Asset'),
       dataIndex: 'attractive' as const,
       key: 'attractive' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,

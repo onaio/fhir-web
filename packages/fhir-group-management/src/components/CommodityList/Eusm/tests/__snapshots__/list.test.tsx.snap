@@ -57,7 +57,7 @@ exports[`renders correctly when listing resources 7`] = `
   class="singleKeyValue-pair__default"
 >
   <dt>
-    Attractive item
+    Is it an Asset
   </dt>
   <dd>
     No

@@ -49,18 +49,18 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
       editable: true,
     },
     {
-      title: t('Type'),
+      title: t('Parent'),
+      dataIndex: 'parent' as const,
+      editable: true,
+    },
+    {
+      title: t('Physical Type'),
       dataIndex: 'type' as const,
       editable: true,
     },
     {
       title: t('Status'),
       dataIndex: 'status' as const,
-      editable: true,
-    },
-    {
-      title: t('Parent'),
-      dataIndex: 'parent' as const,
       editable: true,
     },
     {
