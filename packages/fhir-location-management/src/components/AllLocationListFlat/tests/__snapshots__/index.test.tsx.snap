@@ -2,12 +2,12 @@
 
 exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 1`] = `"Good Health Clinic"`;
 
-exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 2`] = `"Building"`;
+exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 2`] = `""`;
 
-exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 3`] = `"active"`;
+exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 3`] = `"Building"`;
 
-exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 4`] = `""`;
+exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 4`] = `"active"`;
 
 exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 5`] = `"Edit"`;
 
-exports[`location-management/src/components/AllLocationListFlat Show data as expected: table header 1`] = `"NameTypeStatusParentActions"`;
+exports[`location-management/src/components/AllLocationListFlat Show data as expected: table header 1`] = `"NameParentPhysical TypeStatusActions"`;

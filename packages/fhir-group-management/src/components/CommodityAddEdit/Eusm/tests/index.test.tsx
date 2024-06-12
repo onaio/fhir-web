@@ -138,7 +138,7 @@ test('renders correctly', async () => {
     // material number
     screen.getByLabelText('Material number');
     // attractive item
-    screen.getByText('Attractive item');
+    screen.getByText('Is it an Asset');
     const yesRadioBtn = document.querySelector('#isAttractiveItem input[value="true"]');
     const noRadioBtn = document.querySelector('#isAttractiveItem input[value="false"]');
     expect(yesRadioBtn).toMatchSnapshot('attractive item yes radio button');
