@@ -54,7 +54,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
       editable: true,
     },
     {
-      title: t('Type'),
+      title: t('Physical Type'),
       dataIndex: 'type' as const,
       editable: true,
     },
