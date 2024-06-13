@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dictionary } from '@onaio/utils';
-import { Button, Layout, Menu } from 'antd';
+import { Button, Layout, Menu, MenuProps } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import { URL_HOME } from '../../../constants';
 import { Route, getRoutes } from '../../../routes';
@@ -11,6 +11,9 @@ import { useTranslation } from '../../../mls';
 import './Sidebar.css';
 import { RoleContext } from '@opensrp/rbac';
 import { LeftOutlined } from '@ant-design/icons';
+
+/** menu item prop type */
+type MenuItem = Required<MenuProps>['items'][number];
 
 /** interface for SidebarProps */
 export interface SidebarProps extends RouteComponentProps {
@@ -22,6 +25,21 @@ export interface SidebarProps extends RouteComponentProps {
 const defaultSidebarProps: Partial<SidebarProps> = {
   authenticated: false,
 };
+
+type MenuLabelProps = Pick<Route, 'title' | 'url'>;
+
+/** Menu title  */
+const MenuLabel = (props:MenuLabelProps) => {
+  const { title, url } = props;
+  if(!url) {
+    return <>{title}</>
+  }
+  return (
+    <Link className="admin-link" to={url}>
+      {title}
+    </Link>
+  );
+}
 
 /** The Sidebar component */
 export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) => {
@@ -37,28 +55,25 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
     [roles, t, userRole]
   );
 
-  const sidebaritems: JSX.Element[] = React.useMemo(() => {
-    function mapChildren(route: Route) {
-      if (route.children) {
-        return (
-          <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
-            {route.children.map(mapChildren)}
-          </Menu.SubMenu>
-        );
-      } else if (route.url) {
-        return (
-          <Menu.Item key={route.key} icon={route.otherProps?.icon}>
-            <Link className="admin-link" to={route.url}>
-              {route.title}
-            </Link>
-          </Menu.Item>
-        );
-      } else {
-        return <Menu.Item key={route.key}>{route.title}</Menu.Item>;
+  const sideMenuItems:MenuItem[]  = React.useMemo(() => {
+    function buildMenuItems(route: Route) {
+      if(route.enabled === false) {
+        return;
       }
+      const {key, title, otherProps, url, children} = route
+      // handle menu children recursively
+      const subMenuItems = children?.map(buildMenuItems) as MenuItem[] | undefined;
+      const hasChildren = (subMenuItems && subMenuItems.length > 0 )
+      // create menu item
+      const menuItems: MenuItem = {
+        key,
+        icon: otherProps?.icon,
+        label: <MenuLabel title={title} url={url} />,
+        children: hasChildren? subMenuItems : undefined,
+      };
+      return menuItems
     }
-
-    return routes.map(mapChildren);
+    return routes.map(buildMenuItems) as MenuItem[];
   }, [routes]);
 
   const { activeKey, activePaths } = getActivePath(location.pathname, routes);
@@ -105,9 +120,8 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
         onOpenChange={(openKeys) => setCollapsedKeys(openKeys)}
         mode="inline"
         className="menu-dark"
-      >
-        {sidebaritems}
-      </Menu>
+        items={sideMenuItems}
+      />
     </Layout.Sider>
   );
 };

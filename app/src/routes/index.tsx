@@ -68,7 +68,6 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           title: t('User Management'),
           key: 'user-management',
           isHomePageLink: true,
-          url: URL_USER,
           permissions: ['iam_user.read'],
           enabled: COMPOSITE_ENABLE_USER_MANAGEMENT,
           children: [
@@ -91,7 +90,6 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           title: t('Location Management'),
           key: 'location-management',
           isHomePageLink: true,
-          url: URL_LOCATION_UNIT,
           permissions: ['Location.read'],
           enabled: COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT,
           children: [
@@ -131,7 +129,6 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           key: 'team-management',
           isHomePageLink: true,
           permissions: ['Organization.read'],
-          url: URL_TEAMS,
           enabled: COMPOSITE_ENABLE_TEAM_MANAGEMENT,
           children: [
             { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS', permissions: ['Organization.read'] },

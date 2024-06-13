@@ -2,173 +2,163 @@
 
 exports[`components/ConnectedSidebar correctly expand users menu 1`] = `
 Array [
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Location Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Hierarchy
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/all"
-        >
-          All Locations
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Team Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams"
-        >
-          Teams
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams/team-assignment"
-        >
-          Team Assignment
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/quest"
-      >
-        Questionnaire Management
-      </Link>
-    </MenuItem>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "users",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-groups",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-roles",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "user-management",
+        "label": "User Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "location-unit",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "all-locations",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "location-management",
+        "label": "Location Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "TEAMS",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "team-assignment",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "team-management",
+        "label": "Team Management",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "fhir-quest",
+        "label": <LinkTitle />,
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
 
 exports[`components/ConnectedSidebar displays menu links for All Enabled modules 1`] = `
 Array [
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Location Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Hierarchy
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/all"
-        >
-          All Locations
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Team Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams"
-        >
-          Teams
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams/team-assignment"
-        >
-          Team Assignment
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/quest"
-      >
-        Questionnaire Management
-      </Link>
-    </MenuItem>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "users",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-groups",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-roles",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "user-management",
+        "label": "User Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "location-unit",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "all-locations",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "location-management",
+        "label": "Location Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "TEAMS",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "team-assignment",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "team-management",
+        "label": "Team Management",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "fhir-quest",
+        "label": <LinkTitle />,
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
 
@@ -217,6 +207,80 @@ Object {
             "",
           ]
         }
+        items={
+          Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "users",
+                      "label": <LinkTitle />,
+                    },
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "user-groups",
+                      "label": <LinkTitle />,
+                    },
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "user-roles",
+                      "label": <LinkTitle />,
+                    },
+                  ],
+                  "icon": undefined,
+                  "key": "user-management",
+                  "label": "User Management",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "location-unit",
+                      "label": <LinkTitle />,
+                    },
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "all-locations",
+                      "label": <LinkTitle />,
+                    },
+                  ],
+                  "icon": undefined,
+                  "key": "location-management",
+                  "label": "Location Management",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": undefined,
+                      "icon": undefined,
+                      "key": "TEAMS",
+                      "label": <LinkTitle />,
+                    },
+                  ],
+                  "icon": undefined,
+                  "key": "team-management",
+                  "label": "Team Management",
+                },
+                Object {
+                  "children": undefined,
+                  "icon": undefined,
+                  "key": "fhir-quest",
+                  "label": <LinkTitle />,
+                },
+              ],
+              "icon": <ForwardRef(DashboardOutlined) />,
+              "key": "admin",
+              "label": "Administration",
+            },
+          ]
+        }
         mode="inline"
         onOpenChange={[Function]}
         openKeys={Array []}
@@ -226,81 +290,7 @@ Object {
           ]
         }
         theme="dark"
-      >
-        <SubMenu
-          icon={<ForwardRef(DashboardOutlined) />}
-          title="Administration"
-        >
-          <SubMenu
-            title="User Management"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users"
-              >
-                Users
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users/groups"
-              >
-                User Groups
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users/roles"
-              >
-                User Roles
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title="Location Management"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/location/unit"
-              >
-                Hierarchy
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/location/all"
-              >
-                All Locations
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <SubMenu
-            title="Team Management"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/teams"
-              >
-                Teams
-              </Link>
-            </MenuItem>
-          </SubMenu>
-          <MenuItem>
-            <Link
-              className="admin-link"
-              to="/quest"
-            >
-              Questionnaire Management
-            </Link>
-          </MenuItem>
-        </SubMenu>
-      </Menu>
+      />
     </div>,
     null,
   ],
@@ -316,78 +306,75 @@ Object {
 
 exports[`components/ConnectedSidebar renders user managment menu for users with appropriate role 1`] = `
 Array [
-  <SubMenu
-    icon={<ForwardRef(DashboardOutlined) />}
-    title="Administration"
-  >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Location Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/unit"
-        >
-          Hierarchy
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/location/all"
-        >
-          All Locations
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <SubMenu
-      title="Team Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/teams"
-        >
-          Teams
-        </Link>
-      </MenuItem>
-    </SubMenu>
-    <MenuItem>
-      <Link
-        className="admin-link"
-        to="/quest"
-      >
-        Questionnaire Management
-      </Link>
-    </MenuItem>
-  </SubMenu>,
+  Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "users",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-groups",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "user-roles",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "user-management",
+        "label": "User Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "location-unit",
+            "label": <LinkTitle />,
+          },
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "all-locations",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "location-management",
+        "label": "Location Management",
+      },
+      Object {
+        "children": Array [
+          Object {
+            "children": undefined,
+            "icon": undefined,
+            "key": "TEAMS",
+            "label": <LinkTitle />,
+          },
+        ],
+        "icon": undefined,
+        "key": "team-management",
+        "label": "Team Management",
+      },
+      Object {
+        "children": undefined,
+        "icon": undefined,
+        "key": "fhir-quest",
+        "label": <LinkTitle />,
+      },
+    ],
+    "icon": <ForwardRef(DashboardOutlined) />,
+    "key": "admin",
+    "label": "Administration",
+  },
 ]
 `;
