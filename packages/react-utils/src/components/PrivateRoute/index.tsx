@@ -50,8 +50,6 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   const fullRedirectPath = `${redirectPath}?${currentSParams.toString()}`;
 
   const okToRender = authenticated === true || disableLoginProtection === true;
-  console.log('okToRender', okToRender);
-  console.log('authenticated', authenticated);
   if (!okToRender) {
     return <Redirect to={fullRedirectPath} />;
   }
