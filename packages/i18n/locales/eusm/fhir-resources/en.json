@@ -1,12 +1,12 @@
 {
-  "{{val, datetime}}": "",
-  "Effective period end:": "",
-  "Effective period start:": "",
-  "Last Changed:": "",
-  "Last reviewed date:": "",
-  "linkId: {{linkId}}": "",
-  "Publisher:": "",
-  "Subject type:": "",
-  "type: {{itemType}}": "",
-  "Version:": ""
+  "{{val, datetime}}": "{{val, datetime}}",
+  "Effective period end:": "Effective period end:",
+  "Effective period start:": "Effective period start:",
+  "Last Changed:": "Last Changed:",
+  "Last reviewed date:": "Last reviewed date:",
+  "linkId: {{linkId}}": "linkId: {{linkId}}",
+  "Publisher:": "Publisher:",
+  "Subject type:": "Subject type:",
+  "type: {{itemType}}": "type: {{itemType}}",
+  "Version:": "Version:"
 }

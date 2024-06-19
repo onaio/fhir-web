@@ -1,17 +1,18 @@
 {
-  "403": "403",
   "404": "404",
   "Actions": "Actions",
   "Error": "Erreur",
-  "Fetching next page": "Fetching next page",
+  "Fetching next page": "Consultation de la page suivante",
   "Go back": "Retour",
   "Go home": "Retour à l'accueil",
-  "Load more options": "Load more options",
-  "No data": "No data",
+  "Load more options": "Charger plus d'options",
+  "No data": "Aucune donnée",
+  "No data available": "Pas de données disponibles",
   "Search": "Recherche",
-  "Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.": "Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.",
-  "Something went wrong": "Il y a eu un problème",
-  "Sorry, the resource you requested for, does not exist": "Désolé, la ressource que vous avez demandée n'existe pas",
+  "Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.": "Afficher {{recordsFetchedNum}} ; {{remainingRecords}} plus d'enregistrements.",
+  "Something went wrong": "Quelque chose n'a pas fonctionné",
+  "Sorry, the resource you requested for, does not exist": "Désolé, la ressource demandée n'existe pas.",
   "Sorry, you are not authorized to access this page": "Désolé, vous n'êtes pas autorisé à accéder à cette page",
-  "Unable to load dropdown options.": "Unable to load dropdown options."
+  "Unable to load dropdown options.": "Impossible de charger les options de la liste déroulante.",
+  "View details": "Voir les détails"
 }

@@ -1,12 +1,12 @@
 {
-  "{{val, datetime}}": "",
-  "Effective period end:": "",
-  "Effective period start:": "",
-  "Last Changed:": "",
-  "Last reviewed date:": "",
-  "linkId: {{linkId}}": "",
-  "Publisher:": "",
-  "Subject type:": "",
-  "type: {{itemType}}": "",
-  "Version:": ""
+  "{{val, datetime}}": "{{val, datetime}}",
+  "Effective period end:": "Fin de la période de redevabilité :",
+  "Effective period start:": "Début de la période de redevabilité:",
+  "Last Changed:": "Dernière modification :",
+  "Last reviewed date:": "Date de la dernière vérification :",
+  "linkId: {{linkId}}": "linkId: {{linkId}}",
+  "Publisher:": "Éditeur :",
+  "Subject type:": "Type de sujet :",
+  "type: {{itemType}}": "type: {{itemType}}",
+  "Version:": "Version:"
 }
