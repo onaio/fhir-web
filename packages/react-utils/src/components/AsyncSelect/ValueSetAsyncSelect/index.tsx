@@ -5,6 +5,7 @@ import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
 import { BaseAsyncSelect, RawValueType } from '../BaseAsyncSelect';
 import { FHIRServiceClass } from '../../../helpers/dataLoaders';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { defaultSelectFilterFunction } from '../../../helpers/utils';
 
 export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
   valueSetURL: string;
@@ -34,22 +35,12 @@ export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
   const asyncSelectProps = {
     queryParams,
     optionsGetter: (options: DefaultOptionType[]) => options,
-    filterOption: selectFilterFunction,
+    filterOption: defaultSelectFilterFunction,
     ...selectProps,
   };
 
   return <BaseAsyncSelect<IValueSet, DefaultOptionType> {...asyncSelectProps} />;
 }
-
-/**
- * filter practitioners select on search
- *
- * @param inputValue search term
- * @param option select option to filter against
- */
-export const selectFilterFunction = (inputValue: string, option?: DefaultOptionType) => {
-  return !!option?.label?.toString()?.toLowerCase().includes(inputValue.toLowerCase());
-};
 
 /**
  * get select options value

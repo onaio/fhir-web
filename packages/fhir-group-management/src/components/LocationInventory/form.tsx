@@ -167,10 +167,11 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
           resourceType={groupResourceType}
           transformOption={processProductOptions}
           extraQueryParams={productQueryFilters}
-          showSearch={false}
+          showSearch={true}
           placeholder={t('Select product')}
           getFullOptionOnChange={productChangeHandler}
           disabled={editMode}
+          getAllpagesData={true}
         />
       </FormItem>
 

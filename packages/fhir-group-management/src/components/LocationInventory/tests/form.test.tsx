@@ -150,11 +150,18 @@ test('creates new inventory as expected', async () => {
       accountabilityEndDate: dayjs('2024-03-26T08:24:53.645Z'),
     },
   };
+  const totalProducts = productsList.total;
   const preFetchScope = nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, { id: productsList.id, total: totalProducts })
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _count: totalProducts,
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': props.commodityListId,
     })
@@ -195,6 +202,7 @@ test('creates new inventory as expected', async () => {
   render(<AppWrapper {...thisProps}></AppWrapper>);
 
   await waitFor(() => {
+    expect(document.querySelector('.ant-select-loading')).not.toBeInTheDocument();
     expect(preFetchScope.isDone()).toBeTruthy();
   });
 
@@ -267,11 +275,18 @@ test('#1384 - correctly updates location inventory', async () => {
       accountabilityEndDate: dayjs('2024-03-26T08:24:53.645Z'),
     },
   };
+  const totalProducts = productsList.total;
   const preFetchScope = nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
-      _count: 20,
+      _summary: 'count',
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, { id: productsList.id, total: totalProducts })
+    .get(`/${groupResourceType}/_search`)
+    .query({
+      _count: totalProducts,
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': props.commodityListId,
     })
@@ -317,6 +332,7 @@ test('#1384 - correctly updates location inventory', async () => {
   render(<AppWrapper {...thisProps}></AppWrapper>);
 
   await waitFor(() => {
+    expect(document.querySelector('.ant-select-loading')).not.toBeInTheDocument();
     expect(preFetchScope.isDone()).toBeTruthy();
   });
 

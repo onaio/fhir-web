@@ -7,9 +7,10 @@ import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { debounce } from 'lodash';
-import { getResourcesFromBundle } from '../../../helpers/utils';
+import { getResourcesFromBundle, defaultSelectFilterFunction } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
 import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
+import { loadAllResources } from '../../../helpers/fhir-utils';
 
 export type SelectOption<T extends IResource> = {
   label: string;
@@ -34,6 +35,8 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   filterPageSize?: number;
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
+  getAllpagesData?: boolean;
+  localFilterFn?: typeof defaultSelectFilterFunction;
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -59,6 +62,8 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     filterPageSize: pageSize = 20,
     extraQueryParams = {},
     getFullOptionOnChange,
+    getAllpagesData,
+    localFilterFn = defaultSelectFilterFunction,
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -74,33 +79,43 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     });
   }, [searchValue]);
 
+  let queryFn = async ({ pageParam = page }) => {
+    const response = await loadResources(
+      baseUrl,
+      resourceType,
+      { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
+      extraQueryParams
+    );
+    return response;
+  };
+
+  if (getAllpagesData) {
+    queryFn = async () => {
+      const response = await loadAllResources(baseUrl, resourceType, extraQueryParams);
+      return response;
+    };
+  }
+
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isFetching, error } =
     useInfiniteQuery({
       queryKey: [resourceType, debouncedSearchValue, page, pageSize],
-      queryFn: async ({ pageParam = page }) => {
-        const response = await loadResources(
-          baseUrl,
-          resourceType,
-          { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
-          extraQueryParams
-        );
-        return response;
-      },
+      queryFn,
       getNextPageParam: (lastGroup: IBundle, allGroups: IBundle[]) => {
+        if (getAllpagesData) {
+          return false;
+        }
         const totalFetched = getTotalRecordsInBundles(allGroups);
         const total = lastGroup.total as number;
         if (totalFetched < total) {
           return page + 1;
-        } else {
-          return false;
         }
+        return false;
       },
       getPreviousPageParam: () => {
-        if (page === 1) {
+        if (page === 1 || getAllpagesData) {
           return undefined;
-        } else {
-          return page - 1;
         }
+        return page - 1;
       },
       refetchOnWindowFocus: false,
     });
@@ -137,7 +152,6 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     onChange: changeHandler,
     loading: isLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
-    filterOption: false,
     options: options,
     searchValue,
     dropdownRender: (menu: React.ReactNode) => (
@@ -147,31 +161,41 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
         {error ? (
           <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
         ) : (
-          <Space direction="vertical">
-            {data && (
-              <small style={{ padding: '4px 16px' }}>
-                {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
-                  recordsFetchedNum,
-                  remainingRecords,
-                })}
-              </small>
+          <>
+            {!getAllpagesData && (
+              <Space direction="vertical">
+                {data && (
+                  <small style={{ padding: '4px 16px' }}>
+                    {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
+                      recordsFetchedNum,
+                      remainingRecords,
+                    })}
+                  </small>
+                )}
+                <Button
+                  type="text"
+                  icon={<VerticalAlignBottomOutlined />}
+                  disabled={!hasNextPage || isFetchingNextPage || isFetching}
+                  loading={isFetchingNextPage}
+                  onClick={() => fetchNextPage()}
+                >
+                  {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
+                </Button>
+              </Space>
             )}
-            <Button
-              type="text"
-              icon={<VerticalAlignBottomOutlined />}
-              disabled={!hasNextPage || isFetchingNextPage || isFetching}
-              loading={isFetchingNextPage}
-              onClick={() => fetchNextPage()}
-            >
-              {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
-            </Button>
-          </Space>
+          </>
         )}
       </>
     ),
   };
-  if (props.showSearch) {
-    propsToSelect.onSearch = searchHandler;
+
+  if (getAllpagesData) {
+    propsToSelect.filterOption = localFilterFn;
+  } else {
+    if (props.showSearch) {
+      propsToSelect.onSearch = searchHandler;
+    }
+    propsToSelect.filterOption = false;
   }
   return <Select {...propsToSelect}></Select>;
 }

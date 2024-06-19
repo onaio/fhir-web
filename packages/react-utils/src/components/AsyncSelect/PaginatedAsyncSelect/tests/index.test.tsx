@@ -14,6 +14,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { organizationsPage1, organizationsPage1Summary, organizationsPage2 } from './fixtures';
 import flushPromises from 'flush-promises';
+import userEvent from '@testing-library/user-event';
 
 const organizationResourceType = 'Organization';
 
@@ -237,4 +238,121 @@ test('handles error in request', async () => {
   fireEvent.mouseDown(input);
 
   expect(queryByText(/Unable to load dropdown options./)).toBeInTheDocument();
+});
+
+test('Gets all pages on load', async () => {
+  const total = 10;
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, {
+      id: '765f5e8d-65fa-459d-b5a0-79d44e9220bd',
+      resourceType: 'Bundle',
+      total,
+      type: 'searchset',
+    });
+
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _count: total })
+    .reply(200, { ...organizationsPage1, total });
+
+  const changeMock = jest.fn();
+  const fullOptionHandlerMock = jest.fn();
+
+  const props = {
+    ...commonProps,
+    onChange: changeMock,
+    getFullOptionOnChange: fullOptionHandlerMock,
+    showSearch: true,
+    getAllpagesData: true,
+  };
+
+  render(
+    <QueryWrapper>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
+    </QueryWrapper>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // click on input. - should see all records
+  const input = document.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(input);
+
+  // find antd select options
+  let selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  await flushPromises();
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    '高雄榮民總醫院',
+    'Blok Operacyjny Chirurgii Naczyń',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+  ]);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const selectComponent = document.querySelector(`input`)!;
+  // filter searching works
+  userEvent.type(selectComponent, 'Hospital');
+  selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+    'Volunteer virtual hospital 志工虛擬醫院',
+  ]);
+});
+
+test('Shows error when loading all pages', async () => {
+  const total = 10;
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _summary: 'count' })
+    .reply(200, {
+      id: '765f5e8d-65fa-459d-b5a0-79d44e9220bd',
+      resourceType: 'Bundle',
+      total,
+      type: 'searchset',
+    });
+
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _count: total })
+    .replyWithError('failed');
+
+  const changeMock = jest.fn();
+  const fullOptionHandlerMock = jest.fn();
+
+  const props = {
+    ...commonProps,
+    onChange: changeMock,
+    getFullOptionOnChange: fullOptionHandlerMock,
+    showSearch: true,
+    getAllpagesData: true,
+  };
+
+  render(
+    <QueryWrapper>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
+    </QueryWrapper>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // click on input. - should see all records
+  const input = document.querySelector('.ant-select-selector') as Element;
+
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(input);
+
+  // find antd select options
+  const selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  await flushPromises();
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([]);
+  expect(document.querySelector('.ant-alert-message')?.textContent).toEqual(
+    'Unable to load dropdown options.'
+  );
 });
