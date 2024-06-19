@@ -40,6 +40,7 @@ export const FhirResources = [
   'Task',
   'Immunization',
   'Encounter',
+  'Flag',
 ] as const;
 export type FhirResource = typeof FhirResources[number];
 
