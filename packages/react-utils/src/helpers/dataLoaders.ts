@@ -59,7 +59,7 @@ export class FHIRServiceClass<T extends IResource> {
   public resourceType: string;
   public signal: AbortSignal;
   public headers: RequestInit['headers'] = {
-    'content-type': 'application/fhir+json',
+    'Content-Type': 'application/fhir+json',
     'cache-control': 'no-cache',
   };
 

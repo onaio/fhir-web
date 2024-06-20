@@ -10,16 +10,6 @@ import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { setLogger } from 'react-query';
 
-jest.mock('fhirclient', () => ({
-  client: jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-    };
-  }),
-}));
-
 setAllConfigs({
   projectCode: 'core',
   TablesState: {},
