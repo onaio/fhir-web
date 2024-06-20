@@ -55,14 +55,14 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Team Management"
+      title="Organization Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/teams"
         >
-          Teams
+          Organizations
         </Link>
       </MenuItem>
       <MenuItem>
@@ -70,7 +70,7 @@ Array [
           className="admin-link"
           to="/admin/teams/team-assignment"
         >
-          Team Assignment
+          Organization Assignment
         </Link>
       </MenuItem>
     </SubMenu>
@@ -141,14 +141,14 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Team Management"
+      title="Organization Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/teams"
         >
-          Teams
+          Organizations
         </Link>
       </MenuItem>
       <MenuItem>
@@ -156,7 +156,7 @@ Array [
           className="admin-link"
           to="/admin/teams/team-assignment"
         >
-          Team Assignment
+          Organization Assignment
         </Link>
       </MenuItem>
     </SubMenu>
@@ -280,14 +280,14 @@ Object {
             </MenuItem>
           </SubMenu>
           <SubMenu
-            title="Team Management"
+            title="Organization Management"
           >
             <MenuItem>
               <Link
                 className="admin-link"
                 to="/admin/teams"
               >
-                Teams
+                Organizations
               </Link>
             </MenuItem>
           </SubMenu>
@@ -369,14 +369,14 @@ Array [
       </MenuItem>
     </SubMenu>
     <SubMenu
-      title="Team Management"
+      title="Organization Management"
     >
       <MenuItem>
         <Link
           className="admin-link"
           to="/admin/teams"
         >
-          Teams
+          Organizations
         </Link>
       </MenuItem>
     </SubMenu>
