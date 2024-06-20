@@ -2,11 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { FlagForm } from './Form';
 import { useParams } from 'react-router';
-import {
- FlagResourceType,
- GroupResourceType,
- ListResourceType
-} from '../../constants';
+import { FlagResourceType, GroupResourceType, ListResourceType } from '../../constants';
 import { sendErrorNotification } from '@opensrp/notifications';
 import { Spin } from 'antd';
 import { useQuery } from 'react-query';
@@ -15,14 +11,12 @@ import {
   BrokenPage,
   getResourcesFromBundle,
   loadAllResources,
-  BodyLayout
+  BodyLayout,
 } from '@opensrp/react-utils';
-import type { IFlag} from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
+import type { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
-import {
-  servicePointProfileInventoryListCoding,
-} from '@opensrp/fhir-helpers';
+import { servicePointProfileInventoryListCoding } from '@opensrp/fhir-helpers';
 // import { getOrgFormFields } from './utils';
 // import { useTranslation } from '../../mls';
 // import { getConfig } from '@opensrp/pkg-config';
@@ -44,45 +38,54 @@ export const AddEditFlag = (props: AddEditFlagProps) => {
 
   const flag = useQuery(
     [FlagResourceType, flagId],
-    async () =>
-      new FHIRServiceClass<IFlag>(fhirBaseUrl, FlagResourceType).read(
-        flagId as string
-      ),
+    async () => new FHIRServiceClass<IFlag>(fhirBaseUrl, FlagResourceType).read(flagId as string),
     {
       enabled: !!flagId,
     }
   );
 
-  const inventoryGroup = flag.data?.subject.reference && useQuery(
-    [GroupResourceType, flag.data?.subject?.reference],
-    () => new FHIRServiceClass<IGroup>(fhirBaseUrl, GroupResourceType).read(flag.data?.subject?.reference as string),
-    { enabled: !!flag.data?.subject?.reference }
-  );
+  const inventoryGroup =
+    flag.data?.subject.reference &&
+    useQuery(
+      [GroupResourceType, flag.data?.subject?.reference],
+      () =>
+        new FHIRServiceClass<IGroup>(fhirBaseUrl, GroupResourceType).read(
+          flag.data?.subject?.reference as string
+        ),
+      { enabled: !!flag.data?.subject?.reference }
+    );
 
-  const product = inventoryGroup && useQuery(
-    [GroupResourceType, inventoryGroup.data?.member?.[0]?.entity?.reference],
-    () => new FHIRServiceClass<IGroup>(fhirBaseUrl, GroupResourceType).read(inventoryGroup.data?.member?.[0]?.entity?.reference as string),
-    { enabled: !!inventoryGroup.data?.member?.[0]?.entity?.reference }
-  );
+  const product =
+    inventoryGroup &&
+    useQuery(
+      [GroupResourceType, inventoryGroup.data?.member?.[0]?.entity?.reference],
+      () =>
+        new FHIRServiceClass<IGroup>(fhirBaseUrl, GroupResourceType).read(
+          inventoryGroup.data?.member?.[0]?.entity?.reference as string
+        ),
+      { enabled: !!inventoryGroup.data?.member?.[0]?.entity?.reference }
+    );
 
- const list = flag.data?.subject.reference && useQuery(
-  [ListResourceType, flag.data.subject.reference],
-  () => new FHIRServiceClass<IList>(fhirBaseUrl, ListResourceType).list({
-    item: flag.data.subject.reference,
-    code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`
-  }),
-  { enabled: !!flag.data?.subject?.reference }
-);
+  const list =
+    flag.data?.subject.reference &&
+    useQuery(
+      [ListResourceType, flag.data.subject.reference],
+      () =>
+        new FHIRServiceClass<IList>(fhirBaseUrl, ListResourceType).list({
+          item: flag.data.subject.reference,
+          code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`,
+        }),
+      { enabled: !!flag.data?.subject?.reference }
+    );
 
-
-console.log('flag', flag);
-console.log('inventory Group', inventoryGroup);
-console.log('product', product)
-console.log('list----', list);
+  console.log('flag', flag);
+  console.log('inventory Group', inventoryGroup);
+  console.log('product', product);
+  console.log('list----', list);
 
   if (
     flag.isLoading ||
-    flag.isFetching ||
+    flag.isFetching
     // inventoryGroup?.isLoading ||
     // inventoryGroup?.isFetching ||
     // allPractitionerRoles.isLoading ||
@@ -115,9 +118,7 @@ console.log('list----', list);
 
   return (
     <BodyLayout headerProps={headerProps}>
-      <Helmet>
-        {/* <title>{pageTitle}</title> */}
-      </Helmet>
+      <Helmet>{/* <title>{pageTitle}</title> */}</Helmet>
       <div className="bg-white p-5">
         {/* <OrganizationForm
           fhirBaseUrl={fhirBaseUrl}
