@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`EditLocationUnit renders correctly when location is jurisdiction: form rendered 1`] = `"InstanceIdusernameParentNameStatusActiveInactiveLocation categoryService pointJurisdictionTypeSelect the service point typeExternal IDGeometryLatitudeLongitudeUnit group23 SaveCancel"`;

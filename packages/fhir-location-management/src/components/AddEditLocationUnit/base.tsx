@@ -71,16 +71,14 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
 
+  const locationLoadErrorMsg = t('Unable to either load this location or the location hierarchy');
+
   if (error && !data && locError && !locData) {
-    return (
-      <BrokenPage
-        errorMessage={t('Unable to load the location or location hierarchy')}
-      ></BrokenPage>
-    );
+    return <BrokenPage errorMessage={locationLoadErrorMsg}></BrokenPage>;
   }
 
   if (!data || ifNotIdle(!locData)) {
-    return <Resource404 errorMessage={t('Unable to load the location or location hierarchy')} />;
+    return <Resource404 errorMessage={locationLoadErrorMsg} />;
   }
 
   const parentId = sParams.get(parentIdQueryParam) ?? undefined;

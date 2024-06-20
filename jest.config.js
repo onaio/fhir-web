@@ -25,6 +25,7 @@ module.exports = {
     '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
   testEnvironment: 'jsdom',
+  testTimeout: 10000,
   coverageThreshold: {
     global: {
       branches: 80,

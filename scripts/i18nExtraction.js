@@ -103,11 +103,11 @@ const extractionRunner = (argvConfigs, packageSemiPaths) => {
   let count = 0;
   packageSemiPaths.forEach((packageSemiPath) => {
     const packageName = path.basename(packageSemiPath);
-    const namespace = outputNamespace ?? packageName;
+    const namespace = outputNamespace ? outputNamespace : packageName;
     const inputFilesGlob = `${path.resolve(
       REPO_ROOT_PATH,
       packageSemiPath
-    )}/!(node_modules|dist|build)/**/!(*.test).@(tsx|ts|js|jsx)`;
+    )}/!(node_modules|dist|build)/**/!(tests)/*.@(tsx|ts|js|jsx)`;
     const outputPath = path.resolve(
       REPO_ROOT_PATH,
       `packages/i18n/locales/${projectCode}/$NAMESPACE/$LOCALE.json`

@@ -16,25 +16,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
 
     steps:
       # setup code, directories and system wide dependency
       - name: Checkout web
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
           path: web
           fetch-depth: 1
 
       - name: Checkout express server
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: onaio/express-server
           path: express
 
       - name: Checkout fhir automation
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: onaio/fhir-web-automation
           token: ${{ secrets.ACCESS_TOKEN }} # currently using a PAT -> not the best option.
@@ -47,7 +47,7 @@ jobs:
           java-version: 11
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
