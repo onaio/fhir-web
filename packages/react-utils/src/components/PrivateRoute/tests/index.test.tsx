@@ -43,7 +43,7 @@ it('First check that user is logged in before Rbac', async () => {
 
   // should redirect non-AuthN'd users to login
   expect(history.location.pathname).toEqual('/login');
-  expect(history.location.search).toEqual('?next=%2F');
+  expect(history.location.search).toEqual('?next=%2Flogin');
 });
 
 it('PrivateComponent Renders correctly', async () => {

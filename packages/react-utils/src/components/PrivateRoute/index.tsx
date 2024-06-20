@@ -1,7 +1,7 @@
 import { isAuthenticated } from '@onaio/session-reducer';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RouteProps, Route, Redirect, useRouteMatch, useLocation } from 'react-router';
+import { RouteProps, Route, Redirect, useLocation } from 'react-router';
 import { getAllConfigs } from '@opensrp/pkg-config';
 import { RbacCheck } from '@opensrp/rbac';
 import { UnauthorizedPage } from '../UnauthorizedPage';
@@ -39,15 +39,16 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   const { component, disableLoginProtection, redirectPath, permissions, ...routeProps } = allProps;
   const Component = component as unknown as typeof React.Component;
 
-  const match = useRouteMatch();
   const location = useLocation();
   const authenticated = useSelector((state) => isAuthenticated(state));
 
-  const nextUrl = match.path;
+  const nextUrl = location.pathname;
+
   const currentSParams = new URLSearchParams(location.search);
   currentSParams.set(LOGIN_REDIRECT_URL_PARAM, nextUrl);
 
   const fullRedirectPath = `${redirectPath}?${currentSParams.toString()}`;
+
   const okToRender = authenticated === true || disableLoginProtection === true;
   if (!okToRender) {
     return <Redirect to={fullRedirectPath} />;
