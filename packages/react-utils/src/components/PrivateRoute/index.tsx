@@ -43,7 +43,6 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   const authenticated = useSelector((state) => isAuthenticated(state));
 
   const nextUrl = location.pathname;
-
   const currentSParams = new URLSearchParams(location.search);
   currentSParams.set(LOGIN_REDIRECT_URL_PARAM, nextUrl);
 
