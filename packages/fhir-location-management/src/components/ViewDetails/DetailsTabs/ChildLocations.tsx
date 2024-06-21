@@ -80,7 +80,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
       editable: true,
     },
     {
-      title: t('Type'),
+      title: t('Physical Type'),
       dataIndex: 'type' as const,
       editable: true,
     },
