@@ -5,6 +5,7 @@ import { Alert, Button, Col, Divider, Dropdown, MenuProps, Row } from 'antd';
 import {
   BACK_SEARCH_PARAM,
   URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_VIEW_DETAILS,
   locationResourceType,
   parentIdQueryParam,
