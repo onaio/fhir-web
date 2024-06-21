@@ -4,11 +4,10 @@ import {
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_VIEW_DETAILS,
   BACK_SEARCH_PARAM,
-  URL_ALL_LOCATIONS,
 } from '../../constants';
 import { useMls } from '../../mls';
 import { Button, Divider, Dropdown } from 'antd';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, useLocation } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
 import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -28,7 +27,9 @@ export type AllLocationListFlatProps = Omit<
 export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) => {
   const { t } = useMls();
   const history = useHistory();
+  const location = useLocation();
 
+  const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: location.pathname });
   const getItems = (_: Dictionary): MenuProps['items'] => {
     return [
       {
@@ -72,7 +73,10 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}`} className="m-0 p-1">
+              <Link
+                to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}?${backToParam}`}
+                className="m-0 p-1"
+              >
                 {t('Edit')}
               </Link>
               <Divider type="vertical" />
@@ -91,10 +95,12 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
     },
   ];
 
-  const backToParam = `?${BACK_SEARCH_PARAM}=${URL_ALL_LOCATIONS}`;
   const addLocationBtnRender = () => (
     <RbacCheck permissions={['Location.create']}>
-      <Button type="primary" onClick={() => history.push(`${URL_LOCATION_UNIT_ADD}${backToParam}`)}>
+      <Button
+        type="primary"
+        onClick={() => history.push(`${URL_LOCATION_UNIT_ADD}?${backToParam}`)}
+      >
         <PlusOutlined />
         {t('Add Location')}
       </Button>
