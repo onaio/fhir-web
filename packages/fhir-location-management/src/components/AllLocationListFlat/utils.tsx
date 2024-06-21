@@ -53,7 +53,6 @@ export function getTableData(data: BundleEntry[]) {
       const rowData = {
         key: resource.id,
         id: resource.id,
-        description: resource.description,
         name: resource.name,
         type: resource.physicalType?.coding[0]?.display,
         status: resource.status,

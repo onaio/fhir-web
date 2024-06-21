@@ -142,7 +142,7 @@ test('works correctly - jurisdiction location', async () => {
   let tableData = [...childLocationTab.querySelectorAll('table tbody tr')].map(
     (tr) => tr.textContent
   );
-  expect(tableData).toEqual(['Kiambu CountyBuildingactive']);
+  expect(tableData).toEqual(['Kiambu CountyBuildingactiveEdit']);
 
   // validate search works.
   const childLocationSearch = childLocationTab.querySelector('[data-testid="search-form"]')!;
@@ -169,7 +169,7 @@ test('works correctly - jurisdiction location', async () => {
 
   expect(history.location.pathname).toEqual('/admin/location/unit/add');
   expect(history.location.search).toEqual(
-    '?parentId=Location%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334'
+    '?parentId=Location%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334&back_to=%2Fprofile%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334'
   );
 
   expect(nock.isDone()).toBeTruthy();
