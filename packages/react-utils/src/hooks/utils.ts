@@ -4,6 +4,7 @@ import { URLParams } from 'opensrp-server-service/dist/types';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { FHIRServiceClass } from '../helpers/dataLoaders';
+import { Dictionary } from '@onaio/utils';
 
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
@@ -107,4 +108,63 @@ export const loadResources = async (baseUrl: string, resourceType: string, param
     return res;
   }
   return res;
+};
+
+// Define the type for a filter object
+export interface StringFilter {
+  operand: '===' | '!==' | 'includes';
+  value: string;
+  caseSensitive?: boolean;
+}
+export interface NumberFilter {
+  operand: '>' | '<';
+  value: number;
+}
+
+export type Filter = StringFilter | NumberFilter;
+
+// Define the type for the filters state
+export interface FilterDescription {
+  [accessor: string]: Filter;
+}
+
+/**
+ * return true if record correctly matches the filter
+ *
+ * @param item - record to evaluate
+ * @param accessor - property accessor on item
+ * @param filter - filter to check on
+ */
+export const checkFilter = (item: Dictionary, accessor: string, filter: Filter) => {
+  const { value, operand } = filter;
+
+  let itemsValue = item[accessor];
+  let checkValue = value;
+
+  const caseSensitive =
+    (filter as StringFilter).caseSensitive !== undefined && !(filter as StringFilter).caseSensitive;
+
+  if (caseSensitive) {
+    if (typeof itemsValue === 'string') {
+      itemsValue = itemsValue.toLowerCase();
+    }
+    if (typeof checkValue === 'string') {
+      checkValue = checkValue.toLowerCase();
+    }
+  }
+
+  switch (operand) {
+    case '===':
+      return itemsValue === value;
+    case '!==':
+      return itemsValue !== value;
+    case '>':
+      return itemsValue > value;
+    case '<':
+      return itemsValue < value;
+    case 'includes':
+      return itemsValue && itemsValue.includes(value);
+    default:
+      return false;
+  }
 };

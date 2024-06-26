@@ -1365,3 +1365,20 @@ export const hugeSinglePageData = {
     },
   ],
 };
+
+export const emptyPage = {
+  resourceType: 'Bundle',
+  id: '67f02e3f-8028-4410-81c0-fde9391ef6b1',
+  meta: {
+    lastUpdated: '2022-01-13T15:23:21.950+00:00',
+  },
+  type: 'searchset',
+  total: 0,
+  link: [
+    {
+      relation: 'self',
+      url: 'http://fhir.labs.smartregister.org/fhir/Questionnaire/_search?_count=2&_format=json&_getpagesoffset=0',
+    },
+  ],
+  entry: [],
+};

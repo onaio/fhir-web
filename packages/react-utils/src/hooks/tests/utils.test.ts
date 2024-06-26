@@ -1,5 +1,5 @@
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { matchesOnName } from '../utils';
+import { checkFilter, matchesOnName } from '../utils';
 import { hugeSinglePageData } from './fixtures';
 
 test('search match util works correctly', () => {
@@ -9,5 +9,25 @@ test('search match util works correctly', () => {
   result = matchesOnName(singleCareTeam, '7TES');
   expect(result).toBeTruthy();
   result = matchesOnName(singleCareTeam, 'non-existent');
+  expect(result).toBeFalsy();
+});
+
+test('check filter works correctly', () => {
+  const sampleItem = {
+    name: 'RejectFB24',
+  };
+  let result = checkFilter(sampleItem, 'name', { operand: '===', value: 'tanoTena' });
+  expect(result).toBeFalsy();
+  result = checkFilter(sampleItem, 'name', { operand: '!==', value: 'tanoTena' });
+  expect(result).toBeTruthy();
+  result = checkFilter(sampleItem, 'nonExistent', { operand: '===', value: 'RejectFB24' });
+  expect(result).toBeFalsy();
+  result = checkFilter(sampleItem, 'name', { operand: 'includes', value: 'reject' });
+  expect(result).toBeTruthy();
+  result = checkFilter(sampleItem, 'name', {
+    operand: 'includes',
+    value: 'reject',
+    caseSensitive: true,
+  });
   expect(result).toBeFalsy();
 });

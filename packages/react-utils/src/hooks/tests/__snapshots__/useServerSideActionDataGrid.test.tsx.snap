@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`pagination and search work correctly: Search 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  Birth Notification CRVS sample
+</td>
+`;
+
+exports[`pagination and search work correctly: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  NSW Government My Personal Health Record
+</td>
+`;
+
+exports[`pagination and search work correctly: table row 1 page 2 1`] = `
+<td
+  class="ant-table-cell"
+>
+  426 - title
+</td>
+`;
+
+exports[`pagination and search work correctly: table row 2 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  219 - title
+</td>
+`;
+
+exports[`pagination and search work correctly: table row 2 page 2 1`] = `
+<td
+  class="ant-table-cell"
+>
+  NSW Government My Personal Health Record
+</td>
+`;
