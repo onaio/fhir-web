@@ -123,7 +123,7 @@ import {
   ADD_LOCATION_INVENTORY,
   AddLocationInventory,
 } from '@opensrp/fhir-group-management';
-import { AddEditFlag } from '@opensrp/fhir-flag';
+import { CloseFlag } from '@opensrp/fhir-flag';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
 import { APP_LOGIN_URL } from '../configs/dispatchConfig';
@@ -552,7 +552,7 @@ const FHIRApps = () => {
         exact
         path={URL_CLOSE_FLAGS}
         permissions={['Flag.update']}
-        component={AddEditFlag}
+        component={CloseFlag}
       />
       <Route
         exact
