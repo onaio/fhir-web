@@ -1,1 +1,1 @@
-export * from './components/AddEditFlag';
+export * from './components/BaseComponent';
