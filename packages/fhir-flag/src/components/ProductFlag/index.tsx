@@ -11,15 +11,16 @@ import {
   locationResourceType,
   servicePointProfileInventoryListCoding,
 } from '@opensrp/fhir-helpers';
-import { buildInitialFormFieldValues } from '../Utils/utils';
+import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
 
 export interface ProductFlagProps {
   fhirBaseURL: string;
   inventoryGroupId: string;
+  activeFlag: any;
 }
 
 export const ProductFlag = (props: ProductFlagProps) => {
-  const { fhirBaseURL: fhirBaseUrl, inventoryGroupId } = props;
+  const { fhirBaseURL: fhirBaseUrl, inventoryGroupId, activeFlag } = props;
 
   // const { t } = useTranslation();
   // const configuredPractAssignmentStrategy = getConfig('practToOrgAssignmentStrategy');
@@ -78,10 +79,21 @@ export const ProductFlag = (props: ProductFlagProps) => {
     return <BrokenPage errorMessage={(inventoryGroup.error as Error).message} />;
   }
 
-  const initialValues = buildInitialFormFieldValues(product.data?.name, location.data?.name);
+  const initialValues = buildInitialFormFieldValues(
+    product.data?.name,
+    location.data?.name,
+    list.data?.subject?.reference
+  );
 
   return product.data?.name && location.data?.name ? (
-    <CloseFlagForm fhirBaseUrl={fhirBaseUrl} initialValues={initialValues} />
+    <CloseFlagForm
+      fhirBaseUrl={fhirBaseUrl}
+      initialValues={initialValues}
+      activeFlag={activeFlag}
+      mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
+        return postCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
+      }}
+    />
   ) : (
     <Alert
       message="Invalid Flag"
