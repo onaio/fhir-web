@@ -1,18 +1,24 @@
 import React from 'react';
-import { Select, Button, Form, Input, Space, Col, Row } from 'antd';
+import { Select, Button, Form, Input, Col, Row } from 'antd';
 import { BodyLayout } from '@opensrp/react-utils';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { CloseFlagFormFields } from '../Utils/utils';
+import { useMutation } from 'react-query';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
 
-interface CloseFlagFormProps {
+export interface CloseFlagFormProps {
   fhirBaseUrl: string;
   initialValues: CloseFlagFormFields;
-  disabled: string[];
-  cancelUrl?: string;
-  successUrl?: string;
+  activeFlag?: any;
+  mutationEffect: (
+    initialValues: CloseFlagFormFields,
+    values: CloseFlagFormFields,
+    activeFlag: any
+  ) => Promise<IGroup>;
 }
 
 const defaultProps = {
@@ -27,9 +33,27 @@ const headerProps = {
   },
 };
 
-const CloseFlagForm = (props: CloseFlagFormProps) => {
-  const { initialValues } = props;
-  console.log('initialValues', initialValues);
+const CloseFlagForm = (props: CloseFlagFormProps): any => {
+  const { initialValues, activeFlag, mutationEffect } = props;
+
+  const { mutate, isLoading } = useMutation(
+    (values: CloseFlagFormFields) => {
+      return mutationEffect(initialValues, values, activeFlag);
+    },
+    {
+      onError: (err: Error) => {
+        sendErrorNotification(err.message);
+      },
+      onSuccess: async (mutationEffectResponse) => {
+        sendSuccessNotification('Flag Closed successfully');
+
+        // queryClient.refetchQueries([groupResourceType]).catch(() => {
+        //   sendInfoNotification(t('Failed to refresh data, please refresh the page'));
+        // });
+        // goTo(successUrl);
+      },
+    }
+  );
 
   return (
     <BodyLayout headerProps={headerProps}>
@@ -39,7 +63,7 @@ const CloseFlagForm = (props: CloseFlagFormProps) => {
             {...formItemLayout}
             initialValues={initialValues}
             onFinish={(values: CloseFlagFormFields) => {
-              console.log('values-------', values);
+              mutate(values);
             }}
           >
             <FormItem
