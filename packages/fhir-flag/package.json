@@ -41,8 +41,10 @@
   "author": "OpenSRP Engineering",
   "license": "Apache-2.0",
   "dependencies": {
+    "@onaio/session-reducer": "^0.0.13",
     "@opensrp/fhir-helpers": "workspace:^",
     "@opensrp/notifications": "workspace:^",
-    "@opensrp/react-utils": "workspace:^"
+    "@opensrp/react-utils": "workspace:^",
+    "uuid": "^10.0.0"
   }
 }
