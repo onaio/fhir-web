@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Select, Button, Form, Input, Col, Row } from 'antd';
 import { BodyLayout } from '@opensrp/react-utils';
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
@@ -36,9 +36,11 @@ const headerProps = {
 const CloseFlagForm = (props: CloseFlagFormProps): any => {
   const { initialValues, activeFlag, mutationEffect } = props;
 
+  const stableInitialValues = useMemo(() => initialValues, [initialValues]);
+
   const { mutate, isLoading } = useMutation(
     (values: CloseFlagFormFields) => {
-      return mutationEffect(initialValues, values, activeFlag);
+      return mutationEffect(stableInitialValues, values, activeFlag);
     },
     {
       onError: (err: Error) => {
@@ -55,17 +57,15 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
     }
   );
 
+  const handleFinish = (values: CloseFlagFormFields) => {
+    mutate(values);
+  };
+
   return (
     <BodyLayout headerProps={headerProps}>
       <Row className="user-group">
         <Col className="bg-white p-3" span={24}>
-          <Form
-            {...formItemLayout}
-            initialValues={initialValues}
-            onFinish={(values: CloseFlagFormFields) => {
-              mutate(values);
-            }}
-          >
+          <Form {...formItemLayout} initialValues={stableInitialValues} onFinish={handleFinish}>
             <FormItem
               name="locationName"
               id="locationName"
