@@ -1,13 +1,16 @@
 import React from 'react';
 
 import { useParams } from 'react-router';
-import { FlagResourceType } from '../../constants';
+import { FlagResourceType, PractitionerResourceType } from '../../constants';
 import { Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import type { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 import ProductFlag from '../ProductFlag';
 import LocationFlag from '../LocationFlag';
+import { useSelector } from 'react-redux';
+import { getExtraData } from '@onaio/session-reducer';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 export interface CloseFlagProps {
   fhirBaseURL: string;
@@ -20,6 +23,12 @@ export interface RouteParams {
 export const CloseFlag = (props: CloseFlagProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
 
+  const extraData = useSelector((state) => {
+    return getExtraData(state);
+  });
+
+  const { user_id } = extraData;
+
   const { id: flagId } = useParams<RouteParams>();
 
   const flag = useQuery(
@@ -28,10 +37,23 @@ export const CloseFlag = (props: CloseFlagProps) => {
       new FHIRServiceClass<IFlag>(fhirBaseUrl, FlagResourceType).read(`${flagId as string}`),
     {
       enabled: !!flagId,
+      staleTime: 30 * 60 * 1000, // 30 minutes
     }
   );
 
-  if (flag.isLoading || flag.isFetching) {
+  const practitioner = useQuery(
+    [PractitionerResourceType, user_id],
+    () =>
+      new FHIRServiceClass<IBundle>(fhirBaseUrl, PractitionerResourceType).list({
+        identifier: user_id,
+      }),
+    {
+      enabled: !!user_id,
+      staleTime: 30 * 60 * 1000, // 30 minutes
+    }
+  );
+  console.log(practitioner);
+  if (flag.isLoading || flag.isFetching || practitioner.isLoading || practitioner.isFetching) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
 
@@ -39,29 +61,25 @@ export const CloseFlag = (props: CloseFlagProps) => {
     return <BrokenPage errorMessage={(flag.error as Error).message} />;
   }
 
-  const headerProps = {
-    pageHeaderProps: {
-      title: 'Close Flags',
-      onBack: undefined,
-    },
-  };
-
   return (
     <Row>
       <Col span={24}>
-        {flag.data?.subject?.reference?.includes('Location') ? (
-          <LocationFlag
-            activeFlag={flag.data}
-            fhirBaseURL={fhirBaseUrl}
-            locationId={flag?.data?.subject?.reference}
-          />
-        ) : (
-          <ProductFlag
-            activeFlag={flag.data}
-            fhirBaseURL={fhirBaseUrl}
-            inventoryGroupId={flag.data?.subject?.reference as any}
-          />
-        )}
+        {practitioner.data &&
+          (flag.data?.subject?.reference?.includes('Location') ? (
+            <LocationFlag
+              activeFlag={flag.data}
+              fhirBaseURL={fhirBaseUrl}
+              locationId={flag?.data?.subject?.reference}
+              practitioner={practitioner.data}
+            />
+          ) : (
+            <ProductFlag
+              activeFlag={flag.data}
+              fhirBaseURL={fhirBaseUrl}
+              inventoryGroupId={flag.data?.subject?.reference as any}
+              practitioner={practitioner.data}
+            />
+          ))}
       </Col>
     </Row>
   );
