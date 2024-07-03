@@ -1,10 +1,11 @@
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
+import { IObservation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IObservation';
 
 export const encounter: IEncounter = {
   resourceType: 'Encounter',
   id: 'd8f6bb0d-a2ed-4bee-982b-846845930dbc',
   identifier: [{ use: 'usual', value: 'd8f6bb0d-a2ed-4bee-982b-846845930dbc' }],
-  status: 'completed' as any,
+  status: 'finished',
   class: {
     system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
     code: 'OBSENC',
@@ -76,7 +77,7 @@ export const encounter: IEncounter = {
   partOf: { reference: 'Encounter/2492dd29-81bf-4628-96cd-f747f48d7e16' },
 };
 
-export const observation = {
+export const observation: IObservation = {
   resourceType: 'Observation',
   id: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7',
   identifier: [{ use: 'usual', value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' }],
@@ -114,11 +115,11 @@ export const observation = {
     text: 'Vist Flag Observation',
   },
   subject: { reference: 'Location/6f3980e0-d1d6-4a7a-a950-939f3ca7b301' },
-  focus: { reference: 'Flag/6f3980e0-d1d6-4a7a-a950-939f3ca7b301' },
+  focus: [{ reference: 'Flag/6f3980e0-d1d6-4a7a-a950-939f3ca7b301' }],
   encounter: { reference: 'Encounter/6f3980e0-d1d6-4a7a-a950-939f3ca7b301' },
   effectivePeriod: {
-    start: '2024-02-01T00:00:00.00Z',
-    end: '2024-02-01T00:00:00.00Z',
+    start: '2024-02-01T00:00:00.00Z' as any,
+    end: '2024-02-01T00:00:00.00Z' as any,
   },
   performer: [{ reference: 'Practitioner/6f3980e0-d1d6-4a7a-a950-939f3ca7b301' }],
   valueCodeableConcept: {
@@ -131,5 +132,5 @@ export const observation = {
     ],
     text: 'Yes (qualifier value)',
   },
-  note: [{ time: '2024-02-01T00:00:00.00Z', text: 'Please enter fixed reason' }],
+  note: [{ time: '2024-02-01T00:00:00.00Z' as any, text: 'Please enter fixed reason' }],
 };
