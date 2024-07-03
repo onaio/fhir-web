@@ -33,7 +33,6 @@ export const buildInitialFormFieldValues = (
 const generateCommonProperties = (id: string, flag: IFlag) => ({
   id: v5(id, flag.id as string),
   meta: {
-    ...flag.meta,
     tag: flag.meta?.tag,
   },
 });
@@ -46,7 +45,7 @@ const generateCommonProperties = (id: string, flag: IFlag) => ({
  */
 export const postPutEncounter = (baseUrl: string, payload: IEncounter) => {
   const serve = new FHIRServiceClass<IEncounter>(baseUrl, EncounterResourceType);
-  return serve.create(payload);
+  return serve.update(payload);
 };
 
 /**
@@ -57,7 +56,7 @@ export const postPutEncounter = (baseUrl: string, payload: IEncounter) => {
  */
 export const postPutObservation = (baseUrl: string, payload: IObservation) => {
   const serve = new FHIRServiceClass<IObservation>(baseUrl, ObservationResourceType);
-  return serve.create(payload);
+  return serve.update(payload);
 };
 
 /**
@@ -74,6 +73,7 @@ export const postPutFlag = (baseUrl: string, payload: IFlag) => {
 export const generateEncounterPayload = (
   encounter: IEncounter,
   flag: IFlag,
+  practitionerId: string,
   listSubjectReference: string
 ) => {
   const commonProperties = generateCommonProperties('Encounter', flag);
@@ -88,6 +88,13 @@ export const generateEncounterPayload = (
     ...commonProperties,
     partOf: { reference: flag?.encounter?.reference },
     location: [{ location: { reference }, status: 'active' }],
+    participant: [
+      {
+        individual: {
+          reference: `Practitioner/${practitionerId}`,
+        },
+      },
+    ],
   };
 };
 
@@ -98,7 +105,7 @@ export const generateObservationPayload = (
   listSubjectReference: string,
   values: CloseFlagFormFields
 ) => {
-  const commonProperties = generateCommonProperties('Observation', flag);
+  const commonProperties = generateCommonProperties('Encounter', flag);
   const isSPCHECKOrCNBEN =
     flag.category?.[0]?.coding?.[0].code === 'SPCHECK' ||
     flag.category?.[0]?.coding?.[0].code === 'CNBEN';
@@ -134,6 +141,7 @@ export const postCloseFlagResources = async (
   const encounterPayload = generateEncounterPayload(
     encounter as IEncounter,
     activeFlag,
+    practitionerId as string,
     listSubject as string
   );
 
@@ -150,12 +158,23 @@ export const postCloseFlagResources = async (
     status: 'inactive',
   };
 
-  const encounterPost = await postPutEncounter(fhirBaseUrl, encounterPayload as IEncounter);
-  const observationPost = await postPutObservation(fhirBaseUrl, observationPayload as IObservation);
-  const flagUpdate = await postPutFlag(fhirBaseUrl, updatedFlag);
-  return {
-    encounterResponse: encounterPost,
-    observationResponse: observationPost,
-    flagUpdateResponse: flagUpdate,
-  };
+  const flagPromise = postPutFlag(fhirBaseUrl, updatedFlag);
+
+  const encounterObservationPromise = new Promise((resolve, reject) => {
+    postPutEncounter(fhirBaseUrl, encounterPayload as IEncounter)
+      .then((encounterRes) => {
+        postPutObservation(fhirBaseUrl, observationPayload as IObservation)
+          .then((observationRes) => {
+            resolve({ encounterRes, observationRes });
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+
+  return Promise.all([flagPromise, encounterObservationPromise]);
 };
