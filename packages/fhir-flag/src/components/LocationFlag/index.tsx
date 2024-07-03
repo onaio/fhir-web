@@ -1,47 +1,31 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
-import { Alert, Spin } from 'antd';
+import { Alert, Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { locationResourceType } from '@opensrp/fhir-helpers';
 import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
-import { useSelector } from 'react-redux';
-import { getExtraData } from '@onaio/session-reducer';
-import { PractitionerResourceType } from '../../constants';
+
+import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 export interface LocationFlagProps {
   fhirBaseURL: string;
-  locationId: any;
-  activeFlag: any;
+  locationId: string;
+  activeFlag: IFlag;
+  practitioner: IBundle;
 }
 
 export const LocationFlag = (props: LocationFlagProps) => {
-  const { fhirBaseURL: fhirBaseUrl, locationId, activeFlag } = props;
-
-  const extraData = useSelector((state) => {
-    return getExtraData(state);
-  });
-
-  const { user_id } = extraData;
+  const { fhirBaseURL: fhirBaseUrl, locationId, activeFlag, practitioner } = props;
 
   const location = useQuery(
     [locationResourceType, locationId],
     async () => new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationId as string}`),
     {
       enabled: !!locationId,
-    }
-  );
-
-  const practitioner = useQuery(
-    [PractitionerResourceType, user_id],
-    () =>
-      new FHIRServiceClass<IPractitioner>(fhirBaseUrl, PractitionerResourceType).list({
-        identifier: user_id,
-      }),
-    {
-      enabled: !!user_id,
+      staleTime: 30 * 60 * 1000, // 30 minutes
     }
   );
 
@@ -57,7 +41,7 @@ export const LocationFlag = (props: LocationFlagProps) => {
     undefined,
     location.data?.name,
     undefined,
-    practitioner.data?.id
+    practitioner?.['entry']?.[0]?.resource?.id
   );
 
   return location.data?.name ? (
@@ -70,13 +54,17 @@ export const LocationFlag = (props: LocationFlagProps) => {
       }}
     />
   ) : (
-    <Alert
-      message="Invalid Flag"
-      description={
-        'Missing product or location items. This information is required to close the flag form.'
-      }
-      type="error"
-    />
+    <Row className="user-group">
+      <Col className="bg-white p-3" span={24}>
+        <Alert
+          message="Invalid Flag"
+          description={
+            'Missing product or location items. This information is required to close the flag form.'
+          }
+          type="error"
+        />
+      </Col>
+    </Row>
   );
 };
 
