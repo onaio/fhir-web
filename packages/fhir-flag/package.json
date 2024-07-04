@@ -44,6 +44,7 @@
     "@onaio/session-reducer": "^0.0.13",
     "@opensrp/fhir-helpers": "workspace:^",
     "@opensrp/notifications": "workspace:^",
+    "@opensrp/pkg-config": "workspace:^",
     "@opensrp/react-utils": "workspace:^",
     "uuid": "^10.0.0"
   }
