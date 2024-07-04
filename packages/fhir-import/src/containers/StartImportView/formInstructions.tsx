@@ -68,7 +68,7 @@ export const InstructionStepOne =
 export const InstructionStepTwoTitle = <Text strong>Upload your data file</Text>
 export const InstructionStepTwo =
     <ol>
-        <li>Click the "Upload" or "Browse" button to select your prepared data file.</li>
-        <li>Once the file or files are selected, click "Start upload" to begin the upload</li>
+        <li>Click the "Attach" button to select your prepared data file.</li>
+        <li>Once the file or files are selected, click "Start Import" to begin the upload</li>
     </ol>
 
