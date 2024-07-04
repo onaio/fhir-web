@@ -6,7 +6,7 @@ import { UploadChangeParam } from 'antd/es/upload';
 import { useHistory } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { OpenSRPService, formItemLayout, tailLayout } from "@opensrp/react-utils";
-import { locations, users, organizations, careteams, inventory, orgToLocationAssignment, userToOrganizationAssignment, product, productImages, DATA_IMPORT_LIST_URL, IMPORT_DOMAIN_URI } from '../../constants';
+import { locations, users, organizations, careteams, inventories, orgToLocationAssignment, userToOrganizationAssignment, products, productImages, DATA_IMPORT_LIST_URL, IMPORT_DOMAIN_URI, dataImportRQueryKey } from '../../constants';
 import { useTranslation } from '../../mls';
 import { sendErrorNotification, sendSuccessNotification, sendInfoNotification } from '@opensrp/notifications';
 import FormItem from 'antd/es/form/FormItem';
@@ -24,10 +24,10 @@ interface FormFields {
     [users]: UploadFile[];
     [organizations]: UploadFile[];
     [careteams]: UploadFile[];
-    [inventory]: UploadFile[];
+    [inventories]: UploadFile[];
     [orgToLocationAssignment]: UploadFile[];
     [userToOrganizationAssignment]: UploadFile[];
-    [product]: UploadFile[];
+    [products]: UploadFile[];
     [productImages]: UploadFile[];
 }
 
@@ -80,7 +80,8 @@ export const DataImportForm = (props: DataImportFormProps) => {
                 sendErrorNotification(err.message);
             },
             onSuccess: async () => {
-                sendSuccessNotification(t('Commodity updated successfully'));
+                sendSuccessNotification(t('Data import started successfully'));
+                queryClient.invalidateQueries(dataImportRQueryKey)
                 goTo(DATA_IMPORT_LIST_URL);
             },
         }
@@ -110,10 +111,10 @@ export const DataImportForm = (props: DataImportFormProps) => {
         UploadBtnText: "Attach assignment file"
     }, {
         formFieldName: userToOrganizationAssignment,
-        label: "User careteam assignment",
+        label: "User organization assignment",
         UploadBtnText: "Attach assignment file"
     }, {
-        formFieldName: inventory,
+        formFieldName: inventories,
         label: "Inventory",
         UploadBtnText: "Attach inventory file"
     }]
@@ -152,15 +153,15 @@ export const DataImportForm = (props: DataImportFormProps) => {
                 })
             }
             <Form.Item
-                id={product}
-                hidden={hidden.includes(product)}
-                name={product}
+                id={products}
+                hidden={hidden.includes(products)}
+                name={products}
                 label={"Products"}
                 valuePropName="fileList"
                 getValueFromEvent={normalizeFileInputEvent}
             >
                 <Upload
-                    id={product}
+                    id={products}
                     beforeUpload={() => false}
                     accept="text/csv"
                     multiple={false}

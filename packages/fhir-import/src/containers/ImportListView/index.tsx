@@ -115,13 +115,13 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: WorkflowDescription) => (
         <span className="d-flex align-items-center">
-          {/* <RbacCheck permissions={['CareTeam.update']}> */}
+          <RbacCheck permissions={['WebDataImport.read']}>
           <>
             <Link to={`${DATA_IMPORT_DETAIL_URL}/${record.workflowId.toString()}`} className="m-0 p-1">
               {t('View')}
             </Link>
           </>
-          {/* </RbacCheck> */}
+          </RbacCheck>
         </span>
       ),
     },
@@ -149,15 +149,14 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
         <Col className="main-content">
           <div className="main-content__header">
             <div />
-            {/* <SearchForm {...searchFormProps} /> */}
-            {/* <RbacCheck permissions={['CareTeam.create']}> */}
+            <RbacCheck permissions={['WebDataImport.create']}>
             <Link to={DATA_IMPORT_CREATE_URL}>
               <Button type="primary" onClick={() => history.push(DATA_IMPORT_CREATE_URL)}>
                 <CloudUploadOutlined />
                 {t('Bulk upload')}
               </Button>
             </Link>
-            {/* </RbacCheck> */}
+            </RbacCheck>
           </div>
           <TableLayout {...tableProps} />
         </Col>
