@@ -1,4 +1,4 @@
-import { AuthZResource, FhirResource, FhirResources, Permit } from '../constants';
+import { AuthZResource, FhirResource, KeycloakDefinedResource, KeycloakDefinedResources, Permit } from '../constants';
 import { RbacAdapter } from '../helpers/types';
 import { UserRole } from '../roleDefinition';
 
@@ -10,8 +10,8 @@ const fhirVerbToPermitLookup: Record<string, Permit> = {
   MANAGE: Permit.MANAGE,
 };
 
-const getFhirResourceString = (rawResourceString: string): FhirResource | undefined => {
-  const matchedResource = FhirResources.filter(
+const getFhirResourceString = (rawResourceString: string): KeycloakDefinedResource | undefined => {
+  const matchedResource = KeycloakDefinedResources.filter(
     (resource) => resource.toUpperCase() === rawResourceString.toUpperCase()
   );
   return matchedResource[0];
