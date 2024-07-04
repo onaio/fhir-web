@@ -112,7 +112,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
         <Alert
           message="Invalid Flag"
           description={
-            'Missing product or location items. This information is required to close the flag form.'
+            'Missing product or location field. This information is required to close the flag form.'
           }
           type="error"
         />
