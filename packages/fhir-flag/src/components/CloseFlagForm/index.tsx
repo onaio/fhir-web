@@ -6,6 +6,8 @@ import { CloseFlagFormFields } from '../Utils/utils';
 import { useMutation } from 'react-query';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { useTranslation } from '../../mls';
+import { useHistory } from 'react-router';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
@@ -35,6 +37,9 @@ const headerProps = {
 
 const CloseFlagForm = (props: CloseFlagFormProps): any => {
   const { initialValues, activeFlag, mutationEffect } = props;
+  const { t } = useTranslation();
+  const history = useHistory();
+  const goTo = (url = '#') => history.push(url);
 
   const stableInitialValues = useMemo(() => initialValues, [initialValues]);
 
@@ -52,10 +57,15 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
         // queryClient.refetchQueries([groupResourceType]).catch(() => {
         //   sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         // });
-        // goTo(successUrl);
+        goTo('/');
       },
     }
   );
+
+  const statusOptions = [
+    { label: t('Active'), value: 'active' },
+    { label: t('Inactive'), value: 'inactive' },
+  ];
 
   const handleFinish = (values: CloseFlagFormFields) => {
     mutate(values);
@@ -72,31 +82,25 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
               label="Service Point"
               rules={[{ required: true }]}
             >
-              <Input disabled />
+              <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
             <FormItem name="productName" id="productName" label="Product">
-              <Input disabled />
+              <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
             <FormItem id="status" label="Status" name="status" rules={[{ required: true }]}>
-              <Select
-                options={[
-                  { label: 'Active', value: 'active' },
-                  { label: 'Inactive', value: 'inactive' },
-                ]}
-              />
+              <Select options={statusOptions} placeholder={t('Select flag status')} />
             </FormItem>
 
             <FormItem id="comments" label="Comments" name="comments" rules={[{ required: true }]}>
-              <TextArea />
+              <TextArea rows={4} placeholder={t('How was the flag resolved?')} />
             </FormItem>
 
             <FormItem {...tailLayout}>
               <Button type="primary" id="submit-button" htmlType="submit">
-                Save
+                {isLoading ? t('Saving') : t('Save')}
               </Button>
-              <Button id="cancel-button">Cancel</Button>
             </FormItem>
           </Form>
         </Col>

@@ -7,7 +7,7 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { locationResourceType } from '@opensrp/fhir-helpers';
 import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
-
+import { useTranslation } from '../../mls';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 export interface LocationFlagProps {
@@ -19,7 +19,7 @@ export interface LocationFlagProps {
 
 export const LocationFlag = (props: LocationFlagProps) => {
   const { fhirBaseURL: fhirBaseUrl, locationId, activeFlag, practitioner } = props;
-
+  const { t } = useTranslation();
   const location = useQuery(
     [locationResourceType, locationId],
     async () => new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationId as string}`),
@@ -57,10 +57,10 @@ export const LocationFlag = (props: LocationFlagProps) => {
     <Row className="user-group">
       <Col className="bg-white p-3" span={24}>
         <Alert
-          message="Invalid Flag"
-          description={
+          message={t('Invalid Flag')}
+          description={t(
             'Missing  location field. This information is required to close the flag form.'
-          }
+          )}
           type="error"
         />
       </Col>

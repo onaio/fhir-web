@@ -52,7 +52,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
       staleTime: 30 * 60 * 1000, // 30 minutes
     }
   );
-  console.log(practitioner);
+
   if (flag.isLoading || flag.isFetching || practitioner.isLoading || practitioner.isFetching) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
@@ -65,6 +65,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
     <Row>
       <Col span={24}>
         {practitioner.data &&
+          flag.data &&
           (flag.data?.subject?.reference?.includes('Location') ? (
             <LocationFlag
               activeFlag={flag.data}

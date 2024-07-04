@@ -4,7 +4,6 @@ import { GroupResourceType, ListResourceType } from '../../constants';
 import { Alert, Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
-import type { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import {
@@ -13,6 +12,7 @@ import {
 } from '@opensrp/fhir-helpers';
 import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { useTranslation } from '../../mls';
 
 export interface ProductFlagProps {
   fhirBaseURL: string;
@@ -24,9 +24,7 @@ export interface ProductFlagProps {
 export const ProductFlag = (props: ProductFlagProps) => {
   const { fhirBaseURL: fhirBaseUrl, inventoryGroupId, activeFlag, practitioner } = props;
 
-  // const { t } = useTranslation();
-  // const configuredPractAssignmentStrategy = getConfig('practToOrgAssignmentStrategy');
-
+  const { t } = useTranslation();
   const inventoryGroup = useQuery(
     [GroupResourceType, inventoryGroupId],
     () => new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(inventoryGroupId as string),
@@ -110,10 +108,10 @@ export const ProductFlag = (props: ProductFlagProps) => {
     <Row className="user-group">
       <Col className="bg-white p-3" span={24}>
         <Alert
-          message="Invalid Flag"
-          description={
+          message={t('Invalid Flag')}
+          description={t(
             'Missing product or location field. This information is required to close the flag form.'
-          }
+          )}
           type="error"
         />
       </Col>
