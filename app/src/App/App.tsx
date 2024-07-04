@@ -18,10 +18,6 @@ const App: React.FC = () => {
       <div className="body-wrapper">
         <ConnectedHeader />
         <Content>
-          <Link to="/close-flags/1a3a0d65-b6ad-40af-b6cd-2e8801614de9">
-            Close product related Flag
-          </Link>
-          <Link to="/close-flags/17952f75-646f-4087-83bc-6af98dd40938">Close location Flag</Link>
           <FHIRApps />
         </Content>
       </div>
