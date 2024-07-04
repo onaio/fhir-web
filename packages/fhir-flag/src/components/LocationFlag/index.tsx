@@ -1,6 +1,6 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
-import { Alert, Col, Row, Spin } from 'antd';
+import { Alert, Button, Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
@@ -54,17 +54,26 @@ export const LocationFlag = (props: LocationFlagProps) => {
       }}
     />
   ) : (
-    <Row className="user-group">
-      <Col className="bg-white p-3" span={24}>
-        <Alert
-          message={t('Invalid Flag')}
-          description={t(
-            'Missing  location field. This information is required to close the flag form.'
-          )}
-          type="error"
-        />
-      </Col>
-    </Row>
+    <BrokenPage
+      title={t('Invalid Flag')}
+      errorMessage={t(
+        'Missing  location field. This information is required to close the flag form.'
+      )}
+      extraLinks={
+        <>
+          <Button
+            type="primary"
+            onClick={() => {
+              window.opener = null;
+              window.open('', '_self');
+              window.close();
+            }}
+          >
+            {t('Close App')}
+          </Button>
+        </>
+      }
+    />
   );
 };
 

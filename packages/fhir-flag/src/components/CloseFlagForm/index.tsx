@@ -49,15 +49,16 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
     },
     {
       onError: (err: Error) => {
-        sendErrorNotification(err.message);
+        sendErrorNotification(t('Error Occured When Closing Flag'));
       },
       onSuccess: async (mutationEffectResponse) => {
-        sendSuccessNotification('Flag Closed successfully');
+        sendSuccessNotification(t('Flag Closed successfully'));
+        /** close tab */
 
-        // queryClient.refetchQueries([groupResourceType]).catch(() => {
-        //   sendInfoNotification(t('Failed to refresh data, please refresh the page'));
-        // });
         goTo('/');
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
       },
     }
   );
