@@ -8,8 +8,8 @@ import nock from 'nock';
 import * as reactQuery from 'react-query';
 import { waitForElementToBeRemoved, fireEvent, render, cleanup } from '@testing-library/react';
 import { store } from '@opensrp/store';
-import { careTeam4214, careTeams } from './fixtures';
-import { DATA_IMPORT_LIST_URL } from '../../../constants';
+import { workflows } from './fixtures';
+import { DATA_IMPORT_LIST_URL, IMPORT_DOMAIN_URI } from '../../../constants';
 import { createMemoryHistory } from 'history';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
@@ -84,15 +84,15 @@ describe('Care Teams list view', () => {
   });
 
   it('renders correctly', async () => {
-    nock("IMPORT_DOMAIN_URI")
+    nock(IMPORT_DOMAIN_URI)
       .get(`/$import`)
-      .reply(200, [])
+      .reply(200, workflows)
       .persist();
 
     const history = createMemoryHistory();
     history.push(DATA_IMPORT_LIST_URL);
 
-    const { getByText, queryByText } = render(
+   render(
       <Router history={history}>
         <AppWrapper {...props} />
       </Router>
@@ -112,36 +112,20 @@ describe('Care Teams list view', () => {
       });
     });
 
-    // // view details
-    // nock(props.fhirBaseURL)
-    //   .get(`/${careTeamResourceType}/_search`)
-    //   .query({ _id: '308', _include: 'CareTeam:*' })
-    //   .reply(200, careTeam4214)
-    //   .persist();
+    // view details
+    nock(IMPORT_DOMAIN_URI)
+      .get(`/$import/${workflows?.[0].workflowId}`)
+      .query({ _id: '308', _include: 'CareTeam:*' })
+      .reply(200, workflows[0])
+      .persist();
 
-    // // target the initial row view details
-    // const dropdown = document.querySelector(
-    //   'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
-    // ) as Element;
-    // fireEvent.click(dropdown);
+    // target the initial row view details
+    const dropdown = document.querySelector(
+      'tbody tr:nth-child(1) [data-testid="action-dropdown"]'
+    ) as Element;
+    fireEvent.click(dropdown);
 
-    // const viewDetailsLink = getByText(/View Details/);
-    // expect(viewDetailsLink).toMatchInlineSnapshot(`
-    //   <span>
-    //     View Details
-    //   </span>
-    // `);
-    // fireEvent.click(viewDetailsLink);
-    // expect(history.location.pathname).toEqual('/admin/CareTeams');
-    // expect(history.location.search).toEqual('?viewDetails=308');
+    expect(history.location).toEqual({})
 
-    // await waitForElementToBeRemoved(queryByText(/Fetching Care team/i));
-    // document.querySelectorAll('.display-block').forEach((block) => {
-    //   expect(block).toMatchSnapshot('view details display block');
-    // });
-
-    // // close view details
-    // const closeButton = document.querySelector('[data-testid="cancel"]');
-    // fireEvent.click(closeButton);
   });
 });

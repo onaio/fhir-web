@@ -60,7 +60,6 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
   const history = useHistory();
 
   const { sParams } = useSearchParams()
-  const userRole = useUserRole();
   const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const { data, isFetching, isLoading, error } = useQuery(dataImportRQueryKey, () => {
@@ -101,7 +100,6 @@ export const DataImportList: React.FC<ImportListPropTypes> = (props: ImportListP
       dataIndex: 'dateCreated' as const,
       defaultSortOrder: 'descend' as const,
       sortDirections: ['ascend' as const, 'descend' as const],
-      // TODO - figure out ascending / descending order
       sorter: (a: any, b: any) => {
         const diff = a.dateCreated - b.dateCreated
         return diff === 0 ? 0 : diff > 0 ? 1 : -1
