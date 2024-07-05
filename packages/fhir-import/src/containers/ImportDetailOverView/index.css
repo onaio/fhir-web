@@ -15,6 +15,7 @@
     white-space: pre-wrap;
     /* Makes sure that text wraps within the pre element */
     word-wrap: break-word;
+    word-break: break-all;
     /* Ensures long words will wrap and not overflow the container */
     margin: 0;
     color: #fff;
