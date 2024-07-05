@@ -1,9 +1,11 @@
+import { consultBeneficiaryCoding, servicePointCheckCoding } from '../../constants/codeSystems';
 import {
   getCharacteristicWithCode,
   getCharacteristicWithCoding,
   getAdministrativeLevelTypeCoding,
   getLocationAdmLevelCoding,
   getLocationAdmLevel,
+  conceptsHaveCodings,
 } from '../utils';
 import { characteristics } from './fixtures';
 
@@ -61,4 +63,22 @@ test('getLocationAdmLevel works correctly', () => {
   expect(getLocationAdmLevel([coding])).toEqual('1');
   admLevelTypeCoding.system = 'https://example.com';
   expect(getLocationAdmLevel([{ coding: [admLevelTypeCoding] }])).toEqual(undefined);
+});
+
+test('conceptsHaveCodings works correctly', () => {
+  let result = conceptsHaveCodings([], []);
+  expect(result).toBeTruthy();
+  result = conceptsHaveCodings([], [servicePointCheckCoding]);
+  expect(result).toBeFalsy();
+  result = conceptsHaveCodings([], [{}]);
+  expect(result).toBeFalsy();
+  result = conceptsHaveCodings([{ coding: [servicePointCheckCoding] }], [{}]);
+  expect(result).toBeFalsy();
+  result = conceptsHaveCodings([{ coding: [servicePointCheckCoding] }], [servicePointCheckCoding]);
+  expect(result).toBeTruthy();
+  result = conceptsHaveCodings(
+    [{ coding: [servicePointCheckCoding] }],
+    [servicePointCheckCoding, consultBeneficiaryCoding]
+  );
+  expect(result).toBeTruthy();
 });

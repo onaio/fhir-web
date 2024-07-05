@@ -66,3 +66,20 @@ export const keycloakIdentifierCoding = {
   code: 'KUID',
   display: 'Keycloak user ID',
 };
+
+export const servicePointCheckCoding = {
+  system: 'http://smartregister.org/',
+  code: 'SPCHECK',
+  display: 'Service Point Check',
+};
+
+export const consultBeneficiaryCoding = {
+  system: 'http://smartregister.org/',
+  code: 'CNBEN',
+};
+
+export const productCheckCoding = {
+  system: 'http://smartregister.org/',
+  code: 'PRODCHECK',
+  display: 'Product Check',
+};
