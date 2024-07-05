@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import { store } from '@opensrp/store';
@@ -144,8 +145,18 @@ test('works correctly - jurisdiction location', async () => {
   );
   expect(tableData).toEqual(['Kiambu CountyBuildingactiveEdit']);
 
+  // edit url
+  const editLinks = screen.getAllByTestId('edit-child-location').map((element) => {
+    return element.getAttribute('href');
+  });
+  expect(editLinks).toEqual([
+    '/admin/location/unit/edit/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d?back_to=%2Fprofile%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334',
+  ]);
+
   // validate search works.
-  const childLocationSearch = childLocationTab.querySelector('[data-testid="search-form"]')!;
+  const childLocationSearch = childLocationTab.querySelector(
+    '[data-testid="search-form"]'
+  ) as HTMLElement;
   userEvent.paste(childLocationSearch, 'searchLocation');
   expect(history.location.pathname).toEqual('/profile/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334');
   expect(history.location.search).toEqual('?search=searchLocation&page=1&pageSize=20');
@@ -155,7 +166,9 @@ test('works correctly - jurisdiction location', async () => {
   });
   childLocationTab = document.querySelector('[data-testid="child-location-tab"]')!;
   tableData = [...childLocationTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(['No data']);
+  waitFor(() => {
+    expect(tableData).toEqual(['No data']);
+  });
 
   userEvent.clear(childLocationSearch);
   await waitFor(() => {
@@ -246,7 +259,9 @@ test('works correctly - physical location', async () => {
 
   // check records shown in table
   tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(['No data']);
+  waitFor(() => {
+    expect(tableData).toEqual(['No data']);
+  });
 
   userEvent.clear(childLocationSearch);
   expect(history.location.pathname).toEqual('/profile/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334');
