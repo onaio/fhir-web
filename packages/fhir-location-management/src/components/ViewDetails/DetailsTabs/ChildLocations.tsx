@@ -101,6 +101,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
             <RbacCheck permissions={['Location.update']}>
               <>
                 <Link
+                  data-testid="edit-child-location"
                   to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}?${backToParam}`}
                   className="m-0 p-1"
                 >
