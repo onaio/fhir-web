@@ -1,16 +1,17 @@
 import React from 'react';
-
 import { useParams } from 'react-router';
-import { FlagResourceType, PractitionerResourceType } from '../../constants';
+import { FlagResourceType, PractitionerResourceType, thatiMinutes } from '../../constants';
 import { Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
-import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
+import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
 import type { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 import ProductFlag from '../ProductFlag';
 import LocationFlag from '../LocationFlag';
 import { useSelector } from 'react-redux';
 import { getExtraData } from '@onaio/session-reducer';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { useTranslation } from '../../mls';
 
 export interface CloseFlagProps {
   fhirBaseURL: string;
@@ -22,6 +23,7 @@ export interface RouteParams {
 
 export const CloseFlag = (props: CloseFlagProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
+  const { t } = useTranslation()
 
   const extraData = useSelector((state) => {
     return getExtraData(state);
@@ -37,7 +39,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
       new FHIRServiceClass<IFlag>(fhirBaseUrl, FlagResourceType).read(`${flagId as string}`),
     {
       enabled: !!flagId,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      staleTime: thatiMinutes,
     }
   );
 
@@ -49,36 +51,44 @@ export const CloseFlag = (props: CloseFlagProps) => {
       }),
     {
       enabled: !!user_id,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      staleTime: thatiMinutes,
+      select: response => {
+        return getResourcesFromBundle<IPractitioner>(response)?.[0]
+      }
     }
   );
 
-  if (flag.isLoading || flag.isFetching || practitioner.isLoading || practitioner.isFetching) {
+  if (flag.isLoading || practitioner.isLoading) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
 
   if (flag.error && !flag.data) {
-    return <BrokenPage errorMessage={(flag.error as Error).message} />;
+    return <BrokenPage errorMessage={t("Error occurred while trying to fetch flag data")} />;
+  } 
+  if (practitioner.error && !practitioner.data) {
+    return <BrokenPage errorMessage={t("Error occurred while trying to fetch practitioners data")} />;
+  }
+
+  const commonProps = {
+    practitionerId: practitioner.data?.id as string,
+    fhirBaseUrl: fhirBaseUrl,
+    flag: flag.data as IFlag,
   }
 
   return (
     <Row>
       <Col span={24}>
-        {practitioner.data &&
-          flag.data &&
+        {
           (flag.data?.subject?.reference?.includes('Location') ? (
             <LocationFlag
-              activeFlag={flag.data}
-              fhirBaseURL={fhirBaseUrl}
-              locationId={flag?.data?.subject?.reference}
-              practitioner={practitioner.data}
+            {...commonProps}
+              locationReference={flag?.data?.subject?.reference}
+
             />
           ) : (
             <ProductFlag
-              activeFlag={flag.data}
-              fhirBaseURL={fhirBaseUrl}
-              inventoryGroupId={flag.data?.subject?.reference as any}
-              practitioner={practitioner.data}
+            {...commonProps}
+              inventoryGroupReference={flag.data?.subject?.reference as any}
             />
           ))}
       </Col>

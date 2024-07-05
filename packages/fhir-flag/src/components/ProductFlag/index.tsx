@@ -1,6 +1,6 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
-import { GroupResourceType, ListResourceType } from '../../constants';
+import { GroupResourceType, ListResourceType, thatiMinutes } from '../../constants';
 import { Alert, Button, Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
@@ -10,27 +10,27 @@ import {
   locationResourceType,
   servicePointProfileInventoryListCoding,
 } from '@opensrp/fhir-helpers';
-import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import {  putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
+import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 export interface ProductFlagProps {
-  fhirBaseURL: string;
-  inventoryGroupId: string;
-  activeFlag: any;
-  practitioner: IBundle;
+  fhirBaseUrl: string;
+  inventoryGroupReference: string;
+  flag: IFlag;
+  practitionerId: string;
 }
 
 export const ProductFlag = (props: ProductFlagProps) => {
-  const { fhirBaseURL: fhirBaseUrl, inventoryGroupId, activeFlag, practitioner } = props;
-
+  const { fhirBaseUrl, inventoryGroupReference, flag, practitionerId } = props;
   const { t } = useTranslation();
+
   const inventoryGroup = useQuery(
-    [GroupResourceType, inventoryGroupId],
-    () => new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(inventoryGroupId as string),
+    [GroupResourceType, inventoryGroupReference],
+    () => new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(inventoryGroupReference as string),
     {
-      enabled: !!inventoryGroupId,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      enabled: !!inventoryGroupReference,
+      staleTime: thatiMinutes, // 30 minutes
     }
   );
 
@@ -42,20 +42,20 @@ export const ProductFlag = (props: ProductFlagProps) => {
       ),
     {
       enabled: !!inventoryGroup.data?.member?.[0]?.entity?.reference,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      staleTime: thatiMinutes, // 30 minutes
     }
   );
 
   const list = useQuery(
-    [ListResourceType, inventoryGroupId],
+    [ListResourceType, inventoryGroupReference],
     () =>
       new FHIRServiceClass<any>(fhirBaseUrl, ListResourceType).list({
-        item: inventoryGroupId?.split('/')[1],
+        item: inventoryGroupReference?.split('/')[1],
         code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`,
       }),
     {
-      enabled: !!inventoryGroupId?.split('/')[1],
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      enabled: !!inventoryGroupReference?.split('/')[1],
+      staleTime: thatiMinutes, // 30 minutes
     }
   );
 
@@ -67,7 +67,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
       ),
     {
       enabled: !!list.data?.entry?.[0]?.resource?.subject?.reference,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      staleTime: thatiMinutes, // 30 minutes
     }
   );
 
@@ -88,20 +88,21 @@ export const ProductFlag = (props: ProductFlagProps) => {
     return <BrokenPage errorMessage={(inventoryGroup.error as Error).message} />;
   }
 
-  const initialValues = buildInitialFormFieldValues(
-    product.data?.name,
-    location.data?.name,
-    list.data?.entry?.[0]?.resource?.subject?.reference,
-    practitioner?.['entry']?.[0]?.resource?.id
-  );
+  const initialValues = {
+    productName: product.data?.name,
+    locationName: location.data?.name,
+    listSubject: list.data?.entry?.[0]?.resource?.subject?.reference,
+    status: flag.status,
+    practitionerId
+};
 
   return product.data?.name && location.data?.name ? (
     <CloseFlagForm
       fhirBaseUrl={fhirBaseUrl}
       initialValues={initialValues}
-      activeFlag={activeFlag}
+      flag={flag}
       mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
-        return postCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
+        return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
       }}
     />
   ) : (
@@ -115,8 +116,6 @@ export const ProductFlag = (props: ProductFlagProps) => {
           <Button
             type="primary"
             onClick={() => {
-              window.opener = null;
-              window.open('', '_self');
               window.close();
             }}
           >

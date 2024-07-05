@@ -5,9 +5,9 @@ import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { CloseFlagFormFields } from '../Utils/utils';
 import { useMutation } from 'react-query';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { useTranslation } from '../../mls';
-import { useHistory } from 'react-router';
+import { comments, locationName, productName, status } from '../../constants';
+import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
@@ -15,12 +15,12 @@ const { TextArea } = Input;
 export interface CloseFlagFormProps {
   fhirBaseUrl: string;
   initialValues: CloseFlagFormFields;
-  activeFlag?: any;
+  flag: IFlag;
   mutationEffect: (
     initialValues: CloseFlagFormFields,
     values: CloseFlagFormFields,
     activeFlag: any
-  ) => Promise<IGroup>;
+  ) => Promise<unknown>;
 }
 
 const defaultProps = {
@@ -36,28 +36,21 @@ const headerProps = {
 };
 
 const CloseFlagForm = (props: CloseFlagFormProps): any => {
-  const { initialValues, activeFlag, mutationEffect } = props;
+  const { initialValues, flag, mutationEffect } = props;
   const { t } = useTranslation();
-  const history = useHistory();
-  const goTo = (url = '#') => history.push(url);
 
   const stableInitialValues = useMemo(() => initialValues, [initialValues]);
 
   const { mutate, isLoading } = useMutation(
     (values: CloseFlagFormFields) => {
-      return mutationEffect(stableInitialValues, values, activeFlag);
+      return mutationEffect(stableInitialValues, values, flag);
     },
     {
-      onError: (err: Error) => {
+      onError: () => {
         sendErrorNotification(t('Error Occured When Closing Flag'));
       },
-      onSuccess: async (mutationEffectResponse) => {
+      onSuccess: async () => {
         sendSuccessNotification(t('Flag Closed successfully'));
-        /** close tab */
-
-        goTo('/');
-        window.opener = null;
-        window.open('', '_self');
         window.close();
       },
     }
@@ -78,23 +71,23 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
         <Col className="bg-white p-3" span={24}>
           <Form {...formItemLayout} initialValues={stableInitialValues} onFinish={handleFinish}>
             <FormItem
-              name="locationName"
-              id="locationName"
-              label="Service Point"
+              name={locationName}
+              id={locationName}
+              label={t("Service Point")}
               rules={[{ required: true }]}
             >
               <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
-            <FormItem name="productName" id="productName" label="Product">
+            <FormItem name={productName} id={productName} label={t("Product")}>
               <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
-            <FormItem id="status" label="Status" name="status" rules={[{ required: true }]}>
+            <FormItem id={status} label={t("Status")} name={status} rules={[{ required: true }]}>
               <Select options={statusOptions} placeholder={t('Select flag status')} />
             </FormItem>
 
-            <FormItem id="comments" label="Comments" name="comments" rules={[{ required: true }]}>
+            <FormItem id={comments} label="Comments" name={comments} rules={[{ required: true }]}>
               <TextArea rows={4} placeholder={t('How was the flag resolved?')} />
             </FormItem>
 

@@ -6,75 +6,54 @@ import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { locationResourceType } from '@opensrp/fhir-helpers';
-import { buildInitialFormFieldValues, postCloseFlagResources } from '../Utils/utils';
+import { putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 export interface LocationFlagProps {
-  fhirBaseURL: string;
-  locationId: string;
-  activeFlag: IFlag;
-  practitioner: IBundle;
+  fhirBaseUrl: string;
+  locationReference: string;
+  flag: IFlag;
+  practitionerId: string;
 }
 
 export const LocationFlag = (props: LocationFlagProps) => {
-  const { fhirBaseURL: fhirBaseUrl, locationId, activeFlag, practitioner } = props;
+  const { fhirBaseUrl, locationReference, flag, practitionerId } = props;
   const { t } = useTranslation();
-  const location = useQuery(
-    [locationResourceType, locationId],
-    async () => new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationId as string}`),
+  
+  const thatiMinutes = 30 * 60 * 1000
+  const {data: location, isLoading, error} = useQuery(
+    [locationResourceType, locationReference],
+    async () => new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationReference as string}`),
     {
-      enabled: !!locationId,
-      staleTime: 30 * 60 * 1000, // 30 minutes
+      enabled: !!locationReference,
+      staleTime: thatiMinutes,
     }
   );
 
-  if (location.isLoading || location.isFetching) {
+  if (isLoading) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
 
-  if (location.error && !location.data) {
-    return <BrokenPage errorMessage={(location.error as Error).message} />;
+  if (error && !location) {
+    return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-  const initialValues = buildInitialFormFieldValues(
-    undefined,
-    location.data?.name,
-    undefined,
-    practitioner?.['entry']?.[0]?.resource?.id
-  );
 
-  return location.data?.name ? (
-    <CloseFlagForm
-      fhirBaseUrl={fhirBaseUrl}
-      initialValues={initialValues}
-      activeFlag={activeFlag}
-      mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
-        return postCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
-      }}
-    />
-  ) : (
-    <BrokenPage
-      title={t('Invalid Flag')}
-      errorMessage={t(
-        'Missing  location field. This information is required to close the flag form.'
-      )}
-      extraLinks={
-        <>
-          <Button
-            type="primary"
-            onClick={() => {
-              window.opener = null;
-              window.open('', '_self');
-              window.close();
-            }}
-          >
-            {t('Close App')}
-          </Button>
-        </>
-      }
-    />
-  );
+  const initialValues = {
+    locationName: location?.name ?? location?.id,
+    practitionerId,
+    status: flag.status
+  }
+
+  return  <CloseFlagForm
+  fhirBaseUrl={fhirBaseUrl}
+  initialValues={initialValues}
+  flag={flag}
+  mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
+    return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
+  }}
+/>
 };
 
 export default LocationFlag;

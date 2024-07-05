@@ -7,27 +7,13 @@ import { FHIRServiceClass } from '@opensrp/react-utils';
 import { EncounterResourceType, FlagResourceType, ObservationResourceType } from '../../constants';
 
 export interface CloseFlagFormFields {
-  productName: string;
+  productName?: string;
   locationName?: string;
-  status?: string;
+  status: IFlag['status'];
   comments?: string;
   listSubject?: string;
   practitionerId?: string;
 }
-
-export const buildInitialFormFieldValues = (
-  productName?: any,
-  locationName?: string,
-  listSubject?: string,
-  practitionerId?: string
-): CloseFlagFormFields => {
-  return {
-    productName,
-    locationName,
-    listSubject,
-    practitionerId,
-  };
-};
 
 // Utility function to generate common properties
 const generateCommonProperties = (id: string, flag: IFlag) => ({
@@ -123,7 +109,7 @@ export const generateObservationPayload = (
   };
 };
 
-export const postCloseFlagResources = async (
+export const putCloseFlagResources = async (
   initialValues: CloseFlagFormFields,
   values: CloseFlagFormFields,
   activeFlag: any,
