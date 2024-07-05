@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import { FlagResourceType, PractitionerResourceType, thatiMinutes } from '../../constants';
+import { FlagResourceType, PractitionerResourceType } from '@opensrp/fhir-helpers';
 import { Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage, getResourcesFromBundle } from '@opensrp/react-utils';
@@ -12,6 +12,7 @@ import { getExtraData } from '@onaio/session-reducer';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { useTranslation } from '../../mls';
+import { thatiMinutes } from '../../constants';
 
 export interface CloseFlagProps {
   fhirBaseURL: string;

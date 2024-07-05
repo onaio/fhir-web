@@ -2,9 +2,9 @@ import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { IObservation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IObservation';
 import { v5 } from 'uuid';
-import { encounter, observation } from '../../payloadConfigs';
+import { encounter, observation } from './payloadConfigs';
 import { FHIRServiceClass } from '@opensrp/react-utils';
-import { EncounterResourceType, FlagResourceType, ObservationResourceType } from '../../constants';
+import { EncounterResourceType, FlagResourceType, ObservationResourceType, PractitionerResourceType, conceptsHaveCodings, consultBeneficiaryCoding, servicePointCheckCoding } from '@opensrp/fhir-helpers';
 
 export interface CloseFlagFormFields {
   productName?: string;
@@ -60,14 +60,13 @@ export const generateEncounterPayload = (
   encounter: IEncounter,
   flag: IFlag,
   practitionerId: string,
-  listSubjectReference: string
+  locationReference: string
 ) => {
-  const commonProperties = generateCommonProperties('Encounter', flag);
-  const reference =
-    flag.category?.[0]?.coding?.[0].code === 'SPCHECK' ||
-    flag.category?.[0]?.coding?.[0].code === 'CNBEN'
+  const commonProperties = generateCommonProperties(EncounterResourceType, flag);
+  const reference = 
+    conceptsHaveCodings(flag.category, [servicePointCheckCoding, consultBeneficiaryCoding])
       ? flag.subject.reference
-      : listSubjectReference;
+      : locationReference;
 
   return {
     ...encounter,
@@ -77,7 +76,7 @@ export const generateEncounterPayload = (
     participant: [
       {
         individual: {
-          reference: `Practitioner/${practitionerId}`,
+          reference: `${PractitionerResourceType}/${practitionerId}`,
         },
       },
     ],
@@ -88,13 +87,11 @@ export const generateObservationPayload = (
   observation: IObservation,
   flag: IFlag,
   practitionerId: string,
-  listSubjectReference: string,
+  locationReference: string,
   values: CloseFlagFormFields
 ) => {
-  const commonProperties = generateCommonProperties('Encounter', flag);
-  const isSPCHECKOrCNBEN =
-    flag.category?.[0]?.coding?.[0].code === 'SPCHECK' ||
-    flag.category?.[0]?.coding?.[0].code === 'CNBEN';
+  const commonProperties = generateCommonProperties(ObservationResourceType, flag);
+  const isSPCHECKOrCNBEN =conceptsHaveCodings(flag.category, [servicePointCheckCoding, consultBeneficiaryCoding])
 
   return {
     ...observation,
@@ -103,8 +100,8 @@ export const generateObservationPayload = (
     encounter: { reference: `Encounter/${commonProperties.id}` },
     focus: isSPCHECKOrCNBEN
       ? [{ reference: `Flag/${flag.id}` }]
-      : [{ reference: listSubjectReference }, { reference: `Flag/${flag.id}` }],
-    performer: isSPCHECKOrCNBEN ? [{ reference: `Practitioner/${practitionerId}` }] : undefined,
+      : [{ reference: locationReference }, { reference: `${FlagResourceType}/${flag.id}` }],
+    performer: isSPCHECKOrCNBEN ? [{ reference: `${PractitionerResourceType}/${practitionerId}` }] : undefined,
     note: observation.note?.[0]?.text ? [{ text: values.comments }] : observation.note,
   };
 };
@@ -115,13 +112,6 @@ export const putCloseFlagResources = async (
   activeFlag: any,
   fhirBaseUrl: string
 ) => {
-  /**
-   * Check active flag type
-   * if category is spcheck on cnben call locationbasedflag builder
-   * get updated encounter/observation payload and updated flag
-   * do a post on encounter, observation and flag resources respectively
-   * Apply the same for product based flags */
-
   const { listSubject, practitionerId } = initialValues;
 
   const encounterPayload = generateEncounterPayload(

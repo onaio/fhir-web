@@ -1,14 +1,16 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
-import { GroupResourceType, ListResourceType, thatiMinutes } from '../../constants';
+import { thatiMinutes } from '../../constants';
 import { Alert, Button, Col, Row, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import {
+  listResourceType,
   locationResourceType,
   servicePointProfileInventoryListCoding,
+  groupResourceType
 } from '@opensrp/fhir-helpers';
 import {  putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
@@ -26,7 +28,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
   const { t } = useTranslation();
 
   const inventoryGroup = useQuery(
-    [GroupResourceType, inventoryGroupReference],
+    [groupResourceType, inventoryGroupReference],
     () => new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(inventoryGroupReference as string),
     {
       enabled: !!inventoryGroupReference,
@@ -35,7 +37,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
   );
 
   const product = useQuery(
-    [GroupResourceType, inventoryGroup.data?.member?.[0]?.entity?.reference],
+    [groupResourceType, inventoryGroup.data?.member?.[0]?.entity?.reference],
     () =>
       new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(
         inventoryGroup.data?.member?.[0]?.entity?.reference as string
@@ -47,9 +49,9 @@ export const ProductFlag = (props: ProductFlagProps) => {
   );
 
   const list = useQuery(
-    [ListResourceType, inventoryGroupReference],
+    [listResourceType, inventoryGroupReference],
     () =>
-      new FHIRServiceClass<any>(fhirBaseUrl, ListResourceType).list({
+      new FHIRServiceClass<any>(fhirBaseUrl, listResourceType).list({
         item: inventoryGroupReference?.split('/')[1],
         code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`,
       }),

@@ -1,10 +1,9 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
-import { Alert, Button, Col, Row, Spin } from 'antd';
+import { Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { locationResourceType } from '@opensrp/fhir-helpers';
 import { putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
