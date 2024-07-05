@@ -6,7 +6,6 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import './App.css';
 import { FHIRApps } from './fhir-apps';
-import { Link } from 'react-router-dom';
 
 const { Content } = Layout;
 
