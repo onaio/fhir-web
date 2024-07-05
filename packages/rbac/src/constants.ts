@@ -44,7 +44,19 @@ export const FhirResources = [
 ] as const;
 export type FhirResource = typeof FhirResources[number];
 
-export type AuthZResource = IamResource | FhirResource;
+/** Roles for Situations where we have views that are not directly tied to any of the native fhir resources.
+ * These are custom and only relevant for the web. These should also be defined and parsed in a similar design as 
+ * FhirResources
+ */
+export const WebCustomResources = [
+  'WebDataImport'
+] as const;
+export type WebCustomResource = typeof WebCustomResources[number]
+
+export const KeycloakDefinedResources = [...FhirResources, ...WebCustomResources] as const
+export type KeycloakDefinedResource = typeof KeycloakDefinedResources[number]
+
+export type AuthZResource = IamResource | FhirResource | WebCustomResource;
 export type BinaryNumber = number;
 export type PermitKey = keyof typeof Permit;
 export type PermitKeyValues = Valueof<typeof Permit>;

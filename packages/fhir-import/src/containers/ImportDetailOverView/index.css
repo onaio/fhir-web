@@ -1,0 +1,23 @@
+.terminal-output {
+    color: #cccccc;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1e1e1e;
+    border: 1px solid #555555;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    max-height: 600px;
+}
+
+.terminal-output pre {
+    white-space: pre-wrap;
+    /* Makes sure that text wraps within the pre element */
+    word-wrap: break-word;
+    word-break: break-all;
+    /* Ensures long words will wrap and not overflow the container */
+    margin: 0;
+    color: #fff;
+    /* Color for the terminal text */
+}

@@ -1,0 +1,6 @@
+form.import-form .ant-form-item-label label {
+    width: 144px;
+    word-break: break-word;
+    text-align: left;
+    white-space: wrap;
+  }
