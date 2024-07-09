@@ -4,7 +4,15 @@ import { IObservation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IObserva
 import { v5 } from 'uuid';
 import { encounter, observation } from './payloadConfigs';
 import { FHIRServiceClass } from '@opensrp/react-utils';
-import { EncounterResourceType, FlagResourceType, ObservationResourceType, PractitionerResourceType, conceptsHaveCodings, consultBeneficiaryCoding, servicePointCheckCoding } from '@opensrp/fhir-helpers';
+import {
+  EncounterResourceType,
+  FlagResourceType,
+  ObservationResourceType,
+  PractitionerResourceType,
+  conceptsHaveCodings,
+  consultBeneficiaryCoding,
+  servicePointCheckCoding,
+} from '@opensrp/fhir-helpers';
 
 export interface CloseFlagFormFields {
   productName?: string;
@@ -63,10 +71,12 @@ export const generateEncounterPayload = (
   locationReference: string
 ) => {
   const commonProperties = generateCommonProperties(EncounterResourceType, flag);
-  const reference = 
-    conceptsHaveCodings(flag.category, [servicePointCheckCoding, consultBeneficiaryCoding])
-      ? flag.subject.reference
-      : locationReference;
+  const reference = conceptsHaveCodings(flag.category, [
+    servicePointCheckCoding,
+    consultBeneficiaryCoding,
+  ])
+    ? flag.subject.reference
+    : locationReference;
 
   return {
     ...encounter,
@@ -91,17 +101,23 @@ export const generateObservationPayload = (
   values: CloseFlagFormFields
 ) => {
   const commonProperties = generateCommonProperties(ObservationResourceType, flag);
-  const isSPCHECKOrCNBEN =conceptsHaveCodings(flag.category, [servicePointCheckCoding, consultBeneficiaryCoding])
+  const encounterProperties = generateCommonProperties(EncounterResourceType, flag);
+  const isSPCHECKOrCNBEN = conceptsHaveCodings(flag.category, [
+    servicePointCheckCoding,
+    consultBeneficiaryCoding,
+  ]);
 
   return {
     ...observation,
     ...commonProperties,
     subject: { reference: flag.subject?.reference },
-    encounter: { reference: `Encounter/${commonProperties.id}` },
+    encounter: { reference: `Encounter/${encounterProperties.id}` },
     focus: isSPCHECKOrCNBEN
       ? [{ reference: `Flag/${flag.id}` }]
       : [{ reference: locationReference }, { reference: `${FlagResourceType}/${flag.id}` }],
-    performer: isSPCHECKOrCNBEN ? [{ reference: `${PractitionerResourceType}/${practitionerId}` }] : undefined,
+    performer: isSPCHECKOrCNBEN
+      ? [{ reference: `${PractitionerResourceType}/${practitionerId}` }]
+      : undefined,
     note: observation.note?.[0]?.text ? [{ text: values.comments }] : observation.note,
   };
 };
