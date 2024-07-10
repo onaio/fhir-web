@@ -10,9 +10,11 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 interface EditLinkProps {
   location: ILocation;
+  editLinkText?: string;
 }
 
-const EditLink: React.FC<EditLinkProps> = ({ location }) => {
+const EditLink: React.FC<EditLinkProps> = (props) => {
+  const { location, editLinkText } = props;
   const { t } = useMls();
   const { id, physicalType } = location;
   const isBuilding = physicalType?.coding?.[0].code === 'bu';
@@ -29,7 +31,7 @@ const EditLink: React.FC<EditLinkProps> = ({ location }) => {
       }
       className="m-0 p-1"
     >
-      {t('Edit')}
+      {t(editLinkText ? editLinkText : 'Edit')}
     </Link>
   );
 };

@@ -6,11 +6,6 @@ import { URL_LOCATION_UNIT_EDIT, URL_SERVICE_POINT_ADD_EDIT } from '../../../con
 import { EditLink } from '..';
 import { Location } from './fixtures';
 
-// Mock the useMls hook
-jest.mock('../../mls', () => ({
-  useMls: () => ({ t: (key: string) => key }),
-}));
-
 describe('EditLink', () => {
   it('renders the correct link for building locations', () => {
     const { getByText } = render(
@@ -21,7 +16,7 @@ describe('EditLink', () => {
 
     const link = getByText('Edit');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', `${URL_SERVICE_POINT_ADD_EDIT}/1`);
+    expect(link).toHaveAttribute('href', `${URL_SERVICE_POINT_ADD_EDIT}/303`);
   });
 
   it('renders the correct link for non-building locations', () => {
@@ -46,6 +41,16 @@ describe('EditLink', () => {
 
     const link = getByText('Edit');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', `${URL_LOCATION_UNIT_EDIT}/2`);
+    expect(link).toHaveAttribute('href', `${URL_LOCATION_UNIT_EDIT}/303?back_to=%2F`);
+  });
+  it('renders custom text link', () => {
+    const { getByText } = render(
+      <Router>
+        <EditLink location={Location} editLinkText="Edit details" />
+      </Router>
+    );
+
+    const link = getByText('Edit details');
+    expect(link).toBeInTheDocument();
   });
 });
