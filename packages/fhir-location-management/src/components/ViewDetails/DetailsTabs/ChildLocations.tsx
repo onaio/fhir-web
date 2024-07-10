@@ -16,6 +16,7 @@ import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { EditLink } from '../../EditLink';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
@@ -100,13 +101,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
           <span className="d-flex align-items-center">
             <RbacCheck permissions={['Location.update']}>
               <>
-                <Link
-                  data-testid="edit-child-location"
-                  to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}?${backToParam}`}
-                  className="m-0 p-1"
-                >
-                  {t('Edit')}
-                </Link>
+                <EditLink location={record.location} />
                 <Divider type="vertical" />
               </>
             </RbacCheck>
@@ -175,5 +170,6 @@ export function parseTableData(locations: ILocation[]) {
     description: loc.description,
     status: loc.status,
     type: get(loc, 'physicalType.coding.0.display'),
+    location: loc,
   }));
 }
