@@ -2,9 +2,7 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useMls } from '../../../mls';
 import React from 'react';
 import { ResourceDetails } from '@opensrp/react-utils';
-import { Link, useLocation } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
-import { BACK_SEARCH_PARAM, URL_LOCATION_UNIT_EDIT } from '../../../constants';
 import { RbacCheck } from '@opensrp/rbac';
 import { EditLink } from '../../EditLink';
 
@@ -46,10 +44,6 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     description,
     administrativeLevel,
   } = parseLocationDetails(location);
-
-  const loc = useLocation();
-  const currentPath = loc.pathname;
-  const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: currentPath }).toString();
 
   const otherDetailsMap = {
     [t('Location Name')]: name,

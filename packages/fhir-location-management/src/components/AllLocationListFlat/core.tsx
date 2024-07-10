@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_VIEW_DETAILS,
   BACK_SEARCH_PARAM,

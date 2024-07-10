@@ -5,7 +5,6 @@ import { Alert, Button, Col, Divider, Dropdown, MenuProps, Row } from 'antd';
 import {
   BACK_SEARCH_PARAM,
   URL_LOCATION_UNIT_ADD,
-  URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_VIEW_DETAILS,
   locationResourceType,
   parentIdQueryParam,
@@ -60,7 +59,6 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
   type TableData = typeof tableData[0];
 
   const backParamObj = { [BACK_SEARCH_PARAM]: location.pathname };
-  const backToParam = new URLSearchParams(backParamObj).toString();
   const getItems = (_: TableData): MenuProps['items'] => {
     // Todo: replace _ above when handling onClick
     return [
