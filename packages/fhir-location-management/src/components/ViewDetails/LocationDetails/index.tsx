@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
 import { BACK_SEARCH_PARAM, URL_LOCATION_UNIT_EDIT } from '../../../constants';
 import { RbacCheck } from '@opensrp/rbac';
+import { EditLink } from '../../EditLink';
 
 const GeometryRender = ({ geometry }: { geometry?: string }) => {
   let formattedGeo = geometry ?? '';
@@ -74,7 +75,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       headerRightData={dateCreatedKeyPairing}
       headerActions={
         <RbacCheck permissions={['Location.update']}>
-          <Link to={`${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`}>{t('Edit details')}</Link>
+          <EditLink location={location} />
         </RbacCheck>
       }
       bodyData={otherDetailsMap}
