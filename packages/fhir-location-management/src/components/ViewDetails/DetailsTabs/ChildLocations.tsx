@@ -5,7 +5,6 @@ import { Alert, Button, Col, Divider, Dropdown, MenuProps, Row } from 'antd';
 import {
   BACK_SEARCH_PARAM,
   URL_LOCATION_UNIT_ADD,
-  URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_VIEW_DETAILS,
   locationResourceType,
   parentIdQueryParam,
@@ -16,6 +15,7 @@ import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import { get } from 'lodash';
+import { EditLink } from '../../EditLink';
 
 export interface InventoryViewProps {
   fhirBaseUrl: string;
@@ -59,7 +59,6 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
   type TableData = typeof tableData[0];
 
   const backParamObj = { [BACK_SEARCH_PARAM]: location.pathname };
-  const backToParam = new URLSearchParams(backParamObj).toString();
   const getItems = (_: TableData): MenuProps['items'] => {
     // Todo: replace _ above when handling onClick
     return [
@@ -100,13 +99,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
           <span className="d-flex align-items-center">
             <RbacCheck permissions={['Location.update']}>
               <>
-                <Link
-                  data-testid="edit-child-location"
-                  to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}?${backToParam}`}
-                  className="m-0 p-1"
-                >
-                  {t('Edit')}
-                </Link>
+                <EditLink location={record.location} editLinkText={t('Edit')} />
                 <Divider type="vertical" />
               </>
             </RbacCheck>
@@ -175,5 +168,6 @@ export function parseTableData(locations: ILocation[]) {
     description: loc.description,
     status: loc.status,
     type: get(loc, 'physicalType.coding.0.display'),
+    location: loc,
   }));
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  URL_LOCATION_UNIT_EDIT,
   URL_LOCATION_UNIT_ADD,
   URL_LOCATION_VIEW_DETAILS,
   BACK_SEARCH_PARAM,
@@ -13,6 +12,7 @@ import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
+import { EditLink } from '../EditLink';
 
 export type AllLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -30,6 +30,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
   const location = useLocation();
 
   const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: location.pathname });
+
   const getItems = (_: Dictionary): MenuProps['items'] => {
     return [
       {
@@ -73,12 +74,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <Link
-                to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}?${backToParam}`}
-                className="m-0 p-1"
-              >
-                {t('Edit')}
-              </Link>
+              <EditLink location={record.location} editLinkText={t('Edit')} />
               <Divider type="vertical" />
             </>
           </RbacCheck>
