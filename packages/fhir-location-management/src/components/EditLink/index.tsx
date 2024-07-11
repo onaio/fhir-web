@@ -24,7 +24,7 @@ const EditLink: React.FC<EditLinkProps> = (props) => {
     <Link
       to={
         isBuilding
-          ? `${URL_SERVICE_POINT_ADD_EDIT}/${id}`
+          ? `${URL_SERVICE_POINT_ADD_EDIT}/${id}?${backToParam}`
           : `${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`
       }
       className="m-0 p-1"

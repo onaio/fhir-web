@@ -16,7 +16,7 @@ describe('EditLink', () => {
 
     const link = getByText('Edit');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', `${URL_SERVICE_POINT_ADD_EDIT}/303`);
+    expect(link).toHaveAttribute('href', `${URL_SERVICE_POINT_ADD_EDIT}/303?back_to=%2F`);
   });
 
   it('renders the correct link for non-building locations', () => {
