@@ -4,7 +4,7 @@ Fhir web Rbac implementation limits what logged in users can see and actions the
 
 ## Approach
 
-The rbac module provisions an internal role definition and plugins that can parse IAM role information into the pre-defined internal role representation. [This comment](https://github.com/onaio/fhir-web/issues/1182#issuecomment-1486729934) has more information on what this role definition looks like.
+The rbac module provisions an internal role definition and plugins that can parse IAM role information into the pre-defined internal role representation. [This comment](https://github.com/onaio/fhir-web/issues/1411#issuecomment-2175911075) has more information on what this role definition looks like.
 
 The following adapters exist and can be configured using the `REACT_APP_AUTHZ_STRATEGY` env
 
