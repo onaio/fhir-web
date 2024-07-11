@@ -99,7 +99,7 @@ export const ChildLocations = ({ fhirBaseUrl, locationId }: InventoryViewProps) 
           <span className="d-flex align-items-center">
             <RbacCheck permissions={['Location.update']}>
               <>
-                <EditLink location={record.location} />
+                <EditLink location={record.location} editLinkText={t('Edit')} />
                 <Divider type="vertical" />
               </>
             </RbacCheck>

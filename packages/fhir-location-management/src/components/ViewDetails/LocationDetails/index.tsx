@@ -69,7 +69,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       headerRightData={dateCreatedKeyPairing}
       headerActions={
         <RbacCheck permissions={['Location.update']}>
-          <EditLink location={location} editLinkText="Edit details" />
+          <EditLink location={location} editLinkText={t('Edit details')} />
         </RbacCheck>
       }
       bodyData={otherDetailsMap}

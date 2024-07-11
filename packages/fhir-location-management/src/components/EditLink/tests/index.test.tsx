@@ -10,7 +10,7 @@ describe('EditLink', () => {
   it('renders the correct link for building locations', () => {
     const { getByText } = render(
       <Router>
-        <EditLink location={Location} />
+        <EditLink location={Location} editLinkText="Edit" />
       </Router>
     );
 
@@ -35,7 +35,7 @@ describe('EditLink', () => {
 
     const { getByText } = render(
       <Router>
-        <EditLink location={location} />
+        <EditLink location={location} editLinkText="Edit" />
       </Router>
     );
 
@@ -43,7 +43,7 @@ describe('EditLink', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', `${URL_LOCATION_UNIT_EDIT}/303?back_to=%2F`);
   });
-  it('renders custom text link', () => {
+  it('renders custom link text from props', () => {
     const { getByText } = render(
       <Router>
         <EditLink location={Location} editLinkText="Edit details" />

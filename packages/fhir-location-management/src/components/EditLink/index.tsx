@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useMls } from '../../mls';
 import {
   BACK_SEARCH_PARAM,
   URL_LOCATION_UNIT_EDIT,
@@ -10,12 +9,11 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 interface EditLinkProps {
   location: ILocation;
-  editLinkText?: string;
+  editLinkText: string;
 }
 
 const EditLink: React.FC<EditLinkProps> = (props) => {
   const { location, editLinkText } = props;
-  const { t } = useMls();
   const { id, physicalType } = location;
   const isBuilding = physicalType?.coding?.[0].code === 'bu';
   const currentLocation = useLocation();
@@ -31,7 +29,7 @@ const EditLink: React.FC<EditLinkProps> = (props) => {
       }
       className="m-0 p-1"
     >
-      {t(editLinkText ? editLinkText : 'Edit')}
+      {editLinkText}
     </Link>
   );
 };

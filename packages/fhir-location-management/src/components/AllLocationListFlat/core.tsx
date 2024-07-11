@@ -74,7 +74,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <EditLink location={record.location} />
+              <EditLink location={record.location} editLinkText={t('Edit')} />
               <Divider type="vertical" />
             </>
           </RbacCheck>
