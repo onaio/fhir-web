@@ -1,16 +1,8 @@
-import React, { Fragment } from 'react';
-import { Col, Button, Alert, Spin, Tabs } from 'antd';
-import { CloseOutlined, SyncOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Spin, Tabs } from 'antd';
 import { useQuery } from 'react-query';
 import {
   BrokenPage,
-  FHIRServiceClass,
-  getObjLike,
-  IdentifierUseCodes,
-  getResourcesFromBundle,
-  parseFhirHumanName,
-  viewDetailsQuery,
-  useSearchParams,
 } from '@opensrp/react-utils';
 import { dataImportRQueryKey, IMPORT_DOMAIN_URI } from '../../constants';
 import { useTranslation } from '../../mls';
@@ -27,17 +19,14 @@ export interface RouteComponentProps {
 }
 
 /**
- * component that renders the details view to the right side
- * of list view
+ * Details view for a single workflow during bulk uploads.
  *
  * @param props - detail view component props
  */
-export const ImportDetailViewDetails = (props: RouteComponentProps) => {
+export const ImportDetailViewDetails = (_: RouteComponentProps) => {
   const params = useParams<RouteComponentProps>();
   const workflowId = params.workflowId;
   const { t } = useTranslation();
-  const { removeParam } = useSearchParams();
-  console.log("We got here", { workflowId })
 
   const { data, isLoading, error } = useQuery(
     [dataImportRQueryKey, workflowId], () => {
@@ -56,7 +45,7 @@ export const ImportDetailViewDetails = (props: RouteComponentProps) => {
   }
 
   if (error && !data) {
-    return <BrokenPage errorMessage={`${(error as Error).message}`} />;
+    return <BrokenPage errorMessage={`An Error occurred when fetching this workflow`} />;
   }
 
   if (!data) {
@@ -92,18 +81,7 @@ export const ImportDetailViewDetails = (props: RouteComponentProps) => {
       <Helmet>
         <title>{pageTitle} </title>
       </Helmet>
-      <div
-        // TODO remove style
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          padding: '16px',
-          gap: '14px',
-          background: '#FFF',
-          borderRadius: '12px',
-        }}
-      >
+      <div className='view-details-container'>
         <ResourceDetails
           title={data.workflowType}
           headerLeftData={headerLeftData}

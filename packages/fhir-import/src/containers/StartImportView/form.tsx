@@ -4,19 +4,18 @@ import UploadIcon from "@2fd/ant-design-icons/lib/Upload";
 import UploadOutlined from "@2fd/ant-design-icons/lib/UploadOutline";
 import { UploadChangeParam } from 'antd/es/upload';
 import { useHistory } from 'react-router';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { OpenSRPService, formItemLayout, tailLayout } from "@opensrp/react-utils";
+import { useMutation, useQueryClient } from 'react-query';
+import { OpenSRPService } from "@opensrp/react-utils";
 import { locations, users, organizations, careteams, inventories, orgToLocationAssignment, userToOrganizationAssignment, products, productImages, DATA_IMPORT_LIST_URL, IMPORT_DOMAIN_URI, dataImportRQueryKey } from '../../constants';
 import { useTranslation } from '../../mls';
-import { sendErrorNotification, sendSuccessNotification, sendInfoNotification } from '@opensrp/notifications';
-import FormItem from 'antd/es/form/FormItem';
+import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import { HTTPMethod, getDefaultHeaders } from '@opensrp/server-service';
 import "./form.css";
 
 const { Text, Title } = Typography;
 
 interface DataImportFormProps {
-    hidden: string[]
+    hidden?: string[]
 }
 
 interface FormFields {
@@ -34,11 +33,10 @@ interface FormFields {
 /**
  * get payload for fetch
  *
- * @param {object} _ - signal object that allows you to communicate with a DOM request
- * @param {string} accessToken - the access token
- * @param {string} method - the HTTP method
- * @param {object} data - data to be used for payload
- * @returns {Object} the payload
+ * @param  _ - signal object that allows you to communicate with a DOM request
+ * @param  accessToken - the access token
+ * @param  method - the HTTP method
+ * @param  data - data to be used for payload
  */
 export function customFetchOptions<T = any>(
     _: AbortSignal,
@@ -103,8 +101,8 @@ export const DataImportForm = (props: DataImportFormProps) => {
         UploadBtnText: "Attach organizations file"
     }, {
         formFieldName: careteams,
-        label: "Careteams",
-        UploadBtnText: "Attach careteams file"
+        label: "CareTeams",
+        UploadBtnText: "Attach careTeams file"
     }, {
         formFieldName: orgToLocationAssignment,
         label: "Organization location assignment",
@@ -133,8 +131,9 @@ export const DataImportForm = (props: DataImportFormProps) => {
                 formItems.map(item => {
                     const { formFieldName, label, UploadBtnText } = item
                     return <Form.Item
+                        key={formFieldName}
                         id={formFieldName}
-                        hidden={hidden.includes(formFieldName)}
+                        hidden={hidden?.includes(formFieldName)}
                         name={formFieldName}
                         label={label}
                         valuePropName="fileList"
@@ -154,7 +153,7 @@ export const DataImportForm = (props: DataImportFormProps) => {
             }
             <Form.Item
                 id={products}
-                hidden={hidden.includes(products)}
+                hidden={hidden?.includes(products)}
                 name={products}
                 label={"Products"}
                 valuePropName="fileList"
@@ -169,32 +168,14 @@ export const DataImportForm = (props: DataImportFormProps) => {
                 >
                     <Button icon={<UploadOutlined />}>{"Attach product file"}</Button>
                 </Upload>
-                {/* <br/>
-                <Form.Item
-                    id={productImages}
-                    hidden={hidden.includes(productImages)}
-                    name={productImages}
-                    valuePropName="fileList"
-                    getValueFromEvent={normalizeFileInputEvent}
-                >
-                    <Upload
-                        id={product}
-                        beforeUpload={() => false}
-                        accept="text/csv"
-                        multiple={false}
-                        maxCount={1}
-                    >
-                        <Button icon={<UploadOutlined />}>{"Attach products file"}</Button>
-                    </Upload>
-                </Form.Item> */}
             </Form.Item>
-            <FormItem >
+            <Form.Item >
                 <Space>
                     <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
                         {isLoading ? t('Uploading') : t('Start Import')}
                     </Button>
                 </Space>
-            </FormItem>
+            </Form.Item>
 
         </Form>
     </Space>

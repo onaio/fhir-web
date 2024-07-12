@@ -1,6 +1,19 @@
 form.import-form .ant-form-item-label label {
-    width: 144px;
-    word-break: break-word;
-    text-align: left;
-    white-space: wrap;
+  width: 144px;
+  word-break: break-word;
+  text-align: left;
+  white-space: wrap;
+}
+
+.form-instructions-steps .ant-steps-item-icon {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-color: transparent !important;
+
+  > .ant-steps-icon{
+    color: rgba(0, 0, 0, 0.65) !important;
   }
+}
+
+.form-instructions-steps .ant-steps-item-description {
+  color: rgba(0, 0, 0, 0.88) !important;
+}

@@ -9,33 +9,20 @@ const { Title, Text } = Typography;
 
 
 export const ImporterFormInstructions = () => {
-    return <>
+    return <div data-testid="form-instructions">
         <Space direction='vertical'>
         <Title level={4}><UploadIcon />Step by step guide for bulk upload</Title>
         <Text type="secondary">
             Follow these simple instructions to help you prepare, upload, and verify your data smoothly and efficiently
         </Text>
-        <ol>
-            <li>
-                <dl>
-                    <dt>{InstructionStepOneTitle}</dt>
-                    <dd>{InstructionStepOne}</dd>
-                </dl>
-            </li>
-            <li>
-                <dl>
-                    <dt>{InstructionStepTwoTitle}</dt>
-                    <dd>{InstructionStepTwo}</dd>
-                </dl>
-            </li>
-        </ol>
-        {/* <Steps
+        <Steps
+        className='form-instructions-steps'
             direction="vertical"
             size="small"
             items={[{ title: InstructionStepOneTitle, description: InstructionStepOne }, { title: InstructionStepTwoTitle, description: InstructionStepTwo }]}>
-        </Steps> */}
+        </Steps>
         </Space>
-    </>
+    </div>
 }
 
 export const InstructionStepOneTitle = <Text strong>Prepare your data file</Text>

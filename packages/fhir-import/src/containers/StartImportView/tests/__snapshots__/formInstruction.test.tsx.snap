@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly: textContent 1`] = `"Step by step guide for bulk uploadFollow these simple instructions to help you prepare, upload, and verify your data smoothly and efficiently1Prepare your data fileClick the button below to download the bulk upload template file(s) Download Template Enter your data into the template file. Ensure all required fields are filled and follow the specified format(e.g. date format,)Check for any data inconsistencies or errors (e.g. missing values, incorrect data types) before uploading2Upload your data fileClick the \\"Attach\\" button to select your prepared data file.Once the file or files are selected, click \\"Start Import\\" to begin the upload"`;

@@ -22,7 +22,7 @@ export const StartDataImport = () => {
       <Row className="list-view">
         <Col className="main-content">
           <ImporterFormInstructions />
-          <DataImportForm hidden={[]} />
+          <DataImportForm />
         </Col>
       </Row>
     </BodyLayout>

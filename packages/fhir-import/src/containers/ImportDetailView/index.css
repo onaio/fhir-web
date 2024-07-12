@@ -21,3 +21,13 @@
     color: #fff;
     /* Color for the terminal text */
 }
+
+.view-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 14px;
+    background: #FFF;
+    border-radius: 12px;
+}
