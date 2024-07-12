@@ -24,7 +24,7 @@ export interface CloseFlagFormFields {
 }
 
 // Utility function to generate common properties
-const generateCommonProperties = (id: string, flag: IFlag) => ({
+export const generateCommonProperties = (id: string, flag: IFlag) => ({
   id: v5(id, flag.id as string),
   meta: {
     tag: flag.meta?.tag,
