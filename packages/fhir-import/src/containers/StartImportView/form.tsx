@@ -181,10 +181,6 @@ export const DataImportForm = (props: DataImportFormProps) => {
     </Space>
 }
 
-
-
-
-// TODO - dry out
 /**
  * extract file from an input event
  *
