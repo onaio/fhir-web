@@ -3,10 +3,6 @@ FROM alpine/git AS sources
 # TODO - update the tag here
 RUN git clone --branch=bulk-upload-bull https://github.com/onaio/express-server.git /usr/src/express-server
 
-WORKDIR /usr/src/express-server
-
-RUN git checkout 378f2884
-
 FROM node:16.18-alpine as build
 
 COPY ./ /project
@@ -26,6 +22,7 @@ RUN chown -R node .
 USER node
 RUN yarn lerna run build
 
+
 FROM node:16.18-alpine as nodejsbuild
 
 COPY --from=sources /usr/src/express-server /usr/src/express-server
@@ -36,9 +33,9 @@ RUN yarn && yarn tsc && npm prune -production --legacy-peer-deps
 # Remove unused dependencies
 RUN rm -rf ./node_modules/typescript
 
-# TODO - change image to use one with python or install python here
-FROM nikolaik/python-nodejs:python3.12-nodejs22-alpine as final
 
+
+FROM nikolaik/python-nodejs:python3.12-nodejs22-alpine as final
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
 RUN apk add --no-cache tini curl
@@ -58,28 +55,17 @@ WORKDIR /usr/src/web
 COPY --from=build /project/node_modules /usr/src/web/node_modules
 COPY --from=build /project/app/build /usr/src/web
 
-
-# RUN chown -R pn /usr/src/web
-
 WORKDIR /usr/src/app
 
 COPY --from=nodejsbuild /usr/src/express-server/build /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
 
-
 RUN pip install -r /usr/src/app/fhir-tooling/requirements.txt
-
-# RUN chown -R pn /usr/src/app
-
-# USER pn
 
 ENV EXPRESS_REACT_BUILD_PATH /usr/src/web/
 
 EXPOSE 3000
 
 CMD [ "/bin/sh", "-c", "/usr/local/bin/app.sh && node /usr/src/app/dist" ]
-
-# ENTRYPOINT  [ "/bin/sh" ]
-# ENTRYPOINT  [ "/bin/sh", "-c", "/usr/local/bin/app.sh && node ." ]
 
 ENTRYPOINT ["/sbin/tini", "--"]
