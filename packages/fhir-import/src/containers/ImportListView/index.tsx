@@ -5,22 +5,18 @@ import { BodyLayout, OpenSRPService } from '@opensrp/react-utils';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { RouteComponentProps } from 'react-router';
 import { useHistory, Link } from 'react-router-dom';
-import {
-  BrokenPage,
-  TableLayout,
-} from '@opensrp/react-utils';
+import { BrokenPage, TableLayout } from '@opensrp/react-utils';
 import {
   DATA_IMPORT_DETAIL_URL,
   DATA_IMPORT_CREATE_URL,
   dataImportRQueryKey,
-  IMPORT_DOMAIN_URI
+  IMPORT_DOMAIN_URI,
 } from '../../constants';
 import { useTranslation } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
 import { useQuery } from 'react-query';
-import { WorkflowDescription, formatTimestamp } from '../../helpers/utils';
-import { ImportStatusTag } from '../../components/statusTag'
-
+import { JobStatus, WorkflowDescription, formatTimestamp } from '../../helpers/utils';
+import { ImportStatusTag } from '../../components/statusTag';
 
 // route params for care team pages
 interface RouteParams {
@@ -37,16 +33,15 @@ export const DataImportList = () => {
   const history = useHistory();
 
   const { data, isFetching, isLoading, error } = useQuery(dataImportRQueryKey, () => {
-    const service = new OpenSRPService("/$import", IMPORT_DOMAIN_URI)
-    return service.list().then(res => {
-      return res
-    })
-  })
+    const service = new OpenSRPService('/$import', IMPORT_DOMAIN_URI);
+    return service.list().then((res) => {
+      return res;
+    });
+  });
 
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
-
 
   const columns = [
     {
@@ -64,20 +59,20 @@ export const DataImportList = () => {
     {
       title: t('status'),
       dataIndex: 'status' as const,
-      render: (_: any) => {
-        return <ImportStatusTag statusString={_} />
-      }
+      render: (_: JobStatus) => {
+        return <ImportStatusTag statusString={_} />;
+      },
     },
     {
       title: t('Date created'),
       dataIndex: 'dateCreated' as const,
       defaultSortOrder: 'descend' as const,
       sortDirections: ['ascend' as const, 'descend' as const],
-      sorter: (a: any, b: any) => {
-        const diff = a.dateCreated - b.dateCreated
-        return diff === 0 ? 0 : diff > 0 ? 1 : -1
+      sorter: (a: WorkflowDescription, b: WorkflowDescription) => {
+        const diff = a.dateCreated - b.dateCreated;
+        return diff === 0 ? 0 : diff > 0 ? 1 : -1;
       },
-      render: (_: any) => formatTimestamp(_),
+      render: (_: number) => formatTimestamp(_),
     },
     {
       title: t('Actions'),
@@ -88,7 +83,10 @@ export const DataImportList = () => {
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['WebDataImport.read']}>
             <>
-              <Link to={`${DATA_IMPORT_DETAIL_URL}/${record.workflowId.toString()}`} className="m-0 p-1">
+              <Link
+                to={`${DATA_IMPORT_DETAIL_URL}/${record.workflowId.toString()}`}
+                className="m-0 p-1"
+              >
                 {t('View')}
               </Link>
             </>
@@ -99,7 +97,7 @@ export const DataImportList = () => {
   ];
 
   const tableProps = {
-    datasource: (data ?? []),
+    datasource: data ?? [],
     columns,
     loading: isFetching || isLoading,
   };

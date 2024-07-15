@@ -1,4 +1,9 @@
-import { AuthZResource, FhirResource, KeycloakDefinedResource, KeycloakDefinedResources, Permit } from '../constants';
+import {
+  AuthZResource,
+  KeycloakDefinedResource,
+  KeycloakDefinedResources,
+  Permit,
+} from '../constants';
 import { RbacAdapter } from '../helpers/types';
 import { UserRole } from '../roleDefinition';
 

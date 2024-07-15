@@ -17,13 +17,13 @@ import { superUserRole } from '@opensrp/react-utils';
 const fetch = require('node-fetch');
 global.fetch = fetch;
 
-jest.mock("../../../constants", () => {
-  return ({
+jest.mock('../../../constants', () => {
+  return {
     __esModule: true,
     ...Object.assign({}, jest.requireActual('../../../constants')),
-    IMPORT_DOMAIN_URI: "http://localhost"
-  });
-})
+    IMPORT_DOMAIN_URI: 'http://localhost',
+  };
+});
 
 const { QueryClient, QueryClientProvider } = reactQuery;
 
@@ -40,7 +40,6 @@ jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => {
@@ -90,10 +89,7 @@ describe('Care Teams list view', () => {
   });
 
   it('renders correctly', async () => {
-    nock(constants.IMPORT_DOMAIN_URI)
-      .get("/$import")
-      .reply(200, workflows)
-      .persist();
+    nock(constants.IMPORT_DOMAIN_URI).get('/$import').reply(200, workflows).persist();
 
     const history = createMemoryHistory();
     history.push(constants.DATA_IMPORT_LIST_URL);
@@ -105,7 +101,7 @@ describe('Care Teams list view', () => {
     );
 
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
-    expect(nock.pendingMocks()).toEqual([])
+    expect(nock.pendingMocks()).toEqual([]);
 
     expect(document.querySelector('title')).toMatchInlineSnapshot(`
       <title>
@@ -119,7 +115,6 @@ describe('Care Teams list view', () => {
       });
     });
 
-    expect(nock.pendingMocks()).toEqual([])
-
+    expect(nock.pendingMocks()).toEqual([]);
   });
 });

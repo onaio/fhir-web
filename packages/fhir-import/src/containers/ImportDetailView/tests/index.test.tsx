@@ -106,7 +106,9 @@ describe('Care Teams list view', () => {
       </title>
     `);
 
-    expect(document.querySelector(".view-details-container")!.textContent).toMatchSnapshot("innerDetailsText");
+    expect(
+      (document.querySelector('.view-details-container') as HTMLElement).textContent
+    ).toMatchSnapshot('innerDetailsText');
 
     expect(nock.pendingMocks()).toEqual([]);
   });

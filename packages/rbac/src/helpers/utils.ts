@@ -23,7 +23,11 @@ export function makeArray<T>(obj: T | T[]): T[] {
 }
 
 // TODO - this is not actually lowercased
-const lowerCasedAuthZResources = [...IamResources, ...KeycloakDefinedResources, ...WebCustomResources].map(
+const lowerCasedAuthZResources = [
+  ...IamResources,
+  ...KeycloakDefinedResources,
+  ...WebCustomResources,
+].map(
   (tag) => tag
   // tag.toLowerCase()
 ) as string[];
