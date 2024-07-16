@@ -2,10 +2,9 @@ import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { useMls } from '../../../mls';
 import React from 'react';
 import { ResourceDetails } from '@opensrp/react-utils';
-import { Link, useLocation } from 'react-router-dom';
 import { parseLocationDetails } from '../utils';
-import { BACK_SEARCH_PARAM, URL_LOCATION_UNIT_EDIT } from '../../../constants';
 import { RbacCheck } from '@opensrp/rbac';
+import { EditLink } from '../../EditLink';
 
 const GeometryRender = ({ geometry }: { geometry?: string }) => {
   let formattedGeo = geometry ?? '';
@@ -46,10 +45,6 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
     administrativeLevel,
   } = parseLocationDetails(location);
 
-  const loc = useLocation();
-  const currentPath = loc.pathname;
-  const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: currentPath }).toString();
-
   const otherDetailsMap = {
     [t('Location Name')]: name,
     [t('Status')]: status,
@@ -74,7 +69,7 @@ export const LocationDetails = ({ location }: { location: ILocation }) => {
       headerRightData={dateCreatedKeyPairing}
       headerActions={
         <RbacCheck permissions={['Location.update']}>
-          <Link to={`${URL_LOCATION_UNIT_EDIT}/${id}?${backToParam}`}>{t('Edit details')}</Link>
+          <EditLink location={location} editLinkText={t('Edit details')} />
         </RbacCheck>
       }
       bodyData={otherDetailsMap}
