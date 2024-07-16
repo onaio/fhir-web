@@ -29,7 +29,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
   const extraData = useSelector((state) => {
     return getExtraData(state);
   });
-
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { user_id } = extraData;
 
   const { id: flagId } = useParams<RouteParams>();
