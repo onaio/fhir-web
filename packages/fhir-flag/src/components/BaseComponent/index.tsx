@@ -83,10 +83,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
         {flag.data?.subject?.reference?.includes('Location') ? (
           <LocationFlag {...commonProps} locationReference={flag?.data?.subject?.reference} />
         ) : (
-          <ProductFlag
-            {...commonProps}
-            inventoryGroupReference={flag.data?.subject?.reference as any}
-          />
+          <ProductFlag {...commonProps} inventoryGroupReference={flag.data?.subject?.reference} />
         )}
       </Col>
     </Row>

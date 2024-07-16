@@ -19,7 +19,7 @@ export interface CloseFlagFormProps {
   mutationEffect: (
     initialValues: CloseFlagFormFields,
     values: CloseFlagFormFields,
-    activeFlag: any
+    activeFlag: IFlag
   ) => Promise<unknown>;
 }
 
@@ -35,7 +35,7 @@ const headerProps = {
   },
 };
 
-const CloseFlagForm = (props: CloseFlagFormProps): any => {
+const CloseFlagForm = (props: CloseFlagFormProps) => {
   const { initialValues, flag, mutationEffect } = props;
   const { t } = useTranslation();
 
@@ -73,17 +73,17 @@ const CloseFlagForm = (props: CloseFlagFormProps): any => {
             <FormItem
               name={locationName}
               id={locationName}
-              label={t("Service Point")}
+              label={t('Service Point')}
               rules={[{ required: true }]}
             >
               <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
-            <FormItem name={productName} id={productName} label={t("Product")}>
+            <FormItem name={productName} id={productName} label={t('Product')}>
               <Input placeholder={t('(Auto generated)')} disabled />
             </FormItem>
 
-            <FormItem id={status} label={t("Status")} name={status} rules={[{ required: true }]}>
+            <FormItem id={status} label={t('Status')} name={status} rules={[{ required: true }]}>
               <Select options={statusOptions} placeholder={t('Select flag status')} />
             </FormItem>
 

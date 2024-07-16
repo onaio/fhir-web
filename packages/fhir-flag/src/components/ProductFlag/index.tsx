@@ -1,11 +1,12 @@
 import React from 'react';
 import { CloseFlagForm } from '../CloseFlagForm';
 import { thatiMinutes } from '../../constants';
-import { Alert, Button, Col, Row, Spin } from 'antd';
+import { Button, Spin } from 'antd';
 import { useQuery } from 'react-query';
 import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
 import {
   listResourceType,
   locationResourceType,
@@ -15,12 +16,13 @@ import {
 import { putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 export interface ProductFlagProps {
   fhirBaseUrl: string;
-  inventoryGroupReference: string;
   flag: IFlag;
   practitionerId: string;
+  inventoryGroupReference?: string;
 }
 
 export const ProductFlag = (props: ProductFlagProps) => {
@@ -51,7 +53,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
   const list = useQuery(
     [listResourceType, inventoryGroupReference],
     () =>
-      new FHIRServiceClass<any>(fhirBaseUrl, listResourceType).list({
+      new FHIRServiceClass<IBundle>(fhirBaseUrl, listResourceType).list({
         item: inventoryGroupReference?.split('/')[1],
         code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`,
       }),
@@ -62,13 +64,13 @@ export const ProductFlag = (props: ProductFlagProps) => {
   );
 
   const location = useQuery(
-    [locationResourceType, list.data?.entry?.[0]?.resource?.subject?.reference],
+    [locationResourceType, (list.data?.entry?.[0]?.resource as IList)?.subject?.reference],
     async () =>
       new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(
-        `${list.data?.entry?.[0]?.resource?.subject?.reference as string}`
+        `${(list.data?.entry?.[0]?.resource as IList)?.subject?.reference as string}`
       ),
     {
-      enabled: !!list.data?.entry?.[0]?.resource?.subject?.reference,
+      enabled: !!(list.data?.entry?.[0]?.resource as IList)?.subject?.reference,
       staleTime: thatiMinutes, // 30 minutes
     }
   );
@@ -93,7 +95,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
   const initialValues = {
     productName: product.data?.name,
     locationName: location.data?.name,
-    listSubject: list.data?.entry?.[0]?.resource?.subject?.reference,
+    listSubject: (list.data?.entry?.[0]?.resource as IList)?.subject?.reference,
     status: flag?.status,
     practitionerId,
   };
@@ -103,7 +105,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
       fhirBaseUrl={fhirBaseUrl}
       initialValues={initialValues}
       flag={flag}
-      mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
+      mutationEffect={async (initialValues, values, activeFlag): Promise<unknown> => {
         return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
       }}
     />
