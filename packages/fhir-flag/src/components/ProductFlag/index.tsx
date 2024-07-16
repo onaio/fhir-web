@@ -10,9 +10,9 @@ import {
   listResourceType,
   locationResourceType,
   servicePointProfileInventoryListCoding,
-  groupResourceType
+  groupResourceType,
 } from '@opensrp/fhir-helpers';
-import {  putCloseFlagResources } from '../Utils/utils';
+import { putCloseFlagResources } from '../Utils/utils';
 import { useTranslation } from '../../mls';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
@@ -94,9 +94,9 @@ export const ProductFlag = (props: ProductFlagProps) => {
     productName: product.data?.name,
     locationName: location.data?.name,
     listSubject: list.data?.entry?.[0]?.resource?.subject?.reference,
-    status: flag.status,
-    practitionerId
-};
+    status: flag?.status,
+    practitionerId,
+  };
 
   return product.data?.name && location.data?.name ? (
     <CloseFlagForm

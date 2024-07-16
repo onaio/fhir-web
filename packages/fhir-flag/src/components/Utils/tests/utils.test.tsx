@@ -9,7 +9,6 @@ import {
   EncounterResourceType,
   FlagResourceType,
   ObservationResourceType,
-  PractitionerResourceType,
   conceptsHaveCodings,
   consultBeneficiaryCoding,
   servicePointCheckCoding,
@@ -21,7 +20,6 @@ import {
   generateEncounterPayload,
   generateCommonProperties,
   generateObservationPayload,
-  putCloseFlagResources,
 } from '../utils';
 import { flag } from './fixtures';
 
