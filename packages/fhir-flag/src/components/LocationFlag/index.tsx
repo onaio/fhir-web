@@ -6,7 +6,6 @@ import { FHIRServiceClass, BrokenPage } from '@opensrp/react-utils';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { locationResourceType } from '@opensrp/fhir-helpers';
 import { putCloseFlagResources } from '../Utils/utils';
-import { useTranslation } from '../../mls';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 export interface LocationFlagProps {
@@ -18,12 +17,16 @@ export interface LocationFlagProps {
 
 export const LocationFlag = (props: LocationFlagProps) => {
   const { fhirBaseUrl, locationReference, flag, practitionerId } = props;
-  const { t } = useTranslation();
-  
-  const thatiMinutes = 30 * 60 * 1000
-  const {data: location, isLoading, error} = useQuery(
+
+  const thatiMinutes = 30 * 60 * 1000;
+  const {
+    data: location,
+    isLoading,
+    error,
+  } = useQuery(
     [locationResourceType, locationReference],
-    async () => new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationReference as string}`),
+    async () =>
+      new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(`${locationReference as string}`),
     {
       enabled: !!locationReference,
       staleTime: thatiMinutes,
@@ -38,21 +41,21 @@ export const LocationFlag = (props: LocationFlagProps) => {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
 
-
   const initialValues = {
     locationName: location?.name ?? location?.id,
     practitionerId,
-    status: flag.status
-  }
-
-  return  <CloseFlagForm
-  fhirBaseUrl={fhirBaseUrl}
-  initialValues={initialValues}
-  flag={flag}
-  mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
-    return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
-  }}
-/>
+    status: flag.status,
+  };
+  return (
+    <CloseFlagForm
+      fhirBaseUrl={fhirBaseUrl}
+      initialValues={initialValues}
+      flag={flag}
+      mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
+        return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
+      }}
+    />
+  );
 };
 
 export default LocationFlag;
