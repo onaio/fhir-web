@@ -44,7 +44,7 @@ jest.mock('../../CloseFlagForm', () => ({
   CloseFlagForm: jest.fn(() => <div>CloseFlagForm Component</div>),
 }));
 
-const AppWrapper = (props) => (
+const AppWrapper = (props: any) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <RoleContext.Provider value={superUserRole}>

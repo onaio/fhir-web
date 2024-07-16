@@ -50,7 +50,7 @@ jest.mock('@opensrp/react-utils', () => ({
   })),
 }));
 
-const AppWrapper = (props) => (
+const AppWrapper = (props: any) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <RoleContext.Provider value={superUserRole}>
@@ -79,7 +79,8 @@ describe('CloseFlag component', () => {
 
     await flushPromises();
 
-    /** mocked flag is product based
+    /**
+     * mocked flag is product based
      * Assertions confirm that the "Missing location" message is displayed
      * within the ProductFlag child component.
      */

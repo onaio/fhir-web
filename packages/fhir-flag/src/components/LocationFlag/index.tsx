@@ -51,7 +51,7 @@ export const LocationFlag = (props: LocationFlagProps) => {
       fhirBaseUrl={fhirBaseUrl}
       initialValues={initialValues}
       flag={flag}
-      mutationEffect={async (initialValues, values, activeFlag): Promise<any> => {
+      mutationEffect={async (initialValues, values, activeFlag): Promise<unknown> => {
         return putCloseFlagResources(initialValues, values, activeFlag, fhirBaseUrl);
       }}
     />

@@ -118,7 +118,7 @@ describe('ProductFlag component', () => {
     const initialValues = {
       productName: mockProduct.name,
       locationName: mockLocation.name,
-      listSubject: mockList?.subject?.reference,
+      listSubject: mockList.subject.reference,
       status: defaultProps.flag.status,
       practitionerId: defaultProps.practitionerId,
     };
