@@ -39,7 +39,7 @@ export function getResourceParentName(
  */
 export function getTableData(data: BundleEntry[]) {
   const resourcesById: Dictionary<Resource> = {};
-  const tableData: Dictionary<string>[] = [];
+  const tableData: Dictionary<string | Dictionary>[] = [];
   data.forEach((entry) => {
     const id = entry.resource?.id;
     if (id) {
@@ -57,6 +57,7 @@ export function getTableData(data: BundleEntry[]) {
         type: resource.physicalType?.coding[0]?.display,
         status: resource.status,
         parent: getResourceParentName(resource, resourcesById),
+        location: resource,
       };
       tableData.push(rowData);
     }
