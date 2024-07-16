@@ -24,7 +24,7 @@ export interface RouteParams {
 
 export const CloseFlag = (props: CloseFlagProps) => {
   const { fhirBaseURL: fhirBaseUrl } = props;
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const extraData = useSelector((state) => {
     return getExtraData(state);
@@ -53,45 +53,41 @@ export const CloseFlag = (props: CloseFlagProps) => {
     {
       enabled: !!user_id,
       staleTime: thatiMinutes,
-      select: response => {
-        return getResourcesFromBundle<IPractitioner>(response)?.[0]
-      }
+      select: (response) => {
+        return getResourcesFromBundle<IPractitioner>(response)?.[0];
+      },
     }
   );
 
   if (flag.isLoading || practitioner.isLoading) {
     return <Spin size="large" className="custom-spinner"></Spin>;
   }
-
   if (flag.error && !flag.data) {
-    return <BrokenPage errorMessage={t("Error occurred while trying to fetch flag data")} />;
-  } 
+    return <BrokenPage errorMessage={t('Error occurred while trying to fetch flag data')} />;
+  }
   if (practitioner.error && !practitioner.data) {
-    return <BrokenPage errorMessage={t("Error occurred while trying to fetch practitioners data")} />;
+    return (
+      <BrokenPage errorMessage={t('Error occurred while trying to fetch practitioners data')} />
+    );
   }
 
   const commonProps = {
     practitionerId: practitioner.data?.id as string,
     fhirBaseUrl: fhirBaseUrl,
     flag: flag.data as IFlag,
-  }
+  };
 
   return (
     <Row>
       <Col span={24}>
-        {
-          (flag.data?.subject?.reference?.includes('Location') ? (
-            <LocationFlag
+        {flag.data?.subject?.reference?.includes('Location') ? (
+          <LocationFlag {...commonProps} locationReference={flag?.data?.subject?.reference} />
+        ) : (
+          <ProductFlag
             {...commonProps}
-              locationReference={flag?.data?.subject?.reference}
-
-            />
-          ) : (
-            <ProductFlag
-            {...commonProps}
-              inventoryGroupReference={flag.data?.subject?.reference as any}
-            />
-          ))}
+            inventoryGroupReference={flag.data?.subject?.reference as any}
+          />
+        )}
       </Col>
     </Row>
   );
