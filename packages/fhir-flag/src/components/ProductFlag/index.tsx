@@ -116,16 +116,18 @@ export const ProductFlag = (props: ProductFlagProps) => {
         'Missing  location field. This information is required to close the flag form.'
       )}
       extraLinks={
-        <>
-          <Button
-            type="primary"
-            onClick={() => {
-              window.close();
-            }}
-          >
-            {t('Close App')}
-          </Button>
-        </>
+        (
+          <>
+            <Button
+              type="primary"
+              onClick={() => {
+                window.close();
+              }}
+            >
+              {t('Close App')}
+            </Button>
+          </>
+        ) as React.ReactNode
       }
     />
   );
