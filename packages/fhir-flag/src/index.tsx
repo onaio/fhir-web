@@ -1,2 +1,2 @@
 export * from './components/BaseComponent';
-export * from './constants'
+export * from './constants';

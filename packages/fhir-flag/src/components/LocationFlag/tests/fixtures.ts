@@ -1,4 +1,4 @@
-// eslint-disable @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const spCheckFlag = {
   resourceType: 'Flag',
   id: '825b5491-9dad-4e28-ad73-521a31193de3',

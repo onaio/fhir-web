@@ -125,7 +125,7 @@ export const generateObservationPayload = (
 export const putCloseFlagResources = async (
   initialValues: CloseFlagFormFields,
   values: CloseFlagFormFields,
-  activeFlag: any,
+  activeFlag: IFlag,
   fhirBaseUrl: string
 ) => {
   const { listSubject, practitionerId } = initialValues;
@@ -138,7 +138,7 @@ export const putCloseFlagResources = async (
   );
 
   const observationPayload = generateObservationPayload(
-    observation as any,
+    observation as IObservation,
     activeFlag,
     practitionerId as string,
     listSubject as string,
@@ -147,7 +147,8 @@ export const putCloseFlagResources = async (
 
   const updatedFlag = {
     ...activeFlag,
-    status: 'inactive',
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    status: 'inactive' as any,
   };
 
   const flagPromise = postPutFlag(fhirBaseUrl, updatedFlag);
