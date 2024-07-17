@@ -68,6 +68,7 @@ export const flag: IFlag = {
     reference: 'Group/e44e26d0-1f7a-41d6-aa57-99c5712ddd66',
   },
   period: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     start: '2024-04-29T20:37:45+03:00' as any,
   },
   encounter: {

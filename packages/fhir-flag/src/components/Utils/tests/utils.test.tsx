@@ -97,10 +97,8 @@ describe('Utility functions', () => {
     expect(mockUpdate).toHaveBeenCalledWith(payload);
   });
   it('should generate correct encounter payload with location reference', () => {
-    // const conceptsHaveCodings = jest.fn();
     const practitionerId = 'practitioner123';
     const locationReference = 'Location/123';
-    const { conceptsHaveCodings } = require('@opensrp/fhir-helpers');
 
     (conceptsHaveCodings as jest.Mock).mockReturnValue(false);
 
@@ -111,7 +109,7 @@ describe('Utility functions', () => {
         tag: flag.meta?.tag,
       },
       resourceType: 'Encounter',
-      partOf: { reference: flag?.encounter?.reference },
+      partOf: { reference: flag.encounter?.reference },
       location: [{ location: { reference: 'Location/123' }, status: 'active' }],
       participant: [
         {
@@ -133,6 +131,7 @@ describe('Utility functions', () => {
   it('should generate correct observation payload with location reference', () => {
     const practitionerId = 'practitioner123';
     const locationReference = 'Location/123';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const values = { comments: 'Test comments', status: 'test status' as any }; // Example CloseFlagFormFields
 
     (conceptsHaveCodings as jest.Mock).mockReturnValue(false);
@@ -143,7 +142,7 @@ describe('Utility functions', () => {
       meta: {
         tag: flag.meta?.tag,
       },
-      subject: { reference: flag.subject?.reference },
+      subject: { reference: flag.subject.reference },
       encounter: { reference: 'Encounter/mocked-uuid' },
       focus: [{ reference: 'Location/123' }, { reference: `Flag/${flag.id}` }],
       performer: undefined,
@@ -168,6 +167,7 @@ describe('Utility functions', () => {
   it('should generate correct observation payload with performer and focus flag reference', () => {
     const practitionerId = 'practitioner123';
     const locationReference = 'Location/123';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const values = { comments: 'Test comments', status: 'active' as any }; // Example CloseFlagFormFields
 
     (conceptsHaveCodings as jest.Mock).mockReturnValue(true);
@@ -178,7 +178,7 @@ describe('Utility functions', () => {
       meta: {
         tag: flag.meta?.tag,
       },
-      subject: { reference: flag.subject?.reference },
+      subject: { reference: flag.subject.reference },
       encounter: { reference: 'Encounter/mocked-uuid' },
       focus: [{ reference: `Flag/1a3a0d65-b6ad-40af-b6cd-2e8801614de9` }],
       performer: [{ reference: `Practitioner/practitioner123` }],

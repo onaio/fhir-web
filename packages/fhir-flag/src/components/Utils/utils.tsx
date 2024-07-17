@@ -81,7 +81,7 @@ export const generateEncounterPayload = (
   return {
     ...encounter,
     ...commonProperties,
-    partOf: { reference: flag?.encounter?.reference },
+    partOf: { reference: flag.encounter?.reference },
     location: [{ location: { reference }, status: 'active' }],
     participant: [
       {
@@ -110,7 +110,7 @@ export const generateObservationPayload = (
   return {
     ...observation,
     ...commonProperties,
-    subject: { reference: flag.subject?.reference },
+    subject: { reference: flag.subject.reference },
     encounter: { reference: `Encounter/${encounterProperties.id}` },
     focus: isSPCHECKOrCNBEN
       ? [{ reference: `Flag/${flag.id}` }]
