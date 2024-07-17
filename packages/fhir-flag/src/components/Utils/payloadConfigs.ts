@@ -1,3 +1,4 @@
+// eslint-disable @typescript-eslint/no-explicit-any
 import { IEncounter } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IEncounter';
 import { IObservation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IObservation';
 

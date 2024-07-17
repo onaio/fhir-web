@@ -44,6 +44,7 @@ jest.mock('../../CloseFlagForm', () => ({
   CloseFlagForm: jest.fn(() => <div>CloseFlagForm Component</div>),
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>

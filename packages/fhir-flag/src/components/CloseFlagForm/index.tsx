@@ -8,7 +8,6 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { useTranslation } from '../../mls';
 import { comments, locationName, productName, status } from '../../constants';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
-import { RouteComponentProps } from 'react-router';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;

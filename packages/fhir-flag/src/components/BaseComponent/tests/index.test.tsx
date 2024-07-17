@@ -50,6 +50,7 @@ jest.mock('@opensrp/react-utils', () => ({
   })),
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>

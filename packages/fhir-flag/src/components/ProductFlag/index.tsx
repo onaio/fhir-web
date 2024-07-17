@@ -64,13 +64,16 @@ export const ProductFlag = (props: ProductFlagProps) => {
   );
 
   const location = useQuery(
-    [locationResourceType, (list.data?.entry?.[0].resource as IList)?.subject?.reference],
+    [
+      locationResourceType,
+      (list.data?.entry?.[0].resource as IList | undefined)?.subject?.reference,
+    ],
     async () =>
       new FHIRServiceClass<ILocation>(fhirBaseUrl, '').read(
-        `${(list.data?.entry?.[0].resource as IList)?.subject?.reference as string}`
+        `${(list.data?.entry?.[0].resource as IList | undefined)?.subject?.reference as string}`
       ),
     {
-      enabled: !!(list.data?.entry?.[0].resource as IList)?.subject?.reference,
+      enabled: !!(list.data?.entry?.[0].resource as IList | undefined)?.subject?.reference,
       staleTime: thatiMinutes, // 30 minutes
     }
   );
@@ -95,8 +98,8 @@ export const ProductFlag = (props: ProductFlagProps) => {
   const initialValues = {
     productName: product.data?.name,
     locationName: location.data?.name,
-    listSubject: (list.data?.entry?.[0].resource as IList)?.subject?.reference,
-    status: flag?.status,
+    listSubject: (list.data?.entry?.[0].resource as IList | undefined)?.subject?.reference,
+    status: flag.status,
     practitionerId,
   };
 
