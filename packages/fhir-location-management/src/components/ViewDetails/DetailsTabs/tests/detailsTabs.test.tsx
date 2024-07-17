@@ -259,7 +259,7 @@ test('works correctly - physical location', async () => {
 
   // check records shown in table
   tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  waitFor(() => {
+  await waitFor(() => {
     expect(tableData).toEqual(['No data']);
   });
 
