@@ -1,18 +1,30 @@
 import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router';
-import { screen, render } from '@testing-library/react';
+import { Router } from 'react-router';
+import {
+  screen,
+  render,
+  cleanup,
+  waitForElementToBeRemoved,
+  fireEvent,
+  act,
+  waitFor,
+} from '@testing-library/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { Provider } from 'react-redux';
+
 import { LocationFlag, LocationFlagProps } from '..';
-import flushPromises from 'flush-promises';
-import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
-import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
-import { RoleContext } from '@opensrp/rbac';
-import { superUserRole, FHIRServiceClass } from '@opensrp/react-utils';
-import { CloseFlagForm } from '../../CloseFlagForm';
-import { spCheckFlag } from './fixtures';
+import { spCheckFlag, location, encounterBodyLocationFlag } from './fixtures';
+import nock from 'nock';
+import { authenticateUser } from '@onaio/session-reducer';
+import {
+  EncounterResourceType,
+  FlagResourceType,
+  ObservationResourceType,
+  locationResourceType,
+} from '@opensrp/fhir-helpers';
+import userEvents from '@testing-library/user-event';
+import { status } from '../../../constants';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,100 +35,99 @@ const queryClient = new QueryClient({
   },
 });
 
-const mockLocation: ILocation = {
-  resourceType: 'Location',
-  id: 'locationId',
-  name: 'Test Location',
-};
-
-const mockFlag: IFlag = spCheckFlag;
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 const fhirBaseURL = 'http://test.server.org';
 
-jest.mock('@opensrp/react-utils', () => ({
-  ...jest.requireActual('@opensrp/react-utils'),
-  FHIRServiceClass: jest.fn().mockImplementation(() => ({
-    read: jest.fn().mockResolvedValue(mockLocation),
-  })),
-}));
-
-jest.mock('../../CloseFlagForm', () => ({
-  CloseFlagForm: jest.fn(() => <div>CloseFlagForm Component</div>),
-}));
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppWrapper = (props: any) => (
-  <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <RoleContext.Provider value={superUserRole}>
-        <Router history={props.history}>
-          <Route exact path="/location-flag/:id">
-            <LocationFlag {...props} />
-          </Route>
-        </Router>
-      </RoleContext.Provider>
-    </QueryClientProvider>
-  </Provider>
-);
 
-describe('LocationFlag component', () => {
+afterEach(() => {
+  cleanup();
+  jest.clearAllMocks();
+  nock.cleanAll();
+});
+
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      {
+        api_token: 'hunter2',
+        oAuth2Data: { access_token: 'sometoken', state: 'abcde' },
+        user_id: 'bobbie',
+      }
+    )
+  );
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
+test('renders correctly and fetches data', async () => {
   const history = createMemoryHistory();
-  history.push('/location-flag/locationId');
+  const scope = nock(fhirBaseURL)
+    .get(`/${locationResourceType}/locationId`)
+    .reply(200, location)
+    .persist();
+
+  const putScope = nock(fhirBaseURL)
+    .put(
+      `/${EncounterResourceType}/7892014e-56d7-53c1-9df0-b4642dba2486`,
+      encounterBodyLocationFlag
+    )
+    .reply(200, encounterBodyLocationFlag)
+    .put(`/${ObservationResourceType}/observationId`)
+    .reply(200, location)
+    .put(`/${FlagResourceType}/FlagId`)
+    .reply(200, location)
+    .persist();
 
   const defaultProps: LocationFlagProps = {
     fhirBaseUrl: fhirBaseURL,
-    locationReference: 'locationId',
-    flag: mockFlag,
+    locationReference: 'Location/locationId',
+    flag: spCheckFlag,
     practitionerId: 'practitionerId',
   };
+  render(
+    <QueryClientProvider client={queryClient}>
+      <Router history={history}>
+        <LocationFlag {...defaultProps} />
+      </Router>
+    </QueryClientProvider>
+  );
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  expect(document.querySelector('form')?.textContent).toMatchInlineSnapshot(
+    `"Service PointProductStatusActiveCommentsSave"`
+  );
+
+  const commentField = screen.getByLabelText('Comments');
+  userEvents.type(commentField, 'Some comments here');
+
+  const statusSelectField = document.querySelector(`input#${status}`) as HTMLElement;
+  fireEvent.mouseDown(statusSelectField);
+
+  fireEvent.click(document.querySelector(`[title="Inactive"]`) as HTMLElement);
+
+  const submitBtn = screen.getByRole('button', {
+    name: /Save/i,
   });
 
-  it('renders loading spinner when data is being fetched', async () => {
-    (FHIRServiceClass as jest.Mock).mockImplementationOnce(() => ({
-      read: jest.fn().mockResolvedValueOnce(null),
-    }));
-
-    const { container } = render(<AppWrapper {...defaultProps} history={history} />);
-
-    expect(container).toMatchSnapshot();
+  act(() => {
+    fireEvent.click(submitBtn);
   });
-
-  it('renders broken page when there is an error and no location data', async () => {
-    const errorMessage = 'Error fetching location';
-    (FHIRServiceClass as jest.Mock).mockImplementationOnce(() => ({
-      read: jest.fn().mockRejectedValueOnce(new Error(errorMessage)),
-    }));
-
-    render(<AppWrapper {...defaultProps} history={history} />);
-
-    await flushPromises();
-
-    expect(screen.getByText(errorMessage)).toBeInTheDocument();
-  });
-
-  it('renders CloseFlagForm with correct initial values when data is fetched', async () => {
-    render(<AppWrapper {...defaultProps} history={history} />);
-
-    await flushPromises();
-
-    expect(screen.getByText('CloseFlagForm Component')).toBeInTheDocument();
-
-    const initialValues = {
-      locationName: mockLocation.name,
-      practitionerId: defaultProps.practitionerId,
-      status: defaultProps.flag.status,
-    };
-
-    expect(CloseFlagForm).toHaveBeenCalledWith(
-      expect.objectContaining({
-        fhirBaseUrl: fhirBaseURL,
-        initialValues,
-        flag: mockFlag,
-      }),
-      {}
-    );
+  expect(scope.isDone()).toBeTruthy();
+  waitFor(() => {
+    expect(putScope.isDone()).toBeTruthy();
   });
 });
