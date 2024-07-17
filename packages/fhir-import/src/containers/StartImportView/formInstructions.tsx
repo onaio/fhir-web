@@ -3,7 +3,7 @@ import { Typography, Steps, Button, Space } from 'antd';
 import UploadIcon from '@2fd/ant-design-icons/lib/Upload';
 import ArrowDownThick from '@2fd/ant-design-icons/lib/ArrowDownThick';
 import { OpenSRPService, downloadFile, getFileNameFromCDHHeader } from '@opensrp/react-utils';
-import { IMPORT_DOMAIN_URI } from '../../constants';
+import { defaultImportTemplateName, IMPORT_DOMAIN_URI } from '../../constants';
 import { useTranslation } from '../../mls';
 import { sendErrorNotification } from 'opensrp-notifications/dist/types';
 
@@ -60,7 +60,7 @@ export const InstructionStepOne = () => {
                 const contentDispositionHeader = response.headers.get('content-disposition');
                 const fileName = contentDispositionHeader
                   ? getFileNameFromCDHHeader(contentDispositionHeader)
-                  : `import-template`;
+                  : defaultImportTemplateName;
 
                 // get blob data from response
                 const blob = await response.blob();
