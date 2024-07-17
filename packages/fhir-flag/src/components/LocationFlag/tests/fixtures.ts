@@ -207,3 +207,80 @@ export const encounterBodyLocationFlag = {
     ],
   },
 };
+
+export const locationUpdatedFlag = {
+  ...spCheckFlag,
+  status: 'inactive',
+};
+
+export const createdObservationLocationFlag = {
+  resourceType: 'Observation',
+  id: '5e524254-80f9-5d96-bcde-0e28d72f7aff',
+  identifier: [{ use: 'usual', value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' }],
+  status: 'final',
+  category: [
+    {
+      coding: [
+        { system: 'http://smartregister.org/', code: 'SPCHECK', display: 'Service Point Check' },
+      ],
+      text: 'Service Point Check',
+    },
+    {
+      coding: [
+        {
+          system: 'http://smartregister.org/',
+          code: 'OSRPWEB',
+          display: 'OpenSRP web generated Encounter',
+        },
+      ],
+      text: 'OpenSRP web generated Encounter',
+    },
+  ],
+  code: {
+    coding: [
+      { system: 'http://smartregister.org/', code: '11227899', display: 'Vist Flag Observation' },
+    ],
+    text: 'Vist Flag Observation',
+  },
+  subject: { reference: 'Location/20bef46f-b5f2-490f-beca-d9fa6205be06' },
+  focus: [{ reference: 'Flag/825b5491-9dad-4e28-ad73-521a31193de3' }],
+  encounter: { reference: 'Encounter/7892014e-56d7-53c1-9df0-b4642dba2486' },
+  effectivePeriod: { start: '2024-02-01T00:00:00.00Z', end: '2024-02-01T00:00:00.00Z' },
+  performer: [{ reference: 'Practitioner/practitionerId' }],
+  valueCodeableConcept: {
+    coding: [
+      { system: 'http://snomed.info/sct', code: '373066001', display: 'Yes (qualifier value)' },
+    ],
+    text: 'Yes (qualifier value)',
+  },
+  note: [{ text: 'Some comments here' }],
+  meta: {
+    tag: [
+      {
+        system: 'https://smartregister.org/app-version',
+        code: '1.1.0-eusm',
+        display: 'Application Version',
+      },
+      {
+        system: 'https://smartregister.org/organisation-tag-id',
+        code: 'd0882d3a-f35a-43cf-9d43-2ea9f9793e24',
+        display: 'Practitioner Organization',
+      },
+      {
+        system: 'https://smartregister.org/practitioner-tag-id',
+        code: 'ab929110-6918-4d0b-8961-13cce4d5c76b',
+        display: 'Practitioner',
+      },
+      {
+        system: 'https://smartregister.org/location-tag-id',
+        code: 'f15ff8ab-9475-4356-8363-7f518fdd66ce',
+        display: 'Practitioner Location',
+      },
+      {
+        system: 'https://smartregister.org/care-team-tag-id',
+        code: '4ddd4157-921b-4c65-820c-161b6e845011',
+        display: 'Practitioner CareTeam',
+      },
+    ],
+  },
+};

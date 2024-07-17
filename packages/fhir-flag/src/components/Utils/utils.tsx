@@ -169,5 +169,5 @@ export const putCloseFlagResources = async (
       });
   });
 
-  return Promise.all([flagPromise, encounterObservationPromise]);
+  return await Promise.all([flagPromise, encounterObservationPromise]);
 };

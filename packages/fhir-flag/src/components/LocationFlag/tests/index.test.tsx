@@ -12,9 +12,14 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-
 import { LocationFlag, LocationFlagProps } from '..';
-import { spCheckFlag, location, encounterBodyLocationFlag } from './fixtures';
+import {
+  spCheckFlag,
+  location,
+  encounterBodyLocationFlag,
+  locationUpdatedFlag,
+  createdObservationLocationFlag,
+} from './fixtures';
 import nock from 'nock';
 import { authenticateUser } from '@onaio/session-reducer';
 import {
@@ -25,6 +30,12 @@ import {
 } from '@opensrp/fhir-helpers';
 import userEvents from '@testing-library/user-event';
 import { status } from '../../../constants';
+import * as notifications from '@opensrp/notifications';
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,8 +51,6 @@ jest.mock('fhirclient', () => {
 });
 
 const fhirBaseURL = 'http://test.server.org';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 afterEach(() => {
   cleanup();
@@ -74,6 +83,7 @@ afterAll(() => {
 
 test('renders correctly and fetches data', async () => {
   const history = createMemoryHistory();
+
   const scope = nock(fhirBaseURL)
     .get(`/${locationResourceType}/locationId`)
     .reply(200, location)
@@ -85,10 +95,13 @@ test('renders correctly and fetches data', async () => {
       encounterBodyLocationFlag
     )
     .reply(200, encounterBodyLocationFlag)
-    .put(`/${ObservationResourceType}/observationId`)
-    .reply(200, location)
-    .put(`/${FlagResourceType}/FlagId`)
-    .reply(200, location)
+    .put(
+      `/${ObservationResourceType}/5e524254-80f9-5d96-bcde-0e28d72f7aff`,
+      createdObservationLocationFlag
+    )
+    .reply(200, createdObservationLocationFlag)
+    .put(`/${FlagResourceType}/825b5491-9dad-4e28-ad73-521a31193de3`, locationUpdatedFlag)
+    .reply(200, locationUpdatedFlag)
     .persist();
 
   const defaultProps: LocationFlagProps = {
@@ -97,6 +110,15 @@ test('renders correctly and fetches data', async () => {
     flag: spCheckFlag,
     practitionerId: 'practitionerId',
   };
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  const errorNoticeMock = jest
+    .spyOn(notifications, 'sendErrorNotification')
+    .mockImplementation(() => undefined);
+
   render(
     <QueryClientProvider client={queryClient}>
       <Router history={history}>
@@ -126,8 +148,15 @@ test('renders correctly and fetches data', async () => {
   act(() => {
     fireEvent.click(submitBtn);
   });
-  expect(scope.isDone()).toBeTruthy();
-  waitFor(() => {
+
+  await waitFor(() => {
+    expect(successNoticeMock).toHaveBeenCalledWith('Flag Closed successfully');
+    expect(errorNoticeMock).not.toHaveBeenCalledWith();
+  });
+
+  await waitFor(() => {
     expect(putScope.isDone()).toBeTruthy();
   });
+
+  expect(scope.isDone()).toBeTruthy();
 });
