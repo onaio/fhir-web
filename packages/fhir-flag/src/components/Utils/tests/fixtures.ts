@@ -78,3 +78,56 @@ export const flag: IFlag = {
     reference: 'Practitioner/ab929110-6918-4d0b-8961-13cce4d5c76b',
   },
 };
+
+export const practitionerBundle = {
+  resourceType: 'Bundle',
+  id: '729bc784-ff52-4aaf-9a72-feafd0179b63',
+  meta: {
+    lastUpdated: '2024-07-17T09:47:12.426+00:00',
+  },
+  type: 'searchset',
+  total: 1,
+  link: [
+    {
+      relation: 'self',
+      url: 'https://fhir.labs.smartregister.org/fhir/Practitioner/_search?identifier=fede58ef-4716-4ca8-8185-c04d8de77bcb',
+    },
+  ],
+  entry: [
+    {
+      fullUrl: 'https://fhir.labs.smartregister.org/fhir/Practitioner/114',
+      resource: {
+        resourceType: 'Practitioner',
+        id: '114',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2021-04-13T10:59:51.397+00:00',
+          source: '#de8022ba85b18c8a',
+        },
+        identifier: [
+          {
+            use: 'secondary',
+            value: 'fede58ef-4716-4ca8-8185-c04d8de77bcb',
+          },
+        ],
+        active: true,
+        name: [
+          {
+            use: 'official',
+            family: 'fhir',
+            given: ['test'],
+          },
+        ],
+        telecom: [
+          {
+            system: 'email',
+            value: 'test_fhir@test.com',
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};

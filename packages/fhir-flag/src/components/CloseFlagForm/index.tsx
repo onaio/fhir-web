@@ -13,7 +13,6 @@ const { Item: FormItem } = Form;
 const { TextArea } = Input;
 
 export interface CloseFlagFormProps {
-  fhirBaseUrl: string;
   initialValues: CloseFlagFormFields;
   flag: IFlag;
   mutationEffect: (
@@ -47,11 +46,10 @@ const CloseFlagForm = (props: CloseFlagFormProps) => {
     },
     {
       onError: () => {
-        sendErrorNotification(t('Error Occured When Closing Flag'));
+        sendErrorNotification(t('Error Occurred When Closing Flag'));
       },
       onSuccess: async () => {
         sendSuccessNotification(t('Flag Closed successfully'));
-        window.close();
       },
     }
   );

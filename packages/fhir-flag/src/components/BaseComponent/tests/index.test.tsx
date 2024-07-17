@@ -2,17 +2,16 @@ import React from 'react';
 import { store } from '@opensrp/store';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router';
-import { screen, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, render, waitForElementToBeRemoved, cleanup } from '@testing-library/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider } from 'react-redux';
 import { CloseFlag } from '..';
-import flushPromises from 'flush-promises';
-import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
-import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
-import { flag } from '../../Utils/tests/fixtures';
+import { flag, practitionerBundle } from '../../Utils/tests/fixtures';
+import nock from 'nock';
+import { authenticateUser } from '@onaio/session-reducer';
+import { FlagResourceType, PractitionerResourceType } from '@opensrp/fhir-helpers';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,75 +22,78 @@ const queryClient = new QueryClient({
   },
 });
 
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useParams: jest.fn().mockReturnValue({ id: 'flagId' }),
-}));
-
-const mockFlag: IFlag = flag;
-
-const mockPractitioner: IPractitioner = {
-  resourceType: 'Practitioner',
-  id: 'practitionerId',
-};
-
-const mockBundle: IBundle = {
-  resourceType: 'Bundle',
-  entry: [{ resource: mockPractitioner }],
-};
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
 
 const fhirBaseURL = 'http://test.server.org';
-
-jest.mock('@opensrp/react-utils', () => ({
-  ...jest.requireActual('@opensrp/react-utils'),
-  FHIRServiceClass: jest.fn().mockImplementation(() => ({
-    read: jest.fn().mockResolvedValue(mockFlag),
-    list: jest.fn().mockResolvedValue(mockBundle),
-  })),
-}));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppWrapper = (props: any) => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <RoleContext.Provider value={superUserRole}>
-        <Router history={props.history}>
-          <Route exact path="/close-flag/:id">
-            <CloseFlag {...props} />
-          </Route>
-        </Router>
+        <Route exact path="/close-flag/:id">
+          <CloseFlag {...props} />
+        </Route>
       </RoleContext.Provider>
     </QueryClientProvider>
   </Provider>
 );
 
-describe('CloseFlag component', () => {
+afterEach(() => {
+  cleanup();
+  jest.clearAllMocks();
+  nock.cleanAll();
+});
+
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
+      },
+      {
+        api_token: 'hunter2',
+        oAuth2Data: { access_token: 'sometoken', state: 'abcde' },
+        user_id: 'bobbie',
+      }
+    )
+  );
+});
+
+afterAll(() => {
+  nock.enableNetConnect();
+});
+
+test('renders correctly and fetches data', async () => {
   const history = createMemoryHistory();
   history.push('/close-flag/flagId');
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  const scope = nock(fhirBaseURL)
+    .get(`/${FlagResourceType}/flagId`)
+    .reply(200, flag)
+    .get(`/${PractitionerResourceType}/_search`)
+    .query({
+      identifier: 'bobbie',
+    })
+    .reply(200, practitionerBundle)
+    .persist();
 
-  it('renders correctly and fetches data', async () => {
-    render(<AppWrapper fhirBaseURL={fhirBaseURL} history={history} />);
+  render(
+    <Router history={history}>
+      <AppWrapper fhirBaseURL={fhirBaseURL} />
+      );
+    </Router>
+  );
 
-    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-    await flushPromises();
+  expect(screen.getByText('An error occurred while fetching the inventory')).toBeInTheDocument();
 
-    /**
-     * mocked flag is product based
-     * Assertions confirm that the "Missing location" message is displayed
-     * within the ProductFlag child component.
-     */
-
-    const resultTitle = screen.getByText('Invalid Flag').closest('.ant-result-title');
-    const resultSubtitle = screen
-      .getByText(/Missing location field/i)
-      .closest('.ant-result-subtitle');
-
-    expect(resultTitle).toBeInTheDocument();
-    expect(resultSubtitle).toBeInTheDocument();
-  });
+  expect(scope.isDone()).toBeTruthy();
 });

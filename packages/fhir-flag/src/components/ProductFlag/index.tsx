@@ -39,13 +39,13 @@ export const ProductFlag = (props: ProductFlagProps) => {
   );
 
   const product = useQuery(
-    [groupResourceType, inventoryGroup.data?.member?.[0]?.entity?.reference],
+    [groupResourceType, inventoryGroup.data?.member?.[0]?.entity.reference],
     () =>
       new FHIRServiceClass<IGroup>(fhirBaseUrl, '').read(
-        inventoryGroup.data?.member?.[0]?.entity?.reference as string
+        inventoryGroup.data?.member?.[0]?.entity.reference as string
       ),
     {
-      enabled: !!inventoryGroup.data?.member?.[0]?.entity?.reference,
+      enabled: !!inventoryGroup.data?.member?.[0]?.entity.reference,
       staleTime: thatiMinutes, // 30 minutes
     }
   );
@@ -92,7 +92,7 @@ export const ProductFlag = (props: ProductFlagProps) => {
   }
 
   if (inventoryGroup.error && !inventoryGroup.data) {
-    return <BrokenPage errorMessage={(inventoryGroup.error as Error).message} />;
+    return <BrokenPage errorMessage={t('An error occurred while fetching the inventory')} />;
   }
 
   const initialValues = {
@@ -105,7 +105,6 @@ export const ProductFlag = (props: ProductFlagProps) => {
 
   return product.data?.name && location.data?.name ? (
     <CloseFlagForm
-      fhirBaseUrl={fhirBaseUrl}
       initialValues={initialValues}
       flag={flag}
       mutationEffect={async (initialValues, values, activeFlag): Promise<unknown> => {
