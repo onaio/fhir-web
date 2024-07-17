@@ -228,7 +228,7 @@ export const centralProvinceInclude = {
           {
             coding: [
               {
-                system: 'https://smartregister.org/CodeSystem/administrative-level',
+                system: 'https://smartregister.org/codes/administrative-level',
                 code: '1',
                 display: 'Level 1',
               },

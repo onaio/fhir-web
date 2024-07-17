@@ -8,27 +8,27 @@ test('generateLocationUnit works correctly', () => {
   expect(getResourceType()).toEqual({
     code: '0',
     display: 'Level 0',
-    system: 'https://smartregister.org/CodeSystem/administrative-level',
+    system: 'https://smartregister.org/codes/administrative-level',
   });
 
   // Has parent id and parentNode
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect(getResourceType(parentNode1 as any, parentId)).toEqual({
-    system: 'https://smartregister.org/CodeSystem/administrative-level',
+    system: 'https://smartregister.org/codes/administrative-level',
     code: '2',
     display: 'Level 2',
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect(getResourceType(parentNode1 as any, parentId)).toEqual({
-    system: 'https://smartregister.org/CodeSystem/administrative-level',
+    system: 'https://smartregister.org/codes/administrative-level',
     code: '2',
     display: 'Level 2',
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expect(getResourceType(parentNode2 as any, parentId)).toEqual({
-    system: 'https://smartregister.org/CodeSystem/administrative-level',
+    system: 'https://smartregister.org/codes/administrative-level',
     code: '3',
     display: 'Level 3',
   });
