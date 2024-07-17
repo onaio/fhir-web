@@ -550,7 +550,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={`${URL_CLOSE_FLAGS}/:id`}
-        permissions={['Flag.update']}
+        // permissions={['Flag.update']}
         component={CloseFlag}
       />
       <Route
