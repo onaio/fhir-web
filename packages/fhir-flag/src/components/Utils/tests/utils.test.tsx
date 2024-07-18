@@ -146,7 +146,7 @@ describe('Utility functions', () => {
       encounter: { reference: 'Encounter/mocked-uuid' },
       focus: [{ reference: 'Location/123' }, { reference: `Flag/${flag.id}` }],
       performer: undefined,
-      note: [{ text: 'Test comments' }],
+      note: [{ text: 'Test comments', time: expect.any(String) }],
     };
 
     const result = generateObservationPayload(
@@ -182,7 +182,7 @@ describe('Utility functions', () => {
       encounter: { reference: 'Encounter/mocked-uuid' },
       focus: [{ reference: `Flag/1a3a0d65-b6ad-40af-b6cd-2e8801614de9` }],
       performer: [{ reference: `Practitioner/practitioner123` }],
-      note: [{ text: 'Test comments' }],
+      note: [{ text: 'Test comments', time: expect.any(String) }],
     };
 
     const result = generateObservationPayload(

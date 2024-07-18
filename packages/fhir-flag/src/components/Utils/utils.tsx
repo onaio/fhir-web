@@ -99,7 +99,7 @@ export const generateObservationPayload = (
   practitionerId: string,
   locationReference: string,
   values: CloseFlagFormFields
-) => {
+): IObservation => {
   const commonProperties = generateCommonProperties(ObservationResourceType, flag);
   const encounterProperties = generateCommonProperties(EncounterResourceType, flag);
   const isSPCHECKOrCNBEN = conceptsHaveCodings(flag.category, [
@@ -118,7 +118,8 @@ export const generateObservationPayload = (
     performer: isSPCHECKOrCNBEN
       ? [{ reference: `${PractitionerResourceType}/${practitionerId}` }]
       : undefined,
-    note: observation.note?.[0]?.text ? [{ text: values.comments }] : observation.note,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    note: [{ time: new Date().toISOString() as any, text: values.comments }],
   };
 };
 
@@ -144,7 +145,8 @@ export const putCloseFlagResources = async (
     listSubject as string,
     values
   );
-
+  console.log('encounterPayload', encounterPayload);
+  console.log('observationPayload', observationPayload);
   const updatedFlag = {
     ...activeFlag,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -165,6 +167,7 @@ export const putCloseFlagResources = async (
           });
       })
       .catch((err) => {
+        console.log('err------', err);
         reject(err);
       });
   });

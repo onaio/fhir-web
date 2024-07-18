@@ -568,7 +568,6 @@ export const productFlag: IFlag = {
 export const createdEncounterProductFlag = {
   resourceType: 'Encounter',
   id: '15e2dd99-91f7-5dc8-b84b-14d546610f3c',
-  identifier: [{ use: 'usual', value: 'd8f6bb0d-a2ed-4bee-982b-846845930dbc' }],
   status: 'finished',
   class: {
     system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
@@ -603,7 +602,6 @@ export const createdEncounterProductFlag = {
     ],
     text: 'elective',
   },
-  participant: [{ individual: { reference: 'Practitioner/practitionerId' } }],
   period: { start: '2023-09-13T03:56:00.000+00:00', end: '2023-09-13T04:20:00.000+00:00' } as any,
   reasonCode: [
     {
@@ -646,11 +644,12 @@ export const createdEncounterProductFlag = {
       },
     ],
   },
+  participant: [{ individual: { reference: 'Practitioner/practitionerId' } }],
 };
 
 export const createdObservationProductFlag = {
+  resourceType: 'Observation',
   id: 'd15869ed-1ab1-5dc8-b07c-d384bc4ce9b8',
-  identifier: [{ use: 'usual', value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' }],
   status: 'final',
   category: [
     {
@@ -689,7 +688,7 @@ export const createdObservationProductFlag = {
     ],
     text: 'Yes (qualifier value)',
   },
-  note: [{ text: 'Some comments here' }],
+  note: [{ text: 'Some comments here', time: '2017-07-13T19:31:00.000Z' }],
   meta: {
     tag: [
       {

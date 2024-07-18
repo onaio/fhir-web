@@ -128,7 +128,6 @@ export const location: ILocation = {
 export const encounterBodyLocationFlag = {
   resourceType: 'Encounter',
   id: '7892014e-56d7-53c1-9df0-b4642dba2486',
-  identifier: [{ use: 'usual', value: 'd8f6bb0d-a2ed-4bee-982b-846845930dbc' }],
   status: 'finished',
   class: {
     system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode',
@@ -216,7 +215,6 @@ export const locationUpdatedFlag = {
 export const createdObservationLocationFlag = {
   resourceType: 'Observation',
   id: '5e524254-80f9-5d96-bcde-0e28d72f7aff',
-  identifier: [{ use: 'usual', value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' }],
   status: 'final',
   category: [
     {
@@ -253,7 +251,7 @@ export const createdObservationLocationFlag = {
     ],
     text: 'Yes (qualifier value)',
   },
-  note: [{ text: 'Some comments here' }],
+  note: [{ text: 'Some comments here', time: '2017-07-13T19:31:00.000Z' }],
   meta: {
     tag: [
       {
