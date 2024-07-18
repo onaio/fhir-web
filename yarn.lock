@@ -3925,6 +3925,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@opensrp/fhir-import@workspace:packages/fhir-import":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/fhir-import@workspace:packages/fhir-import"
+  dependencies:
+    "@2fd/ant-design-icons": ^2.6.0
+    "@opensrp/notifications": ^0.0.5
+    "@opensrp/rbac": "workspace:^"
+    "@opensrp/react-utils": ^0.0.12
+  peerDependencies:
+    "@opensrp/i18n": ^0.0.1
+    react: ^17.0.0
+    react-dom: 17.0.0
+    react-query: ^3.15.1
+    react-router: ^5.2.0
+    react-router-dom: ^5.2.0
+  languageName: unknown
+  linkType: soft
+
 "@opensrp/fhir-location-management@0.0.1, @opensrp/fhir-location-management@^0.0.1, @opensrp/fhir-location-management@workspace:packages/fhir-location-management":
   version: 0.0.0-use.local
   resolution: "@opensrp/fhir-location-management@workspace:packages/fhir-location-management"

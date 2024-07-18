@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 1`] = `
+<td
+  class="ant-table-cell"
+>
+  26aae779-0e6f-482d-82c3-a0fad1fd3689_orgToLocationAssignment
+</td>
+`;
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 2`] = `
+<td
+  class="ant-table-cell"
+>
+  orgToLocationAssignment
+</td>
+`;
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 3`] = `
+<td
+  class="ant-table-cell"
+>
+  organizations_locations.csv
+</td>
+`;
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 4`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="ant-tag ant-tag-success css-dev-only-do-not-override-k7429z"
+  >
+    completed
+  </span>
+</td>
+`;
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 5`] = `
+<td
+  class="ant-table-cell ant-table-column-sort"
+>
+  7/4/2024, 12:26:51 PM
+</td>
+`;
+
+exports[`Care Teams list view renders correctly: table row 1 page 1 6`] = `
+<td
+  class="ant-table-cell"
+>
+  <span
+    class="d-flex align-items-center"
+  />
+</td>
+`;
