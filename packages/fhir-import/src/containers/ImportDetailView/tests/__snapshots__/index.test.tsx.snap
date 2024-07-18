@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Care Teams list view renders correctly: innerDetailsText 1`] = `
+"orgToLocationAssignmentcompletedID: 26aae779-0e6f-482d-82c3-a0fad1fd3689_orgToLocationAssignmentDate Created7/4/2024, 12:26:51 PMWorkflow typeorgToLocationAssignmentDate Started7/4/2024, 12:26:51 PMDate Ended7/4/2024, 12:26:53 PMAuthorLog OutputProgress::Reading csv 
+Start time: 15:26:53
+Starting csv import...
+Reading csv file
+Returning records from csv file
+Unsupported request!
+{ \\"final-response\\": }
+End time: 15:26:53
+Total time: 0.002815 seconds
+"
+`;
