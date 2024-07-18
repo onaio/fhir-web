@@ -122,6 +122,7 @@ import {
   ADD_LOCATION_INVENTORY,
   AddLocationInventory,
 } from '@opensrp/fhir-group-management';
+import { CloseFlag, URL_CLOSE_FLAGS } from '@opensrp/fhir-flag';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
 import { APP_LOGIN_URL } from '../configs/dispatchConfig';
@@ -578,6 +579,14 @@ const FHIRApps = () => {
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
         component={UserGroupsList}
         permissions={['iam_group.read']}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_CLOSE_FLAGS}/:id`}
+        // permissions={['Flag.update']}
+        component={CloseFlag}
       />
       <Route
         exact

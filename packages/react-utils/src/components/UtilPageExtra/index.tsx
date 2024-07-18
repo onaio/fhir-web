@@ -10,10 +10,6 @@ export interface UtilPageExtraProps {
   homeUrl: string;
 }
 
-export const extraLinksDefault = {
-  homeUrl: HOME_URL,
-};
-
 /**
  * util component that is used in several other util-views that serve
  * as notification views
@@ -39,6 +35,10 @@ const ExtraLinks = (props: UtilPageExtraProps) => {
       </Link>
     </>
   );
+};
+
+export const extraLinksDefault = {
+  homeUrl: HOME_URL,
 };
 
 ExtraLinks.defaultProps = extraLinksDefault;

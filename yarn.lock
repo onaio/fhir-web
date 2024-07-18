@@ -3867,6 +3867,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@opensrp/fhir-flag@workspace:packages/fhir-flag":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/fhir-flag@workspace:packages/fhir-flag"
+  dependencies:
+    "@onaio/session-reducer": ^0.0.13
+    "@opensrp/fhir-helpers": "workspace:^"
+    "@opensrp/notifications": "workspace:^"
+    "@opensrp/pkg-config": "workspace:^"
+    "@opensrp/react-utils": "workspace:^"
+    uuid: ^10.0.0
+  peerDependencies:
+    "@opensrp/i18n": ^0.0.1
+    antd: ^5.5.1
+    react: "^17.0.0 "
+    react-dom: 17.0.0
+    react-query: ^3.34.8
+    react-redux: ^7.2.1
+    react-router: ^5.2.0
+    react-router-dom: ^5.2.0
+  languageName: unknown
+  linkType: soft
+
 "@opensrp/fhir-group-management@^0.0.5, @opensrp/fhir-group-management@workspace:packages/fhir-group-management":
   version: 0.0.0-use.local
   resolution: "@opensrp/fhir-group-management@workspace:packages/fhir-group-management"
@@ -4130,7 +4152,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@opensrp/notifications@^0.0.5, @opensrp/notifications@workspace:packages/opensrp-notifications":
+"@opensrp/notifications@^0.0.5, @opensrp/notifications@workspace:^, @opensrp/notifications@workspace:packages/opensrp-notifications":
   version: 0.0.0-use.local
   resolution: "@opensrp/notifications@workspace:packages/opensrp-notifications"
   peerDependencies:
@@ -4150,7 +4172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opensrp/pkg-config@^0.0.9, @opensrp/pkg-config@workspace:packages/pkg-config":
+"@opensrp/pkg-config@^0.0.9, @opensrp/pkg-config@workspace:^, @opensrp/pkg-config@workspace:packages/pkg-config":
   version: 0.0.0-use.local
   resolution: "@opensrp/pkg-config@workspace:packages/pkg-config"
   dependencies:
@@ -4176,7 +4198,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@opensrp/react-utils@0.0.12, @opensrp/react-utils@^0.0.12, @opensrp/react-utils@workspace:packages/react-utils":
+"@opensrp/react-utils@0.0.12, @opensrp/react-utils@^0.0.12, @opensrp/react-utils@workspace:^, @opensrp/react-utils@workspace:packages/react-utils":
   version: 0.0.0-use.local
   resolution: "@opensrp/react-utils@workspace:packages/react-utils"
   dependencies:
@@ -28834,6 +28856,15 @@ __metadata:
   bin:
     uuid: ./bin/uuid
   checksum: 8793629d2799f500aeea9fcd0aec6c4e9fbcc4d62ed42159ad96be345c3fffac1bbf61a23e18e2782600884fee05e6d4012ce4b70d0037c8e987533ae6a77870
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "uuid@npm:10.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 4b81611ade2885d2313ddd8dc865d93d8dccc13ddf901745edca8f86d99bc46d7a330d678e7532e7ebf93ce616679fb19b2e3568873ac0c14c999032acb25869
   languageName: node
   linkType: hard
 
