@@ -19,7 +19,7 @@ export const rootlocationFixture = {
     {
       coding: [
         {
-          system: 'https://smartregister.org/CodeSystem/administrative-level',
+          system: 'https://smartregister.org/codes/administrative-level',
           code: '0',
           display: 'Level 0',
         },
