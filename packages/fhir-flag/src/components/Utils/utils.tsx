@@ -118,8 +118,7 @@ export const generateObservationPayload = (
     performer: isSPCHECKOrCNBEN
       ? [{ reference: `${PractitionerResourceType}/${practitionerId}` }]
       : undefined,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    note: [{ time: new Date().toISOString() as any, text: values.comments }],
+    note: [{ time: new Date().toISOString() as unknown as Date, text: values.comments }],
   };
 };
 
@@ -145,8 +144,6 @@ export const putCloseFlagResources = async (
     listSubject as string,
     values
   );
-  console.log('encounterPayload', encounterPayload);
-  console.log('observationPayload', observationPayload);
   const updatedFlag = {
     ...activeFlag,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -167,7 +164,6 @@ export const putCloseFlagResources = async (
           });
       })
       .catch((err) => {
-        console.log('err------', err);
         reject(err);
       });
   });
