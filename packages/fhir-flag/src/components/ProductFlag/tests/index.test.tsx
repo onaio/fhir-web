@@ -12,25 +12,31 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { LocationFlag, LocationFlagProps } from '..';
-import {
-  spCheckFlag,
-  location,
-  encounterBodyLocationFlag,
-  locationUpdatedFlag,
-  createdObservationLocationFlag,
-} from './fixtures';
+import { ProductFlag, ProductFlagProps } from '..';
 import nock from 'nock';
 import { authenticateUser } from '@onaio/session-reducer';
 import {
   EncounterResourceType,
   FlagResourceType,
   ObservationResourceType,
+  groupResourceType,
+  listResourceType,
   locationResourceType,
+  servicePointProfileInventoryListCoding,
 } from '@opensrp/fhir-helpers';
 import userEvents from '@testing-library/user-event';
 import { status } from '../../../constants';
 import * as notifications from '@opensrp/notifications';
+import {
+  createdEncounterProductFlag,
+  createdObservationProductFlag,
+  listBundle,
+  productFlag,
+  productGroup,
+  productInventoryGroup,
+  productLocation,
+  productUpdatedFlag,
+} from './fixtures';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -85,30 +91,40 @@ test('renders correctly and fetches data', async () => {
   const history = createMemoryHistory();
 
   const scope = nock(fhirBaseURL)
-    .get(`/${locationResourceType}/locationId`)
-    .reply(200, location)
+    .get(`/${groupResourceType}/inventoryGroupId`)
+    .reply(200, productInventoryGroup)
+    .get(`/${groupResourceType}/03310a5c-7c8f-4338-a2bf-e601bf84327f`)
+    .reply(200, productGroup)
+    .get(`/${listResourceType}/_search`)
+    .query({
+      item: 'inventoryGroupId',
+      code: `${servicePointProfileInventoryListCoding.system}|${servicePointProfileInventoryListCoding.code}`,
+    })
+    .reply(200, listBundle)
+    .get(`/${locationResourceType}/20bef46f-b5f2-490f-beca-d9fa6205be06`)
+    .reply(200, productLocation)
     .persist();
 
   const putScope = nock(fhirBaseURL)
     .put(
-      `/${EncounterResourceType}/7892014e-56d7-53c1-9df0-b4642dba2486`,
-      encounterBodyLocationFlag
+      `/${EncounterResourceType}/15e2dd99-91f7-5dc8-b84b-14d546610f3c`,
+      createdEncounterProductFlag
     )
-    .reply(200, encounterBodyLocationFlag)
+    .reply(200, createdEncounterProductFlag)
     .put(
-      `/${ObservationResourceType}/5e524254-80f9-5d96-bcde-0e28d72f7aff`,
-      createdObservationLocationFlag
+      `/${ObservationResourceType}/d15869ed-1ab1-5dc8-b07c-d384bc4ce9b8`,
+      createdObservationProductFlag
     )
-    .reply(200, createdObservationLocationFlag)
-    .put(`/${FlagResourceType}/825b5491-9dad-4e28-ad73-521a31193de3`, locationUpdatedFlag as any)
-    .reply(200, locationUpdatedFlag)
+    .reply(200, createdObservationProductFlag)
+    .put(`/${FlagResourceType}/1a3a0d65-b6ad-40af-b6cd-2e8801614de9`, productUpdatedFlag as any)
+    .reply(200, productUpdatedFlag)
     .persist();
 
-  const defaultProps: LocationFlagProps = {
+  const defaultProps: ProductFlagProps = {
     fhirBaseUrl: fhirBaseURL,
-    locationReference: 'Location/locationId',
-    flag: spCheckFlag,
+    flag: productFlag as any,
     practitionerId: 'practitionerId',
+    inventoryGroupReference: 'Group/inventoryGroupId',
   };
 
   const successNoticeMock = jest
@@ -122,7 +138,7 @@ test('renders correctly and fetches data', async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <Router history={history}>
-        <LocationFlag {...defaultProps} />
+        <ProductFlag {...defaultProps} />
       </Router>
     </QueryClientProvider>
   );

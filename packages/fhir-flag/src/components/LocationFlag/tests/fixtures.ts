@@ -210,7 +210,7 @@ export const encounterBodyLocationFlag = {
 
 export const locationUpdatedFlag = {
   ...spCheckFlag,
-  status: 'inactive',
+  status: 'inactive' as any,
 };
 
 export const createdObservationLocationFlag = {
