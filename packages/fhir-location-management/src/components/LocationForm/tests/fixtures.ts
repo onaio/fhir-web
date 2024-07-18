@@ -113,7 +113,7 @@ export const parentNode1 = {
         {
           coding: [
             {
-              system: 'https://smartregister.org/CodeSystem/administrative-level',
+              system: 'https://smartregister.org/codes/administrative-level',
               code: '1',
               display: 'Level 1',
             },
@@ -137,7 +137,7 @@ export const parentNode2 = {
         {
           coding: [
             {
-              system: 'https://smartregister.org/CodeSystem/administrative-level',
+              system: 'https://smartregister.org/codes/administrative-level',
               code: '2',
               display: 'Level 2',
             },
