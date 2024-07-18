@@ -60,7 +60,7 @@ WORKDIR /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/build /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
 
-RUN pip install -r /usr/src/app/fhir-tooling/requirements.txt
+RUN pip install -r /usr/src/app/importer/requirements.txt
 
 ENV EXPRESS_REACT_BUILD_PATH /usr/src/web/
 
