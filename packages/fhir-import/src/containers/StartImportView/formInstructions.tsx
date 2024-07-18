@@ -5,7 +5,7 @@ import ArrowDownThick from '@2fd/ant-design-icons/lib/ArrowDownThick';
 import { OpenSRPService, downloadFile, getFileNameFromCDHHeader } from '@opensrp/react-utils';
 import { defaultImportTemplateName, IMPORT_DOMAIN_URI } from '../../constants';
 import { useTranslation } from '../../mls';
-import { sendErrorNotification } from 'opensrp-notifications/dist/types';
+import { sendErrorNotification } from '@opensrp/notifications';
 
 const { Title, Text } = Typography;
 
@@ -28,8 +28,8 @@ export const ImporterFormInstructions = () => {
           direction="vertical"
           size="small"
           items={[
-            { title: InstructionStepOneTitle, description: InstructionStepOne },
-            { title: InstructionStepTwoTitle, description: InstructionStepTwo },
+            { title: <InstructionStepOneTitle />, description: <InstructionStepOne/> },
+            { title: <InstructionStepTwoTitle/>, description: <InstructionStepTwo/> },
           ]}
         ></Steps>
       </Space>

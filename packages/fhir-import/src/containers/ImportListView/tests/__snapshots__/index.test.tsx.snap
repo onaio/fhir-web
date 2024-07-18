@@ -40,7 +40,7 @@ exports[`Care Teams list view renders correctly: table row 1 page 1 5`] = `
 <td
   class="ant-table-cell ant-table-column-sort"
 >
-  07/04/2024, 12:26:51 PM
+  7/4/2024, 12:26:51 PM
 </td>
 `;
 
