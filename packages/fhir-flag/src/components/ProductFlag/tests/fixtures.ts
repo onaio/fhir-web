@@ -566,7 +566,7 @@ export const productFlag: IFlag = {
   },
 };
 
-export const createdEncounterProductFlag: IEncounter = {
+export const createdEncounterProductFlag = {
   resourceType: 'Encounter',
   id: '15e2dd99-91f7-5dc8-b84b-14d546610f3c',
   identifier: [{ use: 'usual', value: 'd8f6bb0d-a2ed-4bee-982b-846845930dbc' }],
@@ -649,8 +649,7 @@ export const createdEncounterProductFlag: IEncounter = {
   },
 };
 
-export const createdObservationProductFlag: IObservation = {
-  resourceType: 'Observation',
+export const createdObservationProductFlag = {
   id: 'd15869ed-1ab1-5dc8-b07c-d384bc4ce9b8',
   identifier: [{ use: 'usual', value: 'a065c211-cf3e-4b5b-972f-fdac0e45fef7' }],
   status: 'final',

@@ -100,6 +100,7 @@ test('renders correctly and fetches data', async () => {
       createdObservationLocationFlag
     )
     .reply(200, createdObservationLocationFlag)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .put(`/${FlagResourceType}/825b5491-9dad-4e28-ad73-521a31193de3`, locationUpdatedFlag as any)
     .reply(200, locationUpdatedFlag)
     .persist();

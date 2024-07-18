@@ -37,6 +37,7 @@ import {
   productLocation,
   productUpdatedFlag,
 } from './fixtures';
+import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -116,13 +117,14 @@ test('renders correctly and fetches data', async () => {
       createdObservationProductFlag
     )
     .reply(200, createdObservationProductFlag)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .put(`/${FlagResourceType}/1a3a0d65-b6ad-40af-b6cd-2e8801614de9`, productUpdatedFlag as any)
     .reply(200, productUpdatedFlag)
     .persist();
 
   const defaultProps: ProductFlagProps = {
     fhirBaseUrl: fhirBaseURL,
-    flag: productFlag as any,
+    flag: productFlag as IFlag,
     practitionerId: 'practitionerId',
     inventoryGroupReference: 'Group/inventoryGroupId',
   };
