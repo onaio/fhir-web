@@ -17,4 +17,4 @@ export const userToOrganizationAssignment = 'userToOrganizationAssignment' as co
 export const products = 'products' as const;
 export const productImages = 'productImages' as const;
 
-export const defaultImportTemplateName = "import-template"
+export const defaultImportTemplateName = 'import-template';

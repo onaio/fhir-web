@@ -28,8 +28,8 @@ export const ImporterFormInstructions = () => {
           direction="vertical"
           size="small"
           items={[
-            { title: <InstructionStepOneTitle />, description: <InstructionStepOne/> },
-            { title: <InstructionStepTwoTitle/>, description: <InstructionStepTwo/> },
+            { title: <InstructionStepOneTitle />, description: <InstructionStepOne /> },
+            { title: <InstructionStepTwoTitle />, description: <InstructionStepTwo /> },
           ]}
         ></Steps>
       </Space>
