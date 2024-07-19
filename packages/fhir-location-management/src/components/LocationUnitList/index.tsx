@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
 import { Row, Col, Button, Spin, Alert } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
-import { LocationUnitDetail } from '../LocationUnitDetail';
 import { useHistory } from 'react-router-dom';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { URL_LOCATION_UNIT_ADD } from '../../constants';
@@ -64,7 +63,6 @@ export function parseTableData(hierarchy: TreeNode[]) {
 
 export const LocationUnitList: React.FC<LocationUnitListProps> = (props: LocationUnitListProps) => {
   const { fhirBaseURL, fhirRootLocationId } = props;
-  const [detailId, setDetailId] = useState<string>();
   const selectedNode = useSelector((state) => getSelectedNode(state));
   const dispatch = useDispatch();
   const { t } = useMls();
@@ -116,6 +114,12 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
   }
   const tableDispData = parseTableData(tableNodes);
   const pageTitle = t('Location Unit Management');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
     <>
@@ -130,11 +134,10 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
           showIcon
         />
       )}
-      <section className="content-section">
+      <BodyLayout headerProps={headerProps}>
         <Helmet>
           <title>{pageTitle}</title>
         </Helmet>
-        <PageHeader title={pageTitle} />
         <Row>
           <Col className="bg-white p-3" span={6}>
             <Tree
@@ -146,7 +149,7 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               }}
             />
           </Col>
-          <Col className="bg-white p-3 border-left" span={detailId ? 13 : 18}>
+          <Col className="bg-white p-3 border-left" span={18}>
             <div className="mb-3 d-flex justify-content-between p-3">
               <h6 className="mt-4">
                 {selectedNode ? selectedNode.model.node.name : t('Location Unit')}
@@ -172,23 +175,11 @@ export const LocationUnitList: React.FC<LocationUnitListProps> = (props: Locatio
               </RbacCheck>
             </div>
             <div className="bg-white p-3">
-              <Table
-                data={tableDispData}
-                onViewDetails={async (row) => {
-                  setDetailId(row.id);
-                }}
-              />
+              <Table data={tableDispData} />
             </div>
           </Col>
-          {detailId ? (
-            <LocationUnitDetail
-              fhirBaseUrl={fhirBaseURL}
-              onClose={() => setDetailId('')}
-              detailId={detailId}
-            />
-          ) : null}
         </Row>
-      </section>
+      </BodyLayout>
     </>
   );
 };

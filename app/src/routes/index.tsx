@@ -1,4 +1,5 @@
 import { DashboardOutlined, IdcardOutlined } from '@ant-design/icons';
+import UploadIcon from '@2fd/ant-design-icons/lib/Upload';
 import {
   ENABLE_HEALTHCARE_SERVICES,
   ENABLE_FHIR_GROUP,
@@ -17,7 +18,7 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
 } from '../constants';
-import { URL_ALL_LOCATIONS, URL_SERVICE_POINT_LOCATIONS } from '@opensrp/fhir-location-management';
+import { URL_ALL_LOCATIONS, URL_SERVICE_POINT_LIST } from '@opensrp/fhir-location-management';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
 import type { TFunction } from '@opensrp/i18n';
 import { LIST_HEALTHCARE_URL } from '@opensrp/fhir-healthcare-service';
@@ -31,6 +32,7 @@ import {
 import React from 'react';
 import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
 import { getConfig, eusmProjectCode } from '@opensrp/pkg-config';
+import { DATA_IMPORT_LIST_URL } from '@opensrp/fhir-import';
 
 /** Interface for menu items */
 export interface Route {
@@ -110,10 +112,10 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           ],
         },
         {
-          title: t('Inventory'),
-          key: 'inventory',
+          title: t('Service Points Inventory'),
+          key: 'service-points-inventory',
           isHomePageLink: true,
-          url: URL_SERVICE_POINT_LOCATIONS,
+          url: URL_SERVICE_POINT_LIST,
           permissions: ['Location.read', 'Group.read'],
           enabled:
             COMPOSITE_ENABLE_LOCATIONS_MANAGEMENT && getConfig('projectCode') === eusmProjectCode,
@@ -127,19 +129,24 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
           url: URL_FHIR_CARE_TEAM,
         },
         {
-          title: t('Team Management'),
-          key: 'team-management',
+          title: t('Organization Management'),
+          key: 'org-management',
           isHomePageLink: true,
           permissions: ['Organization.read'],
           url: URL_TEAMS,
           enabled: COMPOSITE_ENABLE_TEAM_MANAGEMENT,
           children: [
-            { title: t('Teams'), url: URL_TEAMS, key: 'TEAMS', permissions: ['Organization.read'] },
             {
-              permissions: ['OrganizationAffiliation.read'],
-              title: t('Team Assignment'),
+              title: t('Organizations'),
+              url: URL_TEAMS,
+              key: 'ORGS',
+              permissions: ['Organization.read'],
+            },
+            {
+              permissions: ['OrganizationAffiliation.read', 'Location.read'],
+              title: t('Organization Assignment'),
               url: URL_TEAM_ASSIGNMENT,
-              key: 'team-assignment',
+              key: 'org-assignment',
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
@@ -185,6 +192,15 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
       permissions: ['Patient.read'],
       enabled: ENABLE_PATIENTS_MODULE,
       url: LIST_PATIENTS_URL,
+      isHomePageLink: true,
+    },
+    {
+      otherProps: { icon: <UploadIcon /> },
+      title: t('Data Imports'),
+      key: 'data-import',
+      enabled: true,
+      permissions: ['WebDataImport.read'],
+      url: DATA_IMPORT_LIST_URL,
       isHomePageLink: true,
     },
   ];

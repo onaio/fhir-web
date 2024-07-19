@@ -10,16 +10,6 @@ import { setAllConfigs } from '@opensrp/pkg-config';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { setLogger } from 'react-query';
 
-jest.mock('fhirclient', () => ({
-  client: jest.fn().mockImplementation(() => {
-    return {
-      request: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-    };
-  }),
-}));
-
 setAllConfigs({
   projectCode: 'core',
   TablesState: {},
@@ -52,8 +42,11 @@ Object.defineProperty(window, 'location', {
   writable: true,
 });
 
-/** Converts an object's binary to an arrayBuffer, useful when we
+/**
+ * Converts an object's binary to an arrayBuffer, useful when we
  * later want to convert it to a base 64 ascii string
+ *
+ * @param buffer
  */
 function toArrayBuffer(buffer) {
   const arrayBuffer = new ArrayBuffer(buffer.length);

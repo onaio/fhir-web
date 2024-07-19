@@ -1,4 +1,24 @@
 /* common styles goes here */
+
+/* common colors */
+:root {
+  /* side menu */
+  --menu-item-text__dark-theme__color: rgba(255, 255, 255, 0.7);
+  --menu-item-text_hover__dark-theme__color: #FFFFFF;
+  --sub-menu-items__background: #141414;
+
+  /* detail page tab count badge colors */
+  --tab-title-count-badge-active__color: #1676FE;
+  --tab-title-count-badge-active__background: #EBF7FF;
+  --tab-title-count-badge-inactive__color: #000000;
+  --tab-title-count-badge-inactive__background: #F2F2F2;
+
+  /* detail page resource details text colors */
+  --resource-detail-key__default__color: rgba(0, 0, 0, 0.65);
+  --resource-detail-key__light__color: rgba(0, 0, 0, 0.45);
+  --resource-detail-key__dark__color: rgba(0, 0, 0, 0.85);
+}
+
 .mr-0 {
   margin-right: 0px;
 }
@@ -22,4 +42,7 @@
 
 .flex-grow-1 {
   flex-grow: 1;
+}
+.elongate-search-bar{
+	width: 55%;
 }

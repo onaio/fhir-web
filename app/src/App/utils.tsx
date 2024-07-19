@@ -4,7 +4,6 @@ import {
   URL_DRAFT_FILE_LIST,
   URL_UPLOAD_DRAFT_FILE,
   URL_MANIFEST_RELEASE_LIST,
-  URL_LOCATION_UNIT,
 } from '../constants';
 import {
   OPENSRP_API_BASE_URL,
@@ -17,6 +16,7 @@ import {
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   FHIR_API_BASE_URL,
   KEYCLOAK_USERS_PAGE_SIZE,
+  FHIR_INVENTORY_LIST_ID,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -39,9 +39,6 @@ export const locationUnitProps = {
 };
 
 export const newLocationUnitProps = {
-  successURLGenerator: () => URL_LOCATION_UNIT,
-  cancelURLGenerator: () => URL_LOCATION_UNIT,
-  hidden: ['serviceType', 'latitude', 'longitude'],
   ...locationUnitProps,
 };
 
@@ -113,4 +110,10 @@ export const patientProps = {
 
 export const commmodityProps = {
   listId: COMMODITIES_LIST_RESOURCE_ID,
+};
+
+export const fhirCreateEditLocationProps = {
+  ...BaseProps,
+  listId: FHIR_INVENTORY_LIST_ID,
+  commodityListId: COMMODITIES_LIST_RESOURCE_ID,
 };

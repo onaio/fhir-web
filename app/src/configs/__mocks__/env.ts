@@ -10,6 +10,9 @@ export const ENABLE_OPENSRP_OAUTH = false;
 export const MAIN_LOGO_SRC =
   'https://github.com/OpenSRP/web/raw/master/app/src/assets/images/opensrp-logo-color.png';
 
+export const COLLAPSED_LOGO_SRC =
+  'https://github.com/OpenSRP/web/raw/main/app/src/assets/images/opensrp2-logo-small.png'
+
 export const PLAN_ASSIGNMENT_AT_GEO_LEVEL = 1;
 
 export const OPENSRP_LOGOUT_URL = 'https://opensrp-stage.smartregister.org/opensrp/logout.do';

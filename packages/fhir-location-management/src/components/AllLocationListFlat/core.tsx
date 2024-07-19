@@ -1,14 +1,18 @@
 import React from 'react';
-import { URL_LOCATION_UNIT_EDIT, URL_LOCATION_UNIT_ADD } from '../../constants';
+import {
+  URL_LOCATION_UNIT_ADD,
+  URL_LOCATION_VIEW_DETAILS,
+  BACK_SEARCH_PARAM,
+} from '../../constants';
 import { useMls } from '../../mls';
 import { Button, Divider, Dropdown } from 'antd';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, useLocation } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
 import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import './index.css';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
+import { EditLink } from '../EditLink';
 
 export type AllLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -23,16 +27,18 @@ export type AllLocationListFlatProps = Omit<
 export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) => {
   const { t } = useMls();
   const history = useHistory();
+  const location = useLocation();
+
+  const backToParam = new URLSearchParams({ [BACK_SEARCH_PARAM]: location.pathname });
 
   const getItems = (_: Dictionary): MenuProps['items'] => {
-    // Todo: replace _ above when handling onClick
     return [
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${_.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];
@@ -45,18 +51,18 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
       editable: true,
     },
     {
-      title: t('Type'),
+      title: t('Parent'),
+      dataIndex: 'parent' as const,
+      editable: true,
+    },
+    {
+      title: t('Physical Type'),
       dataIndex: 'type' as const,
       editable: true,
     },
     {
       title: t('Status'),
       dataIndex: 'status' as const,
-      editable: true,
-    },
-    {
-      title: t('Parent'),
-      dataIndex: 'parent' as const,
       editable: true,
     },
     {
@@ -68,9 +74,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <Link to={`${URL_LOCATION_UNIT_EDIT}/${record.id.toString()}`} className="m-0 p-1">
-                {t('Edit')}
-              </Link>
+              <EditLink location={record.location} editLinkText={t('Edit')} />
               <Divider type="vertical" />
             </>
           </RbacCheck>
@@ -89,7 +93,10 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
 
   const addLocationBtnRender = () => (
     <RbacCheck permissions={['Location.create']}>
-      <Button type="primary" onClick={() => history.push(URL_LOCATION_UNIT_ADD)}>
+      <Button
+        type="primary"
+        onClick={() => history.push(`${URL_LOCATION_UNIT_ADD}?${backToParam}`)}
+      >
         <PlusOutlined />
         {t('Add Location')}
       </Button>

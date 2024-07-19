@@ -1,14 +1,14 @@
 {
   "Actions": "Actions",
-  "An error occurred": "",
-  "Assign/Unassign Teams | {{locationName}}": "",
-  "Assigned Teams": "",
-  "Cancel": "",
-  "Edit": "",
-  "Enter a Team name": "",
-  "Name": "",
-  "Save": "",
-  "Successfully Assigned Teams": "",
-  "Team Assignment": "",
-  "Teams": ""
+  "An error occurred": "Une erreur est survenue",
+  "Assign/Unassign Teams | {{locationName}}": "Affecter/désaffecter des équipes {{locationName}}",
+  "Assigned Teams": "Equipes assignées",
+  "Cancel": "Annuler",
+  "Edit": "Modifier",
+  "Enter a Team name": "Saisir nom de l'équipe",
+  "Name": "Prénom",
+  "Save": "Sauvegarder",
+  "Successfully Assigned Teams": "Équipes affectées avec succès",
+  "Team Assignment": "Mission de l'équipe",
+  "Teams": "Equipes"
 }

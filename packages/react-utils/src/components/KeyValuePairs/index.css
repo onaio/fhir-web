@@ -3,12 +3,14 @@
   grid-template-columns: repeat(3, minmax(32px, 1fr));
 }
 
+.singleKeyValue-pair__value,
 .keyValueGrid-pair__value {
-  color: #000;
+  color: rgba(0, 0, 0, 0.85);
 }
 
+.singleKeyValue-pair__label,
 .keyValueGrid-pair__label {
-  color: #777;
+  color: var(--resource-detail-key__default__color);
 }
 
 .keyValueGrid-pair__value,
@@ -23,5 +25,31 @@
 dl.keyValueGrid,
 dl.singleKeyValue {
   margin-bottom: 0;
-  line-height: 1.2em;
+  line-height: 1.4em;
+  font-weight: 400;
+}
+
+/* override bootstrap more specif dt weight style*/
+dl dt {
+  font-weight: 400;
+}
+
+.singleFlat-key__default,
+.singleKeyValue-pair__default dt {
+  color: var(--resource-detail-key__default__color);
+}
+
+.singleFlat-value__default,
+.singleKeyValue-pair__default  dd {
+  color: var(--resource-detail-key__dark__color);
+}
+
+.singleFlat-key__light,
+.singleKeyValue-pair__light dt {
+  color: var(--resource-detail-key__light__color);
+}
+
+.singleFlat-value__light,
+.singleKeyValue-pair__light  dd {
+  color: var(--resource-detail-key__default__color)
 }

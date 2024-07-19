@@ -5,10 +5,10 @@ import { useHistory, Link } from 'react-router-dom';
 import { RbacCheck } from '@opensrp/rbac';
 import { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import './index.css';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 import { eusmPhysicalLocationsFilterParams } from './utils';
+import { URL_LOCATION_VIEW_DETAILS, URL_SERVICE_POINT_ADD_EDIT } from '../../constants';
 
 export type EusmLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -30,9 +30,9 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
       {
         key: '1',
         label: (
-          <Button disabled type="link">
+          <Link to={`${URL_LOCATION_VIEW_DETAILS}/${_.id}`} className="m-0 p-1">
             {t('View details')}
-          </Button>
+          </Link>
         ),
       },
     ];
@@ -68,7 +68,10 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
         <span className="d-flex align-items-center">
           <RbacCheck permissions={['Location.update']}>
             <>
-              <Link to={`${'#'}/${record.id.toString()}`} className="m-0 p-1">
+              <Link
+                to={`${URL_SERVICE_POINT_ADD_EDIT}/${record.id.toString()}`}
+                className="m-0 p-1"
+              >
                 {t('Edit')}
               </Link>
               <Divider type="vertical" />
@@ -89,7 +92,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
 
   const addLocationBtnRender = () => (
     <RbacCheck permissions={['Location.create']}>
-      <Button disabled type="primary" onClick={() => history.push('#')}>
+      <Button type="primary" onClick={() => history.push(URL_SERVICE_POINT_ADD_EDIT)}>
         <PlusOutlined />
         {t('Add Service point')}
       </Button>

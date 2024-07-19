@@ -64,7 +64,7 @@ describe('containers/pages/Home', () => {
     expect(Array.from(links).map((x) => x.textContent)).toEqual([
       'User Management',
       'Location Management',
-      'Team Management',
+      'Organization Management',
       'Questionnaire Management',
     ]);
     links.forEach((link) => {

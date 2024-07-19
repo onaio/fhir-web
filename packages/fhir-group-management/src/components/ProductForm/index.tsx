@@ -36,6 +36,7 @@ import {
   normalizeFileInputEvent,
   SelectOption,
 } from './utils';
+import { useUserRole } from '@opensrp/rbac';
 
 const { Item: FormItem } = Form;
 
@@ -82,6 +83,11 @@ function CommodityForm<
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
+
+  const userRole = useUserRole();
+  if (!userRole.hasPermissions(['Binary.create'])) {
+    disabled.push(productImage);
+  }
 
   const { mutate, isLoading } = useMutation(
     (values: FormFields) => {
@@ -206,7 +212,7 @@ function CommodityForm<
       <FormItem
         id={isAttractiveItem}
         name={isAttractiveItem}
-        label={t('Attractive item')}
+        label={t('Is it an Asset')}
         hidden={hidden.includes(isAttractiveItem)}
         rules={validationRules[isAttractiveItem]}
       >
@@ -269,26 +275,40 @@ function CommodityForm<
         <InputNumber disabled={disabled.includes(accountabilityPeriod)} min={0} />
       </FormItem>
 
-      <Form.Item
-        id={productImage}
-        hidden={hidden.includes(productImage)}
-        name={productImage}
-        label={t('Photo of the product')}
-        valuePropName="fileList"
-        getValueFromEvent={normalizeFileInputEvent}
-      >
-        <Upload
-          beforeUpload={() => false}
-          accept="image/*"
-          multiple={false}
-          listType="picture-card"
-          maxCount={1}
-        >
-          <button style={{ border: 0, background: 'none' }} type="button">
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </button>
-        </Upload>
+      <Form.Item noStyle dependencies={[productImage]}>
+        {({ getFieldValue }) => {
+          return (
+            <Form.Item
+              id={productImage}
+              hidden={hidden.includes(productImage)}
+              name={productImage}
+              label={t('Photo of the product')}
+              valuePropName="fileList"
+              getValueFromEvent={normalizeFileInputEvent}
+            >
+              <Upload
+                id={productImage}
+                beforeUpload={() => false}
+                accept="image/*"
+                multiple={false}
+                listType="picture-card"
+                maxCount={1}
+                disabled={disabled.includes(productImage)}
+              >
+                {!getFieldValue(productImage)?.length ? (
+                  <button
+                    data-testid="upload-button"
+                    style={{ border: 0, background: 'none' }}
+                    type="button"
+                  >
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </button>
+                ) : null}
+              </Upload>
+            </Form.Item>
+          );
+        }}
       </Form.Item>
 
       <FormItem {...tailLayout}>

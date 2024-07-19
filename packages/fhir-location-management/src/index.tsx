@@ -3,6 +3,7 @@ export { Tree };
 export * as locationTreeStateDucks from './ducks/location-tree-state';
 export * from './components/LocationUnitList';
 export * from './components/AddEditLocationUnit';
+export * from './components/ViewDetails';
 export * from './components/LocationForm';
 export * from './components/AllLocationListFlat';
 export * from './helpers/utils';

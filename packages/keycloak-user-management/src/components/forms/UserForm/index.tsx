@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
@@ -22,7 +22,7 @@ import {
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
 import { compositionResourceType, PRACTITIONER, SUPERVISOR } from '../../../constants';
-import { FhirSelect } from '@opensrp/react-utils';
+import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
@@ -101,170 +101,174 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
       ]);
     }
   }, [form, initialValues, userEnabled]);
+  const pageTitle = props.initialValues.id
+    ? t('Edit User | {{username}}', { username: initialValues.username })
+    : t('Add User');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <Row className="content-section">
-      {/** If email is provided render edit user otherwise add user */}
-      <PageHeader
-        title={
-          props.initialValues.id
-            ? t('Edit User | {{username}}', { username: initialValues.username })
-            : t('Add User')
-        }
-      />
-      <Col className="bg-white p-3" span={24}>
-        <Form
-          {...layout}
-          form={form}
-          initialValues={initialValues}
-          onFinish={(values) => {
-            setSubmitting(true);
-            submitForm(
-              { ...initialValues, ...values },
-              keycloakBaseURL,
-              userGroups,
-              initialValues.userGroups as string[],
-              practitionerUpdater,
-              t
-            )
-              .catch((_: Error) => {
-                if (props.initialValues.id) {
-                  sendErrorNotification(t('There was a problem updating user details'));
-                }
-                sendErrorNotification(t('There was a problem creating User'));
-              })
-              .finally(() => setSubmitting(false));
-          }}
-        >
-          <Form.Item
-            name="firstName"
-            id="firstName"
-            label={t('First Name')}
-            rules={[{ required: true, message: t('First Name is required') }]}
+    <BodyLayout headerProps={headerProps}>
+      <Row>
+        {/** If email is provided render edit user otherwise add user */}
+        <Col className="bg-white p-3" span={24}>
+          <Form
+            {...layout}
+            form={form}
+            initialValues={initialValues}
+            onFinish={(values) => {
+              setSubmitting(true);
+              submitForm(
+                { ...initialValues, ...values },
+                keycloakBaseURL,
+                userGroups,
+                initialValues.userGroups as string[],
+                practitionerUpdater,
+                t
+              )
+                .catch((_: Error) => {
+                  if (props.initialValues.id) {
+                    sendErrorNotification(t('There was a problem updating user details'));
+                  }
+                  sendErrorNotification(t('There was a problem creating User'));
+                })
+                .finally(() => setSubmitting(false));
+            }}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="lastName"
-            id="lastName"
-            label={t('Last Name')}
-            rules={[{ required: true, message: t('Last Name is required') }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="email" id="email" label={t('Email')}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="username"
-            id="username"
-            label={t('Username')}
-            rules={[{ required: true, message: t('Username is required') }]}
-          >
-            <Input disabled={initialValues.id ? true : false} />
-          </Form.Item>
-
-          {shouldRender(CONTACT_FORM_FIELD) ? (
             <Form.Item
-              id={CONTACT_FORM_FIELD}
-              rules={[
-                {
-                  type: 'string',
-                  pattern: /^0\d{9}$/,
-                  message: t('Contact should be 10 digits and start with 0'),
-                },
-                {
-                  required: !isHidden(CONTACT_FORM_FIELD),
-                  message: t('Contact is required'),
-                },
-              ]}
-              hidden={isHidden(CONTACT_FORM_FIELD)}
-              name={CONTACT_FORM_FIELD}
-              label={t('Contact')}
+              name="firstName"
+              id="firstName"
+              label={t('First Name')}
+              rules={[{ required: true, message: t('First Name is required') }]}
             >
-              <Input></Input>
+              <Input />
             </Form.Item>
-          ) : null}
+            <Form.Item
+              name="lastName"
+              id="lastName"
+              label={t('Last Name')}
+              rules={[{ required: true, message: t('Last Name is required') }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item name="email" id="email" label={t('Email')}>
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="username"
+              id="username"
+              label={t('Username')}
+              rules={[{ required: true, message: t('Username is required') }]}
+            >
+              <Input disabled={initialValues.id ? true : false} />
+            </Form.Item>
 
-          {isFHIRInstance ? (
-            <Form.Item id="userType" name="userType" label={t('User Type')}>
-              <Radio.Group
-                options={[
-                  { label: t('Practitioner'), value: PRACTITIONER },
-                  { label: t('Supervisor'), value: SUPERVISOR },
+            {shouldRender(CONTACT_FORM_FIELD) ? (
+              <Form.Item
+                id={CONTACT_FORM_FIELD}
+                rules={[
+                  {
+                    type: 'string',
+                    pattern: /^0\d{9}$/,
+                    message: t('Contact should be 10 digits and start with 0'),
+                  },
+                  {
+                    required: !isHidden(CONTACT_FORM_FIELD),
+                    message: t('Contact is required'),
+                  },
                 ]}
-                name="userType"
+                hidden={isHidden(CONTACT_FORM_FIELD)}
+                name={CONTACT_FORM_FIELD}
+                label={t('Contact')}
+              >
+                <Input></Input>
+              </Form.Item>
+            ) : null}
+
+            {isFHIRInstance ? (
+              <Form.Item id="userType" name="userType" label={t('User Type')}>
+                <Radio.Group
+                  options={[
+                    { label: t('Practitioner'), value: PRACTITIONER },
+                    { label: t('Supervisor'), value: SUPERVISOR },
+                  ]}
+                  name="userType"
+                ></Radio.Group>
+              </Form.Item>
+            ) : null}
+
+            <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
+              <Radio.Group
+                options={status}
+                name="enabled"
+                // watch user's status
+                onChange={(e) => setUserEnabled(e.target.value)}
               ></Radio.Group>
             </Form.Item>
-          ) : null}
 
-          <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
-            <Radio.Group
-              options={status}
-              name="enabled"
-              // watch user's status
-              onChange={(e) => setUserEnabled(e.target.value)}
-            ></Radio.Group>
-          </Form.Item>
+            {initialValues.id && initialValues.id !== extraData.user_id ? (
+              <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
+                <Radio.Group name="active">
+                  {status.map((e) => (
+                    <Radio
+                      name="active"
+                      key={e.label}
+                      value={e.value}
+                      // disable field if user is disabled
+                      disabled={!userEnabled}
+                    >
+                      {e.label}
+                    </Radio>
+                  ))}
+                </Radio.Group>
+              </Form.Item>
+            ) : null}
 
-          {initialValues.id && initialValues.id !== extraData.user_id ? (
-            <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
-              <Radio.Group name="active">
-                {status.map((e) => (
-                  <Radio
-                    name="active"
-                    key={e.label}
-                    value={e.value}
-                    // disable field if user is disabled
-                    disabled={!userEnabled}
-                  >
-                    {e.label}
-                  </Radio>
-                ))}
-              </Radio.Group>
+            <Form.Item name="userGroups" id="userGroups" label={t('Keycloak User Group')}>
+              <Select<SelectOption[]>
+                mode="multiple"
+                allowClear
+                placeholder={t('Please select')}
+                style={{ width: '100%' }}
+                options={getUserGroupsOptions(userGroups)}
+                filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
+              ></Select>
             </Form.Item>
-          ) : null}
 
-          <Form.Item name="userGroups" id="userGroups" label={t('Keycloak User Group')}>
-            <Select<SelectOption[]>
-              mode="multiple"
-              allowClear
-              placeholder={t('Please select')}
-              style={{ width: '100%' }}
-              options={getUserGroupsOptions(userGroups)}
-              filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
-            ></Select>
-          </Form.Item>
+            {isFHIRInstance ? (
+              <Form.Item
+                id="fhirCoreAppId"
+                name="fhirCoreAppId"
+                label={t('Application ID')}
+                rules={[{ required: true, message: t('Application Id is required') }]}
+                data-testid="fhirCoreAppId"
+              >
+                <PaginatedAsyncSelect<IComposition>
+                  baseUrl={baseUrl}
+                  resourceType={compositionResourceType}
+                  transformOption={getCompositionOptions}
+                  extraQueryParams={compositionUrlFilter}
+                  showSearch={true}
+                ></PaginatedAsyncSelect>
+              </Form.Item>
+            ) : null}
 
-          {isFHIRInstance ? (
-            <Form.Item
-              id="fhirCoreAppId"
-              name="fhirCoreAppId"
-              label={t('Application ID')}
-              rules={[{ required: true, message: t('Application Id is required') }]}
-              data-testid="fhirCoreAppId"
-            >
-              <FhirSelect<IComposition>
-                baseUrl={baseUrl}
-                resourceType={compositionResourceType}
-                transformOption={getCompositionOptions}
-                extraQueryParams={compositionUrlFilter}
-                showSearch={true}
-              ></FhirSelect>
+            <Form.Item {...tailLayout}>
+              <Button type="primary" htmlType="submit" className="create-user">
+                {isSubmitting ? t('SAVING') : t('Save')}
+              </Button>
+              <Button onClick={() => history.goBack()} className="cancel-user">
+                {t('Cancel')}
+              </Button>
             </Form.Item>
-          ) : null}
-
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit" className="create-user">
-              {isSubmitting ? t('SAVING') : t('Save')}
-            </Button>
-            <Button onClick={() => history.goBack()} className="cancel-user">
-              {t('Cancel')}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Col>
-    </Row>
+          </Form>
+        </Col>
+      </Row>
+    </BodyLayout>
   );
 };
 

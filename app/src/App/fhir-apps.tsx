@@ -79,11 +79,15 @@ import {
   AffiliationList as FhirTeamAssignment,
 } from '@opensrp/fhir-team-management';
 import {
+  EusmAddEditLocationUnit,
   LocationUnitList as FHIRLocationUnitList,
   NewEditLocationUnit as FHIRNewEditLocationUnit,
+  URL_SERVICE_POINT_ADD_EDIT,
+  URL_SERVICE_POINT_LIST,
+  URL_LOCATION_VIEW_DETAILS,
+  ViewDetails,
   AllLocationListFlat as ListAllLocationsFlat,
   URL_ALL_LOCATIONS,
-  URL_SERVICE_POINT_LOCATIONS,
   EusmLocationListFlat,
 } from '@opensrp/fhir-location-management';
 import {
@@ -96,6 +100,7 @@ import {
   patientProps,
   fhirCreateEditUserProps,
   commmodityProps,
+  fhirCreateEditLocationProps,
 } from './utils';
 import './App.css';
 import {
@@ -114,10 +119,14 @@ import {
   GroupList,
   LIST_COMMODITY_URL,
   LIST_GROUP_URL,
+  ADD_LOCATION_INVENTORY,
+  AddLocationInventory,
 } from '@opensrp/fhir-group-management';
+import { CloseFlag, URL_CLOSE_FLAGS } from '@opensrp/fhir-flag';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
 import { APP_LOGIN_URL } from '../configs/dispatchConfig';
+import { DATA_IMPORT_CREATE_URL, ImportDetailViewDetails, DATA_IMPORT_DETAIL_URL, DATA_IMPORT_LIST_URL, DataImportList, StartDataImport } from '@opensrp/fhir-import';
 
 /** Util function that renders Oauth2 callback components
  *
@@ -195,6 +204,40 @@ const FHIRApps = () => {
         permissions={['iam_group.read']}
         component={UserGroupsList}
       />
+          <PrivateComponent
+          redirectPath={APP_CALLBACK_URL}
+          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+          exact
+          path={DATA_IMPORT_LIST_URL}
+          permissions={['WebDataImport.read']}
+          component={DataImportList}
+        />
+              <PrivateComponent
+          redirectPath={APP_CALLBACK_URL}
+          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+          exact
+          path={`${DATA_IMPORT_CREATE_URL}`}
+          permissions={['WebDataImport.create']}
+          component={StartDataImport}
+        />
+              <PrivateComponent
+          redirectPath={APP_CALLBACK_URL}
+          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+          exact
+          path={`${DATA_IMPORT_DETAIL_URL}/:${'workflowId'}`}
+          {...patientProps}
+          permissions={['WebDataImport.read']}
+          component={ImportDetailViewDetails}
+        />
+        <PrivateComponent
+          redirectPath={APP_CALLBACK_URL}
+          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+          exact
+          path={`${DATA_IMPORT_LIST_URL}/:${'workflowId'}`}
+          {...patientProps}
+          permissions={['WebDataImport.read']}
+          component={DataImportList}
+        />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -209,6 +252,15 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={`${LIST_PATIENTS_URL}/:${'id'}`}
+        {...patientProps}
+        permissions={['Patient.read']}
+        component={PatientDetails}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${LIST_PATIENTS_URL}/:${'id'}/:resourceType/:resourceId`}
         {...patientProps}
         permissions={['Patient.read']}
         component={PatientDetails}
@@ -327,7 +379,7 @@ const FHIRApps = () => {
         exact
         path={URL_TEAM_ASSIGNMENT}
         {...teamAffiliationProps}
-        permissions={['OrganizationAffiliation.read']}
+        permissions={['OrganizationAffiliation.read', 'Location.read']}
         component={FhirTeamAssignment}
       />
       <PrivateComponent
@@ -378,7 +430,7 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
-        path={URL_SERVICE_POINT_LOCATIONS}
+        path={URL_SERVICE_POINT_LIST}
         permissions={['Location.read']}
         component={EusmLocationListFlat}
       />
@@ -395,10 +447,36 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
+        path={URL_SERVICE_POINT_ADD_EDIT}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_SERVICE_POINT_ADD_EDIT}/:id`}
+        {...newLocationUnitProps}
+        permissions={['Location.create']}
+        component={EusmAddEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
         path={URL_LOCATION_UNIT_EDIT}
         {...editLocationProps}
         permissions={['Location.update']}
         component={FHIRNewEditLocationUnit}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_LOCATION_VIEW_DETAILS}/:id`}
+        permissions={['Location.read']}
+        component={ViewDetails}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
@@ -449,6 +527,24 @@ const FHIRApps = () => {
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId`}
+        {...fhirCreateEditLocationProps}
+        exact
+        permissions={['Group.create']}
+        component={AddLocationInventory}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        path={`${ADD_LOCATION_INVENTORY}/:servicePointId/:inventoryId`}
+        {...fhirCreateEditLocationProps}
+        exact
+        permissions={['Group.create']}
+        component={AddLocationInventory}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         path={`${LIST_GROUP_URL}/:id`}
         permissions={['Group.read']}
         component={GroupList}
@@ -483,6 +579,14 @@ const FHIRApps = () => {
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
         component={UserGroupsList}
         permissions={['iam_group.read']}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${URL_CLOSE_FLAGS}/:id`}
+        // permissions={['Flag.update']}
+        component={CloseFlag}
       />
       <Route
         exact

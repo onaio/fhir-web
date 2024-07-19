@@ -58,6 +58,10 @@ export class FHIRServiceClass<T extends IResource> {
   public baseURL: string;
   public resourceType: string;
   public signal: AbortSignal;
+  public headers: RequestInit['headers'] = {
+    'Content-Type': 'application/fhir+json',
+    'cache-control': 'no-cache',
+  };
 
   /**
    * Constructor method
@@ -75,6 +79,10 @@ export class FHIRServiceClass<T extends IResource> {
     this.baseURL = baseURL;
     this.resourceType = resourceType;
     this.signal = signal;
+  }
+
+  public setHeaders(headers: Headers) {
+    this.headers = headers;
   }
 
   public buildQueryParams(params: URLParams | null) {
@@ -102,21 +110,27 @@ export class FHIRServiceClass<T extends IResource> {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
     // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.create<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
+    return serve.create<T>(payload as fhirclient.FHIR.Resource, {
+      signal: this.signal,
+      headers: this.headers,
+    });
   }
 
   public async update(payload: T) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
     // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.update<T>(payload as fhirclient.FHIR.Resource, { signal: this.signal });
+    return serve.update<T>(payload as fhirclient.FHIR.Resource, {
+      signal: this.signal,
+      headers: this.headers,
+    });
   }
 
   public async list(params: URLParams | null = null) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const queryStr = this.buildQueryParams(params);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>({ url: queryStr, headers: { 'cache-control': 'no-cache' } });
+    return serve.request<T>({ url: queryStr, headers: this.headers });
   }
 
   public async read(id: string) {
@@ -124,14 +138,17 @@ export class FHIRServiceClass<T extends IResource> {
     const serve = FHIR.client(this.buildState(accessToken));
     return serve.request<T>({
       url: `${this.resourceType}/${id}`,
-      headers: { 'cache-control': 'no-cache' },
+      headers: this.headers,
     });
   }
 
   public async delete(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
-    return serve.delete(`${this.resourceType}/${id}`, { signal: this.signal });
+    return serve.delete(`${this.resourceType}/${id}`, {
+      signal: this.signal,
+      headers: this.headers,
+    });
   }
 }
 

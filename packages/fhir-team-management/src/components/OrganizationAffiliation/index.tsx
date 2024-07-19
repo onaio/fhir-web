@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Row, Col, Spin } from 'antd';
 import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import AffiliationTable from './Table';
@@ -63,12 +63,17 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
   }
 
   const pageTitle = t('Team Assignment');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
   return (
-    <section className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Row>
         <Col className="bg-white p-3" span={6}>
           <Tree
@@ -88,6 +93,6 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
           </div>
         </Col>
       </Row>
-    </section>
+    </BodyLayout>
   );
 };

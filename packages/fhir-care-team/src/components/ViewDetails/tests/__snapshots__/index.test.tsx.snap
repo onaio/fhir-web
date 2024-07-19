@@ -2,683 +2,407 @@
 
 exports[`1157 - view details errors out for careTeam 3500 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      CareTeam ID
-    </span>
+  <dt>
+    CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      3500
-    </span>
+  <dd>
+    3500
   </dd>
 </div>
 `;
 
 exports[`1157 - view details errors out for careTeam 3500 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+  <dt>
+    Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Peter James Charlmers Care team
-    </span>
+  <dd>
+    Peter James Charlmers Care team
   </dd>
 </div>
 `;
 
 exports[`1157 - view details errors out for careTeam 3500 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      status
-    </span>
+  <dt>
+    status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      active
-    </span>
+  <dd>
+    active
   </dd>
 </div>
 `;
 
 exports[`1157 - view details errors out for careTeam 3500 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Participants
-    </span>
+  <dt>
+    Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      <ul>
-        <li>
-          <div
-            data-testid="key-value"
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
           >
-            <dl
-              class="singleKeyValue"
+            <div
+              class="singleKeyValue-pair__default"
             >
-              <div
-                class="singleKeyValue-pair"
-              >
-                <dt
-                  class="singleKeyValue-pair__label"
+              <dt>
+                Patient
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
                 >
-                  <span
-                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-                  >
-                    Patient
-                  </span>
-                </dt>
-                <dd
-                  class="singleKeyValue-pair__value"
-                >
-                  <span
-                    class="ant-typography css-dev-only-do-not-override-k7429z"
-                  >
-                    <ul
-                      id="care-team-participants"
-                    >
-                      <li>
-                        Peter James Chalmers
-                      </li>
-                    </ul>
-                  </span>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </li>
-      </ul>
-    </span>
+                  <li>
+                    Peter James Chalmers
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`1157 - view details errors out for careTeam 3500 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Patient
-    </span>
+  <dt>
+    Patient
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <ul
+      id="care-team-participants"
     >
-      <ul
-        id="care-team-participants"
-      >
-        <li>
-          Peter James Chalmers
-        </li>
-      </ul>
-    </span>
+      <li>
+        Peter James Chalmers
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`1157 - view details errors out for careTeam 3500 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Managing organizations
-    </span>
+  <dt>
+    Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
-        data-show="true"
-        role="alert"
+        class="ant-alert-content"
       >
         <div
-          class="ant-alert-content"
+          class="ant-alert-description"
         >
-          <div
-            class="ant-alert-description"
-          >
-            No managing organizations found
-          </div>
+          No managing organizations found
         </div>
       </div>
-    </span>
+    </div>
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      CareTeam ID
-    </span>
+  <dt>
+    CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      142534
-    </span>
+  <dd>
+    142534
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Identifier
-    </span>
+  <dt>
+    Identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      99c4dde5-3aca-4a4b-8b33-b50142e05da6
-    </span>
+  <dd>
+    99c4dde5-3aca-4a4b-8b33-b50142e05da6
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+  <dt>
+    Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Brown Bag
-    </span>
+  <dd>
+    Brown Bag
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      status
-    </span>
+  <dt>
+    status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      active
-    </span>
+  <dd>
+    active
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Participants
-    </span>
+  <dt>
+    Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      <ul>
-        <li>
-          <div
-            data-testid="key-value"
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
           >
-            <dl
-              class="singleKeyValue"
+            <div
+              class="singleKeyValue-pair__default"
             >
-              <div
-                class="singleKeyValue-pair"
-              >
-                <dt
-                  class="singleKeyValue-pair__label"
+              <dt>
+                Practitioner
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
                 >
-                  <span
-                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-                  >
-                    Practitioner
-                  </span>
-                </dt>
-                <dd
-                  class="singleKeyValue-pair__value"
-                >
-                  <span
-                    class="ant-typography css-dev-only-do-not-override-k7429z"
-                  >
-                    <ul
-                      id="care-team-participants"
-                    >
-                      <li>
-                        AeHIN Demo
-                      </li>
-                    </ul>
-                  </span>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </li>
-      </ul>
-    </span>
+                  <li>
+                    AeHIN Demo
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Practitioner
-    </span>
+  <dt>
+    Practitioner
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <ul
+      id="care-team-participants"
     >
-      <ul
-        id="care-team-participants"
-      >
-        <li>
-          AeHIN Demo
-        </li>
-      </ul>
-    </span>
+      <li>
+        AeHIN Demo
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`Closes on clicking cancel (X)  7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Managing organizations
-    </span>
+  <dt>
+    Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
-        data-show="true"
-        role="alert"
+        class="ant-alert-content"
       >
         <div
-          class="ant-alert-content"
+          class="ant-alert-description"
         >
-          <div
-            class="ant-alert-description"
-          >
-            No managing organizations found
-          </div>
+          No managing organizations found
         </div>
       </div>
-    </span>
+    </div>
   </dd>
 </div>
 `;
 
 exports[`works correctly 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      CareTeam ID
-    </span>
+  <dt>
+    CareTeam ID
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      131411
-    </span>
+  <dd>
+    131411
   </dd>
 </div>
 `;
 
 exports[`works correctly 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Identifier
-    </span>
+  <dt>
+    Identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      93bc9c3d-6321-41b0-9b93-1275d7114e22
-    </span>
+  <dd>
+    93bc9c3d-6321-41b0-9b93-1275d7114e22
   </dd>
 </div>
 `;
 
 exports[`works correctly 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+  <dt>
+    Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Care Team One
-    </span>
+  <dd>
+    Care Team One
   </dd>
 </div>
 `;
 
 exports[`works correctly 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      status
-    </span>
+  <dt>
+    status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      active
-    </span>
+  <dd>
+    active
   </dd>
 </div>
 `;
 
 exports[`works correctly 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Participants
-    </span>
+  <dt>
+    Participants
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      <ul>
-        <li>
-          <div
-            data-testid="key-value"
+  <dd>
+    <ul>
+      <li>
+        <div
+          data-testid="key-value"
+        >
+          <dl
+            class="singleKeyValue"
           >
-            <dl
-              class="singleKeyValue"
+            <div
+              class="singleKeyValue-pair__default"
             >
-              <div
-                class="singleKeyValue-pair"
-              >
-                <dt
-                  class="singleKeyValue-pair__label"
+              <dt>
+                Practitioner
+              </dt>
+              <dd>
+                <ul
+                  id="care-team-participants"
                 >
-                  <span
-                    class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-                  >
-                    Practitioner
-                  </span>
-                </dt>
-                <dd
-                  class="singleKeyValue-pair__value"
-                >
-                  <span
-                    class="ant-typography css-dev-only-do-not-override-k7429z"
-                  >
-                    <ul
-                      id="care-team-participants"
-                    >
-                      <li>
-                        Ward test hey N test Tester family
-                      </li>
-                      <li>
-                        Ward test hey N test Tester family
-                      </li>
-                    </ul>
-                  </span>
-                </dd>
-              </div>
-            </dl>
-          </div>
-        </li>
-      </ul>
-    </span>
+                  <li>
+                    Ward test hey N test Tester family
+                  </li>
+                  <li>
+                    Ward test hey N test Tester family
+                  </li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`works correctly 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Practitioner
-    </span>
+  <dt>
+    Practitioner
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <ul
+      id="care-team-participants"
     >
-      <ul
-        id="care-team-participants"
-      >
-        <li>
-          Ward test hey N test Tester family
-        </li>
-        <li>
-          Ward test hey N test Tester family
-        </li>
-      </ul>
-    </span>
+      <li>
+        Ward test hey N test Tester family
+      </li>
+      <li>
+        Ward test hey N test Tester family
+      </li>
+    </ul>
   </dd>
 </div>
 `;
 
 exports[`works correctly 7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Managing organizations
-    </span>
+  <dt>
+    Managing organizations
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <div
+      class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
+      data-show="true"
+      role="alert"
     >
       <div
-        class="ant-alert ant-alert-warning ant-alert-with-description ant-alert-no-icon css-dev-only-do-not-override-k7429z"
-        data-show="true"
-        role="alert"
+        class="ant-alert-content"
       >
         <div
-          class="ant-alert-content"
+          class="ant-alert-description"
         >
-          <div
-            class="ant-alert-description"
-          >
-            No managing organizations found
-          </div>
+          No managing organizations found
         </div>
       </div>
-    </span>
+    </div>
   </dd>
 </div>
 `;

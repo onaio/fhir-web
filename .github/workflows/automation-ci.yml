@@ -16,25 +16,25 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
 
     steps:
       # setup code, directories and system wide dependency
       - name: Checkout web
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
           path: web
           fetch-depth: 1
 
       - name: Checkout express server
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: onaio/express-server
           path: express
 
       - name: Checkout fhir automation
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: onaio/fhir-web-automation
           token: ${{ secrets.ACCESS_TOKEN }} # currently using a PAT -> not the best option.
@@ -47,7 +47,7 @@ jobs:
           java-version: 11
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -100,6 +100,7 @@ jobs:
           REACT_APP_ENABLE_FHIR_ORGANIZATION=true
           REACT_APP_ENABLE_FHIR_TEAMS=true
           REACT_APP_FHIR_ROOT_LOCATION_ID=eff94f33-c356-4634-8795-d52340706ba9
+          REACT_APP_FHIR_INVENTORY_LIST_ID=81b674df-e958-4684-8931-8feefa74d6fb
           REACT_APP_FHIR_PATIENT_SORT_FIELDS=-_lastUpdated
           REACT_APP_FHIR_PATIENT_BUNDLE_SIZE=5000
           REACT_APP_ENABLE_FHIR_HEALTHCARE_SERVICES=false

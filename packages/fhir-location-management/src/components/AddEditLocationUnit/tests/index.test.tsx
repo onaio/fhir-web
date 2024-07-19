@@ -161,7 +161,17 @@ test('#1277 - works ok for new locations', async () => {
     status: 'active',
     name: 'area51',
     partOf: { reference: 'Location/2252', display: 'Root FHIR Location' },
-    identifier: [{ use: 'official', value: '13cafa46-7251-429a-8d19-8da0583c0c5a' }],
+    type: [
+      {
+        coding: [
+          {
+            system: 'http://terminology.hl7.org/CodeSystem/location-physical-type',
+            code: 'jdn',
+            display: 'Jurisdiction',
+          },
+        ],
+      },
+    ],
     physicalType: {
       coding: [
         {
@@ -221,7 +231,9 @@ test('data loading problem', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // errors out
-  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
+  expect(
+    screen.getByText('Unable to either load this location or the location hierarchy')
+  ).toBeInTheDocument();
 });
 
 test('data loading but undefined', async () => {
@@ -244,5 +256,7 @@ test('data loading but undefined', async () => {
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   // errors out
-  expect(screen.getByText('Unable to load the location or location hierarchy')).toBeInTheDocument();
+  expect(
+    screen.getByText('Unable to either load this location or the location hierarchy')
+  ).toBeInTheDocument();
 });

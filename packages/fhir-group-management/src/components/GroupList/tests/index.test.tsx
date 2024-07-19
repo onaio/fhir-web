@@ -128,7 +128,7 @@ test('renders correctly when listing resources', async () => {
   const addGroupBtn = screen.queryByText(/Add Group/);
   expect(addGroupBtn).not.toBeInTheDocument();
 
-  expect(document.querySelector('.page-header')).toMatchSnapshot('Header title');
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
 
   document.querySelectorAll('tr').forEach((tr, idx) => {
     tr.querySelectorAll('td').forEach((td) => {
@@ -185,7 +185,7 @@ test('renders correctly when listing resources', async () => {
 
   // see view details contents
   const keyValuePairs = document.querySelectorAll(
-    'div[data-testid="key-value"] .singleKeyValue-pair'
+    'div[data-testid="key-value"] .singleKeyValue-pair__default'
   );
   keyValuePairs.forEach((pair) => {
     expect(pair).toMatchSnapshot();

@@ -1,11 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly when listing organizations: Header title 1`] = `
-<h4
-  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
 >
-  Organization list
-</h4>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="Organization list"
+      >
+        Organization list
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`renders correctly when listing organizations: Search 1 page 1 1`] = `
@@ -60,106 +73,58 @@ exports[`renders correctly when listing organizations: Search 1 page 1 2`] = `
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 1`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team id
-    </span>
+  <dt>
+    Team id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      205
-    </span>
+  <dd>
+    205
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 2`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team identifier
-    </span>
+  <dt>
+    Team identifier
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      205
-    </span>
+  <dd>
+    205
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team status
-    </span>
+  <dt>
+    Team status
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+  <dd>
+    Active
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing organizations: single key value pairs detail section 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Team practitioners
-    </span>
+  <dt>
+    Team practitioners
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
+  <dd>
+    <ul
+      id="practitioner-teams"
     >
-      <ul
-        id="practitioner-teams"
-      >
-        <li>
-          Allay Allan
-        </li>
-      </ul>
-    </span>
+      <li>
+        Allay Allan
+      </li>
+    </ul>
   </dd>
 </div>
 `;

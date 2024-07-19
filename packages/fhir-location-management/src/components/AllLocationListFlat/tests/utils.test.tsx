@@ -19,6 +19,7 @@ describe('location-management/src/components/AllLocationListFlat/utils', () => {
         parent: '',
         status: 'active',
         type: 'Building',
+        location: flatLocations.entry[0].resource,
       },
     ]);
   });

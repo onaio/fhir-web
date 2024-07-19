@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Divider, Dropdown } from 'antd';
+import { Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { URL_LOCATION_UNIT_EDIT } from '../../constants';
+import { URL_LOCATION_UNIT_EDIT, URL_LOCATION_VIEW_DETAILS } from '../../constants';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { useMls } from '../../mls';
 import { RbacCheck } from '@opensrp/rbac';
@@ -20,11 +20,9 @@ export interface TableData {
 
 export interface Props {
   data: TableData[];
-  onViewDetails?: (row: TableData) => void;
 }
 
 const Table: React.FC<Props> = (props: Props) => {
-  const { onViewDetails } = props;
   const { t } = useMls();
   const columns: Column<TableData>[] = [
     {
@@ -49,15 +47,9 @@ const Table: React.FC<Props> = (props: Props) => {
     {
       key: '1',
       label: (
-        <Button
-          type="link"
-          data-testid="view-location"
-          onClick={() => {
-            onViewDetails?.(record);
-          }}
-        >
+        <Link to={`${URL_LOCATION_VIEW_DETAILS}/${record.id}`} className="m-0 p-1">
           {t('View details')}
-        </Button>
+        </Link>
       ),
     },
   ];

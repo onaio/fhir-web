@@ -92,7 +92,7 @@ test('test error on attached binary request', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
     (keyValue) => keyValue.textContent
   );
   expect(commodityValues).toEqual([
@@ -100,7 +100,7 @@ test('test error on attached binary request', async () => {
     'Material Number52cffa51-fa81-49aa-9944-5b45d9e4c117',
     'NameBed nets',
     'ActiveActive',
-    'Attractive itemNo',
+    'Is it an AssetNo',
     'Is it thereyes',
     'Is it in good conditionYes, no tears, and inocuated',
     'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',
@@ -128,7 +128,7 @@ test('test missing binary in commodity', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair')].map(
+  const commodityValues = [...document.querySelectorAll('.singleKeyValue-pair__default')].map(
     (keyValue) => keyValue.textContent
   );
   expect(commodityValues).toEqual([
@@ -136,7 +136,7 @@ test('test missing binary in commodity', async () => {
     'Material Number52cffa51-fa81-49aa-9944-5b45d9e4c117',
     'NameBed nets',
     'ActiveActive',
-    'Attractive itemNo',
+    'Is it an AssetNo',
     'Is it thereyes',
     'Is it in good conditionYes, no tears, and inocuated',
     'Is it being used appropriatelyHanged at correct height and covers averagely sized beds',

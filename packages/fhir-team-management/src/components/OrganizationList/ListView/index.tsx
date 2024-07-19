@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { Row, Col, Button, Divider, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
@@ -86,7 +86,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Organization.update']}>
+          <RbacCheck permissions={['Organization.update', 'Location.read', 'CareTeam.read']}>
             <>
               <Link to={`${URL_EDIT_ORGANIZATION}/${record.id}`} className="m-0 p-1">
                 {t('Edit')}
@@ -115,12 +115,17 @@ export const OrganizationList = (props: OrganizationListProps) => {
   };
 
   const pageTitle = t('Organization list');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
 
       <Row className="list-view">
         <Col className="main-content">
@@ -137,6 +142,6 @@ export const OrganizationList = (props: OrganizationListProps) => {
         </Col>
         <ViewDetailsWrapper resourceId={resourceId} fhirBaseURL={fhirBaseURL} />
       </Row>
-    </div>
+    </BodyLayout>
   );
 };

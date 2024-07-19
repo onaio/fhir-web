@@ -47,7 +47,7 @@ export const KeycloakGroupDetails = (props: KeycloakGroupDetailsProp) => {
       title: t('Actions'),
       dataIndex: 'id' as const,
       render: (id: string) => (
-        <RbacCheck permissions={['iam_user.update']}>
+        <RbacCheck permissions={['iam_user.update', 'Group.update']}>
           <Button
             onClick={() => removeGroupFromUser(keycloakBaseUrl, id, resourceId, query, t)}
             type="link"

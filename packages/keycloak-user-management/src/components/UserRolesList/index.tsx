@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col, Spin } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import reducerRegistry from '@onaio/redux-reducer-registry';
@@ -97,12 +97,17 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
   ];
 
   const pageTitle = t('User roles');
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -116,7 +121,7 @@ export const UserRolesList: React.FC<Props & RouteComponentProps> = (
           />
         </Col>
       </Row>
-    </div>
+    </BodyLayout>
   );
 };
 

@@ -161,20 +161,20 @@ describe('routes', () => {
           {
             children: [
               {
-                key: 'TEAMS',
-                title: 'Teams',
+                key: 'ORGS',
+                title: 'Organizations',
                 url: '/admin/teams',
               },
               {
                 enabled: true,
-                key: 'team-assignment',
-                title: 'Team Assignment',
+                key: 'org-assignment',
+                title: 'Organization Assignment',
                 url: '/admin/teams/team-assignment',
               },
             ],
             enabled: true,
-            key: 'team-management',
-            title: 'Team Management',
+            key: 'org-management',
+            title: 'Organization Management',
           },
           { enabled: true, key: 'fhir-quest', title: 'Questionnaire Management', url: '/quest' },
         ],
@@ -202,7 +202,7 @@ describe('routes', () => {
       superUserRole
     );
     const parentKeys = routes.flatMap((x) => x.children).map((x) => x.key);
-    expect(parentKeys).toContain('team-management');
+    expect(parentKeys).toContain('org-management');
     expect(parentKeys).toContain('user-management');
     expect(parentKeys).toContain('location-management');
   });

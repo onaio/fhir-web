@@ -1,4 +1,4 @@
-import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { deprecate } from 'util';
 
 export type ParamKeyValuePairs = Record<string, string | undefined>;
@@ -9,7 +9,6 @@ export type ParamKeyValuePairs = Record<string, string | undefined>;
 export function useSearchParams() {
   const location = useLocation();
   const history = useHistory();
-  const match = useRouteMatch();
 
   const sParams = new URLSearchParams(location.search);
 
@@ -24,7 +23,7 @@ export function useSearchParams() {
   }, 'addParam is now deprecated, and will be removed in the future, consider using addParams');
 
   const addParams = (keyValues: ParamKeyValuePairs) => {
-    let nextUrl = match.path;
+    let nextUrl = location.pathname;
     for (const [key, value] of Object.entries(keyValues)) {
       if (value) {
         sParams.set(key, value);
@@ -37,7 +36,7 @@ export function useSearchParams() {
   const removeParam = (queryKey: string) => {
     sParams.delete(queryKey);
     const newParams = sParams.toString();
-    const nextUrl = ''.concat(match.path, '?').concat(newParams.toString());
+    const nextUrl = ''.concat(location.pathname, '?').concat(newParams.toString());
     history.push(nextUrl);
   };
 

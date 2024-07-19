@@ -3,13 +3,22 @@ import { Form, Input, Space, Button, Radio } from 'antd';
 import { Redirect } from 'react-router';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
 import {
-  defaultFormField,
+  defaultFormFields,
   generateLocationUnit,
   LocationFormFields,
   postPutLocationUnit,
-  validationRulesFactory,
+  defaultValidationRulesFactory,
+  ValidationFactory,
 } from './utils';
-import { locationHierarchyResourceType, locationResourceType } from '../../constants';
+import {
+  geometry,
+  isJurisdiction,
+  latitude,
+  locationHierarchyResourceType,
+  locationResourceType,
+  longitude,
+  serviceType,
+} from '../../constants';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import { TreeNode } from '../../helpers/types';
@@ -18,6 +27,8 @@ import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
 import { useMls } from '../../mls';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+import { ValueSetAsyncSelect } from '@opensrp/react-utils';
+import { eusmServicePointValueSetURI } from '@opensrp/fhir-helpers';
 
 const { Item: FormItem } = Form;
 
@@ -28,18 +39,20 @@ export interface LocationFormProps
   tree: TreeNode;
   successURLGenerator: (payload: ILocation) => string;
   fhirBaseURL: string;
-  hidden: string[];
-  disabled: string[];
+  hidden: (keyof LocationFormFields)[];
+  disabled: (keyof LocationFormFields)[];
   onCancel: () => void;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
+  validationRulesFactory: ValidationFactory;
 }
 
 const defaultProps = {
-  initialValues: defaultFormField,
+  initialValues: defaultFormFields,
   successURLGenerator: () => '#',
   hidden: [],
   disabled: [],
   onCancel: () => undefined,
+  validationRulesFactory: defaultValidationRulesFactory,
 };
 
 /** responsive layout for the form labels and columns */
@@ -96,6 +109,7 @@ const LocationForm = (props: LocationFormProps) => {
     successURLGenerator,
     onCancel,
     tree,
+    validationRulesFactory,
   } = props;
   const isEditMode = !!initialValues.id;
   const defaultParentNode =
@@ -108,7 +122,7 @@ const LocationForm = (props: LocationFormProps) => {
   const { t } = useMls();
   const validationRules = validationRulesFactory(t);
 
-  const isHidden = (fieldName: string) => hidden.includes(fieldName);
+  const isHidden = (fieldName: keyof LocationFormFields) => hidden.includes(fieldName);
 
   const [form] = Form.useForm();
 
@@ -250,6 +264,65 @@ const LocationForm = (props: LocationFormProps) => {
             options={locationCategoryOptions}
           ></Radio.Group>
         </FormItem>
+
+        <Form.Item
+          noStyle
+          shouldUpdate={(prevValues, currentValues) =>
+            prevValues[isJurisdiction] !== currentValues[isJurisdiction]
+          }
+        >
+          {({ getFieldValue }) =>
+            getFieldValue(isJurisdiction) === true ? (
+              <FormItem
+                id={geometry}
+                hidden={isHidden(geometry)}
+                name={geometry}
+                rules={validationRules.geometry}
+                label={t('Geometry')}
+              >
+                <Input.TextArea
+                  disabled={disabled.includes(geometry)}
+                  rows={4}
+                  placeholder={t('</> JSON')}
+                />
+              </FormItem>
+            ) : (
+              <>
+                <FormItem
+                  hidden={isHidden(serviceType)}
+                  name={serviceType}
+                  id={serviceType}
+                  label={t('Type')}
+                  rules={validationRules.serviceType}
+                >
+                  <ValueSetAsyncSelect
+                    showSearch={true}
+                    valueSetURL={eusmServicePointValueSetURI}
+                    fhirBaseUrl={fhirBaseURL}
+                  />
+                </FormItem>
+                <FormItem
+                  id={latitude}
+                  hidden={isHidden(latitude)}
+                  name={latitude}
+                  label={t('Latitude')}
+                  rules={validationRules.latitude}
+                >
+                  <Input disabled={disabled.includes(latitude)} placeholder={t('E.g. -16.08306')} />
+                </FormItem>
+                <FormItem
+                  id={longitude}
+                  hidden={isHidden(longitude)}
+                  name={longitude}
+                  label={t('Longitude')}
+                  rules={validationRules.longitude}
+                >
+                  <Input disabled={disabled.includes(longitude)} placeholder={t('E.g. 49.54933')} />
+                </FormItem>
+              </>
+            )
+          }
+        </Form.Item>
 
         <FormItem
           id="description"

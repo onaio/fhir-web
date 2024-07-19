@@ -67,7 +67,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
       key: 'name' as const,
     },
     {
-      title: t('Attractive item'),
+      title: t('Is it an Asset'),
       dataIndex: 'attractive' as const,
       key: 'attractive' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,
@@ -89,7 +89,7 @@ export const EusmCommodityList = (props: GroupListProps) => {
       // eslint-disable-next-line react/display-name
       render: (_: unknown, record: TableData) => (
         <span className="d-flex align-items-center">
-          <RbacCheck permissions={['Group.update']}>
+          <RbacCheck permissions={['Group.update', 'List.create', 'List.update']}>
             <>
               <Link to={`${ADD_EDIT_COMMODITY_URL}/${record.id}`} className="m-0 p-1">
                 {t('Edit')}

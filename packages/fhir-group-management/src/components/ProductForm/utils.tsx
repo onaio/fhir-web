@@ -17,6 +17,7 @@ import {
 } from '../../constants';
 import { capitalize, values } from 'lodash';
 import { UploadChangeParam, UploadFile } from 'antd/es/upload';
+import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
 
 export enum UnitOfMeasure {
   Pieces = 'Pieces',
@@ -28,12 +29,6 @@ export enum UnitOfMeasure {
   TestKits = 'Test kits',
   Sachets = 'Sachets',
   Straps = 'Straps',
-}
-
-export enum TypeOfGroup {
-  Medication = 'medication',
-  Decive = 'device',
-  Substance = 'substance',
 }
 
 /**
@@ -61,7 +56,7 @@ export function defaultValidationRulesFactory(t: TFunction) {
     [identifier]: [{ type: 'string' }] as Rule[],
     [name]: [{ type: 'string', message: t('Must be a valid string') }] as Rule[],
     [active]: [{ type: 'boolean' }] as Rule[],
-    [type]: [{ type: 'enum', enum: Object.values(TypeOfGroup) }] as Rule[],
+    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes) }] as Rule[],
     [unitOfMeasure]: [{ type: 'enum', enum: Object.values(UnitOfMeasure) }] as Rule[],
     [materialNumber]: [{ type: 'string' }] as Rule[],
     [isAttractiveItem]: [{ type: 'boolean' }] as Rule[],
@@ -83,7 +78,7 @@ export interface SelectOption {
  *
  */
 export const getGroupTypeOptions = () => {
-  return values(TypeOfGroup).map((group) => {
+  return values(R4GroupTypeCodes).map((group) => {
     return {
       value: group,
       label: capitalize(group),

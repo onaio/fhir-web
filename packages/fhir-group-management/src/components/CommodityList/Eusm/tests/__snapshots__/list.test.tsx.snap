@@ -2,235 +2,140 @@
 
 exports[`renders correctly when listing resources 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Product Id
-    </span>
+  <dt>
+    Product Id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      52cffa51-fa81-49aa-9944-5b45d9e4c117
-    </span>
+  <dd>
+    52cffa51-fa81-49aa-9944-5b45d9e4c117
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Material Number
-    </span>
+  <dt>
+    Material Number
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      52cffa51-fa81-49aa-9944-5b45d9e4c117
-    </span>
+  <dd>
+    52cffa51-fa81-49aa-9944-5b45d9e4c117
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+  <dt>
+    Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Bed nets
-    </span>
+  <dd>
+    Bed nets
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 6`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+  <dt>
+    Active
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+  <dd>
+    Active
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 7`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Attractive item
-    </span>
+  <dt>
+    Is it an Asset
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      No
-    </span>
+  <dd>
+    No
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 8`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Is it there
-    </span>
+  <dt>
+    Is it there
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      yes
-    </span>
+  <dd>
+    yes
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 9`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Is it in good condition
-    </span>
+  <dt>
+    Is it in good condition
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Yes, no tears, and inocuated
-    </span>
+  <dd>
+    Yes, no tears, and inocuated
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 10`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Is it being used appropriately
-    </span>
+  <dt>
+    Is it being used appropriately
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Hanged at correct height and covers averagely sized beds
-    </span>
+  <dd>
+    Hanged at correct height and covers averagely sized beds
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 11`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Accountability period (in months)
-    </span>
+  <dt>
+    Accountability period (in months)
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      12
-    </span>
+  <dd>
+    12
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<h4
-  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
 >
-  Commodity List
-</h4>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="Commodity List"
+      >
+        Commodity List
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Row, Col } from 'antd';
-import { PageHeader } from '@opensrp/react-utils';
+import { BodyLayout, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { Column, TableLayout } from '@opensrp/react-utils';
 import { BrokenPage, SearchForm } from '@opensrp/react-utils';
 import { useSimpleTabularView } from '@opensrp/react-utils';
@@ -15,6 +15,7 @@ import {
 } from '../PatientDetails/ResourceSchema/Patient';
 import { FilterValue, SorterResult, TablePaginationConfig } from 'antd/lib/table/interface';
 import { get } from 'lodash';
+import { PatientDetailsOverview } from '../PatientDetailsOverview';
 
 interface PatientListProps {
   fhirBaseURL: string;
@@ -29,6 +30,7 @@ interface PatientListProps {
 export const PatientsList = (props: PatientListProps) => {
   const { fhirBaseURL } = props;
   const { t } = useTranslation();
+  const { addParams } = useSearchParams();
 
   const [fhirSortFilters, setFhirSortFilters] = useState<Record<'_sort', string>>();
   const { searchFormProps, tablePaginationProps, queryValues } = useSimpleTabularView<IPatient>(
@@ -52,9 +54,12 @@ export const PatientsList = (props: PatientListProps) => {
 
   type TableData = typeof tableData[0];
 
+  const showPatientOverview = (id: string) => {
+    addParams({ [viewDetailsQuery]: id });
+  };
   const tableProps = {
     datasource: tableData,
-    columns: serverSideSortedColumns(t) as Column<TableData>[],
+    columns: serverSideSortedColumns(t, showPatientOverview) as Column<TableData>[],
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
     onChange: (
@@ -82,21 +87,30 @@ export const PatientsList = (props: PatientListProps) => {
       }
     },
   };
+  const pageTitle = 'Patients';
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div className="content-section">
+    <BodyLayout headerProps={headerProps}>
       <Helmet>
         <title>{t('Patients')}</title>
       </Helmet>
-      <PageHeader title={t('Patients')} />
-      <Row className="list-view">
-        <Col className={'main-content'} span={24}>
-          <div className="main-content__header">
-            <SearchForm {...searchFormProps} />
-          </div>
-          <TableLayout {...tableProps} />
-        </Col>
-      </Row>
-    </div>
+      <div className="main-content__table">
+        <div className="main-content__header">
+          <SearchForm {...searchFormProps} />
+        </div>
+        <Row className="list-view">
+          <Col className={'main-content'}>
+            <TableLayout {...tableProps} />
+          </Col>
+          <PatientDetailsOverview fhirBaseURL={fhirBaseURL} />
+        </Row>
+      </div>
+    </BodyLayout>
   );
 };

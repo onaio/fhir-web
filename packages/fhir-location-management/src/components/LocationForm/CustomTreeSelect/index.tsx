@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { TreeNode } from '../../../helpers/types';
-import { serializeTree } from '../../../helpers/utils';
 import { TreeSelect } from 'antd';
 import { TreeSelectProps } from 'antd/lib/tree-select/';
 import { LabelValueType, DataNode } from 'rc-tree-select/lib/interface';
@@ -30,7 +29,7 @@ export const CustomTreeSelect = (props: CustomTreeSelectProps) => {
       fullDataCallback?.(tree);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [serializeTree(tree), fullDataCallback, value]);
+  }, [fullDataCallback, value]);
 
   const userDefinedRoots = tree.children ?? [];
   const selectOptions = treeToOptions(userDefinedRoots, disabledTreeNodesCallback);

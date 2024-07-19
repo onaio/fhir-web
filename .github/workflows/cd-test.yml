@@ -11,15 +11,15 @@ jobs:
   test:
     strategy:
       matrix:
-        node-version: [16.17.0]
+        node-version: [22.x]
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
@@ -40,7 +40,7 @@ jobs:
       - name: Run all tests
         run: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
         env:
-          NODE_OPTIONS: --max_old_space_size=4096
+          NODE_OPTIONS: --max_old_space_size=5120
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2

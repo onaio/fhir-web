@@ -1,10 +1,11 @@
 import {
   AuthZResource,
-  FhirResources,
+  KeycloakDefinedResources,
   IamResources,
   Permit,
   PermitKey,
   ResourcePermitMap,
+  WebCustomResources,
 } from '../constants';
 import invariant from 'invariant';
 
@@ -21,7 +22,12 @@ export function makeArray<T>(obj: T | T[]): T[] {
   return asArray;
 }
 
-const lowecasedAuthZResourceTags = [...IamResources, ...FhirResources].map(
+// TODO - this is not actually lowercased
+const lowerCasedAuthZResources = [
+  ...IamResources,
+  ...KeycloakDefinedResources,
+  ...WebCustomResources,
+].map(
   (tag) => tag
   // tag.toLowerCase()
 ) as string[];
@@ -40,7 +46,7 @@ export function validatePermissionStr(permission: string) {
   }
   const [resource, permit] = parts;
   // const resourceIsRecognized = lowecasedAuthZResourceTags.includes(resource.toLowerCase());
-  const resourceIsRecognized = lowecasedAuthZResourceTags.includes(resource);
+  const resourceIsRecognized = lowerCasedAuthZResources.includes(resource);
   const permitIsRecognized = permitLiteralKeys.includes(permit.toLowerCase());
   if (!resourceIsRecognized || !permitIsRecognized) {
     return false;

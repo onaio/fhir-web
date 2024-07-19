@@ -34,6 +34,7 @@ keys = [
     "/react/app/default/plan/duration/days",
     "/react/app/date/format",
     "/react/app/main/logo/src",
+    "/react/app/collapsed/logo/src",
     "/react/app/plan/assignment/at/geo/level",
     "/react/app/task/generation/status",
     "/react/app/default/plan/version",

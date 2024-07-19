@@ -12,6 +12,7 @@ import { useTranslation } from '../../mls';
 export interface BrokenPageProps extends UtilPageExtraProps {
   title?: string;
   errorMessage?: string;
+  extraLinks?: React.ReactNode;
 }
 
 export const defaultProps = {
@@ -24,7 +25,7 @@ export const defaultProps = {
  * @param props - the component props
  */
 const BrokenPage = (props: BrokenPageProps) => {
-  const { errorMessage, title } = props;
+  const { errorMessage, title, extraLinks } = props;
   // HACK to preserve defaultProps back compatibility
   const { t } = useTranslation();
   const i18nedErrMessage = errorMessage ?? t('Something went wrong');
@@ -37,7 +38,7 @@ const BrokenPage = (props: BrokenPageProps) => {
       status="500"
       title={i18nedTitle}
       subTitle={i18nedErrMessage}
-      extra={<ExtraLinks {...extraLinksProps} />}
+      extra={extraLinks ? extraLinks : <ExtraLinks {...extraLinksProps} />}
     />
   );
 };

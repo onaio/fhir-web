@@ -2,85 +2,62 @@
 
 exports[`renders correctly when listing resources 3`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Commodity Id
-    </span>
+  <dt>
+    Commodity Id
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      e50eb835-7827-4001-b233-e1dda721d4e8
-    </span>
+  <dd>
+    e50eb835-7827-4001-b233-e1dda721d4e8
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 4`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Name
-    </span>
+  <dt>
+    Name
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Amoxicillin 250mg Tablets
-    </span>
+  <dd>
+    Amoxicillin 250mg Tablets
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources 5`] = `
 <div
-  class="singleKeyValue-pair"
+  class="singleKeyValue-pair__default"
 >
-  <dt
-    class="singleKeyValue-pair__label"
-  >
-    <span
-      class="ant-typography ant-typography-secondary css-dev-only-do-not-override-k7429z"
-    >
-      Active
-    </span>
+  <dt>
+    Active
   </dt>
-  <dd
-    class="singleKeyValue-pair__value"
-  >
-    <span
-      class="ant-typography css-dev-only-do-not-override-k7429z"
-    >
-      Disabled
-    </span>
+  <dd>
+    Disabled
   </dd>
 </div>
 `;
 
 exports[`renders correctly when listing resources: Header title 1`] = `
-<h4
-  class="ant-typography page-header css-dev-only-do-not-override-k7429z"
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
 >
-  Commodity List
-</h4>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="Commodity List"
+      >
+        Commodity List
+      </span>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`renders correctly when listing resources: table row 1 page 1 1`] = `

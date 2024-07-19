@@ -25,6 +25,8 @@ import { screen, render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { careTeam1, careTeam4201Edited, organizations } from './fixtures';
 import flushPromises from 'flush-promises';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -56,14 +58,16 @@ const AppWrapper = (props: any) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <Switch>
-          <Route exact path="/add">
-            <CreateEditCareTeam {...props} />
-          </Route>
-          <Route exact path={`/add/:${ROUTE_PARAM_CARE_TEAM_ID}`}>
-            <CreateEditCareTeam {...props} />
-          </Route>
-        </Switch>
+        <RoleContext.Provider value={superUserRole}>
+          <Switch>
+            <Route exact path="/add">
+              <CreateEditCareTeam {...props} />
+            </Route>
+            <Route exact path={`/add/:${ROUTE_PARAM_CARE_TEAM_ID}`}>
+              <CreateEditCareTeam {...props} />
+            </Route>
+          </Switch>
+        </RoleContext.Provider>
       </QueryClientProvider>
     </Provider>
   );

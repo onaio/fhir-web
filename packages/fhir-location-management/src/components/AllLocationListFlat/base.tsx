@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 import { useSimpleTabularView, NoData, Column } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { locationResourceType } from '../../constants';
-import { BrokenPage, TableLayout, PageHeader, SearchForm } from '@opensrp/react-utils';
+import { BrokenPage, TableLayout, BodyLayout, SearchForm } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { useMls } from '../../mls';
 import { Row, Col } from 'antd';
@@ -85,13 +85,18 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
     pagination: tablePaginationProps,
     locale: getTableLocale(),
   };
+  const headerProps = {
+    pageHeaderProps: {
+      title: pageTitle,
+      onBack: undefined,
+    },
+  };
 
   return (
-    <div id="all-locations" className="content-section">
+    <BodyLayout headerProps={headerProps} id="all-locations">
       <Helmet>
         <title>{pageTitle}</title>
       </Helmet>
-      <PageHeader title={pageTitle} />
       <Row className="list-view">
         <Col className="main-content">
           <div className="main-content__header">
@@ -101,6 +106,6 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
           <TableLayout {...tableProps} />
         </Col>
       </Row>
-    </div>
+    </BodyLayout>
   );
 };

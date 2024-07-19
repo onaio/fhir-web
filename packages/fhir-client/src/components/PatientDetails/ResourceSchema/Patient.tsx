@@ -1,12 +1,11 @@
 import React from 'react';
 import { IPatient } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPatient';
 import { sorterFn } from '../../../helpers/utils';
-import { getPatientName } from '../../PatientsList/utils';
-import { LIST_PATIENTS_URL } from '../../../constants';
-import { Tag, Typography } from 'antd';
-import { Link } from 'react-router-dom';
-import { Column } from '@opensrp/react-utils';
+import { getPatientName, getPatientStatus, patientStatusColor } from '../../PatientsList/utils';
+import { Button, Tag, Typography } from 'antd';
+import { Column, ResourceDetailsProps, dateToLocaleString } from '@opensrp/react-utils';
 import type { TFunction } from '@opensrp/i18n';
+import { get } from 'lodash';
 
 const { Text } = Typography;
 
@@ -30,10 +29,11 @@ export const parsePatient = (patient: IPatient) => {
 };
 
 export type PatientTableData = ReturnType<typeof parsePatient>;
+type ShowPatientOverview = (id: string) => void;
 
 const dobSorterFn = sorterFn(dob, true);
 
-export const columns = (t: TFunction) =>
+export const columns = (t: TFunction, showPatientOverview: ShowPatientOverview) =>
   [
     {
       title: t('Name'),
@@ -73,9 +73,14 @@ export const columns = (t: TFunction) =>
       // eslint-disable-next-line react/display-name
       render: (record: PatientTableData) => (
         <span className="d-flex justify-content-start align-items-center">
-          <Link to={`${LIST_PATIENTS_URL}/${record.id}`} className="m-0 p-1">
+          <Button
+            data-testid={record.id}
+            onClick={() => showPatientOverview(record.id as string)}
+            type="link"
+            className="m-0 p-1"
+          >
             {t('View')}
-          </Link>
+          </Button>
         </span>
       ),
     },
@@ -95,9 +100,10 @@ export const sortMap = {
  * to locally on the ui.
  *
  * @param t - the translator function
+ * @param showPatientOverview - show the patient overview
  */
-export const serverSideSortedColumns = (t: TFunction) => {
-  return columns(t).map((column: ReturnType<typeof columns>[0]) => {
+export const serverSideSortedColumns = (t: TFunction, showPatientOverview: ShowPatientOverview) => {
+  return columns(t, showPatientOverview).map((column: ReturnType<typeof columns>[0]) => {
     const newColumn = { ...column };
     if (typeof column.sorter === 'function') {
       newColumn.sorter = true;
@@ -105,3 +111,49 @@ export const serverSideSortedColumns = (t: TFunction) => {
     return newColumn;
   });
 };
+
+/**
+ * Extract resource details props from resource
+ *
+ * @param resource - Patient resource
+ * @param t - translation function
+ */
+export function patientDetailsProps(
+  resource: IPatient | undefined,
+  t: TFunction
+): ResourceDetailsProps {
+  if (!resource) {
+    return {} as ResourceDetailsProps;
+  }
+  const { meta, gender, birthDate, id, active, deceasedBoolean } = resource;
+  const patientName = getPatientName(resource);
+  const splitName = patientName ? patientName.split(' ') : [];
+  const headerRightData = {
+    [t('Date created')]: dateToLocaleString(meta?.lastUpdated),
+  };
+  const headerLeftData = {
+    [t('ID')]: id,
+    [t('Gender')]: gender,
+  };
+  const bodyData = {
+    [t('First name')]: splitName[0],
+    [t('Last name')]: splitName[1],
+    [t('UUID')]: get(resource, 'identifier.0.value'),
+    [t('Date of birth')]: dateToLocaleString(birthDate, true),
+    [t('Phone')]: get(resource, 'telecom.0.value'),
+    [t('MRN')]: 'Unknown',
+    [t('Address')]: get(resource, 'address.0.line.0') || 'N/A',
+    [t('Country')]: get(resource, 'address.0.country'),
+  };
+  const patientStatus = getPatientStatus(active as boolean, deceasedBoolean as boolean);
+  return {
+    title: patientName,
+    headerRightData,
+    headerLeftData,
+    bodyData,
+    status: {
+      title: patientStatus,
+      color: patientStatusColor[patientStatus],
+    },
+  };
+}

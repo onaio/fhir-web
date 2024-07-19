@@ -1,11 +1,42 @@
 .logo {
-  padding: 1rem 1rem 0.5rem 24px;
+  height: 72px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+
+  img {
+    max-height: 40px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .ant-btn-link:hover {
+    color: var(--menu-item-text_hover__dark-theme__color);
+  }
 }
 
-.logo img {
-  max-height: 40px;
-  width: auto;
-  max-width: 100%;
+.main-logo img {
+  height: 26px;
+}
+
+.small-logo {
+  button {
+    display: contents;
+  }
+
+  img {
+    height: 38px;
+    min-width: 38px;
+  }
+}
+
+.collapse-icon {
+  color: var(--menu-item-text__dark-theme__color);
+  padding: 0 16px;
+  margin-right: 19px;
+  margin-left: auto;
+  width: 6px;
 }
 
 .menu-dark,
@@ -14,10 +45,20 @@
 }
 
 .menu-dark ul:last-child {
-  background: #141414 !important;
+  background: var(--sub-menu-items__background) !important;
 }
 
-.sidebar-icons {
+.ant-menu-dark.ant-menu-submenu > .ant-menu {
+  background: var(--sub-menu-items__background) !important;
+}
+
+.ant-menu-inline-collapsed {
+  .ant-menu-submenu-title, .ant-menu-item  {
+    padding-inline: 20px !important;
+  }
+}
+
+.menu-dark li svg {
   font-size: 18px !important;
   vertical-align: middle;
 }

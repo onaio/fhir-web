@@ -1,0 +1,109 @@
+import {
+  handleDisabledPastDates,
+  handleDisabledFutureDates,
+  isAttractiveProduct,
+  productAccountabilityMonths,
+  getMember,
+  generateCharacteristics,
+  getLocationInventoryPayload,
+} from '../utils';
+import dayjs from 'dayjs';
+import {
+  unicefValuesetConcept,
+  donorValuesetConcept,
+  productCharacteristics,
+  formValues,
+  locationResourcePayload,
+  mockResourceId,
+  productQuantity,
+} from './fixtures';
+import { commodity1 } from '../../CommodityAddEdit/Eusm/tests/fixtures';
+import { attractiveCharacteristicCode } from '../../../helpers/utils';
+
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
+  return {
+    ...actual,
+    v4: () => mockResourceId,
+  };
+});
+
+describe('fhir-group-management/src/components/LocationInventory/utils', () => {
+  it('handleDisabledPastDates and handleDisabledFutureDates works as expected', () => {
+    const now = dayjs();
+    const future = now.add(2, 'day');
+    const past = now.subtract(2, 'day');
+    //   handleDisabledPastDates
+    expect(handleDisabledPastDates()).toEqual(false);
+    expect(handleDisabledPastDates(now)).toEqual(false);
+    expect(handleDisabledPastDates(future)).toEqual(false);
+    expect(handleDisabledPastDates(past)).toEqual(true);
+    //   handleDisabledFutureDates
+    expect(handleDisabledFutureDates()).toEqual(false);
+    expect(handleDisabledFutureDates(now)).toEqual(true);
+    expect(handleDisabledFutureDates(future)).toEqual(true);
+    expect(handleDisabledFutureDates(past)).toEqual(false);
+  });
+
+  it('get attractive items works as expected', () => {
+    const noAttractiveCharacteristic = commodity1.characteristic?.filter(
+      (char) => char.code.coding?.[0].code !== attractiveCharacteristicCode
+    );
+    const nonAttractiveItem = {
+      ...commodity1,
+      characteristic: noAttractiveCharacteristic,
+    };
+    const attractiveItem = {
+      ...commodity1,
+      characteristic: [
+        {
+          code: {
+            coding: [
+              {
+                system: 'http://smartregister.org/codes',
+                code: '23435363',
+                display: 'Attractive Item code',
+              },
+            ],
+          },
+          valueBoolean: true,
+        },
+      ],
+    };
+    expect(isAttractiveProduct()).toEqual(false);
+    expect(isAttractiveProduct(attractiveItem)).toEqual(true);
+    expect(isAttractiveProduct(nonAttractiveItem)).toEqual(false);
+  });
+
+  it('get item accounterbility months works as expected', () => {
+    expect(productAccountabilityMonths()).toEqual(undefined);
+    expect(productAccountabilityMonths(commodity1)).toEqual(12);
+  });
+
+  it('get resource member works as expected', () => {
+    const startDate = dayjs();
+    const endDate = dayjs().add(2, 'day');
+    expect(getMember('productId', startDate, endDate)).toEqual([
+      {
+        entity: {
+          reference: 'Group/productId',
+        },
+        period: {
+          start: new Date(startDate.toDate()).toISOString(),
+          end: new Date(endDate.toDate()).toISOString(),
+        },
+        inactive: false,
+      },
+    ]);
+  });
+
+  it('get resource characteristics works as expected', () => {
+    expect(
+      generateCharacteristics(unicefValuesetConcept, donorValuesetConcept, productQuantity)
+    ).toEqual(productCharacteristics);
+  });
+
+  it('generate location inventory payload works as expected', () => {
+    expect(getLocationInventoryPayload(formValues, false)).toEqual(locationResourcePayload);
+  });
+});
