@@ -33,7 +33,9 @@ export const AddLocationInventory = (props: AddLocationInventoryProps) => {
   const { fhirBaseURL, listId, commodityListId } = props;
   const { t } = useTranslation();
   const { inventoryId, servicePointId } = useParams<RouteParams>();
-  const pageTitle = inventoryId ? t('Edit locations Inventory') : t('Add locations Inventory');
+  const pageTitle = inventoryId
+    ? t('Edit Service Point Inventory')
+    : t('Add Service Point Inventory');
 
   const inventoryResource = useQuery(
     [fhirBaseURL, inventoryId],
