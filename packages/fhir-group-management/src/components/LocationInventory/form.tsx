@@ -218,14 +218,16 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
         />
       </FormItem>
 
-      <FormItem
-        id={serialNumber}
-        rules={validationRules[serialNumber]}
-        name={serialNumber}
-        label={t('Serial number')}
-      >
-        <Input disabled={!attractiveProduct} placeholder={t('Serial number')} />
-      </FormItem>
+      {attractiveProduct ? (
+        <FormItem
+          id={serialNumber}
+          rules={validationRules[serialNumber]}
+          name={serialNumber}
+          label={t('Serial number')}
+        >
+          <Input placeholder={t('Serial number')} />
+        </FormItem>
+      ) : null}
 
       <FormItem id={donor} name={donor} label={t('Donor')}>
         <ValueSetAsyncSelect
