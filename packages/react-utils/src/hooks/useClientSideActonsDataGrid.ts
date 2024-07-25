@@ -9,7 +9,6 @@ import { URLParams } from '@opensrp/server-service';
 import { loadAllResources } from '../helpers/fhir-utils';
 import {
   Filter,
-  FilterDescription,
   checkFilter,
   getNextUrlOnSearch,
   getNumberParam,
@@ -21,6 +20,7 @@ import {
   startingPage,
   startingPageSize,
 } from './utils';
+import { useClientSideDataGridFilters, FilterDescription } from './useClientSideDataGridFilters';
 
 /**
  * Re-usable hook that abstracts search and table pagination for usual list view component
@@ -36,17 +36,14 @@ export function useClientSideActionsDataGrid<T extends object>(
   fhirBaseUrl: string,
   resourceType: string,
   extraParams: URLParams | ((search: string | null) => URLParams) = {},
-  matchesSearch: (obj: T, search: string) => boolean = matchesOnName,
   dataTransformer: (response: IBundle) => T[] = getResourcesFromBundle,
-  initialFilters: FilterDescription = {}
+  initialFilters: FilterDescription<T> = {}
 ) {
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
-  const [filters, setFilters] = useState<FilterDescription>(initialFilters);
 
   const page = getNumberParam(location, pageQuery, startingPage) as number;
-  const search = getStringParam(location, searchQuery);
   const defaultPageSize =
     (getConfig('defaultTablesPageSize') as number | undefined) ?? startingPageSize;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
@@ -72,32 +69,8 @@ export function useClientSideActionsDataGrid<T extends object>(
   };
 
   const { data, ...restQueryValues } = useQuery(rQuery);
-  let filteredData = data;
-  if (search) {
-    filteredData = data?.filter((obj) => {
-      return matchesSearch(obj, search);
-    });
-  }
-
-  // Method to apply all filters to the data
-  filteredData = useMemo(() => {
-    const filtered = [];
-    for (const item of filteredData ?? []) {
-      let fullyChecked = true;
-      for (const accessor in filters) {
-        const filterDescription = filters[accessor] as Filter;
-        const filterResult = checkFilter(item, accessor, filterDescription);
-        if (filterResult) {
-          fullyChecked = false;
-          break;
-        }
-      }
-      if (fullyChecked) {
-        filtered.push(item);
-      }
-    }
-    return filtered;
-  }, [data, filters]);
+  const { filteredData, filterRegistry, registerFilter, deregisterFilter } =
+    useClientSideDataGridFilters(data, initialFilters);
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
@@ -106,22 +79,6 @@ export function useClientSideActionsDataGrid<T extends object>(
       history.push(nextUrl);
     },
   };
-
-  // Method to update the filters
-  const updateFilter = useCallback((accessor: string, filter?: Filter) => {
-    setFilters((prevFilters) => {
-      const newFilters = { ...prevFilters };
-      if (filter === undefined) {
-        delete newFilters[accessor];
-        return newFilters;
-      } else {
-        return {
-          ...newFilters,
-          [accessor]: filter,
-        };
-      }
-    });
-  }, []);
 
   const tablePaginationProps = {
     current: page,
@@ -141,8 +98,9 @@ export function useClientSideActionsDataGrid<T extends object>(
   return {
     tablePaginationProps,
     filterOptions: {
-      updateFilter,
-      currentFilters: filters,
+      registerFilter,
+      filterRegistry,
+      deregisterFilter,
     },
     queryValues: {
       data: filteredData,

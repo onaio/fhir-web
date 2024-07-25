@@ -16,15 +16,11 @@ import { Input } from 'antd';
 import TableLayout from '../../components/TableLayout';
 import { Router, Route, Switch } from 'react-router';
 import { useClientSideActionsDataGrid } from '../useClientSideActonsDataGrid';
-import { emptyPage, hugeSinglePageData, hugeSinglePageDataSummary } from './fixtures';
-import { renderHook, act } from '@testing-library/react-hooks';
-import flushPromises from 'flush-promises';
+import { hugeSinglePageData, hugeSinglePageDataSummary } from './fixtures';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
-
-const history = createMemoryHistory();
 
 const rQClient = new QueryClient({
   defaultOptions: {
@@ -68,12 +64,10 @@ const SearchForm = (props: any) => {
 // minimal app to wrap our hook.
 const SampleApp = () => {
   const { baseUrl, endpoint } = options;
-  const matchesSearch = (obj, search) => obj.name.includes(search);
   const { tablePaginationProps, queryValues, searchFormProps } = useClientSideActionsDataGrid(
     baseUrl,
     endpoint,
-    {},
-    matchesSearch
+    {}
   );
 
   const { data, isFetching, isLoading } = queryValues;
@@ -248,140 +242,5 @@ test('integrates correctly in component', async () => {
     'Examination Gloves (Nitrile) Small',
   ]);
 
-  expect(nock.pendingMocks()).toEqual([]);
-});
-
-test('useClientSideActionsDataGrid hook work for filter state', async () => {
-  history.push('/');
-
-  const wrapper = ({ children }) => (
-    <>
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/">
-            <QueryClientProvider client={rQClient}>
-              <div>{children}</div>
-            </QueryClientProvider>
-          </Route>
-        </Switch>
-      </Router>
-    </>
-  );
-  const fhirBaseURL = 'https://test.server';
-  const resourceType = 'Location';
-
-  nock(fhirBaseURL)
-    .get(`/${resourceType}/_search`)
-    .query({
-      _summary: 'count',
-    })
-    .reply(200, emptyPage)
-    .persist();
-  nock(fhirBaseURL).get(`/${resourceType}/_search`).query({}).reply(200, emptyPage).persist();
-
-  const { result } = renderHook(() => useClientSideActionsDataGrid(fhirBaseURL, resourceType, {}), {
-    wrapper,
-  });
-
-  // check initial state
-  expect(result.error).toBeUndefined();
-  expect(result.current.filterOptions).toMatchObject({
-    updateFilter: expect.any(Function),
-    currentFilters: {},
-  });
-  await flushPromises();
-  await waitFor(() => {
-    // confirm that the request resolved
-    expect(result.current.queryValues.error).toBeNull();
-    expect(result.current.queryValues.data).toEqual([]);
-  });
-
-  act(() => {
-    result.current.filterOptions.updateFilter('name', {
-      operand: 'includes',
-      value: 'petName',
-      caseSensitive: true,
-    });
-  });
-  await flushPromises();
-  expect(result.current.filterOptions.currentFilters).toEqual({
-    name: {
-      caseSensitive: true,
-      operand: 'includes',
-      value: 'petName',
-    },
-  });
-
-  // with name sorted in ascend
-  act(() => {
-    result.current.filterOptions.updateFilter('name');
-  });
-  await flushPromises();
-  expect(result.current.filterOptions.currentFilters).toEqual({});
-  expect(nock.pendingMocks()).toEqual([]);
-});
-
-test('useClientSideActionsDataGrid retains initial filter values', async () => {
-  history.push('/');
-
-  const wrapper = ({ children }) => (
-    <>
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/">
-            <QueryClientProvider client={rQClient}>
-              <div>{children}</div>
-            </QueryClientProvider>
-          </Route>
-        </Switch>
-      </Router>
-    </>
-  );
-  const fhirBaseURL = 'https://test.server';
-  const resourceType = 'Location';
-
-  nock(fhirBaseURL)
-    .get(`/${resourceType}/_search`)
-    .query({
-      _summary: 'count',
-    })
-    .reply(200, emptyPage)
-    .persist();
-  nock(fhirBaseURL).get(`/${resourceType}/_search`).query({}).reply(200, emptyPage).persist();
-
-  const { result } = renderHook(
-    () =>
-      useClientSideActionsDataGrid(fhirBaseURL, resourceType, {}, undefined, undefined, {
-        name: {
-          operand: 'includes',
-          value: 'someValue',
-        },
-      }),
-    { wrapper }
-  );
-
-  // check initial state
-  expect(result.error).toBeUndefined();
-  expect(result.current.filterOptions).toMatchObject({
-    updateFilter: expect.any(Function),
-    currentFilters: {},
-  });
-  await flushPromises();
-  await waitFor(() => {
-    expect(nock.pendingMocks()).toEqual([]);
-    // confirm that the request resolved
-    expect(result.current.queryValues.error).toBeNull();
-    expect(result.current.queryValues.data).toEqual([]);
-  });
-  expect(result.current.filterOptions.currentFilters).toEqual({
-    name: { operand: 'includes', value: 'someValue' },
-  });
-
-  // with name sorted in ascend
-  act(() => {
-    result.current.filterOptions.updateFilter('name');
-  });
-  await flushPromises();
-  expect(result.current.filterOptions.currentFilters).toEqual({});
   expect(nock.pendingMocks()).toEqual([]);
 });
