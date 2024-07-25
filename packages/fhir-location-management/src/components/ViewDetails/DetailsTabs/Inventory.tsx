@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useMls } from '../../../mls';
 import {
   TableLayout,
@@ -6,9 +6,9 @@ import {
   SearchForm,
   Column,
 } from '@opensrp/react-utils';
-import { Alert, Button, Col, Divider, Row } from 'antd';
+import { Alert, Button, Col, Divider, Radio, Row, Space } from 'antd';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { listResourceType } from '../../../constants';
+import { accEndDateFilterKey, listResourceType, nameFilterKey } from '../../../constants';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { RbacCheck } from '@opensrp/rbac';
 import { Link, useHistory } from 'react-router-dom';
@@ -165,6 +165,22 @@ function matchesSearch(obj: TableData, search: string) {
   return (obj.productName ?? '').toLowerCase().includes(search.toLowerCase());
 }
 
+/**
+ * filter products based on accountability period
+ *
+ * @param obj - obj to filter
+ */
+function activeInventoryByAccEndDate(obj: TableData) {
+  if (obj.accountabilityEndDate === undefined) {
+    return true;
+  }
+  const currentAccEndDate = Date.parse(obj.accountabilityEndDate);
+  if (!isNaN(currentAccEndDate)) {
+    return Date.now() >= currentAccEndDate;
+  }
+  return false;
+}
+
 export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
   const { t } = useMls();
   const history = useHistory();
@@ -172,7 +188,8 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
   const {
     queryValues: { data, isLoading, error },
     tablePaginationProps,
-    searchFormProps,
+    searchFormProps: rawSearchFormProps,
+    filterOptions: { registerFilter, deregisterFilter, filterRegistry },
   } = useTabularViewWithLocalSearch<TableData>(
     fhirBaseUrl,
     listResourceType,
@@ -181,11 +198,18 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
       _include: 'List:item',
       '_include:recurse': 'Group:member',
     },
-    matchesSearch,
-    dataTransformer
+    dataTransformer,
+    {
+      [accEndDateFilterKey]: {
+        value: 'active',
+        filterFunc: (el) => {
+          return activeInventoryByAccEndDate(el);
+        },
+      },
+    }
   );
 
-  if (error && !data) {
+  if (error && !data.length) {
     return <Alert type="error">{t('An error occurred while fetching inventory')}</Alert>;
   }
 
@@ -264,8 +288,27 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     },
   ];
 
+  const searchFormProps = {
+    ...rawSearchFormProps,
+    onChangeHandler: (event: ChangeEvent<HTMLInputElement>) => {
+      rawSearchFormProps.onChangeHandler(event);
+      const searchText = event.target.value;
+      if (searchText) {
+        registerFilter(
+          nameFilterKey,
+          (el) => {
+            return matchesSearch(el, searchText);
+          },
+          searchText
+        );
+      } else {
+        deregisterFilter(nameFilterKey);
+      }
+    },
+  };
+
   const tableProps = {
-    datasource: data ?? [],
+    datasource: data,
     columns,
     loading: isLoading,
     size: 'small' as const,
@@ -276,7 +319,39 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     <Row data-testid="inventory-tab" className="list-view">
       <Col style={{ width: '100%' }}>
         <div className="main-content__header">
-          <SearchForm data-testid="search-form" {...searchFormProps} />
+          <Space>
+            <SearchForm data-testid="search-form" {...searchFormProps} />
+            <Radio.Group
+              value={filterRegistry[accEndDateFilterKey].value}
+              buttonStyle="solid"
+              onChange={(event) => {
+                const val = event.target.value;
+                switch (val) {
+                  case 'active':
+                    registerFilter(
+                      accEndDateFilterKey,
+                      (el) => {
+                        return activeInventoryByAccEndDate(el);
+                      },
+                      val
+                    );
+                    break;
+                  case 'inactive':
+                    registerFilter(
+                      accEndDateFilterKey,
+                      (el) => {
+                        return !activeInventoryByAccEndDate(el);
+                      },
+                      val
+                    );
+                    break;
+                }
+              }}
+            >
+              <Radio.Button value="active">{t('Active')}</Radio.Button>
+              <Radio.Button value="inactive">{t('Inactive')}</Radio.Button>
+            </Radio.Group>
+          </Space>
           <RbacCheck permissions={['Group.create']}>
             <Button type="primary" onClick={() => history.push(baseInventoryPath)}>
               <PlusOutlined />

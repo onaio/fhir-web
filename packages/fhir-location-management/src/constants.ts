@@ -34,3 +34,5 @@ export const servicePointNamespace = 'fhir-service-point' as const;
 // Magic strings
 export const MATCH_SEARCH_MODE = 'match';
 export const parentIdQueryParam = 'parentId';
+export const accEndDateFilterKey = 'accountabilityEndDate';
+export const nameFilterKey = 'name';
