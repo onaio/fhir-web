@@ -2,3 +2,7 @@
   width: 45%;
   min-width: 192px;
 }
+
+.filter-row {
+  margin-bottom: 16px;
+}

@@ -21,8 +21,8 @@ export const LocationGridFilterRowRender = (props: LocationGridFilterRowRenderPr
   return (
     <div className="filter-row" data-testid="filter-row">
       <Space>
-        <Space>
-          <Trans t={t} i18nKey="parentLocationFilter">
+        <Trans t={t} i18nKey="parentLocationFilter">
+          <Space>
             Parent Location:
             <PaginatedAsyncSelect<ILocation>
               allowClear={true}
@@ -50,10 +50,10 @@ export const LocationGridFilterRowRender = (props: LocationGridFilterRowRenderPr
                 }
               }}
             />
-          </Trans>
-        </Space>
-        <Space>
-          <Trans t={t} i18nKey="locationStatusFilter">
+          </Space>
+        </Trans>
+        <Trans t={t} i18nKey="locationStatusFilter">
+          <Space>
             Status:
             <Select
               id="location-status-filter"
@@ -78,8 +78,8 @@ export const LocationGridFilterRowRender = (props: LocationGridFilterRowRenderPr
                 { value: '*', label: t('Show all') },
               ]}
             />
-          </Trans>
-        </Space>
+          </Space>
+        </Trans>
       </Space>
     </div>
   );
