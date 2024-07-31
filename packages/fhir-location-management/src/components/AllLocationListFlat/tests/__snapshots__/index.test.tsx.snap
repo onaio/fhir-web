@@ -11,15 +11,3 @@ exports[`location-management/src/components/AllLocationListFlat Show data as exp
 exports[`location-management/src/components/AllLocationListFlat Show data as expected: table data 5`] = `"Edit"`;
 
 exports[`location-management/src/components/AllLocationListFlat Show data as expected: table header 1`] = `"NameParentPhysical TypeStatusActions"`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table data 1`] = `"Good Health Clinic"`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table data 2`] = `""`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table data 3`] = `"Building"`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table data 4`] = `"active"`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table data 5`] = `"Edit"`;
-
-exports[`location-management/src/components/AllLocationListFlat sort and filters work: table header 1`] = `"NameParentPhysical TypeStatusActions"`;

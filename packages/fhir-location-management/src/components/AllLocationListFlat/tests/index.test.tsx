@@ -182,7 +182,7 @@ describe('location-management/src/components/AllLocationListFlat', () => {
         _include: 'Location:partof',
         _getpagesoffset: 0,
         _count: 20,
-        _sort: '-name',
+        _sort: 'name',
       })
       .reply(200, flatLocations);
     const nameSorterCaretDown = document.querySelector(

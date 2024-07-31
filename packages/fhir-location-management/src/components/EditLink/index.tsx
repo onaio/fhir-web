@@ -22,6 +22,7 @@ const EditLink: React.FC<EditLinkProps> = (props) => {
 
   return (
     <Link
+      data-testid="edit-child-location"
       to={
         isBuilding
           ? `${URL_SERVICE_POINT_ADD_EDIT}/${id}?${backToParam}`

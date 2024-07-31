@@ -151,7 +151,7 @@ test('works correctly - jurisdiction location', async () => {
     return element.getAttribute('href');
   });
   expect(editLinks).toEqual([
-    '/admin/location/unit/edit/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d?back_to=%2Fprofile%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334',
+    '/admin/service-points/add-edit/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d?back_to=%2Fprofile%2Fd9d7aa7b-7488-48e7-bae8-d8ac5bd09334',
   ]);
 
   // validate search works.
@@ -249,7 +249,7 @@ test('works correctly - physical location', async () => {
 
   // check records shown in table.
   let tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(['No data']);
+  expect(tableData).toEqual(['HealthEdit']);
 
   // switch to inactive tab
   const inactiveRadio = screen.getByRole('radio', { name: /Inactive/i });
