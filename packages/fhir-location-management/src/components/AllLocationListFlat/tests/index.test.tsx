@@ -4,7 +4,14 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import nock from 'nock';
-import { render, cleanup, waitForElementToBeRemoved, screen, prettyDOM, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render,
+  cleanup,
+  waitForElementToBeRemoved,
+  screen,
+  fireEvent,
+  waitFor,
+} from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { flatLocations } from '../../../ducks/tests/fixtures';
@@ -144,14 +151,10 @@ describe('location-management/src/components/AllLocationListFlat', () => {
     firstRowTd?.forEach((td) => {
       expect(td.textContent).toMatchSnapshot('table data');
     });
-
-    // check sort is added to the correct columns: name
-    console.log(prettyDOM(document))
-    const sorters = document.querySelector
   });
 
-it("sort on columns work", async () => {
-  nock(props.fhirBaseURL)
+  it('sort on columns work', async () => {
+    nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
       .query({
         _total: 'accurate',
@@ -167,11 +170,10 @@ it("sort on columns work", async () => {
 
     // confirm sorters on the page
     // check sort is added to the correct columns: name
-    console.log(prettyDOM(document))
-    const sorters = document.querySelectorAll(".ant-table-column-has-sorters")
-    expect(sorters).toHaveLength(1)
-    const columnWithSort = [...sorters].map(element => element.textContent)
-    expect(columnWithSort).toEqual(["Name"])
+    const sorters = document.querySelectorAll('.ant-table-column-has-sorters');
+    expect(sorters).toHaveLength(1);
+    const columnWithSort = [...sorters].map((element) => element.textContent);
+    expect(columnWithSort).toEqual(['Name']);
 
     const sortScope = nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
@@ -180,19 +182,21 @@ it("sort on columns work", async () => {
         _include: 'Location:partof',
         _getpagesoffset: 0,
         _count: 20,
-        "_sort":"-name" 
+        _sort: '-name',
       })
       .reply(200, flatLocations);
-    const nameSorterCaretDown = document.querySelector("thead .ant-table-column-sorter-down") as Element
-    fireEvent.click(nameSorterCaretDown)
-    waitFor(() => {
-      expect(sortScope.isDone()).toBeTruthy()
-    }) 
-})
+    const nameSorterCaretDown = document.querySelector(
+      'thead .ant-table-column-sorter-down'
+    ) as Element;
+    fireEvent.click(nameSorterCaretDown);
+    await waitFor(() => {
+      expect(sortScope.isDone()).toBeTruthy();
+    });
+  });
 
-it("filters on table work", async () => {
-  // parent filter is added to query
-  nock(props.fhirBaseURL)
+  it('filters on table work', async () => {
+    // parent filter is added to query
+    nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
       .query({
         _total: 'accurate',
@@ -207,22 +211,23 @@ it("filters on table work", async () => {
     expect(screen.getByText(/Locations/)).toBeInTheDocument();
 
     // confirm filters on view
-    const filterRow = screen.getByTestId("filter-row")
-    expect(filterRow.textContent).toEqual("")
+    const filterRow = screen.getByTestId('filter-row');
+    expect(filterRow.textContent).toEqual('Parent Location:Status:Show all');
 
     // make changes to the status filter
-    const inputStatus = document.querySelector("input#location-status-filter") as Element
+    const inputStatus = document.querySelector('input#location-status-filter') as Element;
     fireEvent.mouseDown(inputStatus);
 
-    const optionTexts = [
-      ...document.querySelectorAll(
-        `#$location-status-filter_list+div.rc-virtual-list .ant-select-item-option-content`
-      ),
-    ].map((option) => {
+    await waitFor(() => {
+      expect(document.querySelector('.ant-select-item-option')).toBeInTheDocument();
+    });
+
+    const options = [...document.querySelectorAll(`.ant-select-item-option`)];
+    const optionText = options.map((option) => {
       return option.textContent;
     });
-    expect(optionTexts).toEqual([]);
-    fireEvent.click(document.querySelector(`[title="${"Active"}"]`)!);
+    expect(optionText).toEqual(['Active', 'Inactive', 'Show all']);
+    fireEvent.click(document.querySelector(`[title="${'Active'}"]`) as Element);
 
     const filterScope = nock(props.fhirBaseURL)
       .get(`/${locationResourceType}/_search`)
@@ -231,13 +236,12 @@ it("filters on table work", async () => {
         _include: 'Location:partof',
         _getpagesoffset: 0,
         _count: 20,
-        "status":"active" 
+        status: 'active',
       })
       .reply(200, flatLocations);
-    
-    waitFor(() => {
-      expect(filterScope.isDone()).toBeTruthy()
-    }) 
-})
 
+    await waitFor(() => {
+      expect(filterScope.isDone()).toBeTruthy();
+    });
+  });
 });

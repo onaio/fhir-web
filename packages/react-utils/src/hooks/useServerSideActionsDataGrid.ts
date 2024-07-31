@@ -179,3 +179,10 @@ export function useSimpleTabularView<T extends Resource>(
 
 const useServerSideActionsDataGrid = useSimpleTabularView;
 export { useServerSideActionsDataGrid };
+
+export type GetControlledSortProps = ReturnType<
+  typeof useSimpleTabularView
+>['sortOptions']['getControlledSortProps'];
+export type updateSortParams = ReturnType<
+  typeof useSimpleTabularView
+>['sortOptions']['updateSortParams'];
