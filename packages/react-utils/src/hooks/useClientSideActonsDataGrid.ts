@@ -25,8 +25,8 @@ import { useClientSideDataGridFilters, FilterDescription } from './useClientSide
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
  * @param extraParams - further custom search param filters during api requests
- * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  * @param dataTransformer - function to process data after fetch
+ * @param initialFilters - initiate filters
  */
 export function useClientSideActionsDataGrid<T extends object>(
   fhirBaseUrl: string,
@@ -79,7 +79,7 @@ export function useClientSideActionsDataGrid<T extends object>(
   const tablePaginationProps = {
     current: page,
     pageSize,
-    total: filteredData?.length,
+    total: filteredData.length,
     defaultPageSize,
     onChange: (current: number, pageSize?: number) => {
       if (current && pageSize) {

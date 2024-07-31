@@ -10,6 +10,7 @@ import { Dictionary } from '@onaio/utils';
 import { eusmPhysicalLocationsFilterParams } from './utils';
 import { URL_LOCATION_VIEW_DETAILS, URL_SERVICE_POINT_ADD_EDIT } from '../../constants';
 import { TFunction } from '@opensrp/i18n';
+import { GetControlledSortProps } from '@opensrp/react-utils';
 
 export type EusmLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -39,12 +40,12 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
     ];
   };
 
-  const getColumns = (t: TFunction, getControlledSortProps: Function) => [
+  const getColumns = (t: TFunction, getControlledSortProps: GetControlledSortProps) => [
     {
       title: t('Name'),
       dataIndex: 'name' as const,
       sorter: true,
-      ...getControlledSortProps('name')
+      ...getControlledSortProps('name'),
     },
     {
       title: t('Type'),

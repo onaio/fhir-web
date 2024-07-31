@@ -183,6 +183,6 @@ export { useServerSideActionsDataGrid };
 export type GetControlledSortProps = ReturnType<
   typeof useSimpleTabularView
 >['sortOptions']['getControlledSortProps'];
-export type updateSortParams = ReturnType<
+export type UpdateSortParams = ReturnType<
   typeof useSimpleTabularView
 >['sortOptions']['updateSortParams'];
