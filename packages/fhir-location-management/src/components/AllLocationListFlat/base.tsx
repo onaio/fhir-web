@@ -1,17 +1,19 @@
 import React, { ReactNode, useMemo } from 'react';
-import { useSimpleTabularView, NoData, Column } from '@opensrp/react-utils';
+import { useSimpleTabularView, NoData, Column, PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { RouteComponentProps } from 'react-router';
 import { locationResourceType } from '../../constants';
 import { BrokenPage, TableLayout, BodyLayout, SearchForm } from '@opensrp/react-utils';
 import { Helmet } from 'react-helmet';
 import { useMls } from '../../mls';
-import { Row, Col } from 'antd';
+import { TFunction } from '@opensrp/i18n';
+import { Row, Col, Select, Space } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { BundleEntry } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/bundleEntry';
 import { getEntryFromBundle, getTableData } from './utils';
 import './base.css';
 import type { URLParams } from '@opensrp/server-service';
 import { Dictionary } from '@onaio/utils';
+import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 
 interface RouteParams {
   locationId: string | undefined;
@@ -20,7 +22,7 @@ interface RouteParams {
 export interface Props {
   fhirBaseURL: string;
   extraParamFilters?: URLParams;
-  columns: Column<Dictionary>[];
+  getColumns: (t: TFunction, getColumnSortProps: Function) => Column<Dictionary>[];
   pageTitle: string;
   addLocationBtnRender: () => ReactNode;
 }
@@ -41,7 +43,7 @@ export type BaseAllLocationListFlatProps = Props & RouteComponentProps<RoutePara
  * @returns {Function} returns paginated locations list display
  */
 export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (props) => {
-  const { fhirBaseURL, extraParamFilters, addLocationBtnRender, columns, pageTitle } = props;
+  const { fhirBaseURL, extraParamFilters, addLocationBtnRender, getColumns, pageTitle } = props;
   const { t } = useMls();
   const history = useHistory();
   const getSearchParams = getSearchParamsFactory(extraParamFilters ?? {});
@@ -50,6 +52,8 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
     queryValues: { data, isFetching, isLoading, error },
     tablePaginationProps,
     searchFormProps,
+    sortOptions: { updateSortParams, getControlledSortProps },
+    filterOptions: { updateFilterParams, currentFilters }
   } = useSimpleTabularView<BundleEntry>(
     fhirBaseURL,
     locationResourceType,
@@ -78,12 +82,23 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
     }
   };
 
+
+
   const tableProps = {
     datasource: tableData,
-    columns,
+    columns: getColumns(t, getControlledSortProps),
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
     locale: getTableLocale(),
+    onChange: function (pagination: any, filters: any, sorter: any) {
+      console.log({ pagination, filters, sorter })
+      const sorterArray = Array.isArray(sorter) ? sorter : [sorter]
+      const sortMap = sorterArray.reduce((acc, sort) => {
+        acc[sort.field] = { paramAccessor: sort.field, order: sort.order }
+        return acc
+      }, {})
+      updateSortParams(sortMap)
+    }
   };
   const headerProps = {
     pageHeaderProps: {
@@ -102,6 +117,66 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
           <div className="main-content__header">
             <SearchForm {...searchFormProps} />
             {addLocationBtnRender()}
+          </div>
+          <div className="filter-row" data-testid="filter-row" style={{ margin: "16px 0" }}>
+            <Space>
+              <Space>
+                Parent Location:
+                <PaginatedAsyncSelect<ILocation>
+                  allowClear={true}
+                  showSearch={true}
+                  resourceType='Location'
+                  baseUrl={fhirBaseURL}
+                  transformOption={(resource) => {
+                    return {
+                      value: resource.id!,
+                      label: resource.name!,
+                      ref: resource
+                    }
+                  }}
+                  onChange={(value) => {
+                    console.log({value})
+                    if (!value) {
+                      updateFilterParams({ "partof": undefined as any })
+                    } else {
+                      updateFilterParams({
+                        "partOf": {
+                          paramAccessor: "partof",
+                          rawValue: value,
+                          paramValue: value
+                        }
+                      })
+                    }
+                  }}
+                />
+              </Space>
+              <Space>
+                Status:
+                <Select
+                id="location-status-filter"
+                  value={currentFilters["status"]?.rawValue ?? "*"}
+                  style={{ width: 120 }}
+                  onChange={(value: string) => {
+                    if (value === "*") {
+                      updateFilterParams({ "status": undefined })
+                      return
+                    }
+                    updateFilterParams({
+                      "status": {
+                        paramAccessor: "status",
+                        rawValue: value,
+                        paramValue: value
+                      }
+                    })
+                  }}
+                  options={[
+                    { value: 'active', label: 'Active' },
+                    { value: 'inactive', label: 'Inactive' },
+                    { value: '*', label: 'Show all' },
+                  ]}
+                />
+              </Space>
+            </Space>
           </div>
           <TableLayout {...tableProps} />
         </Col>

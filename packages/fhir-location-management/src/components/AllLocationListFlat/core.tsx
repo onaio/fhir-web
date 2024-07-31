@@ -13,6 +13,7 @@ import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 import { EditLink } from '../EditLink';
+import {TFunction} from '@opensrp/i18n';
 
 export type AllLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -44,26 +45,27 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
     ];
   };
 
-  const columns = [
+  const getColumns = (t: TFunction, getControlledSortProps: Function) => [
     {
       title: t('Name'),
       dataIndex: 'name' as const,
-      editable: true,
+      sorter: true,
+      ...getControlledSortProps('name')
     },
     {
       title: t('Parent'),
       dataIndex: 'parent' as const,
-      editable: true,
+      
     },
     {
       title: t('Physical Type'),
       dataIndex: 'type' as const,
-      editable: true,
+      
     },
     {
       title: t('Status'),
       dataIndex: 'status' as const,
-      editable: true,
+      
     },
     {
       title: t('Actions'),
@@ -107,7 +109,7 @@ export const AllLocationListFlat: React.FC<AllLocationListFlatProps> = (props) =
     ...props,
     pageTitle: t('Locations'),
     addLocationBtnRender,
-    columns,
+    getColumns,
   };
 
   return <BaseAllLocationListFlat {...baseProps} />;

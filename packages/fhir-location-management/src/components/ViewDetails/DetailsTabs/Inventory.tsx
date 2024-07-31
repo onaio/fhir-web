@@ -315,6 +315,14 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     tablePaginationProps,
   };
 
+  const activeValue = "active"
+  const inactiveValue = "inactive"
+
+  const radioOptions = [{
+    value: activeValue,
+    label: t("Active")
+  }, { value: inactiveValue, label: t("Inactive") }]
+
   return (
     <Row data-testid="inventory-tab" className="list-view">
       <Col style={{ width: '100%' }}>
@@ -324,32 +332,8 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
             <Radio.Group
               value={filterRegistry[accEndDateFilterKey].value}
               buttonStyle="solid"
-              onChange={(event) => {
-                const val = event.target.value;
-                switch (val) {
-                  case 'active':
-                    registerFilter(
-                      accEndDateFilterKey,
-                      (el) => {
-                        return activeInventoryByAccEndDate(el);
-                      },
-                      val
-                    );
-                    break;
-                  case 'inactive':
-                    registerFilter(
-                      accEndDateFilterKey,
-                      (el) => {
-                        return !activeInventoryByAccEndDate(el);
-                      },
-                      val
-                    );
-                    break;
-                }
-              }}
+              options={radioOptions}
             >
-              <Radio.Button value="active">{t('Active')}</Radio.Button>
-              <Radio.Button value="inactive">{t('Inactive')}</Radio.Button>
             </Radio.Group>
           </Space>
           <RbacCheck permissions={['Group.create']}>

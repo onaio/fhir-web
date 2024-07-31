@@ -4,7 +4,7 @@ import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import nock from 'nock';
-import { render, cleanup, waitForElementToBeRemoved, screen } from '@testing-library/react';
+import { render, cleanup, waitForElementToBeRemoved, screen, prettyDOM, fireEvent, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { flatLocations } from '../../../ducks/tests/fixtures';
@@ -130,7 +130,7 @@ describe('location-management/src/components/AllLocationListFlat', () => {
     await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
     expect(screen.getByText(/Locations/)).toBeInTheDocument();
 
-    // check table contnets
+    // check table contents
     const table = document.querySelector('table');
     // check table headers
     expect(table?.querySelectorAll('thead tr')).toHaveLength(1);
@@ -144,5 +144,100 @@ describe('location-management/src/components/AllLocationListFlat', () => {
     firstRowTd?.forEach((td) => {
       expect(td.textContent).toMatchSnapshot('table data');
     });
+
+    // check sort is added to the correct columns: name
+    console.log(prettyDOM(document))
+    const sorters = document.querySelector
   });
+
+it("sort on columns work", async () => {
+  nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({
+        _total: 'accurate',
+        _include: 'Location:partof',
+        _getpagesoffset: 0,
+        _count: 20,
+      })
+      .reply(200, flatLocations);
+
+    render(<AppWrapper {...props} />);
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+    expect(screen.getByText(/Locations/)).toBeInTheDocument();
+
+    // confirm sorters on the page
+    // check sort is added to the correct columns: name
+    console.log(prettyDOM(document))
+    const sorters = document.querySelectorAll(".ant-table-column-has-sorters")
+    expect(sorters).toHaveLength(1)
+    const columnWithSort = [...sorters].map(element => element.textContent)
+    expect(columnWithSort).toEqual(["Name"])
+
+    const sortScope = nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({
+        _total: 'accurate',
+        _include: 'Location:partof',
+        _getpagesoffset: 0,
+        _count: 20,
+        "_sort":"-name" 
+      })
+      .reply(200, flatLocations);
+    const nameSorterCaretDown = document.querySelector("thead .ant-table-column-sorter-down") as Element
+    fireEvent.click(nameSorterCaretDown)
+    waitFor(() => {
+      expect(sortScope.isDone()).toBeTruthy()
+    }) 
+})
+
+it("filters on table work", async () => {
+  // parent filter is added to query
+  nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({
+        _total: 'accurate',
+        _include: 'Location:partof',
+        _getpagesoffset: 0,
+        _count: 20,
+      })
+      .reply(200, flatLocations);
+
+    render(<AppWrapper {...props} />);
+    await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+    expect(screen.getByText(/Locations/)).toBeInTheDocument();
+
+    // confirm filters on view
+    const filterRow = screen.getByTestId("filter-row")
+    expect(filterRow.textContent).toEqual("")
+
+    // make changes to the status filter
+    const inputStatus = document.querySelector("input#location-status-filter") as Element
+    fireEvent.mouseDown(inputStatus);
+
+    const optionTexts = [
+      ...document.querySelectorAll(
+        `#$location-status-filter_list+div.rc-virtual-list .ant-select-item-option-content`
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+    expect(optionTexts).toEqual([]);
+    fireEvent.click(document.querySelector(`[title="${"Active"}"]`)!);
+
+    const filterScope = nock(props.fhirBaseURL)
+      .get(`/${locationResourceType}/_search`)
+      .query({
+        _total: 'accurate',
+        _include: 'Location:partof',
+        _getpagesoffset: 0,
+        _count: 20,
+        "status":"active" 
+      })
+      .reply(200, flatLocations);
+    
+    waitFor(() => {
+      expect(filterScope.isDone()).toBeTruthy()
+    }) 
+})
+
 });
