@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback } from 'react';
 import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
@@ -8,12 +8,8 @@ import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle'
 import { URLParams } from '@opensrp/server-service';
 import { loadAllResources } from '../helpers/fhir-utils';
 import {
-  Filter,
-  checkFilter,
   getNextUrlOnSearch,
   getNumberParam,
-  getStringParam,
-  matchesOnName,
   pageQuery,
   pageSizeQuery,
   searchQuery,

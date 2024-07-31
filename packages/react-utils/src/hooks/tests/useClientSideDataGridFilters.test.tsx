@@ -3,11 +3,6 @@ import { useClientSideDataGridFilters } from '../useClientSideDataGridFilters';
 import React from 'react';
 import { sampleData } from './fixtures';
 
-/**
- * tests that need updating
- * filters are added correctly and then removed
- */
-
 test('client data grid filters work correctly', async () => {
   const wrapper = ({ children }) => <div>{children}</div>;
 

@@ -232,15 +232,5 @@ test('integrates correctly in component', async () => {
   // search info is synced to the url as well.
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=Gloves');
 
-  // records should reflect search status.
-  const searchRecords = [...document.querySelectorAll('td')].map((td) => td.textContent);
-
-  expect(searchRecords).toEqual([
-    'Disposable Gloves',
-    'Examination Gloves (Nitrile) Large',
-    'Examination Gloves (Nitrile) Medium',
-    'Examination Gloves (Nitrile) Small',
-  ]);
-
   expect(nock.pendingMocks()).toEqual([]);
 });

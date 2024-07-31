@@ -8,17 +8,21 @@ import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle'
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
 import {
+  filterDescToSearchParams,
+  FilterParamState,
   getNextUrlOnSearch,
   getNumberParam,
   getStringParam,
   loadResources,
   pageQuery,
   pageSizeQuery,
+  sanitizeParams,
   searchQuery,
+  SortDescToSearchParams,
+  SortParamState,
   startingPage,
   startingPageSize,
 } from './utils';
-import { SortOrder } from 'antd/es/table/interface';
 
 export type ExtraParams = URLParams | ((search: string | null) => URLParams);
 
@@ -31,49 +35,6 @@ const defaultGetExtraParams = (search: string | null) => {
   return {};
 };
 
-export interface SortParamState {
-  [dataIndex: string]: { paramAccessor: string; order: SortOrder } | undefined;
-}
-export interface FilterParamState {
-  [dataIndex: string]: { paramAccessor: string; rawValue: unknown; paramValue: string } | undefined;
-} // TODO - know the unknown
-
-function SortParamsToSearchParams(sortState: SortParamState) {
-  const sortString = Object.entries(sortState).reduce(
-    (accumulator, [dataIndex, sortDescription], currIdx, fullArray) => {
-      if (!sortDescription) {
-        return accumulator;
-      }
-      const direction = sortDescription.order === 'descend' ? '-' : '';
-      const sep = currIdx === fullArray.length - 1 ? '' : ',';
-      accumulator += `${direction}${sortDescription.paramAccessor}${sep}`;
-      return accumulator;
-    },
-    ''
-  );
-  if (sortString) {
-    return {
-      _sort: sortString,
-    };
-  } else {
-    return {};
-  }
-}
-
-function filterParamstoSearchParams(filterState: FilterParamState) {
-  const filterParam = Object.entries(filterState).reduce(
-    (accumulator, [dataIndex, filterDescription]) => {
-      if (!filterDescription) {
-        return accumulator;
-      }
-      accumulator[filterDescription.paramAccessor] = filterDescription.paramValue;
-      return accumulator;
-    },
-    {} as URLParams
-  );
-  return filterParam;
-}
-
 /**
  * Re-usable hook that abstracts search and table pagination for usual list view component
  * Should only be used when getting data from a server that follows the hapi FHIR spec
@@ -82,6 +43,8 @@ function filterParamstoSearchParams(filterState: FilterParamState) {
  * @param resourceType - resource type as endpoint
  * @param extraParams - further custom search param filters during api requests
  * @param extractResources - function to get desired resources
+ * @param defaultSortState - default sort state
+ * @param defaultFilterState - default filter state
  */
 export function useSimpleTabularView<T extends Resource>(
   fhirBaseUrl: string,
@@ -111,8 +74,8 @@ export function useSimpleTabularView<T extends Resource>(
     typeof extraParams === 'function' ? extraParams(search) : extraParams;
   otherParams = {
     ...otherParams,
-    ...SortParamsToSearchParams(sortState),
-    ...filterParamstoSearchParams(filterState),
+    ...SortDescToSearchParams(sortState),
+    ...filterDescToSearchParams(filterState),
     _total: 'accurate',
     _getpagesoffset: (page - 1) * pageSize,
     _count: pageSize,
@@ -168,26 +131,12 @@ export function useSimpleTabularView<T extends Resource>(
     },
   };
 
-  const sanitizeParams = (
-    origState: SortParamState | FilterParamState,
-    state: SortParamState | FilterParamState
-  ) => {
-    const newSortState = { ...origState, ...state };
-    const sanitizedState: SortParamState | FilterParamState = {};
-    for (const dataIdx in newSortState) {
-      if (newSortState[dataIdx]) {
-        sanitizedState[dataIdx] = newSortState[dataIdx];
-      }
-    }
-    return sanitizedState;
-  };
-
   const updateSortParams = useCallback(
     (state: SortParamState) => {
       const sanitized = sanitizeParams(sortState, state) as SortParamState;
       setSortState(sanitized);
     },
-    [setSortState]
+    [setSortState, sortState]
   );
 
   const updateFilterParams = useCallback(
@@ -195,13 +144,14 @@ export function useSimpleTabularView<T extends Resource>(
       const sanitized = sanitizeParams(filterState, state) as FilterParamState;
       setFilterState(sanitized);
     },
-    [setFilterState]
+    [setFilterState, filterState]
   );
 
   const getControlledSortProps = (dataIndex: string) => {
     const sortColumnProps = sortState[dataIndex];
     if (sortColumnProps) {
       return {
+        sorter: true,
         sortOrder: sortState[dataIndex]?.order,
         sortDirections: ['ascend' as const, 'descend' as const],
       };

@@ -397,37 +397,6 @@ test('useServerSideActionDataGrid hook work for sort state', async () => {
   });
 
   expect(nock.pendingMocks()).toEqual([]);
-
-  // expect(current.sParams.toString()).toEqual('');
-  // const params = {
-  //   key: 'value',
-  //   key1: 'value1',
-  //   key2: 'value2',
-  // };
-  // current.addParams(params);
-  // expect(current.sParams.toString()).toEqual('key=value&key1=value1&key2=value2');
-
-  // //Test that when we call addParams to an existing key we replace it instead of appending
-  // current.addParam('key1', 'newValue3');
-  // expect(current.sParams.toString()).toEqual('key=value&key1=newValue3&key2=value2');
-
-  // expect(history.location).toMatchObject({
-  //   hash: '',
-  //   key: expect.any(String),
-  //   pathname: '/qr',
-  //   search: '?key=value&key1=newValue3&key2=value2',
-  //   state: undefined,
-  // });
-
-  // current.removeParam('key1');
-  // expect(current.sParams.toString()).toEqual('key=value&key2=value2');
-  // expect(history.location).toMatchObject({
-  //   hash: '',
-  //   key: expect.any(String),
-  //   pathname: '/qr',
-  //   search: '?key=value&key2=value2',
-  //   state: undefined,
-  // });
 });
 
 test('useServerSideActionDataGrid retains initial sort values', async () => {

@@ -1,5 +1,5 @@
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
-import { checkFilter, matchesOnName } from '../utils';
+import { filterDescToSearchParams, matchesOnName, SortDescToSearchParams } from '../utils';
 import { hugeSinglePageData } from './fixtures';
 
 test('search match util works correctly', () => {
@@ -12,22 +12,32 @@ test('search match util works correctly', () => {
   expect(result).toBeFalsy();
 });
 
-test('check filter works correctly', () => {
-  const sampleItem = {
-    name: 'RejectFB24',
-  };
-  let result = checkFilter(sampleItem, 'name', { operand: '===', value: 'tanoTena' });
-  expect(result).toBeFalsy();
-  result = checkFilter(sampleItem, 'name', { operand: '!==', value: 'tanoTena' });
-  expect(result).toBeTruthy();
-  result = checkFilter(sampleItem, 'nonExistent', { operand: '===', value: 'RejectFB24' });
-  expect(result).toBeFalsy();
-  result = checkFilter(sampleItem, 'name', { operand: 'includes', value: 'reject' });
-  expect(result).toBeTruthy();
-  result = checkFilter(sampleItem, 'name', {
-    operand: 'includes',
-    value: 'reject',
-    caseSensitive: true,
+test('generates a search param from sort description', () => {
+  let result = SortDescToSearchParams({});
+  expect(result).toEqual({});
+
+  result = SortDescToSearchParams({ name: { paramAccessor: 'name', order: 'descend' } });
+  expect(result).toEqual({
+    _sort: '-name',
   });
-  expect(result).toBeFalsy();
+
+  result = SortDescToSearchParams({
+    name: { paramAccessor: 'name', order: 'ascend' },
+    status: { paramAccessor: 'status', order: 'descend' },
+  });
+  expect(result).toEqual({
+    _sort: 'name,-status',
+  });
+});
+
+test('generates a search param from filter description', () => {
+  let result = filterDescToSearchParams({});
+  expect(result).toEqual({});
+
+  result = filterDescToSearchParams({
+    name: { paramAccessor: 'name', rawValue: 'zakayo', paramValue: 'PORK' },
+  });
+  expect(result).toEqual({
+    name: 'PORK',
+  });
 });
