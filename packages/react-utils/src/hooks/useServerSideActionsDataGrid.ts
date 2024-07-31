@@ -182,21 +182,26 @@ export function useSimpleTabularView<T extends Resource>(
     return sanitizedState;
   };
 
-  const updateSortParams = (state: SortParamState) => {
-    const sanitized = sanitizeParams(sortState, state) as SortParamState;
-    setSortState(sanitized);
-  };
+  const updateSortParams = useCallback(
+    (state: SortParamState) => {
+      const sanitized = sanitizeParams(sortState, state) as SortParamState;
+      setSortState(sanitized);
+    },
+    [setSortState]
+  );
 
-  const updateFilterParams = (state: FilterParamState) => {
-    const sanitized = sanitizeParams(filterState, state) as FilterParamState;
-    setFilterState(sanitized);
-  };
+  const updateFilterParams = useCallback(
+    (state: FilterParamState) => {
+      const sanitized = sanitizeParams(filterState, state) as FilterParamState;
+      setFilterState(sanitized);
+    },
+    [setFilterState]
+  );
 
   const getControlledSortProps = (dataIndex: string) => {
     const sortColumnProps = sortState[dataIndex];
     if (sortColumnProps) {
       return {
-        sorter: true,
         sortOrder: sortState[dataIndex]?.order,
         sortDirections: ['ascend' as const, 'descend' as const],
       };
