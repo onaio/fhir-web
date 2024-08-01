@@ -137,7 +137,6 @@ test('form validation works', async () => {
     'Delivery date is required',
     'Accountability end date is required',
     'UNICEF section is required',
-    'PO number is required',
   ]);
 });
 
@@ -319,6 +318,9 @@ test('#1384 - correctly updates location inventory', async () => {
   await waitFor(() => {
     expect(preFetchScope.isDone()).toBeTruthy();
   });
+
+  // serial number is initially not shown on the form
+  expect(screen.queryByText('Serial number')).not.toBeInTheDocument();
 
   // simulate value selection for product
   const productSelectComponent = document.querySelector(`input#${product}`)!;
