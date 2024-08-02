@@ -15,6 +15,8 @@ import {
   DEFAULTS_TABLE_PAGE_SIZE,
   PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
   AUTHZ_STRATEGY,
+  COMMODITIES_LIST_RESOURCE_ID,
+  FHIR_INVENTORY_LIST_ID,
 } from './env';
 import { URL_BACKEND_LOGIN, URL_REACT_LOGIN } from '../constants';
 
@@ -33,6 +35,8 @@ const configObject: ConfigState = {
   defaultTablesPageSize: DEFAULTS_TABLE_PAGE_SIZE,
   practToOrgAssignmentStrategy: PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY,
   rbacStrategy: AUTHZ_STRATEGY,
+  productListId: COMMODITIES_LIST_RESOURCE_ID,
+  inventoryListId: FHIR_INVENTORY_LIST_ID,
 };
 
 setAllConfigs(configObject);

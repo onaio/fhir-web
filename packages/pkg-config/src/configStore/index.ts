@@ -34,6 +34,8 @@ export interface ConfigState {
   defaultTablesPageSize?: number; // static value of the default number of rows per page
   rbacStrategy?: KeycloakStrategies;
   practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
+  productListId?: string;
+  inventoryListId?: string;
 }
 
 export interface UserPreference {
@@ -61,6 +63,8 @@ const defaultConfigs: GlobalState = {
   projectCode: 'core',
   rbacStrategy: 'keycloak',
   practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
+  productListId: undefined,
+  inventoryListId: undefined,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)
