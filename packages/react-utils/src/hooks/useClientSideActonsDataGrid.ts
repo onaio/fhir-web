@@ -10,14 +10,13 @@ import { loadAllResources } from '../helpers/fhir-utils';
 import {
   getNextUrlOnSearch,
   getNumberParam,
-  getStringParam,
-  matchesOnName,
   pageQuery,
   pageSizeQuery,
   searchQuery,
   startingPage,
   startingPageSize,
 } from './utils';
+import { useClientSideDataGridFilters, FilterDescription } from './useClientSideDataGridFilters';
 
 /**
  * Re-usable hook that abstracts search and table pagination for usual list view component
@@ -26,22 +25,21 @@ import {
  * @param fhirBaseUrl - fhir server baser url
  * @param resourceType - resource type as endpoint
  * @param extraParams - further custom search param filters during api requests
- * @param matchesSearch -  function that computes whether a resource payload should be matched by search
  * @param dataTransformer - function to process data after fetch
+ * @param initialFilters - initiate filters
  */
-export function useTabularViewWithLocalSearch<T extends object>(
+export function useClientSideActionsDataGrid<T extends object>(
   fhirBaseUrl: string,
   resourceType: string,
   extraParams: URLParams | ((search: string | null) => URLParams) = {},
-  matchesSearch: (obj: T, search: string) => boolean = matchesOnName,
-  dataTransformer: (response: IBundle) => T[] = getResourcesFromBundle
+  dataTransformer: (response: IBundle) => T[] = getResourcesFromBundle,
+  initialFilters: FilterDescription<T> = {}
 ) {
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
 
   const page = getNumberParam(location, pageQuery, startingPage) as number;
-  const search = getStringParam(location, searchQuery);
   const defaultPageSize =
     (getConfig('defaultTablesPageSize') as number | undefined) ?? startingPageSize;
   const pageSize = getNumberParam(location, pageSizeQuery, defaultPageSize) as number;
@@ -67,12 +65,8 @@ export function useTabularViewWithLocalSearch<T extends object>(
   };
 
   const { data, ...restQueryValues } = useQuery(rQuery);
-  let filteredData = data;
-  if (search) {
-    filteredData = data?.filter((obj) => {
-      return matchesSearch(obj, search);
-    });
-  }
+  const { filteredData, filterRegistry, registerFilter, deregisterFilter } =
+    useClientSideDataGridFilters(data, initialFilters);
 
   const searchFormProps = {
     defaultValue: getQueryParams(location)[searchQuery],
@@ -85,7 +79,7 @@ export function useTabularViewWithLocalSearch<T extends object>(
   const tablePaginationProps = {
     current: page,
     pageSize,
-    total: filteredData?.length,
+    total: filteredData.length,
     defaultPageSize,
     onChange: (current: number, pageSize?: number) => {
       if (current && pageSize) {
@@ -99,6 +93,11 @@ export function useTabularViewWithLocalSearch<T extends object>(
 
   return {
     tablePaginationProps,
+    filterOptions: {
+      registerFilter,
+      filterRegistry,
+      deregisterFilter,
+    },
     queryValues: {
       data: filteredData,
       ...restQueryValues,
@@ -106,3 +105,5 @@ export function useTabularViewWithLocalSearch<T extends object>(
     searchFormProps,
   };
 }
+
+export const useTabularViewWithLocalSearch = useClientSideActionsDataGrid;

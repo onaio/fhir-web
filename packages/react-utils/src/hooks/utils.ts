@@ -4,6 +4,7 @@ import { URLParams } from 'opensrp-server-service/dist/types';
 import { ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { FHIRServiceClass } from '../helpers/dataLoaders';
+import { SortOrder } from 'antd/es/table/interface';
 
 export const pageSizeQuery = 'pageSize';
 export const pageQuery = 'page';
@@ -107,4 +108,71 @@ export const loadResources = async (baseUrl: string, resourceType: string, param
     return res;
   }
   return res;
+};
+
+export interface SortParamState {
+  [dataIndex: string]: { paramAccessor: string; order: SortOrder } | undefined;
+}
+export interface FilterParamState {
+  [dataIndex: string]: { paramAccessor: string; rawValue: string; paramValue: string } | undefined;
+}
+
+/**
+ * transforms sort description object into an object that can be passed to a query as search params
+ *
+ * @param sortDescription - sort description
+ */
+export function SortDescToSearchParams(sortDescription: SortParamState) {
+  const sortString = Object.entries(sortDescription).reduce(
+    (accumulator, [_, sortDescription], currIdx, fullArray) => {
+      if (!sortDescription) {
+        return accumulator;
+      }
+      const direction = sortDescription.order === 'descend' ? '-' : '';
+      const sep = currIdx === fullArray.length - 1 ? '' : ',';
+      accumulator += `${direction}${sortDescription.paramAccessor}${sep}`;
+      return accumulator;
+    },
+    ''
+  );
+  if (sortString) {
+    return {
+      _sort: sortString,
+    };
+  } else {
+    return {};
+  }
+}
+
+/**
+ * transforms filter description object into an object that can be passed to a query as search params
+ *
+ * @param filterDescription - object describing filter state
+ */
+export function filterDescToSearchParams(filterDescription: FilterParamState) {
+  const filterParam = Object.entries(filterDescription).reduce(
+    (accumulator, [_, filterDescription]) => {
+      if (!filterDescription) {
+        return accumulator;
+      }
+      accumulator[filterDescription.paramAccessor] = filterDescription.paramValue;
+      return accumulator;
+    },
+    {} as URLParams
+  );
+  return filterParam;
+}
+
+export const sanitizeParams = (
+  origState: SortParamState | FilterParamState,
+  state: SortParamState | FilterParamState
+) => {
+  const newSortState = { ...origState, ...state };
+  const sanitizedState: SortParamState | FilterParamState = {};
+  for (const [dataIdx, value] of Object.entries(newSortState)) {
+    if (value !== undefined) {
+      sanitizedState[dataIdx] = value;
+    }
+  }
+  return sanitizedState;
 };
