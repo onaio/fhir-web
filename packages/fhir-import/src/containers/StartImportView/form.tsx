@@ -19,6 +19,7 @@ import {
   DATA_IMPORT_LIST_URL,
   IMPORT_DOMAIN_URI,
   dataImportRQueryKey,
+  IMPORT_ENDPOINT,
 } from '../../constants';
 import { useTranslation } from '../../mls';
 import {
@@ -28,6 +29,7 @@ import {
 } from '@opensrp/notifications';
 import { HTTPMethod, getDefaultHeaders } from '@opensrp/server-service';
 import './form.css';
+import { getAllConfigs } from '@opensrp/pkg-config';
 
 const { Text, Title } = Typography;
 
@@ -75,10 +77,20 @@ export const DataImportForm = (props: DataImportFormProps) => {
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
+  const { productListId, inventoryListId } = getAllConfigs();
+  const listIdsSParams = new URLSearchParams();
+
+  if (productListId) {
+    listIdsSParams.append('productListId', productListId);
+  }
+  if (inventoryListId) {
+    listIdsSParams.append('inventoryListId', inventoryListId);
+  }
 
   const { mutate, isLoading } = useMutation(
     async (values: FormFields) => {
-      const service = new OpenSRPService('/$import', IMPORT_DOMAIN_URI, customFetchOptions);
+      const postUrl = `${IMPORT_ENDPOINT}?${listIdsSParams.toString()}`;
+      const service = new OpenSRPService(postUrl, IMPORT_DOMAIN_URI, customFetchOptions);
       const formData = new FormData();
 
       Object.entries(values).forEach(([key, value]) => {
