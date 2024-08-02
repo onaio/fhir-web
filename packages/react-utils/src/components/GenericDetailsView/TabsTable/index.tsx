@@ -1,5 +1,8 @@
 import React, { useMemo } from 'react';
-import { ExtractResources, useSimpleTabularView } from '../../../hooks/useSimpleTabularView';
+import {
+  ExtractResources,
+  useSimpleTabularView,
+} from '../../../hooks/useServerSideActionsDataGrid';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { BrokenPage } from '../../BrokenPage';
 import TableLayout, { Column } from '../../TableLayout';

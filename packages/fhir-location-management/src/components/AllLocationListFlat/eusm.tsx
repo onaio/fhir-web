@@ -9,6 +9,8 @@ import { BaseAllLocationListFlat, BaseAllLocationListFlatProps } from './base';
 import { Dictionary } from '@onaio/utils';
 import { eusmPhysicalLocationsFilterParams } from './utils';
 import { URL_LOCATION_VIEW_DETAILS, URL_SERVICE_POINT_ADD_EDIT } from '../../constants';
+import { TFunction } from '@opensrp/i18n';
+import { GetControlledSortProps } from '@opensrp/react-utils';
 
 export type EusmLocationListFlatProps = Omit<
   BaseAllLocationListFlatProps,
@@ -38,26 +40,24 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
     ];
   };
 
-  const columns = [
+  const getColumns = (t: TFunction, getControlledSortProps: GetControlledSortProps) => [
     {
       title: t('Name'),
       dataIndex: 'name' as const,
-      editable: true,
+      sorter: true,
+      ...getControlledSortProps('name'),
     },
     {
       title: t('Type'),
       dataIndex: 'type' as const,
-      editable: true,
     },
     {
       title: t('Status'),
       dataIndex: 'status' as const,
-      editable: true,
     },
     {
       title: t('Parent'),
       dataIndex: 'parent' as const,
-      editable: true,
     },
     {
       title: t('Actions'),
@@ -103,7 +103,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
     ...props,
     pageTitle: t('Service points'),
     addLocationBtnRender,
-    columns,
+    getColumns,
     extraParamFilters: eusmPhysicalLocationsFilterParams,
   };
 

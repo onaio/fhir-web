@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { getQueryParams } from '../components/Search/utils';
 import { getResourcesFromBundle } from '../helpers/utils';
 import { useQuery } from 'react-query';
@@ -8,13 +8,18 @@ import type { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle'
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { URLParams } from '@opensrp/server-service';
 import {
+  filterDescToSearchParams,
+  FilterParamState,
   getNextUrlOnSearch,
   getNumberParam,
   getStringParam,
   loadResources,
   pageQuery,
   pageSizeQuery,
+  sanitizeParams,
   searchQuery,
+  SortDescToSearchParams,
+  SortParamState,
   startingPage,
   startingPageSize,
 } from './utils';
@@ -38,16 +43,22 @@ const defaultGetExtraParams = (search: string | null) => {
  * @param resourceType - resource type as endpoint
  * @param extraParams - further custom search param filters during api requests
  * @param extractResources - function to get desired resources
+ * @param defaultSortState - default sort state
+ * @param defaultFilterState - default filter state
  */
 export function useSimpleTabularView<T extends Resource>(
   fhirBaseUrl: string,
   resourceType: string,
   extraParams: URLParams | ((search: string | null) => URLParams) = defaultGetExtraParams,
-  extractResources: ExtractResources = getResourcesFromBundle
+  extractResources: ExtractResources = getResourcesFromBundle,
+  defaultSortState: SortParamState = {},
+  defaultFilterState: FilterParamState = {}
 ) {
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
+  const [sortState, setSortState] = useState<SortParamState>(defaultSortState);
+  const [filterState, setFilterState] = useState<FilterParamState>(defaultFilterState);
 
   const page = getNumberParam(location, pageQuery, startingPage) as number;
   const search = getStringParam(location, searchQuery);
@@ -63,6 +74,8 @@ export function useSimpleTabularView<T extends Resource>(
     typeof extraParams === 'function' ? extraParams(search) : extraParams;
   otherParams = {
     ...otherParams,
+    ...SortDescToSearchParams(sortState),
+    ...filterDescToSearchParams(filterState),
     _total: 'accurate',
     _getpagesoffset: (page - 1) * pageSize,
     _count: pageSize,
@@ -80,10 +93,12 @@ export function useSimpleTabularView<T extends Resource>(
   const rQuery = {
     queryKey: [resourceType, otherParams] as TRQuery,
     queryFn,
-    select: (data: IBundle) => ({
-      records: extractResources<T>(data),
-      total: data.total ?? 0,
-    }),
+    select: (data: IBundle) => {
+      return {
+        records: extractResources<T>(data),
+        total: data.total ?? 0,
+      };
+    },
     keepPreviousData: true,
     staleTime: 5000,
     refetchOnMount: false,
@@ -116,8 +131,44 @@ export function useSimpleTabularView<T extends Resource>(
     },
   };
 
+  const updateSortParams = useCallback(
+    (state: SortParamState) => {
+      const sanitized = sanitizeParams(sortState, state) as SortParamState;
+      setSortState(sanitized);
+    },
+    [setSortState, sortState]
+  );
+
+  const updateFilterParams = useCallback(
+    (state: FilterParamState) => {
+      const sanitized = sanitizeParams(filterState, state) as FilterParamState;
+      setFilterState(sanitized);
+    },
+    [setFilterState, filterState]
+  );
+
+  const getControlledSortProps = (dataIndex: string) => {
+    const sortColumnProps = sortState[dataIndex];
+    if (sortColumnProps) {
+      return {
+        sorter: true,
+        sortOrder: sortState[dataIndex]?.order,
+        sortDirections: ['ascend' as const, 'descend' as const],
+      };
+    } else {
+      return {};
+    }
+  };
+
   return {
     tablePaginationProps,
+    sortOptions: {
+      updateSortParams,
+      getControlledSortProps,
+      currentParams: otherParams,
+      sortState,
+    },
+    filterOptions: { updateFilterParams, currentFilters: filterState, currentParams: otherParams },
     queryValues: {
       data,
       ...restQueryValues,
@@ -125,3 +176,13 @@ export function useSimpleTabularView<T extends Resource>(
     searchFormProps,
   };
 }
+
+const useServerSideActionsDataGrid = useSimpleTabularView;
+export { useServerSideActionsDataGrid };
+
+export type GetControlledSortProps = ReturnType<
+  typeof useSimpleTabularView
+>['sortOptions']['getControlledSortProps'];
+export type UpdateSortParams = ReturnType<
+  typeof useSimpleTabularView
+>['sortOptions']['updateSortParams'];
