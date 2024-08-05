@@ -15,7 +15,6 @@ import {
   orgToLocationAssignment,
   userToOrganizationAssignment,
   products,
-  productImages,
   DATA_IMPORT_LIST_URL,
   IMPORT_DOMAIN_URI,
   dataImportRQueryKey,
@@ -46,7 +45,6 @@ interface FormFields {
   [orgToLocationAssignment]: UploadFile[];
   [userToOrganizationAssignment]: UploadFile[];
   [products]: UploadFile[];
-  [productImages]: UploadFile[];
 }
 
 /**

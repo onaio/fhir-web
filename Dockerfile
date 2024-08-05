@@ -38,7 +38,7 @@ RUN rm -rf ./node_modules/typescript
 FROM nikolaik/python-nodejs:python3.12-nodejs22-alpine as final
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
-RUN apk add --no-cache tini curl
+RUN apk add --no-cache tini curl libmagic
 
 # confd
 RUN curl -sSL -o /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 \
@@ -60,7 +60,7 @@ WORKDIR /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/build /usr/src/app
 COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
 
-RUN pip install -r /usr/src/app/fhir-tooling/requirements.txt
+RUN pip install -r /usr/src/app/importer/requirements.txt
 
 ENV EXPRESS_REACT_BUILD_PATH /usr/src/web/
 
