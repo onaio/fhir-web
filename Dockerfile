@@ -68,6 +68,6 @@ EXPOSE 3000
 
 RUN corepack enable
 
-CMD [ "/bin/sh", "-c", "/usr/local/bin/app.sh && yarn dev" ]
+CMD [ "/bin/sh", "-c", "/usr/local/bin/app.sh && yarn && yarn dev" ]
 
 ENTRYPOINT ["/sbin/tini", "--"]
