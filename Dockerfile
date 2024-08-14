@@ -57,15 +57,17 @@ COPY --from=build /project/app/build /usr/src/web
 
 WORKDIR /usr/src/app
 
-COPY --from=nodejsbuild /usr/src/express-server/build /usr/src/app
-COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
+COPY --from=nodejsbuild /usr/src/express-server /usr/src/app
+# COPY --from=nodejsbuild /usr/src/express-server/node_modules /usr/src/app/node_modules
 
-RUN pip install -r /usr/src/app/importer/requirements.txt
+RUN pip install -r /usr/src/app/build/importer/requirements.txt
 
 ENV EXPRESS_REACT_BUILD_PATH /usr/src/web/
 
 EXPOSE 3000
 
-CMD [ "/bin/sh", "-c", "/usr/local/bin/app.sh && node /usr/src/app/dist" ]
+RUN corepack enable
+
+CMD [ "/bin/sh", "-c", "/usr/local/bin/app.sh && yarn dev" ]
 
 ENTRYPOINT ["/sbin/tini", "--"]
