@@ -322,10 +322,10 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     <Row data-testid="inventory-tab" className="list-view">
       <Col style={{ width: '100%' }}>
         <div className="main-content__header">
-          <Space size={"large"}>
+          <Space size={'large'}>
             <SearchForm data-testid="search-form" {...searchFormProps} />
             <Space>
-              <Typography.Text>{t("Accountability status:")}</Typography.Text>
+              <Typography.Text>{t('Accountability status:')}</Typography.Text>
               <Radio.Group
                 value={filterRegistry[accEndDateFilterKey].value}
                 buttonStyle="solid"

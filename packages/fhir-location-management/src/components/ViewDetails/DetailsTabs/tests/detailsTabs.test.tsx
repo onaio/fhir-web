@@ -249,7 +249,7 @@ test('works correctly - physical location', async () => {
 
   // check records shown in table.
   let tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(["Bed nets2/1/20242/1/2024HealthEdit", 'HealthEdit']);
+  expect(tableData).toEqual(['Bed nets2/1/20242/1/2024HealthEdit', 'HealthEdit']);
 
   // switch to inactive tab
   const inactiveRadio = screen.getByRole('radio', { name: /Inactive/i });
@@ -257,7 +257,7 @@ test('works correctly - physical location', async () => {
 
   // recheck data
   tableData = [...inventoryTab.querySelectorAll('table tbody tr')].map((tr) => tr.textContent);
-  expect(tableData).toEqual(["No data"]);
+  expect(tableData).toEqual(['No data']);
   checkedRadio = document.querySelector('.ant-radio-button-wrapper-checked');
   expect(checkedRadio?.textContent).toEqual('Inactive');
 
@@ -265,11 +265,12 @@ test('works correctly - physical location', async () => {
   const activeRadio = screen.getByRole('radio', { name: /^active/i });
   fireEvent.click(activeRadio);
 
-  const links = [...inventoryTab.querySelectorAll('a')].map(link => link.href);
-  expect(links).toEqual(
-    ["http://localhost/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334/1277894c-91b5-49f6-a0ac-cdf3f72cc3d5", "http://localhost/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334/e44e26d0-1f7a-41d6-aa57-99c5712ddd66", ""]
-
-  );
+  const links = [...inventoryTab.querySelectorAll('a')].map((link) => link.href);
+  expect(links).toEqual([
+    'http://localhost/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334/1277894c-91b5-49f6-a0ac-cdf3f72cc3d5',
+    'http://localhost/location/inventory/d9d7aa7b-7488-48e7-bae8-d8ac5bd09334/e44e26d0-1f7a-41d6-aa57-99c5712ddd66',
+    '',
+  ]);
 
   // validate search works.
   const childLocationSearch = inventoryTab.querySelector('[data-testid="search-form"]')!;

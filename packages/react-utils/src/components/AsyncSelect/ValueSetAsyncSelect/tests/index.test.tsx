@@ -3,7 +3,7 @@ import React from 'react';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
-import { cleanup, fireEvent, render, waitFor, screen, prettyDOM } from '@testing-library/react';
+import { cleanup, fireEvent, render, waitFor, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ValueSetAsyncSelect, valueSetResourceType } from '..';
 import { eusmServicePoint } from './fixtures';
@@ -204,14 +204,7 @@ test('display is of no consequence when matching value to option', async () => {
   });
 
   let activeValue = document.querySelector('.ant-select-selection-item');
-  expect(activeValue).toMatchInlineSnapshot(`
-    <span
-      class="ant-select-selection-item"
-      title="NatCom Switzerland"
-    >
-      NatCom Switzerland
-    </span>
-  `);
+  expect(activeValue?.textContent).toEqual('NatCom Switzerland');
 
   // When display is left out
   placeboValue = JSON.stringify({
@@ -229,14 +222,7 @@ test('display is of no consequence when matching value to option', async () => {
   });
 
   activeValue = document.querySelector('.ant-select-selection-item');
-  expect(activeValue).toMatchInlineSnapshot(`
-    <span
-      class="ant-select-selection-item"
-      title="NatCom Switzerland"
-    >
-      NatCom Switzerland
-    </span>
-  `);
+  expect(activeValue?.textContent).toEqual('NatCom Switzerland');
 
   expect(nock.isDone()).toBeTruthy();
 });
