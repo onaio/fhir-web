@@ -3,7 +3,7 @@ import React from 'react';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import nock from 'nock';
-import { cleanup, fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, waitFor, screen, prettyDOM } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ValueSetAsyncSelect, valueSetResourceType } from '..';
 import { eusmServicePoint } from './fixtures';
@@ -168,4 +168,75 @@ test('chooses correctly dropdown', async () => {
       },
     ],
   ]);
+});
+
+test('display is of no consequence when matching value to option', async () => {
+  const onChangeHandlerMock = jest.fn();
+  const props = {
+    ...commonProps,
+    id: 'select',
+    onChange: onChangeHandlerMock,
+    showSearch: true,
+  };
+  nock(props.fhirBaseUrl)
+    .get(`/${valueSetResourceType}/$expand?url=${props.valueSetURL}`)
+    .reply(200, eusmServicePoint);
+
+  // When display is different case
+  let placeboValue = JSON.stringify({
+    system: 'http://smartregister.org/CodeSystem/eusm-donors',
+    code: 'NatCom Switzerland',
+    display: 'NATCOM Switzerland',
+  });
+  const { rerender } = render(
+    <AppWrapper>
+      <ValueSetAsyncSelect {...{ ...props, value: placeboValue }} />
+    </AppWrapper>
+  );
+
+  // select is disabled during loading
+  const antSelectContainer = document.querySelector('.ant-select');
+  expect(antSelectContainer?.classList.contains('ant-select-disabled')).toBeTruthy();
+  expect(antSelectContainer?.classList.contains('ant-select-loading')).toBeTruthy();
+
+  await waitFor(() => {
+    expect(antSelectContainer?.classList).not.toContain('ant-select-loading');
+  });
+
+  let activeValue = document.querySelector('.ant-select-selection-item');
+  expect(activeValue).toMatchInlineSnapshot(`
+    <span
+      class="ant-select-selection-item"
+      title="NatCom Switzerland"
+    >
+      NatCom Switzerland
+    </span>
+  `);
+
+  // When display is left out
+  placeboValue = JSON.stringify({
+    system: 'http://smartregister.org/CodeSystem/eusm-donors',
+    code: 'NatCom Switzerland',
+  });
+  rerender(
+    <AppWrapper>
+      <ValueSetAsyncSelect {...{ ...props, value: placeboValue }} />
+    </AppWrapper>
+  );
+
+  await waitFor(() => {
+    expect(antSelectContainer?.classList).not.toContain('ant-select-loading');
+  });
+
+  activeValue = document.querySelector('.ant-select-selection-item');
+  expect(activeValue).toMatchInlineSnapshot(`
+    <span
+      class="ant-select-selection-item"
+      title="NatCom Switzerland"
+    >
+      NatCom Switzerland
+    </span>
+  `);
+
+  expect(nock.isDone()).toBeTruthy();
 });
