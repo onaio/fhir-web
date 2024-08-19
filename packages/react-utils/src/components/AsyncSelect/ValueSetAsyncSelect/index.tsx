@@ -53,7 +53,6 @@ export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
   const sanitizedDefValue = useSanitizedValueSelectValue(optionsByCodeAndSystem, defaultValue)
 
 
-  console.log({sanitizedValue, optionsByCodeAndSystem})
   const selectDropDownRender = dropDownFactory(t, data, error as Error)
 
   const selectProps = {
