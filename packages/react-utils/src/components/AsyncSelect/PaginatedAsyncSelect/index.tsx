@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQueries, useQuery } from 'react-query';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
@@ -34,6 +34,7 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   filterPageSize?: number;
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
+  discoverUnknownOptions?: (values: string[]) => Promise<SelectOption<ResourceT>[]>;
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -59,6 +60,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     filterPageSize: pageSize = 20,
     extraQueryParams = {},
     getFullOptionOnChange,
+    discoverUnknownOptions,
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -105,6 +107,53 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
       refetchOnWindowFocus: false,
     });
 
+  const options = ((data?.pages ?? []) as IBundle[]).flatMap((resourceBundle: IBundle) => {
+    const resources = getResourcesFromBundle<ResourceT>(resourceBundle);
+    const allOptions = resources.map(transformOption);
+    const saneOptions = allOptions.filter((option) => option !== undefined);
+    return saneOptions as SelectOption<ResourceT>[];
+  });
+
+  const optionsByValue = options.reduce((acc, opt) => {
+    acc[opt.value] = opt;
+    return acc;
+  }, {} as Record<string, SelectOption<ResourceT>>);
+
+  const values = Array.isArray(props.value) ? props.value : [props.value];
+  const defaultValues = Array.isArray(props.defaultValue)
+    ? props.defaultValue
+    : [props.defaultValue];
+  const poolValuesToCheck = [...values, defaultValues];
+
+  const missingValues: string[] = [];
+  for (const value of poolValuesToCheck) {
+    if (typeof value === 'string') {
+      if (optionsByValue[value] === undefined) {
+        missingValues.push(value);
+      } else {
+        // TODO - YAGNI - case when value is labelledValue
+      }
+    }
+  }
+
+  const { data: preloadData, isLoading: preLoadDataIsLoading } = useQuery(
+    [missingValues],
+    () => props.discoverUnknownOptions?.(missingValues),
+    {
+      enabled: !!missingValues.length,
+    }
+  );
+
+  const preloadOptionsByValue = (preloadData ?? []).reduce((acc, option) => {
+    acc[option.value] = option;
+    return acc;
+  }, {} as Record<string, SelectOption<ResourceT>>);
+  const fullSetOptions = {
+    ...preloadOptionsByValue,
+    ...optionsByValue,
+  };
+  const updatedOptions = Object.values(fullSetOptions);
+
   const changeHandler = (
     value: string,
     fullOption: SelectOption<ResourceT> | SelectOption<ResourceT>[]
@@ -118,27 +167,22 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     setSearchValue(value);
   };
 
-  const options = ((data?.pages ?? []) as IBundle[]).flatMap((resourceBundle: IBundle) => {
-    const resources = getResourcesFromBundle<ResourceT>(resourceBundle);
-    const allOptions = resources.map(transformOption);
-    const saneOptions = allOptions.filter((option) => option !== undefined);
-    return saneOptions as SelectOption<ResourceT>[];
-  });
-
   const pages = (data?.pages ?? []) as IBundle[];
   const recordsFetchedNum = getTotalRecordsInBundles(pages);
   const totalPossibleRecords = getTotalRecordsOnApi(pages);
   const remainingRecords = totalPossibleRecords - recordsFetchedNum;
+
+  console.log({ error });
 
   const propsToSelect = {
     style: { minWidth: '200px' },
     ...restProps,
     placeholder,
     onChange: changeHandler,
-    loading: isLoading,
+    loading: isLoading || preLoadDataIsLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
     filterOption: false,
-    options: options,
+    options: updatedOptions,
     searchValue,
     dropdownRender: (menu: React.ReactNode) => (
       <>
