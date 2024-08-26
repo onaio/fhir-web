@@ -1,242 +1,235 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import flushPromises from 'flush-promises';
-import nock from 'nock';
-import { history } from '@onaio/connected-reducer-registry';
-import * as fhirCient from 'fhirclient';
-import * as fixtures from './fixtures';
-import { act } from 'react-dom/test-utils';
-import { Router } from 'react-router';
 import { CareTeamForm } from '../Form';
-import { defaultInitialValues } from '../utils';
-import Client from 'fhirclient/lib/Client';
-import { getResourcesFromBundle } from '@opensrp/react-utils';
-import toJson from 'enzyme-to-json';
-
-/* eslint-disable @typescript-eslint/naming-convention */
-
-jest.mock('antd', () => {
-  const antd = jest.requireActual('antd');
-
-  /* eslint-disable react/prop-types */
-  const Select = ({ children, onChange }) => {
-    return <select onChange={(e) => onChange(e.target.value)}>{children}</select>;
-  };
-
-  const Option = ({ children, ...otherProps }) => {
-    return <option {...otherProps}>{children}</option>;
-  };
-  /* eslint-disable react/prop-types */
-
-  Select.Option = Option;
-
-  return {
-    __esModule: true,
-    ...antd,
-    Select,
-  };
-});
-
-jest.setTimeout(10000);
+import { defaultInitialValues, getCareTeamFormFields } from '../utils';
+import { cleanup, fireEvent, waitFor, render, screen, prettyDOM } from '@testing-library/react';
+import userEvents from '@testing-library/user-event';
+import * as notifications from '@opensrp/notifications';
+import nock from 'nock';
+import {
+  careTeamResourceType,
+  organizationResourceType,
+  practitionerResourceType,
+} from '../../../constants';
+import {
+  createdCareTeam2,
+  careTeam4201alternativeEdited,
+  organizations,
+  practitioners,
+  careTeam4201alternative,
+} from './fixtures';
+import { store } from '@opensrp/store';
+import { authenticateUser } from '@onaio/session-reducer';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
 
-describe('components/forms/CreateTeamForm', () => {
-  const props = {
-    initialValues: defaultInitialValues,
-    fhirBaseURL: 'https://r4.smarthealthit.org/',
-    practitioners: getResourcesFromBundle(fixtures.practitioners),
-    organizations: getResourcesFromBundle(fixtures.organizations),
+jest.mock('fhirclient', () => {
+  return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+jest.mock('uuid', () => {
+  const actual = jest.requireActual('uuid');
+  return {
+    ...actual,
+    v4: () => '9b782015-8392-4847-b48c-50c11638656b',
   };
+});
 
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      cacheTime: 0,
+    },
+  },
+});
 
-  it('form validation works for required fields', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppWrapper = ({ children }: { children: any }) => {
+  const history = createMemoryHistory();
+  return (
+    <Router history={history}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </Router>
+  );
+};
 
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    wrapper.update();
-    await act(async () => {
-      await flushPromises();
-    });
-    // name is required and has no default
-    expect(wrapper.find('#name .ant-form-item').text()).toMatchInlineSnapshot(
-      `"NameName is Required"`
-    );
-    wrapper.unmount();
-  });
-
-  it('adds new care team successfully', async () => {
-    nock('https://fhir.smarthealthit.org/')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .post('/CareTeam', (body: any) => {
-        expect(body).toMatchObject({
-          id: '308',
-          identifier: [{ use: 'official', value: '93bc9c3d-6321-41b0-9b93-1275d7114e22' }],
-          meta: {
-            lastUpdated: '2021-06-18T06:07:29.649+00:00',
-            source: '#9bf085bac3f61473',
-            versionId: '4',
-          },
-          name: 'Care Team One',
-          participant: [
-            { member: { reference: 'Practitioner/206' } },
-            { member: { reference: 'Practitioner/103' } },
-          ],
-          resourceType: 'CareTeam',
-          status: 'active',
-          subject: { reference: 'Group/306' },
-        });
-        return true;
-      })
-      .reply(200, 'CareTeam created successfully');
-
-    const wrapper = mount(<CareTeamForm {...props} />);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = new Client({} as any, {
-      serverUrl: 'https://fhir.smarthealthit.org/',
-    });
-
-    const result = await client.create(fixtures.careTeam1);
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    // ensure the post is made against the correct resource endpoint
-    expect(result.url).toEqual('https://fhir.smarthealthit.org/CareTeam');
-
-    // set team name
-    const nameInput = wrapper.find('input#name');
-    nameInput.simulate('change', { target: { name: 'name', value: 'Care Team Test' } });
-
-    // set form fields
-    wrapper
-      .find('input#name')
-      .simulate('change', { target: { name: 'name', value: 'Care Team Test' } });
-    wrapper
-      .find('input[type="radio"]')
-      .first()
-      .simulate('change', { target: { name: 'status', checked: true } });
-    wrapper
-      .find('select')
-      .first()
-      .simulate('change', {
-        target: { value: ['Practitioner A'] },
-      });
-
-    const sd = wrapper.find('#practitionersId');
-    expect(toJson(sd)).toMatchSnapshot('sd');
-
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      await flushPromises();
-    });
-
-    wrapper.update();
-
-    expect(wrapper.find('form').text()).toMatchInlineSnapshot(
-      `"IDUUIDNameStatusActiveInactivePractitioner ParticipantManaging organizationsSaveCancel"`
-    );
-    wrapper.unmount();
-  });
-
-  it('edits care team', async () => {
-    const propEdit = {
-      ...props,
-      initialValues: {
-        uuid: '93bc9c3d-6321-41b0-9b93-1275d7114e22',
-        id: '308',
-        name: 'Care Team One',
-        status: 'active',
-        practitionersId: ['206', '103'],
-        groupsId: '306',
+beforeAll(() => {
+  nock.disableNetConnect();
+  store.dispatch(
+    authenticateUser(
+      true,
+      {
+        email: 'bob@example.com',
+        name: 'Bobbie',
+        username: 'RobertBaratheon',
       },
-    };
+      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+    )
+  );
+});
 
-    const wrapper = mount(<CareTeamForm {...propEdit} />);
+afterAll(() => {
+  nock.enableNetConnect();
+});
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-    // usergroup name
-    await act(async () => {
-      const nameInput = wrapper.find('input#name');
-      nameInput.simulate('change', { target: { name: 'name', value: 'Care Team Test1' } });
-    });
-    wrapper.update();
+afterEach(() => {
+  nock.cleanAll();
+  cleanup();
+  jest.resetAllMocks();
+});
 
-    wrapper.find('form').simulate('submit');
+const props = {
+  initialValues: defaultInitialValues,
+  fhirBaseURL: 'https://r4.smarthealthit.org/',
+};
 
-    await act(async () => {
-      await flushPromises();
-    });
-    wrapper.update();
-    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
+test('1157 - Create care team works corectly', async () => {
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
+  const preloadScope = nock(props.fhirBaseURL)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '20' })
+    .reply(200, organizations)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '20' })
+    .reply(200, practitioners);
+
+  nock(props.fhirBaseURL)
+    .put(`/${careTeamResourceType}/${createdCareTeam2.id}`, createdCareTeam2)
+    .reply(200)
+    .persist();
+
+  render(
+    <AppWrapper>
+      <CareTeamForm {...props} />
+    </AppWrapper>
+  );
+
+  await waitFor(() => {
+    expect(preloadScope.pendingMocks()).toEqual([]);
+  });
+  await waitFor(() => {
+    expect(screen.getByText(/Create Care Team/)).toBeInTheDocument();
   });
 
-  it('Care Team is not created if api is down', async () => {
-    const wrapper = mount(<CareTeamForm {...props} />);
+  const nameInput = screen.getByLabelText('Name') as Element;
+  userEvents.type(nameInput, 'care team');
 
-    await act(async () => {
-      await flushPromises();
-    });
+  const activeStatusRadio = screen.getByLabelText('Active');
+  expect(activeStatusRadio).toBeChecked();
 
-    wrapper.update();
+  const inactiveStatusRadio = screen.getByLabelText('Inactive');
+  expect(inactiveStatusRadio).not.toBeChecked();
+  userEvents.click(inactiveStatusRadio);
 
-    // set usersgroup  name
-    const nameInput = wrapper.find('input#name');
-    nameInput.simulate('change', { target: { name: 'name', value: 'Test' } });
+  const practitionersInput = screen.getByLabelText('Practitioner Participant');
+  fireEvent.mouseDown(practitionersInput);
+  fireEvent.click(screen.getByTitle('Ward N 2 Williams MD'));
 
-    wrapper.find('form').simulate('submit');
-    const fhir = jest.spyOn(fhirCient, 'client');
-    fhir.mockImplementation(
-      jest.fn().mockImplementation(() => {
-        return {
-          request: jest.fn().mockRejectedValue('API is down'),
-        };
-      })
-    );
-    await act(async () => {
-      wrapper.update();
-    });
+  const managingOrgsSelect = screen.getByLabelText('Managing organizations');
+  fireEvent.mouseDown(managingOrgsSelect);
+  fireEvent.click(screen.getByTitle('Test Team 70'));
 
-    await flushPromises();
-    wrapper.update();
-    expect(document.getElementsByClassName('ant-notification')).toHaveLength(1);
-    wrapper.unmount();
+  const saveBtn = screen.getByRole('button', { name: 'Save' });
+  userEvents.click(saveBtn);
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully added CareTeams']]);
   });
 
-  it('cancel button returns user to list view', async () => {
-    const historyPushMock = jest.spyOn(history, 'push');
-    const wrapper = mount(
-      <Router history={history}>
-        <CareTeamForm {...props} />
-      </Router>
-    );
+  expect(nock.isDone()).toBeTruthy();
+});
 
-    await act(async () => {
-      await flushPromises();
-    });
+test('1157 - editing care team works corectly', async () => {
+  const thisProps = {
+    ...props,
+    initialValues: getCareTeamFormFields(careTeam4201alternative),
+  };
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
 
-    wrapper.update();
-    wrapper.find('.cancel-care-team').at(1).simulate('click');
-    wrapper.update();
-    expect(historyPushMock).toHaveBeenCalledTimes(1);
-    expect(historyPushMock).toHaveBeenCalledWith('/admin/CareTeams');
+  const preloadScope = nock(props.fhirBaseURL)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '20' })
+    .reply(200, organizations)
+    .get(`/${practitionerResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '20' })
+    .reply(200, practitioners)
+    .post(`/`, {
+      resourceType: 'Bundle',
+      type: 'batch',
+      entry: [{ request: { method: 'GET', url: 'Organization/368' } }],
+    })
+    .reply(200, [])
+    .post(`/`, {
+      resourceType: 'Bundle',
+      type: 'batch',
+      entry: [{ request: { method: 'GET', url: 'Practitioner/102' } }],
+    })
+    .reply(200, []);
+
+  nock(props.fhirBaseURL)
+    .put(
+      `/${careTeamResourceType}/${careTeam4201alternativeEdited.id}`,
+      careTeam4201alternativeEdited
+    )
+    .reply(200)
+    .persist();
+
+  render(
+    <AppWrapper>
+      <CareTeamForm {...thisProps} />
+    </AppWrapper>
+  );
+
+  await waitFor(() => {
+    expect(preloadScope.pendingMocks()).toEqual([]);
   });
+  await waitFor(() => {
+    expect(screen.getByText(/Edit Care Team /)).toBeInTheDocument();
+  });
+
+  const nameInput = screen.getByLabelText('Name') as Element;
+  userEvents.type(nameInput, 'care team');
+
+  const activeStatusRadio = screen.getByLabelText('Active');
+  expect(activeStatusRadio).toBeChecked();
+
+  const inactiveStatusRadio = screen.getByLabelText('Inactive');
+  expect(inactiveStatusRadio).not.toBeChecked();
+  userEvents.click(inactiveStatusRadio);
+
+  // remove assigned
+  const selectClear = [...document.querySelectorAll('.ant-select-selection-item-remove')];
+  expect(selectClear).toHaveLength(2);
+  selectClear.forEach((clear) => {
+    fireEvent.click(clear);
+  });
+
+  const practitionersInput = screen.getByLabelText('Practitioner Participant');
+  fireEvent.mouseDown(practitionersInput);
+
+  fireEvent.click(screen.getByTitle('Ward N 1 Williams MD'));
+
+  const managingOrgsSelect = screen.getByLabelText('Managing organizations');
+  fireEvent.mouseDown(managingOrgsSelect);
+  fireEvent.click(screen.getByTitle('testing ash123'));
+
+  const saveBtn = screen.getByRole('button', { name: 'Save' });
+  userEvents.click(saveBtn);
+
+  await waitFor(() => {
+    expect(successNoticeMock.mock.calls).toEqual([['Successfully updated CareTeams']]);
+  });
+
+  expect(nock.isDone()).toBeTruthy();
 });

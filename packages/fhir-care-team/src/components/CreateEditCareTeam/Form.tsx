@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { Button, Col, Row, Form, Input, Radio, Select } from 'antd';
-import { BodyLayout } from '@opensrp/react-utils';
+import { Button, Col, Row, Form, Input, Radio } from 'antd';
+import { BodyLayout, PaginatedAsyncSelect, SelectOption } from '@opensrp/react-utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import {
   FormFields,
-  getOrgSelectOptions,
-  getPractitionerSelectOptions,
-  selectFilterFunction,
+  preloadExistingOptionsFactory,
+  processOrganizationOption,
+  processPractitionerOption,
   submitForm,
 } from './utils';
 import {
   id,
   managingOrganizations,
   name,
+  organizationResourceType,
   practitionerParticipants,
+  practitionerResourceType,
   status,
   URL_CARE_TEAM,
   uuid,
@@ -27,8 +29,6 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 export interface CareTeamFormProps {
   initialValues: FormFields;
   fhirBaseURL: string;
-  practitioners: IPractitioner[];
-  organizations: IOrganization[];
   disabled?: string[];
 }
 
@@ -38,14 +38,15 @@ export interface CareTeamFormProps {
  * @param {object} props - component props
  */
 const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => {
-  const { fhirBaseURL, initialValues, practitioners, organizations, disabled } = props;
+  const { fhirBaseURL, initialValues, disabled } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const { t } = useTranslation();
   const [form] = Form.useForm();
-
-  const orgOptions = getOrgSelectOptions(organizations);
-  const practOptions = getPractitionerSelectOptions(practitioners);
+  const [selectedOrgs, setSelectedOrgs] = useState<SelectOption<IOrganization>[]>([]);
+  const [selectedPractitioners, setSelectedPractitioners] = useState<SelectOption<IPractitioner>[]>(
+    []
+  );
 
   const statusOptions = [
     { label: t('Active'), value: 'active' },
@@ -62,6 +63,29 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     },
   };
 
+  const organizationPreloadExistingOptions = preloadExistingOptionsFactory(
+    fhirBaseURL,
+    processOrganizationOption
+  );
+  const practitionerPreloadExistingOptions = preloadExistingOptionsFactory(
+    fhirBaseURL,
+    processPractitionerOption
+  );
+
+  const organizationChangeHandler = (
+    orgs: SelectOption<IOrganization> | SelectOption<IOrganization>[]
+  ) => {
+    const sanitized = Array.isArray(orgs) ? orgs : [orgs];
+    setSelectedOrgs(sanitized);
+  };
+
+  const practitionerChangeHandler = (
+    practitioners: SelectOption<IPractitioner> | SelectOption<IPractitioner>[]
+  ) => {
+    const sanitized = Array.isArray(practitioners) ? practitioners : [practitioners];
+    setSelectedPractitioners(sanitized);
+  };
+
   return (
     <BodyLayout headerProps={headerProps}>
       <Row className="user-group">
@@ -73,8 +97,12 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             initialValues={initialValues}
             onFinish={(values: FormFields) => {
               setIsSubmitting(true);
-              submitForm(values, initialValues, fhirBaseURL, organizations, practitioners, t)
-                .catch(() => {
+              submitForm(values, initialValues, fhirBaseURL, selectedOrgs, selectedPractitioners, t)
+                .then(() => {
+                  history.push(URL_CARE_TEAM);
+                })
+                .catch((err) => {
+                  console.log({ err });
                   if (initialValues.id) {
                     sendErrorNotification(t('There was a problem updating the Care Team'));
                   } else {
@@ -117,14 +145,17 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               id="practitionerParticipants"
               label={t('Practitioner Participant')}
             >
-              <Select
-                placeholder={t('Select practitioners to assign to this Care Team')}
-                allowClear
-                mode="multiple"
+              <PaginatedAsyncSelect<IPractitioner>
+                baseUrl={fhirBaseURL}
+                resourceType={practitionerResourceType}
+                transformOption={processPractitionerOption}
                 showSearch
-                options={practOptions}
-                filterOption={selectFilterFunction}
+                placeholder={t('Select practitioners to assign to this Care Team')}
                 disabled={disabled?.includes(practitionerParticipants)}
+                mode="multiple"
+                allowClear
+                getFullOptionOnChange={practitionerChangeHandler}
+                discoverUnknownOptions={practitionerPreloadExistingOptions as any}
               />
             </Form.Item>
 
@@ -134,14 +165,17 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
               label={t('Managing organizations')}
               tooltip={t('Select one or more managing organizations')}
             >
-              <Select
-                options={orgOptions}
+              <PaginatedAsyncSelect<IOrganization>
+                baseUrl={fhirBaseURL}
+                resourceType={organizationResourceType}
+                transformOption={processOrganizationOption}
                 mode="multiple"
                 allowClear
                 showSearch
                 placeholder={t('Select a managing Organization')}
-                filterOption={selectFilterFunction}
                 disabled={disabled?.includes(managingOrganizations)}
+                getFullOptionOnChange={organizationChangeHandler}
+                discoverUnknownOptions={organizationPreloadExistingOptions as any}
               />
             </Form.Item>
 
