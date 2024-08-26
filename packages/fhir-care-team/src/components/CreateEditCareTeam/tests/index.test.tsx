@@ -24,7 +24,6 @@ import {
 import { screen, render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { careTeam1, careTeam4201Edited, organizations } from './fixtures';
-import flushPromises from 'flush-promises';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
 import * as notifications from '@opensrp/notifications';
@@ -37,7 +36,6 @@ jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
   ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
 }));
-
 
 const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 
@@ -208,9 +206,8 @@ test('#1016 - does not create malformed request body', async () => {
   const history = createMemoryHistory();
 
   const successNoticeMock = jest
-  .spyOn(notifications, 'sendSuccessNotification')
-  .mockImplementation(() => undefined);
-
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
 
   const careTeamId = fixtures.careTeam4201.id;
   history.push(`/add/${careTeamId}`);
@@ -266,8 +263,8 @@ test('#1016 - does not create malformed request body', async () => {
   });
 
   await waitFor(() => {
-    expect(successNoticeMock).toHaveBeenCalledWith("Successfully updated CareTeams")
-  })
+    expect(successNoticeMock).toHaveBeenCalledWith('Successfully updated CareTeams');
+  });
 });
 
 test('data loading problem', async () => {

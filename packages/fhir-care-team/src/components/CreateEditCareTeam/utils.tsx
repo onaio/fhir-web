@@ -1,4 +1,3 @@
-import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import {
   FHIRServiceClass,
@@ -9,7 +8,7 @@ import {
   SelectOption,
   TransformOptions,
 } from '@opensrp/react-utils';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { sendSuccessNotification } from '@opensrp/notifications';
 import {
   FHIR_CARE_TEAM,
   id,
@@ -17,7 +16,6 @@ import {
   organizationResourceType,
   practitionerParticipants,
   practitionerResourceType,
-  URL_CARE_TEAM,
   uuid,
   name,
   status,
@@ -265,11 +263,12 @@ export function preloadExistingOptionsFactory<ResourceT extends IResource>(
         url: fhirBaseUrl,
       })
       .then((response) => {
-        return getResourcesFromBundle<ResourceT>(response as IBundle).map(optionsPreprocessor);
+        return getResourcesFromBundle<ResourceT>(response as IBundle).map(
+          optionsPreprocessor
+        ) as SelectOption<ResourceT>[];
       })
-      .catch((err) => {
-        console.log({ err });
-        return [];
+      .catch(() => {
+        return [] as SelectOption<ResourceT>[];
       });
   };
 }

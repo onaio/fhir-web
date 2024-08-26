@@ -1,7 +1,7 @@
 import React from 'react';
 import { CareTeamForm } from '../Form';
 import { defaultInitialValues, getCareTeamFormFields } from '../utils';
-import { cleanup, fireEvent, waitFor, render, screen, prettyDOM } from '@testing-library/react';
+import { cleanup, fireEvent, waitFor, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import nock from 'nock';

@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { useInfiniteQuery, useQueries, useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
 import type { SelectProps } from 'antd';
@@ -128,7 +128,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   const missingValues: string[] = [];
   for (const value of poolValuesToCheck) {
     if (typeof value === 'string') {
-      if (optionsByValue[value] === undefined) {
+      if (!optionsByValue[value]) {
         missingValues.push(value);
       } else {
         // TODO - YAGNI - case when value is labelledValue
@@ -171,8 +171,6 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   const recordsFetchedNum = getTotalRecordsInBundles(pages);
   const totalPossibleRecords = getTotalRecordsOnApi(pages);
   const remainingRecords = totalPossibleRecords - recordsFetchedNum;
-
-  console.log({ error });
 
   const propsToSelect = {
     style: { minWidth: '200px' },

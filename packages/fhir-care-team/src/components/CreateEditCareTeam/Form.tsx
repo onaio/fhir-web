@@ -101,8 +101,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 .then(() => {
                   history.push(URL_CARE_TEAM);
                 })
-                .catch((err) => {
-                  console.log({ err });
+                .catch(() => {
                   if (initialValues.id) {
                     sendErrorNotification(t('There was a problem updating the Care Team'));
                   } else {
@@ -155,7 +154,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 mode="multiple"
                 allowClear
                 getFullOptionOnChange={practitionerChangeHandler}
-                discoverUnknownOptions={practitionerPreloadExistingOptions as any}
+                discoverUnknownOptions={practitionerPreloadExistingOptions}
               />
             </Form.Item>
 
@@ -175,7 +174,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 placeholder={t('Select a managing Organization')}
                 disabled={disabled?.includes(managingOrganizations)}
                 getFullOptionOnChange={organizationChangeHandler}
-                discoverUnknownOptions={organizationPreloadExistingOptions as any}
+                discoverUnknownOptions={organizationPreloadExistingOptions}
               />
             </Form.Item>
 
