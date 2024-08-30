@@ -25,6 +25,8 @@ RUN yarn lerna run build
 
 FROM node:20-alpine as nodejsbuild
 
+RUN corepack enable
+
 COPY --from=sources /usr/src/express-server /usr/src/express-server
 
 WORKDIR /usr/src/express-server
@@ -36,6 +38,8 @@ RUN rm -rf ./node_modules/typescript
 
 
 FROM nikolaik/python-nodejs:python3.12-nodejs22-alpine as final
+
+RUN corepack enable
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
 RUN apk add --no-cache tini curl libmagic
