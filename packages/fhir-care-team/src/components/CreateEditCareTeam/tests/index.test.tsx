@@ -24,13 +24,18 @@ import {
 import { screen, render } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
 import { careTeam1, careTeam4201Edited, organizations } from './fixtures';
-import flushPromises from 'flush-promises';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
+import * as notifications from '@opensrp/notifications';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
 });
+
+jest.mock('@opensrp/notifications', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/notifications')),
+}));
 
 const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 
@@ -103,18 +108,12 @@ test('renders correctly for create care team', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 })
-    .get(`/${organizationResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count', active: true })
-    .reply(200, { total: 1000 })
-    .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000, active: true })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, fixtures.practitioners);
 
   render(
@@ -122,8 +121,6 @@ test('renders correctly for create care team', async () => {
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
-
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   await waitFor(() => {
     expect(nock.pendingMocks()).toEqual([]);
@@ -171,27 +168,30 @@ test('renders correctly for edit care team', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 })
-    .get(`/${organizationResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count', active: true })
-    .reply(200, { total: 1000 })
-    .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000, active: true })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, fixtures.practitioners);
+
+  nock(props.fhirBaseURL)
+    .post(`/`, {
+      resourceType: 'Bundle',
+      type: 'batch',
+      entry: [
+        { request: { method: 'GET', url: 'Practitioner/206' } },
+        { request: { method: 'GET', url: 'Practitioner/103' } },
+      ],
+    })
+    .reply(200, []);
 
   render(
     <Router history={history}>
       <AppWrapper {...props}></AppWrapper>
     </Router>
   );
-
-  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
   await waitFor(() => {
     expect(nock.pendingMocks()).toEqual([]);
@@ -204,6 +204,11 @@ test('renders correctly for edit care team', async () => {
 
 test('#1016 - does not create malformed request body', async () => {
   const history = createMemoryHistory();
+
+  const successNoticeMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => undefined);
+
   const careTeamId = fixtures.careTeam4201.id;
   history.push(`/add/${careTeamId}`);
 
@@ -213,19 +218,21 @@ test('#1016 - does not create malformed request body', async () => {
 
   nock(props.fhirBaseURL)
     .get(`/${organizationResourceType}/_search`)
-    .query({ _summary: 'count' })
-    .reply(200, { total: 1000 })
-    .get(`/${organizationResourceType}/_search`)
-    .query({ _count: 1000 })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, organizations);
 
   nock(props.fhirBaseURL)
     .get(`/${practitionerResourceType}/_search`)
-    .query({ _summary: 'count', active: true })
-    .reply(200, { total: 1000 })
-    .get(`/${practitionerResourceType}/_search`)
-    .query({ _count: 1000, active: true })
+    .query({ _getpagesoffset: '0', _count: '20' })
     .reply(200, fixtures.practitioners);
+
+  nock(props.fhirBaseURL)
+    .post(`/`, {
+      resourceType: 'Bundle',
+      type: 'batch',
+      entry: [{ request: { method: 'GET', url: 'Organization/4190' } }],
+    })
+    .reply(200, []);
 
   render(
     <Router history={history}>
@@ -253,7 +260,10 @@ test('#1016 - does not create malformed request body', async () => {
   // submit
   await act(async () => {
     userEvents.click(screen.getByText(/Save/));
-    await flushPromises();
+  });
+
+  await waitFor(() => {
+    expect(successNoticeMock).toHaveBeenCalledWith('Successfully updated CareTeams');
   });
 });
 

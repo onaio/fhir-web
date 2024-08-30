@@ -1,12 +1,14 @@
-import { history } from '@onaio/connected-reducer-registry';
 import { v4 } from 'uuid';
 import {
   FHIRServiceClass,
   getObjLike,
+  getResourcesFromBundle,
   IdentifierUseCodes,
   parseFhirHumanName,
+  SelectOption,
+  TransformOptions,
 } from '@opensrp/react-utils';
-import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
+import { sendSuccessNotification } from '@opensrp/notifications';
 import {
   FHIR_CARE_TEAM,
   id,
@@ -14,7 +16,6 @@ import {
   organizationResourceType,
   practitionerParticipants,
   practitionerResourceType,
-  URL_CARE_TEAM,
   uuid,
   name,
   status,
@@ -23,12 +24,13 @@ import {
 import { IfhirR4 } from '@smile-cdr/fhirts';
 import type { TFunction } from '@opensrp/i18n';
 import { ICareTeam } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ICareTeam';
-import { get, keyBy } from 'lodash';
+import { get } from 'lodash';
 import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrganization';
 import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
+import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { CareTeamParticipant } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/careTeamParticipant';
-import { Reference } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/reference';
 
 /**
  * computes participants that should be carried over when generating the payload
@@ -70,34 +72,16 @@ export const submitForm = async (
   values: FormFields,
   initialValues: FormFields,
   fhirBaseURL: string,
-  organizations: IOrganization[],
-  practitioners: IPractitioner[],
+  selectedOrganizations: SelectOption<IOrganization>[],
+  selectedPractitioners: SelectOption<IPractitioner>[],
   t: TFunction
 ): Promise<void> => {
   const { initialCareTeam, id, uuid } = initialValues;
   const { meta, text, participant, ...nonMetaFields } = initialCareTeam ?? {};
 
-  const allPractitionersById = keyBy(
-    practitioners,
-    (practitioner) => `${practitionerResourceType}/${practitioner.id}`
-  );
-  const practitionerParticipantsById: Record<string, CareTeamParticipant> = {};
-  values[practitionerParticipants].forEach((id) => {
-    const fullPractitionerObj = allPractitionersById[id];
-    practitionerParticipantsById[id] = {
-      member: {
-        reference: id,
-        display: getPatientName(fullPractitionerObj),
-      },
-    };
-  });
-
-  const organizationsById = keyBy(organizations, (org) => `${organizationResourceType}/${org.id}`);
-  const managingOrgsById: Record<string, CareTeamParticipant> = {};
-  values[managingOrganizations].forEach((id) => {
-    const orgName = (organizationsById[id] as IOrganization | undefined)?.name;
-    const orgDisplay = orgName ? { display: organizationsById[id].name } : {};
-    managingOrgsById[id] = {
+  const participatingOrgsPayload = selectedOrganizations.map((orgOption) => {
+    const { label, value } = orgOption;
+    return {
       role: [
         {
           coding: [
@@ -110,22 +94,30 @@ export const submitForm = async (
         },
       ],
       member: {
-        ...orgDisplay,
-        reference: id,
+        reference: value as string,
+        display: label,
+      },
+    };
+  });
+
+  const practitionerParticipants = selectedPractitioners.map((option) => {
+    const { label, value } = option;
+    return {
+      member: {
+        reference: value as string,
+        display: label,
       },
     };
   });
 
   const carriedOverParticipantsById = getCarriedOverParticipants(values, initialValues);
-  const finalParticipantsById = {
-    ...carriedOverParticipantsById,
-    ...practitionerParticipantsById,
-    ...managingOrgsById,
-  };
-
-  const managingOrgsPayload = Object.values(managingOrgsById).map(
-    (obj) => obj.member
-  ) as Reference[];
+  const carriedOverParticipants = Object.values(carriedOverParticipantsById);
+  const managingOrgsReferences = participatingOrgsPayload.map((payload) => payload.member);
+  const allParticipants = [
+    ...carriedOverParticipants,
+    ...practitionerParticipants,
+    ...participatingOrgsPayload,
+  ];
 
   const careTeamId = uuid ? uuid : v4();
   const payload: Omit<IfhirR4.ICareTeam, 'meta'> = {
@@ -140,8 +132,8 @@ export const submitForm = async (
     id: id ? id : careTeamId,
     name: values.name,
     status: values.status as IfhirR4.CareTeam.StatusEnum,
-    participant: Object.values(finalParticipantsById),
-    managingOrganization: managingOrgsPayload,
+    participant: allParticipants,
+    managingOrganization: managingOrgsReferences,
   };
 
   const serve = new FHIRServiceClass(fhirBaseURL, FHIR_CARE_TEAM);
@@ -149,14 +141,10 @@ export const submitForm = async (
   if (id) {
     successNotificationMessage = t('Successfully updated CareTeams');
   }
-  await serve
+  return await serve
     .update(payload)
     // TODO - possible place to use translation plurals
-    .then(() => sendSuccessNotification(successNotificationMessage))
-    .catch(() => {
-      sendErrorNotification(t('There was a problem fetching the Care Team'));
-    })
-    .finally(() => history.push(URL_CARE_TEAM));
+    .then(() => sendSuccessNotification(successNotificationMessage));
 };
 
 /**
@@ -233,24 +221,6 @@ export interface SelectOptions {
   label?: string;
 }
 
-export const getOrgSelectOptions = (orgs: IOrganization[] = []): SelectOptions[] => {
-  return orgs.map((org) => {
-    return {
-      value: `${organizationResourceType}/${org.id}`,
-      label: org.name,
-    };
-  });
-};
-
-export const getPractitionerSelectOptions = (resources: IPractitioner[] = []): SelectOptions[] => {
-  return resources.map((res) => {
-    return {
-      value: `${practitionerResourceType}/${res.id}`,
-      label: getPatientName(res),
-    };
-  });
-};
-
 /**
  * filter practitioners select on search
  *
@@ -259,4 +229,72 @@ export const getPractitionerSelectOptions = (resources: IPractitioner[] = []): S
  */
 export const selectFilterFunction = (inputValue: string, option?: SelectOptions) => {
   return !!option?.label?.toLowerCase().includes(inputValue.toLowerCase());
+};
+
+/**
+ * creates util function that given a set of resource ids, it can fetch
+ * just those resources whose id are provided
+ *
+ * @param fhirBaseUrl - fhir base url
+ * @param optionsPreprocessor - callback to convert the response data to select options
+ */
+export function preloadExistingOptionsFactory<ResourceT extends IResource>(
+  fhirBaseUrl: string,
+  optionsPreprocessor: TransformOptions<ResourceT>
+) {
+  return async function preloadExistingOptions(values: string[]) {
+    const service = new FHIRServiceClass(fhirBaseUrl, '');
+    const batchPayload = {
+      resourceType: 'Bundle',
+      type: 'batch',
+      entry: values.map((value) => {
+        return {
+          request: {
+            method: 'GET',
+            url: value,
+          },
+        };
+      }),
+    };
+    return service
+      .customRequest({
+        method: 'POST',
+        body: JSON.stringify(batchPayload),
+        url: fhirBaseUrl,
+      })
+      .then((response) => {
+        return getResourcesFromBundle<ResourceT>(response as IBundle).map(
+          optionsPreprocessor
+        ) as SelectOption<ResourceT>[];
+      })
+      .catch(() => {
+        return [] as SelectOption<ResourceT>[];
+      });
+  };
+}
+
+/**
+ * generate a select option from a practitioner resource
+ *
+ * @param obj - practitioner resource
+ */
+export const processPractitionerOption = (obj: IPractitioner) => {
+  return {
+    value: `${obj.resourceType}/${obj.id}`,
+    label: getPatientName(obj),
+    ref: obj,
+  } as SelectOption<IPractitioner>;
+};
+
+/**
+ * generate a select option from an organization resource
+ *
+ * @param obj - organization resource
+ */
+export const processOrganizationOption = (obj: IOrganization) => {
+  return {
+    value: `${obj.resourceType}/${obj.id}`,
+    label: obj.name,
+    ref: obj,
+  } as SelectOption<IOrganization>;
 };

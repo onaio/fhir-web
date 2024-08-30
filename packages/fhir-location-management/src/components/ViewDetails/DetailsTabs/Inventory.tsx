@@ -6,7 +6,7 @@ import {
   SearchForm,
   Column,
 } from '@opensrp/react-utils';
-import { Alert, Button, Col, Divider, Radio, Row, Space } from 'antd';
+import { Alert, Button, Col, Divider, Radio, Row, Space, Typography } from 'antd';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
 import { accEndDateFilterKey, listResourceType, nameFilterKey } from '../../../constants';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
@@ -176,7 +176,7 @@ function activeInventoryByAccEndDate(obj: TableData) {
   }
   const currentAccEndDate = Date.parse(obj.accountabilityEndDate);
   if (!isNaN(currentAccEndDate)) {
-    return Date.now() >= currentAccEndDate;
+    return currentAccEndDate >= Date.now();
   }
   return false;
 }
@@ -322,38 +322,41 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
     <Row data-testid="inventory-tab" className="list-view">
       <Col style={{ width: '100%' }}>
         <div className="main-content__header">
-          <Space>
+          <Space size={'large'}>
             <SearchForm data-testid="search-form" {...searchFormProps} />
-            <Radio.Group
-              value={filterRegistry[accEndDateFilterKey].value}
-              buttonStyle="solid"
-              onChange={(event) => {
-                const val = event.target.value;
-                switch (val) {
-                  case activeValue:
-                    registerFilter(
-                      accEndDateFilterKey,
-                      (el) => {
-                        return activeInventoryByAccEndDate(el);
-                      },
-                      val
-                    );
-                    break;
-                  case inactiveValue:
-                    registerFilter(
-                      accEndDateFilterKey,
-                      (el) => {
-                        return !activeInventoryByAccEndDate(el);
-                      },
-                      val
-                    );
-                    break;
-                }
-              }}
-            >
-              <Radio.Button value={activeValue}>{t('Active')}</Radio.Button>
-              <Radio.Button value={inactiveValue}>{t('Inactive')}</Radio.Button>
-            </Radio.Group>
+            <Space>
+              <Typography.Text>{t('Accountability status:')}</Typography.Text>
+              <Radio.Group
+                value={filterRegistry[accEndDateFilterKey].value}
+                buttonStyle="solid"
+                onChange={(event) => {
+                  const val = event.target.value;
+                  switch (val) {
+                    case activeValue:
+                      registerFilter(
+                        accEndDateFilterKey,
+                        (el) => {
+                          return activeInventoryByAccEndDate(el);
+                        },
+                        val
+                      );
+                      break;
+                    case inactiveValue:
+                      registerFilter(
+                        accEndDateFilterKey,
+                        (el) => {
+                          return !activeInventoryByAccEndDate(el);
+                        },
+                        val
+                      );
+                      break;
+                  }
+                }}
+              >
+                <Radio.Button value={activeValue}>{t('Active')}</Radio.Button>
+                <Radio.Button value={inactiveValue}>{t('Inactive')}</Radio.Button>
+              </Radio.Group>
+            </Space>
           </Space>
           <RbacCheck permissions={['Group.create']}>
             <Button type="primary" onClick={() => history.push(baseInventoryPath)}>

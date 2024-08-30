@@ -137,15 +137,23 @@ export const careTeam4201Edited = {
     },
   ],
   name: 'Peter Charlmers Care teamWho is Peter Charlmers',
-  subject: { reference: 'Patient/4195' },
+  subject: { reference: 'Patient/4195', display: 'Peter James Chalmers' },
   encounter: { reference: 'Encounter/4197' },
   period: { end: '2013-01-01' },
-  participant: [
-    { member: { reference: 'Patient/4195', display: '' } },
-    { member: { reference: '#pr1', display: '' } },
-  ],
-  managingOrganization: [{ reference: 'Organization/4190' }],
+  managingOrganization: [],
   identifier: [{ use: 'official', value: '0b3a3311-6f5a-40dd-95e5-008001acebe1' }],
+  participant: [
+    {
+      role: [{ text: 'responsiblePerson' }],
+      member: { reference: 'Patient/4195', display: 'Peter James Chalmers' },
+    },
+    {
+      role: [{ text: 'responsiblePerson' }],
+      member: { reference: '#pr1', display: 'Dorothy Dietition' },
+      onBehalfOf: { reference: 'Organization/f001' },
+      period: { end: '2013-01-01' },
+    },
+  ],
 };
 
 export const careTeam4201alternative = {
