@@ -142,6 +142,16 @@ export class FHIRServiceClass<T extends IResource> {
     });
   }
 
+  public async customRequest(requestOptions: fhirclient.RequestOptions) {
+    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+    const serve = FHIR.client(this.buildState(accessToken));
+    return serve.request({
+      signal: this.signal,
+      headers: this.headers,
+      ...requestOptions,
+    });
+  }
+
   public async delete(id: string) {
     const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
     const serve = FHIR.client(this.buildState(accessToken));
