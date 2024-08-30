@@ -128,7 +128,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   const missingValues: string[] = [];
   for (const value of poolValuesToCheck) {
     if (typeof value === 'string') {
-      if (!optionsByValue[value]) {
+      if (!(optionsByValue[value] as SelectOption<ResourceT> | undefined)) {
         missingValues.push(value);
       } else {
         // TODO - YAGNI - case when value is labelledValue
