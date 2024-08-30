@@ -4,6 +4,7 @@ import React from 'react';
 import { SelectProps, DefaultOptionType } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
 import { UseQueryOptions, useQuery } from 'react-query';
+import { TFunction } from '@opensrp/i18n';
 
 export type RawValueType = string | number | (string | number)[];
 
@@ -29,13 +30,9 @@ function BaseAsyncSelect<QueryResponse = unknown, QueryProcessedData = unknown>(
   const { data, isLoading, error } = useQuery(useQueryParams);
 
   const options = useMemo(() => (data ? optionsGetter(data) : undefined), [data, optionsGetter]);
+  const selectDropDownRender = dropDownFactory(t, data, error);
   const singleSelectProps = {
-    dropdownRender: (menu: React.ReactNode) => (
-      <>
-        {!error && data && menu}
-        {error && <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />}
-      </>
-    ),
+    dropdownRender: selectDropDownRender,
     options,
     loading: isLoading,
     disabled: isLoading,
@@ -43,6 +40,25 @@ function BaseAsyncSelect<QueryResponse = unknown, QueryProcessedData = unknown>(
   };
 
   return <Select {...singleSelectProps} />;
+}
+
+/**
+ * Factory to help generate the render for dropdown with respect to how query to fetch
+ * options resolved.
+ *
+ * @param t - translator function
+ * @param data - loaded data
+ * @param error - query error
+ */
+export function dropDownFactory(t: TFunction, data?: unknown, error?: Error | null) {
+  return function selectErrorDropDownRender(menu: React.ReactNode) {
+    return (
+      <>
+        {!error && data && menu}
+        {error && <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />}
+      </>
+    );
+  };
 }
 
 export { BaseAsyncSelect };
