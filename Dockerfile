@@ -37,7 +37,7 @@ RUN rm -rf ./node_modules/typescript
 
 
 
-FROM nikolaik/python-nodejs:python3.12-nodejs22-alpine as final
+FROM nikolaik/python-nodejs:python3.12-nodejs20-alpine as final
 
 RUN corepack enable
 
