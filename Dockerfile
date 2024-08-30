@@ -23,7 +23,7 @@ USER node
 RUN yarn lerna run build
 
 
-FROM node:16.18-alpine as nodejsbuild
+FROM node:20-alpine as nodejsbuild
 
 COPY --from=sources /usr/src/express-server /usr/src/express-server
 
