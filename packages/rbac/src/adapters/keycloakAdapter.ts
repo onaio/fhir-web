@@ -47,6 +47,8 @@ const keycloakRoleMappings: Record<string, UserRole> = {
   'manage-users': new UserRole(['iam_group', 'iam_role', 'iam_user'], Permit.MANAGE),
   'query-groups': new UserRole(['iam_group'], Permit.READ),
   'query-users': new UserRole(['iam_user'], Permit.READ),
+  VIEW_ROLES: new UserRole(['iam_user_role'], Permit.READ),
+  VIEW_USER_GROUPS: new UserRole(['iam_user_group'], Permit.READ),
 };
 
 export const parseKeycloakRoles = (stringRole: string) => {
@@ -76,9 +78,11 @@ export const adapter: RbacAdapter = (roles: KeycloakRoleData = defaultRoleData) 
   });
 
   const allRoles: UserRole[] = [];
+
   allRoleStrings.forEach((role) => {
     // check if we can first get a hit from keycloak default roles.
     let asRole = parseKeycloakRoles(role);
+
     if (asRole === undefined) {
       asRole = parseFHirRoles(role);
     }
@@ -88,11 +92,9 @@ export const adapter: RbacAdapter = (roles: KeycloakRoleData = defaultRoleData) 
       invalidRoleStrings.push(role);
     }
   });
-
   if (invalidRoleStrings.length > 0) {
     /* eslint-disable no-console */
     console.warn(`Could not understand the following roles: ${invalidRoleStrings.join(', ')}`);
   }
-
   return UserRole.combineRoles(allRoles);
 };
