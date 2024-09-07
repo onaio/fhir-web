@@ -126,7 +126,14 @@ import { CloseFlag, URL_CLOSE_FLAGS } from '@opensrp/fhir-flag';
 import { useTranslation } from '../mls';
 import '@opensrp/user-management/dist/index.css';
 import { APP_LOGIN_URL } from '../configs/dispatchConfig';
-import { DATA_IMPORT_CREATE_URL, ImportDetailViewDetails, DATA_IMPORT_DETAIL_URL, DATA_IMPORT_LIST_URL, DataImportList, StartDataImport } from '@opensrp/fhir-import';
+import {
+  DATA_IMPORT_CREATE_URL,
+  ImportDetailViewDetails,
+  DATA_IMPORT_DETAIL_URL,
+  DATA_IMPORT_LIST_URL,
+  DataImportList,
+  StartDataImport,
+} from '@opensrp/fhir-import';
 
 /** Util function that renders Oauth2 callback components
  *
@@ -201,43 +208,43 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_USER_GROUPS}
-        permissions={['iam_group.read']}
+        permissions={['iam_group.read', 'iam_user_group.read']}
         component={UserGroupsList}
       />
-          <PrivateComponent
-          redirectPath={APP_CALLBACK_URL}
-          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-          exact
-          path={DATA_IMPORT_LIST_URL}
-          permissions={['WebDataImport.read']}
-          component={DataImportList}
-        />
-              <PrivateComponent
-          redirectPath={APP_CALLBACK_URL}
-          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-          exact
-          path={`${DATA_IMPORT_CREATE_URL}`}
-          permissions={['WebDataImport.create']}
-          component={StartDataImport}
-        />
-              <PrivateComponent
-          redirectPath={APP_CALLBACK_URL}
-          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-          exact
-          path={`${DATA_IMPORT_DETAIL_URL}/:${'workflowId'}`}
-          {...patientProps}
-          permissions={['WebDataImport.read']}
-          component={ImportDetailViewDetails}
-        />
-        <PrivateComponent
-          redirectPath={APP_CALLBACK_URL}
-          disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-          exact
-          path={`${DATA_IMPORT_LIST_URL}/:${'workflowId'}`}
-          {...patientProps}
-          permissions={['WebDataImport.read']}
-          component={DataImportList}
-        />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={DATA_IMPORT_LIST_URL}
+        permissions={['WebDataImport.read']}
+        component={DataImportList}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${DATA_IMPORT_CREATE_URL}`}
+        permissions={['WebDataImport.create']}
+        component={StartDataImport}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${DATA_IMPORT_DETAIL_URL}/:${'workflowId'}`}
+        {...patientProps}
+        permissions={['WebDataImport.read']}
+        component={ImportDetailViewDetails}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={`${DATA_IMPORT_LIST_URL}/:${'workflowId'}`}
+        {...patientProps}
+        permissions={['WebDataImport.read']}
+        component={DataImportList}
+      />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
@@ -270,7 +277,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_USER_ROLES}
-        permissions={['iam_role.read']}
+        permissions={['iam_role.read', 'iam_user_role.read']}
         component={UserRolesList}
       />
       <PrivateComponent
@@ -578,7 +585,7 @@ const FHIRApps = () => {
         exact
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
         component={UserGroupsList}
-        permissions={['iam_group.read']}
+        permissions={['iam_group.read', 'iam_user_group.read']}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
