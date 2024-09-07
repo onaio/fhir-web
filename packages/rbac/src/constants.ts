@@ -12,7 +12,13 @@ export enum Permit {
  * Authorization server resources that this web client is familiar with, thus we can enforce rbac for permissions on views that
  * deal with the below resource.
  */
-export const IamResources = ['iam_user', 'iam_role', 'iam_group'] as const;
+export const IamResources = [
+  'iam_user',
+  'iam_role',
+  'iam_group',
+  'iam_user_role',
+  'iam_user_group',
+] as const;
 export type IamResource = typeof IamResources[number];
 
 /**
