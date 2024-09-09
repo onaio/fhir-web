@@ -60,6 +60,8 @@ export interface KeycloakUser {
   firstName: string;
   id: string;
   lastName: string;
+  nationalId: string;
+  phoneNumber: string;
   notBefore?: number;
   requiredActions?: string[];
   totp?: boolean;
