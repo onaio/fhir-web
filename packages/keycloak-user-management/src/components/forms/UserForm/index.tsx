@@ -155,6 +155,34 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             >
               <Input />
             </Form.Item>
+            <Form.Item
+              name="nationalId"
+              id="nationalId"
+              label={t('National Id')}
+              rules={[
+                {
+                  pattern: /^\d{16}$/,
+                  message: t('National Id number with 10 to 16 digits'),
+                  required: true,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="phoneNumber"
+              id="phoneNumber"
+              label={t('Mobile Phone Number')}
+              rules={[
+                {
+                  pattern: /^\d{10,16}$/,
+                  required: true,
+                  message: t('Please enter a Phone number with 10 to 16 digits.'),
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
             <Form.Item name="email" id="email" label={t('Email')}>
               <Input />
             </Form.Item>
@@ -276,6 +304,8 @@ export const defaultUserFormInitialValues: FormFields = {
   firstName: '',
   id: '',
   lastName: '',
+  nationalId: '',
+  phoneNumber: '',
   username: '',
   active: true,
   userType: 'practitioner',
