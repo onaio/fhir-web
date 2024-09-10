@@ -81,6 +81,18 @@ export const UserDetails = (props: UserDetailProps) => {
       },
     }
   );
+
+  // Extract phone number from Practitioner
+  const practitioner = practitionerDetails?.fhir?.practitioner?.[0];
+  const phoneNumber = practitioner?.telecom?.find((telecom) => telecom.system === 'phone')?.value;
+
+  // Extract national ID from Practitioner
+  const nationalId = practitioner?.identifier?.find(
+    (identifier) =>
+      identifier.use === 'official' &&
+      identifier.type?.coding?.some((coding) => coding.code === 'NationalID')
+  )?.value;
+
   const practDetailsByResName: PractitionerDetail['fhir'] = practitionerDetails?.fhir ?? {};
 
   if (userIsLoading) {
@@ -100,14 +112,26 @@ export const UserDetails = (props: UserDetailProps) => {
   }
 
   const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
-  const userDetails = {
-    [t('Id')]: id,
-    [t('First Name')]: firstName,
-    [t('Last Name')]: lastName,
-    [t('Username')]: username,
-    [t('Email')]: email,
-    [t('Verified')]: emailVerified ? t('True') : t('False'),
-  };
+  const userDetails =
+    phoneNumber && nationalId
+      ? {
+          [t('Id')]: id,
+          [t('First Name')]: firstName,
+          [t('Last Name')]: lastName,
+          [t('National ID')]: nationalId,
+          [t('Phone Number')]: phoneNumber,
+          [t('Username')]: username,
+          [t('Email')]: email,
+          [t('Verified')]: emailVerified ? t('True') : t('False'),
+        }
+      : {
+          [t('Id')]: id,
+          [t('First Name')]: firstName,
+          [t('Last Name')]: lastName,
+          [t('Username')]: username,
+          [t('Email')]: email,
+          [t('Verified')]: emailVerified ? t('True') : t('False'),
+        };
   const attributesArray = Object.entries(attributes ?? {});
   const breadCrumbProps = {
     items: [
