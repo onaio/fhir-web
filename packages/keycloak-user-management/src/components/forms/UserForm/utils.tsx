@@ -24,6 +24,7 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import type { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
+import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /**
  * Utility function to get new user UUID from POST response location header
@@ -99,7 +100,15 @@ const createEditKeycloakUser = async (
       `${KEYCLOAK_URL_USERS}/${keycloakUserPayload.id}`,
       keycloakBaseURL
     );
+
+    keycloakUserPayload.attributes = {
+      ...keycloakUserPayload.attributes,
+      nationalId: keycloakUserPayload.nationalId,
+      phoneNumber: keycloakUserPayload.phoneNumber,
+    };
+
     const { nationalId, phoneNumber, ...coreUserPayload } = keycloakUserPayload;
+
     return serve
       .update(coreUserPayload)
       .then(() => {
@@ -112,7 +121,14 @@ const createEditKeycloakUser = async (
         throw error;
       });
   } else {
+    keycloakUserPayload.attributes = {
+      ...keycloakUserPayload.attributes,
+      nationalId: keycloakUserPayload.nationalId,
+      phoneNumber: keycloakUserPayload.phoneNumber,
+    };
+
     const { nationalId, phoneNumber, ...coreUserPayload } = keycloakUserPayload;
+
     // create new keycloak user
     const serve = new KeycloakService(KEYCLOAK_URL_USERS, keycloakBaseURL);
     return serve
@@ -254,22 +270,13 @@ export const getFormValues = (
     return defaultUserFormInitialValues;
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
-  const { contact: contacts, fhir_core_app_id: fhirCoreAppId } = keycloakUser.attributes ?? {};
+  const {
+    contact: contacts,
+    fhir_core_app_id: fhirCoreAppId,
+    nationalId = '',
+    phoneNumber = '',
+  } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
-
-  let nationalId = '';
-  let phoneNumber = '';
-
-  if (Array.isArray(practitioner?.identifier)) {
-    nationalId =
-      practitioner?.identifier?.find((item: any) => item?.type?.text === 'National ID')?.value ||
-      '';
-  }
-  if (Array.isArray((practitioner as IPractitioner)?.telecom)) {
-    phoneNumber =
-      (practitioner as IPractitioner).telecom?.find((telco) => telco.system === 'phone')?.value ||
-      '';
-  }
 
   let userType: FormFields['userType'] = 'practitioner';
 
