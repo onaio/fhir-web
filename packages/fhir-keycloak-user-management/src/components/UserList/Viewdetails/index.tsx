@@ -188,15 +188,13 @@ export const UserDetails = (props: UserDetailProps) => {
             <Alert message={t('This user does not have any attributes')} type="info" />
           ) : (
             <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-              {attributesArray.map(([key, value]) => {
-                if (!renderExtraFields.includes(key)) {
-                  return (
-                    <Descriptions.Item key={key} label={key}>
-                      {JSON.stringify(value)}
-                    </Descriptions.Item>
-                  );
-                }
-              })}
+              {attributesArray
+                .filter(([key]) => !renderExtraFields.includes(key))
+                .map(([key, value]) => (
+                  <Descriptions.Item key={key} label={key}>
+                    {JSON.stringify(value)}
+                  </Descriptions.Item>
+                ))}
             </Descriptions>
           )}
         </PageHeader>

@@ -231,11 +231,11 @@ test('renders correctly for edit user', async () => {
 
   const nationalIdInput = document.querySelector('input#nationalId');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  userEvent.type(nationalIdInput!, '1234567891011121' as any);
+  userEvent.type(nationalIdInput!, '1234567891011121');
 
   const phoneNumberInput = document.querySelector('input#phoneNumber');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  userEvent.type(phoneNumberInput!, '0700123456' as any);
+  userEvent.type(phoneNumberInput!, '0700123456');
 
   const emailInput = document.querySelector('input#email');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -24,7 +24,6 @@ import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPracti
 import type { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
-import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 
 /**
  * Utility function to get new user UUID from POST response location header
