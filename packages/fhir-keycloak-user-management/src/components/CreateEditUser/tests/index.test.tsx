@@ -21,13 +21,13 @@ import fetch from 'jest-fetch-mock';
 import {
   keycloakUser,
   practitioner,
-  updatedPractitioner,
   userGroup,
   group,
   updatedGroup,
   practitionerRoleBundle,
   updatedPractitionerRole,
   compositionResource,
+  extraFieldsPractitioner,
 } from './fixtures';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
@@ -38,6 +38,17 @@ import { opensrpI18nInstance } from '@opensrp/i18n';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
+});
+
+jest.mock('@opensrp/pkg-config', () => {
+  const actual = jest.requireActual('@opensrp/pkg-config');
+  return {
+    ...actual,
+
+    getConfig: (projectCode) => {
+      return 'giz';
+    },
+  };
 });
 
 jest.mock('@opensrp/notifications', () => ({
@@ -153,8 +164,8 @@ test('renders correctly for edit user', async () => {
     .reply(200, practitionerRoleBundle);
 
   nock(props.baseUrl)
-    .put(`/${practitionerResourceType}/${updatedPractitioner.id}`, updatedPractitioner)
-    .reply(200, updatedPractitioner);
+    .put(`/${practitionerResourceType}/${extraFieldsPractitioner.id}`, extraFieldsPractitioner)
+    .reply(200, extraFieldsPractitioner);
 
   nock(props.baseUrl)
     .put(
@@ -217,6 +228,14 @@ test('renders correctly for edit user', async () => {
   const lastNameInput = document.querySelector('input#lastName');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(lastNameInput!, 'plotus');
+
+  const nationalIdInput = document.querySelector('input#nationalId');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(nationalIdInput!, '1234567891011121' as any);
+
+  const phoneNumberInput = document.querySelector('input#phoneNumber');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  userEvent.type(phoneNumberInput!, '0700123456' as any);
 
   const emailInput = document.querySelector('input#email');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

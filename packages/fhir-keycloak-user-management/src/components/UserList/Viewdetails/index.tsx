@@ -83,7 +83,7 @@ export const UserDetails = (props: UserDetailProps) => {
   );
 
   // Extract phone number from Practitioner
-  const practitioner = practitionerDetails?.fhir?.practitioner?.[0];
+  const practitioner = practitionerDetails?.fhir.practitioner?.[0];
   const phoneNumber = practitioner?.telecom?.find((telecom) => telecom.system === 'phone')?.value;
 
   // Extract national ID from Practitioner
