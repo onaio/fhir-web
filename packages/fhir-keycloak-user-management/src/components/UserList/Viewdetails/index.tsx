@@ -26,7 +26,7 @@ import { PractitionerDetailsView } from './ViewDetailResources/PractitionerDetai
 import { CareTeamDetailsView } from './ViewDetailResources/CareTeamDetails';
 import { OrganizationDetailsView } from './ViewDetailResources/OrganizationDetailsView';
 import { PractitionerDetail } from './types';
-import { practitionerDetailsResourceType } from '../../../constants';
+import { practitionerDetailsResourceType, renderExtraFields } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
@@ -82,17 +82,6 @@ export const UserDetails = (props: UserDetailProps) => {
     }
   );
 
-  // Extract phone number from Practitioner
-  const practitioner = practitionerDetails?.fhir.practitioner?.[0];
-  const phoneNumber = practitioner?.telecom?.find((telecom) => telecom.system === 'phone')?.value;
-
-  // Extract national ID from Practitioner
-  const nationalId = practitioner?.identifier?.find(
-    (identifier) =>
-      identifier.use === 'official' &&
-      identifier.type?.coding?.some((coding) => coding.code === 'NationalID')
-  )?.value;
-
   const practDetailsByResName: PractitionerDetail['fhir'] = practitionerDetails?.fhir ?? {};
 
   if (userIsLoading) {
@@ -112,14 +101,15 @@ export const UserDetails = (props: UserDetailProps) => {
   }
 
   const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
+
   const userDetails =
-    phoneNumber && nationalId
+    attributes?.phoneNumber && attributes?.nationalId
       ? {
           [t('Id')]: id,
           [t('First Name')]: firstName,
           [t('Last Name')]: lastName,
-          [t('National ID')]: nationalId,
-          [t('Phone Number')]: phoneNumber,
+          [t('National ID')]: attributes?.nationalId,
+          [t('Phone Number')]: attributes?.phoneNumber,
           [t('Username')]: username,
           [t('Email')]: email,
           [t('Verified')]: emailVerified ? t('True') : t('False'),
@@ -199,11 +189,13 @@ export const UserDetails = (props: UserDetailProps) => {
           ) : (
             <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
               {attributesArray.map(([key, value]) => {
-                return (
-                  <Descriptions.Item key={key} label={key}>
-                    {JSON.stringify(value)}
-                  </Descriptions.Item>
-                );
+                if (!renderExtraFields.includes(key)) {
+                  return (
+                    <Descriptions.Item key={key} label={key}>
+                      {JSON.stringify(value)}
+                    </Descriptions.Item>
+                  );
+                }
               })}
             </Descriptions>
           )}
