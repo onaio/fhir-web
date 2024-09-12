@@ -25,7 +25,7 @@ const customLanguageDetectorName = 'customLanguageDetector';
 const newInstance = i18next.createInstance();
 
 const languageCode = getConfig('languageCode');
-const projectCode = getConfig('projectCode');
+const projectCode = getConfig('projectCode') === 'giz' ? 'core' : getConfig('projectCode');
 const fallbackLng = `en-core`;
 const configuredLng = `${languageCode}-${projectCode}`;
 
