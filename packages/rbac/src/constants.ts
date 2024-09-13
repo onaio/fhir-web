@@ -50,6 +50,7 @@ export type FhirResource = typeof FhirResources[number];
  * FhirResources
  */
 export const WebCustomResources = ['WebDataImport'] as const;
+
 export type WebCustomResource = typeof WebCustomResources[number];
 
 export const KeycloakDefinedResources = [...FhirResources, ...WebCustomResources] as const;
