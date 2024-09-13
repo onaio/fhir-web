@@ -208,7 +208,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_USER_GROUPS}
-        permissions={['iam_group.read', 'iam_user_group.read']}
+        permissions={['iam_group.read']}
         component={UserGroupsList}
       />
       <PrivateComponent
@@ -277,7 +277,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={URL_USER_ROLES}
-        permissions={['iam_role.read', 'iam_user_role.read']}
+        permissions={['iam_role.read']}
         component={UserRolesList}
       />
       <PrivateComponent
@@ -585,7 +585,7 @@ const FHIRApps = () => {
         exact
         path={`${URL_USER_GROUPS}/:${ROUTE_PARAM_USER_GROUP_ID}`}
         component={UserGroupsList}
-        permissions={['iam_group.read', 'iam_user_group.read']}
+        permissions={['iam_group.read']}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}

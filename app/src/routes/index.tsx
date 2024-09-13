@@ -31,7 +31,7 @@ import {
 } from '../configs/settings';
 import React from 'react';
 import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
-import { getConfig, eusmProjectCode } from '@opensrp/pkg-config';
+import { getConfig, eusmProjectCode, getAllConfigs } from '@opensrp/pkg-config';
 import { DATA_IMPORT_LIST_URL } from '@opensrp/fhir-import';
 
 /** Interface for menu items */
@@ -79,13 +79,15 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
               title: t('User Groups'),
               key: 'user-groups',
               url: URL_USER_GROUPS,
-              permissions: ['iam_user_group.read'],
+              permissions: ['iam_group.read'],
+              enabled: getConfig('projectCode') !== eusmProjectCode,
             },
             {
               title: t('User Roles'),
               key: 'user-roles',
               url: URL_USER_ROLES,
-              permissions: ['iam_user_role.read'],
+              permissions: ['iam_role.read'],
+              enabled: getConfig('projectCode') !== eusmProjectCode,
             },
           ],
         },
