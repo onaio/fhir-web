@@ -41,6 +41,8 @@ export interface UserAttributes {
   // while these may be adhoc and arbitrary it carries with it serious back and cross compatibility issues, these should not be modified lightly
   contact?: string[];
   fhir_core_app_id?: string[];
+  nationalId?: string;
+  phoneNumber?: string;
 }
 
 /** Interface for user json object */
@@ -60,6 +62,8 @@ export interface KeycloakUser {
   firstName: string;
   id: string;
   lastName: string;
+  nationalId?: string;
+  phoneNumber?: string;
   notBefore?: number;
   requiredActions?: string[];
   totp?: boolean;

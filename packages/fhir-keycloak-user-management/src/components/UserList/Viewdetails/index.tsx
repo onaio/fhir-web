@@ -26,7 +26,7 @@ import { PractitionerDetailsView } from './ViewDetailResources/PractitionerDetai
 import { CareTeamDetailsView } from './ViewDetailResources/CareTeamDetails';
 import { OrganizationDetailsView } from './ViewDetailResources/OrganizationDetailsView';
 import { PractitionerDetail } from './types';
-import { practitionerDetailsResourceType } from '../../../constants';
+import { practitionerDetailsResourceType, renderExtraFields } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
@@ -81,6 +81,7 @@ export const UserDetails = (props: UserDetailProps) => {
       },
     }
   );
+
   const practDetailsByResName: PractitionerDetail['fhir'] = practitionerDetails?.fhir ?? {};
 
   if (userIsLoading) {
@@ -100,10 +101,13 @@ export const UserDetails = (props: UserDetailProps) => {
   }
 
   const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
+
   const userDetails = {
     [t('Id')]: id,
     [t('First Name')]: firstName,
     [t('Last Name')]: lastName,
+    ...(attributes?.nationalId ? { [t('National ID')]: attributes.nationalId } : {}),
+    ...(attributes?.phoneNumber ? { [t('Phone Number')]: attributes.phoneNumber } : {}),
     [t('Username')]: username,
     [t('Email')]: email,
     [t('Verified')]: emailVerified ? t('True') : t('False'),
@@ -174,13 +178,13 @@ export const UserDetails = (props: UserDetailProps) => {
             <Alert message={t('This user does not have any attributes')} type="info" />
           ) : (
             <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-              {attributesArray.map(([key, value]) => {
-                return (
+              {attributesArray
+                .filter(([key]) => !renderExtraFields.includes(key))
+                .map(([key, value]) => (
                   <Descriptions.Item key={key} label={key}>
                     {JSON.stringify(value)}
                   </Descriptions.Item>
-                );
-              })}
+                ))}
             </Descriptions>
           )}
         </PageHeader>

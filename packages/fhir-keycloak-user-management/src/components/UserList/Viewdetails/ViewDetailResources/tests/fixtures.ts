@@ -206,6 +206,33 @@ export const user1147 = {
   },
 };
 
+export const user1147ExtraFields = {
+  id: '9f72c646-dc1e-4f24-98df-6f04373b9ec6',
+  createdTimestamp: 1675179889477,
+  username: '1147',
+  enabled: true,
+  totp: false,
+  emailVerified: false,
+  firstName: 'test1147',
+  lastName: '1147',
+  email: 'mejay2303@gmail.com',
+  attributes: {
+    fhir_core_app_id: ['giz'],
+    nationalId: ['1234567891011121'],
+    phoneNumber: ['0101345678'],
+  },
+  disableableCredentialTypes: [],
+  requiredActions: [],
+  notBefore: 1681810919,
+  access: {
+    manageGroupMembership: true,
+    view: true,
+    mapRoles: true,
+    impersonate: true,
+    manage: true,
+  },
+};
+
 export const user1147Groups = [
   {
     id: 'b68e2590-c2ee-4b3c-9184-c4b35a69a271',

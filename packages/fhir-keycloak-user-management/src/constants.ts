@@ -15,3 +15,9 @@ export const keycloakMembersEndpoint = 'members';
 
 // router urls
 export const USER_DETAILS_URL = `${URL_USER}/details`;
+
+// form field names
+export const NATIONAL_ID_FORM_FIELD = 'nationalId';
+export const PHONE_NUMBER_FORM_FIELD = 'phoneNumber';
+
+export const renderExtraFields = [NATIONAL_ID_FORM_FIELD, PHONE_NUMBER_FORM_FIELD];
