@@ -31,7 +31,7 @@ import {
 } from '../configs/settings';
 import React from 'react';
 import { UserRole } from '@opensrp/rbac/dist/types/roleDefinition';
-import { getConfig, eusmProjectCode, getAllConfigs } from '@opensrp/pkg-config';
+import { getConfig, eusmProjectCode } from '@opensrp/pkg-config';
 import { DATA_IMPORT_LIST_URL } from '@opensrp/fhir-import';
 
 /** Interface for menu items */
