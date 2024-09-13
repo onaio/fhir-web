@@ -25,6 +25,7 @@ import {
 import {
   practitionerDetailsBundle,
   user1147,
+  user1147ExtraFields,
   user1147Groups,
   user1147Roles,
 } from '../ViewDetailResources/tests/fixtures';
@@ -307,4 +308,167 @@ test('Edit button works correctly', async () => {
   fireEvent.click(editBtn);
 
   expect(history.location.pathname).toEqual('/admin/users/edit/userId');
+});
+
+test('Renders extra user fields correctly', async () => {
+  const history = createMemoryHistory();
+  history.push(`${URL_USER}/${userId}`);
+
+  const successMock = jest
+    .spyOn(notifications, 'sendSuccessNotification')
+    .mockImplementation(() => {
+      return;
+    });
+
+  nock(props.fhirBaseURL)
+    .get(`/${practitionerDetailsResourceType}/_search`)
+    .query({ 'keycloak-uuid': userId })
+    .reply(200, practitionerDetailsBundle);
+
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}`)
+    .reply(200, user1147ExtraFields);
+
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}`)
+    .reply(200, user1147Groups);
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  // this only await the first call to get the users.
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  expect(screen.queryByTitle(/View details/i)).toBeInTheDocument();
+
+  // second page header details.
+  const userProfile = screen.getByTestId('user-profile');
+  const textContent = userProfile.textContent;
+  expect(textContent).toEqual(
+    '1147EnabledDeleteEditId9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147National ID1234567891011121Phone Number0101345678Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["giz"]'
+  );
+
+  // have a look at the tabs
+
+  // start with group
+  const groupTab = screen.getByText('User groups');
+  fireEvent.click(groupTab);
+
+  await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+
+  // check table has correct number of rows. and try removing user from one group
+  let detailsTabSection = document.querySelector('.details-tab');
+  const groupsTable = detailsTabSection?.querySelector('table');
+
+  const tableData = [...(groupsTable?.querySelectorAll('tr') ?? [])].map((tr) => tr.textContent);
+  expect(tableData).toEqual(['NamePathActions', 'SuperUser/SuperUserLeave']);
+
+  const leaveBtn = screen.getByText('Leave');
+  expect(leaveBtn).toMatchInlineSnapshot(`
+    <span>
+      Leave
+    </span>
+  `);
+
+  nock(props.keycloakBaseURL)
+    .delete(`${KEYCLOAK_URL_USERS}/${userId}${KEYCLOAK_URL_USER_GROUPS}/${user1147Groups[0].id}`)
+    .reply(200, user1147Groups);
+
+  fireEvent.click(leaveBtn);
+
+  await waitFor(() => {
+    expect(successMock).toHaveBeenCalledWith(
+      'User has been successfully removed from the keycloak group'
+    );
+  });
+
+  // go to practitioners
+  const practTab = screen.getByText('Practitioners');
+  fireEvent.click(practTab);
+
+  // Check that practitioner-details has finished loading.
+  await waitFor(() => {
+    expect(screen.getByText('3a801d6e-7bd3-4a5f-bc9c-64758fbb3dad')).toBeInTheDocument();
+  });
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const practitionerTable = detailsTabSection?.querySelector('table');
+
+  const practitionerData = [...(practitionerTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(practitionerData).toEqual([
+    'IdNameActiveUser TypePractitioner Role Coding',
+    '3a801d6e-7bd3-4a5f-bc9c-64758fbb3dadtest1147 1147ActivepractitionerAssigned practitioner(http://snomed.info/sct|405623001), ',
+  ]);
+
+  // go to roles
+  nock(props.keycloakBaseURL)
+    .get(`${KEYCLOAK_URL_USERS}/${userId}/${keycloakRoleMappingsEndpoint}`)
+    .reply(200, user1147Roles);
+
+  const rolesTab = screen.getByText('User roles');
+  fireEvent.click(rolesTab);
+
+  // Check that practitioner-details has finished loading.
+  await waitFor(() => {
+    expect(screen.getByText('GET_LOCATION')).toBeInTheDocument();
+  });
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const realmRolesTable = detailsTabSection?.querySelectorAll('table')[0];
+  const clientRolesTable = detailsTabSection?.querySelectorAll('table')[1];
+  const realmRolesData = [...(realmRolesTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  const clientRolesData = [...(clientRolesTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(realmRolesData).toEqual([
+    'NameDescription',
+    'POST_LOCATION',
+    'GET_LOCATION',
+    'offline_access${role_offline-access}',
+  ]);
+
+  expect(clientRolesData).toEqual([
+    'ClientNameDescription',
+    'realm-managementmanage-realm${role_manage-realm}',
+    'realm-managementmanage-users${role_manage-users}',
+    'accountmanage-account${role_manage-account}',
+  ]);
+
+  // go to careTeams
+  const careTeamsTab = screen.getByText('CareTeams');
+  fireEvent.click(careTeamsTab);
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const careTeamsTable = detailsTabSection?.querySelector('table');
+
+  const careTeamsData = [...(careTeamsTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(careTeamsData).toEqual(['IdNameStatusCategory', 'No data']);
+
+  // go to organization
+  const organizationsTab = screen.getByText('Organizations');
+  fireEvent.click(organizationsTab);
+
+  // practitioner records
+  detailsTabSection = document.querySelector('div.ant-tabs-tabpane-active');
+  const organizationsTable = detailsTabSection?.querySelector('table');
+
+  const organizationsData = [...(organizationsTable?.querySelectorAll('tr') ?? [])].map(
+    (tr) => tr.textContent
+  );
+  expect(organizationsData).toEqual([
+    'IdNameActiveType',
+    '0d7ae048-9b84-4f0c-ba37-8d6c0b97dc84e2e-corporationActive(http://terminology.hl7.org/CodeSystem/organization-type|team), ',
+  ]);
 });
