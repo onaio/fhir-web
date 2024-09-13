@@ -10,6 +10,7 @@ import {
   practitionerResourceType,
   groupResourceType,
   practitionerRoleResourceType,
+  renderExtraFields,
 } from '../../constants';
 import {
   FHIRServiceClass,
@@ -334,9 +335,11 @@ export const practitionerUpdater =
             values.practitionerRole?.id
           )
             .then(() => sendSuccessNotification(practitionerRoleSuccessMessage))
-            .catch(() => sendErrorNotification(practitionerRoleErrorMessage));
+            .catch(() => {
+              return sendErrorNotification(practitionerRoleErrorMessage);
+            });
         })
-        .catch((error) => {
+        .catch(() => {
           return sendErrorNotification(practitionerErrorMessage);
         })
         .finally(() => {
@@ -353,13 +356,13 @@ export const practitionerUpdater =
  * @param props - component props
  */
 export function CreateEditUser(props: CreateEditPropTypes) {
-  const showExtraFormFields = getConfig('projectCode') === 'giz' ? true : false;
+  const extraFormFields = getConfig('projectCode') === 'giz' ? renderExtraFields : [];
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
     getPractitionerRoleFun: getPractitionerRole,
     postPutPractitionerFactory: practitionerUpdater,
-    showExtraFormFields: showExtraFormFields,
+    extraFormFields: extraFormFields,
   };
 
   return <BaseCreateEditUser {...baseCompProps} />;
