@@ -102,26 +102,16 @@ export const UserDetails = (props: UserDetailProps) => {
 
   const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
 
-  const userDetails =
-    attributes?.phoneNumber && attributes?.nationalId
-      ? {
-          [t('Id')]: id,
-          [t('First Name')]: firstName,
-          [t('Last Name')]: lastName,
-          [t('National ID')]: attributes?.nationalId,
-          [t('Phone Number')]: attributes?.phoneNumber,
-          [t('Username')]: username,
-          [t('Email')]: email,
-          [t('Verified')]: emailVerified ? t('True') : t('False'),
-        }
-      : {
-          [t('Id')]: id,
-          [t('First Name')]: firstName,
-          [t('Last Name')]: lastName,
-          [t('Username')]: username,
-          [t('Email')]: email,
-          [t('Verified')]: emailVerified ? t('True') : t('False'),
-        };
+  const userDetails = {
+    [t('Id')]: id,
+    [t('First Name')]: firstName,
+    [t('Last Name')]: lastName,
+    ...(attributes?.nationalId ? { [t('National ID')]: attributes.nationalId } : {}),
+    ...(attributes?.phoneNumber ? { [t('Phone Number')]: attributes.phoneNumber } : {}),
+    [t('Username')]: username,
+    [t('Email')]: email,
+    [t('Verified')]: emailVerified ? t('True') : t('False'),
+  };
   const attributesArray = Object.entries(attributes ?? {});
   const breadCrumbProps = {
     items: [
