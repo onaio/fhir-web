@@ -58,4 +58,4 @@ export enum LocationUnitStatus {
   SUSPENDED = 'suspended',
 }
 
-export type LocationI18nNamespace =  typeof namespace | typeof servicePointNamespace
+export type LocationI18nNamespace = typeof namespace | typeof servicePointNamespace;

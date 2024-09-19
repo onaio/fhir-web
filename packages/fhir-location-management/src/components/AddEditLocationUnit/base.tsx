@@ -24,7 +24,7 @@ export interface BaseNewEditLocationUnitProps
   fhirRootLocationId: string;
   cancelURLGenerator: () => string;
   updateLocationFormProps?: (formProps: LocationFormProps) => LocationFormProps;
-  i18nNamespace?: LocationI18nNamespace
+  i18nNamespace?: LocationI18nNamespace;
 }
 
 /**
@@ -42,7 +42,7 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
     cancelURLGenerator,
     disabledTreeNodesCallback,
     updateLocationFormProps,
-    i18nNamespace
+    i18nNamespace,
   } = props;
   const history = useHistory();
   const location = useLocation();

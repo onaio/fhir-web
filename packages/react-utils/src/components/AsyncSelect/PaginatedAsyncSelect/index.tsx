@@ -173,7 +173,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   const remainingRecords = totalPossibleRecords - recordsFetchedNum;
 
   const propsToSelect = {
-    className: "asyncSelect",
+    className: 'asyncSelect',
     ...restProps,
     placeholder,
     onChange: changeHandler,

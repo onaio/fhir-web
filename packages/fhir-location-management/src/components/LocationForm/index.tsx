@@ -45,7 +45,7 @@ export interface LocationFormProps
   onCancel: () => void;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
   validationRulesFactory: ValidationFactory;
-  i18nNamespace?: LocationI18nNamespace
+  i18nNamespace?: LocationI18nNamespace;
 }
 
 const defaultProps = {
@@ -55,7 +55,7 @@ const defaultProps = {
   disabled: [],
   onCancel: () => undefined,
   validationRulesFactory: defaultValidationRulesFactory,
-  i18nNamespace: namespace
+  i18nNamespace: namespace,
 };
 
 /** responsive layout for the form labels and columns */

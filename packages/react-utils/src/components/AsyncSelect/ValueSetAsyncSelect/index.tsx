@@ -54,7 +54,7 @@ export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
   const selectDropDownRender = dropDownFactory(t, data, error as Error);
 
   const selectProps = {
-    className: "asyncSelect",
+    className: 'asyncSelect',
     dropdownRender: selectDropDownRender,
     options: data,
     loading: isLoading,

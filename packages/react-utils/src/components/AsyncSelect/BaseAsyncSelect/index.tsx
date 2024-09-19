@@ -5,7 +5,7 @@ import { SelectProps, DefaultOptionType } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
 import { UseQueryOptions, useQuery } from 'react-query';
 import { TFunction } from '@opensrp/i18n';
-import "./index.css"
+import './index.css';
 
 export type RawValueType = string | number | (string | number)[];
 

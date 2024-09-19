@@ -33,7 +33,7 @@ export const EusmAddEditLocationUnit = (props: EusmAddEditLocationUnitProps) => 
     cancelURLGenerator: () => URL_SERVICE_POINT_LIST,
     hidden: [isJurisdiction],
     URL_SERVICE_POINT_LIST,
-    i18nNamespace: servicePointNamespace
+    i18nNamespace: servicePointNamespace,
   };
 
   return <BaseNewEditLocationUnit {...baseNewEditViewProps} />;
