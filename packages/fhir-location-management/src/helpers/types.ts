@@ -2,6 +2,7 @@ import TreeModel from 'tree-model';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { Resource } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/resource';
 import { Uri } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/uri';
+import { namespace, servicePointNamespace } from '../constants';
 
 export interface CommonHierarchyNode {
   nodeId: Uri;
@@ -56,3 +57,5 @@ export enum LocationUnitStatus {
   INACTIVE = 'inactive',
   SUSPENDED = 'suspended',
 }
+
+export type LocationI18nNamespace =  typeof namespace | typeof servicePointNamespace
