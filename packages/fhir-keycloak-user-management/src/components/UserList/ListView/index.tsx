@@ -20,6 +20,7 @@ import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
 import { useTranslation } from '@opensrp/i18n';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
+import { UserDetailsOverview } from '../ViewdetailsOverview';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -120,7 +121,12 @@ export const UserList = (props: OrganizationListProps) => {
               </Button>
             </RbacCheck>
           </div>
-          <TableLayout {...tableProps} />
+          <div className="dataGridWithOverview">
+            <div className="dataGridWithOverview-table">
+              <TableLayout {...tableProps} />
+            </div>
+            <UserDetailsOverview keycloakBaseURL={keycloakBaseURL} />
+          </div>
         </Col>
       </Row>
     </BodyLayout>

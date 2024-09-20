@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Descriptions, Divider, Tabs, Tag } from 'antd';
+import { Tabs } from 'antd';
 import { Spin } from 'antd';
 import { useTranslation } from '../../../mls';
 import { useHistory, useParams } from 'react-router';
@@ -8,10 +8,11 @@ import {
   BrokenPage,
   FHIRServiceClass,
   Resource404,
+  ResourceDetails,
   RichPageHeaderProps,
   getResourcesFromBundle,
+  isValidDate,
 } from '@opensrp/react-utils';
-import { PageHeader } from '@ant-design/pro-layout';
 import {
   KEYCLOAK_URL_USERS,
   KeycloakUser,
@@ -25,12 +26,14 @@ import { KeycloakGroupDetails } from './ViewDetailResources/GroupDetailView';
 import { PractitionerDetailsView } from './ViewDetailResources/PractitionerDetails';
 import { CareTeamDetailsView } from './ViewDetailResources/CareTeamDetails';
 import { OrganizationDetailsView } from './ViewDetailResources/OrganizationDetailsView';
-import { PractitionerDetail } from './types';
-import { practitionerDetailsResourceType, renderExtraFields } from '../../../constants';
+import { practitionerDetailsResourceType } from '../../../constants';
 import './index.css';
 import { UserDeleteBtn } from '../../UserDeleteBtn';
 import { KeycloakRoleDetails } from './ViewDetailResources/RoleDetailView';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
+import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
+import { PractitionerDetail } from './types';
 
 // remove onclose from type and export the rest
 interface UserDetailProps {
@@ -100,19 +103,18 @@ export const UserDetails = (props: UserDetailProps) => {
     return <Resource404 title={t('Could not find the user.')}></Resource404>;
   }
 
-  const { id, firstName, lastName, username, email, emailVerified, enabled, attributes } = user;
-
-  const userDetails = {
-    [t('Id')]: id,
-    [t('First Name')]: firstName,
-    [t('Last Name')]: lastName,
-    ...(attributes?.nationalId ? { [t('National ID')]: attributes.nationalId } : {}),
-    ...(attributes?.phoneNumber ? { [t('Phone Number')]: attributes.phoneNumber } : {}),
-    [t('Username')]: username,
-    [t('Email')]: email,
-    [t('Verified')]: emailVerified ? t('True') : t('False'),
-  };
-  const attributesArray = Object.entries(attributes ?? {});
+  const {
+    id,
+    firstName,
+    lastName,
+    username,
+    email,
+    emailVerified,
+    enabled,
+    attributes,
+    createdTimestamp,
+  } = user;
+  const fhirCoreAppId = attributes?.fhir_core_app_id;
   const breadCrumbProps = {
     items: [
       {
@@ -124,129 +126,140 @@ export const UserDetails = (props: UserDetailProps) => {
       },
     ],
   };
+  const pageTitle = t(`View details | {{userName}}`, { userName: user.username });
   const pageHeaderProps = {
-    subTitle: user.username,
+    title: pageTitle,
   };
   const richPageHeaderProps: RichPageHeaderProps = {
     pageHeaderProps,
     breadCrumbProps,
   };
 
+  let dateCreated = createdTimestamp ? new Date(createdTimestamp) : undefined;
+  if (!isValidDate(dateCreated)) {
+    dateCreated = undefined;
+  }
+  const otherDetailsMap = {
+    [t('First Name')]: firstName,
+    [t('Last Name')]: lastName,
+    [t('Username')]: username,
+    [t('Email')]: email,
+    ...(attributes?.nationalId ? { [t('National ID')]: attributes.nationalId } : {}),
+    ...(attributes?.phoneNumber ? { [t('Phone Number')]: attributes.phoneNumber } : {}),
+    [t('FHIR Core App Id')]: fhirCoreAppId,
+  };
+  const dateCreatedKeyPairing = {
+    [t('Date Created')]: dateCreated?.toLocaleString(),
+  };
+  const headerLeftData = {
+    ID: id,
+    [t('Verified')]: emailVerified ? t('True') : t('False'),
+  };
+
   return (
     <BodyLayout headerProps={richPageHeaderProps}>
-      <div className="content-box" data-testid="user-profile">
-        <PageHeader
-          ghost={false}
+      <Helmet>
+        <title>{pageTitle} </title>
+      </Helmet>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          padding: '16px',
+          gap: '14px',
+          background: '#FFF',
+          borderRadius: '12px',
+        }}
+      >
+        <ResourceDetails
+          column={2}
           title={user.username}
-          subTitle={
-            enabled ? (
-              <Tag color="green">{t('Enabled')}</Tag>
-            ) : (
-              <Tag color="green">{t('Disabled')}</Tag>
-            )
+          headerLeftData={headerLeftData}
+          headerRightData={dateCreatedKeyPairing}
+          status={{
+            title: enabled ? t('Enabled') : t('Disabled'),
+            color: enabled ? 'green' : 'red',
+          }}
+          headerActions={
+            <>
+              <RbacCheck
+                permissions={['iam_user.delete', 'Practitioner.delete']}
+                key="user-delete-btn"
+              >
+                <UserDeleteBtn
+                  fhirBaseUrl={fhirBaseUrl}
+                  keycloakBaseUrl={keycloakBaseUrl}
+                  resourceId={resourceId}
+                  afterActions={userDeleteAfterAction}
+                />
+              </RbacCheck>
+              <RbacCheck permissions={['iam_user.update', 'Practitioner.update']} key="edit-user">
+                <Link to={`${URL_USER_EDIT}/${resourceId}`}>{t('Edit')}</Link>
+              </RbacCheck>
+            </>
           }
-          extra={[
-            <RbacCheck
-              permissions={['iam_user.delete', 'Practitioner.delete']}
-              key="user-delete-btn"
-            >
-              <UserDeleteBtn
-                fhirBaseUrl={fhirBaseUrl}
-                keycloakBaseUrl={keycloakBaseUrl}
-                resourceId={resourceId}
-                afterActions={userDeleteAfterAction}
-              />
-            </RbacCheck>,
-            <RbacCheck permissions={['iam_user.update', 'Practitioner.update']} key="edit-user">
-              <Button type="primary" onClick={() => history.push(`${URL_USER_EDIT}/${resourceId}`)}>
-                {t('Edit')}
-              </Button>
-            </RbacCheck>,
-          ]}
-        >
-          <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-            {Object.entries(userDetails).map(([key, value]) => {
-              return (
-                <Descriptions.Item key={key} label={key}>
-                  {value}
-                </Descriptions.Item>
-              );
-            })}
-          </Descriptions>
-          <Divider orientation="center">Attributes</Divider>
-          {attributesArray.length === 0 ? (
-            <Alert message={t('This user does not have any attributes')} type="info" />
-          ) : (
-            <Descriptions size="small" column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}>
-              {attributesArray
-                .filter(([key]) => !renderExtraFields.includes(key))
-                .map(([key, value]) => (
-                  <Descriptions.Item key={key} label={key}>
-                    {JSON.stringify(value)}
-                  </Descriptions.Item>
-                ))}
-            </Descriptions>
-          )}
-        </PageHeader>
-      </div>
-      <div className="details-tab">
-        <Tabs
-          defaultActiveKey="1"
-          size={'small'}
-          items={[
-            {
-              label: t('User groups'),
-              key: 'Groups',
-              children: (
-                <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-              ),
-              disabled: !hasGroupRead,
-            },
-            {
-              label: t('User roles'),
-              key: 'Roles',
-              children: (
-                <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
-              ),
-            },
-            {
-              label: t('Practitioners'),
-              key: 'Practitioners',
-              children: (
-                <PractitionerDetailsView
-                  loading={detailsLoading}
-                  practitionerDetails={practDetailsByResName}
-                  error={detailsError}
-                />
-              ),
-              disabled: !hasPractitionerRead,
-            },
-            {
-              label: t('CareTeams'),
-              key: 'CareTeams',
-              children: (
-                <CareTeamDetailsView
-                  loading={detailsLoading}
-                  practitionerDetails={practDetailsByResName}
-                  error={detailsError}
-                />
-              ),
-              disabled: !hasPractitionerRead,
-            },
-            {
-              label: t('Organizations'),
-              key: 'Organizations',
-              children: (
-                <OrganizationDetailsView
-                  loading={detailsLoading}
-                  practitionerDetails={practDetailsByResName}
-                  error={detailsError}
-                />
-              ),
-              disabled: !hasPractitionerRead,
-            },
-          ]}
+          bodyData={otherDetailsMap}
         />
+        <div className="details-tab">
+          <Tabs
+            defaultActiveKey="1"
+            size={'small'}
+            items={[
+              {
+                label: t('User groups'),
+                key: 'Groups',
+                children: (
+                  <KeycloakGroupDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+                ),
+                disabled: !hasGroupRead,
+              },
+              {
+                label: t('User roles'),
+                key: 'Roles',
+                children: (
+                  <KeycloakRoleDetails keycloakBaseUrl={keycloakBaseUrl} resourceId={resourceId} />
+                ),
+              },
+              {
+                label: t('Practitioners'),
+                key: 'Practitioners',
+                children: (
+                  <PractitionerDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+                disabled: !hasPractitionerRead,
+              },
+              {
+                label: t('CareTeams'),
+                key: 'CareTeams',
+                children: (
+                  <CareTeamDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+                disabled: !hasPractitionerRead,
+              },
+              {
+                label: t('Organizations'),
+                key: 'Organizations',
+                children: (
+                  <OrganizationDetailsView
+                    loading={detailsLoading}
+                    practitionerDetails={practDetailsByResName}
+                    error={detailsError}
+                  />
+                ),
+                disabled: !hasPractitionerRead,
+              },
+            ]}
+          />
+        </div>
       </div>
     </BodyLayout>
   );
