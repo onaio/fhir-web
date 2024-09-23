@@ -149,7 +149,7 @@ test('Renders without crashing', async () => {
   const userProfile = screen.getByTestId('user-profile');
   const textContent = userProfile.textContent;
   expect(textContent).toEqual(
-    '1147EnabledDeleteEditId9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["ecbis"]'
+    '1147EnabledDeleteEditID: 9f72c646-dc1e-4f24-98df-6f04373b9ec6Verified: FalseDate Created1/31/2023, 3:44:49 PMFirst Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comFHIR Core App IdecbisUser groupsUser rolesPractitionersCareTeamsOrganizationsNamePathActionsNo data'
   );
 
   // have a look at the tabs
@@ -304,7 +304,7 @@ test('Edit button works correctly', async () => {
 
   expect(screen.queryByTitle(/View details/i)).toBeInTheDocument();
 
-  const editBtn = screen.getByRole('button', { name: 'Edit' });
+  const editBtn = screen.getByRole('link', { name: 'Edit' });
   fireEvent.click(editBtn);
 
   expect(history.location.pathname).toEqual('/admin/users/edit/userId');
@@ -348,7 +348,7 @@ test('Renders extra user fields correctly', async () => {
   const userProfile = screen.getByTestId('user-profile');
   const textContent = userProfile.textContent;
   expect(textContent).toEqual(
-    '1147EnabledDeleteEditId9f72c646-dc1e-4f24-98df-6f04373b9ec6First Nametest1147Last Name1147National ID1234567891011121Phone Number0101345678Username1147Emailmejay2303@gmail.comVerifiedFalseAttributesfhir_core_app_id["giz"]'
+    '1147EnabledDeleteEditID: 9f72c646-dc1e-4f24-98df-6f04373b9ec6Verified: FalseDate Created1/31/2023, 3:44:49 PMFirst Nametest1147Last Name1147Username1147Emailmejay2303@gmail.comNational ID1234567891011121Phone Number0101345678FHIR Core App IdgizUser groupsUser rolesPractitionersCareTeamsOrganizationsNamePathActionsNo data'
   );
 
   // have a look at the tabs

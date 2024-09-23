@@ -162,6 +162,7 @@ export const UserDetails = (props: UserDetailProps) => {
         <title>{pageTitle} </title>
       </Helmet>
       <div
+        data-testid="user-profile"
         style={{
           display: 'flex',
           flexDirection: 'column',

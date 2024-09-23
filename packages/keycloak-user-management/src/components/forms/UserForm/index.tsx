@@ -331,6 +331,7 @@ export const defaultUserFormInitialValues: FormFields = {
 UserForm.defaultProps = {
   initialValues: defaultUserFormInitialValues,
   practitionerUpdaterFactory: postPutPractitioner,
+  extraFormFields: [],
 };
 
 export { UserForm };

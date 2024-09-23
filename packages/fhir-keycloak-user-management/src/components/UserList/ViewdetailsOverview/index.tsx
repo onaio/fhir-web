@@ -17,14 +17,14 @@ import { Link } from 'react-router-dom';
 // remove onclose from type and export the rest
 interface UserDetailsOverViewProps {
   keycloakBaseURL: string;
+  resourceId: string;
 }
 
 export const UserDetailsOverview = (props: UserDetailsOverViewProps) => {
-  const { keycloakBaseURL: keycloakBaseUrl } = props;
+  const { keycloakBaseURL: keycloakBaseUrl, resourceId } = props;
   const { t } = useTranslation();
 
-  const { removeParam, sParams } = useSearchParams();
-  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
+  const { removeParam } = useSearchParams();
 
   const {
     data: user,
@@ -57,7 +57,7 @@ export const UserDetailsOverview = (props: UserDetailsOverViewProps) => {
         if (userIsLoading) {
           return (
             <Alert
-              description={t('Fetching Patient details')}
+              description={t('Fetching user details')}
               type="info"
               showIcon
               icon={<SyncOutlined spin />}
@@ -69,11 +69,7 @@ export const UserDetailsOverview = (props: UserDetailsOverViewProps) => {
       },
     };
 
-    return (
-      <div className="view-details-content dataGridWithOverview-overview">
-        <ResourceDetails {...resourceDetailsProp} />
-      </div>
-    );
+    return <ResourceDetails {...resourceDetailsProp} />;
   }
 
   const { id, firstName, lastName, username, email, enabled, emailVerified } = user;
@@ -124,9 +120,5 @@ export const UserDetailsOverview = (props: UserDetailsOverViewProps) => {
     ),
   };
 
-  return (
-    <div className="view-details-content dataGridWithOverview-overview">
-      <ResourceDetails {...resourceDetailsProp} />
-    </div>
-  );
+  return <ResourceDetails {...resourceDetailsProp} />;
 };

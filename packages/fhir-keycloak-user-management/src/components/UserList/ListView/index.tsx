@@ -6,6 +6,8 @@ import {
   TableLayout,
   BrokenPage,
   searchQuery,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
@@ -40,6 +42,8 @@ export const UserList = (props: OrganizationListProps) => {
   const extraData = useSelector(getExtraData);
   const { t } = useTranslation();
   const userRole = useUserRole();
+  const { sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const { isLoading, data, error, isFetching } = useQuery([KEYCLOAK_URL_USERS], () =>
     loadKeycloakResources(keycloakBaseURL, KEYCLOAK_URL_USERS)
@@ -125,7 +129,11 @@ export const UserList = (props: OrganizationListProps) => {
             <div className="dataGridWithOverview-table">
               <TableLayout {...tableProps} />
             </div>
-            <UserDetailsOverview keycloakBaseURL={keycloakBaseURL} />
+            {resourceId ? (
+              <div className="view-details-content dataGridWithOverview-overview">
+                <UserDetailsOverview keycloakBaseURL={keycloakBaseURL} resourceId={resourceId} />
+              </div>
+            ) : null}
           </div>
         </Col>
       </Row>
