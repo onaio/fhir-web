@@ -28,20 +28,20 @@
   margin: 0 0 16px 0;
 }
 
-.main-content__table{
-	gap: 14px;
-	border-radius: 12px;
-	background: #FFFFFF;
-	padding: 16px;
+.main-content__table {
+  gap: 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 16px;
 
-	.main-content{
-		padding: 0;
-	}
-	
-	.view-details-content{
-		padding-top: 0px;
-	}
+  .main-content {
+    padding: 0;
   }
+
+  .view-details-content {
+    padding-top: 0px;
+  }
+}
 
 .flex-right {
   display: flex;
@@ -83,7 +83,7 @@
 
 .list-view {
   padding-bottom: 16px;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 .view-details-content,
@@ -124,8 +124,6 @@
     margin: 0;
     flex: 30%;
     margin-left: 12px;
-
-	
   }
 }
 
@@ -152,5 +150,21 @@
       font-weight: 500;
       line-height: 28px;
     }
+  }
+}
+
+.dataGridWithOverview {
+  display: flex;
+  flex-wrap: wrap;
+
+  .dataGridWithOverview-overview {
+    min-width: 512px;
+    flex: 1;
+    padding: 0;
+  }
+
+  .dataGridWithOverview-table {
+    flex: 3;
+    min-width: 512px;
   }
 }

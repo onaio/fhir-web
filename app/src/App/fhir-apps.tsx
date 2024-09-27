@@ -367,15 +367,6 @@ const FHIRApps = () => {
         redirectPath={APP_CALLBACK_URL}
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
-        path={`${URL_USER}/:id`}
-        {...usersListProps}
-        permissions={['iam_group.update']}
-        component={FhirUserList}
-      />
-      <PrivateComponent
-        redirectPath={APP_CALLBACK_URL}
-        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
-        exact
         path={URL_TEAMS}
         permissions={['Organization.read']}
         component={FhirTeamsList}
