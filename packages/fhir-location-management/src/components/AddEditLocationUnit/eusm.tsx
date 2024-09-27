@@ -2,7 +2,7 @@ import React from 'react';
 import { LocationFormProps } from '../LocationForm';
 import { eusmServicePointValidationRules } from '../LocationForm/utils';
 import { BaseNewEditLocationUnit, BaseNewEditLocationUnitProps } from './base';
-import { URL_SERVICE_POINT_LIST, isJurisdiction } from '../../constants';
+import { URL_SERVICE_POINT_LIST, isJurisdiction, servicePointNamespace } from '../../constants';
 
 export type EusmAddEditLocationUnitProps = BaseNewEditLocationUnitProps;
 
@@ -33,6 +33,7 @@ export const EusmAddEditLocationUnit = (props: EusmAddEditLocationUnitProps) => 
     cancelURLGenerator: () => URL_SERVICE_POINT_LIST,
     hidden: [isJurisdiction],
     URL_SERVICE_POINT_LIST,
+    i18nNamespace: servicePointNamespace,
   };
 
   return <BaseNewEditLocationUnit {...baseNewEditViewProps} />;

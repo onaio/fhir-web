@@ -9,6 +9,7 @@ import { BrokenPage, Resource404 } from '@opensrp/react-utils';
 import { useGetLocation, useGetLocationHierarchy } from '../../helpers/utils';
 import { useMls } from '../../mls';
 import { parentIdQueryParam, BACK_SEARCH_PARAM } from '../../constants';
+import { LocationI18nNamespace } from '../../helpers/types';
 
 export type LocationRouteProps = { id?: string };
 
@@ -23,7 +24,7 @@ export interface BaseNewEditLocationUnitProps
   fhirRootLocationId: string;
   cancelURLGenerator: () => string;
   updateLocationFormProps?: (formProps: LocationFormProps) => LocationFormProps;
-  i18nNamespace: 'fhir-service-point';
+  i18nNamespace?: LocationI18nNamespace;
 }
 
 /**
@@ -41,12 +42,13 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
     cancelURLGenerator,
     disabledTreeNodesCallback,
     updateLocationFormProps,
+    i18nNamespace,
   } = props;
   const history = useHistory();
   const location = useLocation();
   const params = useParams<LocationRouteProps>();
   const sParams = new URLSearchParams(location.search);
-  const { t } = useMls();
+  const { t } = useMls(i18nNamespace);
 
   const backToUrl = sParams.get(BACK_SEARCH_PARAM) ?? undefined;
   const cancelHandler = () => {
@@ -94,6 +96,7 @@ export const BaseNewEditLocationUnit = (props: BaseNewEditLocationUnitProps) => 
     fhirBaseURL,
     disabledTreeNodesCallback: disabledTreeNodesCallback,
     validationRulesFactory: defaultValidationRulesFactory,
+    i18nNamespace,
   };
   const locationFormProps = updateLocationFormProps?.(initialFormProps) ?? initialFormProps;
 
