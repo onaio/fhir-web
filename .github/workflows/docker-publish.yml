@@ -111,4 +111,6 @@ jobs:
         with:
           title: "Docker Scout Vulnerability Report for Image ${{ steps.meta.outputs.tags }}"
           content-filepath: scout-report.md
-          labels: bug, security
+          labels: |
+            "Security Support"
+            "Bug Report"
