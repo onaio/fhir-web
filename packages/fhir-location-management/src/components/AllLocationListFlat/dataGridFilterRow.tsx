@@ -10,6 +10,7 @@ export interface LocationGridFilterRowRenderProps {
   fhirBaseUrl: string;
   updateFilterParams: (filter: FilterParamState) => void;
   currentFilters: FilterParamState;
+  showParentLocationFilter: boolean;
 }
 
 const partOfFilterDataIdx = 'partof';
@@ -17,41 +18,43 @@ const statusFilterDataIdx = 'status';
 
 export const LocationGridFilterRowRender = (props: LocationGridFilterRowRenderProps) => {
   const { t } = useMls();
-  const { fhirBaseUrl, updateFilterParams, currentFilters } = props;
+  const { fhirBaseUrl, updateFilterParams, currentFilters, showParentLocationFilter } = props;
   return (
     <div className="filter-row" data-testid="filter-row">
       <Space>
-        <Trans t={t} i18nKey="parentLocationFilter">
-          <Space>
-            Parent Location:
-            <PaginatedAsyncSelect<ILocation>
-              allowClear={true}
-              showSearch={true}
-              resourceType={locationResourceType}
-              baseUrl={fhirBaseUrl}
-              transformOption={(resource) => {
-                return {
-                  value: resource.id as string,
-                  label: resource.name as string,
-                  ref: resource,
-                };
-              }}
-              onChange={(value) => {
-                if (!value) {
-                  updateFilterParams({ [partOfFilterDataIdx]: undefined });
-                } else {
-                  updateFilterParams({
-                    [partOfFilterDataIdx]: {
-                      paramAccessor: 'partof',
-                      rawValue: value,
-                      paramValue: value,
-                    },
-                  });
-                }
-              }}
-            />
-          </Space>
-        </Trans>
+        {showParentLocationFilter && (
+          <Trans t={t} i18nKey="parentLocationFilter">
+            <Space>
+              Parent Location:
+              <PaginatedAsyncSelect<ILocation>
+                allowClear={true}
+                showSearch={true}
+                resourceType={locationResourceType}
+                baseUrl={fhirBaseUrl}
+                transformOption={(resource) => {
+                  return {
+                    value: resource.id as string,
+                    label: resource.name as string,
+                    ref: resource,
+                  };
+                }}
+                onChange={(value) => {
+                  if (!value) {
+                    updateFilterParams({ [partOfFilterDataIdx]: undefined });
+                  } else {
+                    updateFilterParams({
+                      [partOfFilterDataIdx]: {
+                        paramAccessor: 'partof',
+                        rawValue: value,
+                        paramValue: value,
+                      },
+                    });
+                  }
+                }}
+              />
+            </Space>
+          </Trans>
+        )}
         <Trans t={t} i18nKey="locationStatusFilter">
           <Space>
             Status:
