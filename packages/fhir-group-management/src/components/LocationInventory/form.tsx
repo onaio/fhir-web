@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Button, Input, DatePicker, Space, Switch } from 'antd';
 import {
-  PaginatedAsyncSelect,
   formItemLayout,
   tailLayout,
   SelectOption as ProductSelectOption,
   ValueSetAsyncSelect,
+  ClientSideActionsSelect,
 } from '@opensrp/react-utils';
 import { useTranslation } from '../../mls';
 import { useQueryClient, useMutation } from 'react-query';
@@ -162,12 +162,12 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       initialValues={initialValues}
     >
       <FormItem id={product} name={product} label={t('Product name')}>
-        <PaginatedAsyncSelect<IGroup>
-          baseUrl={fhirBaseURL}
+        <ClientSideActionsSelect<IGroup>
+          fhirBaseUrl={fhirBaseURL}
           resourceType={groupResourceType}
           transformOption={processProductOptions}
           extraQueryParams={productQueryFilters}
-          showSearch={false}
+          showSearch={true}
           placeholder={t('Select product')}
           getFullOptionOnChange={productChangeHandler}
           disabled={editMode}

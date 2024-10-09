@@ -2,6 +2,7 @@ import {
   cleanup,
   fireEvent,
   render,
+  screen,
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
@@ -12,7 +13,15 @@ import { IOrganization } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IOrgani
 import nock from 'nock';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { organizationsPage1, organizationsPage1Summary, organizationsPage2 } from './fixtures';
+import {
+  firstDefaultPage,
+  fourthPage,
+  organizationsPage1,
+  organizationsPage1Summary,
+  organizationsPage2,
+  secondPage,
+  thirdPage,
+} from './fixtures';
 import flushPromises from 'flush-promises';
 
 const organizationResourceType = 'Organization';
@@ -203,6 +212,93 @@ test('works correctly nominal case', async () => {
 
   expect(changeMock).toHaveBeenCalledWith(tarronHospitalId, tarronHospital);
   expect(fullOptionHandlerMock).toHaveBeenCalledWith(tarronHospital);
+});
+
+test('paginating the infinity query works ok.', async () => {
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '0', _count: '5' })
+    .reply(200, firstDefaultPage);
+
+  const props = {
+    ...commonProps,
+  };
+
+  render(
+    <QueryWrapper>
+      <PaginatedAsyncSelect<IOrganization> {...props}></PaginatedAsyncSelect>
+    </QueryWrapper>
+  );
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // // click on input. - should see the first 5 records by default
+  const input = document.querySelector('.ant-select-selector') as Element;
+  // simulate click on select - to show dropdown items
+  fireEvent.mouseDown(input);
+
+  // load more button
+  const loadMoreButton = screen.getByRole('button', { name: /Load more options/ });
+
+  // load second page of data.
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '5', _count: '5' })
+    .reply(200, secondPage);
+
+  fireEvent.click(loadMoreButton);
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Fetching next page/)).toBeInTheDocument();
+  });
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // load third page of data.
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '10', _count: '5' })
+    .reply(200, thirdPage);
+
+  fireEvent.click(loadMoreButton);
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Fetching next page/)).toBeInTheDocument();
+  });
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // load fourth and last page of data.
+  nock(commonProps.baseUrl)
+    .get(`/${organizationResourceType}/_search`)
+    .query({ _getpagesoffset: '15', _count: '5' })
+    .reply(200, fourthPage);
+
+  fireEvent.click(loadMoreButton);
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Fetching next page/)).toBeInTheDocument();
+  });
+
+  await waitForElementToBeRemoved(document.querySelector('.anticon-spin'));
+
+  // find antd select options
+  const selectOptions = document.querySelectorAll('.ant-select-item-option-content');
+
+  await flushPromises();
+  // expect all practitioners (except inactive ones)
+  expect([...selectOptions].map((opt) => opt.textContent)).toStrictEqual([
+    '高雄榮民總醫院',
+    'Hospital Krel Tarron',
+    'clinFHIR Sample creator',
+    'Health Level Seven International',
+  ]);
+
+  // how many records
+  const recordsText = screen.queryByText(/Showing\s*4\s*\s*;\s*14\s*more records/);
+  expect(recordsText).toBeInTheDocument();
+
+  expect(nock.pendingMocks()).toEqual([]);
 });
 
 test('handles error in request', async () => {
