@@ -103,7 +103,7 @@ function CommodityForm<
         await postSuccess?.(mutationEffectResponse, isEdit).catch((err) => {
           sendErrorNotification(err.message);
         });
-        queryClient.refetchQueries([groupResourceType]).catch(() => {
+        queryClient.invalidateQueries([groupResourceType]).catch(() => {
           sendInfoNotification(t('Failed to refresh data, please refresh the page'));
         });
         goTo(successUrl);
