@@ -4,27 +4,18 @@ import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
-import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { debounce } from 'lodash';
 import { getResourcesFromBundle } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
-import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
-
-export type SelectOption<T extends IResource> = {
-  label: string;
-  value: string | number;
-  ref: T;
-};
-
-export interface TransformOptions<T extends IResource> {
-  (resource: T): SelectOption<T> | undefined;
-}
-
-export type AbstractedSelectOptions<ResourceT extends IResource> = Omit<
-  SelectProps<string, SelectOption<ResourceT>>,
-  'loading' | 'options' | 'searchValue'
->;
+import {
+  loadSearchableResources,
+  getTotalRecordsInBundles,
+  getTotalRecordsOnApi,
+  AbstractedSelectOptions,
+  SelectOption,
+  TransformOptions,
+} from '../utils';
 
 export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   extends AbstractedSelectOptions<ResourceT> {
@@ -88,7 +79,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   } = useInfiniteQuery({
     queryKey: [resourceType, debouncedSearchValue, page, pageSize],
     queryFn: async ({ pageParam = page }) => {
-      const response = await loadResources(
+      const response = await loadSearchableResources(
         baseUrl,
         resourceType,
         { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
