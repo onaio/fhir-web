@@ -376,3 +376,183 @@ export const organizationsPage1Summary = {
   type: 'searchset',
   total: 10,
 };
+
+export const pageSummary = {
+  resourceType: 'Bundle',
+  id: '73d0c5dd-8446-453f-a7be-badb4bac22c8',
+  meta: {
+    lastUpdated: '2023-01-31T09:06:30.352+00:00',
+    tag: [
+      {
+        system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationValue',
+        code: 'SUBSETTED',
+        display: 'Resource encoded in summary mode',
+      },
+    ],
+  },
+  type: 'searchset',
+  total: 18,
+};
+
+export const firstDefaultPage = {
+  resourceType: 'Bundle',
+  id: 'b3fcfa95-cc95-4a44-8bf5-abd68292945e',
+  meta: {
+    lastUpdated: '2023-01-31T08:38:11.517+00:00',
+  },
+  type: 'searchset',
+  total: 18,
+  entry: [
+    {
+      fullUrl: 'https://hapi.fhir.org/baseR4/Organization/1839',
+      resource: {
+        resourceType: 'Organization',
+        id: '1839',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2019-09-21T01:13:54.367+00:00',
+          source: '#899bf40a941da002',
+        },
+        type: [
+          {
+            coding: [
+              {
+                system: 'http://hl7.org/fhir/organization-type',
+                code: 'prov',
+                display: 'Healthcare Provider',
+              },
+            ],
+            text: 'Healthcare Provider',
+          },
+        ],
+        name: '高雄榮民總醫院',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
+export const secondPage = {
+  resourceType: 'Bundle',
+  id: 'b3fcfa95-cc95-4a44-8bf5-abd68292945e',
+  meta: {
+    lastUpdated: '2023-01-31T08:38:11.517+00:00',
+  },
+  type: 'searchset',
+  total: 18,
+  entry: [
+    {
+      fullUrl: 'https://hapi.fhir.org/baseR4/Organization/30099',
+      resource: {
+        resourceType: 'Organization',
+        id: '30099',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2019-09-26T13:14:11.303+00:00',
+          source: '#20dc8ea0e407f070',
+        },
+        active: true,
+        name: 'Hospital Krel Tarron',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
+export const thirdPage = {
+  resourceType: 'Bundle',
+  id: 'b3fcfa95-cc95-4a44-8bf5-abd68292945e',
+  meta: {
+    lastUpdated: '2023-01-31T08:38:11.517+00:00',
+  },
+  type: 'searchset',
+  total: 18,
+  entry: [
+    {
+      fullUrl: 'https://hapi.fhir.org/baseR4/Organization/31863',
+      resource: {
+        resourceType: 'Organization',
+        id: '31863',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2019-09-27T12:41:52.007+00:00',
+          source: '#6b29cdf4ae6b69bd',
+        },
+        text: {
+          status: 'generated',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml">\n      Health Level Seven International\n      <br/>\n\t\t\t\t3300 Washtenaw Avenue, Suite 227\n      <br/>\n\t\t\t\tAnn Arbor, MI 48104\n      <br/>\n\t\t\t\tUSA\n      <br/>\n\t\t\t\t(+1) 734-677-7777 (phone)\n      <br/>\n\t\t\t\t(+1) 734-677-6622 (fax)\n      <br/>\n\t\t\t\tE-mail:  \n      <a href="mailto:hq@HL7.org">hq@HL7.org</a>\n    \n    </div>',
+        },
+        name: 'Health Level Seven International',
+        alias: ['HL7 International'],
+        telecom: [
+          {
+            system: 'phone',
+            value: '(+1) 734-677-7777',
+          },
+          {
+            system: 'fax',
+            value: '(+1) 734-677-6622',
+          },
+          {
+            system: 'email',
+            value: 'hq@HL7.org',
+          },
+        ],
+        address: [
+          {
+            line: ['3300 Washtenaw Avenue, Suite 227'],
+            city: 'Ann Arbor',
+            state: 'MI',
+            postalCode: '48104',
+            country: 'USA',
+          },
+        ],
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
+
+export const fourthPage = {
+  resourceType: 'Bundle',
+  id: 'b3fcfa95-cc95-4a44-8bf5-abd68292945e',
+  meta: {
+    lastUpdated: '2023-01-31T08:38:11.517+00:00',
+  },
+  type: 'searchset',
+  total: 18,
+  entry: [
+    {
+      fullUrl: 'https://hapi.fhir.org/baseR4/Organization/30165',
+      resource: {
+        resourceType: 'Organization',
+        id: '30165',
+        meta: {
+          versionId: '1',
+          lastUpdated: '2019-09-26T14:34:41.185+00:00',
+          source: '#8c99c9b0e07e31fd',
+        },
+        text: {
+          status: 'generated',
+          div: '<div xmlns="http://www.w3.org/1999/xhtml">clinFhir</div>',
+        },
+        identifier: [
+          {
+            system: 'http://fhir.hl7.org.nz/identifier',
+            value: 'cf',
+          },
+        ],
+        name: 'clinFHIR Sample creator',
+      },
+      search: {
+        mode: 'match',
+      },
+    },
+  ],
+};
