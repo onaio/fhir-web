@@ -5,16 +5,16 @@ on:
     paths:
       - "docs/fhir-web-docker-deployment.md"
     branches:
-      - main
+      - master
 
 jobs:
   update-docker-hub-documentation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
       - name: Update Docker Hub ReadMe
-        uses: peter-evans/dockerhub-description@v4
+        uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
