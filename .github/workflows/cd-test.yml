@@ -38,12 +38,12 @@ jobs:
         run: yarn lerna:prepublish 
 
       - name: Run all tests
-        run: yarn test --verbose --collectCoverage=true --forceExit
+        run: yarn test --verbose --collectCoverage=true --forceExit --detectOpenHandles
         env:
           NODE_OPTIONS: --max_old_space_size=5120
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage
