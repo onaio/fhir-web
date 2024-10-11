@@ -1,7 +1,7 @@
 FROM alpine/git AS sources
 
 # TODO - update the tag here
-RUN git clone --branch=v2.1.1-rc3 https://github.com/onaio/express-server.git /usr/src/express-server
+RUN git clone --branch=v2.1.1-rc4 https://github.com/onaio/express-server.git /usr/src/express-server
 
 FROM node:16.18-alpine as build
 
