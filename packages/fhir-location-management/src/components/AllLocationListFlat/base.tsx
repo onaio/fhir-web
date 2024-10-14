@@ -33,6 +33,7 @@ export interface Props {
   getColumns: (t: TFunction, getColumnSortProps: GetControlledSortProps) => Column<Dictionary>[];
   pageTitle: string;
   addLocationBtnRender: () => ReactNode;
+  showParentLocationFilter?: boolean;
 }
 
 const getSearchParamsFactory = (ourParams: URLParams) => (search: string | null) => {
@@ -138,6 +139,7 @@ export const BaseAllLocationListFlat: React.FC<BaseAllLocationListFlatProps> = (
             fhirBaseUrl={fhirBaseURL}
             updateFilterParams={updateFilterParams}
             currentFilters={currentFilters}
+            showParentLocationFilter={props.showParentLocationFilter ?? true}
           />
           <TableLayout {...tableProps} />
         </Col>

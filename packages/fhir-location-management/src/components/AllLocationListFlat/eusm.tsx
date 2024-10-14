@@ -105,6 +105,7 @@ export const EusmLocationListFlat: React.FC<EusmLocationListFlatProps> = (props)
     addLocationBtnRender,
     getColumns,
     extraParamFilters: eusmPhysicalLocationsFilterParams,
+    showParentLocationFilter: false,
   };
 
   return <BaseAllLocationListFlat {...baseProps} />;
