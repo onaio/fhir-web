@@ -1,7 +1,10 @@
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { FHIRServiceClass } from '../../../helpers/dataLoaders';
-import { FhirApiFilter } from '../../../helpers/utils';
+import { FHIRServiceClass } from '../../helpers/dataLoaders';
+import { FhirApiFilter } from '../../helpers/utils';
+import { DefaultOptionType } from 'antd/lib/select';
+import type { SelectProps } from 'antd';
+import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 
 /**
  * Unified function that gets a list of FHIR resources from a FHIR hapi server
@@ -11,7 +14,7 @@ import { FhirApiFilter } from '../../../helpers/utils';
  * @param params - our params
  * @param extraParams - any extra user-defined params
  */
-export const loadResources = async (
+export const loadSearchableResources = async (
   baseUrl: string,
   resourceType: string,
   params: FhirApiFilter,
@@ -64,3 +67,28 @@ export const getTotalRecordsInBundles = (bundles: IBundle[]) => {
       .reduce((a, v) => a + v, 0)
   );
 };
+
+/**
+ * filter select on search
+ *
+ * @param inputValue search term
+ * @param option select option to filter against
+ */
+export const defaultSelectFilterFunction = (inputValue: string, option?: DefaultOptionType) => {
+  return !!option?.label?.toString()?.toLowerCase().includes(inputValue.toLowerCase());
+};
+
+export type SelectOption<T extends IResource> = {
+  label: string;
+  value: string | number;
+  ref: T;
+};
+
+export interface TransformOptions<T extends IResource> {
+  (resource: T): SelectOption<T> | undefined;
+}
+
+export type AbstractedSelectOptions<ResourceT extends IResource> = Omit<
+  SelectProps<string, SelectOption<ResourceT>>,
+  'loading' | 'options' | 'searchValue'
+>;
