@@ -8,6 +8,12 @@ export interface FilterDescription<ElementT extends object, ValueT = unknown> {
   };
 }
 
+export type RegisterFilter<T extends object> = (
+  key: string,
+  filterFunc?: FilterFunc<T>,
+  value?: unknown
+) => void;
+
 /**
  * hook to dynamically manage data filters
  *
