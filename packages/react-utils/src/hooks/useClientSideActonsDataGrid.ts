@@ -69,6 +69,7 @@ export function useClientSideActionsDataGrid<T extends object>(
     useClientSideDataGridFilters(data, initialFilters);
 
   const searchFormProps = {
+    wrapperClassName: 'elongate-search-bar',
     defaultValue: getQueryParams(location)[searchQuery],
     onChangeHandler: function onChangeHandler(event: ChangeEvent<HTMLInputElement>) {
       const nextUrl = getNextUrlOnSearch(event, location, match);
