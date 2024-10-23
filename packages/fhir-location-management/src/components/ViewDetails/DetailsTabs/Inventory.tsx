@@ -328,7 +328,7 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
               <Typography.Text>{t('Accountability status:')}</Typography.Text>
               <Radio.Group
                 size="small"
-                value={filterRegistry[accEndDateFilterKey].value}
+                value={filterRegistry[accEndDateFilterKey]?.value}
                 buttonStyle="solid"
                 onChange={(event) => {
                   const val = event.target.value;
