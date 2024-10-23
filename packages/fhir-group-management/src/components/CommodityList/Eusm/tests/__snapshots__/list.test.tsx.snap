@@ -168,21 +168,13 @@ exports[`renders correctly when listing resources: table row 1 page 1 4`] = `
 <td
   class="ant-table-cell"
 >
-  substance
-</td>
-`;
-
-exports[`renders correctly when listing resources: table row 1 page 1 5`] = `
-<td
-  class="ant-table-cell"
->
   <div>
     Active
   </div>
 </td>
 `;
 
-exports[`renders correctly when listing resources: table row 1 page 1 6`] = `
+exports[`renders correctly when listing resources: table row 1 page 1 5`] = `
 <td
   class="ant-table-cell"
 >

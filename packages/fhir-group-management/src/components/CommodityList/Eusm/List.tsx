@@ -1,23 +1,26 @@
 import React from 'react';
 import { Button, Divider, Dropdown, MenuProps } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { ADD_EDIT_COMMODITY_URL } from '../../../constants';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTranslation } from '../../../mls';
-import { BaseListView, BaseListViewProps } from '../../BaseComponents/BaseGroupsListView';
 import { TFunction } from '@opensrp/i18n';
-import { useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
+import { getResourcesFromBundle, useSearchParams, viewDetailsQuery } from '@opensrp/react-utils';
 import { supplyMgSnomedCode, snomedCodeSystem } from '../../../helpers/utils';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
 import { ViewDetailsWrapper, parseEusmCommodity } from './ViewDetails';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
+import { GroupGridFilerRow, TableData } from './GroupGridFilterRow';
+import {
+  ClientSideActionsBaseListView,
+  ClientSideActionsBaseListViewProps,
+} from '../../BaseComponents/BaseGroupsListView/ClientSideActionsGrid';
+import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 
 interface GroupListProps {
   fhirBaseURL: string;
   listId: string; // commodities are added to list resource with this id
 }
-
-type TableData = ReturnType<typeof parseEusmCommodity>;
 
 /**
  * Shows the list of all group and there details
@@ -28,6 +31,7 @@ type TableData = ReturnType<typeof parseEusmCommodity>;
 export const EusmCommodityList = (props: GroupListProps) => {
   const { fhirBaseURL, listId } = props;
 
+  const history = useHistory();
   const { t } = useTranslation();
   const { addParam } = useSearchParams();
   const userRole = useUserRole();
@@ -60,22 +64,20 @@ export const EusmCommodityList = (props: GroupListProps) => {
       title: t('Material Number'),
       dataIndex: 'identifier' as const,
       key: 'identifier' as const,
+      sorter: (a: TableData, b: TableData) =>
+        (a.identifier ?? '').localeCompare(b.identifier ?? ''),
     },
     {
       title: t('Name'),
       dataIndex: 'name' as const,
       key: 'name' as const,
+      sorter: (a: TableData, b: TableData) => (a.name ?? '').localeCompare(b.name ?? ''),
     },
     {
       title: t('Is it an Asset'),
       dataIndex: 'attractive' as const,
       key: 'attractive' as const,
       render: (value: boolean) => <div>{value ? t('Yes') : t('No')}</div>,
-    },
-    {
-      title: t('type'),
-      dataIndex: 'type' as const,
-      key: 'type' as const,
     },
     {
       title: t('Active'),
@@ -110,12 +112,22 @@ export const EusmCommodityList = (props: GroupListProps) => {
     },
   ];
 
-  const baseListViewProps: BaseListViewProps<TableData> = {
+  const baseListViewProps: ClientSideActionsBaseListViewProps<TableData> = {
     getColumns: getColumns,
-    createButtonLabel: t('Add commodity'),
-    createButtonUrl: ADD_EDIT_COMMODITY_URL,
+    addGroupBtnRender: () => {
+      return (
+        <RbacCheck permissions={['Group.create', 'List.create', 'List.update']}>
+          <Button type="primary" onClick={() => history.push(ADD_EDIT_COMMODITY_URL)}>
+            <PlusOutlined />
+            {t('Add commodity')}
+          </Button>
+        </RbacCheck>
+      );
+    },
     fhirBaseURL,
-    generateTableData: (group: IGroup) => parseEusmCommodity(group),
+    dataTransformer(bundle: IBundle) {
+      return getResourcesFromBundle<IGroup>(bundle).map((group) => parseEusmCommodity(group));
+    },
     pageTitle: t('Commodity List'),
     extraQueryFilters: {
       code: `${snomedCodeSystem}|${supplyMgSnomedCode}`,
@@ -124,7 +136,12 @@ export const EusmCommodityList = (props: GroupListProps) => {
     viewDetailsRender: (fhirBaseURL, resourceId) => (
       <ViewDetailsWrapper fhirBaseURL={fhirBaseURL} resourceId={resourceId} />
     ),
+    filterRowRender(registerFilter, filterRegistry) {
+      return (
+        <GroupGridFilerRow updateFilterParams={registerFilter} currentFilters={filterRegistry} />
+      );
+    },
   };
 
-  return <BaseListView {...baseListViewProps} />;
+  return <ClientSideActionsBaseListView {...baseListViewProps} />;
 };
