@@ -105,6 +105,7 @@ export function ClientSideActionsBaseListView<
   const nameFilterKey = 'name';
   const searchInputProps = {
     ...searchFormProps,
+    wrapperClassName: 'elongate-search-bar',
     onChangeHandler: (event: ChangeEvent<HTMLInputElement>) => {
       searchFormProps.onChangeHandler(event);
       const searchText = event.target.value;

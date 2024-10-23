@@ -26,7 +26,7 @@ export const GroupGridFilerRow = (props: GroupGridFilerRowProps) => {
             Asset:
             <Radio.Group
               size="small"
-              value={currentFilters[isAnAssetDataIdx].value}
+              value={currentFilters[isAnAssetDataIdx]?.value}
               buttonStyle="solid"
               onChange={(event) => {
                 const val = event.target.value;
@@ -54,7 +54,7 @@ export const GroupGridFilerRow = (props: GroupGridFilerRowProps) => {
             Status:
             <Radio.Group
               size="small"
-              value={currentFilters[statusFilterDataIdx].value}
+              value={currentFilters[statusFilterDataIdx]?.value}
               buttonStyle="solid"
               onChange={(event) => {
                 const val = event.target.value;
@@ -67,7 +67,7 @@ export const GroupGridFilerRow = (props: GroupGridFilerRowProps) => {
                     val
                   );
                 } else {
-                  updateFilterParams(isAnAssetDataIdx, undefined);
+                  updateFilterParams(statusFilterDataIdx, undefined);
                 }
               }}
             >
