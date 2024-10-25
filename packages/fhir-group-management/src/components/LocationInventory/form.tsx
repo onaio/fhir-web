@@ -160,7 +160,12 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
       }}
       initialValues={initialValues}
     >
-      <FormItem id={product} name={product} label={t('Product name')}>
+      <FormItem
+        id={product}
+        rules={validationRules[product]}
+        name={product}
+        label={t('Product name')}
+      >
         <ClientSideActionsSelect<IGroup>
           fhirBaseUrl={fhirBaseURL}
           resourceType={groupResourceType}

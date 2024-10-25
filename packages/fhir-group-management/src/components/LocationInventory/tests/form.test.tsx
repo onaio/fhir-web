@@ -134,6 +134,7 @@ test('form validation works', async () => {
   const errorMsgs = errorNodes.map((node) => node.textContent);
 
   expect(errorMsgs).toEqual([
+    'Product is required',
     'Delivery date is required',
     'Accountability end date is required',
     'UNICEF section is required',
