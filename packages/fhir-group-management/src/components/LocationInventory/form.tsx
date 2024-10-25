@@ -154,7 +154,6 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
   return (
     <Form
       form={form}
-      requiredMark={false}
       {...formItemLayout}
       onFinish={(values: GroupFormFields) => {
         mutate(values);
