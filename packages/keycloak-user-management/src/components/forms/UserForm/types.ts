@@ -6,7 +6,17 @@ import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPr
 import { PRACTITIONER, SUPERVISOR } from '../../../constants';
 
 export interface FormFields
-  extends Pick<KeycloakUser, 'id' | 'username' | 'firstName' | 'lastName' | 'email' | 'enabled'> {
+  extends Pick<
+    KeycloakUser,
+    | 'id'
+    | 'username'
+    | 'firstName'
+    | 'lastName'
+    | 'nationalId'
+    | 'phoneNumber'
+    | 'email'
+    | 'enabled'
+  > {
   active?: boolean;
   userType?: typeof PRACTITIONER | typeof SUPERVISOR;
   userGroups?: string[];
@@ -36,6 +46,7 @@ export interface UserFormProps {
   renderFields?: FormFieldsKey[];
   practitionerUpdaterFactory: PractitionerUpdaterFactory;
   isFHIRInstance: boolean;
+  extraFormFields: string[];
 }
 
 /** descibes antd select component options */

@@ -188,6 +188,90 @@ export const updatedPractitioner = {
   telecom: [{ system: 'email', value: 'test@onatest.comflotus@plotus.duck' }],
 };
 
+export const extraFieldsPractitioner = {
+  resourceType: 'Practitioner',
+  id: 'c1d36d9a-b771-410b-959e-af2c04d132a2',
+  identifier: [
+    { use: 'official', value: 'c1d36d9a-b771-410b-959e-af2c04d132a2' },
+    {
+      use: 'secondary',
+      type: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/identifier-type',
+            code: 'KUID',
+            display: 'Keycloak user ID',
+          },
+        ],
+        text: 'Keycloak user ID',
+      },
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
+    {
+      use: 'official',
+      type: {
+        coding: [
+          {
+            system: 'http://smartregister.org/codes/naitonal_id',
+            code: 'NationalID',
+            display: 'Naitonal ID',
+          },
+        ],
+        text: 'National ID',
+      },
+      value: '1234567891011121',
+    },
+  ],
+  active: true,
+  name: [{ use: 'official', family: 'kenyaplotus', given: ['Demoflotus', ''] }],
+  telecom: [
+    { system: 'email', value: 'test@onatest.comflotus@plotus.duck' },
+    { system: 'phone', value: '0700123456', use: 'mobile' },
+  ],
+};
+
+export const updatedExtraFieldsPractitioner = {
+  resourceType: 'Practitioner',
+  id: 'acb9d47e-7247-448f-be93-7a193a5312da',
+  identifier: [
+    { use: 'official', value: 'acb9d47e-7247-448f-be93-7a193a5312da' },
+    {
+      use: 'secondary',
+      type: {
+        coding: [
+          {
+            system: 'http://hl7.org/fhir/identifier-type',
+            code: 'KUID',
+            display: 'Keycloak user ID',
+          },
+        ],
+        text: 'Keycloak user ID',
+      },
+      value: 'cab07278-c77b-4bc7-b154-bcbf01b7d35b',
+    },
+    {
+      use: 'official',
+      type: {
+        coding: [
+          {
+            system: 'http://smartregister.org/codes/naitonal_id',
+            code: 'NationalID',
+            display: 'Naitonal ID',
+          },
+        ],
+        text: 'National ID',
+      },
+      value: '1234567891011121',
+    },
+  ],
+  active: true,
+  name: [{ use: 'official', family: 'plotus', given: ['flotus', ''] }],
+  telecom: [
+    { system: 'email', value: 'flotus@plotus.duck' },
+    { system: 'phone', value: '0700123456', use: 'mobile' },
+  ],
+};
+
 export const group = {
   resourceType: 'Bundle',
   id: 'f20c0276-8364-4e31-ae99-e4bcdb3813ce',

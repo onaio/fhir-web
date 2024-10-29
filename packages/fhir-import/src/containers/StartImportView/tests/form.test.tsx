@@ -8,6 +8,12 @@ import { store } from '@opensrp/store';
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import * as constants from '../../../constants';
+import * as pkgConfig from '@opensrp/pkg-config';
+
+jest.mock('@opensrp/pkg-config', () => ({
+  __esModule: true,
+  ...Object.assign({}, jest.requireActual('@opensrp/pkg-config')),
+}));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('node-fetch');
@@ -76,6 +82,13 @@ test.skip('creates an import submission correctly', async () => {
     })
     .reply(200, [])
     .persist();
+
+  jest.spyOn(pkgConfig, 'getAllConfigs').mockImplementation(() => {
+    return {
+      productListId: 'productListId',
+      inventoryListId: 'inventoryListId',
+    };
+  });
 
   const successNoticeMock = jest
     .spyOn(notifications, 'sendSuccessNotification')

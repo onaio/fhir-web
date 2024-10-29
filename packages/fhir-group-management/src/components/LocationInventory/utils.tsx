@@ -582,10 +582,7 @@ export const validationRulesFactory = (t: TFunction, isAttractiveProduct: boolea
       { required: true, message: t('Accountability end date is required') },
     ] as Rule[],
     [serialNumber]: [{ type: 'string', message: t('Must be a valid string') }] as Rule[],
-    [PONumber]: [
-      { type: 'string', message: t('Must be a valid string') },
-      { required: true, message: t('PO number is required') },
-    ] as Rule[],
+    [PONumber]: [{ type: 'string', message: t('Must be a valid string') }] as Rule[],
   };
   if (isAttractiveProduct) {
     rules[serialNumber].push({ required: true, message: t('Serial number is required') });

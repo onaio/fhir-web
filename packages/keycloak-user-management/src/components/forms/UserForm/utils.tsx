@@ -99,6 +99,7 @@ const createEditKeycloakUser = async (
       `${KEYCLOAK_URL_USERS}/${keycloakUserPayload.id}`,
       keycloakBaseURL
     );
+
     return serve
       .update(keycloakUserPayload)
       .then(() => {
@@ -252,7 +253,12 @@ export const getFormValues = (
     return defaultUserFormInitialValues;
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
-  const { contact: contacts, fhir_core_app_id: fhirCoreAppId } = keycloakUser.attributes ?? {};
+  const {
+    contact: contacts,
+    fhir_core_app_id: fhirCoreAppId,
+    nationalId = '',
+    phoneNumber = '',
+  } = keycloakUser.attributes ?? {};
   const { active } = practitioner ?? {};
 
   let userType: FormFields['userType'] = 'practitioner';
@@ -274,6 +280,8 @@ export const getFormValues = (
     id,
     firstName,
     lastName,
+    nationalId,
+    phoneNumber,
     email,
     username,
     enabled,
@@ -298,10 +306,23 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
   const isEditMode = !!values.id;
   // possibility of creating a practitioner for an existing user if one was not created before
 
-  const { id, username, firstName, lastName, email, enabled, contact, fhirCoreAppId } = values;
+  const {
+    id,
+    username,
+    firstName,
+    lastName,
+    nationalId,
+    phoneNumber,
+    email,
+    enabled,
+    contact,
+    fhirCoreAppId,
+  } = values;
   const preUserAttributes = {
     ...(contact ? { contact: [contact] } : {}),
     ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
+    ...(nationalId ? { nationalId: [nationalId] } : {}),
+    ...(phoneNumber ? { phoneNumber: [phoneNumber] } : {}),
   };
 
   const cleanedAttributes = pickBy(
@@ -365,6 +386,7 @@ export const postPutPractitioner =
     // otherwise follow the practitioner's activation field
     const practitionerActive = enabled === false ? false : active === undefined ? false : active;
     const practObj = values.practitioner as Practitioner | undefined;
+
     if (practObj?.identifier) {
       practitioner = {
         ...practObj,
@@ -375,7 +397,7 @@ export const postPutPractitioner =
       };
     }
 
-    const practitionerIsEditMode = !!values.practitioner?.identifier;
+    const practitionerIsEditMode = !!practObj?.identifier;
 
     return createOrEditPractitioners(baseUrl, practitioner, practitionerIsEditMode, t);
   };

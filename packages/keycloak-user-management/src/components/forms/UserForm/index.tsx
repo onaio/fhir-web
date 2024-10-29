@@ -21,7 +21,13 @@ import {
 } from './types';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
-import { compositionResourceType, PRACTITIONER, SUPERVISOR } from '../../../constants';
+import {
+  compositionResourceType,
+  NATIONAL_ID_FORM_FIELD,
+  PHONE_NUMBER_FORM_FIELD,
+  PRACTITIONER,
+  SUPERVISOR,
+} from '../../../constants';
 import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
@@ -36,8 +42,10 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     renderFields,
     hiddenFields,
     isFHIRInstance,
+    extraFormFields,
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
+
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
   const { t } = useTranslation();
 
@@ -155,6 +163,38 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             >
               <Input />
             </Form.Item>
+            {extraFormFields.includes(NATIONAL_ID_FORM_FIELD) && (
+              <Form.Item
+                name={NATIONAL_ID_FORM_FIELD}
+                id={NATIONAL_ID_FORM_FIELD}
+                label={t('National Id')}
+                rules={[
+                  {
+                    pattern: /^\d{16}$/,
+                    message: t('National Id number with 16 digits'),
+                    required: true,
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            )}
+            {extraFormFields.includes(PHONE_NUMBER_FORM_FIELD) && (
+              <Form.Item
+                name={PHONE_NUMBER_FORM_FIELD}
+                id={PHONE_NUMBER_FORM_FIELD}
+                label={t('Mobile Phone Number')}
+                rules={[
+                  {
+                    pattern: /^\d{10,16}$/,
+                    required: true,
+                    message: t('Please enter a Phone number with 10 to 16 digits.'),
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            )}
             <Form.Item name="email" id="email" label={t('Email')}>
               <Input />
             </Form.Item>
@@ -276,6 +316,8 @@ export const defaultUserFormInitialValues: FormFields = {
   firstName: '',
   id: '',
   lastName: '',
+  nationalId: '',
+  phoneNumber: '',
   username: '',
   active: true,
   userType: 'practitioner',
@@ -289,6 +331,7 @@ export const defaultUserFormInitialValues: FormFields = {
 UserForm.defaultProps = {
   initialValues: defaultUserFormInitialValues,
   practitionerUpdaterFactory: postPutPractitioner,
+  extraFormFields: [],
 };
 
 export { UserForm };

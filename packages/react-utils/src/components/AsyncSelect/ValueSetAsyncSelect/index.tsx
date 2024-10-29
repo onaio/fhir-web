@@ -1,12 +1,14 @@
-import React from 'react';
-import { DefaultOptionType, SelectProps } from 'antd/lib/select';
+import React, { useMemo } from 'react';
+import Select, { DefaultOptionType, SelectProps } from 'antd/lib/select';
 import { ValueSetContains } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/valueSetContains';
 import { IValueSet } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IValueSet';
-import { BaseAsyncSelect, RawValueType } from '../BaseAsyncSelect';
+import { dropDownFactory, RawValueType } from '../BaseAsyncSelect';
 import { FHIRServiceClass } from '../../../helpers/dataLoaders';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
+import { useQuery } from 'react-query';
+import { useTranslation } from '../../../mls';
 
-export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType> {
+export interface ValueSetAsyncSelectProps extends SelectProps<RawValueType, DefaultOptionType> {
   valueSetURL: string;
   fhirBaseUrl: string;
 }
@@ -20,8 +22,9 @@ export const valueSetResourceType = 'ValueSet';
  * @param props - AsyncSelect component props
  */
 export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
-  const { valueSetURL, fhirBaseUrl, ...selectProps } = props;
+  const { valueSetURL, fhirBaseUrl, value, defaultValue, ...rawSelectProps } = props;
 
+  const { t } = useTranslation();
   const queryParams = {
     queryKey: [valueSetResourceType, valueSetURL],
     queryFn: async () =>
@@ -31,14 +34,38 @@ export function ValueSetAsyncSelect(props: ValueSetAsyncSelectProps) {
     select: (data: IValueSet) => getValueSetSelectOptions(data),
   };
 
-  const asyncSelectProps = {
-    queryParams,
-    optionsGetter: (options: DefaultOptionType[]) => options,
+  const { data, isLoading, error } = useQuery(queryParams);
+
+  const optionsByCodeAndSystem = useMemo(() => {
+    return (data ?? []).reduce((acc, opt) => {
+      try {
+        const optionObj = JSON.parse((opt.value ?? '{}') as string);
+        const key = `${optionObj.code}-${optionObj.system}`;
+        acc[key] = opt;
+        return acc;
+      } catch (_) {
+        return acc;
+      }
+    }, {} as Record<string, DefaultOptionType>);
+  }, [data]);
+  const sanitizedValue = useSanitizedValueSelectValue(optionsByCodeAndSystem, value);
+  const sanitizedDefValue = useSanitizedValueSelectValue(optionsByCodeAndSystem, defaultValue);
+
+  const selectDropDownRender = dropDownFactory(t, data, error as Error);
+
+  const selectProps = {
+    className: 'asyncSelect',
+    dropdownRender: selectDropDownRender,
+    options: data,
+    loading: isLoading,
+    disabled: isLoading,
+    ...rawSelectProps,
     filterOption: selectFilterFunction,
-    ...selectProps,
+    value: sanitizedValue,
+    defaultValue: sanitizedDefValue,
   };
 
-  return <BaseAsyncSelect<IValueSet, DefaultOptionType> {...asyncSelectProps} />;
+  return <Select {...selectProps} />;
 }
 
 /**
@@ -92,3 +119,28 @@ export function getValueSetSelectOptions(data: IValueSet) {
   }));
   return options;
 }
+
+/**
+ * valueset options are a json stringified representation of the codeable concept,
+ * the option.value thus can include the `display` property which we should not use when
+ * testing for equality between a codeableConcept value and the options.
+ *
+ * @param optionsByCodeAndSystem - lookup of options by the important parts, code and system
+ * @param value - a provided or selected value.
+ */
+export const useSanitizedValueSelectValue = (
+  optionsByCodeAndSystem: Record<string, DefaultOptionType>,
+  value?: RawValueType | null
+) => {
+  return useMemo(() => {
+    try {
+      if (value) {
+        const valueOb = JSON.parse(value as string);
+        const key = `${valueOb.code}-${valueOb.system}`;
+        return optionsByCodeAndSystem[key].value ?? value;
+      }
+    } catch (_) {
+      return value;
+    }
+  }, [optionsByCodeAndSystem, value]);
+};

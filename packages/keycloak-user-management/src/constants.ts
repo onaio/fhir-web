@@ -44,3 +44,7 @@ export const SUPERVISOR_USER_TYPE_CODE = '236321002';
 export const PRACTITIONER_USER_TYPE_CODE = '405623001';
 export const SNOMED_CODEABLE_SYSTEM = 'http://snomed.info/sct';
 export const DEVICE_SETTING_CODEABLE_CODE = '1156600005';
+
+// Form field name
+export const NATIONAL_ID_FORM_FIELD = 'nationalId';
+export const PHONE_NUMBER_FORM_FIELD = 'phoneNumber';

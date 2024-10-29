@@ -10,6 +10,7 @@ import {
   practitionerResourceType,
   groupResourceType,
   practitionerRoleResourceType,
+  renderExtraFields,
 } from '../../constants';
 import {
   FHIRServiceClass,
@@ -31,6 +32,7 @@ import { HumanName } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/humanName';
 import { HumanNameUseCodes } from '@opensrp/fhir-team-management';
 import { Identifier } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/identifier';
 import { keycloakIdentifierCoding } from '@opensrp/fhir-helpers';
+import { getConfig } from '@opensrp/pkg-config';
 
 export const getPractitioner = (baseUrl: string, userId: string) => {
   const serve = new FHIRServiceClass<IBundle>(baseUrl, practitionerResourceType);
@@ -61,6 +63,23 @@ export const getPractitionerSecondaryIdentifier = (keycloakID: string): Identifi
       text: 'Keycloak user ID',
     },
     value: keycloakID,
+  };
+};
+
+export const nationalIdIdentifierBuilder = (nationalId: string) => {
+  return {
+    use: IdentifierUseCodes.OFFICIAL,
+    type: {
+      coding: [
+        {
+          system: 'http://smartregister.org/codes/naitonal_id',
+          code: 'NationalID',
+          display: 'Naitonal ID',
+        },
+      ],
+      text: 'National ID',
+    },
+    value: nationalId,
   };
 };
 
@@ -176,6 +195,7 @@ export const createEditPractitionerRoleResource = (
   };
 
   const serve = new FHIRServiceClass<IPractitionerRole>(baseUrl, practitionerRoleResourceType);
+
   return (
     serve
       // use update (PUT) for both creating and updating practitioner resource
@@ -221,10 +241,16 @@ export const practitionerUpdater =
 
     let officialIdentifier;
     let secondaryIdentifier;
+    let nationalIdIdentifier;
+
     if (values.practitioner) {
       const currentIdentifiers = (values.practitioner as IPractitioner).identifier;
       officialIdentifier = getObjLike(currentIdentifiers, 'use', IdentifierUseCodes.OFFICIAL)[0];
       secondaryIdentifier = getObjLike(currentIdentifiers, 'use', IdentifierUseCodes.SECONDARY)[0];
+    }
+
+    if (values.nationalId) {
+      nationalIdIdentifier = nationalIdIdentifierBuilder(values.nationalId);
     }
 
     if (!officialIdentifier) {
@@ -241,7 +267,9 @@ export const practitionerUpdater =
     const payload: IPractitioner = {
       resourceType: practitionerResourceType,
       id: officialIdentifier.value,
-      identifier: [officialIdentifier, secondaryIdentifier],
+      identifier: nationalIdIdentifier
+        ? [officialIdentifier, secondaryIdentifier, nationalIdIdentifier]
+        : [officialIdentifier, secondaryIdentifier],
       active: values.enabled ?? false,
       name: [
         {
@@ -250,12 +278,24 @@ export const practitionerUpdater =
           given: [values.firstName, ''],
         },
       ],
-      telecom: [
-        {
-          system: 'email',
-          value: values.email,
-        },
-      ],
+      telecom: values.phoneNumber
+        ? [
+            {
+              system: 'email',
+              value: values.email,
+            },
+            {
+              system: 'phone',
+              value: values.phoneNumber,
+              use: 'mobile',
+            },
+          ]
+        : [
+            {
+              system: 'email',
+              value: values.email,
+            },
+          ],
     };
 
     const serve = new FHIRServiceClass<IPractitioner>(baseUrl, practitionerResourceType);
@@ -295,9 +335,13 @@ export const practitionerUpdater =
             values.practitionerRole?.id
           )
             .then(() => sendSuccessNotification(practitionerRoleSuccessMessage))
-            .catch(() => sendErrorNotification(practitionerRoleErrorMessage));
+            .catch(() => {
+              return sendErrorNotification(practitionerRoleErrorMessage);
+            });
         })
-        .catch(() => sendErrorNotification(practitionerErrorMessage))
+        .catch(() => {
+          return sendErrorNotification(practitionerErrorMessage);
+        })
         .finally(() => {
           if (!isEditMode) {
             history.push(`${URL_USER_CREDENTIALS}/${userId}/${values.username}`);
@@ -312,11 +356,13 @@ export const practitionerUpdater =
  * @param props - component props
  */
 export function CreateEditUser(props: CreateEditPropTypes) {
+  const extraFormFields = getConfig('projectCode') === 'giz' ? renderExtraFields : [];
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
     getPractitionerRoleFun: getPractitionerRole,
     postPutPractitionerFactory: practitionerUpdater,
+    extraFormFields: extraFormFields,
   };
 
   return <BaseCreateEditUser {...baseCompProps} />;

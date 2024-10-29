@@ -137,7 +137,6 @@ test('form validation works', async () => {
     'Delivery date is required',
     'Accountability end date is required',
     'UNICEF section is required',
-    'PO number is required',
   ]);
 });
 
@@ -153,7 +152,13 @@ test('creates new inventory as expected', async () => {
   const preFetchScope = nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
+      _summary: 'count',
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, { total: 20 })
+    .get(`/${groupResourceType}/_search`)
+    .query({
       _count: 20,
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': props.commodityListId,
@@ -195,29 +200,32 @@ test('creates new inventory as expected', async () => {
   render(<AppWrapper {...thisProps}></AppWrapper>);
 
   await waitFor(() => {
-    expect(preFetchScope.isDone()).toBeTruthy();
+    expect(preFetchScope.pendingMocks()).toEqual([]);
   });
 
-  // simulate value selection for product
-  const productSelectComponent = document.querySelector(`input#${product}`)!;
-  fireEvent.mouseDown(productSelectComponent);
+  await waitFor(() => {
+    // simulate value selection for product
+    const productSelectComponent = document.querySelector(`input#${product}`)!;
+    fireEvent.mouseDown(productSelectComponent);
 
-  const optionTexts = [
-    ...document.querySelectorAll(
-      `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
-    ),
-  ].map((option) => {
-    return option.textContent;
+    const optionTexts = [
+      ...document.querySelectorAll(
+        `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(optionTexts).toEqual([
+      'Yellow sunshine',
+      'Fig tree',
+      'Lumpy nuts',
+      'Happy Feet',
+      'Lilly Flowers',
+      'Smartphone TEST',
+    ]);
   });
 
-  expect(optionTexts).toEqual([
-    'Yellow sunshine',
-    'Fig tree',
-    'Lumpy nuts',
-    'Happy Feet',
-    'Lilly Flowers',
-    'Smartphone TEST',
-  ]);
   fireEvent.click(document.querySelector(`[title="${'Lumpy nuts'}"]`)!);
 
   const quantity = screen.getByLabelText('Quantity');
@@ -270,7 +278,13 @@ test('#1384 - correctly updates location inventory', async () => {
   const preFetchScope = nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _getpagesoffset: 0,
+      _summary: 'count',
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': props.commodityListId,
+    })
+    .reply(200, { total: 20 })
+    .get(`/${groupResourceType}/_search`)
+    .query({
       _count: 20,
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': props.commodityListId,
@@ -320,26 +334,31 @@ test('#1384 - correctly updates location inventory', async () => {
     expect(preFetchScope.isDone()).toBeTruthy();
   });
 
-  // simulate value selection for product
-  const productSelectComponent = document.querySelector(`input#${product}`)!;
-  fireEvent.mouseDown(productSelectComponent);
+  // serial number is initially not shown on the form
+  expect(screen.queryByText('Serial number')).not.toBeInTheDocument();
 
-  const optionTexts = [
-    ...document.querySelectorAll(
-      `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
-    ),
-  ].map((option) => {
-    return option.textContent;
+  await waitFor(() => {
+    // simulate value selection for product
+    const productSelectComponent = document.querySelector(`input#${product}`)!;
+    fireEvent.mouseDown(productSelectComponent);
+
+    const optionTexts = [
+      ...document.querySelectorAll(
+        `#${product}_list+div.rc-virtual-list .ant-select-item-option-content`
+      ),
+    ].map((option) => {
+      return option.textContent;
+    });
+
+    expect(optionTexts).toEqual([
+      'Yellow sunshine',
+      'Fig tree',
+      'Lumpy nuts',
+      'Happy Feet',
+      'Lilly Flowers',
+      'Smartphone TEST',
+    ]);
   });
-
-  expect(optionTexts).toEqual([
-    'Yellow sunshine',
-    'Fig tree',
-    'Lumpy nuts',
-    'Happy Feet',
-    'Lilly Flowers',
-    'Smartphone TEST',
-  ]);
   fireEvent.click(document.querySelector(`[title="${'Lumpy nuts'}"]`)!);
 
   const quantity = screen.getByLabelText('Quantity');

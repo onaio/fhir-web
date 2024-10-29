@@ -8,8 +8,14 @@ export const supportedLanguageCodes = ['en', 'sw', 'fr', 'ar', 'th', 'vi'] as co
 export const eusmProjectCode = 'eusm' as const;
 export const coreProjectCode = 'core' as const;
 export const echisProjectCode = 'echis' as const;
+export const gizProjectCode = 'giz' as const;
 
-export const supportedProjectCode = [eusmProjectCode, coreProjectCode, echisProjectCode] as const;
+export const supportedProjectCode = [
+  eusmProjectCode,
+  coreProjectCode,
+  echisProjectCode,
+  gizProjectCode,
+] as const;
 export const supportedRbacStrategies = ['keycloak'] as const;
 
 export type LanguageCode = typeof supportedLanguageCodes[number];
@@ -34,6 +40,8 @@ export interface ConfigState {
   defaultTablesPageSize?: number; // static value of the default number of rows per page
   rbacStrategy?: KeycloakStrategies;
   practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
+  productListId?: string;
+  inventoryListId?: string;
 }
 
 export interface UserPreference {
@@ -61,6 +69,8 @@ const defaultConfigs: GlobalState = {
   projectCode: 'core',
   rbacStrategy: 'keycloak',
   practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
+  productListId: undefined,
+  inventoryListId: undefined,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)

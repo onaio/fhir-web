@@ -17,11 +17,12 @@ import {
   locationHierarchyResourceType,
   locationResourceType,
   longitude,
+  namespace,
   serviceType,
 } from '../../constants';
 import { CustomTreeSelect, CustomTreeSelectProps } from './CustomTreeSelect';
 import { IfhirR4 } from '@smile-cdr/fhirts';
-import { TreeNode } from '../../helpers/types';
+import { LocationI18nNamespace, TreeNode } from '../../helpers/types';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { LocationUnitStatus } from '../../helpers/types';
 import { useQueryClient } from 'react-query';
@@ -44,6 +45,7 @@ export interface LocationFormProps
   onCancel: () => void;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
   validationRulesFactory: ValidationFactory;
+  i18nNamespace?: LocationI18nNamespace;
 }
 
 const defaultProps = {
@@ -53,6 +55,7 @@ const defaultProps = {
   disabled: [],
   onCancel: () => undefined,
   validationRulesFactory: defaultValidationRulesFactory,
+  i18nNamespace: namespace,
 };
 
 /** responsive layout for the form labels and columns */
@@ -119,7 +122,7 @@ const LocationForm = (props: LocationFormProps) => {
   const [areWeDoneHere, setAreWeDoneHere] = useState<boolean>(false);
   const [successUrl, setSuccessUrl] = useState<string>();
   const queryClient = useQueryClient();
-  const { t } = useMls();
+  const { t } = useMls(props.i18nNamespace);
   const validationRules = validationRulesFactory(t);
 
   const isHidden = (fieldName: keyof LocationFormFields) => hidden.includes(fieldName);

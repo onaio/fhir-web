@@ -122,14 +122,14 @@ test('renders correctly', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  screen.getByText('Add locations Inventory');
+  screen.getByText('Add Service Point Inventory');
   // form items
   screen.getByText('Product name');
   screen.getByText('Quantity');
   screen.getByText('Delivery date');
   screen.getByText('Accountability end date');
   screen.getByText('UNICEF section');
-  screen.getByText('Serial number');
+  expect(screen.queryByAltText('Serial number')).not.toBeInTheDocument();
   screen.getByText('Donor');
   screen.getByText('PO number');
   screen.getByText('Expiry date');
@@ -160,5 +160,5 @@ test('renders correctly on edit', async () => {
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 
-  screen.getByText('Edit locations Inventory');
+  screen.getByText('Edit Service Point Inventory');
 });

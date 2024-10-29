@@ -1,30 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { URLParams } from '@opensrp/server-service';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { VerticalAlignBottomOutlined } from '@ant-design/icons';
 import { Button, Divider, Select, Empty, Space, Spin, Alert } from 'antd';
-import type { SelectProps } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { debounce } from 'lodash';
 import { getResourcesFromBundle } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
-import { loadResources, getTotalRecordsInBundles, getTotalRecordsOnApi } from './utils';
-
-export type SelectOption<T extends IResource> = {
-  label: string;
-  value: string | number;
-  ref: T;
-};
-
-export interface TransformOptions<T extends IResource> {
-  (resource: T): SelectOption<T> | undefined;
-}
-
-export type AbstractedSelectOptions<ResourceT extends IResource> = Omit<
-  SelectProps<string, SelectOption<ResourceT>>,
-  'loading' | 'options' | 'searchValue'
->;
+import {
+  loadSearchableResources,
+  getTotalRecordsInBundles,
+  getTotalRecordsOnApi,
+  AbstractedSelectOptions,
+  SelectOption,
+  TransformOptions,
+} from '../utils';
 
 export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   extends AbstractedSelectOptions<ResourceT> {
@@ -34,6 +25,7 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   filterPageSize?: number;
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
+  discoverUnknownOptions?: (values: string[]) => Promise<SelectOption<ResourceT>[]>;
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -59,6 +51,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     filterPageSize: pageSize = 20,
     extraQueryParams = {},
     getFullOptionOnChange,
+    discoverUnknownOptions,
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -74,36 +67,96 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     });
   }, [searchValue]);
 
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isFetching, error } =
-    useInfiniteQuery({
-      queryKey: [resourceType, debouncedSearchValue, page, pageSize],
-      queryFn: async ({ pageParam = page }) => {
-        const response = await loadResources(
-          baseUrl,
-          resourceType,
-          { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
-          extraQueryParams
-        );
-        return response;
-      },
-      getNextPageParam: (lastGroup: IBundle, allGroups: IBundle[]) => {
-        const totalFetched = getTotalRecordsInBundles(allGroups);
-        const total = lastGroup.total as number;
-        if (totalFetched < total) {
-          return page + 1;
-        } else {
-          return false;
-        }
-      },
-      getPreviousPageParam: () => {
-        if (page === 1) {
-          return undefined;
-        } else {
-          return page - 1;
-        }
-      },
-      refetchOnWindowFocus: false,
-    });
+  type PageResponse = { res: IBundle; page: number; pageSize: number };
+  const {
+    data: rawData,
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+    isFetchingNextPage,
+    isFetching,
+    error,
+  } = useInfiniteQuery({
+    queryKey: [resourceType, debouncedSearchValue, page, pageSize],
+    queryFn: async ({ pageParam = page }) => {
+      const response = await loadSearchableResources(
+        baseUrl,
+        resourceType,
+        { page: pageParam, pageSize, search: debouncedSearchValue ?? null },
+        extraQueryParams
+      ).then((res) => ({ res, page: pageParam, pageSize }));
+      return response;
+    },
+    getNextPageParam: (lastGroup: PageResponse, allGroups: PageResponse[]) => {
+      const allBundles = allGroups.map((group) => group.res);
+      const totalFetched = getTotalRecordsInBundles(allBundles);
+      const total = lastGroup.res.total as number;
+      const nextPage = lastGroup.page + 1;
+      if (totalFetched < total) {
+        return nextPage;
+      } else {
+        return false;
+      }
+    },
+    getPreviousPageParam: (lastGroup: PageResponse) => {
+      const nextPage = lastGroup.page - 1;
+      if (nextPage === 1) {
+        return undefined;
+      } else {
+        return nextPage;
+      }
+    },
+    refetchOnWindowFocus: false,
+  });
+
+  const data = rawData?.pages.map((page) => page.res) ?? [];
+
+  const options = data.flatMap((resourceBundle: IBundle) => {
+    const resources = getResourcesFromBundle<ResourceT>(resourceBundle);
+    const allOptions = resources.map(transformOption);
+    const saneOptions = allOptions.filter((option) => option !== undefined);
+    return saneOptions as SelectOption<ResourceT>[];
+  });
+
+  const optionsByValue = options.reduce((acc, opt) => {
+    acc[opt.value] = opt;
+    return acc;
+  }, {} as Record<string, SelectOption<ResourceT>>);
+
+  const values = Array.isArray(props.value) ? props.value : [props.value];
+  const defaultValues = Array.isArray(props.defaultValue)
+    ? props.defaultValue
+    : [props.defaultValue];
+  const poolValuesToCheck = [...values, defaultValues];
+
+  const missingValues: string[] = [];
+  for (const value of poolValuesToCheck) {
+    if (typeof value === 'string') {
+      if (!(optionsByValue[value] as SelectOption<ResourceT> | undefined)) {
+        missingValues.push(value);
+      } else {
+        // TODO - YAGNI - case when value is labelledValue
+      }
+    }
+  }
+
+  const { data: preloadData, isLoading: preLoadDataIsLoading } = useQuery(
+    [missingValues],
+    () => props.discoverUnknownOptions?.(missingValues),
+    {
+      enabled: !!missingValues.length,
+    }
+  );
+
+  const preloadOptionsByValue = (preloadData ?? []).reduce((acc, option) => {
+    acc[option.value] = option;
+    return acc;
+  }, {} as Record<string, SelectOption<ResourceT>>);
+  const fullSetOptions = {
+    ...preloadOptionsByValue,
+    ...optionsByValue,
+  };
+  const updatedOptions = Object.values(fullSetOptions);
 
   const changeHandler = (
     value: string,
@@ -118,37 +171,30 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     setSearchValue(value);
   };
 
-  const options = ((data?.pages ?? []) as IBundle[]).flatMap((resourceBundle: IBundle) => {
-    const resources = getResourcesFromBundle<ResourceT>(resourceBundle);
-    const allOptions = resources.map(transformOption);
-    const saneOptions = allOptions.filter((option) => option !== undefined);
-    return saneOptions as SelectOption<ResourceT>[];
-  });
-
-  const pages = (data?.pages ?? []) as IBundle[];
+  const pages = data;
   const recordsFetchedNum = getTotalRecordsInBundles(pages);
   const totalPossibleRecords = getTotalRecordsOnApi(pages);
   const remainingRecords = totalPossibleRecords - recordsFetchedNum;
 
   const propsToSelect = {
-    style: { minWidth: '200px' },
+    className: 'asyncSelect',
     ...restProps,
     placeholder,
     onChange: changeHandler,
-    loading: isLoading,
+    loading: isLoading || preLoadDataIsLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
     filterOption: false,
-    options: options,
+    options: updatedOptions,
     searchValue,
     dropdownRender: (menu: React.ReactNode) => (
       <>
-        {!error && data && menu}
+        {!error && data.length && menu}
         <Divider style={{ margin: '8px 0' }} />
         {error ? (
           <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
         ) : (
           <Space direction="vertical">
-            {data && (
+            {data.length && (
               <small style={{ padding: '4px 16px' }}>
                 {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
                   recordsFetchedNum,

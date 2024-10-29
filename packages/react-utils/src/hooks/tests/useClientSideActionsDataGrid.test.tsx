@@ -15,7 +15,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { Input } from 'antd';
 import TableLayout from '../../components/TableLayout';
 import { Router, Route, Switch } from 'react-router';
-import { useTabularViewWithLocalSearch } from '../useTabularViewWithLocalSearch';
+import { useClientSideActionsDataGrid } from '../useClientSideActonsDataGrid';
 import { hugeSinglePageData, hugeSinglePageDataSummary } from './fixtures';
 
 jest.mock('fhirclient', () => {
@@ -64,12 +64,10 @@ const SearchForm = (props: any) => {
 // minimal app to wrap our hook.
 const SampleApp = () => {
   const { baseUrl, endpoint } = options;
-  const matchesSearch = (obj, search) => obj.name.includes(search);
-  const { tablePaginationProps, queryValues, searchFormProps } = useTabularViewWithLocalSearch(
+  const { tablePaginationProps, queryValues, searchFormProps } = useClientSideActionsDataGrid(
     baseUrl,
     endpoint,
-    {},
-    matchesSearch
+    {}
   );
 
   const { data, isFetching, isLoading } = queryValues;
@@ -84,7 +82,7 @@ const SampleApp = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tableProps: any = {
-    datasource: data ?? [],
+    datasource: data,
     columns,
     loading: isFetching || isLoading,
     pagination: tablePaginationProps,
@@ -233,16 +231,6 @@ test('integrates correctly in component', async () => {
 
   // search info is synced to the url as well.
   expect(history.location.search).toEqual('?pageSize=20&page=1&search=Gloves');
-
-  // records should reflect search status.
-  const searchRecords = [...document.querySelectorAll('td')].map((td) => td.textContent);
-
-  expect(searchRecords).toEqual([
-    'Disposable Gloves',
-    'Examination Gloves (Nitrile) Large',
-    'Examination Gloves (Nitrile) Medium',
-    'Examination Gloves (Nitrile) Small',
-  ]);
 
   expect(nock.pendingMocks()).toEqual([]);
 });

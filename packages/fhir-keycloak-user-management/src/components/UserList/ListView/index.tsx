@@ -6,6 +6,8 @@ import {
   TableLayout,
   BrokenPage,
   searchQuery,
+  useSearchParams,
+  viewDetailsQuery,
 } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
@@ -20,6 +22,7 @@ import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
 import { useTranslation } from '@opensrp/i18n';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
+import { UserDetailsOverview } from '../ViewdetailsOverview';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -39,6 +42,8 @@ export const UserList = (props: OrganizationListProps) => {
   const extraData = useSelector(getExtraData);
   const { t } = useTranslation();
   const userRole = useUserRole();
+  const { sParams } = useSearchParams();
+  const resourceId = sParams.get(viewDetailsQuery) ?? undefined;
 
   const { isLoading, data, error, isFetching } = useQuery([KEYCLOAK_URL_USERS], () =>
     loadKeycloakResources(keycloakBaseURL, KEYCLOAK_URL_USERS)
@@ -120,7 +125,16 @@ export const UserList = (props: OrganizationListProps) => {
               </Button>
             </RbacCheck>
           </div>
-          <TableLayout {...tableProps} />
+          <div className="dataGridWithOverview">
+            <div className="dataGridWithOverview-table">
+              <TableLayout {...tableProps} />
+            </div>
+            {resourceId ? (
+              <div className="view-details-content dataGridWithOverview-overview">
+                <UserDetailsOverview keycloakBaseURL={keycloakBaseURL} resourceId={resourceId} />
+              </div>
+            ) : null}
+          </div>
         </Col>
       </Row>
     </BodyLayout>
