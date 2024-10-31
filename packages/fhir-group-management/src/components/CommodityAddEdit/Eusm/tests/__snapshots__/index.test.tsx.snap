@@ -21,6 +21,7 @@ exports[`renders correctly: attractive item no radio button 1`] = `
 
 exports[`renders correctly: attractive item yes radio button 1`] = `
 <input
+  checked=""
   class="ant-radio-input"
   type="radio"
   value="true"

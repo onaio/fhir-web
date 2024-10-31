@@ -20,6 +20,7 @@ import {
   editedCommodity1,
   listEdited1,
   newList,
+  removedImageCommodity,
 } from './fixtures';
 import { binaryResourceType, groupResourceType, listResourceType } from '../../../../constants';
 import userEvent from '@testing-library/user-event';
@@ -196,7 +197,7 @@ test('form validation works', async () => {
   const errorNodes = [...document.querySelectorAll('.ant-form-item-explain-error')];
   const errorMsgs = errorNodes.map((node) => node.textContent);
 
-  expect(errorMsgs).toEqual(['Required', 'Required', 'Required']);
+  expect(errorMsgs).toEqual(['Required', 'Required', 'Required', 'Required']);
 });
 
 it('can create new commodity', async () => {
@@ -432,8 +433,8 @@ it('can remove product image', async () => {
   );
 
   nock(props.fhirBaseURL)
-    .put(`/${groupResourceType}/${commodity1.id}`, commodityLessImage)
-    .reply(200, commodityLessImage)
+    .put(`/${groupResourceType}/${commodity1.id}`, removedImageCommodity)
+    .reply(200, removedImageCommodity)
     .persist();
 
   render(
@@ -445,6 +446,9 @@ it('can remove product image', async () => {
   await waitFor(() => {
     screen.getByText('Edit commodity | Bed nets');
   });
+
+  const attractiveYes = screen.getByRole('radio', { name: /yes/i });
+  userEvent.click(attractiveYes);
 
   const removeFileIcon = screen.getByTitle('Remove file');
   userEvent.click(removeFileIcon);
