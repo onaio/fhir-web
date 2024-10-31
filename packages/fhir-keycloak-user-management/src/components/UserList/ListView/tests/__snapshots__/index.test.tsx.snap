@@ -21,6 +21,27 @@ exports[`View details navigates correctly: Header title 1`] = `
 </div>
 `;
 
+exports[`active filter works correctly: Header title 1`] = `
+<div
+  class="ant-page-header site-page-header ant-page-header-ghost"
+>
+  <div
+    class="ant-page-header-heading "
+  >
+    <div
+      class="ant-page-header-heading-left"
+    >
+      <span
+        class="ant-page-header-heading-title"
+        title="User Management"
+      >
+        User Management
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`renders correctly when listing resources: Header title 1`] = `
 <div
   class="ant-page-header site-page-header ant-page-header-ghost"

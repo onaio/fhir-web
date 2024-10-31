@@ -14,6 +14,7 @@ import { groupResourceType, LIST_COMMODITY_URL } from '../../../../constants';
 import { firstTwentyEusmCommodities, listResource } from './fixtures';
 import { RoleContext } from '@opensrp/rbac';
 import { superUserRole } from '@opensrp/react-utils';
+import userEvents from '@testing-library/user-event';
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -107,8 +108,13 @@ test('renders correctly when listing resources', async () => {
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/_search`)
     .query({
-      _total: 'accurate',
-      _getpagesoffset: 0,
+      _summary: 'count',
+      code: 'http://snomed.info/sct|386452003',
+      '_has:List:item:_id': listResId,
+    })
+    .reply(200, { total: 20 })
+    .get(`/${groupResourceType}/_search`)
+    .query({
       _count: 20,
       code: 'http://snomed.info/sct|386452003',
       '_has:List:item:_id': listResId,
@@ -137,6 +143,21 @@ test('renders correctly when listing resources', async () => {
     });
   });
 
+  // filters.
+  const searchInput = screen.getByTestId('search-form');
+
+  userEvents.paste(searchInput, 'nonExistent');
+  screen.getByText(/No data/i);
+
+  userEvents.clear(searchInput);
+  userEvents.paste(searchInput, 'net');
+
+  const tableText = [...document.querySelectorAll('tr')].map((node) => node.textContent);
+  expect(tableText).toEqual([
+    'Material NumberNameIs it an AssetActiveActions',
+    '52cffa51-fa81-49aa-9944-5b45d9e4c117Bed netsNoActiveEdit',
+  ]);
+
   // view details
   nock(props.fhirBaseURL)
     .get(`/${groupResourceType}/52cffa51-fa81-49aa-9944-5b45d9e4c117`)
@@ -153,7 +174,9 @@ test('renders correctly when listing resources', async () => {
     </span>
   `);
   fireEvent.click(viewDetailsLink);
-  expect(history.location.search).toEqual('?viewDetails=52cffa51-fa81-49aa-9944-5b45d9e4c117');
+  expect(history.location.search).toEqual(
+    '?page=1&pageSize=20&search=net&viewDetails=52cffa51-fa81-49aa-9944-5b45d9e4c117'
+  );
 
   await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
 

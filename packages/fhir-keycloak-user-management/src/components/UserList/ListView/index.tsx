@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Radio, Space } from 'antd';
 import {
   getQueryParams,
   SearchForm,
@@ -8,6 +8,7 @@ import {
   searchQuery,
   useSearchParams,
   viewDetailsQuery,
+  useClientSideDataGridFilters,
 } from '@opensrp/react-utils';
 import { PlusOutlined } from '@ant-design/icons';
 import { URL_USER_CREATE, KEYCLOAK_URL_USERS } from '@opensrp/user-management';
@@ -20,7 +21,7 @@ import { BodyLayout } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
-import { useTranslation } from '@opensrp/i18n';
+import { Trans, useTranslation } from '@opensrp/i18n';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
 import { UserDetailsOverview } from '../ViewdetailsOverview';
 
@@ -28,6 +29,9 @@ interface OrganizationListProps {
   fhirBaseURL: string;
   keycloakBaseURL: string;
 }
+
+const nameFilterKey = 'name';
+const activeFilterKey = 'status';
 
 /**
  * Renders users in a table
@@ -49,30 +53,12 @@ export const UserList = (props: OrganizationListProps) => {
     loadKeycloakResources(keycloakBaseURL, KEYCLOAK_URL_USERS)
   );
 
+  const { registerFilter, filterRegistry, deregisterFilter, filteredData } =
+    useClientSideDataGridFilters<KeycloakUser>(data?.records ?? []);
+
   if (error && !data) {
     return <BrokenPage errorMessage={(error as Error).message} />;
   }
-
-  // consider filter while creating the table data records.
-  const tableData = (data?.records ?? [])
-    .filter((user: KeycloakUser) => {
-      const searchParam = new URLSearchParams(location.search).get(searchQuery);
-      if (!searchParam) {
-        return true;
-      }
-      const { firstName, username, lastName } = user;
-      return [firstName, username, lastName]
-        .filter((x) => !!x)
-        .map((x) => x.replace(' ', ''))
-        .map((x) => x.toLowerCase())
-        .some((word) => word.includes(searchParam.toLowerCase().replace(' ', '')));
-    })
-    .map((obj: KeycloakUser) => {
-      return {
-        ...obj,
-        key: obj.id,
-      };
-    });
 
   const columns = getTableColumns(keycloakBaseURL, fhirBaseURL, extraData, t, userRole, history);
 
@@ -86,8 +72,20 @@ export const UserList = (props: OrganizationListProps) => {
 
       if (searchText) {
         currentSParams.set(searchQuery, searchText);
+        registerFilter(
+          nameFilterKey,
+          (el) => {
+            const lowerSearchCase = searchText.toLowerCase();
+            const firstSearch = !!(el.firstName ?? '').toLowerCase().includes(lowerSearchCase);
+            const lastSearch = !!(el.lastName ?? '').toLowerCase().includes(lowerSearchCase);
+            const userSearch = !!el.username.toLowerCase().includes(lowerSearchCase);
+            return firstSearch || lastSearch || userSearch;
+          },
+          searchText
+        );
       } else {
         currentSParams.delete(searchQuery);
+        deregisterFilter(nameFilterKey);
       }
 
       nextUrl = ''.concat(nextUrl, '?').concat(currentSParams.toString());
@@ -96,7 +94,7 @@ export const UserList = (props: OrganizationListProps) => {
   };
 
   const tableProps = {
-    datasource: tableData,
+    datasource: filteredData,
     columns,
     loading: isFetching || isLoading,
   };
@@ -116,14 +114,46 @@ export const UserList = (props: OrganizationListProps) => {
       </Helmet>
       <Row className="list-view">
         <Col className="main-content">
-          <div className="main-content__header">
-            <SearchForm data-testid="search-form" {...searchFormProps} />
-            <RbacCheck permissions={['iam_user.create', 'Practitioner.create']}>
-              <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
-                <PlusOutlined />
-                {t('Add User')}
-              </Button>
-            </RbacCheck>
+          <div>
+            <div className="main-content__header">
+              <SearchForm data-testid="search-form" {...searchFormProps} />
+              <RbacCheck permissions={['iam_user.create', 'Practitioner.create']}>
+                <Button type="primary" onClick={() => history.push(URL_USER_CREATE)}>
+                  <PlusOutlined />
+                  {t('Add User')}
+                </Button>
+              </RbacCheck>
+            </div>
+            <div className="pb-3">
+              <Trans t={t} i18nKey="keycloakUserStatusFilter">
+                <Space>
+                  Status:
+                  <Radio.Group
+                    size="small"
+                    value={filterRegistry[activeFilterKey]?.value}
+                    buttonStyle="solid"
+                    onChange={(event) => {
+                      const val = event.target.value;
+                      if (val !== undefined) {
+                        registerFilter(
+                          activeFilterKey,
+                          (el) => {
+                            return el.enabled === val;
+                          },
+                          val
+                        );
+                      } else {
+                        registerFilter(activeFilterKey, undefined);
+                      }
+                    }}
+                  >
+                    <Radio.Button value={true}>{t('Enabled')}</Radio.Button>
+                    <Radio.Button value={false}>{t('Disabled')}</Radio.Button>
+                    <Radio.Button value={undefined}>{t('Show all')}</Radio.Button>
+                  </Radio.Group>
+                </Space>
+              </Trans>
+            </div>
           </div>
           <div className="dataGridWithOverview">
             <div className="dataGridWithOverview-table">

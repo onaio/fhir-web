@@ -2,11 +2,19 @@ import { useCallback, useMemo, useState } from 'react';
 
 export type FilterFunc<T extends object> = (element: T) => boolean;
 export interface FilterDescription<ElementT extends object, ValueT = unknown> {
-  [key: string]: {
-    value?: ValueT;
-    filterFunc: FilterFunc<ElementT>;
-  };
+  [key: string]:
+    | {
+        value?: ValueT;
+        filterFunc: FilterFunc<ElementT>;
+      }
+    | undefined;
 }
+
+export type RegisterFilter<T extends object> = (
+  key: string,
+  filterFunc?: FilterFunc<T>,
+  value?: unknown
+) => void;
 
 /**
  * hook to dynamically manage data filters
@@ -44,7 +52,7 @@ export function useClientSideDataGridFilters<T extends object>(
     const filteredData = [];
     dataLoop: for (const item of data) {
       for (const filter of filters) {
-        if (!filter.filterFunc(item)) {
+        if (filter && !filter.filterFunc(item)) {
           continue dataLoop;
         }
       }

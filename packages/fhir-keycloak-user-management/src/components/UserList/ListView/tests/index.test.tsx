@@ -339,3 +339,57 @@ test('View details navigates correctly', async () => {
   expect(history.location.pathname).toEqual('/admin/users');
   expect(history.location.search).toEqual('?viewDetails=081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0');
 });
+
+test('active filter works correctly', async () => {
+  const history = createMemoryHistory();
+  history.push(URL_USER);
+
+  fetch
+    .once(JSON.stringify(15))
+    .once(JSON.stringify(userFixtures))
+    .once(JSON.stringify(userFixtures[0]));
+  fetch.mockResponse(JSON.stringify([]));
+
+  render(
+    <Router history={history}>
+      <AppWrapper {...props}></AppWrapper>
+    </Router>
+  );
+
+  // await waitForElementToBeRemoved(document.querySelector('.ant-spin'));
+  await waitFor(async () => {
+    const spin = document.querySelector('.ant-spin');
+    expect(spin).toBeNull();
+  });
+
+  expect(fetch.mock.calls.map((x) => x[0])).toEqual([
+    'http://test-keycloak.server.org/users/count',
+    'http://test-keycloak.server.org/users?max=15',
+  ]);
+
+  expect(document.querySelector('.site-page-header')).toMatchSnapshot('Header title');
+
+  const initialTableNodes = [...document.querySelectorAll('tr')].map((node) => node.textContent);
+  expect(initialTableNodes).toEqual([
+    'First nameLast nameUsernameActions',
+    'april4petertestapril4petertestEdit',
+    'BlueTestblueEdit',
+    'ChwUserchw_demo_userEdit',
+    'JohnCodacodademoEdit',
+    'JaneCodacodademo2Edit',
+  ]);
+
+  // show all is selected
+  const showAllOption = screen.getByRole('radio', { name: /Show all/i });
+  expect(showAllOption).toHaveAttribute('checked');
+
+  const inactiveRadioFilter = screen.getByRole('radio', { name: /Disabled/ });
+  userEvents.click(inactiveRadioFilter);
+
+  const afterFilterNodes = [...document.querySelectorAll('tr')].map((node) => node.textContent);
+  expect(afterFilterNodes).toEqual([
+    'First nameLast nameUsernameActions',
+    'BlueTestblueEdit',
+    'RoyMungecodasprint2Edit',
+  ]);
+});

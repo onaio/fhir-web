@@ -14,6 +14,7 @@ export * from './components/KeyValuePairs';
 export * from './helpers/fhir-utils';
 export * from './hooks/useServerSideActionsDataGrid';
 export * from './hooks/useClientSideActonsDataGrid';
+export * from './hooks/useClientSideDataGridFilters';
 export * from './hooks/useSearchParams';
 export * from './hooks/utils';
 export * from './components/PageHeaders';
