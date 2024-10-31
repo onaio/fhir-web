@@ -129,7 +129,6 @@ function CommodityForm<
 
   return (
     <Form
-      requiredMark={false}
       {...formItemLayout}
       onFinish={(values: FormFields) => {
         mutate(values);

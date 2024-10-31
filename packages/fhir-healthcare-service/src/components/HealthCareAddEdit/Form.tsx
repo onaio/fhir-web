@@ -84,7 +84,6 @@ const HealthCareForm = (props: HealthCareFormProps) => {
 
   return (
     <Form
-      requiredMark={false}
       {...formItemLayout}
       onFinish={(values: HealthCareFormFields) => {
         mutate(values);

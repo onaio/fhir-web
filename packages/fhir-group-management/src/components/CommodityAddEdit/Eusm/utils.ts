@@ -8,9 +8,6 @@ import { cloneDeep, get } from 'lodash';
 import {
   active,
   groupResourceType,
-  id,
-  identifier,
-  type,
   unitOfMeasure,
   name,
   listResourceType,
@@ -54,6 +51,7 @@ import { IBinary } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBinary';
 import { UploadFile } from 'antd';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
+import { defaultValidationRulesFactory } from '../../ProductForm/utils';
 
 export type EusmGroupFormFields = GroupFormFields<{ group: IGroup; binary?: IBinary }>;
 
@@ -80,8 +78,7 @@ export const defaultCode = {
  */
 export const validationRulesFactory = (t: TFunction) => {
   return {
-    [id]: [{ type: 'string' }] as Rule[],
-    [identifier]: [{ type: 'string' }] as Rule[],
+    ...defaultValidationRulesFactory(t),
     [materialNumber]: [
       { type: 'string', message: t('Must be a valid string') },
       { required: true, message: t('Required') },
@@ -91,12 +88,12 @@ export const validationRulesFactory = (t: TFunction) => {
       { required: true, message: t('Required') },
     ] as Rule[],
     [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
-    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes), required: true }] as Rule[],
-    [isAttractiveItem]: [{ type: 'boolean' }] as Rule[],
+    [isAttractiveItem]: [{ required: true, message: t('Required') }, { type: 'boolean' }] as Rule[],
     [availability]: [{ type: 'string' }, { required: true, message: t('Required') }] as Rule[],
-    [condition]: [{ type: 'string' }] as Rule[],
-    [appropriateUsage]: [{ type: 'string' }] as Rule[],
-    [accountabilityPeriod]: [{ type: 'number' }] as Rule[],
+    [accountabilityPeriod]: [
+      { required: true, message: t('Required') },
+      { type: 'number' },
+    ] as Rule[],
   };
 };
 
@@ -336,6 +333,7 @@ export const getGroupFormFields = (obj?: IGroup, binary?: IBinary): EusmGroupFor
     return {
       initialObject: { group: { code: defaultCode } },
       active: true,
+      [isAttractiveItem]: true,
       type: R4GroupTypeCodes.SUBSTANCE,
     } as EusmGroupFormFields;
   }
