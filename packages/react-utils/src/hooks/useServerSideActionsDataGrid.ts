@@ -101,7 +101,6 @@ export function useSimpleTabularView<T extends Resource>(
     },
     keepPreviousData: true,
     staleTime: 5000,
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
   };
