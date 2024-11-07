@@ -8,6 +8,7 @@ import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notific
 import { useTranslation } from '../../mls';
 import { comments, locationName, productName, status } from '../../constants';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
+import { useUserRole } from '@opensrp/rbac';
 
 const { Item: FormItem } = Form;
 const { TextArea } = Input;
@@ -36,6 +37,7 @@ const headerProps = {
 
 const CloseFlagForm = (props: CloseFlagFormProps) => {
   const { initialValues, flag, mutationEffect } = props;
+  const userRole = useUserRole();
   const { t } = useTranslation();
 
   const stableInitialValues = useMemo(() => initialValues, [initialValues]);
@@ -63,6 +65,15 @@ const CloseFlagForm = (props: CloseFlagFormProps) => {
     mutate(values);
   };
 
+  const saveBtnDisabled = userRole.hasPermissions([
+    'Flag.update',
+    'Encounter.update',
+    'Observation.update',
+  ]);
+  const saveBtnDisabledReason = saveBtnDisabled
+    ? t('Missing Required permissions to perform this action')
+    : undefined;
+
   return (
     <BodyLayout headerProps={headerProps}>
       <Row className="user-group">
@@ -89,8 +100,13 @@ const CloseFlagForm = (props: CloseFlagFormProps) => {
               <TextArea rows={4} placeholder={t('How was the flag resolved?')} />
             </FormItem>
 
-            <FormItem {...tailLayout}>
-              <Button type="primary" id="submit-button" htmlType="submit">
+            <FormItem {...tailLayout} help={saveBtnDisabledReason}>
+              <Button
+                type="primary"
+                id="submit-button"
+                htmlType="submit"
+                disabled={saveBtnDisabled}
+              >
                 {isLoading ? t('Saving') : t('Save')}
               </Button>
             </FormItem>

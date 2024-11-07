@@ -13,6 +13,7 @@ import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { useTranslation } from '../../mls';
 import { thatiMinutes } from '../../constants';
+import { RbacCheck } from '@opensrp/rbac';
 
 export interface CloseFlagProps {
   fhirBaseURL: string;
@@ -54,7 +55,7 @@ export const CloseFlag = (props: CloseFlagProps) => {
       enabled: !!user_id,
       staleTime: thatiMinutes,
       select: (response) => {
-        return getResourcesFromBundle<IPractitioner>(response)?.[0];
+        return getResourcesFromBundle<IPractitioner>(response)[0];
       },
     }
   );
@@ -80,10 +81,20 @@ export const CloseFlag = (props: CloseFlagProps) => {
   return (
     <Row>
       <Col span={24}>
-        {flag.data?.subject?.reference?.includes('Location') ? (
-          <LocationFlag {...commonProps} locationReference={flag.data.subject.reference} />
+        {flag.data?.subject.reference?.includes('Location') ? (
+          <RbacCheck
+            permissions={['Location.read']}
+            fallback={t('Missing Required permissions to perform this action')}
+          >
+            <LocationFlag {...commonProps} locationReference={flag.data.subject.reference} />
+          </RbacCheck>
         ) : (
-          <ProductFlag {...commonProps} inventoryGroupReference={flag.data?.subject.reference} />
+          <RbacCheck
+            permissions={['Group.read', 'Location.read', 'List.read']}
+            fallback={t('Missing Required permissions to perform this action')}
+          >
+            <ProductFlag {...commonProps} inventoryGroupReference={flag.data?.subject.reference} />
+          </RbacCheck>
         )}
       </Col>
     </Row>
