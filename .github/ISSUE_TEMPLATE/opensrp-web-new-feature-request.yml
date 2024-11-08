@@ -1,7 +1,7 @@
-name: OpenSRP web new Feature request.
-description: Use this to request for a new feature that is not available in the current application.
-title: '[New Feature Request]: '
-labels: [New Feature Request]
+name: OpenSRP web Enhancement/Feature request.
+description: Use this to request for an enhancement or new feature that is not available in the current application.
+title: '[Enhancement/Feature Request]: '
+labels: [Feature Request]
 body:
  - type: markdown
    attributes:
@@ -10,9 +10,9 @@ body:
  - type: textarea
    id: use_case
    attributes:
-     label: Feature Use Case
+     label: Use case/Problem Statement
      description: Give a detailed use case of how this feature is to be used?
-     placeholder: Needed to dispaly what teams practitioners are assigned to
+     placeholder: Needed to display what teams practitioners are assigned to
    validations:
      required: true
  - type: textarea
