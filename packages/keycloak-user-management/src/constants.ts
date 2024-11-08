@@ -46,5 +46,13 @@ export const SNOMED_CODEABLE_SYSTEM = 'http://snomed.info/sct';
 export const DEVICE_SETTING_CODEABLE_CODE = '1156600005';
 
 // Form field name
-export const NATIONAL_ID_FORM_FIELD = 'nationalId';
-export const PHONE_NUMBER_FORM_FIELD = 'phoneNumber';
+export const NATIONAL_ID_FORM_FIELD = 'nationalId' as const;
+export const PHONE_NUMBER_FORM_FIELD = 'phoneNumber' as const;
+export const firstNameField = 'firstName' as const;
+export const lastNameField = 'lastName' as const;
+export const emailField = 'email' as const;
+export const usernameField = 'username' as const;
+export const userTypeField = 'userType' as const;
+export const enabledField = 'enabled' as const;
+export const userGroupsField = 'userGroups' as const;
+export const fhirCoreAppIdField = 'fhirCoreAppId' as const;

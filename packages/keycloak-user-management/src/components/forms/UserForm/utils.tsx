@@ -254,7 +254,6 @@ export const getFormValues = (
   }
   const { id, username, firstName, lastName, email, enabled } = keycloakUser;
   const {
-    contact: contacts,
     fhir_core_app_id: fhirCoreAppId,
     nationalId = '',
     phoneNumber = '',
@@ -285,7 +284,6 @@ export const getFormValues = (
     email,
     username,
     enabled,
-    contact: contacts?.[0],
     active,
     userType,
     practitioner,
@@ -315,11 +313,9 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     phoneNumber,
     email,
     enabled,
-    contact,
     fhirCoreAppId,
   } = values;
   const preUserAttributes = {
-    ...(contact ? { contact: [contact] } : {}),
     ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
     ...(nationalId ? { nationalId: [nationalId] } : {}),
     ...(phoneNumber ? { phoneNumber: [phoneNumber] } : {}),
