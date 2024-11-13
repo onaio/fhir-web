@@ -1,0 +1,20 @@
+{
+  "(Auto generated)": "(Auto generated)",
+  "Active": "Active",
+  "An error occurred while fetching the inventory": "An error occurred while fetching the inventory",
+  "Close App": "Close App",
+  "Error Occurred When Closing Flag": "Error Occurred When Closing Flag",
+  "Error occurred while trying to fetch flag data": "Error occurred while trying to fetch flag data",
+  "Error occurred while trying to fetch practitioners data": "Error occurred while trying to fetch practitioners data",
+  "Flag Closed successfully": "Flag Closed successfully",
+  "How was the flag resolved?": "How was the flag resolved?",
+  "Inactive": "Inactive",
+  "Invalid Flag": "Invalid Flag",
+  "Missing  location field. This information is required to close the flag form.": "Missing  location field. This information is required to close the flag form.",
+  "Product": "Product",
+  "Save": "Save",
+  "Saving": "Saving",
+  "Select flag status": "Select flag status",
+  "Service Point": "Service Point",
+  "Status": "Status"
+}
