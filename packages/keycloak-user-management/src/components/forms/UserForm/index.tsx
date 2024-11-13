@@ -352,11 +352,6 @@ export const defaultUserFormInitialValues: FormFields = {
   fhirCoreAppId: undefined,
 };
 
-UserForm.defaultProps = {
-  initialValues: defaultUserFormInitialValues,
-  practitionerUpdaterFactory: postPutPractitioner,
-};
-
 export const commonFhirFields: FormFieldsKey[] = [
   firstNameField,
   lastNameField,
@@ -368,5 +363,11 @@ export const commonFhirFields: FormFieldsKey[] = [
   userGroupsField,
   fhirCoreAppIdField,
 ];
+
+UserForm.defaultProps = {
+  initialValues: defaultUserFormInitialValues,
+  practitionerUpdaterFactory: postPutPractitioner,
+  renderFields: commonFhirFields,
+};
 
 export { UserForm };

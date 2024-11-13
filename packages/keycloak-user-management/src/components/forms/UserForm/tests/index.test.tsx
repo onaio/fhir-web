@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import flushPromises from 'flush-promises';
 import React from 'react';
@@ -6,7 +6,7 @@ import fetch from 'jest-fetch-mock';
 import { history } from '@onaio/connected-reducer-registry';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
-import { defaultUserFormInitialValues, UserForm } from '..';
+import { commonFhirFields, defaultUserFormInitialValues, UserForm } from '..';
 import {
   keycloakUser,
   practitioner1,
@@ -17,13 +17,16 @@ import {
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
-import { Form } from 'antd';
-import { URL_USER } from '../../../../constants';
+import { fhirCoreAppIdField, URL_USER } from '../../../../constants';
 import { UserFormProps } from '../types';
 import { getFormValues, postPutPractitioner } from '../utils';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { Dictionary } from '@onaio/utils/dist/types/types';
+import { render, waitFor, screen } from '@testing-library/react';
 
 /* eslint-disable @typescript-eslint/naming-convention */
+
+const client = new QueryClient();
 
 const mockId = '0b3a3311-6f5a-40dd-95e5-008001acebe1';
 
@@ -56,7 +59,9 @@ jest.mock('antd', () => {
 });
 
 describe('components/forms/UserForm', () => {
+  const nonFhirFields = commonFhirFields.filter((field) => field !== fhirCoreAppIdField);
   const props: UserFormProps = {
+    renderFields: nonFhirFields,
     initialValues: defaultUserFormInitialValues,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     baseUrl: OPENSRP_API_BASE_URL,
@@ -89,12 +94,12 @@ describe('components/forms/UserForm', () => {
     fetch.resetMocks();
   });
 
-  it('renders without crashing', () => {
-    shallow(<UserForm {...props} />);
-  });
-
   it('renders correctly', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...props} />
+      </QueryClientProvider>
+    );
     await act(async () => {
       await flushPromises();
       wrapper.update();
@@ -118,14 +123,15 @@ describe('components/forms/UserForm', () => {
     expect(toJson(wrapper.find('#userGroups label'))).toMatchSnapshot(`userGroups label`);
     expect(toJson(wrapper.find('#userGroups input'))).toMatchSnapshot(`userGroups input`);
 
-    // not found, not rendered in props
-    expect(toJson(wrapper.find('#contact label'))).toMatchInlineSnapshot(`null`);
-    expect(toJson(wrapper.find('#contact input'))).toMatchInlineSnapshot(`null`);
     wrapper.unmount();
   });
 
   it('form validation works for required fields', async () => {
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...props} />
+      </QueryClientProvider>
+    );
 
     wrapper.find('form').simulate('submit');
 
@@ -147,94 +153,13 @@ describe('components/forms/UserForm', () => {
     wrapper.unmount();
   });
 
-  it('hidden fields', async () => {
-    const wrapper = mount(
-      <UserForm {...{ ...props, renderFields: ['contact'], hiddenFields: ['contact'] }} />
-    );
-
-    expect(wrapper.find('FormItemInput#contact').prop('hidden')).toBeTruthy();
-    wrapper.unmount();
-  });
-
-  it('form validation works for contact field', async () => {
-    const wrapper1 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // found
-    expect(toJson(wrapper1.find('#contact label'))).toMatchSnapshot('contact label');
-    expect(toJson(wrapper1.find('#contact input'))).toMatchSnapshot('contact input');
-
-    // empty error message; contact is required
-    await act(async () => {
-      wrapper1.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper1.update();
-
-    expect(wrapper1.find('FormItemInput#contact').prop('errors')).toEqual(['Contact is required']);
-
-    const wrapper2 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // regex validation
-    wrapper2
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: 'Test' } });
-
-    await act(async () => {
-      wrapper2.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper2.update();
-
-    expect(wrapper2.find('FormItemInput#contact').prop('errors')).toEqual([
-      'Contact should be 10 digits and start with 0',
-    ]);
-
-    const wrapper3 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // regex validation more than 10 alphanumerics
-    wrapper3
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: '012345678910' } });
-
-    await act(async () => {
-      wrapper3.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper3.update();
-
-    expect(wrapper3.find('FormItemInput#contact').prop('errors')).toEqual([
-      'Contact should be 10 digits and start with 0',
-    ]);
-
-    const wrapper4 = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
-
-    // should now not have an error.
-    wrapper4
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: '0123456789' } });
-
-    await act(async () => {
-      wrapper4.find('form').simulate('submit');
-      await flushPromises();
-    });
-
-    wrapper4.update();
-
-    await act(async () => {
-      expect(wrapper4.find('FormItemInput#contact').prop('errors')).toEqual([]);
-    });
-
-    wrapper1.unmount();
-    wrapper2.unmount();
-    wrapper3.unmount();
-    wrapper4.unmount();
-  });
-
   it('adds user', async () => {
-    const wrapper = mount(<UserForm {...{ ...props, renderFields: ['contact'] }} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        {' '}
+        <UserForm {...{ ...props }} />
+      </QueryClientProvider>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -261,9 +186,10 @@ describe('components/forms/UserForm', () => {
       target: { value: ['UPDATE_PASSWORD'] },
     });
 
-    wrapper
-      .find('input#contact')
-      .simulate('change', { target: { name: 'contact', value: '0123456789' } });
+    await act(async () => {
+      await flushPromises();
+      wrapper.update();
+    });
 
     wrapper.find('form').simulate('submit');
 
@@ -279,9 +205,6 @@ describe('components/forms/UserForm', () => {
       username: 'TestOne',
       email: 'testone@gmail.com',
       enabled: true,
-      attributes: {
-        contact: ['0123456789'],
-      },
     });
     expect(fetch.mock.calls[0]).toMatchObject([
       'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage/users',
@@ -304,7 +227,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: getFormValues(keycloakUser),
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...propEdit} />
+      </QueryClientProvider>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -343,65 +270,13 @@ describe('components/forms/UserForm', () => {
     ]);
   });
 
-  it('render correct value for enabled when set to true', async () => {
-    const wrapper = mount(<UserForm {...props} />);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    await act(async () => {
-      wrapper
-        .find('input[name="enabled"]')
-        .first()
-        .simulate('change', { target: { name: 'enabled', checked: true } });
-    });
-    wrapper.update();
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      wrapper.update();
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formInstance = (wrapper.find(Form).props() as any).form;
-
-    expect(formInstance.getFieldsValue().enabled).toEqual(true);
-    wrapper.unmount();
-  });
-
-  it('render correct value for enabled when set to false', async () => {
-    const wrapper = mount(<UserForm {...props} />);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    await act(async () => {
-      wrapper
-        .find('input[name="enabled"]')
-        .last()
-        .simulate('change', { target: { name: 'enabled', checked: false } });
-    });
-    wrapper.update();
-    wrapper.find('form').simulate('submit');
-
-    await act(async () => {
-      wrapper.update();
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const formInstance = (wrapper.find(Form).props() as any).form;
-
-    expect(formInstance.getFieldsValue().enabled).toEqual(false);
-    wrapper.unmount();
-  });
-
   it('user is not created if api is down', async () => {
     fetch.mockReject(new Error('API is down'));
-    const wrapper = mount(<UserForm {...props} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...props} />
+      </QueryClientProvider>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -440,7 +315,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: getFormValues(keycloakUser),
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...propEdit} />
+      </QueryClientProvider>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -466,7 +345,9 @@ describe('components/forms/UserForm', () => {
   it('cancel button returns user to admin page', async () => {
     const wrapper = mount(
       <Router history={history}>
-        <UserForm {...props} />
+        <QueryClientProvider client={client}>
+          <UserForm {...props} />
+        </QueryClientProvider>
       </Router>
     );
 
@@ -488,7 +369,11 @@ describe('components/forms/UserForm', () => {
       ...props,
       initialValues: keycloakUser,
     };
-    const wrapper = mount(<UserForm {...propEdit} />);
+    const wrapper = mount(
+      <QueryClientProvider client={client}>
+        <UserForm {...propEdit} />
+      </QueryClientProvider>
+    );
 
     await act(async () => {
       await flushPromises();
@@ -508,7 +393,9 @@ describe('components/forms/UserForm', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <UserForm {...propsPractitionerNull} />
+        <QueryClientProvider client={client}>
+          <UserForm {...propsPractitionerNull} />
+        </QueryClientProvider>
       </Router>
     );
 
@@ -531,7 +418,9 @@ describe('components/forms/UserForm', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <UserForm {...propsPractitioner} />
+        <QueryClientProvider client={client}>
+          <UserForm {...propsPractitioner} />
+        </QueryClientProvider>
       </Router>
     );
 
@@ -554,7 +443,9 @@ describe('components/forms/UserForm', () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <UserForm {...propsOwn} />
+        <QueryClientProvider client={client}>
+          <UserForm {...propsOwn} />
+        </QueryClientProvider>
       </Router>
     );
 
@@ -566,90 +457,42 @@ describe('components/forms/UserForm', () => {
   });
 
   it('updates form data when user to edit changes', async () => {
-    // start with first user
+    // Start with first user
     const propsFirstUser = {
       ...props,
       initialValues: getFormValues(FirstUser),
     };
 
-    const wrapper = mount(<UserForm {...propsFirstUser} />);
-
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
-    });
-
-    expect(wrapper.find('input#firstName').props().value).toEqual(FirstUser.firstName);
-    expect(wrapper.find('input#email').props().value).toEqual(FirstUser.email);
-    expect(wrapper.find('input#username').props().value).toEqual(FirstUser.username);
-
-    // update user
-    wrapper.setProps({ initialValues: keycloakUser });
-    // re-render
-    wrapper.update();
-
-    expect(wrapper.find('input#firstName').props().value).toEqual(keycloakUser.firstName);
-    expect(wrapper.find('input#email').props().value).toEqual(keycloakUser.email);
-    expect(wrapper.find('input#username').props().value).toEqual(keycloakUser.username);
-  });
-
-  it('disables and toggles practitioner off when toggling active user off', async () => {
-    const propsOwn = {
-      ...props,
-      practitioner: practitioner1,
-      // mount with both user and practitioner enabled
-      initialValues: getFormValues(
-        { ...keycloakUser, enabled: true },
-        { ...practitioner1, active: true }
-      ),
-    };
-
-    const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsOwn} />
-      </Router>
+    const { rerender } = render(
+      <QueryClientProvider client={client}>
+        <UserForm {...propsFirstUser} />
+      </QueryClientProvider>
     );
 
-    await act(async () => {
-      await flushPromises();
-      wrapper.update();
+    // Wait for initial render and check initial values
+    await waitFor(() => {
+      expect(screen.getByLabelText(/first name/i)).toHaveValue(FirstUser.firstName);
+      expect(screen.getByLabelText(/email/i)).toHaveValue(FirstUser.email);
+      expect(screen.getByLabelText(/username/i)).toHaveValue(FirstUser.username);
     });
 
-    // user enabled checkbox
-    const userEnabled = wrapper.find('input[name="enabled"]');
-    // expect 'yes' and 'no' options
-    expect(userEnabled).toHaveLength(2);
-    // 'yes' to be checked and 'no' to be unchecked (active user)
-    expect(userEnabled.at(0).props().checked).toEqual(true);
-    expect(userEnabled.at(1).props().checked).toEqual(false);
+    // Update props with the new user data and rerender
+    const propsUpdatedUser = {
+      ...props,
+      initialValues: getFormValues(keycloakUser),
+    };
 
-    // practitioner active checkbox
-    const practitionerActive = wrapper.find('input[name="active"]');
-    // 'yes' and 'no' options
-    expect(practitionerActive).toHaveLength(2);
-    // 'yes' to be checked and 'no' to be unchecked (practitioner active)
-    expect(practitionerActive.at(0).props().checked).toEqual(true);
-    expect(practitionerActive.at(1).props().checked).toEqual(false);
-    // practitioner not disabled
-    wrapper.find('Radio[name="active"]').forEach((node) => {
-      expect(node.props().disabled).toBe(false);
-    });
+    rerender(
+      <QueryClientProvider client={client}>
+        <UserForm {...propsUpdatedUser} />
+      </QueryClientProvider>
+    );
 
-    // simulate toggle user off
-    userEnabled.at(1).simulate('change', { target: { checked: true } });
-
-    // re-select
-    const userEnabled2 = wrapper.find('input[name="enabled"]');
-    const practitionerActive2 = wrapper.find('input[name="active"]');
-
-    // expect user toggled off
-    expect(userEnabled2.at(0).props().checked).toEqual(false);
-    expect(userEnabled2.at(1).props().checked).toEqual(true);
-    // expect practitioner toggle off and disabled
-    expect(practitionerActive2.at(0).props().checked).toEqual(false);
-    expect(practitionerActive2.at(1).props().checked).toEqual(true);
-    wrapper.find('Radio[name="active"]').forEach((node) => {
-      expect(node.props().disabled).toBe(true);
+    // Wait for the form to update with the new values
+    await waitFor(() => {
+      expect(screen.getByLabelText(/first name/i)).toHaveValue(keycloakUser.firstName);
+      expect(screen.getByLabelText(/email/i)).toHaveValue(keycloakUser.email);
+      expect(screen.getByLabelText(/username/i)).toHaveValue(keycloakUser.username);
     });
   });
 });

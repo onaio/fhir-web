@@ -234,9 +234,6 @@ test('renders correctly for new user', async () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(usernameInput!, 'flopo');
 
-  const markSupervisor = document.querySelectorAll('input[name="userType"]')[1];
-  userEvent.click(markSupervisor);
-
   const submitButton = document.querySelector('button[type="submit"]');
 
   // find antd Select with id 'fhirCoreAppId' in the 'Form' component

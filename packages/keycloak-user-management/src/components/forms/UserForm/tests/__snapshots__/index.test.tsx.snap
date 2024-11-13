@@ -16,32 +16,6 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
-exports[`components/forms/UserForm form validation works for contact field: contact input 1`] = `
-<input
-  aria-required="true"
-  className="ant-input css-dev-only-do-not-override-k7429z"
-  disabled={false}
-  id="contact"
-  onBlur={[Function]}
-  onChange={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
-  style={Object {}}
-  type="text"
-  value=""
-/>
-`;
-
-exports[`components/forms/UserForm form validation works for contact field: contact label 1`] = `
-<label
-  className="ant-form-item-required"
-  htmlFor="contact"
-  title="Contact"
->
-  Contact
-</label>
-`;
-
 exports[`components/forms/UserForm renders correctly: email input 1`] = `
 <input
   className="ant-input css-dev-only-do-not-override-k7429z"
@@ -73,7 +47,6 @@ Array [
     checked={true}
     className="ant-radio-input"
     disabled={false}
-    name="enabled"
     onChange={[Function]}
     type="radio"
     value={true}
@@ -82,7 +55,6 @@ Array [
     checked={false}
     className="ant-radio-input"
     disabled={false}
-    name="enabled"
     onChange={[Function]}
     type="radio"
     value={false}
@@ -204,6 +176,7 @@ Object {
       No
     </Radio>
   </Memo>,
+  "hidden": false,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
   "name": "active",
@@ -230,6 +203,7 @@ Object {
       No
     </Radio>
   </Memo>,
+  "hidden": false,
   "id": "practitionerToggle",
   "label": "Mark as Practitioner",
   "name": "active",

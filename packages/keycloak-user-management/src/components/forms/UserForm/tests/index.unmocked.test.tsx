@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import flushPromises from 'flush-promises';
 import React from 'react';
 import { history } from '@onaio/connected-reducer-registry';
-import { defaultUserFormInitialValues, UserForm } from '..';
+import { commonFhirFields, defaultUserFormInitialValues, UserForm } from '..';
 import { compositionPage1, createdUser, keycloakUser, practitioner1, userGroup } from './fixtures';
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
@@ -20,11 +20,13 @@ import {
   render,
   waitFor,
   waitForElementToBeRemoved,
+  within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { compositionUrlFilter } from '../utils';
 import { CreateEditUser } from '../../../CreateEditUser';
 import * as notifications from '@opensrp/notifications';
+import { createMemoryHistory } from 'history';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fetch = require('node-fetch');
@@ -102,9 +104,11 @@ describe('forms/userForm', () => {
     };
 
     const wrapper = mount(
-      <Router history={history}>
-        <UserForm {...propsOwn} />
-      </Router>
+      <QueryWrapper>
+        <Router history={history}>
+          <UserForm {...propsOwn} />
+        </Router>
+      </QueryWrapper>
     );
 
     await act(async () => {
@@ -147,6 +151,7 @@ describe('forms/userForm', () => {
       // mount with both user and practitioner enabled
       initialValues: getFormValues(),
       isFHIRInstance: true,
+      renderFields: commonFhirFields,
     };
 
     nock(propsOwn.baseUrl)
@@ -220,5 +225,71 @@ describe('forms/userForm', () => {
     });
 
     expect(nock.pendingMocks()).toHaveLength(0);
+  });
+
+  it('disables and toggles practitioner off when toggling active user off', async () => {
+    const history = createMemoryHistory();
+    const propsOwn = {
+      ...props,
+      practitioner: practitioner1,
+      // mount with both user and practitioner enabled
+      initialValues: getFormValues(
+        { ...keycloakUser, enabled: true },
+        { ...practitioner1, active: true }
+      ),
+    };
+
+    render(
+      <Router history={history}>
+        <QueryWrapper>
+          <UserForm {...propsOwn} />
+        </QueryWrapper>
+      </Router>
+    );
+
+    await waitFor(() => {
+      const enabledFieldGroup = document.querySelector('#enabled') as HTMLElement;
+
+      const enabledYesRadio = within(enabledFieldGroup).getByRole('radio', { name: /yes/i });
+      const enabledNoRadio = within(enabledFieldGroup).getByRole('radio', { name: /no/i });
+
+      expect(enabledYesRadio).toBeChecked();
+      expect(enabledNoRadio).not.toBeChecked();
+
+      const activeFieldGroup = document.querySelector('#active') as HTMLElement;
+
+      const activeYesRadio = within(activeFieldGroup).getByRole('radio', { name: /yes/i });
+      const activeNoRadio = within(activeFieldGroup).getByRole('radio', { name: /no/i });
+
+      expect(activeYesRadio).toBeChecked();
+      expect(activeNoRadio).not.toBeChecked();
+      expect(activeNoRadio).not.toBeDisabled();
+      expect(activeYesRadio).not.toBeDisabled();
+    });
+
+    const enabledFieldGroup = document.querySelector('#enabled') as HTMLElement;
+    const enabledNoRadio = within(enabledFieldGroup).getByRole('radio', { name: /no/i });
+
+    userEvent.click(enabledNoRadio);
+
+    await waitFor(() => {
+      const enabledFieldGroup = document.querySelector('#enabled') as HTMLElement;
+
+      const enabledYesRadio = within(enabledFieldGroup).getByRole('radio', { name: /yes/i });
+      const enabledNoRadio = within(enabledFieldGroup).getByRole('radio', { name: /no/i });
+
+      expect(enabledYesRadio).not.toBeChecked();
+      expect(enabledNoRadio).toBeChecked();
+
+      const activeFieldGroup = document.querySelector('#active') as HTMLElement;
+
+      const activeYesRadio = within(activeFieldGroup).getByRole('radio', { name: /yes/i });
+      const activeNoRadio = within(activeFieldGroup).getByRole('radio', { name: /no/i });
+
+      expect(activeYesRadio).not.toBeChecked();
+      expect(activeNoRadio).toBeChecked();
+      expect(activeNoRadio).toBeDisabled();
+      expect(activeYesRadio).toBeDisabled();
+    });
   });
 });
