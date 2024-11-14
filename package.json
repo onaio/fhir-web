@@ -94,7 +94,7 @@
     "flush-promises": "^1.0.2",
     "glob": "^8.0.1",
     "husky": "^8.0.0",
-    "i18next-parser": "^5.4.0",
+    "i18next-parser": "^9.0.2",
     "jest": "27.5.1",
     "jest-canvas-mock": "^2.5.2",
     "jest-environment-jsdom-sixteen": "^2.0.0",
