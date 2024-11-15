@@ -1,0 +1,9 @@
+{
+  "name": "scripts",
+  "packageManager": "yarn@3.6.1",
+  "type": "module",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "i18next-parser": "^9.0.2"
+  }
+}
