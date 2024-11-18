@@ -3,7 +3,13 @@ import { Dictionary } from '@onaio/utils';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
-import { PRACTITIONER, SUPERVISOR } from '../../../constants';
+import {
+  fhirCoreAppIdField,
+  PRACTITIONER,
+  SUPERVISOR,
+  userGroupsField,
+  userTypeField,
+} from '../../../constants';
 
 export interface FormFields
   extends Pick<
@@ -18,13 +24,12 @@ export interface FormFields
     | 'enabled'
   > {
   active?: boolean;
-  userType?: typeof PRACTITIONER | typeof SUPERVISOR;
-  userGroups?: string[];
+  [userTypeField]?: typeof PRACTITIONER | typeof SUPERVISOR;
+  [userGroupsField]?: string[];
   practitioner?: Practitioner | IPractitioner;
   keycloakUser?: KeycloakUser;
-  contact?: string;
   practitionerRole?: IPractitionerRole;
-  fhirCoreAppId?: string;
+  [fhirCoreAppIdField]?: string;
 }
 
 export type FormFieldsKey = keyof FormFields | keyof UserAttributes;
@@ -45,8 +50,6 @@ export interface UserFormProps {
   hiddenFields?: FormFieldsKey[];
   renderFields?: FormFieldsKey[];
   practitionerUpdaterFactory: PractitionerUpdaterFactory;
-  isFHIRInstance: boolean;
-  extraFormFields: string[];
 }
 
 /** descibes antd select component options */

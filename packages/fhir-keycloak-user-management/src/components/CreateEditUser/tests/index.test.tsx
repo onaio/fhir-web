@@ -230,7 +230,7 @@ test('renders correctly for edit user', async () => {
   const yesMarkPractitioner = document.querySelectorAll('input[name="active"]')[0];
   userEvent.click(yesMarkPractitioner);
 
-  const markSupervisor = document.querySelectorAll('input[name="userType"]')[1];
+  const markSupervisor = document.querySelector('input[value="supervisor"]') as HTMLElement;
   userEvent.click(markSupervisor);
 
   const submitButton = document.querySelector('button[type="submit"]');

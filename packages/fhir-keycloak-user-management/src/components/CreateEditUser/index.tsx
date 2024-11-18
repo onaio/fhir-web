@@ -5,6 +5,9 @@ import {
   FormFields,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
+  commonFhirFields,
+  userTypeField,
+  FormFieldsKey,
 } from '@opensrp/user-management';
 import {
   practitionerResourceType,
@@ -356,13 +359,20 @@ export const practitionerUpdater =
  * @param props - component props
  */
 export function CreateEditUser(props: CreateEditPropTypes) {
-  const extraFormFields = getConfig('projectCode') === 'giz' ? renderExtraFields : [];
+  let renderFormFields: FormFieldsKey[] = [...commonFhirFields];
+  const projectCode = getConfig('projectCode');
+  if (projectCode === 'giz') {
+    renderFormFields = [...commonFhirFields, ...renderExtraFields] as FormFieldsKey[];
+  } else if (projectCode === 'eusm') {
+    renderFormFields = renderFormFields.filter((field) => field !== userTypeField);
+  }
+
   const baseCompProps = {
     ...props,
     getPractitionerFun: getPractitioner,
     getPractitionerRoleFun: getPractitionerRole,
     postPutPractitionerFactory: practitionerUpdater,
-    extraFormFields: extraFormFields,
+    userFormRenderFields: renderFormFields,
   };
 
   return <BaseCreateEditUser {...baseCompProps} />;

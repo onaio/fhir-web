@@ -69,6 +69,7 @@ export const newPractitioner = {
   name: [{ use: 'official', family: 'plotus', given: ['flotus', ''] }],
   telecom: [{ system: 'email', value: 'flotus@plotus.duck' }],
 };
+
 export const newPractitionerRole = {
   resourceType: 'PractitionerRole',
   id: 'acb9d47e-7247-448f-be93-7a193a5312da',
@@ -88,7 +89,11 @@ export const newPractitionerRole = {
   code: [
     {
       coding: [
-        { system: 'http://snomed.info/sct', code: '236321002', display: 'Supervisor (occupation)' },
+        {
+          system: 'http://snomed.info/sct',
+          code: '405623001',
+          display: 'Assigned practitioner',
+        },
       ],
     },
   ],

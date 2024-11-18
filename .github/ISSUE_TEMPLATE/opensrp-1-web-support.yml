@@ -1,12 +1,12 @@
-name: General OpenSRP web FHIR.
-description: Use this to Create issues the are FHIR related.
-title: '[FHIR Road Map]: '
-labels: [FHIR compatibility]
+name: OpenSRP 1 web Support Request.
+description: Use this to Create issues related to OpenSRP 1 (None FHIR Version).
+title: '[OpenSRP 1 Support]: '
+labels: [OpenSRP 1 Support]
 body:
  - type: markdown
    attributes:
      value: |
-       Thanks for taking the time to fill out this bug report!
+       Thanks for taking the time to fill out this support request!
  - type: textarea
    id: issue_context
    attributes:
@@ -20,7 +20,7 @@ body:
      label: Issue Implemetation details?
      description: Please write up the implementation details of the issue/feature.
    validations:
-     required: true
+     required: false
  - type: textarea
    id: issue_acceptance
    attributes:
@@ -28,11 +28,12 @@ body:
      description: Please provide an acceptance criteria on the issue/feature?.
    validations:
      required: true
- - type: textarea
-   id: issue_fhir_resources
+ - type: input
+   id: project_contact
    attributes:
-     label: FHIR resources to be used?
-     description: Please provide a list of FHIR resources to be used for this issue/feature.
+     label: Project Contact
+     description: Who is the technical lead on this project?
+     placeholder: John Doe
    validations:
      required: false
  - type: textarea
