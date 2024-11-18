@@ -12,21 +12,23 @@ import {
 } from './utils';
 import { sendErrorNotification } from '@opensrp/notifications';
 import '../../../index.css';
-import {
-  CONTACT_FORM_FIELD,
-  FormFields,
-  FormFieldsKey,
-  SelectOption,
-  UserFormProps,
-} from './types';
+import { FormFields, FormFieldsKey, SelectOption, UserFormProps } from './types';
 import { SelectProps } from 'antd/lib/select';
 import { useTranslation } from '../../../mls';
 import {
   compositionResourceType,
+  emailField,
+  enabledField,
+  fhirCoreAppIdField,
+  firstNameField,
+  lastNameField,
   NATIONAL_ID_FORM_FIELD,
   PHONE_NUMBER_FORM_FIELD,
   PRACTITIONER,
   SUPERVISOR,
+  userGroupsField,
+  usernameField,
+  userTypeField,
 } from '../../../constants';
 import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
@@ -41,10 +43,13 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     userGroups,
     renderFields,
     hiddenFields,
-    isFHIRInstance,
-    extraFormFields,
   } = props;
-  const shouldRender = (fieldName: FormFieldsKey) => !!renderFields?.includes(fieldName);
+  const shouldRender = (fieldName: FormFieldsKey) => {
+    if (renderFields === undefined) {
+      return true;
+    }
+    return !!renderFields.includes(fieldName);
+  };
 
   const isHidden = (fieldName: FormFieldsKey) => !!hiddenFields?.includes(fieldName);
   const { t } = useTranslation();
@@ -147,26 +152,35 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 .finally(() => setSubmitting(false));
             }}
           >
-            <Form.Item
-              name="firstName"
-              id="firstName"
-              label={t('First Name')}
-              rules={[{ required: true, message: t('First Name is required') }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="lastName"
-              id="lastName"
-              label={t('Last Name')}
-              rules={[{ required: true, message: t('Last Name is required') }]}
-            >
-              <Input />
-            </Form.Item>
-            {extraFormFields.includes(NATIONAL_ID_FORM_FIELD) && (
+            {shouldRender(firstNameField) ? (
+              <Form.Item
+                name={firstNameField}
+                id={firstNameField}
+                hidden={isHidden(firstNameField)}
+                label={t('First Name')}
+                rules={[{ required: true, message: t('First Name is required') }]}
+              >
+                <Input />
+              </Form.Item>
+            ) : null}
+
+            {shouldRender(lastNameField) ? (
+              <Form.Item
+                name={lastNameField}
+                id={lastNameField}
+                hidden={isHidden(lastNameField)}
+                label={t('Last Name')}
+                rules={[{ required: true, message: t('Last Name is required') }]}
+              >
+                <Input />
+              </Form.Item>
+            ) : null}
+
+            {shouldRender(NATIONAL_ID_FORM_FIELD) ? (
               <Form.Item
                 name={NATIONAL_ID_FORM_FIELD}
                 id={NATIONAL_ID_FORM_FIELD}
+                hidden={isHidden(NATIONAL_ID_FORM_FIELD)}
                 label={t('National Id')}
                 rules={[
                   {
@@ -178,9 +192,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               >
                 <Input />
               </Form.Item>
-            )}
-            {extraFormFields.includes(PHONE_NUMBER_FORM_FIELD) && (
+            ) : null}
+
+            {shouldRender(PHONE_NUMBER_FORM_FIELD) ? (
               <Form.Item
+                hidden={isHidden(PHONE_NUMBER_FORM_FIELD)}
                 name={PHONE_NUMBER_FORM_FIELD}
                 id={PHONE_NUMBER_FORM_FIELD}
                 label={t('Mobile Phone Number')}
@@ -194,64 +210,63 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               >
                 <Input />
               </Form.Item>
-            )}
-            <Form.Item name="email" id="email" label={t('Email')}>
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="username"
-              id="username"
-              label={t('Username')}
-              rules={[{ required: true, message: t('Username is required') }]}
-            >
-              <Input disabled={initialValues.id ? true : false} />
-            </Form.Item>
+            ) : null}
 
-            {shouldRender(CONTACT_FORM_FIELD) ? (
-              <Form.Item
-                id={CONTACT_FORM_FIELD}
-                rules={[
-                  {
-                    type: 'string',
-                    pattern: /^0\d{9}$/,
-                    message: t('Contact should be 10 digits and start with 0'),
-                  },
-                  {
-                    required: !isHidden(CONTACT_FORM_FIELD),
-                    message: t('Contact is required'),
-                  },
-                ]}
-                hidden={isHidden(CONTACT_FORM_FIELD)}
-                name={CONTACT_FORM_FIELD}
-                label={t('Contact')}
-              >
-                <Input></Input>
+            {shouldRender(emailField) ? (
+              <Form.Item name={emailField} id={emailField} label={t('Email')}>
+                <Input />
               </Form.Item>
             ) : null}
 
-            {isFHIRInstance ? (
-              <Form.Item id="userType" name="userType" label={t('User Type')}>
+            {shouldRender(usernameField) ? (
+              <Form.Item
+                name={usernameField}
+                id={usernameField}
+                label={t('Username')}
+                rules={[{ required: true, message: t('Username is required') }]}
+              >
+                <Input disabled={initialValues.id ? true : false} />
+              </Form.Item>
+            ) : null}
+
+            {shouldRender(userTypeField) ? (
+              <Form.Item
+                id={userTypeField}
+                name={userTypeField}
+                label={t('User Type')}
+                hidden={isHidden(userTypeField)}
+              >
                 <Radio.Group
                   options={[
                     { label: t('Practitioner'), value: PRACTITIONER },
                     { label: t('Supervisor'), value: SUPERVISOR },
                   ]}
-                  name="userType"
                 ></Radio.Group>
               </Form.Item>
             ) : null}
 
-            <Form.Item id="enabled" name="enabled" label={t('Enable user')}>
+            <Form.Item
+              id={enabledField}
+              name={enabledField}
+              label={t('Enable user')}
+              hidden={isHidden(enabledField)}
+            >
               <Radio.Group
                 options={status}
-                name="enabled"
                 // watch user's status
                 onChange={(e) => setUserEnabled(e.target.value)}
               ></Radio.Group>
             </Form.Item>
 
-            {initialValues.id && initialValues.id !== extraData.user_id ? (
-              <Form.Item id="practitionerToggle" name="active" label={t('Mark as Practitioner')}>
+            {initialValues.id &&
+            initialValues.id !== extraData.user_id &&
+            shouldRender('active') ? (
+              <Form.Item
+                id="practitionerToggle"
+                name="active"
+                label={t('Mark as Practitioner')}
+                hidden={isHidden('active')}
+              >
                 <Radio.Group name="active">
                   {status.map((e) => (
                     <Radio
@@ -268,21 +283,31 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               </Form.Item>
             ) : null}
 
-            <Form.Item name="userGroups" id="userGroups" label={t('Keycloak User Group')}>
-              <Select<SelectOption[]>
-                mode="multiple"
-                allowClear
-                placeholder={t('Please select')}
-                style={{ width: '100%' }}
-                options={getUserGroupsOptions(userGroups)}
-                filterOption={userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']}
-              ></Select>
-            </Form.Item>
-
-            {isFHIRInstance ? (
+            {shouldRender(userGroupsField) ? (
               <Form.Item
-                id="fhirCoreAppId"
-                name="fhirCoreAppId"
+                name={userGroupsField}
+                id={userGroupsField}
+                hidden={isHidden(userGroupsField)}
+                label={t('Keycloak User Group')}
+              >
+                <Select<SelectOption[]>
+                  mode="multiple"
+                  allowClear
+                  placeholder={t('Please select')}
+                  style={{ width: '100%' }}
+                  options={getUserGroupsOptions(userGroups)}
+                  filterOption={
+                    userGroupOptionsFilter as SelectProps<SelectOption[]>['filterOption']
+                  }
+                ></Select>
+              </Form.Item>
+            ) : null}
+
+            {shouldRender(fhirCoreAppIdField) ? (
+              <Form.Item
+                hidden={isHidden(fhirCoreAppIdField)}
+                id={fhirCoreAppIdField}
+                name={fhirCoreAppIdField}
                 label={t('Application ID')}
                 rules={[{ required: true, message: t('Application Id is required') }]}
                 data-testid="fhirCoreAppId"
@@ -323,15 +348,26 @@ export const defaultUserFormInitialValues: FormFields = {
   userType: 'practitioner',
   userGroups: undefined,
   practitioner: undefined,
-  contact: undefined,
   enabled: true,
   fhirCoreAppId: undefined,
 };
 
+export const commonFhirFields: FormFieldsKey[] = [
+  firstNameField,
+  lastNameField,
+  emailField,
+  usernameField,
+  userTypeField,
+  enabledField,
+  'active',
+  userGroupsField,
+  fhirCoreAppIdField,
+];
+
 UserForm.defaultProps = {
   initialValues: defaultUserFormInitialValues,
   practitionerUpdaterFactory: postPutPractitioner,
-  extraFormFields: [],
+  renderFields: commonFhirFields,
 };
 
 export { UserForm };

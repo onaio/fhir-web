@@ -21,6 +21,7 @@ import {
   removeKeycloakUsers,
 } from '../../../ducks/user';
 import { authenticateUser } from '@onaio/session-reducer';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import {
   keycloakUser,
@@ -31,6 +32,12 @@ import {
 import { defaultUserFormInitialValues } from '../../forms/UserForm';
 import { getFormValues } from '../../forms/UserForm/utils';
 import { Dictionary } from '@onaio/utils/dist/types/types';
+
+const queryClient = new QueryClient();
+
+const QueryWrapper = ({ children }: { children: JSX.Element }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
 jest.mock('@opensrp/store', () => {
   const actualStore = jest.requireActual('@opensrp/store');
@@ -119,11 +126,13 @@ describe('components/CreateEditUser', () => {
     fetch.mockResponseOnce(JSON.stringify(requiredActions));
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <CreateEditUser {...propsCreate} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <CreateEditUser {...propsCreate} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     await act(async () => {
@@ -159,11 +168,13 @@ describe('components/CreateEditUser', () => {
       .once(JSON.stringify(practitioner1));
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...props} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...props} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     await act(async () => {
@@ -193,9 +204,11 @@ describe('components/CreateEditUser', () => {
     fetch.mockResponseOnce(JSON.stringify(keycloakUser));
 
     const wrapper = mount(
-      <Router history={history}>
-        <CreateEditUser {...propsCreate} />
-      </Router>
+      <QueryWrapper>
+        <Router history={history}>
+          <CreateEditUser {...propsCreate} />
+        </Router>
+      </QueryWrapper>
     );
 
     expect(wrapper.exists('.ant-spin')).toBeTruthy();
@@ -239,11 +252,13 @@ describe('components/CreateEditUser', () => {
     };
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...propsPageRefreshed} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...propsPageRefreshed} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     // Loader should be displayed
@@ -330,9 +345,11 @@ describe('components/CreateEditUser', () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...userProps} />
-        </Router>
+        <QueryWrapper>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...userProps} />
+          </Router>
+        </QueryWrapper>
       </Provider>
     );
 
@@ -345,8 +362,7 @@ describe('components/CreateEditUser', () => {
     });
     expect(toJson(wrapper.find('.ant-spin'))).toBeFalsy();
     // eslint-disable-next-line no-irregular-whitespace
-    const newLocal = `"Edit User | opensrpFirst NameLast NameEmailUsernameEnable userYesNoMark as PractitionerYesNoKeycloak User GroupAdminAdmin 2New Group SaveCancel"`;
-    expect(wrapper.text()).toMatchInlineSnapshot(newLocal);
+    expect(wrapper.text()).toMatchSnapshot();
     wrapper.unmount();
   });
 
@@ -376,11 +392,13 @@ describe('components/CreateEditUser', () => {
     };
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...propsPageRefreshed} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...propsPageRefreshed} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     await act(async () => {
@@ -408,11 +426,13 @@ describe('components/CreateEditUser', () => {
     );
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...props} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...props} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     await act(async () => {
@@ -438,11 +458,13 @@ describe('components/CreateEditUser', () => {
       .once(JSON.stringify(requiredActions));
 
     const wrapper = mount(
-      <Provider store={store}>
-        <Router history={history}>
-          <ConnectedCreateEditUser {...props} />
-        </Router>
-      </Provider>
+      <QueryWrapper>
+        <Provider store={store}>
+          <Router history={history}>
+            <ConnectedCreateEditUser {...props} />
+          </Router>
+        </Provider>
+      </QueryWrapper>
     );
 
     expect(wrapper.exists('.ant-spin')).toBeTruthy();

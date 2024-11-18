@@ -51,7 +51,6 @@ export interface CreateEditUserProps {
   getPractitionerFun: (baseUrl: string, userId: string) => Promise<Practitioner | IPractitioner>;
   getPractitionerRoleFun?: (baseUrl: string, userId: string) => Promise<IPractitionerRole>;
   postPutPractitionerFactory: UserFormProps['practitionerUpdaterFactory'];
-  extraFormFields: string[];
 }
 
 const getOpenSrpPractitioner = (baseUrl: string, userId: string) => {
@@ -95,7 +94,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
     getPractitionerFun,
     postPutPractitionerFactory,
     getPractitionerRoleFun,
-    extraFormFields,
   } = props;
 
   const userId = props.match.params[ROUTE_PARAM_USER_ID];
@@ -215,8 +213,6 @@ const CreateEditUser: React.FC<CreateEditPropTypes> = (props: CreateEditPropType
           hiddenFields={userFormHiddenFields}
           renderFields={userFormRenderFields}
           practitionerUpdaterFactory={postPutPractitionerFactory}
-          isFHIRInstance={!!getPractitionerRoleFun}
-          extraFormFields={extraFormFields}
         />
       </Col>
     </Row>

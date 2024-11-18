@@ -14,7 +14,7 @@ import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
 import { cleanup, fireEvent, render } from '@testing-library/react';
-import { waitFor } from '@testing-library/dom';
+import { waitFor, within } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
@@ -35,6 +35,9 @@ import { practitionerResourceType, practitionerRoleResourceType } from '../../..
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
 import { opensrpI18nInstance } from '@opensrp/i18n';
+import { setConfig } from '@opensrp/pkg-config';
+
+setConfig('projectCode', 'giz');
 
 jest.mock('fhirclient', () => {
   return jest.requireActual('fhirclient/lib/entry/browser');
@@ -245,11 +248,11 @@ test('renders correctly for edit user', async () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(usernameInput!, 'flopo');
 
-  // change mark as practitioner to tue
-  const yesMarkPractitioner = document.querySelectorAll('input[name="active"]')[0];
+  const enabledFieldGroup = document.querySelector('#active') as HTMLElement;
+  const yesMarkPractitioner = within(enabledFieldGroup).getByRole('radio', { name: /yes/i });
   userEvent.click(yesMarkPractitioner);
 
-  const markSupervisor = document.querySelectorAll('input[name="userType"]')[1];
+  const markSupervisor = document.querySelector('input[value="supervisor"]') as HTMLElement;
   userEvent.click(markSupervisor);
 
   const submitButton = document.querySelector('button[type="submit"]');

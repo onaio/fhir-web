@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`components/CreateEditUser loads edit user page without breaking if user is not a practitioner 1`] = `"Edit User | opensrpFirst NameLast NameEmailUsernameUser TypePractitionerSupervisorEnable userYesNoMark as PractitionerYesNoKeycloak User GroupAdminAdmin 2New Group Application IDSaveCancel"`;
+
 exports[`components/CreateEditUser renders correctly 1`] = `
 Object {
   "children": <Col
@@ -7,11 +9,9 @@ Object {
   >
     <UserForm
       extraData={Object {}}
-      extraFormFields={Array []}
       initialValues={
         Object {
           "active": true,
-          "contact": undefined,
           "enabled": true,
           "fhirCoreAppId": undefined,
           "firstName": "",
@@ -25,9 +25,21 @@ Object {
           "username": "",
         }
       }
-      isFHIRInstance={false}
       keycloakBaseURL="https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage"
       practitionerUpdaterFactory={[Function]}
+      renderFields={
+        Array [
+          "firstName",
+          "lastName",
+          "email",
+          "username",
+          "userType",
+          "enabled",
+          "active",
+          "userGroups",
+          "fhirCoreAppId",
+        ]
+      }
       userGroups={
         Array [
           Object {
