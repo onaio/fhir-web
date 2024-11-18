@@ -29,6 +29,7 @@ import {
 import { HTTPMethod, getDefaultHeaders } from '@opensrp/server-service';
 import './form.css';
 import { getAllConfigs } from '@opensrp/pkg-config';
+import { RbacCheck } from '@opensrp/rbac';
 
 const { Text, Title } = Typography;
 
@@ -116,38 +117,55 @@ export const DataImportForm = (props: DataImportFormProps) => {
   const formItems = [
     {
       formFieldName: users,
-      label: 'Users',
-      UploadBtnText: 'Attach users file',
+      label: t('Users'),
+      UploadBtnText: t('Attach users file'),
+      permissions: ['iam_user.create', 'Practitioner.create', 'iam_user.update'],
     },
     {
       formFieldName: locations,
-      label: 'Locations',
-      UploadBtnText: 'Attach locations file',
+      label: t('Locations'),
+      UploadBtnText: t('Attach locations file'),
+      permissions: ['Location.create', 'Location.update'],
     },
     {
       formFieldName: organizations,
-      label: 'Organizations',
-      UploadBtnText: 'Attach organizations file',
+      label: t('Organizations'),
+      UploadBtnText: t('Attach organizations file'),
+      permissions: ['Organization.create', 'Organization.update'],
     },
     {
       formFieldName: careteams,
-      label: 'CareTeams',
-      UploadBtnText: 'Attach careTeams file',
+      label: t('CareTeams'),
+      UploadBtnText: t('Attach careTeams file'),
+      permissions: ['CareTeam.create', 'CareTeam.update'],
     },
     {
       formFieldName: orgToLocationAssignment,
-      label: 'Organization location assignment',
+      label: t('Organization location assignment'),
       UploadBtnText: 'Attach assignment file',
+      permissions: ['OrganizationAffiliation.create', 'OrganizationAffiliation.update'],
     },
     {
       formFieldName: userToOrganizationAssignment,
-      label: 'User organization assignment',
-      UploadBtnText: 'Attach assignment file',
+      label: t('User organization assignment'),
+      UploadBtnText: t('Attach assignment file'),
+      permissions: ['PractitionerRole.create', 'PractitionerRole.update'],
     },
     {
       formFieldName: inventories,
-      label: 'Inventory',
-      UploadBtnText: 'Attach inventory file',
+      label: t('Inventory'),
+      UploadBtnText: t('Attach inventory file'),
+      permissions: ['Group.create', 'Group.update'],
+      disabled: !inventoryListId,
+      disabledReason: t('A list resource Id is not correctly configured'),
+    },
+    {
+      formFieldName: products,
+      label: t('Products'),
+      UploadBtnText: t('Attach product file'),
+      permissions: ['Group.create', 'Group.update'],
+      disabled: !productListId,
+      disabledReason: t('A list resource Id is not correctly configured'),
     },
   ];
 
@@ -166,47 +184,59 @@ export const DataImportForm = (props: DataImportFormProps) => {
         }}
       >
         {formItems.map((item) => {
-          const { formFieldName, label, UploadBtnText } = item;
+          const { formFieldName, label, UploadBtnText, permissions, disabled, disabledReason } =
+            item;
+          const disableInfoProps =
+            disabled && disabledReason
+              ? { validateStatus: 'warning' as const, help: disabledReason }
+              : {};
           return (
-            <Form.Item
-              key={formFieldName}
-              id={formFieldName}
-              hidden={hidden?.includes(formFieldName)}
-              name={formFieldName}
-              label={label}
-              valuePropName="fileList"
-              getValueFromEvent={normalizeFileInputEvent}
-            >
-              <Upload
+            <RbacCheck permissions={permissions} key={formFieldName}>
+              <Form.Item
+                key={formFieldName}
+                {...disableInfoProps}
                 id={formFieldName}
-                beforeUpload={() => false}
-                accept="text/csv"
-                multiple={false}
-                maxCount={1}
+                hidden={hidden?.includes(formFieldName)}
+                name={formFieldName}
+                label={label}
+                valuePropName="fileList"
+                getValueFromEvent={normalizeFileInputEvent}
               >
-                <Button icon={<UploadOutlined />}>{UploadBtnText}</Button>
-              </Upload>
-            </Form.Item>
+                <Upload
+                  disabled={disabled}
+                  id={formFieldName}
+                  beforeUpload={() => false}
+                  accept="text/csv"
+                  multiple={false}
+                  maxCount={1}
+                >
+                  <Button icon={<UploadOutlined />}>{UploadBtnText}</Button>
+                </Upload>
+              </Form.Item>
+            </RbacCheck>
           );
         })}
-        <Form.Item
-          id={products}
-          hidden={hidden?.includes(products)}
-          name={products}
-          label={'Products'}
-          valuePropName="fileList"
-          getValueFromEvent={normalizeFileInputEvent}
-        >
-          <Upload
+        {/* <RbacCheck permissions={['Group.create', 'Group.update']}>
+          <Form.Item
             id={products}
-            beforeUpload={() => false}
-            accept="text/csv"
-            multiple={false}
-            maxCount={1}
+            hidden={hidden?.includes(products)}
+            name={products}
+            label={'Products'}
+            valuePropName="fileList"
+            getValueFromEvent={normalizeFileInputEvent}
           >
-            <Button icon={<UploadOutlined />}>{'Attach product file'}</Button>
-          </Upload>
-        </Form.Item>
+            <Upload
+              disabled={!!productListId}
+              id={products}
+              beforeUpload={() => false}
+              accept="text/csv"
+              multiple={false}
+              maxCount={1}
+            >
+              <Button icon={<UploadOutlined />}>{'Attach product file'}</Button>
+            </Upload>
+          </Form.Item>
+        </RbacCheck> */}
         <Form.Item>
           <Space>
             <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
