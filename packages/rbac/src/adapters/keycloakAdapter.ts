@@ -49,6 +49,7 @@ const keycloakRoleMappings: Record<string, UserRole> = {
     new UserRole(['iam_role', 'iam_group'], Permit.READ),
   ]),
   'query-groups': new UserRole(['iam_group'], Permit.READ),
+  'view-groups': new UserRole(['iam_group'], Permit.READ),
   'query-users': new UserRole(['iam_user'], Permit.READ),
 };
 
