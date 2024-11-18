@@ -4126,7 +4126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@opensrp/i18n@^0.0.1, @opensrp/i18n@workspace:packages/i18n":
+"@opensrp/i18n@^0.0.1, @opensrp/i18n@workspace:^, @opensrp/i18n@workspace:packages/i18n":
   version: 0.0.0-use.local
   resolution: "@opensrp/i18n@workspace:packages/i18n"
   dependencies:
@@ -4187,7 +4187,7 @@ __metadata:
   resolution: "@opensrp/rbac@workspace:packages/rbac"
   dependencies:
     "@onaio/session-reducer": ^0.0.13
-    "@opensrp/i18n": ^0.0.1
+    "@opensrp/i18n": "workspace:^"
     "@opensrp/pkg-config": ^0.0.9
     "@types/invariant": ^2.2.35
     invariant: ^2.2.4
