@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@onaio/session-reducer": "^0.0.13",
-    "@opensrp/i18n": "^0.0.1",
+    "@opensrp/i18n": "workspace:^",
     "@opensrp/pkg-config": "^0.0.9",
     "invariant": "^2.2.4"
   },
