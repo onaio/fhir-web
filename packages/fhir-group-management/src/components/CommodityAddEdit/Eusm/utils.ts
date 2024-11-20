@@ -330,7 +330,8 @@ export async function getProductImagePayload(
       changed: true,
     };
   } else {
-    const id = v4();
+    // use initial images id for binary resource essentially editing existing binary resource.
+    const id = initialValues.productImage?.[0]?.uid ?? v4();
     const payload: IBinary = {
       id,
       resourceType: binaryResourceType,
