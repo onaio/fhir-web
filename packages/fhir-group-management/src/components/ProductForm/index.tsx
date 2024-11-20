@@ -278,6 +278,7 @@ function CommodityForm<
         {({ getFieldValue }) => {
           return (
             <Form.Item
+              rules={validationRules[productImage]}
               id={productImage}
               hidden={hidden.includes(productImage)}
               name={productImage}

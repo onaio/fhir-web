@@ -52,6 +52,8 @@ import { UploadFile } from 'antd';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
 import { defaultValidationRulesFactory } from '../../ProductForm/utils';
+import { RcFile } from 'antd/es/upload';
+import imageCompression from 'browser-image-compression';
 
 export type EusmGroupFormFields = GroupFormFields<{ group: IGroup; binary?: IBinary }>;
 
@@ -283,6 +285,23 @@ function fileToBase64(file?: File): Promise<string | undefined> {
 }
 
 /**
+ * Compresses images before uploading, images is scaled down and
+ * converted to webp format
+ *
+ * @param file - image file to be downscaled
+ */
+export async function compressImage(file: RcFile | undefined) {
+  if (!file) return;
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    fileType: 'image/webp',
+  };
+  const compressedBlob = await imageCompression(file, options);
+  return compressedBlob;
+}
+
+/**
  *  generates the binary payload for uploaded image
  *
  * @param values - current form field values
@@ -297,6 +316,9 @@ export async function getProductImagePayload(
   // TODO - replace btoa with typed arrays.
   const currentImageb64 = await fileToBase64(currentImage);
   const initialImageb64 = await fileToBase64(initialImage);
+
+  const scaledDownImage = await compressImage(currentImage);
+  const scaledDownCurrentImageb64 = await fileToBase64(scaledDownImage);
 
   if (currentImageb64 === initialImageb64) {
     // This could mean it was not added or removed.
@@ -313,7 +335,7 @@ export async function getProductImagePayload(
       id,
       resourceType: binaryResourceType,
       contentType: currentImage.type,
-      data: currentImageb64,
+      data: scaledDownCurrentImageb64,
     };
     return {
       changed: true,
