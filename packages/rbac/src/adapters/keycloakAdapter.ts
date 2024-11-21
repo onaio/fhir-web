@@ -44,10 +44,7 @@ export const parseFHirRoles = (role: string) => {
 const keycloakRoleMappings: Record<string, UserRole> = {
   'realm-admin': new UserRole(['iam_group', 'iam_role', 'iam_user'], Permit.MANAGE),
   'view-users': new UserRole(['iam_user'], Permit.READ),
-  'manage-users': UserRole.combineRoles([
-    new UserRole(['iam_user'], Permit.MANAGE),
-    new UserRole(['iam_role', 'iam_group'], Permit.READ),
-  ]),
+  'manage-users': UserRole.combineRoles([new UserRole(['iam_user'], Permit.MANAGE)]),
   'query-groups': new UserRole(['iam_group'], Permit.READ),
   'view-groups': new UserRole(['iam_group'], Permit.READ),
   'query-users': new UserRole(['iam_user'], Permit.READ),
