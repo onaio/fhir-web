@@ -52,6 +52,7 @@ const validateFile = (_: unknown, fileList: UploadFile[] | undefined) => {
       return Promise.reject(new Error('File must be smaller than 5MB!'));
     }
   }
+
   return Promise.resolve();
 };
 
@@ -76,9 +77,10 @@ export function defaultValidationRulesFactory(t: TFunction) {
     [appropriateUsage]: [{ type: 'string' }] as Rule[],
     [accountabilityPeriod]: [{ type: 'number' }] as Rule[],
     [productImage]: [
-      { type: 'array', max: 1 },
+      { type: 'array', max: 1, message: 'Some message about an array' },
       {
         validator: validateFile,
+        message: 'Some message about a',
       },
     ] as Rule[],
   };

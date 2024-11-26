@@ -103,17 +103,17 @@ export const validationRulesFactory = (t: TFunction) => {
  * @param characteristic - group characteristic
  */
 function getValueFromCharacteristic(characteristic: GroupCharacteristic) {
-  if (characteristic['valueCodeableConcept']) {
-    return characteristic.valueCodeableConcept.text;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueCodeableConcept')) {
+    return characteristic.valueCodeableConcept?.text;
   }
-  if (characteristic['valueBoolean']) {
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueBoolean')) {
     return characteristic.valueBoolean;
   }
-  if (characteristic['valueQuantity']) {
-    return characteristic.valueQuantity.value;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueQuantity')) {
+    return characteristic.valueQuantity?.value;
   }
-  if (characteristic['valueReference']) {
-    return characteristic.valueReference.reference;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueReference')) {
+    return characteristic.valueReference?.reference;
   }
 }
 
@@ -297,7 +297,9 @@ export async function compressImage(file: RcFile | undefined) {
     maxWidthOrHeight: 1920,
     fileType: 'image/webp',
   };
+
   const compressedBlob = await imageCompression(file, options);
+
   return compressedBlob;
 }
 
@@ -321,13 +323,20 @@ export async function getProductImagePayload(
   const scaledDownCurrentImageb64 = await fileToBase64(scaledDownImage);
 
   if (currentImageb64 === initialImageb64) {
-    // This could mean it was not added or removed.
+    // This means there was no change to the product field
     return {
       changed: false,
     };
-  } else if (currentImage === undefined) {
+  }
+  if (currentImage === undefined) {
+    const id = initialValues.productImage?.[0]?.uid ?? v4();
+    const payload: IBinary = {
+      id,
+      resourceType: binaryResourceType,
+    };
     return {
       changed: true,
+      payload,
     };
   } else {
     // use initial images id for binary resource essentially editing existing binary resource.
@@ -335,7 +344,7 @@ export async function getProductImagePayload(
     const payload: IBinary = {
       id,
       resourceType: binaryResourceType,
-      contentType: currentImage.type,
+      contentType: scaledDownImage?.type,
       data: scaledDownCurrentImageb64,
     };
     return {
