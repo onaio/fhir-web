@@ -1,7 +1,8 @@
 {
-  "name": "scripts",
+  "name": "@opensrp/scripts-i18n",
   "packageManager": "yarn@3.6.1",
   "type": "module",
+  "bin": "cli.js",
   "devDependencies": {
     "gulp": "^5.0.0",
     "i18next-parser": "^9.0.2"

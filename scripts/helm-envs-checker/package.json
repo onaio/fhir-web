@@ -1,0 +1,9 @@
+{
+  "name": "@opensrp/scripts-helm-envs-checker",
+  "packageManager": "yarn@3.6.1",
+  "bin": "cli.js",
+  "devDependencies": {
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.7.2"
+  }
+}
