@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { downloadStrings } from './downloadMerged.js';
-import { uploadTranslations } from './uploadMerged.js';
-import { runExtractions, supportedProjectCodes, supportedLocaleCodes } from './extract.js';
+import { downloadStrings } from './lib/downloadMerged.js';
+import { uploadTranslations } from './lib/uploadMerged.js';
+import { runExtractions, supportedProjectCodes, supportedLocaleCodes } from './lib/extract.js';
 
 // Define global options and configure commands
 yargs(hideBin(process.argv))
@@ -91,11 +91,10 @@ yargs(hideBin(process.argv))
           type: 'string',
           demandOption: true,
         },
-        locales: {
+        locale: {
           alias: 'l',
-          describe: 'Extracted strings will be generated for this locale(s)',
+          describe: 'Upload strings for this locale',
           choices: supportedLocaleCodes,
-          type: 'array',
           default: ['en'],
         },
       });

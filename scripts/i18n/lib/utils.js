@@ -26,6 +26,20 @@ export const getLocaleFilePaths = async (projectCode, locale) => {
 };
 
 /**
+ * uses glob to get all the generated translation files for each package
+ * as they reside in the package/i18n package
+ * @param {string} projectCode informs on the namespace for which the translation files lie.
+ * @param {string} locale informs which local files to pick under the project code namespace
+ * @Returns {string[]} - matched paths
+ */
+export const getLocaleFolderPaths = async (projectCode, locale) => {
+  const workspacesGlob = `packages/i18n/locales/${projectCode}/*/`;
+  return promisedGlob(workspacesGlob, { cwd: REPO_ROOT_PATH }).catch(() => {
+    return [];
+  });
+};
+
+/**
  * Ensures the directory for the given file path exists. If not, creates it synchronously.
  * @param {string} filePath - The full file path to ensure.
  */
