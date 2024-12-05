@@ -245,7 +245,7 @@ export const editedCommodity1 = {
           },
         ],
       },
-      valueReference: { reference: 'Binary/9b782015-8392-4847-b48c-50c11638656b' },
+      valueReference: { reference: 'Binary/24d55827-fbd8-4b86-a47a-2f5b4598c515' },
     },
   ],
 };
@@ -258,10 +258,10 @@ export const binary1 = {
 };
 
 export const editedBinary1 = {
-  id: '9b782015-8392-4847-b48c-50c11638656b',
+  id: binary1.id,
   resourceType: 'Binary',
-  contentType: 'image/png',
-  data: 'aGVsbG8=',
+  contentType: 'image/webp',
+  data: 'aGw=',
 };
 
 export const editedCommodity = {
@@ -459,111 +459,6 @@ export const createdCommodity = {
 export const createdBinary = {
   id: '9b782015-8392-4847-b48c-50c11638656b',
   resourceType: 'Binary',
-  contentType: 'image/png',
-  data: 'aGVsbG8=',
-};
-
-export const removedImageCommodity = {
-  resourceType: 'Group',
-  id: '52cffa51-fa81-49aa-9944-5b45d9e4c117',
-  identifier: [
-    { use: 'secondary', value: '606109db-5632-48c5-8710-b726e1b3addf' },
-    { use: 'official', value: '52cffa51-fa81-49aa-9944-5b45d9e4c117' },
-  ],
-  active: true,
-  type: 'substance',
-  actual: false,
-  code: {
-    coding: [{ system: 'http://snomed.info/sct', code: '386452003', display: 'Supply management' }],
-  },
-  name: 'Bed nets',
-  characteristic: [
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '23435363',
-            display: 'Attractive Item code',
-          },
-        ],
-      },
-      valueBoolean: true,
-    },
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '34536373',
-            display: 'Is it there code',
-          },
-        ],
-      },
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '34536373-1',
-            display: 'Value entered on the It is there code',
-          },
-        ],
-        text: 'yes',
-      },
-    },
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '45647484',
-            display: 'Is it in good condition? (optional)',
-          },
-        ],
-      },
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '45647484-1',
-            display: 'Value entered on the Is it in good condition? (optional)',
-          },
-        ],
-        text: 'Yes, no tears, and inocuated',
-      },
-    },
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '56758595',
-            display: 'Is it being used appropriately? (optional)',
-          },
-        ],
-      },
-      valueCodeableConcept: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '56758595-1',
-            display: 'Value entered on the Is it being used appropriately? (optional)',
-          },
-        ],
-        text: 'Hanged at correct height and covers averagely sized beds',
-      },
-    },
-    {
-      code: {
-        coding: [
-          {
-            system: 'http://smartregister.org/codes',
-            code: '67869606',
-            display: 'Accountability period (in months)',
-          },
-        ],
-      },
-      valueQuantity: { value: 12 },
-    },
-  ],
+  contentType: 'image/webp',
+  data: 'aGw=',
 };

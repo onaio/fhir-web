@@ -52,6 +52,8 @@ import { UploadFile } from 'antd';
 import { Coding } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/coding';
 import { R4GroupTypeCodes } from '@opensrp/fhir-helpers';
 import { defaultValidationRulesFactory } from '../../ProductForm/utils';
+import { RcFile } from 'antd/es/upload';
+import imageCompression from 'browser-image-compression';
 
 export type EusmGroupFormFields = GroupFormFields<{ group: IGroup; binary?: IBinary }>;
 
@@ -101,17 +103,17 @@ export const validationRulesFactory = (t: TFunction) => {
  * @param characteristic - group characteristic
  */
 function getValueFromCharacteristic(characteristic: GroupCharacteristic) {
-  if (characteristic['valueCodeableConcept']) {
-    return characteristic.valueCodeableConcept.text;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueCodeableConcept')) {
+    return characteristic.valueCodeableConcept?.text;
   }
-  if (characteristic['valueBoolean']) {
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueBoolean')) {
     return characteristic.valueBoolean;
   }
-  if (characteristic['valueQuantity']) {
-    return characteristic.valueQuantity.value;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueQuantity')) {
+    return characteristic.valueQuantity?.value;
   }
-  if (characteristic['valueReference']) {
-    return characteristic.valueReference.reference;
+  if (Object.prototype.hasOwnProperty.call(characteristic, 'valueReference')) {
+    return characteristic.valueReference?.reference;
   }
 }
 
@@ -283,6 +285,25 @@ function fileToBase64(file?: File): Promise<string | undefined> {
 }
 
 /**
+ * Compresses images before uploading, images is scaled down and
+ * converted to webp format
+ *
+ * @param file - image file to be downscaled
+ */
+export async function compressImage(file: RcFile | undefined) {
+  if (!file) return;
+  const options = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: 1920,
+    fileType: 'image/webp',
+  };
+
+  const compressedBlob = await imageCompression(file, options);
+
+  return compressedBlob;
+}
+
+/**
  *  generates the binary payload for uploaded image
  *
  * @param values - current form field values
@@ -298,22 +319,33 @@ export async function getProductImagePayload(
   const currentImageb64 = await fileToBase64(currentImage);
   const initialImageb64 = await fileToBase64(initialImage);
 
+  const scaledDownImage = await compressImage(currentImage);
+  const scaledDownCurrentImageb64 = await fileToBase64(scaledDownImage);
+
   if (currentImageb64 === initialImageb64) {
-    // This could mean it was not added or removed.
+    // This means there was no change to the product field
     return {
       changed: false,
     };
-  } else if (currentImage === undefined) {
-    return {
-      changed: true,
-    };
-  } else {
-    const id = v4();
+  }
+  if (currentImage === undefined) {
+    const id = initialValues.productImage?.[0]?.uid ?? v4();
     const payload: IBinary = {
       id,
       resourceType: binaryResourceType,
-      contentType: currentImage.type,
-      data: currentImageb64,
+    };
+    return {
+      changed: true,
+      payload,
+    };
+  } else {
+    // use initial images id for binary resource essentially editing existing binary resource.
+    const id = initialValues.productImage?.[0]?.uid ?? v4();
+    const payload: IBinary = {
+      id,
+      resourceType: binaryResourceType,
+      contentType: scaledDownImage?.type,
+      data: scaledDownCurrentImageb64,
     };
     return {
       changed: true,

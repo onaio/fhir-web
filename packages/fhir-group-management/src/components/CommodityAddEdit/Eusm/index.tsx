@@ -87,6 +87,7 @@ export const CommodityAddEdit = (props: GroupAddEditProps) => {
             );
 
             let binaryResponse;
+
             if (binary) {
               binaryResponse = await postPutBinary(fhirBaseUrl, binary);
             }

@@ -44,6 +44,18 @@ export const normalizeFileInputEvent = (e: UploadChangeParam<UploadFile>) => {
   return e.fileList;
 };
 
+const validateFileFactory = (t: TFunction) => (_: unknown, fileList: UploadFile[] | undefined) => {
+  if (fileList && fileList.length > 0) {
+    const file = fileList[0].originFileObj;
+    const MAX_IMAGE_SIZE_MB = 5;
+    if (file && file.size / 1024 / 1024 > MAX_IMAGE_SIZE_MB) {
+      return Promise.reject(new Error(t('File must be smaller than 5MB!')));
+    }
+  }
+
+  return Promise.resolve();
+};
+
 // TODO - Do we really need this.
 /**
  * factory to create default validation rules
@@ -64,7 +76,12 @@ export function defaultValidationRulesFactory(t: TFunction) {
     [condition]: [{ type: 'string' }] as Rule[],
     [appropriateUsage]: [{ type: 'string' }] as Rule[],
     [accountabilityPeriod]: [{ type: 'number' }] as Rule[],
-    [productImage]: [{ type: 'array', max: 1 }] as Rule[],
+    [productImage]: [
+      { type: 'array', max: 1 },
+      {
+        validator: validateFileFactory(t),
+      },
+    ] as Rule[],
   };
 }
 

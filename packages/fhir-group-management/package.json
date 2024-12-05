@@ -38,6 +38,7 @@
     "@opensrp/rbac": "workspace:^",
     "@opensrp/react-utils": "^0.0.12",
     "@opensrp/reducer-factory": "^0.0.13",
+    "browser-image-compression": "^2.0.2",
     "fhirclient": "^2.3.11",
     "uuid": "^8.3.1"
   },

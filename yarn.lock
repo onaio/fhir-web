@@ -3903,6 +3903,7 @@ __metadata:
     "@opensrp/reducer-factory": ^0.0.13
     "@opensrp/store": ^0.0.10
     "@types/uuid": 8.3.0
+    browser-image-compression: ^2.0.2
     fhirclient: ^2.3.11
     uuid: ^8.3.1
   peerDependencies:
@@ -8487,6 +8488,15 @@ __metadata:
   version: 1.1.0
   resolution: "brorand@npm:1.1.0"
   checksum: 8a05c9f3c4b46572dec6ef71012b1946db6cae8c7bb60ccd4b7dd5a84655db49fe043ecc6272e7ef1f69dc53d6730b9e2a3a03a8310509a3d797a618cbee52be
+  languageName: node
+  linkType: hard
+
+"browser-image-compression@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "browser-image-compression@npm:2.0.2"
+  dependencies:
+    uzip: 0.20201231.0
+  checksum: 16051f07b0ec3927d30600d244d07d46bd41de16d6c44b872efe89f4b2b22dbd9dfbb66e3d1ff2c6282057722456a53759996e1478774dc520843ffb48f7441e
   languageName: node
   linkType: hard
 
@@ -28892,6 +28902,13 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
+  languageName: node
+  linkType: hard
+
+"uzip@npm:0.20201231.0":
+  version: 0.20201231.0
+  resolution: "uzip@npm:0.20201231.0"
+  checksum: 34253f4c3d996571b10b659eea415bec952bde940e1fd44090ce19687b6dbaae411d8e6321b9028e44aa442379659d71bb39e95ba15de0626cfe970d90b24f40
   languageName: node
   linkType: hard
 
