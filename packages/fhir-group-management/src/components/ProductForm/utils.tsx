@@ -44,12 +44,12 @@ export const normalizeFileInputEvent = (e: UploadChangeParam<UploadFile>) => {
   return e.fileList;
 };
 
-const validateFile = (_: unknown, fileList: UploadFile[] | undefined) => {
+const validateFileFactory = (t: TFunction) => (_: unknown, fileList: UploadFile[] | undefined) => {
   if (fileList && fileList.length > 0) {
     const file = fileList[0].originFileObj;
     const MAX_IMAGE_SIZE_MB = 5;
     if (file && file.size / 1024 / 1024 > MAX_IMAGE_SIZE_MB) {
-      return Promise.reject(new Error('File must be smaller than 5MB!'));
+      return Promise.reject(new Error(t('File must be smaller than 5MB!')));
     }
   }
 
@@ -77,10 +77,9 @@ export function defaultValidationRulesFactory(t: TFunction) {
     [appropriateUsage]: [{ type: 'string' }] as Rule[],
     [accountabilityPeriod]: [{ type: 'number' }] as Rule[],
     [productImage]: [
-      { type: 'array', max: 1, message: 'Some message about an array' },
+      { type: 'array', max: 1 },
       {
-        validator: validateFile,
-        message: 'Some message about a',
+        validator: validateFileFactory(t),
       },
     ] as Rule[],
   };
