@@ -4,12 +4,8 @@ on:
   push:
     paths-ignore:
       - 'docs/**'
-    # Publish `master` as Docker `master` tag.
-    # See also https://github.com/crazy-max/ghaction-docker-meta#basic
     branches:
       - main
-
-    # Publish `v1.2.3` tags as releases.
     tags:
       - v*
 
@@ -63,7 +59,6 @@ jobs:
             type=ref,event=branch,key=main,tag=latest
             type=ref,event=branch,pattern=release/*,group=1
             type=ref,event=tag
-            type=sha
             # Add a custom tag if provided through workflow_dispatch input
             type=raw,value=${{ github.event.inputs.customTag }}
 
@@ -86,31 +81,3 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-      
-      - name: Scan Docker Image with Docker Scout and Save Report
-        id: scout
-        run: |
-          # Save the Docker Scout report as JSON and Markdown
-          docker scout cves ${{ steps.meta.outputs.tags }} --output json > scout-report.json
-          docker scout cves ${{ steps.meta.outputs.tags }} --output markdown > scout-report.md
-
-      - name: Check Docker Scout Scan Result
-        id: check-scout-result
-        run: |
-          # Check if any vulnerabilities are reported in the JSON output
-          if grep -q '"severity":' scout-report.json; then
-            echo "Vulnerabilities found in Docker Scout report."
-            echo "found_vulnerabilities=true" >> $GITHUB_ENV
-          else
-            echo "No vulnerabilities found."
-            echo "found_vulnerabilities=false" >> $GITHUB_ENV
-
-      - name: Create GitHub Issue for Vulnerabilities
-        if: env.found_vulnerabilities == 'true'
-        uses: peter-evans/create-issue-from-file@v4
-        with:
-          title: "Docker Scout Vulnerability Report for Image ${{ steps.meta.outputs.tags }}"
-          content-filepath: scout-report.md
-          labels: |
-            "Security Support"
-            "Bug Report"
