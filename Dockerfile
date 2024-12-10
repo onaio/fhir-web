@@ -42,7 +42,11 @@ FROM nikolaik/python-nodejs:python3.13-nodejs22-slim as final
 RUN corepack enable
 
 # Use tini for NodeJS application https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
-RUN apk add --no-cache tini curl libmagic
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tini \
+    curl \
+    libmagic-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # confd
 RUN curl -sSL -o /usr/local/bin/confd https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 \
