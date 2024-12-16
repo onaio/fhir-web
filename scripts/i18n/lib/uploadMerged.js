@@ -1,11 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import {
-  ensureFilePath,
-  getLocaleFilePaths,
-  getLocaleFolderPaths,
-  REPO_ROOT_PATH,
-} from './utils.js';
+import { ensureFilePath, getLocaleFolderPaths, REPO_ROOT_PATH } from './utils.js';
 
 function processNamespace(namespace, unifiedJson, locale) {
   const baseLocale = 'en';
@@ -26,9 +21,6 @@ export async function uploadTranslations(inFile, projectCode = 'core', locale = 
   const unifiedJson = JSON.parse(fs.readFileSync(inFile, 'utf-8'));
   const resourceFolders = await getLocaleFolderPaths(projectCode);
   for (const namespace of resourceFolders) {
-    if (!namespace.includes('fhir-client')) {
-      continue;
-    }
     const qualifiedNamespacePath = path.resolve(REPO_ROOT_PATH, namespace);
     processNamespace(qualifiedNamespacePath, unifiedJson, locale);
   }
