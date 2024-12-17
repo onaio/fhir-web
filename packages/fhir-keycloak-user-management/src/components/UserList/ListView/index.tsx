@@ -77,12 +77,8 @@ export const UserList = (props: OrganizationListProps) => {
           nameFilterKey,
           (el) => {
             const lowerSearchCase = searchText.toLowerCase();
-            const firstSearch = !!((el.firstName as string | undefined) ?? '')
-              .toLowerCase()
-              .includes(lowerSearchCase);
-            const lastSearch = !!((el.lastName as string | undefined) ?? '')
-              .toLowerCase()
-              .includes(lowerSearchCase);
+            const firstSearch = !!(el.firstName ?? '').toLowerCase().includes(lowerSearchCase);
+            const lastSearch = !!(el.lastName ?? '').toLowerCase().includes(lowerSearchCase);
             const userSearch = !!el.username.toLowerCase().includes(lowerSearchCase);
             return firstSearch || lastSearch || userSearch;
           },

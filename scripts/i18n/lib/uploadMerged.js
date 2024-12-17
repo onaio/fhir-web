@@ -9,7 +9,6 @@ function processNamespace(namespace, unifiedJson, locale) {
   const referenceDict = JSON.parse(fs.readFileSync(enReferenceResourceFile, 'utf-8'));
   ensureFilePath(destReferenceResourceFile);
   const updatedStringMap = {};
-  console.log({ referenceDict });
   for (const key in referenceDict) {
     let updateValue = unifiedJson[key] ?? key;
     updatedStringMap[key] = updateValue;

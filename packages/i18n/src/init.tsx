@@ -64,7 +64,7 @@ newInstance
     returnEmptyString: false,
     nsSeparator: '::',
     keySeparator: false,
-    debug: true,
+    debug: false,
     react: {
       useSuspense: process.env.NODE_ENV === 'test' ? false : true,
     },

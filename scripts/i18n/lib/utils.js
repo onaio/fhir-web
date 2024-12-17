@@ -47,8 +47,7 @@ export function ensureFilePath(filePath) {
   const dirPath = path.dirname(filePath); // Extract the directory path
   try {
     if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true }); // Create the directory if it doesn't exist
-      console.log(`Directory ensured: ${dirPath}`);
+      fs.mkdirSync(dirPath, { recursive: true });
     }
   } catch (error) {
     console.error(`Error ensuring file path: ${error.message}`);
