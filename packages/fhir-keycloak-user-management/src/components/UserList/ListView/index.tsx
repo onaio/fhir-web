@@ -21,9 +21,10 @@ import { BodyLayout } from '@opensrp/react-utils';
 import { getExtraData } from '@onaio/session-reducer';
 import { KeycloakUser } from '@opensrp/user-management';
 import { useSelector } from 'react-redux';
-import { Trans, useTranslation } from '@opensrp/i18n';
+import { Trans } from '@opensrp/i18n';
 import { RbacCheck, useUserRole } from '@opensrp/rbac';
 import { UserDetailsOverview } from '../ViewdetailsOverview';
+import { useTranslation } from '../../../mls';
 
 interface OrganizationListProps {
   fhirBaseURL: string;
@@ -76,8 +77,12 @@ export const UserList = (props: OrganizationListProps) => {
           nameFilterKey,
           (el) => {
             const lowerSearchCase = searchText.toLowerCase();
-            const firstSearch = !!(el.firstName ?? '').toLowerCase().includes(lowerSearchCase);
-            const lastSearch = !!(el.lastName ?? '').toLowerCase().includes(lowerSearchCase);
+            const firstSearch = !!((el.firstName as string | undefined) ?? '')
+              .toLowerCase()
+              .includes(lowerSearchCase);
+            const lastSearch = !!((el.lastName as string | undefined) ?? '')
+              .toLowerCase()
+              .includes(lowerSearchCase);
             const userSearch = !!el.username.toLowerCase().includes(lowerSearchCase);
             return firstSearch || lastSearch || userSearch;
           },

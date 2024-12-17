@@ -11,6 +11,7 @@
   "Inactive": "Inactif",
   "Invalid Flag": "Signalement de problème non valide",
   "Missing  location field. This information is required to close the flag form.": "Champ de localisation manquant. Cette information est nécessaire pour fermer le formulaire de signalement.",
+  "Missing Required permissions to perform this action": "Missing Required permissions to perform this action",
   "Product": "Produit",
   "Save": "Sauvegarder",
   "Saving": "Sauvegarde",
