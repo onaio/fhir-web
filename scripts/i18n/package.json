@@ -6,5 +6,8 @@
   "devDependencies": {
     "gulp": "^5.0.0",
     "i18next-parser": "^9.0.2"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
