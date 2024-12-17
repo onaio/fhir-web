@@ -80,6 +80,8 @@ export const ImportDetailViewDetails = (_: RouteComponentProps) => {
     [t('Author')]: data.author,
   };
 
+  console.log({pageTitle})
+
   return (
     <BodyLayout headerProps={headerProps}>
       <Helmet>
