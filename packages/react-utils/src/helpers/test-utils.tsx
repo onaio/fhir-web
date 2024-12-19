@@ -1,7 +1,7 @@
 import { store } from '@opensrp/store';
 import { Provider } from 'react-redux';
 import React from 'react';
-import { RoleContext, UserRole, FhirResources, Permit, AllSupportedRoles, allSupportedRoles } from '@opensrp/rbac';
+import { RoleContext, UserRole, Permit, allSupportedRoles } from '@opensrp/rbac';
 import { history } from '@onaio/connected-reducer-registry';
 import { Router } from 'react-router';
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
