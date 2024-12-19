@@ -216,7 +216,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={DATA_IMPORT_LIST_URL}
-        permissions={['WebDataImport.read']}
+        permissions={['DataImport.read']}
         component={DataImportList}
       />
       <PrivateComponent
@@ -224,7 +224,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={`${DATA_IMPORT_CREATE_URL}`}
-        permissions={['WebDataImport.create']}
+        permissions={['DataImport.create']}
         component={StartDataImport}
       />
       <PrivateComponent
@@ -233,7 +233,7 @@ const FHIRApps = () => {
         exact
         path={`${DATA_IMPORT_DETAIL_URL}/:${'workflowId'}`}
         {...patientProps}
-        permissions={['WebDataImport.read']}
+        permissions={['DataImport.read']}
         component={ImportDetailViewDetails}
       />
       <PrivateComponent
@@ -242,7 +242,7 @@ const FHIRApps = () => {
         exact
         path={`${DATA_IMPORT_LIST_URL}/:${'workflowId'}`}
         {...patientProps}
-        permissions={['WebDataImport.read']}
+        permissions={['DataImport.read']}
         component={DataImportList}
       />
       <PrivateComponent
@@ -590,7 +590,7 @@ const FHIRApps = () => {
         exact
         path={APP_LOGIN_URL}
         render={() => {
-          window.location.href = OpenSRP;
+          window.location.href = `${OpenSRP}&kc_locale=fr`;
           return <></>;
         }}
       />
