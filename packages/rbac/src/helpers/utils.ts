@@ -23,13 +23,6 @@ export function makeArray<T>(obj: T | T[]): T[] {
 export const permitLiteralKeys = Object.keys(Permit).map((x) => x.toLowerCase());
 
 /**
- * @param resource
- */
-function resourceStringIsValid(resource: string): resource is AllSupportedRoles {
-  return allSupportedRoles.includes(resource as AllSupportedRoles);
-}
-
-/**
  * validates that a string is a valid representation of one of the recognized
  * resource permit combinations.
  *

@@ -11,12 +11,16 @@ export enum Permit {
 /** Resources that the web client understands */
 
 /** Resources that relate with user self administration like deleting own account */
-export const accountClientResources = ['account_user', 'account_application', 'account_group'] as const
-export type AccountClientResources = typeof accountClientResources[number]
+export const accountClientResources = [
+  'account_user',
+  'account_application',
+  'account_group',
+] as const;
+export type AccountClientResources = typeof accountClientResources[number];
 
 /** Resources that relate to the realm administration like managing other users accounts */
-export const realmClientResources = ['iam_user', 'iam_realm', 'iam_group', 'iam_role'] as const
-export type RealmClientResources = typeof realmClientResources[number]
+export const realmClientResources = ['iam_user', 'iam_realm', 'iam_group', 'iam_role'] as const;
+export type RealmClientResources = typeof realmClientResources[number];
 
 /**
  * fhir hapi Server resources that this web client is familiar with, thus we can enforce rbac for permissions on views that
@@ -55,7 +59,12 @@ export type FhirResources = typeof fhirResources[number];
 export const webClientRoles = ['DataImport'] as const;
 export type WebClientRoles = typeof webClientRoles[number];
 
-export const allSupportedRoles = [...fhirResources, ...accountClientResources, ...realmClientResources, ...webClientRoles];
+export const allSupportedRoles = [
+  ...fhirResources,
+  ...accountClientResources,
+  ...realmClientResources,
+  ...webClientRoles,
+];
 export type AllSupportedRoles = typeof allSupportedRoles[number];
 
 export type BinaryNumber = number;
