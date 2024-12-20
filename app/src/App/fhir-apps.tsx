@@ -590,7 +590,7 @@ const FHIRApps = () => {
         exact
         path={APP_LOGIN_URL}
         render={() => {
-          window.location.href = `${OpenSRP}&kc_locale=fr`;
+          window.location.href = OpenSRP;
           return <></>;
         }}
       />
