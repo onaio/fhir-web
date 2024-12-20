@@ -53,7 +53,7 @@ export const parseKeycloakClientRoles = (scope: string, stringRole: string) => {
       'query-realm': new UserRole(['iam_group', 'iam_role', 'iam_user', 'iam_realm'], Permit.READ),
       'view-users': new UserRole(['iam_user'], Permit.READ),
       'query-users': new UserRole(['iam_user'], Permit.READ),
-      'manage-users': UserRole.combineRoles([new UserRole(['iam_user'], Permit.MANAGE)]),
+      'manage-users': new UserRole(['iam_user'], Permit.MANAGE),
       'query-groups': new UserRole(['iam_group'], Permit.READ),
       'view-groups': new UserRole(['iam_group'], Permit.READ),
     },
