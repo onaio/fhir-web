@@ -45,7 +45,13 @@ describe('CodeableConcept Component', () => {
   test('renders with empty coding array and no text', () => {
     const concept: TCodeableConcept = {};
     render(<CodeableConcept concept={concept} />);
-    expect(screen.findByTestId('concept-tooltip')).toMatchInlineSnapshot(`Promise {}`);
+    expect(document.querySelector('body')).toMatchInlineSnapshot(`
+      <body>
+        <div>
+          <span />
+        </div>
+      </body>
+    `);
   });
 
   test('renders with empty coding array but with text', () => {
