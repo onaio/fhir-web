@@ -65,7 +65,7 @@ const CloseFlagForm = (props: CloseFlagFormProps) => {
     mutate(values);
   };
 
-  const saveBtnDisabled = userRole.hasPermissions([
+  const saveBtnDisabled = !userRole.hasPermissions([
     'Flag.update',
     'Encounter.update',
     'Observation.update',
