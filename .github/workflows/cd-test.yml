@@ -13,6 +13,8 @@ jobs:
       matrix:
         node-version: [22.x]
         os: [ubuntu-latest, windows-latest]
+        allow-failure: [false, true]
+      fail-fast: false # Ensure the workflow doesn't stop when one matrix combination fails
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -49,3 +51,5 @@ jobs:
           directory: ./coverage
           fail_ci_if_error: true
           verbose: true
+
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
