@@ -5,6 +5,7 @@ import { flag } from '../../Utils/tests/fixtures';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import userEvents from '@testing-library/user-event';
 import { status } from '../../../constants';
+import { ContextProvider } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -46,7 +47,9 @@ describe('CloseFlagForm component', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <CloseFlagForm {...props} />
+        <ContextProvider>
+          <CloseFlagForm {...props} />
+        </ContextProvider>
       </QueryClientProvider>
     );
 
@@ -83,7 +86,9 @@ describe('CloseFlagForm component', () => {
 
     render(
       <QueryClientProvider client={queryClient}>
-        <CloseFlagForm {...props} />
+        <ContextProvider>
+          <CloseFlagForm {...props} />
+        </ContextProvider>
       </QueryClientProvider>
     );
 

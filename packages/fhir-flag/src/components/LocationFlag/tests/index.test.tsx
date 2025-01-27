@@ -31,6 +31,8 @@ import {
 import userEvents from '@testing-library/user-event';
 import { status } from '../../../constants';
 import * as notifications from '@opensrp/notifications';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -122,9 +124,11 @@ test('renders correctly and fetches data', async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <Router history={history}>
-        <LocationFlag {...defaultProps} />
-      </Router>
+      <RoleContext.Provider value={superUserRole}>
+        <Router history={history}>
+          <LocationFlag {...defaultProps} />
+        </Router>
+      </RoleContext.Provider>
     </QueryClientProvider>
   );
 
