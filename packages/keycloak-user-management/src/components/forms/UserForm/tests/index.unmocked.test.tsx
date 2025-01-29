@@ -156,7 +156,10 @@ describe('forms/userForm', () => {
 
     nock(propsOwn.baseUrl)
       .get(`/${compositionResourceType}/_search`)
-      .query({ _getpagesoffset: '0', _count: '20', ...compositionUrlFilter })
+      .query({ _summary: 'count', ...compositionUrlFilter })
+      .reply(200, { total: compositionPage1.entry.length })
+      .get(`/${compositionResourceType}/_search`)
+      .query({ _count: '5', ...compositionUrlFilter })
       .reply(200, compositionPage1);
 
     const newId = 'keycloakNewUserId';

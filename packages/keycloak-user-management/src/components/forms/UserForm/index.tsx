@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { BodyLayout } from '@opensrp/react-utils';
+import { BodyLayout, ClientSideActionsSelect } from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
@@ -30,7 +30,6 @@ import {
   usernameField,
   userTypeField,
 } from '../../../constants';
-import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
@@ -312,13 +311,13 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 rules={[{ required: true, message: t('Application Id is required') }]}
                 data-testid="fhirCoreAppId"
               >
-                <PaginatedAsyncSelect<IComposition>
-                  baseUrl={baseUrl}
+                <ClientSideActionsSelect<IComposition>
+                  fhirBaseUrl={baseUrl}
                   resourceType={compositionResourceType}
                   transformOption={getCompositionOptions}
                   extraQueryParams={compositionUrlFilter}
                   showSearch={true}
-                ></PaginatedAsyncSelect>
+                ></ClientSideActionsSelect>
               </Form.Item>
             ) : null}
 
