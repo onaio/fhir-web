@@ -186,35 +186,37 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     filterOption: false,
     options: updatedOptions,
     searchValue,
-    dropdownRender: (menu: React.ReactNode) => (
-      <>
-        {!error && data.length && menu}
-        <Divider style={{ margin: '8px 0' }} />
-        {error ? (
-          <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
-        ) : (
-          <Space direction="vertical">
-            {data.length && (
-              <small style={{ padding: '4px 16px' }}>
-                {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
-                  recordsFetchedNum,
-                  remainingRecords,
-                })}
-              </small>
-            )}
-            <Button
-              type="text"
-              icon={<VerticalAlignBottomOutlined />}
-              disabled={!hasNextPage || isFetchingNextPage || isFetching}
-              loading={isFetchingNextPage}
-              onClick={() => fetchNextPage()}
-            >
-              {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
-            </Button>
-          </Space>
-        )}
-      </>
-    ),
+    dropdownRender: (menu: React.ReactNode) => {
+      return (
+        <>
+          {!error && data.length ? menu : null}
+          <Divider style={{ margin: '8px 0' }} />
+          {error ? (
+            <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
+          ) : (
+            <Space direction="vertical">
+              {data.length ? (
+                <small style={{ padding: '4px 16px' }}>
+                  {t('Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.', {
+                    recordsFetchedNum,
+                    remainingRecords,
+                  })}
+                </small>
+              ) : null}
+              <Button
+                type="text"
+                icon={<VerticalAlignBottomOutlined />}
+                disabled={!hasNextPage || isFetchingNextPage || isFetching}
+                loading={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+              >
+                {isFetchingNextPage ? t('Fetching next page') : t('Load more options')}
+              </Button>
+            </Space>
+          )}
+        </>
+      );
+    },
   };
   if (props.showSearch) {
     propsToSelect.onSearch = searchHandler;
