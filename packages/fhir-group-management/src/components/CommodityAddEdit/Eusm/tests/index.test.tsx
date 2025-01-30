@@ -285,10 +285,13 @@ it('can create new commodity', async () => {
   fireEvent.click(screen.getByRole('button', { name: /Save/i }));
 
   await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
+  });
+
+  await waitFor(() => {
     expect(errorNoticeMock).not.toHaveBeenCalled();
     expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
   });
-
   expect(nock.isDone()).toBeTruthy();
 });
 
@@ -403,11 +406,14 @@ it('edits resource', async () => {
   userEvent.click(screen.getByRole('button', { name: /Save/i }));
 
   await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
+  });
+
+  await waitFor(() => {
     expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
     expect(errorNoticeMock.mock.calls).toEqual([]);
   });
 
-  expect(nock.pendingMocks()).toEqual([]);
   expect(nock.isDone()).toBeTruthy();
 });
 
@@ -480,11 +486,13 @@ it('can remove product image', async () => {
   });
 
   await waitFor(() => {
+    expect(nock.pendingMocks()).toEqual([]);
+  });
+
+  await waitFor(() => {
     expect(errorNoticeMock.mock.calls).toEqual([]);
     expect(successNoticeMock.mock.calls).toEqual([['Commodity updated successfully']]);
   });
-
-  expect(nock.pendingMocks()).toEqual([]);
 });
 
 test('cancel handler is called on cancel', async () => {
@@ -503,6 +511,7 @@ test('cancel handler is called on cancel', async () => {
 
   fireEvent.click(cancelBtn);
   expect(history.location.pathname).toEqual('/commodity/list');
+  expect(nock.pendingMocks()).toEqual([]);
 });
 
 test('data loading problem', async () => {
@@ -523,4 +532,5 @@ test('data loading problem', async () => {
 
   // errors out
   expect(screen.getByText(/something aweful happened/)).toBeInTheDocument();
+  expect(nock.pendingMocks()).toEqual([]);
 });
