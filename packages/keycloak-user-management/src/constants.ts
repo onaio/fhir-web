@@ -54,3 +54,5 @@ export const userTypeField = 'userType' as const;
 export const enabledField = 'enabled' as const;
 export const userGroupsField = 'userGroups' as const;
 export const fhirCoreAppIdField = 'fhirCoreAppId' as const;
+export const passwordField = 'password' as const;
+export const passwordConfirmField = 'confirm' as const;

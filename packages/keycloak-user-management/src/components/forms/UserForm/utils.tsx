@@ -318,6 +318,7 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     email,
     enabled,
     fhirCoreAppId,
+    password,
   } = values;
   const preUserAttributes = {
     ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
@@ -339,6 +340,17 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     username,
     ...(email ? { email } : {}),
     enabled,
+    ...(password
+      ? {
+          credentials: [
+            {
+              type: 'password',
+              value: password,
+              temporary: false, // note - this should change if we add required actions.
+            },
+          ],
+        }
+      : {}),
     ...(some(cleanedAttributes) ? { attributes: cleanedAttributes } : {}),
   };
 

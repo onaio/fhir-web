@@ -12,6 +12,7 @@ import {
   ROUTE_PARAM_USER_ID,
   URL_USER,
   ROUTE_PARAM_USERNAME,
+  passwordField,
 } from '../../constants';
 import { useTranslation } from '../../mls';
 import {
@@ -147,42 +148,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
                 submitForm(values, userId, serviceClass, keycloakBaseURL, t)
               }
             >
-              <Form.Item
-                name="password"
-                label={t('Password')}
-                rules={[
-                  {
-                    required: true,
-                    message: t('Password is required'),
-                  },
-                ]}
-                hasFeedback
-              >
-                <Input.Password />
-              </Form.Item>
-
-              <Form.Item
-                name="confirm"
-                label={t('Confirm Password')}
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: t('Confirm Password is required'),
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      if (!value || getFieldValue('password') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(t('The two passwords that you entered do not match!'));
-                    },
-                  }),
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
+              <CredentialsFieldsRender />
               <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit" className="reset-password">
                   {t('Set password')}
@@ -202,3 +168,47 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
+
+export const CredentialsFieldsRender = () => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <Form.Item
+        name={passwordField}
+        label={t('Password')}
+        rules={[
+          {
+            required: true,
+            message: t('Password is required'),
+          },
+        ]}
+        hasFeedback
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item
+        name={'confirm'}
+        label={t('Confirm Password')}
+        dependencies={['password']}
+        hasFeedback
+        rules={[
+          {
+            required: true,
+            message: t('Confirm Password is required'),
+          },
+          ({ getFieldValue }) => ({
+            validator(rule, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(t('The two passwords that you entered do not match!'));
+            },
+          }),
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+    </>
+  );
+};
