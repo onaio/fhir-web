@@ -38,6 +38,8 @@ import {
   productUpdatedFlag,
 } from './fixtures';
 import { IFlag } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IFlag';
+import { RoleContext } from '@opensrp/rbac';
+import { superUserRole } from '@opensrp/react-utils';
 
 jest.mock('@opensrp/notifications', () => ({
   __esModule: true,
@@ -139,9 +141,11 @@ test('renders correctly and fetches data', async () => {
 
   render(
     <QueryClientProvider client={queryClient}>
-      <Router history={history}>
-        <ProductFlag {...defaultProps} />
-      </Router>
+      <RoleContext.Provider value={superUserRole}>
+        <Router history={history}>
+          <ProductFlag {...defaultProps} />
+        </Router>
+      </RoleContext.Provider>
     </QueryClientProvider>
   );
 
