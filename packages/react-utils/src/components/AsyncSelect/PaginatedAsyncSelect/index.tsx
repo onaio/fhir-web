@@ -189,7 +189,13 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     dropdownRender: (menu: React.ReactNode) => {
       return (
         <>
-          {!error && data.length ? menu : null}
+          {!error && data.length ? (
+            menu
+          ) : isLoading ? (
+            <Spin size="small" />
+          ) : (
+            <Empty description={t('No data')} />
+          )}
           <Divider style={{ margin: '8px 0' }} />
           {error ? (
             <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />
