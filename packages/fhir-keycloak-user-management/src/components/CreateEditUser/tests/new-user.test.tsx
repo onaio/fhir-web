@@ -307,7 +307,5 @@ test('renders correctly for new user', async () => {
     },
   ]);
 
-  expect(history.location.pathname).toEqual(
-    '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b/flopo'
-  );
+  expect(history.location.pathname).toEqual('/admin/users');
 });

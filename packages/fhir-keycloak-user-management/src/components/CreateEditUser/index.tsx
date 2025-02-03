@@ -1,7 +1,6 @@
 import {
   ConnectedCreateEditUser as BaseCreateEditUser,
   CreateEditPropTypes,
-  URL_USER_CREDENTIALS,
   FormFields,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
@@ -25,7 +24,6 @@ import {
 import React from 'react';
 import { v4 } from 'uuid';
 import { sendErrorNotification, sendSuccessNotification } from '@opensrp/notifications';
-import { history } from '@onaio/connected-reducer-registry';
 import { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
 import { IBundle } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IBundle';
 import { IGroup } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IGroup';
@@ -344,11 +342,6 @@ export const practitionerUpdater =
         })
         .catch(() => {
           return sendErrorNotification(practitionerErrorMessage);
-        })
-        .finally(() => {
-          if (!isEditMode) {
-            history.push(`${URL_USER_CREDENTIALS}/${userId}/${values.username}`);
-          }
         })
     );
   };
