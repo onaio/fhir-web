@@ -63,8 +63,8 @@ export const HealthCareAddEdit = (props: HealthCareAddEditProps) => {
   const initialValues = getHealthCareFormFields(healthCareService.data);
 
   const pageTitle = healthCareService.data
-    ? t('Edit team | {{name}}', { name: healthCareService.data.name ?? '' })
-    : t('Create team');
+    ? t('Edit organization | {{name}}', { name: healthCareService.data.name ?? '' })
+    : t('Create organization');
   const headerProps = {
     pageHeaderProps: {
       title: pageTitle,

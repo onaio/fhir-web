@@ -64,13 +64,13 @@ export const UserDetails = (props: Partial<UserDetailProps>) => {
         </div>
       )}
       <div className="mb-4 small">
-        <p className="mb-0 font-weight-bold">{t('Assigned Teams')}</p>
+        <p className="mb-0 font-weight-bold">{t('Assigned Organizations')}</p>
         {assignedTeams?.length ? (
           assignedTeams.map((team) => (
             <p key={team.identifier} className="mb-0" id="assignedTeam">{`${team.name}`}</p>
           ))
         ) : (
-          <p id="noAssignedTeams">{t('No Assigned Teams')}</p>
+          <p id="noAssignedTeams">{t('No Assigned Organizations')}</p>
         )}
       </div>
     </div>

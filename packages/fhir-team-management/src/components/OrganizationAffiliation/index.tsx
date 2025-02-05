@@ -62,7 +62,7 @@ export const AffiliationList: React.FC<LocationUnitListProps> = (props: Location
     tableNodes = [selectedNode, ...sortedNodes];
   }
 
-  const pageTitle = t('Team Assignment');
+  const pageTitle = t('Assign Organizations to Locations');
   const headerProps = {
     pageHeaderProps: {
       title: pageTitle,
