@@ -76,7 +76,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
   class="singleKeyValue-pair__default"
 >
   <dt>
-    Team id
+    Organization id
   </dt>
   <dd>
     205
@@ -89,7 +89,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
   class="singleKeyValue-pair__default"
 >
   <dt>
-    Team identifier
+    Organization identifier
   </dt>
   <dd>
     205
@@ -102,7 +102,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
   class="singleKeyValue-pair__default"
 >
   <dt>
-    Team status
+    Organization status
   </dt>
   <dd>
     Active
@@ -115,7 +115,7 @@ exports[`renders correctly when listing organizations: single key value pairs de
   class="singleKeyValue-pair__default"
 >
   <dt>
-    Team practitioners
+    Organization practitioners
   </dt>
   <dd>
     <ul

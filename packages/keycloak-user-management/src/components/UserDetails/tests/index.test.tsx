@@ -55,7 +55,9 @@ describe('components/TeamsDetail', () => {
   it('shows no team available message when team not available', () => {
     const newProps = { ...props, assignedTeams: [] };
     const wrapper = mount(<UserDetails {...newProps} />);
-    expect(wrapper.find('#noAssignedTeams').text()).toMatchInlineSnapshot(`"No Assigned Teams"`);
+    expect(wrapper.find('#noAssignedTeams').text()).toMatchInlineSnapshot(
+      `"No Assigned Organizations"`
+    );
   });
   it('shows spinner', () => {
     const newProps = { ...props, keycloakUser: undefined };
