@@ -44,7 +44,7 @@ function parseInventoryGroup(group: IGroup) {
     if (!dateString) return;
     const sampleDate = new Date(dateString);
     if (isNaN(sampleDate.getTime())) return;
-    return sampleDate.toLocaleDateString();
+    return sampleDate;
   };
 
   // invariant one member representing the product
@@ -171,14 +171,11 @@ function matchesSearch(obj: TableData, search: string) {
  * @param obj - obj to filter
  */
 function activeInventoryByAccEndDate(obj: TableData) {
-  if (obj.accountabilityEndDate === undefined) {
+  const endDate = obj.accountabilityEndDate;
+  if (endDate === undefined) {
     return true;
   }
-  const currentAccEndDate = Date.parse(obj.accountabilityEndDate);
-  if (!isNaN(currentAccEndDate)) {
-    return currentAccEndDate >= Date.now();
-  }
-  return false;
+  return endDate.getTime() >= Date.now();
 }
 
 export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) => {
@@ -253,11 +250,17 @@ export const InventoryView = ({ fhirBaseUrl, locationId }: InventoryViewProps) =
       title: t('Delivery dt.'),
       dataIndex: 'deliveryDate' as const,
       key: 'deliveryDate' as const,
+      render: (val?: Date) => {
+        return val?.toLocaleDateString();
+      },
     },
     {
       title: t('Acct. end dt.'),
       dataIndex: 'accountabilityEndDate' as const,
       key: 'accountabilityEndDate' as const,
+      render: (val?: Date) => {
+        return val?.toLocaleDateString();
+      },
     },
     {
       title: t('Unicef section'),
