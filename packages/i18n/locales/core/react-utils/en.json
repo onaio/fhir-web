@@ -1,12 +1,22 @@
 {
-  "403": "",
   "404": "",
   "Actions": "",
+  "Class": "",
+  "Date created": "",
   "Error": "",
+  "Fetching next page": "",
   "Go back": "",
   "Go home": "",
+  "ID": "",
+  "Load more options": "",
+  "No data": "",
+  "No data available": "",
   "Search": "",
+  "Showing {{recordsFetchedNum}}; {{remainingRecords}} more records.": "",
   "Something went wrong": "",
   "Sorry, the resource you requested for, does not exist": "",
-  "Sorry, you are not authorized to access this page": ""
+  "Sorry, you are not authorized to access this page": "",
+  "status": "",
+  "Unable to load dropdown options.": "",
+  "View details": ""
 }
