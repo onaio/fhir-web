@@ -24,6 +24,7 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import type { TFunction } from '@opensrp/i18n';
+import { PasswordStrengthMeter } from './passwordStrengthMeter';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -129,7 +130,8 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     },
   };
   const history = useHistory();
-  const heading = `${t('User Credentials')} | ${username}`;
+  const heading = t(`Reset password | {{username}}`, { username });
+
   const headerProps = {
     pageHeaderProps: {
       title: heading,
@@ -148,7 +150,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
                 submitForm(values, userId, serviceClass, keycloakBaseURL, t)
               }
             >
-              <CredentialsFieldsRender />
+              <CredentialsFieldsRender isReset={true} />
               <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit" className="reset-password">
                   {t('Set password')}
@@ -169,13 +171,18 @@ UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
 
-export const CredentialsFieldsRender = () => {
+export interface CredentialsFieldsRenderProps {
+  isReset?: boolean;
+}
+
+export const CredentialsFieldsRender = (props: CredentialsFieldsRenderProps) => {
+  const { isReset = false } = props;
   const { t } = useTranslation();
   return (
     <>
       <Form.Item
         name={passwordField}
-        label={t('Password')}
+        label={isReset ? t('New Password') : t('Password')}
         rules={[
           {
             required: true,
@@ -184,7 +191,7 @@ export const CredentialsFieldsRender = () => {
         ]}
         hasFeedback
       >
-        <Input.Password />
+        <PasswordStrengthMeter />
       </Form.Item>
 
       <Form.Item
