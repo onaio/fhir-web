@@ -10,6 +10,9 @@ const baseValuSetURI = 'http://smartregister.org/ValueSet';
 export const unicefSectionValueSetURI = `${baseValuSetURI}/eusm-unicef-sections`;
 export const unicefDonorValueSetURI = `${baseValuSetURI}/eusm-donors`;
 export const eusmServicePointValueSetURI = `${baseValuSetURI}/eusm-service-point-type`;
+export const inventoryRelTagIdSystemUri =
+  'https://smartregister.org/related-entity-location-tag-id';
+export const inventoryLocationTagIdSystemUri = 'https://smartregister.org/location-tag-id';
 
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,
@@ -81,4 +84,16 @@ export const productCheckCoding = {
   system: 'http://smartregister.org/',
   code: 'PRODCHECK',
   display: 'Product Check',
+};
+
+export const inventoryRelTagIdCoding = {
+  system: inventoryRelTagIdSystemUri,
+  display: 'Related Entity Location',
+  code: '', // the location id
+};
+
+export const inventoryLocationTagCoding = {
+  system: inventoryLocationTagIdSystemUri,
+  display: 'Practitioner Location',
+  code: '', // the location id
 };

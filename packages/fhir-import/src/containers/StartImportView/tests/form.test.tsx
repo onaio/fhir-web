@@ -86,7 +86,6 @@ test.skip('creates an import submission correctly', async () => {
   jest.spyOn(pkgConfig, 'getAllConfigs').mockImplementation(() => {
     return {
       productListId: 'productListId',
-      inventoryListId: 'inventoryListId',
     };
   });
 

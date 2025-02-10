@@ -150,7 +150,6 @@ We use different technologies to deploy fhir-web. This documentation will focus 
       // UUID's
       REACT_APP_FHIR_ROOT_LOCATION_ID: '<id-of-the-root-location-on-the-HAPI-server>',
       REACT_APP_COMMODITIES_LIST_RESOURCE_ID: '<id-of-a-list-on-HAPI-fhir-server>',
-      REACT_APP_FHIR_INVENTORY_LIST_ID: '<id-of-inventory-list-resource-on-HAPI--fhir-server>',
 
       // toggle fhir-web modules
       REACT_APP_ENABLE_FHIR_CARE_TEAM: 'false',
