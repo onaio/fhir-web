@@ -6,21 +6,24 @@ import ConnectedHeader from '../containers/ConnectedHeader';
 import ConnectedSidebar from '../containers/ConnectedSidebar';
 import './App.css';
 import { FHIRApps } from './fhir-apps';
+import { AntdLocaleProvider } from '../components/antdLocaleProvider';
 
 const { Content } = Layout;
 
 const App: React.FC = () => {
   return (
-    <Layout>
-      <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
-      <ConnectedSidebar />
-      <div className="body-wrapper">
-        <ConnectedHeader />
-        <Content>
-          <FHIRApps />
-        </Content>
-      </div>
-    </Layout>
+    <AntdLocaleProvider>
+      <Layout>
+        <Helmet titleTemplate={`%s | ${WEBSITE_NAME}`} defaultTitle="" />
+        <ConnectedSidebar />
+        <div className="body-wrapper">
+          <ConnectedHeader />
+          <Content>
+            <FHIRApps />
+          </Content>
+        </div>
+      </Layout>
+    </AntdLocaleProvider>
   );
 };
 

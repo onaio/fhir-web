@@ -14,6 +14,7 @@ import { useTranslation } from '../../../mls';
 import { getConfig, LanguageCode, setConfig } from '@opensrp/pkg-config';
 import { APP_LOGIN_URL } from '../../../configs/dispatchConfig';
 import { ButtonLink } from '@opensrp/react-utils';
+import { LocaleContext } from '../../antdLocaleProvider';
 
 /** interface for HeaderProps */
 export interface HeaderProps extends RouteComponentProps {
@@ -57,13 +58,17 @@ export const HeaderComponent: React.FC<HeaderProps> = (props: HeaderProps) => {
   const { user_id } = extraData;
   const { t, i18n } = useTranslation();
   const history = useHistory();
+  const { setLocale } = React.useContext(LocaleContext);
 
   /** default enum of all possible language options */
 
   const languageChangeHandler = languageChangeHandlerFactory(i18n);
   const languageSwitcherProps = {
     value: i18n.language,
-    onLanguageChange: languageChangeHandler,
+    onLanguageChange: (langaugeCode: string | number) => {
+      languageChangeHandler(langaugeCode);
+      setLocale(langaugeCode as LanguageCode);
+    },
     allLanguageOptions: languageOptions,
     supportedLanguages: SUPPORTED_LANGUAGES as LanguageCode[],
   };
