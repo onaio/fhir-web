@@ -42,7 +42,6 @@ export interface ConfigState {
   rbacStrategy?: KeycloakStrategies;
   practToOrgAssignmentStrategy?: PractToOrgAssignmentStrategy;
   productListId?: string;
-  inventoryListId?: string;
 }
 
 export interface UserPreference {
@@ -72,7 +71,6 @@ const defaultConfigs: Partial<GlobalState> = {
   rbacStrategy: 'keycloak',
   practToOrgAssignmentStrategy: PractToOrgAssignmentStrategy.ONE_TO_MANY,
   productListId: undefined,
-  inventoryListId: undefined,
 };
 
 let localstorage: UserPreference = localStorage.getItem(USER_PREFERENCE_KEY)

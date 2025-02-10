@@ -55,7 +55,6 @@ const { Item: FormItem } = Form;
 export interface LocationInventoryFormProps {
   fhirBaseURL: string;
   initialValues: GroupFormFields;
-  listResourceId: string;
   servicePointObj: ILocation;
   cancelUrl?: string;
   successUrl?: string;
@@ -90,7 +89,6 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
     fhirBaseURL,
     initialValues,
     inventoryId,
-    listResourceId,
     inventoryResourceObj,
     servicePointObj,
     commodityListId,
@@ -107,8 +105,13 @@ const AddLocationInventoryForm = (props: LocationInventoryFormProps) => {
 
   const { mutate, isLoading } = useMutation(
     async (values: GroupFormFields) => {
-      const payload = getLocationInventoryPayload(values, editMode, inventoryResourceObj);
-      return postLocationInventory(fhirBaseURL, payload, editMode, listResourceId, servicePointObj);
+      const payload = getLocationInventoryPayload(
+        values,
+        editMode,
+        servicePointObj,
+        inventoryResourceObj
+      );
+      return postLocationInventory(fhirBaseURL, payload, editMode, servicePointObj);
     },
     {
       onError: (error: Error) => {
