@@ -19,7 +19,7 @@ Object {
         onClick={[Function]}
         type="link"
       >
-        Credentials
+        Reset Password
       </Button>,
     },
     Object {
@@ -98,7 +98,7 @@ Object {
           onClick={[Function]}
           type="link"
         >
-          Credentials
+          Reset Password
         </Button>,
       },
       Object {
@@ -160,7 +160,7 @@ Object {
         onClick={[Function]}
         type="link"
       >
-        Credentials
+        Reset Password
       </Button>,
     },
     Object {
