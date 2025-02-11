@@ -186,6 +186,13 @@ describe('forms/userForm', () => {
     const usernameInput = document.querySelector('input#username') as Element;
     userEvent.type(usernameInput, 'TestOne');
 
+    //set password
+    const passwordInput = screen.getByLabelText('Password');
+    userEvent.type(passwordInput, 'passwoord!!');
+    // confirm set password
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password');
+    userEvent.type(confirmPasswordInput, 'passwoord!!');
+
     // set user email
     const emailInput = document.querySelector('input#email') as Element;
     userEvent.type(emailInput, 'testone@gmail.com');

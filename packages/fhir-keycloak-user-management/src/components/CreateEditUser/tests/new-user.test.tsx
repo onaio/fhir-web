@@ -6,7 +6,7 @@ import { CreateEditUser, practitionerUpdater, getPractitioner, getPractitionerRo
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import { screen, cleanup, fireEvent, render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
@@ -247,6 +247,13 @@ test('renders correctly for new user', async () => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(usernameInput!, 'flopo');
 
+  //set password
+  const passwordInput = screen.getByLabelText('Password');
+  userEvent.type(passwordInput, 'passwoord!!');
+  // confirm set password
+  const confirmPasswordInput = screen.getByLabelText('Confirm Password');
+  userEvent.type(confirmPasswordInput, 'passwoord!!');
+
   const submitButton = document.querySelector('button[type="submit"]');
 
   // find antd Select with id 'fhirCoreAppId' in the 'Form' component
@@ -300,7 +307,5 @@ test('renders correctly for new user', async () => {
     },
   ]);
 
-  expect(history.location.pathname).toEqual(
-    '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b/flopo'
-  );
+  expect(history.location.pathname).toEqual('/admin/users');
 });

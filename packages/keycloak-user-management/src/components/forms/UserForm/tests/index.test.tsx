@@ -17,7 +17,7 @@ import {
 import { act } from 'react-dom/test-utils';
 import { OPENSRP_API_BASE_URL } from '@opensrp/server-service';
 import { Router } from 'react-router';
-import { fhirCoreAppIdField, URL_USER } from '../../../../constants';
+import { fhirCoreAppIdField, passwordField, URL_USER } from '../../../../constants';
 import { UserFormProps } from '../types';
 import { getFormValues, postPutPractitioner } from '../utils';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -61,7 +61,7 @@ jest.mock('antd', () => {
 describe('components/forms/UserForm', () => {
   const nonFhirFields = commonFhirFields.filter((field) => field !== fhirCoreAppIdField);
   const props: UserFormProps = {
-    renderFields: nonFhirFields,
+    renderFields: nonFhirFields.filter((x) => x !== passwordField),
     initialValues: defaultUserFormInitialValues,
     keycloakBaseURL: 'https://keycloak-stage.smartregister.org/auth/admin/realms/opensrp-web-stage',
     baseUrl: OPENSRP_API_BASE_URL,
@@ -156,7 +156,6 @@ describe('components/forms/UserForm', () => {
   it('adds user', async () => {
     const wrapper = mount(
       <QueryClientProvider client={client}>
-        {' '}
         <UserForm {...{ ...props }} />
       </QueryClientProvider>
     );

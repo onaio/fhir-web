@@ -6,7 +6,6 @@ import { KeycloakUser, UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
-  URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
   PRACTITIONER,
   SUPERVISOR,
@@ -76,10 +75,6 @@ export const createOrEditPractitioners = async (
       }
     })
     .then(() => sendSuccessNotification(successMessage));
-
-  if (!isEditMode) {
-    history.push(`${URL_USER_CREDENTIALS}/${payload.userId}/${payload.username}`);
-  }
 };
 
 /**
@@ -212,9 +207,7 @@ export const submitForm = async (
     }
   });
 
-  if (isEditMode) {
-    history.push(URL_USER);
-  }
+  history.push(URL_USER);
 };
 
 // get the code of a practitioner resource type
@@ -318,6 +311,7 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     email,
     enabled,
     fhirCoreAppId,
+    password,
   } = values;
   const preUserAttributes = {
     ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
@@ -339,6 +333,17 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     username,
     ...(email ? { email } : {}),
     enabled,
+    ...(password
+      ? {
+          credentials: [
+            {
+              type: 'password',
+              value: password,
+              temporary: false, // note - this should change if we add required actions.
+            },
+          ],
+        }
+      : {}),
     ...(some(cleanedAttributes) ? { attributes: cleanedAttributes } : {}),
   };
 
