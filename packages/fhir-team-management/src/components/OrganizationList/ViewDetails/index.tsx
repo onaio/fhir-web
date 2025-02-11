@@ -129,7 +129,7 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   const assignedLocations = FindAssignedLocations(affiliationsData ?? [], id);
 
   const practitionerKeyValues = {
-    [t('Team practitioners')]: (
+    [t('Organization practitioners')]: (
       <ul id="practitioner-teams">
         {(assignedPractitioners ?? []).map((practitioner) => {
           const officialNames = getObjLike(practitioner.name, 'use', IdentifierUseCodes.OFFICIAL);
@@ -151,9 +151,9 @@ export const ViewDetails = (props: ViewDetailsProps) => {
   };
 
   const organizationKeyValues = {
-    [t('Team id')]: id,
-    [t('Team identifier')]: identifier,
-    [t('Team status')]: active ? t('Active') : t('Disabled'),
+    [t('Organization id')]: id,
+    [t('Organization identifier')]: identifier,
+    [t('Organization status')]: active ? t('Active') : t('Disabled'),
   };
 
   return (

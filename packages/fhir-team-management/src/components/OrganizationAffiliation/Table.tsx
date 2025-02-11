@@ -94,7 +94,9 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
 
   if ((affiliationsError && !affiliationsData) || (orgsError && !orgsData)) {
     return (
-      <BrokenPage errorMessage={t('Unable to load teams or teams assignments at the moment')} />
+      <BrokenPage
+        errorMessage={t('Unable to load organizations or their assignments at the moment')}
+      />
     );
   }
 
@@ -107,7 +109,7 @@ const AffiliationTable: React.FC<Props> = (props: Props) => {
       dataIndex: 'name',
     },
     {
-      title: t('Assigned teams'),
+      title: t('Assigned organizations'),
       render: (_, record) => {
         const { id } = record;
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
