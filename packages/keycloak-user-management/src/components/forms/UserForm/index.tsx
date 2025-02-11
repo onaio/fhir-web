@@ -1,7 +1,12 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { BodyLayout, formItemLayout, ClientSideActionsSelect, tailLayout } from '@opensrp/react-utils';
+import {
+  BodyLayout,
+  formItemLayout,
+  ClientSideActionsSelect,
+  tailLayout,
+} from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
