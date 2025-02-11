@@ -12,9 +12,13 @@ import {
   SUPERVISOR,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
-  SNOMED_CODEABLE_SYSTEM,
-  DEVICE_SETTING_CODEABLE_CODE,
 } from '../../../constants';
+import {
+  snomedCodeSystemUri,
+  loincCodeSystemUri,
+  deviceSettingCodeableCode,
+  loincMedicalRecordCodeableCode,
+} from '@opensrp/fhir-helpers';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
@@ -407,6 +411,6 @@ export const getCompositionOptions = (composition: IComposition) => {
 
 /** search param for filter to get composition resources of the type device setting */
 export const compositionUrlFilter = {
-  type: `${SNOMED_CODEABLE_SYSTEM}|${DEVICE_SETTING_CODEABLE_CODE}`,
-  _elements: 'identifier,title',
+  type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+  category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
 };

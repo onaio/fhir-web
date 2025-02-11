@@ -28,6 +28,13 @@ import { practitionerResourceType, practitionerRoleResourceType } from '../../..
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
 import { opensrpI18nInstance } from '@opensrp/i18n';
+import {
+  compositionResourceType,
+  deviceSettingCodeableCode,
+  loincCodeSystemUri,
+  loincMedicalRecordCodeableCode,
+  snomedCodeSystemUri,
+} from '@opensrp/fhir-helpers';
 
 jest.setTimeout(10000);
 
@@ -187,12 +194,18 @@ test('renders correctly for new user', async () => {
   nock(props.baseUrl).put(`/Group/${mockId}`, newGroup).reply(200, {});
 
   nock(props.baseUrl)
-    .get(`/Composition/_search`)
+    .get(`/${compositionResourceType}/_search`)
     .query({
-      _getpagesoffset: '0',
-      _count: '20',
-      type: `http://snomed.info/sct|1156600005`,
-      _elements: 'identifier,title',
+      _summary: 'count',
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
+    })
+    .reply(200, { total: compositionResource.total })
+    .get(`/${compositionResourceType}/_search`)
+    .query({
+      _count: compositionResource.total,
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
     })
     .reply(200, compositionResource)
     .persist();
