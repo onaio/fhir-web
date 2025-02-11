@@ -264,14 +264,14 @@ test('credentials view renders correctly', async () => {
   fireEvent.click(dropdown);
 
   // Clicking credentials takes you to the credentials view
-  const updateLink = screen.getByText(/Credentials/i);
+  const updateLink = screen.getByText(/Reset password/i);
   fireEvent.click(updateLink);
   expect(history.location.pathname).toEqual(
     `${URL_USER_CREDENTIALS}/081724e8-5fc1-47dd-8d0c-fa0c6ae6ddf0/april4petertest`
   );
 
   // Confirm we are in the credentials view
-  expect(screen.getByText(/User Credentials/i)).toBeInTheDocument();
+  expect(screen.getByText(/Reset password/i)).toBeInTheDocument();
 
   // Clicking cancel returns us to users
   fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
