@@ -1,8 +1,8 @@
 import React, { createContext, useState } from 'react';
 import { ConfigProvider } from 'antd';
 import { LanguageCode } from '@opensrp/pkg-config';
-import enUS from 'antd/es/locale/en_US';
-import frFR from 'antd/es/locale/fr_FR';
+import enUS from 'antd/lib/locale/en_US';
+import frFR from 'antd/lib/locale/fr_FR';
 import type { Locale } from 'antd/es/locale';
 import { opensrpI18nInstance } from '@opensrp/i18n';
 
