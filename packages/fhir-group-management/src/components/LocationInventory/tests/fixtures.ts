@@ -140,6 +140,21 @@ export const locationResourcePayload = {
   active: true,
   actual: false,
   type: 'substance',
+  meta: {
+    tag: [
+      {
+        code: 'service-point-id',
+        display: 'Related Entity Location',
+        system: 'https://smartregister.org/related-entity-location-tag-id',
+      },
+      {
+        code: 'service-point-id',
+        display: 'Practitioner Location',
+        system: 'https://smartregister.org/location-tag-id',
+      },
+    ],
+  },
+
   identifier: [
     {
       use: 'secondary',
@@ -209,8 +224,20 @@ export const locationInventoryList = {
     ],
     text: 'Supply Inventory List',
   },
-  title: 'Service Point',
-  subject: { reference: 'Location/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d' },
+  meta: {
+    tag: [
+      {
+        system: 'https://smartregister.org/related-entity-location-tag-id',
+        display: 'Related Entity Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+      {
+        system: 'https://smartregister.org/location-tag-id',
+        display: 'Practitioner Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+    ],
+  },
   entry: [
     {
       flag: {
@@ -227,6 +254,8 @@ export const locationInventoryList = {
       item: { reference: 'Group/67bb848e-f049-41f4-9c75-3b726664db67' },
     },
   ],
+  title: 'Service Point',
+  subject: { reference: 'Location/46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d' },
 };
 
 export const locationInventoryList1384 = {
@@ -296,6 +325,20 @@ export const updatedLocationInventoryList1 = {
       },
     ],
     text: 'Supply Inventory List',
+  },
+  meta: {
+    tag: [
+      {
+        system: 'https://smartregister.org/related-entity-location-tag-id',
+        display: 'Related Entity Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+      {
+        system: 'https://smartregister.org/location-tag-id',
+        display: 'Practitioner Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+    ],
   },
   entry: [
     {
@@ -1241,6 +1284,20 @@ export const unicefDonorsValueSet = {
 };
 
 export const createdInventoryGroup1 = {
+  meta: {
+    tag: [
+      {
+        system: 'https://smartregister.org/related-entity-location-tag-id',
+        display: 'Related Entity Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+      {
+        system: 'https://smartregister.org/location-tag-id',
+        display: 'Practitioner Location',
+        code: '46bb8a3f-cf50-4cc2-b421-fe4f77c3e75d',
+      },
+    ],
+  },
   resourceType: 'Group',
   id: '67bb848e-f049-41f4-9c75-3b726664db67',
   active: true,

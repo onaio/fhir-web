@@ -76,14 +76,11 @@ export const DataImportForm = (props: DataImportFormProps) => {
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
-  const { productListId, inventoryListId } = getAllConfigs();
+  const { productListId } = getAllConfigs();
   const listIdsSParams = new URLSearchParams();
 
   if (productListId) {
     listIdsSParams.append('productListId', productListId);
-  }
-  if (inventoryListId) {
-    listIdsSParams.append('inventoryListId', inventoryListId);
   }
 
   const { mutate, isLoading } = useMutation(
@@ -156,7 +153,6 @@ export const DataImportForm = (props: DataImportFormProps) => {
       label: t('Inventory'),
       UploadBtnText: t('Attach inventory file'),
       permissions: ['Group.create', 'Group.update'],
-      disabled: !inventoryListId,
       disabledReason: t('A list resource Id is not correctly configured'),
     },
     {
