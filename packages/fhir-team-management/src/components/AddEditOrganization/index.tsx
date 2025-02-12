@@ -97,8 +97,8 @@ export const AddEditOrganization = (props: AddEditOrganizationProps) => {
   const initialValues = getOrgFormFields(organization.data, assignedPractitionerRoles);
 
   const pageTitle = organization.data
-    ? t('Edit team | {{teamName}}', { teamName: organization.data.name ?? '' })
-    : t('Create team');
+    ? t('Edit organization | {{teamName}}', { teamName: organization.data.name ?? '' })
+    : t('Create organization');
   const headerProps = {
     pageHeaderProps: {
       title: pageTitle,

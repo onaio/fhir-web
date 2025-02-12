@@ -76,7 +76,7 @@ export const OrganizationList = (props: OrganizationListProps) => {
 
   const columns = [
     {
-      title: t('Team name'),
+      title: t('Organization name'),
       dataIndex: 'name' as const,
       key: 'name' as const,
     },

@@ -128,7 +128,9 @@ test('renders correctly for edit locations', async () => {
   expect(nock.pendingMocks()).toEqual([]);
 
   await waitFor(() => {
-    expect(screen.getByText('Edit team | OpenSRP web Test Organisation')).toBeInTheDocument();
+    expect(
+      screen.getByText('Edit organization | OpenSRP web Test Organisation')
+    ).toBeInTheDocument();
   });
 
   // some small but incoclusive proof that the form rendered and has some initial values

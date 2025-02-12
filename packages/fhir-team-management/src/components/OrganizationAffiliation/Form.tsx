@@ -65,7 +65,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
     {
       onError: (err: Error) => sendErrorNotification(err.message),
       onSuccess: () => {
-        sendSuccessNotification(t('Team assignments updated successfully'));
+        sendSuccessNotification(t('Organization assignments updated successfully'));
         handleCancel();
         queryClient.refetchQueries([organizationAffiliationResourceType]).catch(() => {
           sendInfoNotification(
@@ -92,7 +92,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
   return (
     <Modal
       destroyOnClose={true}
-      title={t(`Assign/Unassign Teams | {{locationName}}`, { locationName })}
+      title={t(`Assign/Unassign Organizations | {{locationName}}`, { locationName })}
       open={visible}
       okText="Save"
       onCancel={handleCancel}
@@ -126,7 +126,7 @@ export const AffiliationModal = (props: AffiliationModalProps) => {
         mode="multiple"
         allowClear
         showSearch
-        placeholder={t('Select teams')}
+        placeholder={t('Select organizations')}
         options={orgSelectOptions}
         defaultValue={defaultOrgsValues as unknown as string[]}
         filterOption={orgsFilterFunction}

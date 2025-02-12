@@ -131,7 +131,9 @@ const UserList = (props: UserListTypes): JSX.Element => {
       const organizations: Organization[] = await serve.read(practitionerId);
       return organizations;
     } catch (error) {
-      sendErrorNotification(t('There was a problem fetching teams assigned to Practitioner'));
+      sendErrorNotification(
+        t('There was a problem fetching organizations that practitioner is assigned to')
+      );
       return [];
     }
   };
@@ -158,7 +160,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
               });
             })
             .catch(() => {
-              sendErrorNotification(t('There was a problem fetching assigned teams'));
+              sendErrorNotification(t('There was a problem fetching assigned organizations'));
             });
         } else {
           setUserDetails({
@@ -169,7 +171,7 @@ const UserList = (props: UserListTypes): JSX.Element => {
         }
       })
       .catch(() => {
-        sendErrorNotification(t('There was a problem fetching practitioner'));
+        sendErrorNotification(t('There was a problem fetching practitioners'));
       });
   };
 

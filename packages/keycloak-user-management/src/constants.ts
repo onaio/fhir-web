@@ -42,8 +42,6 @@ export const UserQueryId = 'User';
 export const SUPERVISOR = 'supervisor';
 export const SUPERVISOR_USER_TYPE_CODE = '236321002';
 export const PRACTITIONER_USER_TYPE_CODE = '405623001';
-export const SNOMED_CODEABLE_SYSTEM = 'http://snomed.info/sct';
-export const DEVICE_SETTING_CODEABLE_CODE = '1156600005';
 
 // Form field name
 export const NATIONAL_ID_FORM_FIELD = 'nationalId' as const;
@@ -56,3 +54,5 @@ export const userTypeField = 'userType' as const;
 export const enabledField = 'enabled' as const;
 export const userGroupsField = 'userGroups' as const;
 export const fhirCoreAppIdField = 'fhirCoreAppId' as const;
+export const passwordField = 'password' as const;
+export const passwordConfirmField = 'confirm' as const;

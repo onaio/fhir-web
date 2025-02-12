@@ -8,3 +8,4 @@ export const ListResourceType = 'List';
 export const EncounterResourceType = 'Encounter';
 export const ObservationResourceType = 'Observation';
 export const PractitionerResourceType = 'Practitioner';
+export const compositionResourceType = 'Composition';

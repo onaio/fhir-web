@@ -2,6 +2,7 @@ export const smartregisterSystemUri = 'http://smartregister.org/codes';
 export const eusmServicePointCodeSystemUri =
   'http://smartregister.org/CodeSystem/eusm-service-point-type';
 export const snomedCodeSystemUri = 'http://snomed.info/sct';
+export const loincCodeSystemUri = 'http://loinc.org';
 export const hl7PhysicalTypeCodeSystemUri =
   'http://terminology.hl7.org/CodeSystem/location-physical-type';
 export const administrativeLevelSystemUri = 'https://smartregister.org/codes/administrative-level';
@@ -13,6 +14,9 @@ export const eusmServicePointValueSetURI = `${baseValuSetURI}/eusm-service-point
 export const inventoryRelTagIdSystemUri =
   'https://smartregister.org/related-entity-location-tag-id';
 export const inventoryLocationTagIdSystemUri = 'https://smartregister.org/location-tag-id';
+
+export const deviceSettingCodeableCode = '1156600005';
+export const loincMedicalRecordCodeableCode = '11503-0';
 
 export const poNumberIdentifierCoding = {
   system: smartregisterSystemUri,

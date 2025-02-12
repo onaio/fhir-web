@@ -1,7 +1,12 @@
 import React, { useEffect, useState, FC } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
-import { BodyLayout } from '@opensrp/react-utils';
+import {
+  BodyLayout,
+  formItemLayout,
+  ClientSideActionsSelect,
+  tailLayout,
+} from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
   getCompositionOptions,
@@ -23,6 +28,7 @@ import {
   firstNameField,
   lastNameField,
   NATIONAL_ID_FORM_FIELD,
+  passwordField,
   PHONE_NUMBER_FORM_FIELD,
   PRACTITIONER,
   SUPERVISOR,
@@ -30,8 +36,8 @@ import {
   usernameField,
   userTypeField,
 } from '../../../constants';
-import { PaginatedAsyncSelect } from '@opensrp/react-utils';
 import { IComposition } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IComposition';
+import { CredentialsFieldsRender } from '../../Credentials';
 
 const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   const {
@@ -61,23 +67,6 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
 
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const history = useHistory();
-  const layout = {
-    labelCol: {
-      xs: { offset: 0, span: 16 },
-      sm: { offset: 2, span: 10 },
-      md: { offset: 0, span: 8 },
-      lg: { offset: 0, span: 6 },
-    },
-    wrapperCol: { xs: { span: 24 }, sm: { span: 14 }, md: { span: 12 }, lg: { span: 10 } },
-  };
-  const tailLayout = {
-    wrapperCol: {
-      xs: { offset: 0, span: 16 },
-      sm: { offset: 12, span: 24 },
-      md: { offset: 8, span: 16 },
-      lg: { offset: 6, span: 14 },
-    },
-  };
   const status = [
     { label: t('Yes'), value: true },
     { label: t('No'), value: false },
@@ -114,7 +103,9 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
       ]);
     }
   }, [form, initialValues, userEnabled]);
-  const pageTitle = props.initialValues.id
+
+  const editing = !!props.initialValues.id;
+  const pageTitle = editing
     ? t('Edit User | {{username}}', { username: initialValues.username })
     : t('Add User');
   const headerProps = {
@@ -130,7 +121,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
         {/** If email is provided render edit user otherwise add user */}
         <Col className="bg-white p-3" span={24}>
           <Form
-            {...layout}
+            {...formItemLayout}
             form={form}
             initialValues={initialValues}
             onFinish={(values) => {
@@ -229,6 +220,8 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
               </Form.Item>
             ) : null}
 
+            {shouldRender(passwordField) && !editing ? <CredentialsFieldsRender /> : null}
+
             {shouldRender(userTypeField) ? (
               <Form.Item
                 id={userTypeField}
@@ -312,13 +305,13 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 rules={[{ required: true, message: t('Application Id is required') }]}
                 data-testid="fhirCoreAppId"
               >
-                <PaginatedAsyncSelect<IComposition>
-                  baseUrl={baseUrl}
+                <ClientSideActionsSelect<IComposition>
+                  fhirBaseUrl={baseUrl}
                   resourceType={compositionResourceType}
                   transformOption={getCompositionOptions}
                   extraQueryParams={compositionUrlFilter}
                   showSearch={true}
-                ></PaginatedAsyncSelect>
+                ></ClientSideActionsSelect>
               </Form.Item>
             ) : null}
 
@@ -362,6 +355,7 @@ export const commonFhirFields: FormFieldsKey[] = [
   'active',
   userGroupsField,
   fhirCoreAppIdField,
+  passwordField,
 ];
 
 UserForm.defaultProps = {

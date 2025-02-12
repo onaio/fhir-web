@@ -473,5 +473,6 @@ export const createdUser = {
   username: 'TestOne',
   email: 'testone@gmail.com',
   enabled: true,
+  credentials: [{ type: 'password', value: 'passwoord!!', temporary: false }],
   attributes: { fhir_core_app_id: ['cha'] },
 };

@@ -5,6 +5,7 @@ import { TFunction } from '@opensrp/i18n';
 import { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitionerRole';
 import {
   fhirCoreAppIdField,
+  passwordField,
   PRACTITIONER,
   SUPERVISOR,
   userGroupsField,
@@ -30,6 +31,7 @@ export interface FormFields
   keycloakUser?: KeycloakUser;
   practitionerRole?: IPractitionerRole;
   [fhirCoreAppIdField]?: string;
+  [passwordField]?: string;
 }
 
 export type FormFieldsKey = keyof FormFields | keyof UserAttributes;

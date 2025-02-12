@@ -32,10 +32,16 @@ import {
 import userEvent from '@testing-library/user-event';
 import * as notifications from '@opensrp/notifications';
 import { practitionerResourceType, practitionerRoleResourceType } from '../../../constants';
-import { fetchKeycloakUsers } from '@opensrp/user-management';
+import { compositionResourceType, fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
 import { opensrpI18nInstance } from '@opensrp/i18n';
 import { setConfig } from '@opensrp/pkg-config';
+import {
+  loincCodeSystemUri,
+  loincMedicalRecordCodeableCode,
+  snomedCodeSystemUri,
+  deviceSettingCodeableCode,
+} from '@opensrp/fhir-helpers';
 
 setConfig('projectCode', 'giz');
 
@@ -189,12 +195,18 @@ test('renders correctly for edit user', async () => {
     .reply(200, {});
 
   nock(props.baseUrl)
-    .get(`/Composition/_search`)
+    .get(`/${compositionResourceType}/_search`)
     .query({
-      _getpagesoffset: '0',
-      _count: '20',
-      type: `http://snomed.info/sct|1156600005`,
-      _elements: 'identifier,title',
+      _summary: 'count',
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
+    })
+    .reply(200, { total: compositionResource.total })
+    .get(`/${compositionResourceType}/_search`)
+    .query({
+      _count: compositionResource.total,
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
     })
     .reply(200, compositionResource)
     .persist();

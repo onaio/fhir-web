@@ -6,15 +6,18 @@ import { KeycloakUser, UserGroup } from '../../../ducks/user';
 import {
   KEYCLOAK_URL_USERS,
   URL_USER,
-  URL_USER_CREDENTIALS,
   KEYCLOAK_URL_USER_GROUPS,
   PRACTITIONER,
   SUPERVISOR,
   PRACTITIONER_USER_TYPE_CODE,
   SUPERVISOR_USER_TYPE_CODE,
-  SNOMED_CODEABLE_SYSTEM,
-  DEVICE_SETTING_CODEABLE_CODE,
 } from '../../../constants';
+import {
+  snomedCodeSystemUri,
+  loincCodeSystemUri,
+  deviceSettingCodeableCode,
+  loincMedicalRecordCodeableCode,
+} from '@opensrp/fhir-helpers';
 import { OpenSRPService } from '@opensrp/react-utils';
 import { FormFields, PractitionerUpdaterFun, SelectOption } from './types';
 import { Practitioner } from '@opensrp/team-management';
@@ -72,10 +75,6 @@ export const createOrEditPractitioners = async (
       }
     })
     .then(() => sendSuccessNotification(successMessage));
-
-  if (!isEditMode) {
-    history.push(`${URL_USER_CREDENTIALS}/${payload.userId}/${payload.username}`);
-  }
 };
 
 /**
@@ -208,9 +207,7 @@ export const submitForm = async (
     }
   });
 
-  if (isEditMode) {
-    history.push(URL_USER);
-  }
+  history.push(URL_USER);
 };
 
 // get the code of a practitioner resource type
@@ -314,6 +311,7 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     email,
     enabled,
     fhirCoreAppId,
+    password,
   } = values;
   const preUserAttributes = {
     ...(fhirCoreAppId ? { fhir_core_app_id: [fhirCoreAppId] } : {}),
@@ -335,6 +333,17 @@ export const getUserAndGroupsPayload = (values: FormFields) => {
     username,
     ...(email ? { email } : {}),
     enabled,
+    ...(password
+      ? {
+          credentials: [
+            {
+              type: 'password',
+              value: password,
+              temporary: false, // note - this should change if we add required actions.
+            },
+          ],
+        }
+      : {}),
     ...(some(cleanedAttributes) ? { attributes: cleanedAttributes } : {}),
   };
 
@@ -407,6 +416,6 @@ export const getCompositionOptions = (composition: IComposition) => {
 
 /** search param for filter to get composition resources of the type device setting */
 export const compositionUrlFilter = {
-  type: `${SNOMED_CODEABLE_SYSTEM}|${DEVICE_SETTING_CODEABLE_CODE}`,
-  _elements: 'identifier,title',
+  type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+  category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
 };

@@ -82,7 +82,7 @@ export const getTableColumns = (
               history.push(`${URL_USER_CREDENTIALS}/${record.id}/${record.username}`);
             }}
           >
-            {t('Credentials')}
+            {t('Reset password')}
           </Button>
         ),
       },

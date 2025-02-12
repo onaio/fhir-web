@@ -153,11 +153,11 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       </FormItem>
 
       <FormItem name={name} rules={validationRules.name} id="name" label={t('Name')}>
-        <Input placeholder={t('Enter team name')} />
+        <Input placeholder={t('Enter organization name')} />
       </FormItem>
 
       <FormItem name={alias} rules={validationRules.alias} id="alias" label={t('Alias')}>
-        <Input placeholder={t('Enter team alias')} />
+        <Input placeholder={t('Enter organization alias')} />
       </FormItem>
 
       <FormItem id="status" name={active} label="Status" rules={validationRules.status}>

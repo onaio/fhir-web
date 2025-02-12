@@ -12,6 +12,7 @@ import {
   ROUTE_PARAM_USER_ID,
   URL_USER,
   ROUTE_PARAM_USERNAME,
+  passwordField,
 } from '../../constants';
 import { useTranslation } from '../../mls';
 import {
@@ -23,6 +24,7 @@ import {
 import { Dictionary } from '@onaio/utils';
 import { sendSuccessNotification, sendErrorNotification } from '@opensrp/notifications';
 import type { TFunction } from '@opensrp/i18n';
+import { PasswordStrengthMeter } from './passwordStrengthMeter';
 
 reducerRegistry.register(keycloakUsersReducerName, keycloakUsersReducer);
 
@@ -128,7 +130,8 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
     },
   };
   const history = useHistory();
-  const heading = `${t('User Credentials')} | ${username}`;
+  const heading = t(`Reset password | {{username}}`, { username });
+
   const headerProps = {
     pageHeaderProps: {
       title: heading,
@@ -147,42 +150,7 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
                 submitForm(values, userId, serviceClass, keycloakBaseURL, t)
               }
             >
-              <Form.Item
-                name="password"
-                label={t('Password')}
-                rules={[
-                  {
-                    required: true,
-                    message: t('Password is required'),
-                  },
-                ]}
-                hasFeedback
-              >
-                <Input.Password />
-              </Form.Item>
-
-              <Form.Item
-                name="confirm"
-                label={t('Confirm Password')}
-                dependencies={['password']}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: t('Confirm Password is required'),
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      if (!value || getFieldValue('password') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(t('The two passwords that you entered do not match!'));
-                    },
-                  }),
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
+              <CredentialsFieldsRender isReset={true} />
               <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit" className="reset-password">
                   {t('Set password')}
@@ -202,3 +170,52 @@ const UserCredentials: React.FC<CredentialsPropsTypes> = (props: CredentialsProp
 UserCredentials.defaultProps = defaultCredentialsProps;
 
 export { UserCredentials };
+
+export interface CredentialsFieldsRenderProps {
+  isReset?: boolean;
+}
+
+export const CredentialsFieldsRender = (props: CredentialsFieldsRenderProps) => {
+  const { isReset = false } = props;
+  const { t } = useTranslation();
+  return (
+    <>
+      <Form.Item
+        name={passwordField}
+        label={isReset ? t('New Password') : t('Password')}
+        rules={[
+          {
+            required: true,
+            message: t('Password is required'),
+          },
+        ]}
+        hasFeedback
+      >
+        <PasswordStrengthMeter />
+      </Form.Item>
+
+      <Form.Item
+        name={'confirm'}
+        label={t('Confirm Password')}
+        dependencies={['password']}
+        hasFeedback
+        rules={[
+          {
+            required: true,
+            message: t('Confirm Password is required'),
+          },
+          ({ getFieldValue }) => ({
+            validator(rule, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(t('The two passwords that you entered do not match!'));
+            },
+          }),
+        ]}
+      >
+        <Input.Password />
+      </Form.Item>
+    </>
+  );
+};

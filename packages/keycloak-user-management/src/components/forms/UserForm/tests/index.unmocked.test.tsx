@@ -156,7 +156,10 @@ describe('forms/userForm', () => {
 
     nock(propsOwn.baseUrl)
       .get(`/${compositionResourceType}/_search`)
-      .query({ _getpagesoffset: '0', _count: '20', ...compositionUrlFilter })
+      .query({ _summary: 'count', ...compositionUrlFilter })
+      .reply(200, { total: compositionPage1.entry.length })
+      .get(`/${compositionResourceType}/_search`)
+      .query({ _count: '5', ...compositionUrlFilter })
       .reply(200, compositionPage1);
 
     const newId = 'keycloakNewUserId';
@@ -182,6 +185,13 @@ describe('forms/userForm', () => {
     // set username
     const usernameInput = document.querySelector('input#username') as Element;
     userEvent.type(usernameInput, 'TestOne');
+
+    //set password
+    const passwordInput = screen.getByLabelText('Password');
+    userEvent.type(passwordInput, 'passwoord!!');
+    // confirm set password
+    const confirmPasswordInput = screen.getByLabelText('Confirm Password');
+    userEvent.type(confirmPasswordInput, 'passwoord!!');
 
     // set user email
     const emailInput = document.querySelector('input#email') as Element;

@@ -243,7 +243,7 @@ test('Edits organization affiliation correctly', async () => {
   fireEvent.click(submitBtn);
 
   await waitFor(() => {
-    expect(successMock).toHaveBeenCalledWith('Team assignments updated successfully');
+    expect(successMock).toHaveBeenCalledWith('Organization assignments updated successfully');
     expect(screen.queryByText(/Assign\/Unassign Teams/i)).not.toBeInTheDocument();
   });
 
@@ -272,7 +272,7 @@ test('Edits organization affiliation correctly', async () => {
   expect(nock.isDone()).toBeTruthy();
 
   await waitFor(() => {
-    expect(successMock).toHaveBeenCalledWith('Team assignments updated successfully');
+    expect(successMock).toHaveBeenCalledWith('Organization assignments updated successfully');
   });
 
   unmount();

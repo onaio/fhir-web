@@ -92,7 +92,7 @@ const TableActions = (props: Props): JSX.Element => {
             data-testid="credentials"
             onClick={() => history.push(`${URL_USER_CREDENTIALS}/${record.id}/${record.username}`)}
           >
-            {t('Credentials')}
+            {t('Reset Password')}
           </Button>
         ),
       },

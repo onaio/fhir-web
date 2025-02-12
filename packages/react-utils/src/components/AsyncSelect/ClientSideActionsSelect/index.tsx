@@ -1,7 +1,7 @@
 import React from 'react';
 import { URLParams } from '@opensrp/server-service';
 import { useQuery } from 'react-query';
-import { Divider, Select, Empty, Spin, Alert } from 'antd';
+import { Select, Empty, Spin, Alert } from 'antd';
 import { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { getResourcesFromBundle } from '../../../helpers/utils';
 import { useTranslation } from '../../../mls';
@@ -79,8 +79,13 @@ export function ClientSideActionsSelect<ResourceT extends IResource>(
     options,
     dropdownRender: (menu: React.ReactNode) => (
       <>
-        {!error && options?.length && menu}
-        <Divider style={{ margin: '8px 0' }} />
+        {!error && options?.length ? (
+          menu
+        ) : isLoading ? (
+          <Spin size="small" />
+        ) : (
+          <Empty description={t('No data')} />
+        )}
         {error && <Alert message={t('Unable to load dropdown options.')} type="error" showIcon />}
       </>
     ),

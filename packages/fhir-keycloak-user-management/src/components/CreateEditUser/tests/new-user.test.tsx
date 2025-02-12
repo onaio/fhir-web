@@ -6,7 +6,7 @@ import { CreateEditUser, practitionerUpdater, getPractitioner, getPractitionerRo
 import { Provider } from 'react-redux';
 import { store } from '@opensrp/store';
 import nock from 'nock';
-import { cleanup, fireEvent, render } from '@testing-library/react';
+import { screen, cleanup, fireEvent, render } from '@testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { authenticateUser } from '@onaio/session-reducer';
 import fetch from 'jest-fetch-mock';
@@ -28,6 +28,13 @@ import { practitionerResourceType, practitionerRoleResourceType } from '../../..
 import { fetchKeycloakUsers } from '@opensrp/user-management';
 import { history } from '@onaio/connected-reducer-registry';
 import { opensrpI18nInstance } from '@opensrp/i18n';
+import {
+  compositionResourceType,
+  deviceSettingCodeableCode,
+  loincCodeSystemUri,
+  loincMedicalRecordCodeableCode,
+  snomedCodeSystemUri,
+} from '@opensrp/fhir-helpers';
 
 jest.setTimeout(10000);
 
@@ -187,12 +194,18 @@ test('renders correctly for new user', async () => {
   nock(props.baseUrl).put(`/Group/${mockId}`, newGroup).reply(200, {});
 
   nock(props.baseUrl)
-    .get(`/Composition/_search`)
+    .get(`/${compositionResourceType}/_search`)
     .query({
-      _getpagesoffset: '0',
-      _count: '20',
-      type: `http://snomed.info/sct|1156600005`,
-      _elements: 'identifier,title',
+      _summary: 'count',
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
+    })
+    .reply(200, { total: compositionResource.total })
+    .get(`/${compositionResourceType}/_search`)
+    .query({
+      _count: compositionResource.total,
+      type: `${loincCodeSystemUri}|${loincMedicalRecordCodeableCode}`,
+      category: `${snomedCodeSystemUri}|${deviceSettingCodeableCode}`,
     })
     .reply(200, compositionResource)
     .persist();
@@ -233,6 +246,13 @@ test('renders correctly for new user', async () => {
   const usernameInput = document.querySelector('input#username');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   userEvent.type(usernameInput!, 'flopo');
+
+  //set password
+  const passwordInput = screen.getByLabelText('Password');
+  userEvent.type(passwordInput, 'passwoord!!');
+  // confirm set password
+  const confirmPasswordInput = screen.getByLabelText('Confirm Password');
+  userEvent.type(confirmPasswordInput, 'passwoord!!');
 
   const submitButton = document.querySelector('button[type="submit"]');
 
@@ -287,7 +307,5 @@ test('renders correctly for new user', async () => {
     },
   ]);
 
-  expect(history.location.pathname).toEqual(
-    '/admin/users/credentials/cab07278-c77b-4bc7-b154-bcbf01b7d35b/flopo'
-  );
+  expect(history.location.pathname).toEqual('/admin/users');
 });
