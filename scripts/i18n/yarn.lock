@@ -234,6 +234,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opensrp/scripts-i18n@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/scripts-i18n@workspace:."
+  dependencies:
+    gulp: ^5.0.0
+    i18next-parser: ^9.0.2
+  bin:
+    scripts-i18n: cli.js
+  languageName: unknown
+  linkType: soft
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -2454,15 +2465,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scripts@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "scripts@workspace:."
-  dependencies:
-    gulp: ^5.0.0
-    i18next-parser: ^9.0.2
-  languageName: unknown
-  linkType: soft
-
 "semver-greatest-satisfied-range@npm:^2.0.0":
   version: 2.0.0
   resolution: "semver-greatest-satisfied-range@npm:2.0.0"
@@ -2812,9 +2814,9 @@ __metadata:
   linkType: hard
 
 "undici@npm:^6.19.5":
-  version: 6.21.0
-  resolution: "undici@npm:6.21.0"
-  checksum: bc2eb26c4b010a4f816314d48d4529f62b1116405097b2c5f0ac68247c56049a857d11a9f05b237818f04ce4f51d6f5e8d6fcc6aae2ab816c2b7318a9706727c
+  version: 6.21.1
+  resolution: "undici@npm:6.21.1"
+  checksum: 2efc52f77224754a2efa7cb6459829f3c93c8321d17e76f574a904b353783d95073b6116f5b15637c4845d98c9dc5a019b809cb9d63b3529267e7727c49f6996
   languageName: node
   linkType: hard
 
