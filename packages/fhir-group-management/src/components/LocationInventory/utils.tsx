@@ -17,7 +17,6 @@ import {
   unicefSection,
 } from '../../constants';
 import { IList } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IList';
-import { cloneDeep } from 'lodash';
 import { GroupFormFields } from './types';
 import { GroupMember } from '@smile-cdr/fhirts/dist/FHIR-R4/classes/groupMember';
 import { v4 } from 'uuid';
@@ -38,6 +37,8 @@ import {
   donorCharacteristicCoding,
   getCharacteristicWithCoding,
   inventoryGroupCoding,
+  inventoryLocationTagCoding,
+  inventoryRelTagIdCoding,
   poNumberIdentifierCoding,
   quantityCharacteristicCoding,
   sectionCharacteristicCoding,
@@ -256,17 +257,28 @@ export const generateIdentifier = (
  *
  * @param values - form values
  * @param editMode - editing form?
+ * @param servicePoint - service point for which we are creating inventory
  * @param listResourceObj - resource object available on edit
  * @returns returns group resource payload
  */
 export const getLocationInventoryPayload = (
   values: GroupFormFields,
   editMode: boolean,
+  servicePoint: ILocation,
   listResourceObj?: IGroup
 ): IGroup => {
   const donor = values.donor ? JSON.parse(values.donor) : values.donor;
   const unicefSection = values.unicefSection ? JSON.parse(values.unicefSection) : {};
   const payload: IGroup = {
+    meta: {
+      tag: [
+        { ...inventoryRelTagIdCoding, code: servicePoint.id },
+        {
+          ...inventoryLocationTagCoding,
+          code: servicePoint.id,
+        },
+      ],
+    },
     resourceType: groupResourceType,
     id: values.id || v4(),
     active: true,
@@ -299,39 +311,42 @@ export const postPutGroup = (baseUrl: string, payload: IGroup) => {
   return serve.update(payload);
 };
 
-/**
- * Gets list resource for given id, create it if it does not exist
- *
- * @param baseUrl - api base url
- * @param listId - list id
- */
-export async function getOrCreateList(baseUrl: string, listId: string) {
-  const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
-  return serve.read(listId).catch((err) => {
-    if (err.statusCode === 404) {
-      // TODO - do we have to create the template here and then have to upload an updated version
-      return createListResource(baseUrl, listId);
-    }
-    throw err;
-  });
-}
+// /**
+//  * Gets list resource for given id, create it if it does not exist
+//  *
+//  * @param baseUrl - api base url
+//  * @param listId - list id
+//  */
+// export async function getOrCreateList(baseUrl: string, listId: string, servicePointId: string) {
+//   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
+//   return serve.read(listId).catch((err) => {
+//     if (err.statusCode === 404) {
+//       // TODO - do we have to create the template here and then have to upload an updated version
+//       return createListResource(baseUrl, listId, servicePointId);
+//     }
+//     throw err;
+//   });
+// }
 
 /**
  * Gets list resource for given id, create it if it does not exist
  *
  * @param baseUrl - api base url
  * @param listId - list id
+ * @param servicePointId - service point for which we are creating inventory
  * @param entries - resource entries
  * @param listResource - a list resource
  */
 export async function createListResource(
   baseUrl: string,
   listId: string,
+  servicePointId: string,
   entries?: ListEntry[],
   listResource?: IList
 ) {
   const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
-  const listResourceToUse = listResource || createLocationServicePointList(listId, entries);
+  const listResourceToUse =
+    listResource || createLocationServicePointList(listId, servicePointId, entries);
   return serve.update(listResourceToUse);
 }
 
@@ -341,21 +356,19 @@ export async function createListResource(
  * @param baseUrl - api base url
  * @param payload - location inventory payload
  * @param editMode - editing data?
- * @param listResourceId - env location list resource uuid
  * @param servicePointObj - inventory service point object
  */
 export async function postLocationInventory(
   baseUrl: string,
   payload: IGroup,
   editMode: boolean,
-  listResourceId: string,
   servicePointObj: ILocation
 ) {
   // create group resource for inventory
   const groupResource = await postPutGroup(baseUrl, payload);
   if (!editMode) {
     const groupResourceId = groupResource.id as string;
-    const listId = v4();
+    let listId = v4();
     // create group resource that links products to to a location.
     const locationInventoryListBundle = await new FHIRServiceClass<IBundle>(
       baseUrl,
@@ -373,62 +386,43 @@ export async function postLocationInventory(
     let locationInventoryList = locationInventoryListBundle
       ? getResourcesFromBundle<IList>(locationInventoryListBundle)[0]
       : undefined;
+    listId = locationInventoryList?.id ?? listId;
     locationInventoryList = createUpdateLocationInventoryList(
       listId,
       groupResourceId,
       servicePointObj,
       locationInventoryList
     );
-    await createListResource(baseUrl, listId, undefined, locationInventoryList);
-
-    if (listResourceId) {
-      const combinedListResource = updateListReferencesFactory(baseUrl, listResourceId);
-      await combinedListResource(groupResourceId, locationInventoryList.id as string, editMode);
-    }
+    await createListResource(
+      baseUrl,
+      listId,
+      servicePointObj.id as string,
+      undefined,
+      locationInventoryList
+    );
   }
   return groupResource;
 }
 
 /**
- * Updates the global list that holds a reference to all other inventory groups
- * as well as the product groups assigned in the inventory groups.
- *
- * @param baseUrl - the api base url
- * @param globalInventoryListId - list resource id to add the group to
- */
-export const updateListReferencesFactory =
-  (baseUrl: string, globalInventoryListId: string) =>
-  async (groupResourceId: string, locationInventoryListId: string, editingGroup: boolean) => {
-    const commoditiesListResource = await getOrCreateList(baseUrl, globalInventoryListId);
-    const payload = cloneDeep(commoditiesListResource);
-
-    let existingEntries = payload.entry ?? [];
-    if (!editingGroup) {
-      existingEntries.push(
-        { item: { reference: `${groupResourceType}/${groupResourceId}` } },
-        { item: { reference: `${listResourceType}/${locationInventoryListId}` } }
-      );
-    }
-    existingEntries = Array.from(
-      new Map(existingEntries.map((entry) => [entry.item.reference, entry])).values()
-    );
-    if (existingEntries.length) {
-      payload.entry = existingEntries;
-    }
-
-    const serve = new FHIRServiceClass<IList>(baseUrl, listResourceType);
-    return serve.update(payload);
-  };
-
-/**
  * Creates an object of list resource keys
  *
  * @param id - externally defined id that will be the id of the new list resource
+ * @param servicePointId - service point for which we are creating inventory
  */
-function createCommonListResource(id: string): IList {
+function createCommonListResource(id: string, servicePointId: string): IList {
   return {
     resourceType: listResourceType,
     id: id,
+    meta: {
+      tag: [
+        { ...inventoryRelTagIdCoding, code: servicePointId },
+        {
+          ...inventoryLocationTagCoding,
+          code: servicePointId,
+        },
+      ],
+    },
     identifier: [
       {
         use: IdentifierUseCodes.OFFICIAL,
@@ -448,10 +442,15 @@ function createCommonListResource(id: string): IList {
  * This is so that the list resource can then be used when configuring the fhir mobile client
  *
  * @param id - externally defined id that will be the id of the new list resource
+ * @param servicePointId - service point for which we are creating inventory
  * @param entries - list of resource entries
  */
-export function createLocationServicePointList(id: string, entries?: ListEntry[]): IList {
-  const commonResources = createCommonListResource(id);
+export function createLocationServicePointList(
+  id: string,
+  servicePointId: string,
+  entries?: ListEntry[]
+): IList {
+  const commonResources = createCommonListResource(id, servicePointId);
   return {
     ...commonResources,
     mode: 'working',
@@ -477,8 +476,8 @@ export function createUpdateLocationInventoryList(
   currentLocationInventory?: IGroup
 ): IList {
   const existingLocationInventory = currentLocationInventory ?? {};
-  const commonResources = createCommonListResource(id);
   const { name, id: servicePointId } = servicePoint;
+  const commonResources = createCommonListResource(id, servicePointId as string);
   const now = new Date();
   const stringDate = now.toISOString();
   const newEntry: ListEntry = {
@@ -491,13 +490,13 @@ export function createUpdateLocationInventoryList(
     item: { reference: `${groupResourceType}/${InventoryResourceId}` },
   };
   const listPayload: IList = {
+    ...existingLocationInventory,
     ...commonResources,
-    entry: [],
     title: name,
     subject: { reference: `Location/${servicePointId}` },
-    ...existingLocationInventory,
   };
-  listPayload.entry?.push(newEntry);
+  listPayload.entry = listPayload.entry ?? [];
+  listPayload.entry.push(newEntry);
   return listPayload;
 }
 

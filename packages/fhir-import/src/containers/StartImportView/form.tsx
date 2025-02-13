@@ -76,14 +76,11 @@ export const DataImportForm = (props: DataImportFormProps) => {
   const history = useHistory();
   const { t } = useTranslation();
   const goTo = (url = '#') => history.push(url);
-  const { productListId, inventoryListId } = getAllConfigs();
+  const { productListId } = getAllConfigs();
   const listIdsSParams = new URLSearchParams();
 
   if (productListId) {
     listIdsSParams.append('productListId', productListId);
-  }
-  if (inventoryListId) {
-    listIdsSParams.append('inventoryListId', inventoryListId);
   }
 
   const { mutate, isLoading } = useMutation(
@@ -120,53 +117,59 @@ export const DataImportForm = (props: DataImportFormProps) => {
       label: t('Users'),
       UploadBtnText: t('Attach users file'),
       permissions: ['iam_user.create', 'Practitioner.create', 'iam_user.update'],
+      disabled: false,
+      disabledReason: undefined,
     },
     {
       formFieldName: locations,
       label: t('Locations'),
       UploadBtnText: t('Attach locations file'),
       permissions: ['Location.create', 'Location.update'],
+      disabled: false,
     },
     {
       formFieldName: organizations,
       label: t('Organizations'),
       UploadBtnText: t('Attach organizations file'),
       permissions: ['Organization.create', 'Organization.update'],
+      disabled: false,
     },
     {
       formFieldName: careteams,
       label: t('CareTeams'),
       UploadBtnText: t('Attach careTeams file'),
       permissions: ['CareTeam.create', 'CareTeam.update'],
+      disabled: false,
     },
     {
       formFieldName: orgToLocationAssignment,
       label: t('Organization location assignment'),
       UploadBtnText: t('Attach assignment file'),
       permissions: ['OrganizationAffiliation.create', 'OrganizationAffiliation.update'],
+      disabled: false,
     },
     {
       formFieldName: userToOrganizationAssignment,
       label: t('User organization assignment'),
       UploadBtnText: t('Attach assignment file'),
       permissions: ['PractitionerRole.create', 'PractitionerRole.update'],
+      disabled: false,
     },
-    {
-      formFieldName: inventories,
-      label: t('Inventory'),
-      UploadBtnText: t('Attach inventory file'),
-      permissions: ['Group.create', 'Group.update'],
-      disabled: !inventoryListId,
-      disabledReason: t('A list resource Id is not correctly configured'),
-    },
-    {
-      formFieldName: products,
-      label: t('Products'),
-      UploadBtnText: t('Attach product file'),
-      permissions: ['Group.create', 'Group.update'],
-      disabled: !productListId,
-      disabledReason: t('A list resource Id is not correctly configured'),
-    },
+    // {
+    //   formFieldName: inventories,
+    //   label: t('Inventory'),
+    //   UploadBtnText: t('Attach inventory file'),
+    //   permissions: ['Group.create', 'Group.update'],
+    //   disabledReason: t('A list resource Id is not correctly configured'),
+    // },
+    // {
+    //   formFieldName: products,
+    //   label: t('Products'),
+    //   UploadBtnText: t('Attach product file'),
+    //   permissions: ['Group.create', 'Group.update'],
+    //   disabled: !productListId,
+    //   disabledReason: t('A list resource Id is not correctly configured'),
+    // },
   ];
 
   return (
@@ -186,10 +189,9 @@ export const DataImportForm = (props: DataImportFormProps) => {
         {formItems.map((item) => {
           const { formFieldName, label, UploadBtnText, permissions, disabled, disabledReason } =
             item;
-          const disableInfoProps =
-            disabled && disabledReason
-              ? { validateStatus: 'warning' as const, help: disabledReason }
-              : {};
+          const disableInfoProps = ((disabled && disabledReason) as boolean | undefined)
+            ? { validateStatus: 'warning' as const, help: disabledReason }
+            : {};
           return (
             <RbacCheck permissions={permissions} key={formFieldName}>
               <Form.Item

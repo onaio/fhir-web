@@ -15,7 +15,6 @@ import {
   formValues,
   locationResourcePayload,
   locationInventoryList,
-  allInventoryList,
   productsList,
   unicefDonorsValueSet,
   unicefSectionValueSet,
@@ -67,13 +66,11 @@ const queryClient = new QueryClient({
   },
 });
 
-const listResourceId = 'list-resource-id';
 const props = {
   fhirBaseURL: 'http://test.server.org',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialValues: {} as any,
   inventoryId: undefined,
-  listResourceId,
   inventoryResourceObj: undefined,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   servicePointObj: servicePointDatum as any,
@@ -182,12 +179,6 @@ test('creates new inventory as expected', async () => {
       code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
     })
     .reply(404, { message: 'Not found' })
-    .get(`/${listResourceType}/${listResourceId}`)
-    .reply(404, { message: 'Not found' })
-    .put(`/${listResourceType}/${listResourceId}`, { ...allInventoryList, entry: [] })
-    .reply(201, { ...allInventoryList, entry: [] })
-    .put(`/${listResourceType}/${listResourceId}`, allInventoryList)
-    .reply(201, allInventoryList)
     .persist();
 
   const successNoticeMock = jest
@@ -260,6 +251,7 @@ test('creates new inventory as expected', async () => {
 
   await waitFor(() => {
     expect(postCreationalScope.isDone()).toBeTruthy();
+    expect(preFetchScope.isDone()).toBeTruthy();
     expect(errorNoticeMock).not.toHaveBeenCalled();
     expect(successNoticeMock.mock.calls).toEqual([['Location inventory created successfully']]);
   });
@@ -297,13 +289,6 @@ test('#1384 - correctly updates location inventory', async () => {
     .reply(200, unicefDonorsValueSet)
     .persist();
 
-  const updatedAllInventoryList = {
-    ...allInventoryList,
-    entry: [
-      ...allInventoryList.entry,
-      { item: { reference: 'List/9f4edfe3-ac84-449f-8640-f0d297e75ff5' } },
-    ],
-  };
   const postCreationalScope = nock(props.fhirBaseURL)
     .put(`/${groupResourceType}/${mockResourceId}`, createdInventoryGroup1)
     .reply(201, createdInventoryGroup1)
@@ -313,12 +298,8 @@ test('#1384 - correctly updates location inventory', async () => {
       code: `${smartregisterSystemUri}|${servicePointProfileInventoryListCoding.code}`,
     })
     .reply(200, locationInventoryList1384Bundle)
-    .get(`/${listResourceType}/${listResourceId}`)
-    .reply(200, allInventoryList)
     .put(`/${listResourceType}/${updatedLocationInventoryList1.id}`, updatedLocationInventoryList1)
     .reply(201, updatedLocationInventoryList1)
-    .put(`/${listResourceType}/${listResourceId}`, updatedAllInventoryList)
-    .reply(201, updatedAllInventoryList)
     .persist();
 
   const successNoticeMock = jest
@@ -393,6 +374,7 @@ test('#1384 - correctly updates location inventory', async () => {
 
   await waitFor(() => {
     expect(postCreationalScope.isDone()).toBeTruthy();
+    expect(preFetchScope.isDone()).toBeTruthy();
     expect(errorNoticeMock).not.toHaveBeenCalled();
     expect(successNoticeMock.mock.calls).toEqual([['Location inventory created successfully']]);
   });

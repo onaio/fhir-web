@@ -104,6 +104,8 @@ describe('fhir-group-management/src/components/LocationInventory/utils', () => {
   });
 
   it('generate location inventory payload works as expected', () => {
-    expect(getLocationInventoryPayload(formValues, false)).toEqual(locationResourcePayload);
+    expect(getLocationInventoryPayload(formValues, false, { id: 'service-point-id' })).toEqual(
+      locationResourcePayload
+    );
   });
 });
