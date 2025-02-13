@@ -368,7 +368,7 @@ export async function postLocationInventory(
   const groupResource = await postPutGroup(baseUrl, payload);
   if (!editMode) {
     const groupResourceId = groupResource.id as string;
-    const listId = v4();
+    let listId = v4();
     // create group resource that links products to to a location.
     const locationInventoryListBundle = await new FHIRServiceClass<IBundle>(
       baseUrl,
@@ -386,6 +386,7 @@ export async function postLocationInventory(
     let locationInventoryList = locationInventoryListBundle
       ? getResourcesFromBundle<IList>(locationInventoryListBundle)[0]
       : undefined;
+    listId = locationInventoryList?.id ?? listId;
     locationInventoryList = createUpdateLocationInventoryList(
       listId,
       groupResourceId,
