@@ -39,7 +39,7 @@ export const SidebarComponent: React.FC<SidebarProps> = (props: SidebarProps) =>
 
   const sidebaritems: JSX.Element[] = React.useMemo(() => {
     function mapChildren(route: Route) {
-      if (route.children) {
+      if (route.children && route.children.length > 0) {
         return (
           <Menu.SubMenu key={route.key} icon={route.otherProps?.icon} title={route.title}>
             {route.children.map(mapChildren)}

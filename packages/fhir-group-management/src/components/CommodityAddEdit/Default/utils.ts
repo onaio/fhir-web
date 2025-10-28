@@ -56,9 +56,9 @@ export const validationRulesFactory = (t: TFunction) => {
       { required: true, message: t('Required') },
     ] as Rule[],
     [active]: [{ type: 'boolean' }, { required: true, message: t('Required') }] as Rule[],
-    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes), required: true }] as Rule[],
+    [type]: [{ type: 'enum', enum: Object.values(R4GroupTypeCodes), required: true, message: t("'type' is required") }] as Rule[],
     [unitOfMeasure]: [
-      { type: 'enum', enum: Object.values(UnitOfMeasure), required: true },
+      { type: 'enum', enum: Object.values(UnitOfMeasure), required: true, message: t("'unitOfMeasure' is required") },
     ] as Rule[],
   };
 };

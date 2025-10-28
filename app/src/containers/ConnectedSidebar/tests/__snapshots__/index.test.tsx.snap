@@ -6,34 +6,14 @@ Array [
     icon={<ForwardRef(DashboardOutlined) />}
     title="Administration"
   >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/users"
+      >
+        User Management
+      </Link>
+    </MenuItem>
     <SubMenu
       title="Location Management"
     >
@@ -102,34 +82,14 @@ Array [
     icon={<ForwardRef(DashboardOutlined) />}
     title="Administration"
   >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/users"
+      >
+        User Management
+      </Link>
+    </MenuItem>
     <SubMenu
       title="Location Management"
     >
@@ -251,34 +211,14 @@ Object {
           icon={<ForwardRef(DashboardOutlined) />}
           title="Administration"
         >
-          <SubMenu
-            title="User Management"
-          >
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users"
-              >
-                Users
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users/groups"
-              >
-                User Groups
-              </Link>
-            </MenuItem>
-            <MenuItem>
-              <Link
-                className="admin-link"
-                to="/admin/users/roles"
-              >
-                User Roles
-              </Link>
-            </MenuItem>
-          </SubMenu>
+          <MenuItem>
+            <Link
+              className="admin-link"
+              to="/admin/users"
+            >
+              User Management
+            </Link>
+          </MenuItem>
           <SubMenu
             title="Location Management"
           >
@@ -350,34 +290,14 @@ Array [
     icon={<ForwardRef(DashboardOutlined) />}
     title="Administration"
   >
-    <SubMenu
-      title="User Management"
-    >
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users"
-        >
-          Users
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/groups"
-        >
-          User Groups
-        </Link>
-      </MenuItem>
-      <MenuItem>
-        <Link
-          className="admin-link"
-          to="/admin/users/roles"
-        >
-          User Roles
-        </Link>
-      </MenuItem>
-    </SubMenu>
+    <MenuItem>
+      <Link
+        className="admin-link"
+        to="/admin/users"
+      >
+        User Management
+      </Link>
+    </MenuItem>
     <SubMenu
       title="Location Management"
     >

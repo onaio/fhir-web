@@ -111,6 +111,9 @@ describe('routes', () => {
     envModule.ENABLE_TEAMS_ASSIGNMENT_MODULE = true;
     envModule.ENABLE_FHIR_USER_MANAGEMENT = true;
     envModule.ENABLE_QUEST = true;
+    envModule.ENABLE_USERS = true;
+    envModule.ENABLE_USER_GROUPS = true;
+    envModule.ENABLE_USER_ROLES = true;
 
     let routes = getRoutes(
       ['ROLE_EDIT_KEYCLOAK_USERS', 'ROLE_VIEW_KEYCLOAK_USERS'],
