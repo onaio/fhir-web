@@ -1,0 +1,54 @@
+{
+  "name": "@opensrp/fhir-user-sync",
+  "version": "0.0.1",
+  "description": "Keycloak user to FHIR resources synchronization",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "https://github.com/OpenSRP/web/",
+  "scripts": {
+    "test": "run -T test $INIT_CWD --verbose",
+    "tsc": "run -T tsc",
+    "lint": "run -T eslint ./**/*.{js,jsx,ts,tsx}",
+    "copy": "run -T copyfiles -u 1 \"./src/**/*.{css,html}\" \"./dist/\"",
+    "build": "run tsc && run transpile && run copy",
+    "transpile": "run -T babel src -d dist --root-mode upward --extensions .ts,.tsx --ignore '**/*.test.ts,**/*.test.tsx,**/tests,**/__tests__'"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "../../setupTests"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/OpenSRP/web/issues"
+  },
+  "author": "OpenSRP Engineering",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@opensrp/fhir-helpers": "workspace:^",
+    "@opensrp/keycloak-service": "^0.0.17",
+    "@opensrp/notifications": "^0.0.5",
+    "@opensrp/pkg-config": "^0.0.9",
+    "@opensrp/rbac": "workspace:^",
+    "@opensrp/react-utils": "^0.0.12",
+    "@opensrp/user-management": "^0.1.19",
+    "uuid": "^8.3.1"
+  },
+  "devDependencies": {
+    "@smile-cdr/fhirts": "^1.2.5",
+    "@types/uuid": "8.3.0"
+  },
+  "peerDependencies": {
+    "@opensrp/i18n": "^0.0.1",
+    "antd": "^5.5.2",
+    "react": "17.0.0",
+    "react-helmet": "^6.1.0"
+  }
+}

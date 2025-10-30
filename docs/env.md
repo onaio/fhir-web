@@ -140,6 +140,34 @@ Below is a list of currently supported environment variables:
   - **Optional**(`boolean`)
   - default: `"false"`
 
+- **REACT_APP_ENABLE_USERS**
+
+  - Enable the Users submenu under User Management
+  - **Optional**(`boolean`)
+  - default: `"false"`
+  - Note: Requires `REACT_APP_ENABLE_FHIR_USER_MANAGEMENT` to be enabled
+
+- **REACT_APP_ENABLE_USER_GROUPS**
+
+  - Enable the User Groups submenu under User Management
+  - **Optional**(`boolean`)
+  - default: `"false"`
+  - Note: Requires `REACT_APP_ENABLE_FHIR_USER_MANAGEMENT` to be enabled
+
+- **REACT_APP_ENABLE_USER_ROLES**
+
+  - Enable the User Roles submenu under User Management
+  - **Optional**(`boolean`)
+  - default: `"false"`
+  - Note: Requires `REACT_APP_ENABLE_FHIR_USER_MANAGEMENT` to be enabled
+
+- **REACT_APP_ENABLE_USER_SYNC**
+
+  - Enable the User Sync submenu under User Management
+  - **Optional**(`boolean`)
+  - default: `"false"`
+  - Note: Requires `REACT_APP_ENABLE_FHIR_USER_MANAGEMENT` to be enabled
+
 - **REACT_APP_OPENSRP_OAUTH_SCOPES**
 
   - Sets the oauth app permission scopes.
