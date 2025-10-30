@@ -4,6 +4,10 @@
   "private": true,
   "scripts": {
     "start": "lerna run start --scope=@opensrp/web",
+    "start:https": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem lerna run start --scope=@opensrp/web",
+    "start:chrome": "open -n -a 'Google Chrome' --args --user-data-dir=/tmp/chrome --disable-web-security",
+    "generate-certs": "if command -v mkcert > /dev/null; then mkcert localhost; else openssl req -x509 -newkey rsa:4096 -keyout localhost-key.pem -out localhost.pem -days 365 -nodes -subj '/CN=localhost'; fi",
+    "dev": "yarn generate-certs && yarn start:https",
     "build": "lerna run build --scope=@opensrp/web",
     "lerna:prepublish": "lerna run build --include-dependencies --stream --no-private",
     "lerna:version": "lerna version --include-merged-tags --conventional-commits --create-release github --sign-git-commit --sign-git-tag",
