@@ -97,6 +97,10 @@ describe('components/ConnectedSidebar', () => {
 
   it('correctly expand users menu', () => {
     const envModule = require('../../../configs/env');
+    envModule.ENABLE_USERS = true;
+    envModule.ENABLE_USER_GROUPS = true;
+    envModule.ENABLE_USER_ROLES = true;
+    envModule.ENABLE_USER_SYNC = true;
     envModule.OPENSRP_ROLES = {
       USERS: 'ROLE_EDIT_KEYCLOAK_USERS',
     };

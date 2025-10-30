@@ -11,6 +11,7 @@ export const URL_LOGOUT = '/logout';
 export const URL_HOME = '/';
 
 export const URL_USER = `${URL_ADMIN}/users`;
+export const URL_USER_SYNC = `${URL_ADMIN}/users/sync`;
 export const URL_ORG_AFFILIATION = `${URL_ADMIN}/OrgAffiliation`;
 export const URL_USER_GROUPS = `${URL_USER}/groups`;
 export const URL_USER_ROLES = `${URL_USER}/roles`;

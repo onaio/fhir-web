@@ -114,6 +114,14 @@ export const ENABLE_FHIR_LOCATIONS = setEnv('REACT_APP_ENABLE_FHIR_LOCATIONS', '
 export const ENABLE_FHIR_USER_MANAGEMENT =
   setEnv('REACT_APP_ENABLE_FHIR_USER_MANAGEMENT', 'false') === 'true';
 
+export const ENABLE_USERS = setEnv('REACT_APP_ENABLE_USERS', 'false') === 'true';
+
+export const ENABLE_USER_GROUPS = setEnv('REACT_APP_ENABLE_USER_GROUPS', 'false') === 'true';
+
+export const ENABLE_USER_ROLES = setEnv('REACT_APP_ENABLE_USER_ROLES', 'false') === 'true';
+
+export const ENABLE_USER_SYNC = setEnv('REACT_APP_ENABLE_USER_SYNC', 'false') === 'true';
+
 export const FHIR_API_BASE_URL = setEnv(
   'REACT_APP_FHIR_API_BASE_URL',
   'https://fhir-auth.labs.smartregister.org/fhir'

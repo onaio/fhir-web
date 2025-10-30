@@ -16,6 +16,7 @@ import {
   DISABLE_TEAM_MEMBER_REASSIGNMENT,
   FHIR_API_BASE_URL,
   KEYCLOAK_USERS_PAGE_SIZE,
+  KEYCLOAK_API_BASE_URL,
 } from '../configs/env';
 
 export const BaseProps = {
@@ -114,4 +115,9 @@ export const commmodityProps = {
 export const fhirCreateEditLocationProps = {
   ...BaseProps,
   commodityListId: COMMODITIES_LIST_RESOURCE_ID,
+};
+
+export const userSyncProps = {
+  fhirBaseURL: FHIR_API_BASE_URL,
+  keycloakBaseURL: KEYCLOAK_API_BASE_URL,
 };

@@ -34,6 +34,7 @@ import {
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
   URL_TEAM_ASSIGNMENT,
+  URL_USER_SYNC,
 } from '../constants';
 import { providers } from '../configs/settings';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
@@ -101,6 +102,7 @@ import {
   fhirCreateEditUserProps,
   commmodityProps,
   fhirCreateEditLocationProps,
+  userSyncProps,
 } from './utils';
 import './App.css';
 import {
@@ -134,6 +136,7 @@ import {
   DataImportList,
   StartDataImport,
 } from '@opensrp/fhir-import';
+import { UserSync } from '@opensrp/fhir-user-sync';
 
 /** Util function that renders Oauth2 callback components
  *
@@ -288,6 +291,15 @@ const FHIRApps = () => {
         {...usersListProps}
         permissions={['iam_user.read']}
         component={FhirUserList}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={URL_USER_SYNC}
+        {...userSyncProps}
+        permissions={['iam_user.read', 'Practitioner.create']}
+        component={UserSync}
       />
       <PrivateComponent
         redirectPath={APP_CALLBACK_URL}
