@@ -79,6 +79,13 @@ export const customFetch: CustomFetch = async (...rest) => {
   }
 };
 
+/**
+ * Check if response is 401 Unauthorized
+ */
+function isUnauthorizedResponse(response: Response | undefined): boolean {
+  return response?.status === 401;
+}
+
 /** params option type */
 type ParamsType = URLParams | null;
 
@@ -176,14 +183,26 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const payload = {
-      ...this.getOptions(this.signal, accessToken, method),
-      'Cache-Control': 'no-cache',
-      Pragma: 'no-cache',
-      body: JSON.stringify(data),
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      const payload = {
+        ...this.getOptions(this.signal, accessToken, method),
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(data),
+      };
+      return await customFetch(url, payload);
     };
-    const response = await customFetch(url, payload);
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (isUnauthorizedResponse(response)) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
+
     if (response) {
       if (response.ok || response.status === 201) {
         return response;
@@ -211,8 +230,19 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(`${this.generalURL}/${id}`, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      return await customFetch(url, this.getOptions(this.signal, accessToken, method));
+    };
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (isUnauthorizedResponse(response)) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
 
     if (response) {
       if (response.ok) {
@@ -241,14 +271,26 @@ export class KeycloakAPIService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const payload = {
-      ...this.getOptions(this.signal, accessToken, method),
-      'Cache-Control': 'no-cache',
-      Pragma: 'no-cache',
-      body: JSON.stringify(data),
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      const payload = {
+        ...this.getOptions(this.signal, accessToken, method),
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        body: JSON.stringify(data),
+      };
+      return await customFetch(url, payload);
     };
-    const response = await customFetch(url, payload);
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (isUnauthorizedResponse(response)) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
+
     if (response) {
       if (response.ok) {
         return {};
@@ -269,8 +311,19 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async list(params: ParamsType = null, method: HTTPMethod = 'GET'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const response = await customFetch(url, this.getOptions(this.signal, accessToken, method));
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      return await customFetch(url, this.getOptions(this.signal, accessToken, method));
+    };
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (isUnauthorizedResponse(response)) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
 
     if (response) {
       if (response.ok) {
@@ -293,8 +346,19 @@ export class KeycloakAPIService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async delete(params: ParamsType = null, method: HTTPMethod = 'DELETE'): Promise<any> {
     const url = KeycloakAPIService.getURL(this.generalURL, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      return await fetch(url, this.getOptions(this.signal, accessToken, method));
+    };
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (response.status === 401) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
 
     if (response.ok || response.status === 204 || response.status === 200) {
       return {};
@@ -320,8 +384,19 @@ export class KeycloakService extends KeycloakAPIService {
     method: HTTPMethod = 'GET'
   ): Promise<Blob> {
     const url = KeycloakService.getURL(`${this.generalURL}/${id}`, params);
-    const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-    const response = await fetch(url, this.getOptions(this.signal, accessToken, method));
+
+    const executeRequest = async () => {
+      const accessToken = await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      return await fetch(url, this.getOptions(this.signal, accessToken, method));
+    };
+
+    let response = await executeRequest();
+
+    // Retry once on 401
+    if (response.status === 401) {
+      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+      response = await executeRequest();
+    }
 
     if (!response.ok) {
       throw new Error(

@@ -19,6 +19,29 @@ import type { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResou
 
 const configs = getAllConfigs();
 
+/**
+ * Force token refresh regardless of current expiry state
+ */
+async function forceTokenRefresh(): Promise<string> {
+  try {
+    return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
+  } catch (e) {
+    history.push(`${configs.appLoginURL}`);
+    throw new Error('Session Expired');
+  }
+}
+
+/**
+ * Check if error is a 401 Unauthorized
+ */
+function isUnauthorizedError(error: unknown): boolean {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    return message.includes('401') || message.includes('unauthorized');
+  }
+  return false;
+}
+
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
   /**
@@ -107,58 +130,130 @@ export class FHIRServiceClass<T extends IResource> {
   }
 
   public async create(payload: T) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.create<T>(payload as fhirclient.FHIR.Resource, {
-      signal: this.signal,
-      headers: this.headers,
-    });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
+      return serve.create<T>(payload as fhirclient.FHIR.Resource, {
+        signal: this.signal,
+        headers: this.headers,
+      });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 
   public async update(payload: T) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.update<T>(payload as fhirclient.FHIR.Resource, {
-      signal: this.signal,
-      headers: this.headers,
-    });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
+      return serve.update<T>(payload as fhirclient.FHIR.Resource, {
+        signal: this.signal,
+        headers: this.headers,
+      });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 
   public async list(params: URLParams | null = null) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const queryStr = this.buildQueryParams(params);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>({ url: queryStr, headers: this.headers });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const queryStr = this.buildQueryParams(params);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request<T>({ url: queryStr, headers: this.headers });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 
   public async read(id: string) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>({
-      url: `${this.resourceType}/${id}`,
-      headers: this.headers,
-    });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request<T>({
+        url: `${this.resourceType}/${id}`,
+        headers: this.headers,
+      });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 
   public async customRequest(requestOptions: fhirclient.RequestOptions) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request({
-      signal: this.signal,
-      headers: this.headers,
-      ...requestOptions,
-    });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request({
+        signal: this.signal,
+        headers: this.headers,
+        ...requestOptions,
+      });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 
   public async delete(id: string) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.delete(`${this.resourceType}/${id}`, {
-      signal: this.signal,
-      headers: this.headers,
-    });
+    const executeRequest = async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.delete(`${this.resourceType}/${id}`, {
+        signal: this.signal,
+        headers: this.headers,
+      });
+    };
+
+    try {
+      return await executeRequest();
+    } catch (error) {
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+      throw error;
+    }
   }
 }
 
