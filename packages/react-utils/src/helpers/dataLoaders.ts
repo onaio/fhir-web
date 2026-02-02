@@ -42,6 +42,25 @@ function isUnauthorizedError(error: unknown): boolean {
   return false;
 }
 
+/**
+ * Check if error is a transient server error (502, 503, 504)
+ */
+function isTransientError(error: unknown): boolean {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('502') ||
+      message.includes('503') ||
+      message.includes('504') ||
+      message.includes('bad gateway') ||
+      message.includes('service unavailable')
+    );
+  }
+  return false;
+}
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
   /**
@@ -140,15 +159,31 @@ export class FHIRServiceClass<T extends IResource> {
       });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 
   public async update(payload: T) {
@@ -162,15 +197,31 @@ export class FHIRServiceClass<T extends IResource> {
       });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 
   public async list(params: URLParams | null = null) {
@@ -181,15 +232,31 @@ export class FHIRServiceClass<T extends IResource> {
       return serve.request<T>({ url: queryStr, headers: this.headers });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 
   public async read(id: string) {
@@ -202,15 +269,31 @@ export class FHIRServiceClass<T extends IResource> {
       });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 
   public async customRequest(requestOptions: fhirclient.RequestOptions) {
@@ -224,15 +307,31 @@ export class FHIRServiceClass<T extends IResource> {
       });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 
   public async delete(id: string) {
@@ -245,15 +344,31 @@ export class FHIRServiceClass<T extends IResource> {
       });
     };
 
-    try {
-      return await executeRequest();
-    } catch (error) {
-      if (isUnauthorizedError(error)) {
-        await forceTokenRefresh();
+    const maxRetries = 3;
+    let lastError: Error | undefined;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
         return await executeRequest();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Handle 401 - refresh token and retry once
+        if (isUnauthorizedError(error)) {
+          await forceTokenRefresh();
+          return await executeRequest();
+        }
+
+        // Handle transient errors - retry with backoff
+        if (isTransientError(error) && attempt < maxRetries) {
+          await delay(1000 * Math.pow(2, attempt));
+          continue;
+        }
+
+        throw error;
       }
-      throw error;
     }
+    throw lastError;
   }
 }
 

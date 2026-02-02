@@ -86,6 +86,15 @@ function isUnauthorizedResponse(response: Response | undefined): boolean {
   return response?.status === 401;
 }
 
+/**
+ * Check if response is a transient server error (502, 503, 504)
+ */
+function isTransientResponse(response: Response | undefined): boolean {
+  return response?.status === 502 || response?.status === 503 || response?.status === 504;
+}
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /** params option type */
 type ParamsType = URLParams | null;
 
@@ -195,21 +204,31 @@ export class KeycloakAPIService {
       return await customFetch(url, payload);
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (isUnauthorizedResponse(response)) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (response) {
-      if (response.ok || response.status === 201) {
-        return response;
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
       }
 
-      const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+      // Retry once on 401
+      if (isUnauthorizedResponse(response)) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (response) {
+        if (response.ok || response.status === 201) {
+          return response;
+        }
+
+        const defaultMessage = `KeycloakAPIService create on ${this.endpoint} failed, HTTP status ${response.status}`;
+        await throwHTTPError(response, defaultMessage);
+      }
     }
   }
 
@@ -236,20 +255,30 @@ export class KeycloakAPIService {
       return await customFetch(url, this.getOptions(this.signal, accessToken, method));
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (isUnauthorizedResponse(response)) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (response) {
-      if (response.ok) {
-        return await response.json();
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
       }
-      const defaultMessage = `KeycloakAPIService read on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+
+      // Retry once on 401
+      if (isUnauthorizedResponse(response)) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (response) {
+        if (response.ok) {
+          return await response.json();
+        }
+        const defaultMessage = `KeycloakAPIService read on ${this.endpoint} failed, HTTP status ${response.status}`;
+        await throwHTTPError(response, defaultMessage);
+      }
     }
   }
 
@@ -283,20 +312,30 @@ export class KeycloakAPIService {
       return await customFetch(url, payload);
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (isUnauthorizedResponse(response)) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (response) {
-      if (response.ok) {
-        return {};
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
       }
-      const defaultMessage = `KeycloakAPIService update on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+
+      // Retry once on 401
+      if (isUnauthorizedResponse(response)) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (response) {
+        if (response.ok) {
+          return {};
+        }
+        const defaultMessage = `KeycloakAPIService update on ${this.endpoint} failed, HTTP status ${response.status}`;
+        await throwHTTPError(response, defaultMessage);
+      }
     }
   }
 
@@ -317,20 +356,30 @@ export class KeycloakAPIService {
       return await customFetch(url, this.getOptions(this.signal, accessToken, method));
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (isUnauthorizedResponse(response)) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (response) {
-      if (response.ok) {
-        return await response.json();
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
       }
-      const defaultMessage = `KeycloakAPIService list on ${this.endpoint} failed, HTTP status ${response.status}`;
-      await throwHTTPError(response, defaultMessage);
+
+      // Retry once on 401
+      if (isUnauthorizedResponse(response)) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (response) {
+        if (response.ok) {
+          return await response.json();
+        }
+        const defaultMessage = `KeycloakAPIService list on ${this.endpoint} failed, HTTP status ${response.status}`;
+        await throwHTTPError(response, defaultMessage);
+      }
     }
   }
 
@@ -352,19 +401,29 @@ export class KeycloakAPIService {
       return await fetch(url, this.getOptions(this.signal, accessToken, method));
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (response.status === 401) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (response.ok || response.status === 204 || response.status === 200) {
-      return {};
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
+      }
+
+      // Retry once on 401
+      if (response.status === 401) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (response.ok || response.status === 204 || response.status === 200) {
+        return {};
+      }
+      const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
+      await throwHTTPError(response, defaultMessage);
     }
-    const defaultMessage = `KeycloakAPIService delete on ${this.endpoint} failed, HTTP status ${response.status}`;
-    await throwHTTPError(response, defaultMessage);
   }
 }
 
@@ -390,19 +449,30 @@ export class KeycloakService extends KeycloakAPIService {
       return await fetch(url, this.getOptions(this.signal, accessToken, method));
     };
 
-    let response = await executeRequest();
+    const maxRetries = 3;
 
-    // Retry once on 401
-    if (response.status === 401) {
-      await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
-      response = await executeRequest();
-    }
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      let response = await executeRequest();
 
-    if (!response.ok) {
-      throw new Error(
-        `KeycloakService read on ${this.endpoint} failed, HTTP status ${response.status}`
-      );
+      // Retry on transient errors with backoff
+      if (isTransientResponse(response) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
+      }
+
+      // Retry once on 401
+      if (response.status === 401) {
+        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        response = await executeRequest();
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          `KeycloakService read on ${this.endpoint} failed, HTTP status ${response.status}`
+        );
+      }
+      return await response.blob();
     }
-    return await response.blob();
+    throw new Error(`KeycloakService read on ${this.endpoint} failed after ${maxRetries} retries`);
   }
 }
