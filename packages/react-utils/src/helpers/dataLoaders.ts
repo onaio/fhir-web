@@ -44,6 +44,8 @@ function isUnauthorizedError(error: unknown): boolean {
 
 /**
  * Check if error is a transient server error (502, 503, 504)
+ * @param {unknown} error - The error to check
+ * @returns {boolean} True if the error is a transient server error
  */
 function isTransientError(error: unknown): boolean {
   if (error instanceof Error) {
@@ -59,6 +61,11 @@ function isTransientError(error: unknown): boolean {
   return false;
 }
 
+/**
+ * Delay execution for a specified number of milliseconds
+ * @param {number} ms - The number of milliseconds to delay
+ * @returns {Promise<void>} A promise that resolves after the delay
+ */
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /** OpenSRP service Generic class */

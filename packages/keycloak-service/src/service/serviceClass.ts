@@ -88,11 +88,18 @@ function isUnauthorizedResponse(response: Response | undefined): boolean {
 
 /**
  * Check if response is a transient server error (502, 503, 504)
+ * @param {Response | undefined} response - The response to check
+ * @returns {boolean} True if the response status is 502, 503, or 504
  */
 function isTransientResponse(response: Response | undefined): boolean {
   return response?.status === 502 || response?.status === 503 || response?.status === 504;
 }
 
+/**
+ * Delay execution for a specified number of milliseconds
+ * @param {number} ms - The number of milliseconds to delay
+ * @returns {Promise<void>} A promise that resolves after the delay
+ */
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /** params option type */
