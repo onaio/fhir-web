@@ -81,6 +81,8 @@ export const customFetch: CustomFetch = async (...rest) => {
 
 /**
  * Check if response is 401 Unauthorized
+ *
+ * @param {Response | undefined} response - The response to check
  */
 function isUnauthorizedResponse(response: Response | undefined): boolean {
   return response?.status === 401;
@@ -88,6 +90,7 @@ function isUnauthorizedResponse(response: Response | undefined): boolean {
 
 /**
  * Check if response is a transient server error (502, 503, 504)
+ *
  * @param {Response | undefined} response - The response to check
  * @returns {boolean} True if the response status is 502, 503, or 504
  */
@@ -97,6 +100,7 @@ function isTransientResponse(response: Response | undefined): boolean {
 
 /**
  * Delay execution for a specified number of milliseconds
+ *
  * @param {number} ms - The number of milliseconds to delay
  * @returns {Promise<void>} A promise that resolves after the delay
  */
