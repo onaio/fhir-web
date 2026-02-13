@@ -389,6 +389,97 @@ describe('services/keycloak', () => {
   });
 });
 
+describe('KeycloakService retry behavior', () => {
+  const mockGetToken = async () => 'hunter2';
+  const baseURL = 'https://keycloak-test.smartregister.org/auth/realms/';
+  let origSetTimeout: typeof setTimeout;
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    fetch.resetMocks();
+    // Make setTimeout execute immediately to avoid real delays in tests
+    origSetTimeout = global.setTimeout;
+    global.setTimeout = ((fn: () => void) => {
+      fn();
+      return 0;
+    }) as unknown as typeof setTimeout;
+  });
+
+  afterEach(() => {
+    global.setTimeout = origSetTimeout;
+  });
+
+  it('retries on 502 and succeeds on second attempt', async () => {
+    fetch.mockResponses(
+      [JSON.stringify({}), { status: 502 }],
+      [JSON.stringify([keycloakUser]), { status: 200 }]
+    );
+    const service = new KeycloakService('users', baseURL, mockGetToken);
+    const result = await service.list();
+    expect(result).toEqual([keycloakUser]);
+    expect(fetch.mock.calls).toHaveLength(2);
+  });
+
+  it('retries on 503 twice then succeeds', async () => {
+    fetch.mockResponses(
+      [JSON.stringify({}), { status: 503 }],
+      [JSON.stringify({}), { status: 503 }],
+      [JSON.stringify([keycloakUser]), { status: 200 }]
+    );
+    const service = new KeycloakService('users', baseURL, mockGetToken);
+    const result = await service.list();
+    expect(result).toEqual([keycloakUser]);
+    expect(fetch.mock.calls).toHaveLength(3);
+  });
+
+  it('exhausts retries on persistent 504 and throws', async () => {
+    fetch.mockResponses(
+      [JSON.stringify({}), { status: 504 }],
+      [JSON.stringify({}), { status: 504 }],
+      [JSON.stringify({}), { status: 504 }],
+      [JSON.stringify({}), { status: 504 }]
+    );
+    const service = new KeycloakService('users', baseURL, mockGetToken);
+    let error;
+    try {
+      await service.list();
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeDefined();
+    expect(error.statusCode).toEqual(504);
+    expect(fetch.mock.calls).toHaveLength(4);
+  });
+
+  it('retries on 401 with token refresh and succeeds', async () => {
+    fetch.mockResponses(
+      [JSON.stringify({}), { status: 401 }],
+      [JSON.stringify([keycloakUser]), { status: 200 }]
+    );
+    const service = new KeycloakService('users', baseURL, mockGetToken);
+    const result = await service.list();
+    expect(result).toEqual([keycloakUser]);
+    expect(fetch.mock.calls).toHaveLength(2);
+  });
+
+  it('retries on 401 but second request also fails with 500', async () => {
+    fetch.mockResponses(
+      [JSON.stringify({}), { status: 401 }],
+      [JSON.stringify({}), { status: 500 }]
+    );
+    const service = new KeycloakService('users', baseURL, mockGetToken);
+    let error;
+    try {
+      await service.list();
+    } catch (e) {
+      error = e;
+    }
+    expect(error).toBeDefined();
+    expect(error.statusCode).toEqual(500);
+    expect(fetch.mock.calls).toHaveLength(2);
+  });
+});
+
 describe('src/errors', () => {
   it('does not create a network error', () => {
     /// increase test coverage.
