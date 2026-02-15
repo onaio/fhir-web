@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 import queryString from 'querystring';
-import { handleSessionOrTokenExpiry } from '@opensrp/react-utils';
+import { handleSessionOrTokenExpiry, forceTokenRefresh } from '@opensrp/react-utils';
 
 import { throwNetworkError, throwHTTPError } from './errors';
 /** defaults */
@@ -256,7 +256,7 @@ export class KeycloakAPIService {
         return await customFetch(url, payload);
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (response.ok || response.status === 201) {
@@ -292,7 +292,7 @@ export class KeycloakAPIService {
         return await customFetch(url, this.getOptions(this.signal, accessToken, method));
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (response.ok) {
@@ -335,7 +335,7 @@ export class KeycloakAPIService {
         return await customFetch(url, payload);
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (response.ok) {
@@ -365,7 +365,7 @@ export class KeycloakAPIService {
         return await customFetch(url, this.getOptions(this.signal, accessToken, method));
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (response.ok) {
@@ -396,7 +396,7 @@ export class KeycloakAPIService {
         return await customFetch(url, this.getOptions(this.signal, accessToken, method));
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (response.ok || response.status === 204 || response.status === 200) {
@@ -432,7 +432,7 @@ export class KeycloakService extends KeycloakAPIService {
         return await customFetch(url, this.getOptions(this.signal, accessToken, method));
       },
       async () => {
-        await KeycloakAPIService.processAcessToken(this.accessTokenOrCallBack);
+        await forceTokenRefresh();
       },
       async (response) => {
         if (!response.ok) {

@@ -5,7 +5,7 @@ import { store } from '@opensrp/store';
 import { getDefaultHeaders, getFetchOptions } from '../../index';
 import fetch from 'jest-fetch-mock';
 import { customFetch, getFilterParams, KeycloakService } from '../serviceClass';
-import { jwtAccessToken, keycloakUser, OpenSRPAPIResponse } from './fixtures';
+import { jwtAccessToken, keycloakUser, OpenSRPAPIResponse, refreshTokenResponse } from './fixtures';
 import { HTTPError, throwHTTPError, throwNetworkError, NetworkError } from '../errors';
 
 const getAccessToken = (): Promise<string> =>
@@ -454,17 +454,20 @@ describe('KeycloakService retry behavior', () => {
   it('retries on 401 with token refresh and succeeds', async () => {
     fetch.mockResponses(
       [JSON.stringify({}), { status: 401 }],
+      [JSON.stringify(refreshTokenResponse), { status: 200 }],
       [JSON.stringify([keycloakUser]), { status: 200 }]
     );
     const service = new KeycloakService('users', baseURL, mockGetToken);
     const result = await service.list();
     expect(result).toEqual([keycloakUser]);
-    expect(fetch.mock.calls).toHaveLength(2);
+    // 1st: original request (401), 2nd: token refresh, 3rd: retried request
+    expect(fetch.mock.calls).toHaveLength(3);
   });
 
   it('retries on 401 but second request also fails with 500', async () => {
     fetch.mockResponses(
       [JSON.stringify({}), { status: 401 }],
+      [JSON.stringify(refreshTokenResponse), { status: 200 }],
       [JSON.stringify({}), { status: 500 }]
     );
     const service = new KeycloakService('users', baseURL, mockGetToken);
@@ -476,7 +479,8 @@ describe('KeycloakService retry behavior', () => {
     }
     expect(error).toBeDefined();
     expect(error.statusCode).toEqual(500);
-    expect(fetch.mock.calls).toHaveLength(2);
+    // 1st: original request (401), 2nd: token refresh, 3rd: retried request (500)
+    expect(fetch.mock.calls).toHaveLength(3);
   });
 });
 

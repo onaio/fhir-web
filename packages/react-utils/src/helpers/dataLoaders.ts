@@ -22,7 +22,7 @@ const configs = getAllConfigs();
 /**
  * Force token refresh regardless of current expiry state
  */
-async function forceTokenRefresh(): Promise<string> {
+export async function forceTokenRefresh(): Promise<string> {
   try {
     return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
   } catch (e) {
