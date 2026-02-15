@@ -698,4 +698,67 @@ describe('FHIRServiceClass retry behavior', () => {
     expect(result).toEqual(fixtures.careTeams);
     expect(requestMock).toHaveBeenCalledTimes(2);
   });
+
+  it('retries on structured HttpError with statusCode 401', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Unauthorized'), { statusCode: 401 });
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(httpError)
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries on structured HttpError with statusCode 502', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Bad Gateway'), { statusCode: 502 });
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(httpError)
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not treat non-401/5xx statusCode as retryable', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Not Found'), { statusCode: 404 });
+    const requestMock = jest.fn().mockRejectedValue(httpError);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    await expect(fhir.list()).rejects.toThrow('Not Found');
+    await flushPromises();
+
+    expect(requestMock).toHaveBeenCalledTimes(1);
+  });
 });

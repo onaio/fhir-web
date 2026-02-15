@@ -27,11 +27,31 @@ export async function forceTokenRefresh(): Promise<string> {
 }
 
 /**
- * Check if error is a 401 Unauthorized
+ * Extract HTTP status code from an error object if available.
+ * fhirclient's HttpError exposes statusCode/status properties.
  *
- * @param {Error} error - The error to check
+ * @param error - The error to extract status from
+ * @returns The status code if found
+ */
+function getErrorStatusCode(error: unknown): number | undefined {
+  if (error && typeof error === 'object') {
+    const err = error as Record<string, unknown>;
+    if (typeof err.statusCode === 'number') return err.statusCode;
+    if (typeof err.status === 'number') return err.status;
+  }
+  return undefined;
+}
+
+/**
+ * Check if error is a 401 Unauthorized.
+ * Checks structured statusCode/status first, falls back to message parsing.
+ *
+ * @param error - The error to check
+ * @returns True if the error represents a 401 Unauthorized
  */
 function isUnauthorizedError(error: unknown): boolean {
+  const statusCode = getErrorStatusCode(error);
+  if (statusCode !== undefined) return statusCode === 401;
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     return message.includes('401') || message.includes('unauthorized');
@@ -40,12 +60,15 @@ function isUnauthorizedError(error: unknown): boolean {
 }
 
 /**
- * Check if error is a transient server error (502, 503, 504)
+ * Check if error is a transient server error (502, 503, 504).
+ * Checks structured statusCode/status first, falls back to message parsing.
  *
- * @param {Error} error - The error to check
- * @returns {boolean} True if the error is a transient server error
+ * @param error - The error to check
+ * @returns True if the error is a transient server error
  */
 function isTransientError(error: unknown): boolean {
+  const statusCode = getErrorStatusCode(error);
+  if (statusCode !== undefined) return statusCode >= 502 && statusCode <= 504;
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     return (
