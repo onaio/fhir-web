@@ -89,6 +89,7 @@ describe('components/forms/UserFroupForm', () => {
     nameInput.simulate('change', { target: { name: 'name', value: 'Test' } });
     wrapper.update();
 
+    fetch.mockResponseOnce(JSON.stringify({}), { status: 201 });
     wrapper.find('form').simulate('submit');
     await act(async () => {
       await flushPromises();
@@ -132,6 +133,7 @@ describe('components/forms/UserFroupForm', () => {
     });
     wrapper.update();
 
+    fetch.mockResponseOnce(JSON.stringify({}));
     wrapper.find('form').simulate('submit');
 
     await act(async () => {

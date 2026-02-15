@@ -358,3 +358,407 @@ describe('dataloaders/FHIRService', () => {
     expect(result).toEqual('Success');
   });
 });
+
+describe('FHIRServiceClass retry behavior', () => {
+  let origSetTimeout: typeof setTimeout;
+  const mockGetToken = async () => 'hunter2';
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    fetch.resetMocks();
+    jest.restoreAllMocks();
+    // Make delay() resolve immediately so tests don't wait for real backoff
+    origSetTimeout = global.setTimeout;
+    global.setTimeout = ((fn: () => void) => {
+      fn();
+      return 0;
+    }) as unknown as typeof setTimeout;
+  });
+
+  afterEach(() => {
+    global.setTimeout = origSetTimeout;
+  });
+
+  it('retries on transient 502 error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('502 Bad Gateway'))
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    // First call fails with 502, second succeeds
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries on transient 503 error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('503 Service Unavailable'))
+      .mockRejectedValueOnce(new Error('503 Service Unavailable'))
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('refreshes token and retries on 401 unauthorized error', async () => {
+    // Mock refreshToken response (forceTokenRefresh calls refreshToken which uses fetch)
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    // First call fails with 401, forceTokenRefresh is called, then retry succeeds
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('throws immediately on non-retryable error', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn().mockRejectedValue(new Error('404 Not Found'));
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    await expect(fhir.list()).rejects.toThrow('404 Not Found');
+    await flushPromises();
+
+    // Should not retry - only one call
+    expect(requestMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('exhausts retries on persistent transient error', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest.fn().mockRejectedValue(new Error('504 Gateway Timeout'));
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    await expect(fhir.list()).rejects.toThrow('504 Gateway Timeout');
+    await flushPromises();
+
+    // maxAttempts is 4, loop runs attempt 0,1,2,3 = 4 calls total
+    expect(requestMock).toHaveBeenCalledTimes(4);
+  });
+
+  it('create retries on transient error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const createMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('502 Bad Gateway'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        create: createMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.create(fixtures.careTeam1);
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(createMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('update retries on transient error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const updateMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('503 Service Unavailable'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        update: updateMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.update(fixtures.careTeam1);
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(updateMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('read retries on transient error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('504 Gateway Timeout'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.read('308');
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('delete retries on transient error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const deleteMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('502 Bad Gateway'))
+      .mockResolvedValueOnce('Success');
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        delete: deleteMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.delete('308');
+    await flushPromises();
+
+    expect(result).toEqual('Success');
+    expect(deleteMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('customRequest retries on transient error then succeeds', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('503 Service Unavailable'))
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.customRequest({ url: 'CareTeam' });
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('create retries on 401 unauthorized error', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const createMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        create: createMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.create(fixtures.careTeam1);
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(createMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('update retries on 401 unauthorized error', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const updateMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        update: updateMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.update(fixtures.careTeam1);
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(updateMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('read retries on 401 unauthorized error', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce(fixtures.careTeam1);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.read('308');
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeam1);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('delete retries on 401 unauthorized error', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const deleteMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce('Success');
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        delete: deleteMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.delete('308');
+    await flushPromises();
+
+    expect(result).toEqual('Success');
+    expect(deleteMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('customRequest retries on 401 unauthorized error', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('401 Unauthorized'))
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.customRequest({ url: 'CareTeam' });
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries on structured HttpError with statusCode 401', async () => {
+    fetch.mockResponseOnce(JSON.stringify(fixtures.refreshTokenResponse));
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Unauthorized'), { statusCode: 401 });
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(httpError)
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('retries on structured HttpError with statusCode 502', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Bad Gateway'), { statusCode: 502 });
+    const requestMock = jest
+      .fn()
+      .mockRejectedValueOnce(httpError)
+      .mockResolvedValueOnce(fixtures.careTeams);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    const result = await fhir.list();
+    await flushPromises();
+
+    expect(result).toEqual(fixtures.careTeams);
+    expect(requestMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not treat non-401/5xx statusCode as retryable', async () => {
+    const fhirMock = jest.spyOn(fhirCient, 'client');
+    const httpError = Object.assign(new Error('Not Found'), { statusCode: 404 });
+    const requestMock = jest.fn().mockRejectedValue(httpError);
+    fhirMock.mockImplementation(
+      jest.fn().mockImplementation(() => ({
+        request: requestMock,
+      }))
+    );
+
+    const fhir = new FHIRServiceClass<fhirR4.CareTeam>('https://test.fhir.org', 'CareTeam');
+    fhir.accessTokenOrCallBack = mockGetToken;
+    await expect(fhir.list()).rejects.toThrow('Not Found');
+    await flushPromises();
+
+    expect(requestMock).toHaveBeenCalledTimes(1);
+  });
+});
