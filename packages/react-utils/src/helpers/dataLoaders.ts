@@ -23,12 +23,7 @@ const configs = getAllConfigs();
  * Force token refresh regardless of current expiry state
  */
 export async function forceTokenRefresh(): Promise<string> {
-  try {
-    return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
-  } catch (e) {
-    history.push(`${configs.appLoginURL}`);
-    throw new Error('Session Expired');
-  }
+  return handleSessionOrTokenExpiry(true);
 }
 
 /**
@@ -265,9 +260,10 @@ export class FHIRServiceClass<T extends IResource> {
 /**
  * gets access token or redirects to login if session is expired
  *
+ * @param {boolean} forceRefresh - if true, unconditionally refreshes the token
  */
-export async function handleSessionOrTokenExpiry() {
-  if (isTokenExpired(store.getState())) {
+export async function handleSessionOrTokenExpiry(forceRefresh = false) {
+  if (forceRefresh || isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
