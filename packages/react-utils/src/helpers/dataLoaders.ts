@@ -72,6 +72,41 @@ function isTransientError(error: unknown): boolean {
  */
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/**
+ * Retry wrapper for FHIR client operations that throw errors on failure.
+ * Handles 401 (token refresh + single retry), transient errors (502/503/504 with
+ * exponential backoff), and throws immediately on all other errors.
+ *
+ * @param executeRequest - async callback that performs the FHIR client operation
+ */
+async function retryWithErrorHandling<T>(executeRequest: () => Promise<T>): Promise<T> {
+  const maxRetries = 3;
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await executeRequest();
+    } catch (error) {
+      lastError = error as Error;
+
+      // Handle 401 - refresh token and retry once
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+
+      // Handle transient errors - retry with backoff
+      if (isTransientError(error) && attempt < maxRetries) {
+        await delay(1000 * Math.pow(2, attempt));
+        continue;
+      }
+
+      throw error;
+    }
+  }
+  throw lastError;
+}
+
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
   /**
@@ -160,7 +195,7 @@ export class FHIRServiceClass<T extends IResource> {
   }
 
   public async create(payload: T) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const serve = FHIR.client(this.buildState(accessToken));
       // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
@@ -168,37 +203,11 @@ export class FHIRServiceClass<T extends IResource> {
         signal: this.signal,
         headers: this.headers,
       });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 
   public async update(payload: T) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const serve = FHIR.client(this.buildState(accessToken));
       // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
@@ -206,109 +215,31 @@ export class FHIRServiceClass<T extends IResource> {
         signal: this.signal,
         headers: this.headers,
       });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 
   public async list(params: URLParams | null = null) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const queryStr = this.buildQueryParams(params);
       const serve = FHIR.client(this.buildState(accessToken));
       return serve.request<T>({ url: queryStr, headers: this.headers });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 
   public async read(id: string) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const serve = FHIR.client(this.buildState(accessToken));
       return serve.request<T>({
         url: `${this.resourceType}/${id}`,
         headers: this.headers,
       });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 
   public async customRequest(requestOptions: fhirclient.RequestOptions) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const serve = FHIR.client(this.buildState(accessToken));
       return serve.request({
@@ -316,70 +247,18 @@ export class FHIRServiceClass<T extends IResource> {
         headers: this.headers,
         ...requestOptions,
       });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 
   public async delete(id: string) {
-    const executeRequest = async () => {
+    return retryWithErrorHandling(async () => {
       const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
       const serve = FHIR.client(this.buildState(accessToken));
       return serve.delete(`${this.resourceType}/${id}`, {
         signal: this.signal,
         headers: this.headers,
       });
-    };
-
-    const maxRetries = 3;
-    let lastError: Error | undefined;
-
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
-        return await executeRequest();
-      } catch (error) {
-        lastError = error as Error;
-
-        // Handle 401 - refresh token and retry once
-        if (isUnauthorizedError(error)) {
-          await forceTokenRefresh();
-          return await executeRequest();
-        }
-
-        // Handle transient errors - retry with backoff
-        if (isTransientError(error) && attempt < maxRetries) {
-          await delay(1000 * Math.pow(2, attempt));
-          continue;
-        }
-
-        throw error;
-      }
-    }
-    throw lastError;
+    });
   }
 }
 
