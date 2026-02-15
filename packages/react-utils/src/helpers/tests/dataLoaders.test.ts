@@ -480,7 +480,7 @@ describe('FHIRServiceClass retry behavior', () => {
     await expect(fhir.list()).rejects.toThrow('504 Gateway Timeout');
     await flushPromises();
 
-    // maxRetries is 3, loop runs attempt 0,1,2,3 = 4 calls total
+    // maxAttempts is 4, loop runs attempt 0,1,2,3 = 4 calls total
     expect(requestMock).toHaveBeenCalledTimes(4);
   });
 

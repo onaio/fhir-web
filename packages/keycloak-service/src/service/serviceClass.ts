@@ -121,13 +121,13 @@ async function fetchWithRetry<T>(
   onUnauthorized: () => Promise<void>,
   processResponse: (response: Response) => Promise<T>
 ): Promise<T | undefined> {
-  const maxRetries = 3;
+  const maxAttempts = 4;
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     let response = await executeRequest();
 
     // Retry on transient errors with backoff
-    if (isTransientResponse(response) && attempt < maxRetries) {
+    if (isTransientResponse(response) && attempt < maxAttempts - 1) {
       await delay(1000 * Math.pow(2, attempt));
       continue;
     }
@@ -445,7 +445,7 @@ export class KeycloakService extends KeycloakAPIService {
     );
 
     if (result === undefined) {
-      throw new Error(`KeycloakService read on ${this.endpoint} failed after 3 retries`);
+      throw new Error(`KeycloakService read on ${this.endpoint} failed after 4 attempts`);
     }
     return result;
   }

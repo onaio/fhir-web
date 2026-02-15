@@ -80,10 +80,10 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
  * @param executeRequest - async callback that performs the FHIR client operation
  */
 async function retryWithErrorHandling<T>(executeRequest: () => Promise<T>): Promise<T> {
-  const maxRetries = 3;
+  const maxAttempts = 4;
   let lastError: Error | undefined;
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
     try {
       return await executeRequest();
     } catch (error) {
@@ -96,7 +96,7 @@ async function retryWithErrorHandling<T>(executeRequest: () => Promise<T>): Prom
       }
 
       // Handle transient errors - retry with backoff
-      if (isTransientError(error) && attempt < maxRetries) {
+      if (isTransientError(error) && attempt < maxAttempts - 1) {
         await delay(1000 * Math.pow(2, attempt));
         continue;
       }
