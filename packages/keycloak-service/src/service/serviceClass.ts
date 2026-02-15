@@ -128,7 +128,7 @@ async function fetchWithRetry<T>(
 
     // Retry on transient errors with backoff
     if (isTransientResponse(response) && attempt < maxAttempts - 1) {
-      await delay(1000 * Math.pow(2, attempt));
+      await delay(2000 * Math.pow(2, attempt));
       continue;
     }
 

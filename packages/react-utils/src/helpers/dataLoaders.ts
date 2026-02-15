@@ -115,7 +115,7 @@ async function retryWithErrorHandling<T>(executeRequest: () => Promise<T>): Prom
 
       // Handle transient errors - retry with backoff
       if (isTransientError(error) && attempt < maxAttempts - 1) {
-        await delay(1000 * Math.pow(2, attempt));
+        await delay(2000 * Math.pow(2, attempt));
         continue;
       }
 
