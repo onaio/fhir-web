@@ -19,7 +19,6 @@ import {
   fireEvent,
   render,
   waitFor,
-  waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -206,7 +205,10 @@ describe('forms/userForm', () => {
     // simulate click on select - to show dropdown items
     fireEvent.mouseDown(appIdInput);
 
-    await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+    // Wait for dropdown options to load
+    await waitFor(() => {
+      expect(document.querySelector('div#fhirCoreAppId_list + .rc-virtual-list')).toBeTruthy();
+    });
     const appIdOptionList = document.querySelector(
       'div#fhirCoreAppId_list + .rc-virtual-list'
     ) as Element;
