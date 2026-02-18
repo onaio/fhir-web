@@ -83,7 +83,7 @@ const AppWrapper = (props: any) => {
   );
 };
 
-beforeAll(() => {
+beforeEach(() => {
   store.dispatch(
     authenticateUser(
       true,
@@ -92,7 +92,14 @@ beforeAll(() => {
         name: 'Bobbie',
         username: 'RobertBaratheon',
       },
-      { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+      {
+        api_token: 'hunter2',
+        oAuth2Data: {
+          access_token: 'sometoken',
+          state: 'abcde',
+          token_expires_at: '3000-01-01T00:00:00.000Z',
+        },
+      }
     )
   );
 });

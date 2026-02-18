@@ -178,6 +178,11 @@ describe('forms/userForm', () => {
       </QueryWrapper>
     );
 
+    // Flush initial async data loading (composition select useQuery)
+    await act(async () => {
+      await flushPromises();
+    });
+
     const nameInput = document.querySelector('input#firstName') as Element;
     userEvent.type(nameInput, 'Test');
 
