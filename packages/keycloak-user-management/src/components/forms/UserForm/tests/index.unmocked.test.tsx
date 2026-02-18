@@ -61,6 +61,13 @@ const props = {
 describe('forms/userForm', () => {
   beforeAll(() => {
     nock.disableNetConnect();
+  });
+
+  afterAll(() => {
+    nock.enableNetConnect();
+  });
+
+  beforeEach(() => {
     store.dispatch(
       authenticateUser(
         true,
@@ -69,13 +76,17 @@ describe('forms/userForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+        {
+          api_token: 'hunter2',
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          oAuth2Data: {
+            access_token: 'sometoken',
+            state: 'abcde',
+            token_expires_at: '3000-01-01T00:00:00.000Z',
+          },
+        }
       )
     );
-  });
-
-  afterAll(() => {
-    nock.enableNetConnect();
   });
 
   afterEach(() => {
