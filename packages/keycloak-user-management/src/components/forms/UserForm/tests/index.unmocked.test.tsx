@@ -13,14 +13,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { compositionResourceType } from '../../../../constants';
-import {
-  screen,
-  cleanup,
-  fireEvent,
-  render,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { screen, cleanup, fireEvent, render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { compositionUrlFilter } from '../utils';
 import { CreateEditUser } from '../../../CreateEditUser';
