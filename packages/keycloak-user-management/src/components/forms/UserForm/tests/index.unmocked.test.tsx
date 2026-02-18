@@ -93,6 +93,7 @@ describe('forms/userForm', () => {
     nock.cleanAll();
     cleanup();
     jest.resetAllMocks();
+    queryClient.clear();
   });
 
   it('filters user groups', async () => {
@@ -178,9 +179,10 @@ describe('forms/userForm', () => {
       </QueryWrapper>
     );
 
-    // Flush initial async data loading (composition select useQuery)
-    await act(async () => {
-      await flushPromises();
+    // Wait for both composition API calls to complete
+    await waitFor(() => {
+      const compositionPending = nock.pendingMocks().filter((m) => m.includes('Composition'));
+      expect(compositionPending).toHaveLength(0);
     });
 
     const nameInput = document.querySelector('input#firstName') as Element;
