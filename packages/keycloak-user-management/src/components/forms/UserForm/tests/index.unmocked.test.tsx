@@ -13,15 +13,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { store } from '@opensrp/store';
 import { authenticateUser } from '@onaio/session-reducer';
 import { compositionResourceType } from '../../../../constants';
-import {
-  screen,
-  cleanup,
-  fireEvent,
-  render,
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react';
+import { screen, cleanup, fireEvent, render, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { compositionUrlFilter } from '../utils';
 import { CreateEditUser } from '../../../CreateEditUser';
@@ -69,6 +61,13 @@ const props = {
 describe('forms/userForm', () => {
   beforeAll(() => {
     nock.disableNetConnect();
+  });
+
+  afterAll(() => {
+    nock.enableNetConnect();
+  });
+
+  beforeEach(() => {
     store.dispatch(
       authenticateUser(
         true,
@@ -77,19 +76,24 @@ describe('forms/userForm', () => {
           name: 'Bobbie',
           username: 'RobertBaratheon',
         },
-        { api_token: 'hunter2', oAuth2Data: { access_token: 'sometoken', state: 'abcde' } }
+        {
+          api_token: 'hunter2',
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          oAuth2Data: {
+            access_token: 'sometoken',
+            state: 'abcde',
+            token_expires_at: '3000-01-01T00:00:00.000Z',
+          },
+        }
       )
     );
-  });
-
-  afterAll(() => {
-    nock.enableNetConnect();
   });
 
   afterEach(() => {
     nock.cleanAll();
     cleanup();
     jest.resetAllMocks();
+    queryClient.clear();
   });
 
   it('filters user groups', async () => {
@@ -175,6 +179,12 @@ describe('forms/userForm', () => {
       </QueryWrapper>
     );
 
+    // Wait for both composition API calls to complete
+    await waitFor(() => {
+      const compositionPending = nock.pendingMocks().filter((m) => m.includes('Composition'));
+      expect(compositionPending).toHaveLength(0);
+    });
+
     const nameInput = document.querySelector('input#firstName') as Element;
     userEvent.type(nameInput, 'Test');
 
@@ -206,7 +216,10 @@ describe('forms/userForm', () => {
     // simulate click on select - to show dropdown items
     fireEvent.mouseDown(appIdInput);
 
-    await waitForElementToBeRemoved(appIdSection.querySelector('.anticon-spin'));
+    // Wait for dropdown options to load
+    await waitFor(() => {
+      expect(document.querySelector('div#fhirCoreAppId_list + .rc-virtual-list')).toBeTruthy();
+    });
     const appIdOptionList = document.querySelector(
       'div#fhirCoreAppId_list + .rc-virtual-list'
     ) as Element;

@@ -19,6 +19,112 @@ import type { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResou
 
 const configs = getAllConfigs();
 
+/**
+ * Force token refresh regardless of current expiry state
+ */
+export async function forceTokenRefresh(): Promise<string> {
+  return handleSessionOrTokenExpiry(true);
+}
+
+/**
+ * Extract HTTP status code from an error object if available.
+ * fhirclient's HttpError exposes statusCode/status properties.
+ *
+ * @param error - The error to extract status from
+ * @returns The status code if found
+ */
+function getErrorStatusCode(error: unknown): number | undefined {
+  if (error && typeof error === 'object') {
+    const err = error as Record<string, unknown>;
+    if (typeof err.statusCode === 'number') return err.statusCode;
+    if (typeof err.status === 'number') return err.status;
+  }
+  return undefined;
+}
+
+/**
+ * Check if error is a 401 Unauthorized.
+ * Checks structured statusCode/status first, falls back to message parsing.
+ *
+ * @param error - The error to check
+ * @returns True if the error represents a 401 Unauthorized
+ */
+function isUnauthorizedError(error: unknown): boolean {
+  const statusCode = getErrorStatusCode(error);
+  if (statusCode !== undefined) return statusCode === 401;
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    return message.includes('401') || message.includes('unauthorized');
+  }
+  return false;
+}
+
+/**
+ * Check if error is a transient server error (502, 503, 504).
+ * Checks structured statusCode/status first, falls back to message parsing.
+ *
+ * @param error - The error to check
+ * @returns True if the error is a transient server error
+ */
+function isTransientError(error: unknown): boolean {
+  const statusCode = getErrorStatusCode(error);
+  if (statusCode !== undefined) return statusCode >= 502 && statusCode <= 504;
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    return (
+      message.includes('502') ||
+      message.includes('503') ||
+      message.includes('504') ||
+      message.includes('bad gateway') ||
+      message.includes('service unavailable')
+    );
+  }
+  return false;
+}
+
+/**
+ * Delay execution for a specified number of milliseconds
+ *
+ * @param {number} ms - The number of milliseconds to delay
+ * @returns {Promise<void>} A promise that resolves after the delay
+ */
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Retry wrapper for FHIR client operations that throw errors on failure.
+ * Handles 401 (token refresh + single retry), transient errors (502/503/504 with
+ * exponential backoff), and throws immediately on all other errors.
+ *
+ * @param executeRequest - async callback that performs the FHIR client operation
+ */
+async function retryWithErrorHandling<T>(executeRequest: () => Promise<T>): Promise<T> {
+  const maxAttempts = 4;
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      return await executeRequest();
+    } catch (error) {
+      lastError = error as Error;
+
+      // Handle 401 - refresh token and retry once
+      if (isUnauthorizedError(error)) {
+        await forceTokenRefresh();
+        return await executeRequest();
+      }
+
+      // Handle transient errors - retry with backoff
+      if (isTransientError(error) && attempt < maxAttempts - 1) {
+        await delay(2000 * Math.pow(2, attempt));
+        continue;
+      }
+
+      throw error;
+    }
+  }
+  throw lastError;
+}
+
 /** OpenSRP service Generic class */
 export class OpenSRPService<T extends object = Dictionary> extends GenericOpenSRPService<T> {
   /**
@@ -107,57 +213,69 @@ export class FHIRServiceClass<T extends IResource> {
   }
 
   public async create(payload: T) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.create<T>(payload as fhirclient.FHIR.Resource, {
-      signal: this.signal,
-      headers: this.headers,
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
+      return serve.create<T>(payload as fhirclient.FHIR.Resource, {
+        signal: this.signal,
+        headers: this.headers,
+      });
     });
   }
 
   public async update(payload: T) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
-    return serve.update<T>(payload as fhirclient.FHIR.Resource, {
-      signal: this.signal,
-      headers: this.headers,
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      // TODO - using two clashing libraries to supply fhir resource typings, we should choose one.
+      return serve.update<T>(payload as fhirclient.FHIR.Resource, {
+        signal: this.signal,
+        headers: this.headers,
+      });
     });
   }
 
   public async list(params: URLParams | null = null) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const queryStr = this.buildQueryParams(params);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>({ url: queryStr, headers: this.headers });
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const queryStr = this.buildQueryParams(params);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request<T>({ url: queryStr, headers: this.headers });
+    });
   }
 
   public async read(id: string) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request<T>({
-      url: `${this.resourceType}/${id}`,
-      headers: this.headers,
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request<T>({
+        url: `${this.resourceType}/${id}`,
+        headers: this.headers,
+      });
     });
   }
 
   public async customRequest(requestOptions: fhirclient.RequestOptions) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.request({
-      signal: this.signal,
-      headers: this.headers,
-      ...requestOptions,
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.request({
+        signal: this.signal,
+        headers: this.headers,
+        ...requestOptions,
+      });
     });
   }
 
   public async delete(id: string) {
-    const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
-    const serve = FHIR.client(this.buildState(accessToken));
-    return serve.delete(`${this.resourceType}/${id}`, {
-      signal: this.signal,
-      headers: this.headers,
+    return retryWithErrorHandling(async () => {
+      const accessToken = await OpenSRPService.processAcessToken(this.accessTokenOrCallBack);
+      const serve = FHIR.client(this.buildState(accessToken));
+      return serve.delete(`${this.resourceType}/${id}`, {
+        signal: this.signal,
+        headers: this.headers,
+      });
     });
   }
 }
@@ -165,9 +283,10 @@ export class FHIRServiceClass<T extends IResource> {
 /**
  * gets access token or redirects to login if session is expired
  *
+ * @param {boolean} forceRefresh - if true, unconditionally refreshes the token
  */
-export async function handleSessionOrTokenExpiry() {
-  if (isTokenExpired(store.getState())) {
+export async function handleSessionOrTokenExpiry(forceRefresh = false) {
+  if (forceRefresh || isTokenExpired(store.getState())) {
     try {
       // refresh token
       return await refreshToken(`${EXPRESS_TOKEN_REFRESH_URL}`, store.dispatch, {});
