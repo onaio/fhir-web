@@ -194,7 +194,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
                 rules={[
                   {
                     pattern: /^\d{10,16}$/,
-                    required: true,
+                    required: false,
                     message: t('Please enter a Phone number with 10 to 16 digits.'),
                   },
                 ]}

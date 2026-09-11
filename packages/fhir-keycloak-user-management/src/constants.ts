@@ -20,4 +20,4 @@ export const USER_DETAILS_URL = `${URL_USER}/details`;
 export const NATIONAL_ID_FORM_FIELD = 'nationalId';
 export const PHONE_NUMBER_FORM_FIELD = 'phoneNumber';
 
-export const renderExtraFields = [NATIONAL_ID_FORM_FIELD, PHONE_NUMBER_FORM_FIELD];
+export const renderExtraFields = [NATIONAL_ID_FORM_FIELD];

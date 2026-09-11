@@ -13,6 +13,7 @@ import {
   groupResourceType,
   practitionerRoleResourceType,
   renderExtraFields,
+  PHONE_NUMBER_FORM_FIELD,
 } from '../../constants';
 import {
   FHIRServiceClass,
@@ -352,10 +353,18 @@ export const practitionerUpdater =
  * @param props - component props
  */
 export function CreateEditUser(props: CreateEditPropTypes) {
-  let renderFormFields: FormFieldsKey[] = [...commonFhirFields];
+/*
+ * phoneNumber is now rendered by default for all projects (not tied to a specific
+ * projectCode) since it's a generally useful field on user create/edit.
+ * The giz branch still adds nationalId on top of the defaults, and eusm still
+ */
+  let renderFormFields: FormFieldsKey[] = [
+    ...commonFhirFields,
+    PHONE_NUMBER_FORM_FIELD,
+  ] as FormFieldsKey[];
   const projectCode = getConfig('projectCode');
   if (projectCode === 'giz') {
-    renderFormFields = [...commonFhirFields, ...renderExtraFields] as FormFieldsKey[];
+    renderFormFields = [...renderFormFields, ...renderExtraFields] as FormFieldsKey[];
   } else if (projectCode === 'eusm') {
     renderFormFields = renderFormFields.filter((field) => field !== userTypeField);
   }
