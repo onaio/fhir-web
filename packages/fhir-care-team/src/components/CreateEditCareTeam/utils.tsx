@@ -112,11 +112,19 @@ export const submitForm = async (
 
   const carriedOverParticipantsById = getCarriedOverParticipants(values, initialValues);
   const carriedOverParticipants = Object.values(carriedOverParticipantsById);
+
+  const newPractitionerParticipants = practitionerParticipants.filter(
+    (p) => !carriedOverParticipantsById[p.member.reference as string]
+  );
+  const newOrgParticipants = participatingOrgsPayload.filter(
+    (p) => !carriedOverParticipantsById[p.member.reference as string]
+  );
+
   const managingOrgsReferences = participatingOrgsPayload.map((payload) => payload.member);
   const allParticipants = [
     ...carriedOverParticipants,
-    ...practitionerParticipants,
-    ...participatingOrgsPayload,
+    ...newPractitionerParticipants,
+    ...newOrgParticipants,
   ];
 
   const careTeamId = uuid ? uuid : v4();

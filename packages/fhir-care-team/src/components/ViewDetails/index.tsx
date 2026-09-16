@@ -75,7 +75,7 @@ const ViewDetails = (props: ViewDetailsProps) => {
 
   // fetch this careTeam and include all its referenced resources.
   const { data, isLoading, error } = useQuery({
-    queryKey: [careTeamResourceType, careTeamId],
+    queryKey: [careTeamResourceType,"viewDetails", careTeamId],
     queryFn: () =>
       new FHIRServiceClass<IBundle>(fhirBaseURL, careTeamResourceType).list({
         _id: careTeamId,

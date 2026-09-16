@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useHistory } from 'react-router';
 import { Button, Col, Row, Form, Input, Radio } from 'antd';
 import { BodyLayout, PaginatedAsyncSelect, SelectOption } from '@opensrp/react-utils';
@@ -85,6 +85,10 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
     const sanitized = Array.isArray(practitioners) ? practitioners : [practitioners];
     setSelectedPractitioners(sanitized);
   };
+
+    useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues, form]);
 
   return (
     <BodyLayout headerProps={headerProps}>
