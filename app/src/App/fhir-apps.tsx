@@ -607,6 +607,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={WIZARD_ONBOARDING_URL}
+        {...teamManagementProps}
         permissions={[
           'Organization.create',
           'CareTeam.create',

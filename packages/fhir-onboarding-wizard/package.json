@@ -34,6 +34,10 @@
     "@onaio/utils": "^0.0.1",
     "@opensrp/react-utils": "^0.0.12",
     "@smile-cdr/fhirts": "^1.2.5",
+    "@opensrp/fhir-care-team": "^0.0.1",
+    "@opensrp/fhir-location-management": "^0.0.1",
+    "@opensrp/user-management": "^0.0.1",
+    "@opensrp/fhir-team-management": "^0.0.5",
     "uuid": "^8.3.1"
   },
   "devDependencies": {
