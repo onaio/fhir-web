@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DraftList matches the snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="details-full-view"
+  >
+    <div
+      class="ant-page-header site-page-header ant-page-header-ghost"
+    >
+      <div
+        class="ant-page-header-heading "
+      >
+        <div
+          class="ant-page-header-heading-left"
+        >
+          <span
+            class="ant-page-header-heading-title"
+            title="Drafts"
+          >
+            Drafts
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="content-body"
+    >
+      <div
+        class="ant-list ant-list-split css-dev-only-do-not-override-k7429z"
+      >
+        <div
+          class="ant-spin-nested-loading css-dev-only-do-not-override-k7429z"
+        >
+          <div
+            class="ant-spin-container"
+          >
+            <ul
+              class="ant-list-items"
+            >
+              <li
+                class="ant-list-item"
+              >
+                Org A
+                <ul
+                  class="ant-list-item-action"
+                >
+                  <li>
+                    <button
+                      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
+                      type="button"
+                    >
+                      <span>
+                        Edit
+                      </span>
+                    </button>
+                    <em
+                      class="ant-list-item-action-split"
+                    />
+                  </li>
+                  <li>
+                    <button
+                      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link ant-btn-dangerous"
+                      type="button"
+                    >
+                      <span>
+                        Remove
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+              <li
+                class="ant-list-item"
+              >
+                Org B
+                <ul
+                  class="ant-list-item-action"
+                >
+                  <li>
+                    <button
+                      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link"
+                      type="button"
+                    >
+                      <span>
+                        Edit
+                      </span>
+                    </button>
+                    <em
+                      class="ant-list-item-action-split"
+                    />
+                  </li>
+                  <li>
+                    <button
+                      class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-link ant-btn-dangerous"
+                      type="button"
+                    >
+                      <span>
+                        Remove
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
