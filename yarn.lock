@@ -4421,6 +4421,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@opensrp/fhir-onboarding-wizard@^0.0.1, @opensrp/fhir-onboarding-wizard@workspace:packages/fhir-onboarding-wizard":
+  version: 0.0.0-use.local
+  resolution: "@opensrp/fhir-onboarding-wizard@workspace:packages/fhir-onboarding-wizard"
+  dependencies:
+    "@onaio/utils": ^0.0.1
+    "@opensrp/react-utils": ^0.0.12
+    "@smile-cdr/fhirts": ^1.2.5
+    "@types/uuid": 8.3.0
+    nock: ^13.0.6
+    uuid: ^8.3.1
+  peerDependencies:
+    antd: ^5.5.2
+    react: 17.0.0
+    react-query: ^3.15.1
+  languageName: unknown
+  linkType: soft
+
 "@opensrp/fhir-quest-form@^0.0.0, @opensrp/fhir-quest-form@workspace:packages/fhir-quest-form":
   version: 0.0.0-use.local
   resolution: "@opensrp/fhir-quest-form@workspace:packages/fhir-quest-form"
@@ -4821,6 +4838,7 @@ __metadata:
     "@opensrp/fhir-group-management": ^0.0.5
     "@opensrp/fhir-healthcare-service": ^0.0.1
     "@opensrp/fhir-location-management": ^0.0.1
+    "@opensrp/fhir-onboarding-wizard": ^0.0.1
     "@opensrp/fhir-quest-form": ^0.0.0
     "@opensrp/fhir-team-management": ^0.0.5
     "@opensrp/fhir-user-management": ^0.0.1

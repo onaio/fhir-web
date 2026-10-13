@@ -35,7 +35,9 @@ import {
   URL_FHIR_CARE_TEAM,
   URL_TEAM_ASSIGNMENT,
   URL_USER_SYNC,
+  WIZARD_ONBOARDING_URL,
 } from '../constants';
+import { OnboardingWizard } from '@opensrp/fhir-onboarding-wizard';
 import { providers } from '../configs/settings';
 import CustomConnectedAPICallBack from '../components/page/CustomCallback';
 import { PatientsList, PatientDetails, LIST_PATIENTS_URL } from '@opensrp/fhir-client';
@@ -599,6 +601,19 @@ const FHIRApps = () => {
         path={`${URL_CLOSE_FLAGS}/:id`}
         permissions={['Flag.read']}
         component={CloseFlag}
+      />
+      <PrivateComponent
+        redirectPath={APP_CALLBACK_URL}
+        disableLoginProtection={DISABLE_LOGIN_PROTECTION}
+        exact
+        path={WIZARD_ONBOARDING_URL}
+        permissions={[
+          'Organization.create',
+          'CareTeam.create',
+          'Practitioner.create',
+          'iam_user.create',
+        ]}
+        component={OnboardingWizard}
       />
       <Route
         exact

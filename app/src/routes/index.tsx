@@ -12,6 +12,7 @@ import {
   ENABLE_USER_GROUPS,
   ENABLE_USER_ROLES,
   ENABLE_USER_SYNC,
+  ENABLE_FHIR_ONBOARDING_WIZARD,
 } from '../configs/env';
 import {
   URL_USER,
@@ -22,6 +23,7 @@ import {
   URL_USER_GROUPS,
   URL_USER_ROLES,
   URL_FHIR_CARE_TEAM,
+  WIZARD_ONBOARDING_URL,
 } from '../constants';
 import { URL_ALL_LOCATIONS, URL_SERVICE_POINT_LIST } from '@opensrp/fhir-location-management';
 import { QUEST_VIEW_URL } from '@opensrp/fhir-views';
@@ -170,6 +172,19 @@ export function getRoutes(roles: string[], t: TFunction, userRole: UserRole): Ro
               enabled: ENABLE_TEAMS_ASSIGNMENT_MODULE,
             },
           ],
+        },
+        {
+          title: t('Setup Wizard'),
+          key: 'onboarding-wizard',
+          isHomePageLink: true,
+          url: WIZARD_ONBOARDING_URL,
+          permissions: [
+            'Organization.create',
+            'CareTeam.create',
+            'Practitioner.create',
+            'iam_user.create',
+          ],
+          enabled: ENABLE_FHIR_ONBOARDING_WIZARD,
         },
         {
           title: t('Group Management'),
