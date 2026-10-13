@@ -44,6 +44,7 @@ export interface LocationFormProps
   disabled: (keyof LocationFormFields)[];
   onCancel: () => void;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
+  onDraftSubmit?: (draft: LocationFormFields & { payload: ILocation }) => void;
   validationRulesFactory: ValidationFactory;
   i18nNamespace?: LocationI18nNamespace;
 }
@@ -113,6 +114,7 @@ const LocationForm = (props: LocationFormProps) => {
     onCancel,
     tree,
     validationRulesFactory,
+    onDraftSubmit,
   } = props;
   const isEditMode = !!initialValues.id;
   const defaultParentNode =
@@ -159,8 +161,13 @@ const LocationForm = (props: LocationFormProps) => {
         initialValues={initialValues}
         /* tslint:disable-next-line jsx-no-lambda */
         onFinish={async (values) => {
-          setSubmitting(true);
           const payload = generateLocationUnit(values, initialValues, parentNode);
+          if (onDraftSubmit) {
+            onDraftSubmit({ ...values, payload });
+            form.resetFields();
+            return;
+          }
+          setSubmitting(true);
 
           const successMessage = isEditMode
             ? t(`Location was successfully updated`)
@@ -344,17 +351,26 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem {...tailLayout}>
           <Space>
-            <Button
-              type="primary"
-              id="location-form-submit-button"
-              disabled={isSubmitting}
-              htmlType="submit"
-            >
-              {isSubmitting ? t('Saving') : t('Save')}
-            </Button>
-            <Button id="location-form-cancel-button" onClick={onCancel}>
-              {t('Cancel')}
-            </Button>
+            // Draft buttons
+            {onDraftSubmit ? (
+              <Button type="primary" id="add-to-draft-button" htmlType="submit">
+                {t('Add to Draft')}
+              </Button>
+            ) : (
+              <>
+                <Button
+                  type="primary"
+                  id="location-form-submit-button"
+                  disabled={isSubmitting}
+                  htmlType="submit"
+                >
+                  {isSubmitting ? t('Saving') : t('Save')}
+                </Button>
+                <Button id="location-form-cancel-button" onClick={onCancel}>
+                  {t('Cancel')}
+                </Button>
+              </>
+            )}
           </Space>
         </FormItem>
       </Form>
