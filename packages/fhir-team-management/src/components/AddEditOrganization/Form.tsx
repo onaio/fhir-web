@@ -49,6 +49,8 @@ interface OrganizationFormProps {
   existingPractitionerRoles: IPractitionerRole[];
   allPractitionerRoles: IPractitionerRole[];
   configuredPractAssignmentStrategy?: PractToOrgAssignmentStrategy;
+  onDraftSubmit?: (values: OrganizationFormFields) => void;
+  draftPractitionerOptions?: { label: string; value: string }[];
 }
 
 const defaultProps = {
@@ -67,7 +69,10 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     existingPractitionerRoles,
     allPractitionerRoles,
     configuredPractAssignmentStrategy,
+    onDraftSubmit,
+    draftPractitionerOptions = [],
   } = props;
+  const [form] = Form.useForm<OrganizationFormFields>();
 
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -128,18 +133,27 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     { label: t('Inactive'), value: false },
   ];
 
-  const practitionersSelectOptions = getPractitionerOptions(
-    practitioners,
-    existingPractitionerRoles,
-    allPractitionerRoles,
-    configuredPractAssignmentStrategy
-  );
+  const practitionersSelectOptions = [
+    ...draftPractitionerOptions,
+    ...getPractitionerOptions(
+      practitioners,
+      existingPractitionerRoles,
+      allPractitionerRoles,
+      configuredPractAssignmentStrategy
+    ),
+  ];
   const validationRules = validationRulesFactory(t);
 
   return (
     <Form
       {...formItemLayout}
+      form={form}
       onFinish={(values) => {
+        if (onDraftSubmit) {
+          onDraftSubmit(values);
+          form.resetFields(); // clears the form so the user can add another entry
+          return;
+        }
         mutate(values);
       }}
       initialValues={initialValues}
@@ -187,17 +201,25 @@ const OrganizationForm = (props: OrganizationFormProps) => {
 
       <FormItem {...tailLayout}>
         <Space>
-          <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
-            {isLoading ? t('Saving') : t('save')}
-          </Button>
-          <Button
-            id="cancel-button"
-            onClick={() => {
-              goTo(cancelUrl);
-            }}
-          >
-            {t('Cancel')}
-          </Button>
+          {onDraftSubmit ? (
+            <Button type="primary" id="add-to-draft-button" htmlType="submit">
+              {t('Add to Draft')}
+            </Button>
+          ) : (
+            <>
+              <Button type="primary" id="submit-button" disabled={isLoading} htmlType="submit">
+                {isLoading ? t('Saving') : t('save')}
+              </Button>
+              <Button
+                id="cancel-button"
+                onClick={() => {
+                  goTo(cancelUrl);
+                }}
+              >
+                {t('Cancel')}
+              </Button>
+            </>
+          )}
         </Space>
       </FormItem>
     </Form>
