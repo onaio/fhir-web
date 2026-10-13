@@ -351,7 +351,6 @@ const LocationForm = (props: LocationFormProps) => {
 
         <FormItem {...tailLayout}>
           <Space>
-            // Draft buttons
             {onDraftSubmit ? (
               <Button type="primary" id="add-to-draft-button" htmlType="submit">
                 {t('Add to Draft')}

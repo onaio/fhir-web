@@ -6,6 +6,8 @@ import { StepPanel } from './StepPanel';
 
 interface OnboardingWizardProps {
   fhirBaseURL: string;
+  fhirRootLocationId: string;
+  fhirCustomEndpointBaseURL?: string;
 }
 
 export const OnboardingWizard = (props: OnboardingWizardProps) => {
@@ -40,6 +42,8 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
           stepConfig={currentStepConfig}
           commonProps={{
             fhirBaseURL: props.fhirBaseURL,
+            fhirRootLocationId: props.fhirRootLocationId,
+            fhirCustomEndpointBaseURL: props.fhirCustomEndpointBaseURL,
           }}
           onNext={handleNext}
           onBack={() => setCurrentStep((s) => Math.max(0, s - 1))}

@@ -608,6 +608,7 @@ const FHIRApps = () => {
         exact
         path={WIZARD_ONBOARDING_URL}
         {...teamManagementProps}
+        {...newLocationUnitProps}
         permissions={[
           'Organization.create',
           'CareTeam.create',

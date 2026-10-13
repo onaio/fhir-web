@@ -2,8 +2,15 @@ import { StepKey, StepConfig } from './types';
 
 import { OrganizationStepAdapter } from './components/StepAdapters/OrganizationStepAdapter';
 import { CareTeamStepAdapter } from './components/StepAdapters/CareteamStepAdapter';
+import { LocationStepAdapter } from './components/StepAdapters/LocationStepAdapter';
 
 export const steps: StepConfig[] = [
+      {
+    key: StepKey.LOCATION,
+    title: 'Location',
+    component: LocationStepAdapter, 
+    requiredPermissions: ['Location.create'],
+  },
   {
     key: StepKey.ORGANIZATION,
     title: 'Organization',
