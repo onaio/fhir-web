@@ -1,4 +1,5 @@
 import type { OrganizationFormFields } from '@opensrp/fhir-team-management';
+import type { CareTeamFormFields } from '@opensrp/fhir-care-team';
 
 export enum StepKey {
   LOCATION = 'location',
@@ -8,9 +9,11 @@ export enum StepKey {
 }
 
 export type OrganizationFormValues = OrganizationFormFields;
+export type CareTeamFormValues =CareTeamFormFields
 
 export interface WizardState {
   [StepKey.ORGANIZATION]?: OrganizationFormValues;
+  [StepKey.CARE_TEAM]?: CareTeamFormValues;
 }
 
 export interface StepConfig {

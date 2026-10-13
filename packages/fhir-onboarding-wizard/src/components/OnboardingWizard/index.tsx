@@ -5,7 +5,7 @@ import { wizardReducer, initialState } from '../../reducer';
 import { StepPanel } from './StepPanel';
 
 interface OnboardingWizardProps {
-  fhirBaseURL: string; 
+  fhirBaseURL: string;
 }
 
 export const OnboardingWizard = (props: OnboardingWizardProps) => {
@@ -16,7 +16,14 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
 
   const currentStepConfig = steps[currentStep];
 
-  const handleNext = async (drafts: unknown[]) => {}
+  const handleNext = async (drafts: unknown[]) => {
+    dispatch({ type: 'SAVE_STEP', step: currentStepConfig.key, values: drafts });
+
+    if (currentStep < steps.length - 1) {
+      setCurrentStep((s) => s + 1); // this line moves you to the next form
+      return;
+    }
+  };
 
   return (
     <div>
@@ -29,10 +36,10 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
 
       <div>
         <StepPanel
-          key={currentStepConfig.key} 
+          key={currentStepConfig.key}
           stepConfig={currentStepConfig}
           commonProps={{
-            fhirBaseURL: props.fhirBaseURL
+            fhirBaseURL: props.fhirBaseURL,
           }}
           onNext={handleNext}
           onBack={() => setCurrentStep((s) => Math.max(0, s - 1))}
