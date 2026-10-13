@@ -607,6 +607,7 @@ const FHIRApps = () => {
         disableLoginProtection={DISABLE_LOGIN_PROTECTION}
         exact
         path={WIZARD_ONBOARDING_URL}
+        {...fhirCreateEditUserProps}
         {...teamManagementProps}
         {...newLocationUnitProps}
         permissions={[

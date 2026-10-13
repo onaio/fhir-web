@@ -3,6 +3,7 @@ import { StepKey, StepConfig } from './types';
 import { OrganizationStepAdapter } from './components/StepAdapters/OrganizationStepAdapter';
 import { CareTeamStepAdapter } from './components/StepAdapters/CareteamStepAdapter';
 import { LocationStepAdapter } from './components/StepAdapters/LocationStepAdapter';
+import { UserStepAdapter } from './components/StepAdapters/UserStepAdapter';
 
 export const steps: StepConfig[] = [
       {
@@ -10,6 +11,12 @@ export const steps: StepConfig[] = [
     title: 'Location',
     component: LocationStepAdapter, 
     requiredPermissions: ['Location.create'],
+  },
+    {
+    key: StepKey.USERS,
+    title: 'Users',
+    component: UserStepAdapter, // <-- wire up
+    requiredPermissions: ['iam_user.create', 'Practitioner.create'],
   },
   {
     key: StepKey.ORGANIZATION,

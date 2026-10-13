@@ -3,11 +3,15 @@ import { Steps, Alert } from 'antd';
 import { steps } from '../../steps';
 import { wizardReducer, initialState } from '../../reducer';
 import { StepPanel } from './StepPanel';
+import { Dictionary } from '@onaio/utils';
 
 interface OnboardingWizardProps {
   fhirBaseURL: string;
   fhirRootLocationId: string;
   fhirCustomEndpointBaseURL?: string;
+  keycloakBaseURL: string;
+  baseUrl: string;
+  extraData?: Dictionary<unknown>;
 }
 
 export const OnboardingWizard = (props: OnboardingWizardProps) => {
@@ -44,6 +48,9 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
             fhirBaseURL: props.fhirBaseURL,
             fhirRootLocationId: props.fhirRootLocationId,
             fhirCustomEndpointBaseURL: props.fhirCustomEndpointBaseURL,
+            keycloakBaseURL: props.keycloakBaseURL,
+            baseUrl: props.baseUrl,
+            extraData: props.extraData,
           }}
           onNext={handleNext}
           onBack={() => setCurrentStep((s) => Math.max(0, s - 1))}
