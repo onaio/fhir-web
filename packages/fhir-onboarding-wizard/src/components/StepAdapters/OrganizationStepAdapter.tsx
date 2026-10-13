@@ -5,6 +5,8 @@ import { OrganizationForm } from '@opensrp/fhir-team-management';
 import type { OrganizationFormFields } from '@opensrp/fhir-team-management';
 import { BodyLayout, getResourcesFromBundle, loadAllResources } from '@opensrp/react-utils';
 import type { IPractitioner } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IPractitioner';
+import { readDrafts } from '../Drafts/useDraftStore';
+import { StepKey, UserFormValues } from '../../types';
 
 const practitionerResourceType = 'Practitioner';
 
@@ -42,6 +44,13 @@ export const OrganizationStepAdapter: React.FC<OrganizationStepAdapterProps> = (
     );
   }
 
+  const draftPractitionerOptions = readDrafts<UserFormValues & { draftId: string }>(StepKey.USERS).map(
+  (u) => ({
+    label: `${[u.firstName, u.lastName].filter(Boolean).join(' ') || u.username} (draft)`,
+    value: `draft:${u.draftId}`,
+  })
+);
+
   const headerProps = {
     pageHeaderProps: { title: 'Create organization', onBack: undefined },
   };
@@ -57,6 +66,7 @@ export const OrganizationStepAdapter: React.FC<OrganizationStepAdapterProps> = (
           existingPractitionerRoles={[]}
           allPractitionerRoles={[]}
           onDraftSubmit={props.onSubmit}
+          draftPractitionerOptions={draftPractitionerOptions}
         />
       </div>
     </BodyLayout>

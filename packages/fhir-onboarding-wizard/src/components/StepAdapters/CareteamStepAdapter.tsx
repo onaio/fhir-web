@@ -4,6 +4,7 @@ import type { CareTeamFormFields } from '@opensrp/fhir-care-team';
 import type { OrganizationFormFields } from '@opensrp/fhir-team-management';
 import { readDrafts } from '../Drafts/useDraftStore';
 import { StepKey } from '../../types';
+import type { UserFormValues } from '../../types';
 
 interface CareTeamStepAdapterProps {
   onSubmit: (values: CareTeamFormFields) => void;
@@ -19,6 +20,13 @@ export const CareTeamStepAdapter: React.FC<CareTeamStepAdapterProps> = (props) =
     value: `draft:${o.draftId}`,
   }));
 
+  const draftPractitionerOptions = readDrafts<UserFormValues & { draftId: string }>(
+    StepKey.USERS
+  ).map((u) => ({
+    label: `${[u.firstName, u.lastName].filter(Boolean).join(' ') || u.username} (draft)`,
+    value: `draft:${u.draftId}`,
+  }));
+
   return (
     <CareTeamForm
       fhirBaseURL={props.fhirBaseURL}
@@ -26,6 +34,7 @@ export const CareTeamStepAdapter: React.FC<CareTeamStepAdapterProps> = (props) =
       disabled={[]}
       onDraftSubmit={props.onSubmit}
       draftOrganizationOptions={draftOrganizationOptions}
+      draftPractitionerOptions={draftPractitionerOptions}
     />
   );
 };
