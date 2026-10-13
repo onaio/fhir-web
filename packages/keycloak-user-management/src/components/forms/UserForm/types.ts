@@ -52,6 +52,7 @@ export interface UserFormProps {
   hiddenFields?: FormFieldsKey[];
   renderFields?: FormFieldsKey[];
   practitionerUpdaterFactory: PractitionerUpdaterFactory;
+  onDraftSubmit?: (values: FormFields) => void;
 }
 
 /** descibes antd select component options */

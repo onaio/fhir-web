@@ -49,6 +49,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     userGroups,
     renderFields,
     hiddenFields,
+    onDraftSubmit,
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => {
     if (renderFields === undefined) {
@@ -125,6 +126,11 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             form={form}
             initialValues={initialValues}
             onFinish={(values) => {
+              if(onDraftSubmit) {
+                onDraftSubmit(values);
+                form.resetFields();
+                return;
+              }
               setSubmitting(true);
               submitForm(
                 { ...initialValues, ...values },
@@ -316,12 +322,20 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             ) : null}
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" className="create-user">
-                {isSubmitting ? t('SAVING') : t('Save')}
-              </Button>
-              <Button onClick={() => history.goBack()} className="cancel-user">
-                {t('Cancel')}
-              </Button>
+              {onDraftSubmit ? (
+                <Button type="primary" id="add-to-draft-button" htmlType="submit">
+                  {t('Add to Draft')}
+                </Button>
+              ) : (
+                <>
+                  <Button type="primary" htmlType="submit" className="create-user">
+                    {isSubmitting ? t('SAVING') : t('Save')}
+                  </Button>
+                  <Button onClick={() => history.goBack()} className="cancel-user">
+                    {t('Cancel')}
+                  </Button>
+                </>
+              )}
             </Form.Item>
           </Form>
         </Col>
