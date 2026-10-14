@@ -1,9 +1,12 @@
 import React, { useReducer, useState } from 'react';
-import { Steps, Alert } from 'antd';
+import { Steps, Alert, message } from 'antd';
 import { steps } from '../../steps';
 import { wizardReducer, initialState } from '../../reducer';
 import { StepPanel } from './StepPanel';
 import { Dictionary } from '@onaio/utils';
+import { clearAllDrafts } from '../Drafts/useDraftStore';
+import { UserGroup } from '@opensrp/user-management';
+import { clearIdMap, submitWizard } from '../utils/SubmitWizard';
 
 interface OnboardingWizardProps {
   fhirBaseURL: string;
@@ -12,6 +15,7 @@ interface OnboardingWizardProps {
   keycloakBaseURL: string;
   baseUrl: string;
   extraData?: Dictionary<unknown>;
+  userGroups: UserGroup[];
 }
 
 export const OnboardingWizard = (props: OnboardingWizardProps) => {
@@ -28,6 +32,30 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
     if (currentStep < steps.length - 1) {
       setCurrentStep((s) => s + 1); // this line moves you to the next form
       return;
+    }
+
+        setSubmitting(true);
+    setError(null);
+    try {
+      await submitWizard({
+        fhirBaseURL: props.fhirBaseURL,
+        baseUrl: props.baseUrl,
+        keycloakBaseURL: props.keycloakBaseURL,
+        userGroups: props.userGroups,
+      });
+      clearAllDrafts();
+      clearIdMap();
+      message.success('Setup complete');
+      setTimeout(() => window.location.reload(), 1500);
+    } catch (e) {
+      console.error(e);
+      setError(
+        e instanceof Error && e.message
+          ? e.message
+          : 'Setup failed. Please check the details and try again.'
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -51,6 +79,7 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
             keycloakBaseURL: props.keycloakBaseURL,
             baseUrl: props.baseUrl,
             extraData: props.extraData,
+            userGroups: props.userGroups,
           }}
           onNext={handleNext}
           onBack={() => setCurrentStep((s) => Math.max(0, s - 1))}
