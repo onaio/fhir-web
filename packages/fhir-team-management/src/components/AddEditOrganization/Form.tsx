@@ -37,6 +37,7 @@ import {
 import { formItemLayout, tailLayout } from '@opensrp/react-utils';
 import { PractToOrgAssignmentStrategy } from '@opensrp/pkg-config';
 import { useUserRole } from '@opensrp/rbac';
+import { uniqBy } from 'lodash';
 
 const { Item: FormItem } = Form;
 interface OrganizationFormProps {
@@ -70,7 +71,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     allPractitionerRoles,
     configuredPractAssignmentStrategy,
     onDraftSubmit,
-    draftPractitionerOptions = [],
+    draftPractitionerOptions = []
   } = props;
   const [form] = Form.useForm<OrganizationFormFields>();
 
@@ -133,15 +134,19 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     { label: t('Inactive'), value: false },
   ];
 
-  const practitionersSelectOptions = [
-    ...draftPractitionerOptions,
-    ...getPractitionerOptions(
-      practitioners,
-      existingPractitionerRoles,
-      allPractitionerRoles,
-      configuredPractAssignmentStrategy
-    ),
-  ];
+  const practitionersSelectOptions = uniqBy(
+    [
+      ...draftPractitionerOptions,
+      ...getPractitionerOptions(
+        practitioners,
+        existingPractitionerRoles,
+        allPractitionerRoles,
+        configuredPractAssignmentStrategy
+      ),
+    ],
+    'value'
+  );
+
   const validationRules = validationRulesFactory(t);
 
   return (

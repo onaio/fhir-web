@@ -34,7 +34,7 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
       return;
     }
 
-        setSubmitting(true);
+    setSubmitting(true);
     setError(null);
     try {
       await submitWizard({
@@ -45,7 +45,13 @@ export const OnboardingWizard = (props: OnboardingWizardProps) => {
       });
       clearAllDrafts();
       clearIdMap();
-      message.success('Setup complete');
+      message.success({
+        content: 'Setup complete',
+        style: {
+          fontSize: '1.2rem',
+          padding: '4rem 10rem',
+        },
+      });
       setTimeout(() => window.location.reload(), 1500);
     } catch (e) {
       console.error(e);
