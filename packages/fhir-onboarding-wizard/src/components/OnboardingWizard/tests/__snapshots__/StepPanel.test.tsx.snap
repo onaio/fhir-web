@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StepPanel matches the snapshot on first render 1`] = `
+<DocumentFragment>
+  <div>
+    <button>
+      fake-submit
+    </button>
+    <div
+      class="ant-space css-dev-only-do-not-override-k7429z ant-space-horizontal ant-space-align-center"
+      style="padding: 0rem 0rem 0.6rem 1rem;"
+    >
+      <div
+        class="ant-space-item"
+        style="margin-right: 8px;"
+      >
+        <button
+          class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-default"
+          type="button"
+        >
+          <span>
+            Back
+          </span>
+        </button>
+      </div>
+      <div
+        class="ant-space-item"
+      >
+        <button
+          class="ant-btn css-dev-only-do-not-override-k7429z ant-btn-primary"
+          disabled=""
+          type="button"
+        >
+          <span>
+            Next
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

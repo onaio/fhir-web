@@ -2,6 +2,7 @@ import type { OrganizationFormFields } from '@opensrp/fhir-team-management';
 import type { CareTeamFormFields } from '@opensrp/fhir-care-team';
 import { ILocation } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/ILocation';
 import { FormFields } from '@opensrp/user-management';
+import type { DuplicateCheck } from '../src/components/utils/duplicateChecks';
 
 export enum StepKey {
   LOCATION = 'location',
@@ -27,4 +28,5 @@ export interface StepConfig {
   title: string;
   component: React.ComponentType<any>;
   requiredPermissions: string[];
+  findDuplicate?: DuplicateCheck;
 }

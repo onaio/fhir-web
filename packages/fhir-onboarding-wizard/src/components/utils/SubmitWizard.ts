@@ -34,6 +34,7 @@ import type { IPractitionerRole } from '@smile-cdr/fhirts/dist/FHIR-R4/interface
 import type { IResource } from '@smile-cdr/fhirts/dist/FHIR-R4/interfaces/IResource';
 import { readDrafts } from '../../components/Drafts/useDraftStore';
 import { StepKey } from '../../types';
+import { duplicateChecks } from './duplicateChecks';
 
 export interface SubmitWizardArgs {
   fhirBaseURL: string;
@@ -344,25 +345,15 @@ async function submitCareTeams({ fhirBaseURL }: SubmitWizardArgs, idMap: IdMap) 
   }
 }
 
-/** checked before anything is created, so a bad draft never leaves a half-finished setup */
+/** the same rules as when a draft is added, run once more before anything is created */
 function validateDrafts() {
-  const usernames = new Set<string>();
-  const emails = new Set<string>();
-  for (const user of readDrafts<Draft<UserFormFields>>(StepKey.USERS)) {
-    const username = (user.username ?? '').trim().toLowerCase();
-    if (usernames.has(username)) {
-      throw new Error(`Two user drafts use the username "${user.username}". Usernames must be unique.`);
-    }
-    usernames.add(username);
-
-    const email = (user.email ?? '').trim().toLowerCase();
-    if (email) {
-      if (emails.has(email)) {
-        throw new Error(`Two user drafts use the email "${user.email}". Emails must be unique.`);
-      }
-      emails.add(email);
-    }
-  }
+  (Object.keys(duplicateChecks) as StepKey[]).forEach((step) => {
+    const drafts = readDrafts<Record<string, unknown>>(step);
+    drafts.forEach((draft, i) => {
+      const problem = duplicateChecks[step](draft, drafts, i);
+      if (problem) throw new Error(problem);
+    });
+  });
 }
 
 async function runStep(name: string, fn: () => Promise<void>) {

@@ -50,7 +50,7 @@ interface OrganizationFormProps {
   existingPractitionerRoles: IPractitionerRole[];
   allPractitionerRoles: IPractitionerRole[];
   configuredPractAssignmentStrategy?: PractToOrgAssignmentStrategy;
-  onDraftSubmit?: (values: OrganizationFormFields) => void;
+  onDraftSubmit?: (values: OrganizationFormFields) => boolean | void;
   draftPractitionerOptions?: { label: string; value: string }[];
 }
 
@@ -71,7 +71,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
     allPractitionerRoles,
     configuredPractAssignmentStrategy,
     onDraftSubmit,
-    draftPractitionerOptions = []
+    draftPractitionerOptions = [],
   } = props;
   const [form] = Form.useForm<OrganizationFormFields>();
 
@@ -155,8 +155,7 @@ const OrganizationForm = (props: OrganizationFormProps) => {
       form={form}
       onFinish={(values) => {
         if (onDraftSubmit) {
-          onDraftSubmit(values);
-          form.resetFields(); // clears the form so the user can add another entry
+          if (onDraftSubmit(values) !== false) form.resetFields(); // a rejected draft keeps what was typed
           return;
         }
         mutate(values);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button, Space } from 'antd';
+import { Alert, Button, Space, message } from 'antd';
 import { useDraftStore } from '../Drafts/useDraftStore';
 import { DraftList } from '../Drafts/draftList';
 import type { StepConfig } from '../../types';
@@ -28,12 +28,18 @@ export const StepPanel: React.FC<StepPanelProps> = ({
   const [editIndex, setEditIndex] = useState<number | undefined>(undefined);
   const StepComponent = stepConfig.component;
 
-  const handleAddToDraft = (values: unknown) => {
-    const existingId =
-      editIndex !== undefined ? (drafts[editIndex] as { draftId?: string })?.draftId : undefined;
-    addDraft({ ...(values as object), draftId: existingId ?? v4() }, editIndex);
-    setEditIndex(undefined);
-  };
+const handleAddToDraft = (values: unknown): boolean => {
+  const problem = stepConfig.findDuplicate?.(values as Record<string, unknown>, drafts, editIndex);
+  if (problem) {
+    message.error(problem);
+    return false; // tells the form to keep what was typed
+  }
+  const existingId =
+    editIndex !== undefined ? (drafts[editIndex] as { draftId?: string })?.draftId : undefined;
+  addDraft({ ...(values as object), draftId: existingId ?? v4() }, editIndex);
+  setEditIndex(undefined);
+  return true;
+};
 
   return (
     <div>

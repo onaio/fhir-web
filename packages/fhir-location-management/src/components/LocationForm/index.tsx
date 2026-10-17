@@ -44,7 +44,7 @@ export interface LocationFormProps
   disabled: (keyof LocationFormFields)[];
   onCancel: () => void;
   afterSubmit?: (payload: IfhirR4.ILocation) => void;
-  onDraftSubmit?: (draft: LocationFormFields & { payload: ILocation }) => void;
+  onDraftSubmit?: (draft: LocationFormFields & { payload: ILocation }) => boolean | void;
   validationRulesFactory: ValidationFactory;
   i18nNamespace?: LocationI18nNamespace;
 }
@@ -163,8 +163,8 @@ const LocationForm = (props: LocationFormProps) => {
         onFinish={async (values) => {
           const payload = generateLocationUnit(values, initialValues, parentNode);
           if (onDraftSubmit) {
-            onDraftSubmit({ ...values, payload });
-            form.resetFields();
+            // a rejected draft keeps what was typed
+            if (onDraftSubmit({ ...values, payload }) !== false) form.resetFields();
             return;
           }
           setSubmitting(true);

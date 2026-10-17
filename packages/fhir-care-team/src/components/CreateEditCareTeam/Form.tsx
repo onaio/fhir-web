@@ -30,7 +30,7 @@ export interface CareTeamFormProps {
   initialValues: FormFields;
   fhirBaseURL: string;
   disabled?: string[];
-  onDraftSubmit?: (values: FormFields) => void;
+  onDraftSubmit?: (values: FormFields) => boolean | void;
   draftOrganizationOptions?: { label: string; value: string }[];
   draftPractitionerOptions?: { label: string; value: string }[];
 }
@@ -107,8 +107,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             initialValues={initialValues}
             onFinish={(values: FormFields) => {
               if (onDraftSubmit) {
-                onDraftSubmit(values);
-                form.resetFields(); 
+                if (onDraftSubmit(values) !== false) form.resetFields(); // a rejected draft keeps what was typed
                 return;
               }
               setIsSubmitting(true);

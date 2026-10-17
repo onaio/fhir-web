@@ -126,9 +126,9 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             form={form}
             initialValues={initialValues}
             onFinish={(values) => {
-              if(onDraftSubmit) {
-                onDraftSubmit(values);
-                form.resetFields();
+              if (onDraftSubmit) {
+                // a rejected draft keeps what was typed
+                if (onDraftSubmit(values) !== false) form.resetFields();
                 return;
               }
               setSubmitting(true);
