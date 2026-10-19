@@ -1,0 +1,1 @@
+export const WIZARD_ONBOARDING_URL = '/wizard/setup';

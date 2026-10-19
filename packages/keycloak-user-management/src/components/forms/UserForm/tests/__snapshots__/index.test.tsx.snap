@@ -16,6 +16,146 @@ exports[`components/forms/UserForm edits user: readonly username edit 1`] = `
 />
 `;
 
+exports[`components/forms/UserForm form validation works for required fields: email input 1`] = `
+<input
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="email"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: email label 1`] = `
+<label
+  className=""
+  htmlFor="email"
+  title="Email"
+>
+  Email
+</label>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: enabled input 1`] = `
+Array [
+  <input
+    checked={true}
+    className="ant-radio-input"
+    disabled={false}
+    onChange={[Function]}
+    type="radio"
+    value={true}
+  />,
+  <input
+    checked={false}
+    className="ant-radio-input"
+    disabled={false}
+    onChange={[Function]}
+    type="radio"
+    value={false}
+  />,
+]
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: firstName input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="firstName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: firstName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="firstName"
+  title="First Name"
+>
+  First Name
+</label>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: lastName input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="lastName"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: lastName label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="lastName"
+  title="Last Name"
+>
+  Last Name
+</label>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: practitionerToggle input 1`] = `null`;
+
+exports[`components/forms/UserForm form validation works for required fields: practitionerToggle label 1`] = `null`;
+
+exports[`components/forms/UserForm form validation works for required fields: userGroups input 1`] = `null`;
+
+exports[`components/forms/UserForm form validation works for required fields: userGroups label 1`] = `
+<label
+  className=""
+  htmlFor="userGroups"
+  title="Keycloak User Group"
+>
+  Keycloak User Group
+</label>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: username input 1`] = `
+<input
+  aria-required="true"
+  className="ant-input css-dev-only-do-not-override-k7429z"
+  disabled={false}
+  id="username"
+  onBlur={[Function]}
+  onChange={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  style={Object {}}
+  type="text"
+  value=""
+/>
+`;
+
+exports[`components/forms/UserForm form validation works for required fields: username label 1`] = `
+<label
+  className="ant-form-item-required"
+  htmlFor="username"
+  title="Username"
+>
+  Username
+</label>
+`;
+
 exports[`components/forms/UserForm renders correctly: email input 1`] = `
 <input
   className="ant-input css-dev-only-do-not-override-k7429z"

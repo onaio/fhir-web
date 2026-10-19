@@ -174,3 +174,6 @@ export const PRACTITIONER_TO_ORG_ASSIGNMENT_STRATEGY = setEnv(
 );
 
 export const AUTHZ_STRATEGY = setEnv('REACT_APP_AUTHZ_STRATEGY', 'keycloak');
+
+export const ENABLE_FHIR_ONBOARDING_WIZARD =
+  process.env.REACT_APP_ENABLE_FHIR_ONBOARDING_WIZARD !== 'false';

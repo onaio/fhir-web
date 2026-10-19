@@ -30,6 +30,9 @@ export interface CareTeamFormProps {
   initialValues: FormFields;
   fhirBaseURL: string;
   disabled?: string[];
+  onDraftSubmit?: (values: FormFields) => boolean | void;
+  draftOrganizationOptions?: { label: string; value: string }[];
+  draftPractitionerOptions?: { label: string; value: string }[];
 }
 
 /**
@@ -38,7 +41,14 @@ export interface CareTeamFormProps {
  * @param {object} props - component props
  */
 const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => {
-  const { fhirBaseURL, initialValues, disabled } = props;
+  const {
+    fhirBaseURL,
+    initialValues,
+    disabled,
+    onDraftSubmit,
+    draftOrganizationOptions,
+    draftPractitionerOptions,
+  } = props;
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const history = useHistory();
   const { t } = useTranslation();
@@ -96,6 +106,10 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
             form={form}
             initialValues={initialValues}
             onFinish={(values: FormFields) => {
+              if (onDraftSubmit) {
+                if (onDraftSubmit(values) !== false) form.resetFields(); // a rejected draft keeps what was typed
+                return;
+              }
               setIsSubmitting(true);
               submitForm(values, initialValues, fhirBaseURL, selectedOrgs, selectedPractitioners, t)
                 .then(() => {
@@ -155,6 +169,7 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 allowClear
                 getFullOptionOnChange={practitionerChangeHandler}
                 discoverUnknownOptions={practitionerPreloadExistingOptions}
+                prependOptions={draftPractitionerOptions}
               />
             </Form.Item>
 
@@ -175,16 +190,25 @@ const CareTeamForm: React.FC<CareTeamFormProps> = (props: CareTeamFormProps) => 
                 disabled={disabled?.includes(managingOrganizations)}
                 getFullOptionOnChange={organizationChangeHandler}
                 discoverUnknownOptions={organizationPreloadExistingOptions}
+                prependOptions={draftOrganizationOptions}
               />
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" className="create-group">
-                {isSubmitting ? t('Saving') : t('Save')}
-              </Button>
-              <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
-                {t('Cancel')}
-              </Button>
+              {onDraftSubmit ? (
+                <Button type="primary" id="add-to-draft-button" htmlType="submit">
+                  {t('Add to Draft')}
+                </Button>
+              ) : (
+                <>
+                  <Button type="primary" htmlType="submit" className="create-group">
+                    {isSubmitting ? t('Saving') : t('Save')}
+                  </Button>
+                  <Button onClick={() => history.push(URL_CARE_TEAM)} className="cancel-care-team">
+                    {t('Cancel')}
+                  </Button>
+                </>
+              )}
             </Form.Item>
           </Form>
         </Col>

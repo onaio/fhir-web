@@ -10,3 +10,5 @@ export * from './components/forms/UserForm';
 export { getUserTypeCode, getUserType } from './components/forms/UserForm/utils';
 export * from './ducks/user';
 export * as UserGroupDucks from './ducks/userGroups';
+
+export {getUserAndGroupsPayload} from './components/forms/UserForm/utils'

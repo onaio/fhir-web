@@ -26,6 +26,7 @@ export interface PaginatedAsyncSelectProps<ResourceT extends IResource>
   extraQueryParams?: URLParams;
   getFullOptionOnChange?: (obj: SelectOption<ResourceT> | SelectOption<ResourceT>[]) => void;
   discoverUnknownOptions?: (values: string[]) => Promise<SelectOption<ResourceT>[]>;
+  prependOptions?: { label: string; value: string }[];
 }
 
 const debouncedFn = debounce((callback) => callback(), 500);
@@ -52,6 +53,7 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     extraQueryParams = {},
     getFullOptionOnChange,
     discoverUnknownOptions,
+    prependOptions = [],
     ...restProps
   } = props;
   const defaultStartPage = 1;
@@ -130,9 +132,13 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
   const poolValuesToCheck = [...values, defaultValues];
 
   const missingValues: string[] = [];
+  const prependValues = new Set(prependOptions.map((o) => o.value));
   for (const value of poolValuesToCheck) {
     if (typeof value === 'string') {
-      if (!(optionsByValue[value] as SelectOption<ResourceT> | undefined)) {
+      if (
+        !(optionsByValue[value] as SelectOption<ResourceT> | undefined) &&
+        !prependValues.has(value)
+      ) {
         missingValues.push(value);
       } else {
         // TODO - YAGNI - case when value is labelledValue
@@ -184,7 +190,10 @@ export function PaginatedAsyncSelect<ResourceT extends IResource>(
     loading: isLoading || preLoadDataIsLoading,
     notFoundContent: isLoading ? <Spin size="small" /> : <Empty description={t('No data')} />,
     filterOption: false,
-    options: updatedOptions,
+    options: [
+      ...(prependOptions as unknown as SelectOption<ResourceT>[]), // drafts first
+      ...updatedOptions,
+    ],
     searchValue,
     dropdownRender: (menu: React.ReactNode) => {
       return (

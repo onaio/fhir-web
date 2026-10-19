@@ -1,11 +1,14 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, useMemo, FC } from 'react';
 import { useHistory } from 'react-router';
+import { useQuery } from 'react-query';
 import { Button, Col, Row, Form, Select, Input, Radio } from 'antd';
 import {
   BodyLayout,
   formItemLayout,
   ClientSideActionsSelect,
   tailLayout,
+  getResourcesFromBundle,
+  loadAllResources,
 } from '@opensrp/react-utils';
 import {
   compositionUrlFilter,
@@ -49,6 +52,7 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
     userGroups,
     renderFields,
     hiddenFields,
+    onDraftSubmit,
   } = props;
   const shouldRender = (fieldName: FormFieldsKey) => {
     if (renderFields === undefined) {
@@ -105,6 +109,44 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
   }, [form, initialValues, userEnabled]);
 
   const editing = !!props.initialValues.id;
+
+  // when the server has exactly one application id, preselect it for a new user
+  const appIdsQuery = useQuery(
+    ['user-form-application-ids', baseUrl],
+    () => loadAllResources(baseUrl, compositionResourceType, compositionUrlFilter),
+    {
+      select: (res) =>
+        Array.from(
+          new Set(
+            getResourcesFromBundle<IComposition>(res)
+              .map((composition) => composition.identifier?.value)
+              .filter((value): value is string => !!value)
+          )
+        ),
+      // never when editing (an empty id there may be deliberate), or when the field is not shown
+      enabled: !editing && !!baseUrl && shouldRender(fhirCoreAppIdField),
+      refetchOnWindowFocus: false,
+      retry: false, // only a convenience, so a failed lookup must not get in the way
+    }
+  );
+  const onlyAppId = appIdsQuery.data?.length === 1 ? appIdsQuery.data[0] : undefined;
+
+  // The starting values with the id filled in. resetFields() returns to these, so a form that is
+  // reused for several drafts keeps the id.
+  const startingValues = useMemo(
+    () =>
+      onlyAppId && !initialValues[fhirCoreAppIdField]
+        ? { ...initialValues, [fhirCoreAppIdField]: onlyAppId }
+        : initialValues,
+    [initialValues, onlyAppId]
+  );
+
+  useEffect(() => {
+    if (onlyAppId && !form.getFieldValue(fhirCoreAppIdField)) {
+      form.setFieldsValue({ [fhirCoreAppIdField]: onlyAppId });
+    }
+  }, [form, initialValues, onlyAppId]);
+
   const pageTitle = editing
     ? t('Edit User | {{username}}', { username: initialValues.username })
     : t('Add User');
@@ -123,8 +165,13 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
           <Form
             {...formItemLayout}
             form={form}
-            initialValues={initialValues}
+            initialValues={startingValues}
             onFinish={(values) => {
+              if (onDraftSubmit) {
+                // a rejected draft keeps what was typed
+                if (onDraftSubmit(values) !== false) form.resetFields();
+                return;
+              }
               setSubmitting(true);
               submitForm(
                 { ...initialValues, ...values },
@@ -316,12 +363,20 @@ const UserForm: FC<UserFormProps> = (props: UserFormProps) => {
             ) : null}
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" className="create-user">
-                {isSubmitting ? t('SAVING') : t('Save')}
-              </Button>
-              <Button onClick={() => history.goBack()} className="cancel-user">
-                {t('Cancel')}
-              </Button>
+              {onDraftSubmit ? (
+                <Button type="primary" id="add-to-draft-button" htmlType="submit">
+                  {t('Add to Draft')}
+                </Button>
+              ) : (
+                <>
+                  <Button type="primary" htmlType="submit" className="create-user">
+                    {isSubmitting ? t('SAVING') : t('Save')}
+                  </Button>
+                  <Button onClick={() => history.goBack()} className="cancel-user">
+                    {t('Cancel')}
+                  </Button>
+                </>
+              )}
             </Form.Item>
           </Form>
         </Col>

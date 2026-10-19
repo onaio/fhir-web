@@ -9,3 +9,7 @@ export * from './components/AllLocationListFlat';
 export * from './helpers/utils';
 export * from './helpers/types';
 export * from './constants';
+
+export type {LocationFormFields} from './components/LocationForm/utils';
+export {defaultValidationRulesFactory} from './components/LocationForm/utils';
+export {postPutLocationUnit} from './components/LocationForm/utils';
